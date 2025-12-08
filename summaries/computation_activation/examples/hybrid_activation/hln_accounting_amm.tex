@@ -1,4 +1,4 @@
-\begin{example}[Continuation of \exaref{exa:hlnAccountingRep}]
+\begin{example}[Continuation of \exaref{exa:hlnAccountingRep}]\label{exa:hlnAccountingAMM}
     Let us recall the statistic of \exaref{exa:hlnAccountingRep} and consider a dataset of $\datanum=20$ states summarized in the frequency table:
     \begin{center}
         \begin{tabular}{|c|ccc|}
@@ -44,7 +44,7 @@
     In the $\mathrm{While}$ loop we then have for the formula $\formulaof{1}$
     \begin{align*}
         \hypercoreat{\headvariableof{1}}
-        = \contractionof{\bencodingofat{\formulaof{0}}{\headvariableof{0},\catvariableof{F},\catvariableof{A1},\catvariableof{A2}},
+        = \contractionof{\tbasisat{\headvariableof{0}},\bencodingofat{\formulaof{0}}{\headvariableof{0},\catvariableof{F},\catvariableof{A1},\catvariableof{A2}},
             \bencodingofat{\formulaof{1}}{\headvariableof{1},\catvariableof{F},\catvariableof{A1},\catvariableof{A2}}}{\headvariableof{1}}
         = \begin{bmatrix}
               1 \\

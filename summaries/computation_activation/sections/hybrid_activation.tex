@@ -65,17 +65,17 @@ Let us demonstrate the utility of \HybridLogicNetworks{} with an example from ac
 Let us now briefly discuss how \HybridLogicNetworks{} can be trained on data based on likelihood maximization.
 Given a dataset $\dataset$ consisting of $\datanum$ independent and identically distributed samples from an unknown distribution, we want to find a \HybridLogicNetwork{} $\hlnwith$ that maximizes the data likelihood
 \begin{align*}
-    \lossof{\hybridparam} \coloneqq -\frac{1}{\datanum} \sum_{\decindexin} \lnof{\probofat{\hlnparameters}{\shortcatvariables=\shortcatindices^{\datindex}}}
+    \lossof{\hybridparam} \coloneqq -\frac{1}{\datanum} \sum_{\datindexin} \lnof{\probofat{\hlnparameters}{\shortcatvariables=\shortcatindices^{\datindex}}}
     \, .
 \end{align*}
-We notice that this is $\infty$ if and only if there is a data point $\decindexin$ with
+We notice that this is $\infty$ if and only if there is a data point $\datindexin$ with
 \begin{align*}
     \hlnformulaat{\shortcatvariables=\shortcatindices^{\datindex}}=0 \, .
 \end{align*}
 If this is not the case, we can rewrite the loss using the empirical mean vector $\datameanwith\in\parspace$, which is defined for $\selindexin$ as
 \begin{align*}
     \datameanat{\indexedselvariable}
-    = \frac{1}{\datanum} \sum_{\decindexin} \formulaofat{\selindex}{\shortcatvariables=\shortcatindices^{\datindex}} \, ,
+    = \frac{1}{\datanum} \sum_{\datindexin} \formulaofat{\selindex}{\shortcatvariables=\shortcatindices^{\datindex}} \, ,
 \end{align*}
 by
 \begin{align*}
@@ -84,7 +84,8 @@ by
 \end{align*}
 Since $\hardparam$ influences only the second term the best hard parameters can be found by
 \begin{align*}
-    \hardlegset = \{\selindex \wcols \datameanat{\indexedselvariable}\in\ozset\} \andspace \headindexof{\selindex} = \datameanat{\indexedselvariable} \, .
+    \hardlegset = \{\selindex \wcols \datameanat{\indexedselvariable}\in\ozset\} \andspace
+    \headindexof{\selindex} = \datameanat{\indexedselvariable} \quad \text{for} \quad \selindex\in\variableset \, .
 \end{align*}
 We further optimize the coordinates $\selindex\in[\seldim]/\hardlegset$ of $\canparamwithin$ alternatingly by the coordinate descent steps
 \begin{align*}
@@ -147,18 +148,24 @@ For more details we refer to~\cite[Chapter~9]{goessmann_tensor-network_2025}.
 
 \input{../examples/hybrid_activation/hln_accounting_amm}
 
-\subsection{Entailment by \HybridLogicNetworks{}}
+\subsection{Entailment by \HybridLogicNetworks{}} % Now
 
-Also entailment can be checked for \HybridLogicNetwork{}.
-Assuming a positive probability of all models of the integrated \HardLogicNetwork{}, the entailment can be checked only considering the \HardLogicNetwork{}.
-Here a query is a formula to retrieve information from a given network.
+Let us now demonstrate a further usage of our unified treatment of probabilistic and logical models, by investigating a generalized concept of entailment.
+Entailment can be generalized to probabilistic models, by deciding whether a propositional formula is always satisfied given a probabilistic model.
+%Also entailment can be checked for \HybridLogicNetwork{}.
+%Assuming a positive probability of all models of the integrated \HardLogicNetwork{}, the entailment can be checked only considering the \HardLogicNetwork{}.
+%Here a query is a formula to retrieve information from a given network.
 
-\begin{theorem}%[{~\cite[Theorem 8.12]{goessmann_tensor-network_2025}}]
-    \alex{Unclear: Would need to add probabilistic entailment..}
-    Let $\probofat{\hlnparameters}{\shortcatvariables}$ be a \HybridLogicNetwork{}.
-    Given a query formula $g$, we have that $\probofat{\hlnparameters}{\shortcatvariables}\models~g$ if and only if
+\begin{theorem}\label{the:hybridEntailment}
+    Let $\probofat{\hlnparameters}{\shortcatvariables}$ be a \HybridLogicNetwork{} and $\secexformulaat{\shortcatvariables}$ a propositional formula.
+    Then we have the probabilistic entailment of $\secexformula$ by $\probof{\hlnparameters}$, that is
     \begin{align*}
-        \hlnformula \models g,
+        \contraction{\probofat{\hlnparameters}{\shortcatvariables},\secexformulaat{\shortcatvariables}} = 1 \, ,
+    \end{align*}
+    if and only if
+%    Given a query formula $\secexformula$, we have that $\probofat{\hlnparameters}{\shortcatvariables}\models~\secexformula$ if and only if
+    \begin{align*}
+        \hlnformula \models \secexformula \, ,
     \end{align*}
     where %the tuple $(A,y_A)$ denote the hard logic part of the network and
     \begin{align*}
@@ -169,32 +176,56 @@ Here a query is a formula to retrieve information from a given network.
     \end{align*}
 \end{theorem}
 \begin{proof}
-    \alex{Could be done based on support.}
+    We have 
+    \begin{align*}
+        \contraction{\probofat{\hlnparameters}{\shortcatvariables},\secexformulaat{\shortcatvariables}} = 1
+    \end{align*}
+    if and only if 
+    \begin{align*}
+        \contraction{\left(\onesat{\shortcatvariables}-\nonzeroof{\probofat{\hlnparameters}{\shortcatvariables}}\right),\secexformulaat{\shortcatvariables}} = 0
+    \end{align*}
+    We notice, that $\hlnformulawith$ is the indicator tensor for the support of $\probofat{\hlnparameters}{\shortcatvariables}$.
+    It therfore holds that
+    \begin{align*}
+        &\contraction{\left(\onesat{\shortcatvariables}-\nonzeroof{\probofat{\hlnparameters}{\shortcatvariables}}\right),\secexformulaat{\shortcatvariables}} \\
+        &\quad\quad = \contraction{\secexformulaat{\shortcatvariables}} - \contraction{\hlnformulawith,\secexformulaat{\shortcatvariables}} \\
+        &\quad\quad = \contraction{\secexformulaat{\shortcatvariables}} - \contraction{\hlnformulawith,\left(\onesat{\shortcatvariables}-\lnot\secexformulaat{\shortcatvariables}\right)} \\
+        &\quad\quad = \contraction{\hlnformulawith,\secexformulaat{\shortcatvariables}} \, .
+    \end{align*}
+    By \defref{def:logicalEntailment} this vanishes if and only if $\hlnformula \models \secexformula$.
 \end{proof}
 
-\begin{example}{Entailment for Accounting Logic}
-    \alex{Bad example: Minterms are only entailed by themselves.}
-    To check entailment of the query formula defined by the minterm
-    \begin{align*}
-        g[X_{A_1}=0,X_{A_2}=1,X_F=1] = 1
-    \end{align*}
-    and is set to zero otherwise, entailment can be checked by contracting
-    \begin{align*}
-        \hlnformula[\catvariableof{A_1},\catvariableof{A_2},\catvariableof{F}] = \catvariableof{A1} \oplus \catvariableof{A2} \otimes \mathbb{I}
-    \end{align*}
-    with $g$ arriving at
-    \begin{align*}
-        &\langle  \hlnformula[\catvariableof{A_1},\catvariableof{A_2},\catvariableof{F}], \lnot g[X_{A_1},X_{A_2},X_F]  \rangle \\
-        &= \sum_{x_{A_1},x_{A_2},x_{F} \in \{0,1\}} \hspace{-2ex}\hlnformula[X_{A_1}=x_{A_1},X_{A_2}=x_{A_2},X_F=x_f]  (1-g[X_{A_1}=x_{A_1},X_{A_2}=x_{A_2},X_F=x_f])\\
-        &= \sum_{\substack{x_{A_1},x_{A_2},x_{F} \in \{0,1\}\\ (x_{A_1},x_{A_2},x_{F})\neq (0,1,1)}} \hspace{-2ex}\hlnformula[X_{A_1}=x_{A_1},X_{A_2}=x_{A_2},X_F=x_f] \\
-        &\geq \hlnformula[X_{A_1}=1,X_{A_2}=0,X_F=0] > 0.
-    \end{align*}
-    Therefore, $\mathbb{P}^{\mathcal{F},(A,y_A,\theta)}[\catvariableof{[d]}]$ does not entail $g$.
-    In this case, this is due to the fact, that $g$ only assumes one model, despite the formula having multiple models.
-    Doing the same calculations for
-    \begin{align*}
-        \tilde g[X_{A_1}=1,X_{A_2}=1,X_F=1] = 0
-    \end{align*}
-    and equal to $1$ everywhere else leads to the constraction being equal to zero.
-    Therefore, $\mathbb{P}^{\mathcal{F},(A,y_A,\theta)}[\catvariableof{[d]}]$ does entail $\tilde g$.
-\end{example}
+\input{../examples/hybrid_activation/hln_accounting_entailment}
+
+%
+%\begin{example}{Entailment for Accounting Logic}
+%    \alex{Bad example: Minterms are only entailed by themselves.}
+%    To check entailment of the query formula defined by the minterm
+%    \begin{align*}
+%        g[X_{A_1}=0,X_{A_2}=1,X_F=1] = 1
+%    \end{align*}
+%    and is set to zero otherwise, entailment can be checked by contracting
+%    \begin{align*}
+%        \hlnformula[\catvariableof{A_1},\catvariableof{A_2},\catvariableof{F}] = \catvariableof{A1} \oplus \catvariableof{A2} \otimes \mathbb{I}
+%    \end{align*}
+%    with $g$ arriving at
+%    \begin{align*}
+%        &\langle  \hlnformula[\catvariableof{A_1},\catvariableof{A_2},\catvariableof{F}], \lnot g[X_{A_1},X_{A_2},X_F]  \rangle \\
+%        &= \sum_{x_{A_1},x_{A_2},x_{F} \in \{0,1\}} \hspace{-2ex}\hlnformula[X_{A_1}=x_{A_1},X_{A_2}=x_{A_2},X_F=x_f]  (1-g[X_{A_1}=x_{A_1},X_{A_2}=x_{A_2},X_F=x_f])\\
+%        &= \sum_{\substack{x_{A_1},x_{A_2},x_{F} \in \{0,1\}\\ (x_{A_1},x_{A_2},x_{F})\neq (0,1,1)}} \hspace{-2ex}\hlnformula[X_{A_1}=x_{A_1},X_{A_2}=x_{A_2},X_F=x_f] \\
+%        &\geq \hlnformula[X_{A_1}=1,X_{A_2}=0,X_F=0] > 0.
+%    \end{align*}
+%    Therefore, $\mathbb{P}^{\mathcal{F},(A,y_A,\theta)}[\catvariableof{[d]}]$ does not entail $g$.
+%    In this case, this is due to the fact, that $g$ only assumes one model, despite the formula having multiple models.
+%
+%    Doing the same calculations for
+%    \begin{align*}
+%        \secexformulaat{\catvariableof{A1},\catvariableof{A2},\catvariableof{F}}
+%        = \lnot\catvariableof{A1} \lor \lnot\catvariableof{A2} \lor \lnot\catvariableof{F}
+%    \end{align*}
+%    \begin{align*}
+%        \tilde g[X_{A_1}=1,X_{A_2}=1,X_F=1] = 0
+%    \end{align*}
+%    and equal to $1$ everywhere else leads to the constraction being equal to zero.
+%    Therefore, $\mathbb{P}^{\mathcal{F},(A,y_A,\theta)}[\catvariableof{[d]}]$ does entail $\tilde g$.
+%\end{example}
