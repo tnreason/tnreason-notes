@@ -42,7 +42,9 @@ We will first provide a formal definition as real maps from index sets enumerati
     \begin{align*}
         \bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} \,,
     \end{align*}
-    which is a linear space, enriched with the operations of coordinate wise summation and scalar multiplication. We call a tensor $\hypercoreat{\shortcatvariables}$ boolean, when $\imageof{\hypercore}\subset[2]$, i.e. all coordinates are either $0$ or $1$.
+    which is a linear space, enriched with the operations of coordinate wise summation and scalar multiplication.
+    We call a tensor $\hypercoreat{\shortcatvariables}$ boolean, when $\imageof{\hypercore}\subset[2]$, i.e. all coordinates are either $0$ or $1$.
+    \alex{We abbreviate sets as $[\catorder]=\{0,\ldots,\catorder-1\}$, tuples of state indices by $\catindexof{[\catorder]}=\catindexof{0},\ldots,\catindexof{\catorder-1}$ and tuples of variables by $\catvariableof{[\catorder]}=\catvariableof{0},\ldots,\catvariableof{\catorder-1}$}
 \end{definition}
 
 This notation of tensors opposed to its notation through ordered indices as common in tensor calculus, facilitates writing down contractions along individual legs and other operations.
@@ -287,3 +289,9 @@ To represent a \ComputationActivationNetwork{} two tensor networks are needed: $
 
 % We write \(G_{EL}=([p],\{\{\ell\}:\ell\in[p]\})\) for the hypergraph of singleton edges and call it elementary activation graph. 
 % An activation tensor on \(G_{EL}\) factorizes into a product of unary cores over \(Y_0,\dots,Y_{p-1}\).
+
+\subsection{Continuous Variables} % Needed for families of distributions
+
+\alex{We can also allow for variables taking values in infinite sets such as $\rr$.
+Contractions are then performed by generic integrations with respect to e.g. the Lebesque measure.
+}

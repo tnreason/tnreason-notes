@@ -28,7 +28,7 @@ The generated \mintinline{python}{computationCores} is a dictionary with the fol
 '(or_a_b)_cC', [2, 2, 2]
 '(not_c)_cC', [2, 2]
 \end{minted}
-Based on this dictionary, the \ComputationActivationNetwork{} can be build by setting the activation network for the single output feature (the output of $f$) to a vector acting on the output of the basis encoding of $f$. Here a \mintinline{python}{SingleHybridFeature} is used, which allows for hard or sift activations. Then the value for the desired output of the feature is set to \mintinline{python}{True}.
+Based on this dictionary, the \ComputationActivationNetwork{} can be build by setting the activation network for the single output feature (the output of $f$) to a vector acting on the output of the basis encoding of $f$. Here a \mintinline{python}{SingleHybridFeature} is used, which allows for hard or soft activations. Then the value for the desired output of the feature is set to \mintinline{python}{True}.
 \begin{minted}{python}
 caNet = representation.ComputationActivationNetwork(
     computationCoreDict=computationCores,
@@ -38,10 +38,13 @@ caNet = representation.ComputationActivationNetwork(
     )
 \end{minted}
 
-As in example~\ref{exa:bencodingNegCon}, the CAN then has the following form.
-%\input{../tikz_pics/implementation/can_decomp}
+As in example~\ref{exa:bencodingNegCon}, the CAN then has the following form.\alex{Should we use the engine.draw() for that?}
+\input{../tikz_pics/implementation/can_decomp}
 
-The other representation in example~\ref{exa:bencodingNegCon} can also be implemented. Both architectures can be found the linked notebook\footnote{\url{https://colab.research.google.com/drive/14knFuMJHI683DAmUgJ-G10MQFueoXR6q\#scrollTo=vrOYBViZhX2S}}. Note that more efficient representations of this network are possible and the one described here is mainly for pedagogic purposes.  Furthermore the right implementation of the formula can be checked by contractions.
+The other representation in example~\ref{exa:bencodingNegCon} can also be implemented.
+Both architectures can be found the linked notebook\footnote{\url{https://colab.research.google.com/drive/14knFuMJHI683DAmUgJ-G10MQFueoXR6q\#scrollTo=vrOYBViZhX2S}}.
+Note that more efficient representations of this network are possible and the one described here is mainly for pedagogic purposes.
+Furthermore the right implementation of the formula can be checked by contractions.
 \begin{minted}{python}
 allCores = caNet.create_cores()
 formula = engine.contract(coreDict = allCores, 

@@ -1,7 +1,62 @@
-\begin{example}[I.i.d. Boolean Variables: Coin toss interpretation]\label{exa:ctHc}
+\begin{example}[I.i.d. Boolean Variables: Coin toss interpretation]
+    \label{exa:ctHc}
     Let there be $\catorder$ boolean variables $\shortcatvariables$, which are i.i.d. drawn from a positive distribution $\probat{\catvariable}$.
     From the pairwise independencies of $\catvariableof{\catenumerator}$ it follows with the Hammersley-Clifford Factorization Theorem that the distribution is representable by an elementary tensor network, that is
     \begin{align*}
-        \probwith = \bigotimes_{\catenumeratorin} \probat{\catvariableof{\catenumerator}} \, .
+        \probwith = \bigotimes_{\catenumeratorin} \probofat{\catenumerator}{\catvariableof{\catenumerator}} \, .
     \end{align*}
+    The corresponding hypergraph is the elementary graph, with respect to which any two disjoint subsets of nodes are separated (see \figref{fig:ELDecomposition}).
+    \begin{figure}
+        \begin{center}
+            \begin{tikzpicture}[scale=0.35,thick]
+                \begin{scope}[shift={(-19,-2)}]
+                    \coordinate[label=left:$a)$] (A) at (-2,2);
+
+                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (0,0) {};
+                    \node[anchor=center] (A) at (0,0) {\corelabelsize $\catvariableof{0}$};
+                    \node[anchor=center] (A) at (0,1.75) {\corelabelsize $\edgeof{0}$};
+
+                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (4,0) {};
+                    \node[anchor=center] (A) at (4,0) {\corelabelsize $\catvariableof{1}$};
+                    \node[anchor=center] (A) at (4,1.75) {\corelabelsize $\edgeof{1}$};
+
+                    \coordinate[label=below:$\hdots $] (A) at (7,0.5);
+
+                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (10,0) {};
+                    \node[] (text) at (10,0) {\corelabelsize $\catvariableof{\catorder\shortminus1}$};
+                    \node[anchor=center] (A) at (10,1.75) {\corelabelsize $\edgeof{\catorder\shortminus1}$};
+                \end{scope}
+
+                \coordinate[label=left:$b)$] (A) at (-4,0);
+
+                \begin{scope}[shift={(5,-2)}]
+                    %% Draw Probtensor here
+                    \draw (-3,-1) rectangle (-9,1);
+                    \node[anchor=center] at (-6,0) {\corelabelsize $\probtensor$};
+                    \draw (-4,-1)--(-4,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
+                    \draw (-7,-1)--(-7,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+                    \draw (-8,-1)--(-8,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+
+                    \node[anchor=center] (A) at (-1.5,0) {${=}$};
+
+                    \draw (0,-1) rectangle (2,1);
+                    \node[anchor=center] (A) at (1,0) {\corelabelsize $\probof{0}$};
+                    \draw (1,-1)--(1,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+
+                    \draw (3,-1) rectangle (5,1);
+                    \node[anchor=center] (A) at (4,0) {\corelabelsize $\probof{1}$};
+                    \draw (4,-1)--(4,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+
+                    \node[anchor=center] (text) at (7,0) {$\hdots$};
+
+                    \draw (9,-1) rectangle (11,1);
+                    \node[anchor=center] (A) at (10,0) {\corelabelsize $\probof{\catorder\shortminus1}$};
+                    \draw (10,-1)--(10,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
+                \end{scope}
+            \end{tikzpicture}
+        \end{center}
+        \caption{Decomposition of a probability distribution with independent variables (see \exaref{exa:ctHc}).
+        The independences are captured by the elementary hypergraph a), which edges contain single nodes.
+        The corresponding tensor $\probwith$ is then represented by a Markov Network on the elementary hypergraph, where each factor is the marginal distribution of the corresponding variable.}\label{fig:ELDecomposition}
+    \end{figure}
 \end{example}
