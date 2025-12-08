@@ -1,16 +1,19 @@
-\begin{thebibliography}{47}
+\begin{thebibliography}{48}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem[Affleck et~al.(1987)Affleck, Kennedy, Lieb, and Tasaki]{IanaffleckMPS}
+\bibitem[Affleck et~al.(1987)Affleck, Kennedy, Lieb, and
+  Tasaki]{affleck_rigorous_1987}
 Ian Affleck, Tom Kennedy, Elliott~H. Lieb, and Hal Tasaki.
 \newblock Rigorous results on valence-bond ground states in antiferromagnets.
-\newblock \emph{Phys. Rev. Lett.}, 59:\penalty0 799--802, Aug 1987.
+\newblock \emph{Physical Review Letters}, 59\penalty0 (7):\penalty0 799--802,
+  August 1987.
 \newblock \doi{10.1103/PhysRevLett.59.799}.
 \newblock URL \url{https://link.aps.org/doi/10.1103/PhysRevLett.59.799}.
+\newblock Publisher: American Physical Society.
 
 \bibitem[Ali(2025)]{ali_explicit_2025}
 Alejandro~Mata Ali.
@@ -46,28 +49,30 @@ Samy Badreddine, Artur d'Avila Garcez, Luciano Serafini, and Michael Spranger.
 \newblock URL
   \url{https://www.sciencedirect.com/science/article/pii/S0004370221002009}.
 
-\bibitem[{Barredo Arrieta} et~al.(2020){Barredo Arrieta}, Díaz-Rodríguez,
-  {Del Ser}, Bennetot, Tabik, Barbado, Garcia, Gil-Lopez, Molina, Benjamins,
-  Chatila, and Herrera]{BARREDOARRIETA202082}
-Alejandro {Barredo Arrieta}, Natalia Díaz-Rodríguez, Javier {Del Ser}, Adrien
+\bibitem[Barredo~Arrieta et~al.(2020)Barredo~Arrieta, Díaz-Rodríguez,
+  Del~Ser, Bennetot, Tabik, Barbado, Garcia, Gil-Lopez, Molina, Benjamins,
+  Chatila, and Herrera]{barredo_arrieta_explainable_2020}
+Alejandro Barredo~Arrieta, Natalia Díaz-Rodríguez, Javier Del~Ser, Adrien
   Bennetot, Siham Tabik, Alberto Barbado, Salvador Garcia, Sergio Gil-Lopez,
   Daniel Molina, Richard Benjamins, Raja Chatila, and Francisco Herrera.
-\newblock Explainable artificial intelligence (xai): Concepts, taxonomies,
-  opportunities and challenges toward responsible ai.
-\newblock \emph{Information Fusion}, 58:\penalty0 82–115, 2020.
+\newblock Explainable {Artificial} {Intelligence} ({XAI}): {Concepts},
+  taxonomies, opportunities and challenges toward responsible {AI}.
+\newblock \emph{Information Fusion}, 58:\penalty0 82--115, June 2020.
 \newblock ISSN 1566-2535.
 \newblock \doi{10.1016/j.inffus.2019.12.012}.
 \newblock URL
   \url{https://www.sciencedirect.com/science/article/pii/S1566253519308103}.
 
 \bibitem[Berezutskii et~al.(2025)Berezutskii, Luchnikov, and
-  Fedorov]{MERAsimulation}
+  Fedorov]{berezutskii_simulating_2025}
 A.~V. Berezutskii, I.~A. Luchnikov, and A.~K. Fedorov.
 \newblock Simulating quantum circuits using the multi-scale entanglement
   renormalization ansatz.
-\newblock \emph{Phys. Rev. Res.}, 7:\penalty0 013063, Jan 2025.
+\newblock \emph{Physical Review Research}, 7\penalty0 (1):\penalty0 013063,
+  January 2025.
 \newblock \doi{10.1103/PhysRevResearch.7.013063}.
 \newblock URL \url{https://link.aps.org/doi/10.1103/PhysRevResearch.7.013063}.
+\newblock Publisher: American Physical Society.
 
 \bibitem[Casella and Berger(2001)]{casella_statistical_2001}
 George Casella and Roger Berger.
@@ -82,11 +87,10 @@ P.~Clifford and J.~M. Hammersley.
 \newblock URL
   \url{https://ora.ox.ac.uk/objects/uuid:4ea849da-1511-4578-bb88-6a8d02f457a6}.
 
-\bibitem[Colelough and Regli(2025)]{colelough2025neurosymbolicai2024systematic}
-Brandon~C. Colelough and William Regli.
-\newblock Neuro-symbolic ai in 2024: A systematic review.
-\newblock 2025.
-\newblock URL \url{https://arxiv.org/abs/2501.05435}.
+\bibitem[Colelough and Regli(2024)]{colelough_neuro-symbolic_2024}
+Brandon~C Colelough and William Regli.
+\newblock Neuro-{Symbolic} {AI} in 2024: {A} {Systematic} {Review}.
+\newblock Jeju, South Korea, 2024.
 
 \bibitem[Cover and Thomas(2006)]{cover_elements_2006}
 Thomas~M. Cover and Joy~A. Thomas.
@@ -101,12 +105,13 @@ Pedro Domingos.
 \newblock URL \url{http://arxiv.org/abs/2510.12269}.
 \newblock arXiv:2510.12269 [cs].
 
-\bibitem[Eigel et~al.(2017)Eigel, Pfeffer, and Schneider]{eigel2017adaptive}
+\bibitem[Eigel et~al.(2017)Eigel, Pfeffer, and Schneider]{eigel_adaptive_2017}
 Martin Eigel, Max Pfeffer, and Reinhold Schneider.
-\newblock Adaptive stochastic galerkin fem with hierarchical tensor
+\newblock Adaptive stochastic {Galerkin} {FEM} with hierarchical tensor
   representations.
 \newblock \emph{Numerische Mathematik}, 136\penalty0 (3):\penalty0 765--803,
-  2017.
+  July 2017.
+\newblock ISSN 0945-3245.
 \newblock \doi{10.1007/s00211-016-0850-x}.
 \newblock URL \url{https://doi.org/10.1007/s00211-016-0850-x}.
 
@@ -141,11 +146,19 @@ Ivan Glasser, Ryan Sweke, Nicola Pancotti, Jens Eisert, and Ignacio Cirac.
   modeling.
 \newblock \emph{Advances in Neural Information Processing Systems}, 32, 2019.
 
-\bibitem[Goessmann(2025)]{goessmann2025}
+\bibitem[Goessmann(2021)]{goessmann_uniform_2021}
 Alex Goessmann.
-\newblock \emph{The tensor network approach towards efficient and explainable
-  {AI}}.
-\newblock 2025.
+\newblock \emph{Uniform {Concentration} of {Tensor} and {Neural} {Networks}:
+  {An} {Approach} towards {Recovery} {Guarantees}}.
+\newblock {PhD} {Thesis}, Technische Universität Berlin, Berlin, 2021.
+\newblock URL \url{https://depositonce.tu-berlin.de/handle/11303/15990}.
+
+\bibitem[Goessmann(2025)]{goessmann_tensor-network_2025}
+Alex Goessmann.
+\newblock The {Tensor}-{Network} {Approach} to {Efficient} and {Explainable}
+  {AI}, 2025.
+\newblock URL
+  \url{https://github.com/EnexaProject/enexa-tensor-reasoning-documentation/}.
 
 \bibitem[Goessmann et~al.(2020)Goessmann, Roth, Kutyniok, Götte, Sweke, and
   Eisert]{goessmann_tensor_2020}
@@ -158,14 +171,22 @@ Alex Goessmann, Ingo Roth, Gitta Kutyniok, Michael Götte, Ryan Sweke, and Jens
   page~21, 2020.
 
 \bibitem[Gourianov et~al.(2025)Gourianov, Givi, Jaksch, and
-  Pope]{Gourianov2025}
+  Pope]{gourianov_tensor_2025}
 Nikita Gourianov, Peyman Givi, Dieter Jaksch, and Stephen~B. Pope.
 \newblock Tensor networks enable the calculation of turbulence probability
   distributions.
-\newblock \emph{Science Advances}, 11\penalty0 (5), January 2025.
-\newblock ISSN 2375-2548.
+\newblock \emph{Science Advances}, 11\penalty0 (5):\penalty0 eads5990, January
+  2025.
 \newblock \doi{10.1126/sciadv.ads5990}.
-\newblock URL \url{http://dx.doi.org/10.1126/sciadv.ads5990}.
+\newblock URL \url{https://www.science.org/doi/10.1126/sciadv.ads5990}.
+\newblock Publisher: American Association for the Advancement of Science.
+
+\bibitem[Hackbusch and Kühn(2009)]{hackbusch_new_2009}
+W.~Hackbusch and S.~Kühn.
+\newblock A {New} {Scheme} for the {Tensor} {Representation}.
+\newblock \emph{Journal of Fourier Analysis and Applications}, 15\penalty0
+  (5):\penalty0 706--722, October 2009.
+\newblock ISSN 1531-5851.
 
 \bibitem[Hackbusch(2012)]{hackbusch_tensor_2012}
 Wolfgang Hackbusch.
@@ -175,41 +196,26 @@ Wolfgang Hackbusch.
 \newblock ISBN 978-3-642-28026-9.
 \newblock \doi{10.1007/978-3-642-28027-6}.
 
-\bibitem[Hackbusch and Kühn(2009)]{HackbushKühnHTTensor}
-Wolfgang Hackbusch and Stefan Kühn.
-\newblock {A new scheme for the tensor representation}.
-\newblock \emph{The journal of Fourier analysis and applications}, 15\penalty0
-  (5):\penalty0 706--722, 2009.
-\newblock ISSN 1069-5869.
-\newblock \doi{10.1007/s00041-009-9094-9}.
-
 \bibitem[Hagemann et~al.(2025)Hagemann, Schütte, Sommer, Eigel, and
-  Steidl]{hagemann2024samplingboltzmanndensitiesphysics}
+  Steidl]{hagemann_sampling_2025}
 Paul Hagemann, Janina Schütte, David Sommer, Martin Eigel, and Gabriele
   Steidl.
-\newblock Sampling from boltzmann densities with physics informed low-rank
-  formats.
+\newblock Sampling from {Boltzmann} {Densities} with {Physics} {Informed}
+  {Low}-{Rank} {Formats}.
 \newblock In Tatiana~A. Bubba, Romina Gaburro, Silvia Gazzola, Kostas
   Papafitsoros, Marcelo Pereyra, and Carola-Bibiane Schönlieb, editors,
-  \emph{Scale Space and Variational Methods in Computer Vision}, page
-  374–386, Cham, 2025. Springer Nature Switzerland.
+  \emph{Scale {Space} and {Variational} {Methods} in {Computer} {Vision}},
+  pages 374--386. Springer Nature Switzerland, Cham, 2025.
 \newblock ISBN 978-3-031-92366-1.
 
-\bibitem[Hitchcock(1927{\natexlab{a}})]{hitchcock_expression_1927}
+\bibitem[Hitchcock(1927)]{hitchcock_expression_1927}
 Frank~L. Hitchcock.
 \newblock The {Expression} of a {Tensor} or a {Polyadic} as a {Sum} of
   {Products}.
 \newblock \emph{Journal of Mathematics and Physics}, 6\penalty0 (1-4):\penalty0
-  164--189, 1927{\natexlab{a}}.
+  164--189, 1927.
 \newblock ISSN 1467-9590.
 \newblock \doi{https://doi.org/10.1002/sapm192761164}.
-
-\bibitem[Hitchcock(1927{\natexlab{b}})]{Hitchcock1927TheEO}
-Frank~Lauren Hitchcock.
-\newblock The expression of a tensor or a polyadic as a sum of products.
-\newblock \emph{Journal of Mathematics and Physics}, 6:\penalty0 164--189,
-  1927{\natexlab{b}}.
-\newblock URL \url{https://api.semanticscholar.org/CorpusID:124183279}.
 
 \bibitem[Hochreiter(2022)]{hochreiter_toward_2022}
 Sepp Hochreiter.
@@ -235,10 +241,14 @@ J.~Landsberg.
 \newblock ISBN 978-0-8218-6907-9 978-0-8218-8481-2 978-0-8218-8483-6
   978-1-4704-0923-4.
 
-\bibitem[Lipton(2017)]{lipton2017mythosmodelinterpretability}
+\bibitem[Lipton(2018)]{lipton_mythos_2018}
 Zachary~C. Lipton.
-\newblock The mythos of model interpretability, 2017.
-\newblock URL \url{https://arxiv.org/abs/1606.03490}.
+\newblock The mythos of model interpretability.
+\newblock \emph{Commun. ACM}, 61\penalty0 (10):\penalty0 36--43, September
+  2018.
+\newblock ISSN 0001-0782.
+\newblock \doi{10.1145/3233231}.
+\newblock URL \url{https://dl.acm.org/doi/10.1145/3233231}.
 
 \bibitem[Marra et~al.(2024)Marra, Dumančić, Manhaeve, and
   De~Raedt]{marra_statistical_2024}
@@ -276,22 +286,23 @@ Maximilian Nickel, Kevin Murphy, Volker Tresp, and Evgeniy Gabrilovich.
 \newblock \doi{10.1109/JPROC.2015.2483592}.
 \newblock URL \url{https://ieeexplore.ieee.org/document/7358050/}.
 
-\bibitem[Orús(2019)]{RomanOrusTNs}
+\bibitem[Orús(2019)]{orus_tensor_2019}
 Román Orús.
 \newblock Tensor networks for complex quantum systems.
-\newblock \emph{Nature Reviews Physics}, 1\penalty0 (9):\penalty0 538–550,
-  August 2019.
+\newblock \emph{Nature Reviews Physics}, 1\penalty0 (9):\penalty0 538--550,
+  September 2019.
 \newblock ISSN 2522-5820.
 \newblock \doi{10.1038/s42254-019-0086-7}.
-\newblock URL \url{http://dx.doi.org/10.1038/s42254-019-0086-7}.
 
-\bibitem[Oseledets(2011)]{oseledetsTensorTrain}
+\bibitem[Oseledets(2011)]{oseledets_tensor-train_2011}
 I.~V. Oseledets.
-\newblock Tensor-train decomposition.
+\newblock Tensor-{Train} {Decomposition}.
 \newblock \emph{SIAM Journal on Scientific Computing}, 33\penalty0
-  (5):\penalty0 2295--2317, 2011.
+  (5):\penalty0 2295--2317, January 2011.
+\newblock ISSN 1064-8275.
 \newblock \doi{10.1137/090752286}.
-\newblock URL \url{https://doi.org/10.1137/090752286}.
+\newblock URL \url{https://epubs.siam.org/doi/10.1137/090752286}.
+\newblock Publisher: Society for Industrial and Applied Mathematics.
 
 \bibitem[Pearl(1988)]{pearl_probabilistic_1988}
 Judea Pearl.
@@ -342,14 +353,13 @@ Stuart Russell and Peter Norvig.
 \newblock ISBN 978-1-292-40113-3.
 
 \bibitem[Sander et~al.(2025{\natexlab{a}})Sander, Fröhlich, Ali, Eigel,
-  Eisert, Hintermüller, Mendl, Milbradt, and
-  Wille]{sander2025quantumcircuitsimulationlocal}
+  Eisert, Hintermüller, Mendl, Milbradt, and Wille]{sander_quantum_2025}
 Aaron Sander, Maximilian Fröhlich, Mazen Ali, Martin Eigel, Jens Eisert,
   Michael Hintermüller, Christian~B. Mendl, Richard~M. Milbradt, and Robert
   Wille.
 \newblock Quantum circuit simulation with a local time-dependent variational
-  principle, 2025{\natexlab{a}}.
-\newblock URL \url{https://arxiv.org/abs/2508.10096}.
+  principle, August 2025{\natexlab{a}}.
+\newblock URL \url{https://arxiv.org/abs/2508.10096v1}.
 
 \bibitem[Sander et~al.(2025{\natexlab{b}})Sander, Fröhlich, Eigel, Eisert,
   Gelß, Hintermüller, Milbradt, Wille, and Mendl]{sander_large-scale_2025}
@@ -381,6 +391,16 @@ Geoffrey~G. Towell and Jude~W. Shavlik.
 \newblock URL
   \url{https://www.sciencedirect.com/science/article/pii/0004370294901058}.
 
+\bibitem[Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez,
+  Kaiser, and Polosukhin]{vaswani_attention_2017}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N Gomez, Ł~ukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is {All} you {Need}.
+\newblock In \emph{Advances in {Neural} {Information} {Processing} {Systems}},
+  volume~30. Curran Associates, Inc., 2017.
+\newblock URL
+  \url{https://proceedings.neurips.cc/paper_files/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html}.
+
 \bibitem[Wainwright and Jordan(2008)]{wainwright_graphical_2008}
 Martin~J. Wainwright and Michael~Irwin Jordan.
 \newblock \emph{Graphical {Models}, {Exponential} {Families}, and {Variational}
@@ -388,11 +408,13 @@ Martin~J. Wainwright and Michael~Irwin Jordan.
 \newblock Now Publishers Inc, 2008.
 \newblock ISBN 978-1-60198-184-4.
 
-\bibitem[White(1992)]{StevewhiteDMRG}
+\bibitem[White(1993)]{white_density-matrix_1993}
 Steven~R. White.
-\newblock Density matrix formulation for quantum renormalization groups.
-\newblock \emph{Phys. Rev. Lett.}, 69:\penalty0 2863--2866, Nov 1992.
-\newblock \doi{10.1103/PhysRevLett.69.2863}.
-\newblock URL \url{https://link.aps.org/doi/10.1103/PhysRevLett.69.2863}.
+\newblock Density-matrix algorithms for quantum renormalization groups.
+\newblock \emph{Physical Review B}, 48\penalty0 (14):\penalty0 10345--10356,
+  October 1993.
+\newblock \doi{10.1103/PhysRevB.48.10345}.
+\newblock URL \url{https://link.aps.org/doi/10.1103/PhysRevB.48.10345}.
+\newblock Publisher: American Physical Society.
 
 \end{thebibliography}

@@ -1,27 +1,28 @@
 \section{Conclusion \& Outlook}
 
-% \begin{itemize}
-%     \item Conclusion: tensor representation close mathematical structures -> strength to do analysis? (Janina)
-%     \item Contraction algorithms (Alex)
-%     \item Max: Combine with foundation models / LLMs for agentic models (Max)
-% \end{itemize}
-
-
-% CONTRACTION
+% Conclusion: Representation
 This work has treated the representation of several models in tensor networks.
-Especially, probability distributions over discrete sets and propositional formulas can be represented in the introduced structure. Multiple properties, such as independence of variables for the distributions and connections of subsets for the propositional formulas, can be directly encoded into the architecture leading to sparse, memory-efficient representations. The exact representation also encourages the carrying over of analysis of the mathematical concepts to the \CompActNets{}.
+Especially, probability distributions over discrete sets and propositional formulas can be represented in the introduced structure.
+Multiple properties, such as independence of variables for the distributions and connections of subsets for the propositional formulas, can be directly encoded into the architecture leading to sparse, memory-efficient representations.
+The exact representation also encourages the carrying over of analysis of the mathematical concepts to the \CompActNets{}.
 
-Model inference such as the computation of marginal distributions and the decision of entailment are formulated by tensor network contractions.
-These contraction can become bottlenecks, which are known as
-\begin{itemize}
-    \item tree-widths of graphical models \cite{pearl_probabilistic_1988}
-    \item intractability of generic logical reasoning \cite{russell_artificial_2021}
-\end{itemize}
-Approximation schemes can be derived based on variational inference \cite{wainwright_graphical_2008}, such as loopy message passing schemes and mean field methods.
-Further frequenctly applied schemes are particle-based inference schemes such as Gibbs sampling.
+% Conclusion: Contraction Bottleneck in Reasoning
+Model inference such as the calculating marginal distributions and deciding entailment are formulated by tensor network contractions.
+The computation of these contractions is however often a bottleneck.
+This bottleneck is related to the $\mathrm{NP}$-hardness of probabilistic inferences in graphical models (see \cite{koller_probabilistic_2009}) and of logical reasoning (see \cite{russell_artificial_2021}). % Better citations ?
+% Outlook: Approximation Schemes
+Approximation schemes to overcome this bottleneck can be summarized under the umbrella of variational inference (see \cite{wainwright_graphical_2008}), such as loopy message passing schemes and mean field methods.
+We in this work presented message-passing schemes as belief propagation in probability theory and syntactial inference algorithms in logics.
+We can understand them as approximation of (potentially intractible) contractions and will dedicate future work to study them in the \tnreason{} formalism.
+While these schemes are developed either for graphical models (sum-product algorithms, belief-propagation) or more general exponential families (expectation-propagation), we anticipate to derive them in future work for generic \CompActNets{}.
+Further frequently applied schemes are particle-based inference schemes such as Gibbs sampling.
 
-Message-passing schemes appear in particular as belief propagation in probability theory and syntactial inference algorithms in logics.
-We can understand them as approximation of (potentially intractible) contractions and will dedicate future work to study them in the \tnreason formalism.
+% Outlook: LLMs
+Beyond the theoretical integration of differentiable architectures into the transformer architecture of Large Language Models \cite{vaswani_attention_2017}, the CompActNets framework offers an immediate practical application as a verifiable reasoning engine for AI agents in high-stakes domains such as regulatory compliance, clinical decision support  or accounting.
+By leveraging the framework's inherent flexibility, Large Language Models can be adapted to function as semantic translators that dynamically construct problem-specific tensor networks in the form of CompAct Nets from natural language descriptions, effectively treating the reasoning engine as an external tool.
+This approach mitigates the hallucination risks of probabilistic models by delegating complex logical execution to the exact linear algebra of the tensor network, ensuring that the inference process is both rigorous and reproducible.
+Consequently, this synergy enables the deployment of reliable AI systems where the intuitive power of the LLM is grounded by the explainable, instance-adaptive topology of the \ComputationActivationNetwork{}.
+
 
 
 % %\vspace{3cm}
@@ -97,7 +98,4 @@ We can understand them as approximation of (potentially intractible) contraction
 % * As training converges, the softmax sharpens, and the model effectively selects *one* specific, exact tensor contraction to apply to the data.
 % * Crucially, because tensor contraction is just a series of sums and products, the entire process remains fully differentiable. The model effectively learns to "program itself" by selecting the correct tensor routines to solve the problem.
 
-
-
-Beyond the theoretical integration of differentiable architectures into the transformer architecture of Large Language Models \cite{vaswani2023attentionneed}, the CompActNets framework offers an immediate practical application as a verifiable reasoning engine for AI agents in high-stakes domains such as regulatory compliance, clinical decision support  or accounting. By leveraging the framework's inherent flexibility, Large Language Models can be adapted to function as semantic translators that dynamically construct problem-specific tensor networks in the form of CompAct Nets from natural language descriptions, effectively treating the reasoning engine as an external tool. This approach mitigates the hallucination risks of probabilistic models by delegating complex logical execution to the exact linear algebra of the tensor network, ensuring that the inference process is both rigorous and reproducible. Consequently, this synergy enables the deployment of reliable AI systems where the intuitive power of the LLM is grounded by the explainable, instance-adaptive topology of the Computation-Activation Network.
 

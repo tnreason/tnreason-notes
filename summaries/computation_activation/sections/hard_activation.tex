@@ -58,7 +58,7 @@ In this way, the contraction $\contraction{\formula}$ counts the number of model
 One can therefore decide the satisfiability of a formula by checking if $\contraction{\formula}>0$.
 
 \paragraph{Basis encoding}
-Representing booleans by elements in $\{0,1\}$ leads to the problem, that negation is an affine transformation and can not be represented by multilinear tensors~\cite[Section 4.1.1]{goessmann2025}.
+Representing booleans by elements in $\{0,1\}$ leads to the problem, that negation is an affine transformation and can not be represented by multilinear tensors. %~\cite[Section 4.1.1]{goessmann_tensor-network_2025}.
 Therefore, instead of using this \emph{coordinate calculus} an approach based on \emph{basis calculus} is employed, which is explained in this section.
 To be able to express different kinds of connectives and finally any propositional formula by multi-linear tensors, booleans are encoded by one-hot encodings as defined in \defref{def:onehotenc}.
 Propositional formulas $\formula$ can be expressed in terms of a tensor describing the mapping and its negation by

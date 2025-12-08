@@ -142,7 +142,7 @@ This is the computational bottleneck of the algorithm and can be approached by v
 \end{algorithm}
 
 It can be shown, that the algorithm converges if and only if there is a \HybridLogicNetwork{} matching the empirical moments of the data.
-For more details we refer to~\cite[Chapter~9]{goessmann2025}.
+For more details we refer to~\cite[Chapter~9]{goessmann_tensor-network_2025}.
 
 \input{../examples/hln_accounting_amm}
 
@@ -152,7 +152,7 @@ Also entailment can be checked for \HybridLogicNetwork{}.
 Assuming a positive probability of all models of the integrated \HardLogicNetwork{}, the entailment can be checked only considering the \HardLogicNetwork{}.
 Here a query is a formula to retrieve information from a given network.
 
-\begin{theorem}[{~\cite[Theorem 8.12]{goessmann2025}}]
+\begin{theorem}%[{~\cite[Theorem 8.12]{goessmann_tensor-network_2025}}]
     \alex{Unclear: Would need to add probabilistic entailment..}
     Let $\probofat{\hlnparameters}{\shortcatvariables}$ be a \HybridLogicNetwork{}.
     Given a query formula $g$, we have that $\probofat{\hlnparameters}{\shortcatvariables}\models~g$ if and only if
