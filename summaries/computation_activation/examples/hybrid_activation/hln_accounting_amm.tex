@@ -27,7 +27,7 @@
         \canparamat{\selvariable} =
         \begin{bmatrix}
             0 \\
-            \lnof{(\frac{0.25}{0.75})\cdot(\frac{0.9}{0.1})}
+            \lnof{(\frac{0.9}{0.1})\cdot(\frac{1}{3})}
         \end{bmatrix}
         =
         \begin{bmatrix}
@@ -40,4 +40,18 @@
             1.098612
         \end{bmatrix} \, .
     \end{align*}
+    To derive this, we notice that \algoref{alg:AMM_HLN} treats formula $\formulaof{0}$ as a hard constraint and assigns $\hardlegset = \{0\}$ and $\headindexof{\hardlegset} = 1$.
+    In the $\mathrm{While}$ loop we then have for the formula $\formulaof{1}$
+    \begin{align*}
+        \hypercoreat{\headvariableof{1}}
+        = \contractionof{\bencodingofat{\formulaof{0}}{\headvariableof{0},\catvariableof{F},\catvariableof{A1},\catvariableof{A2}},
+            \bencodingofat{\formulaof{1}}{\headvariableof{1},\catvariableof{F},\catvariableof{A1},\catvariableof{A2}}}{\headvariableof{1}}
+        = \begin{matrix}
+              1 \\
+              3
+        \end{matrix}
+    \end{align*}
+    since $\formulaof{0}$ has $4$ models, of which $3$ are also models of $\formulaof{1}$ and $1$ is instead a model of $\lnot\formulaof{1}$.
+    Notice, that the tensor $\hypercoreat{\headvariableof{1}}$ will not change in any further iteration of the $\mathrm{While}$ and the parameter $\canparamat{\selvariable=1}$ will therefore stay constant until the termination of the algorithm.
+%    We compare these with the satisfaction rates of $\formulaof{1}$
 \end{example}

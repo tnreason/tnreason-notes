@@ -32,7 +32,7 @@ A tensor-based representation of propositional logic is developed by encoding bo
      If there is a model to a propositional formula, we say the formula is \emph{satisfiable}.
  \end{definition}
 
-\input{../examples/prop_formula_coordinatewise.tex}
+\input{../examples/hard_activation/prop_formula_coordinatewise.tex}
 
 %\begin{example}
 %    \label{ex:propform}
@@ -44,13 +44,13 @@ A tensor-based representation of propositional logic is developed by encoding bo
 %\end{example}
 
 \paragraph{CP decomposition}
-Since the tensor $\formulaat{\shortcatvariables}$ is equal to one at index $x_{[d]}$ if and only if $x_{[d]}$ is a model of $\formula$, i.e. fulfills the formula, A propositional formula can be written as the sum over the one-hot encodings of its models.
+Since the tensor $\formulaat{\shortcatvariables}$ is equal to one at index $x_{[d]}$ if and only if $x_{[d]}$ is a model of $\formula$, i.e. fulfills the formula, a propositional formula can be written as the sum over the one-hot encodings of its models.
 \begin{center}
     \input{../tikz_pics/logic_representation/formula_direct.tex}
 \end{center}
 This decomposition corresponds to the CP decomposition of a tensor.
 
-\input{../examples/prop_formula_basCP.tex}
+\input{../examples/hard_activation/prop_formula_basCP.tex}
 
 \paragraph{Model counts by contraction}
 Each coordiante of the propositional formula is either a $1$ or $0$ encoding if the indexed state is a model of the formula or not.
@@ -82,7 +82,7 @@ In our graphical notation this property is visualized by
     \input{../tikz_pics/logic_representation/formula_bencoding.tex}
 \end{center}
 We further provide a more detailed example in coordinate sensitive notation in the following.
-\input{../examples/bencoding_neg_con.tex}
+\input{../examples/hard_activation/bencoding_neg_con.tex}
 
 \paragraph{Interpretation as \CompActNets{}}
 The propositional formula and its negation can be represented by that tensor by
@@ -97,8 +97,6 @@ Both $\formula$ and $\lnot\formula$ are thus \ComputationActivationNetworks{} to
 This representation of propositional formulas with respect to basis encoding thus leads to \ComputationActivationNetworks{}, which were also used to describe probability distributions in the last section.
 In this way the soft and hard logic can be combined in one framework.
 
-
-%\input{../examples/old_bencoding_coordinate_visualization.tex}
 
 \subsection{Decomposition of Propositional Formulas}
 
@@ -194,7 +192,7 @@ This is equivalent to \defref{def:logicalEntailment}, since $\contraction{\kb,\l
 Entailment is the central operation of "logical inference", i.e. deduce true statements from known statements.
 In the tensor network representation, these entailments can be decided by contracting the whole representing tensor with the statement, that needs to be checked.
 
-\input{../examples/sudoku_entailment}
+\input{../examples/hard_activation/sudoku_entailment}
 
 \subsection{Efficient Representation of Knowledge Bases}
 
@@ -243,7 +241,7 @@ We use this to decompose knowledge bases into their individual formulas as follo
     \end{align*}
 \end{proof}
 
-\input{../examples/prop_formula_kb_head_sym}
+\input{../examples/hard_activation/prop_formula_kb_head_sym}
 
 
 % BAD NOTATION!
@@ -269,7 +267,7 @@ Here a local contraction describes the calculation of contractions along few clo
     \begin{align*}
         \contraction{\kbwith,\lnot\formulawith}
         &= \contraction{\kb/\seckb[\shortcatvariables],\seckb,\lnot\formulawith} \\
-        &= \contraction{\kb/\seckb[\shortcatvariables],\contractionof{\seckb[\shortcatvariables],\lnot\formula[\shortcatvariables]}{\shortcatvariables}} \\
+        &= \contraction{\kb/\seckb[\shortcatvariables],\contractionof{\seckb[\shortcatvariables],\lnot\formulawith}{\shortcatvariables}} \\
         &= \contraction{\kb/\seckb[\shortcatvariables],\zerosat{\shortcatvariables}} \\
         &= 0 \, .
     \end{align*}
@@ -281,34 +279,28 @@ This is sound by the above theorem, but not complete, since it can happen that n
 We can futhermore add entailed formulas to the knowledge base without the latter, as we show next.
 
 \begin{theorem}[Invariance of adding Entailed Formulas]\label{the:addingEntailed}
-    If $\kb\models\formula$ then
+    If $\kb\models\formula$ then % Actually can extend to iff -> Modify the proof for that?
     \begin{align*}
         \kbwith
-        = \contractionof{\kb,\formula}{\shortcatvariables} \, .
+        = \contractionof{\kbwith,\formulawith}{\shortcatvariables} \, .
     \end{align*}
 \end{theorem}
 \begin{proof}
-    We use that $\formula[\shortcatvariables]+\lnot\formula[\shortcatvariables]=\onesat{\shortcatvariables}$ and thus
+    We use that $\formulawith+\lnot\formulawith=\onesat{\shortcatvariables}$ and thus
     \begin{align*}
         \kbwith
-        &= \contractionof{\kb[\shortcatvariables],(\formula[\shortcatvariables]+\lnot\formula[\shortcatvariables])}{\shortcatvariables} \\
-        &= \contractionof{\kb[\shortcatvariables],\formula[\shortcatvariables]}{\shortcatvariables}  + \contractionof{\kb[\shortcatvariables],\lnot\formula[\shortcatvariables]}{\shortcatvariables}  \\
-        &= \contractionof{\kb[\shortcatvariables],\formula[\shortcatvariables]}{\shortcatvariables} \, .
+        &= \contractionof{\kbwith,(\formulawith+\lnot\formulawith)}{\shortcatvariables} \\
+        &= \contractionof{\kbwith,\formulawith}{\shortcatvariables}  + \contractionof{\kbwith,\lnot\formulawith}{\shortcatvariables}  \\
+        &= \contractionof{\kbwith,\formulawith}{\shortcatvariables} \, .
     \end{align*}
 \end{proof}
 
-
-One can understand this theorem as "making the knowledge base more accessible":
+% Interpreting entailment
+One can understand entailment as "making the knowledge base more accessible":
 Adding deduced statements to a knowledge base does not change the knowledge base as a tensor, but one can interpret it in an easier way.
+\theref{the:addingEntailed} justifies this intuition in our tensor network formalism.
 
 This motivates an message-passing approach to decide entailment by iteratively adding entailed formulas to the knowledge base and checking entailment on smaller parts of the knowledge base.
-Such inference methods are nown e.g. as Constraint Propagation.
+Such inference methods are known e.g. as Constraint Propagation.
 
-\input{../examples/sudoku_message_passing.tex}
-
-%\begin{example}{Sudoku continued}
-%    For the Sudoku example, a local contraction of the left- and right-hand-side of~\eqref{eq:sudokukb} means that only direct connections via the basic Sudoku rules and the known board are checked.
-%    If the local contraction amounts to zero, the direct Sudoku rules already imply, that $X_{r0,r1,c0,c1,n}$ must be true/is the only possible choice.
-%    In most cases the local contraction will not lead to $0$.
-%    Then no statement can be made.
-%\end{example}
+\input{../examples/hard_activation/sudoku_message_passing.tex}

@@ -1,8 +1,10 @@
 \section{Notation and Basic Concepts}\label{sec:notation}
 
-We first, introduce the basic architecture and later show how the probabilistic and logical framework are covered.
-This is done in multiple steps.
-First, the considered variables and tensors are explained. Followed by the explanation of tensor calculations, mainly tensor products and contractions.
+\alex{Novelty here: Defining tensor networks on hypergraphs, to ease the relation with graphical models (avoid graph duality).}
+
+We in this section introduce the tensor network formalism and the basic architecture. % and later show how the probabilistic and logical framework are covered.
+First, the considered variables and tensors are explained.
+Followed by the explanation of tensor calculations, mainly tensor products and contractions.
 Finally, the main architecture, the \emph{\ComputationActivationNetwork{}}, is defined.
 
 %\subsection{Categorical Variables and Representations}
@@ -126,11 +128,11 @@ Drawing on the interpretation of tensors by hyperedges we can continue with the 
     The set of tensor networks on $\graph$, such that all tensors have non-negative coordinates, is denoted by $\tnsetof{\graph}$.
 \end{definition}
 
-%\janina{Example graph and definition}
+As examples we now present the $\cpformat$ and the $\ttformat$ formats in our hypergraph notation.
 
-\input{../examples/tt_format.tex}
+\input{../examples/notation/cp_format.tex}
 
-\input{../examples/cp_format.tex}
+\input{../examples/notation/tt_format.tex}
 
 \subsubsection{Tensor Product}
 Let us now exploit the developed graphical representations to define contractions of tensor networks.
@@ -202,47 +204,29 @@ To ease notation, we will often omit the set notation by brackets $\{\cdot\}$ an
 %\end{center}
 %This way any entrywise positive tensor can be normalized to form a probability distribution by conditioning on the empty set $\emptyset$.
 
-\subsection{Directed Tensors and Normalizations}
+\subsection{Normalizations}
 
-%% Directionality
-Directionality represents constraints on the structure of tensors, namely that the sum over outgoing trivializes the tensor.
-
-\begin{definition}
-    \label{def:directedTensor}
-    A Tensor
-    \begin{align*}
-        \hypercoreat{\nodevariables} \in\bigotimes_{\nodein}\rr^{\catdimof{\node}}
-    \end{align*}
-    is said to be directed with incoming variables $\innodes$ and outgoing variables $\outnodes$, where $\nodes=\innodes\dot{\cup}\outnodes$, when
-    \begin{align*}
-        \contractionof{\hypercore}{\catvariableof{\innodes}} =  \onesat{\catvariableof{\innodes}}
-    \end{align*}
-    where $\onesat{\catvariableof{\innodes}}$ denoted the trivial tensor in  $\bigotimes_{\node\in\innodes}\rr^{\catdimof{\node}}$ which coordinates are all $1$.
-\end{definition}
-
-By the normalization operation, tensors are turned into directed tensors.
-
+%% Directionality by Normalization
 \begin{definition}
     \label{def:normalization}
-    A tensor $\hypercoreat{\nodevariables}$ is said to be normalizable on $\innodes\subset\nodes$, if for any $\catindexof{\innodes}\in\nodestatesof{\innodes}$ we have
+    The normalization of a tensor $\hypercorewithnodes$ on incoming nodes $\innodes\subset\nodes$ and outgoing nodes $\outnodes\subset\nodes/\innodes$ is the tensor $\normalizationofwrt{\hypercorewithnodes}{\catvariableof{\outnodes}}{\catvariableof{\innodes}}$ defined for $\catindexof{\innodes}$ as
     \begin{align*}
-        \contraction{\hypercoreat{\nodevariables},\onehotmapofat{\catindexof{\innodes}}{\catvariableof{\innodes}}} > 0 \, .
+        \normalizationofwrt{\hypercorewithnodes}{\catvariableof{\outnodes}}{\indexedcatvariableof{\innodes}}
+        = \begin{cases}
+              \frac{\contractionof{\hypercore}{\catvariableof{\outnodes},\indexedcatvariableof{\innodes}}}{\contractionof{\hypercore}{\indexedcatvariableof{\innodes}}} & \ifspace \contractionof{\hypercore}{\indexedcatvariableof{\innodes}} \neq 0 \\
+              \frac{1}{\prod_{\node\in\outnodes}\catdimof{\node}}\onesat{\catvariableof{\outnodes}} & \text{else}
+        \end{cases} \, .
     \end{align*}
-    The normalization of an on $\innodes\subset\nodes$ normalizable tensor is the tensor
+    We say that $\hypercorewithnodes$ is normalized with incoming nodes $\incomingnodes\subset\nodes$, if
     \begin{align*}
-        \normalizationofwrt{\hypercoreat{\nodevariables}}{\catvariableof{\outnodes}}{\catvariableof{\innodes}} =
-        \sum_{\catindexof{\innodes}\in\nodestatesof{\innodes}}
-        \onehotmapofat{\catindexof{\innodes}}{\catvariableof{\innodes}} \otimes \frac{
-            \contractionof{\hypercoreat{\nodevariables},\onehotmapofat{\catindexof{\innodes}}{\catvariableof{\innodes}}}{\catvariableof{\outnodes}}
-        }{
-            \contraction{\hypercoreat{\nodevariables},\onehotmapofat{\catindexof{\innodes}}{\catvariableof{\innodes}}}
-        }
+        \hypercorewithnodes
+        = \normalizationofwrt{\hypercorewithnodes}{\catvariableof{\nodes/\innodes}}{\catvariableof{\innodes}} \, .
     \end{align*}
-    where $\outnodes = \nodes/\innodes$.
 \end{definition}
 
+Directionality thus represents constraints on the structure of tensors, namely that the sum over outgoing trivializes the tensor.
 %% Diagrammatic notation
-In our graphical tensor notation, we depict directed tensors by directed hyperedges (a), which are decorated by directed tensors (b), for example:
+In our graphical tensor notation, we depict normalized tensors by directed hyperedges (a), which are decorated by directed tensors (b), for example:
 \begin{center}
     \input{../tikz_pics/notation_basic_concepts/directed_core.tex}
 \end{center}
@@ -272,7 +256,7 @@ Let us now encode functions between the state sets of systems in factored repres
         \onehotmapofat{\statesetfunctionev{\shortcatindices}}{\headvariables} \otimes  \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
     \end{align*}
 \end{definition}
-Basis encodings are directed tensors and are thus depicted as decorations of directed edges in hypergraphs:
+Basis encodings are normalized tensors and are thus depicted as decorations of directed edges in hypergraphs:
 \begin{center}
     \input{../tikz_pics/notation_basic_concepts/bencoding}
 \end{center}
@@ -290,7 +274,7 @@ Based on these concepts the main architecture can be defined.
 
 \begin{definition}[\ComputationActivationNetwork{} (\CompActNets{})]
     \label{def:realizableStatDistributions}
-    Given a statistic $\sstat : \facstates \rightarrow \parspace$, and a hypergraph $\graph=(\nodes,\edges)$ with nodes $[\seldim]\subset\nodes$ containing the image coordinates of $\sstat$, we define the by $\sstat$ computable and by $\graph$ activated family of distributions by
+    Given a function $\sstat : \facstates \rightarrow \parspace$, and a hypergraph $\graph=(\nodes,\edges)$ with nodes $[\seldim]\subset\nodes$ containing the image coordinates of $\sstat$, we define the by $\sstat$ computable and by $\graph$ activated family of distributions by
     \begin{align*}
         \realizabledistsof{\sstat,\graph}
         = \left\{ \normalizationof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\contractionof{\acttensor}{\headvariables} %\} \cup \{\hypercoreofat{\edge}{\sstatcatof{\edge}} \wcols \edgein \}

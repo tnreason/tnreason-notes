@@ -144,6 +144,7 @@
 \newcommand{\probof}[1]{\probtensor^{#1}}
 \newcommand{\probofat}[2]{\probof{#1}\left[#2\right]}
 \newcommand{\probwith}{\probat{\shortcatvariables}}
+\newcommand{\probwithnodes}{\probat{\nodevariables}}
 \newcommand{\probofwrt}[2]{\probtensor_{#1}\left[#2\right]}
 
 \newcommand{\condprobat}[2]{\mathbb{P}\big[#1\big|#2\big]}
@@ -663,10 +664,7 @@
 
 \newcommand{\extnetasset}{\left\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edgein\right\}}
 
-
 %% Probability Representation
-%\newcommand{\catvariable}{\catvariable}
-
 \newcommand{\exrandom}{\catvariableof{0}}
 \newcommand{\secexrandom}{\catvariableof{1}}
 \newcommand{\thirdexrandom}{\catvariableof{2}}
@@ -960,6 +958,7 @@
 \newcommand{\hypercore}{\tau}
 \newcommand{\hypercoreat}[1]{\hypercore\left[#1\right]}
 \newcommand{\hypercorewith}{\hypercoreat{\shortcatvariables}}
+\newcommand{\hypercorewithnodes}{\hypercoreat{\nodevariables}}
 \newcommand{\hypercorewithin}{\hypercoreat{\shortcatvariables}\in\facspace}
 \newcommand{\hyperonecoordinates}{\shortcatindices\wcols\hypercoreat{\indexedshortcatvariables} = 1}
 \newcommand{\hyperzerocoordinates}{\shortcatindices\wcols\hypercoreat{\indexedshortcatvariables} = 0}

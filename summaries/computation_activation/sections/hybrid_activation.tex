@@ -1,11 +1,11 @@
 \section{\HybridLogicNetworks{}}\label{sec:hyb_rep}
 
 Let us now exploit the common formulation of logical formulas and probabilistic models in \CompActNets{} to define hybrid models, which combine both aspects.
-We call \CompActNets{} in the special case of boolean statistics $\sstat$ \HybridLogicNetworks{}.
+We call \CompActNets{} \HybridLogicNetworks{} in the special case of boolean statistics $\sstat$ and elementary activations.
 
 \subsection{Parametrization}
 
-We now investigate hybrid logical and probabilistic models, which we want to call \HybridLogicNetworks{} (HLNs).
+%We now investigate hybrid logical and probabilistic models, which we want to call \HybridLogicNetworks{} (HLNs).
 
 \begin{definition}[\HybridLogicNetwork{} (HLN)]
     \label{def:hybridLogicNetwork}
@@ -45,7 +45,7 @@ and a parameter vector $\canparamwithin$ defined for all $\selindexin$ as
     \canparamat{\indexedselvariable} =
     \begin{cases}
         0 & \ifspace \selindex\in\hardlegset \\
-        \lnof{\frac{\acttensorlegat{\headvariableof{\selindex}=1}}{\acttensorlegat{\headvariableof{\selindex}=1}}} & \ifspace \selindex\notin\hardlegset \, .
+        \lnof{\frac{\acttensorlegat{\headvariableof{\selindex}=1}}{\acttensorlegat{\headvariableof{\selindex}=0}}} & \ifspace \selindex\notin\hardlegset \, .
     \end{cases}
 \end{align*}
 Then we have by construction that there is $\lambda>0$ with
@@ -56,7 +56,7 @@ Then we have by construction that there is $\lambda>0$ with
 
 Let us demonstrate the utility of \HybridLogicNetworks{} with an example from accounting.
 
-\input{../examples/hln_accounting_rep}
+\input{../examples/hybrid_activation/hln_accounting_rep}
 
 \subsection{Parameter Estimation in \HybridLogicNetworks{}}
 
@@ -144,7 +144,7 @@ This is the computational bottleneck of the algorithm and can be approached by v
 It can be shown, that the algorithm converges if and only if there is a \HybridLogicNetwork{} matching the empirical moments of the data.
 For more details we refer to~\cite[Chapter~9]{goessmann_tensor-network_2025}.
 
-\input{../examples/hln_accounting_amm}
+\input{../examples/hybrid_activation/hln_accounting_amm}
 
 \subsection{Entailment by \HybridLogicNetworks{}}
 
