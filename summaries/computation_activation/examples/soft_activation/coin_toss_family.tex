@@ -1,11 +1,11 @@
 \begin{example}[Family of independent Coin Tosses]
     Consider tossing a coin with head probability $\thirdcatindex\in[0,1]$ and repeating the experiment independently $\catorder\in\nn$ times.
     We define a variable $\thirdcatvariable$ taking values in $\mathrm{val}(\thirdcatvariable)=[0,1]$ and denote by $\shortcatvariables$ $\catorder$ boolean variables.
-    Then the family of coin toss distributions is modeled by the tensor $\probat{\shortcatvariables,\thirdcatvariable}$ with coordinates $\shortcatindices\in\atomstates$ and $\thirdcatindex\in[0,1]$ by
+    Then the family of coin toss distributions is the tensor $\condprobat{\shortcatvariables}{\thirdcatvariable}$ with coordinates $\shortcatindices\in\atomstates$ and $\thirdcatindex\in[0,1]$ by
     \begin{align*}
-        \probat{\indexedshortcatvariables,\thirdcatvariable=\thirdcatindex}
+        \condprobat{\indexedshortcatvariables}{\thirdcatvariable=\thirdcatindex}
         = \prod_{\catenumeratorin} \thirdcatindex^{\catindexof{\catenumerator}} (1-\thirdcatindex)^{1-\catindexof{\catenumerator}}
-        = \thirdcatindex^{\sum_{i=1}^{\catorder} \catindexof{i}} (1-\thirdcatindex)^{\catorder - \sum_{i=1}^{\catorder} \catindexof{i}} \, .
+        = \thirdcatindex^{\sum_{\catenumeratorin} \catindexof{\catenumerator}} (1-\thirdcatindex)^{\catorder - \sum_{\catenumeratorin} \catindexof{\catenumerator}} \, .
     \end{align*}
     Notice, that for each slice with respect to $\thirdcatindex\in[0,1]$ we have by the binomial theorem $\contraction{\probat{\shortcatvariables,\thirdcatvariable=\thirdcatindex}}=1$ and thus $\probat{\shortcatvariables,\thirdcatvariable}$ is indeed a family of probability distributions.
     For $\catorder=2$ we have more explicitly for any $\thirdcatindex\in[0,1]$:

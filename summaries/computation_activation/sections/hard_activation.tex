@@ -4,19 +4,6 @@ A tensor-based representation of propositional logic is developed by encoding bo
 
 \subsection{Propositional Semantics by Boolean Tensors}
 
-%We define
-%\begin{itemize}
-%    \item a \emph{propositional formula} as a boolean-valued tensor
-%    \begin{align*}
-%        \formulaat{\shortcatvariables} \defcols \atomstates \rightarrow \ozset \subset \rr \, ,
-%    \end{align*}
-%    \item a \emph{model} of a propositional formula as a state $\shortcatindices \in \atomstates$, which fulfills
-%    $% \begin{align*}
-%    \formulaat{\indexedshortcatvariables}=1 \, ,
-%    $% \end{align*}
-%    where we associate $\text{True}\leftrightarrow 1$ and $\text{False}\leftrightarrow 0$,
-%    \item and the propositional formula to be \emph{satisfiable}, if there is a model.
-%\end{itemize}
 
 \begin{definition}
     \label{def:formulas}
@@ -33,15 +20,6 @@ A tensor-based representation of propositional logic is developed by encoding bo
 \end{definition}
 
 \input{../examples/hard_activation/prop_formula_coordinatewise.tex}
-
-%\begin{example}
-%    \label{ex:propform}
-%    The propositional formula defined for $d=3$ and $x_{[3]} = (\catvariableof{0},\catvariableof{1},\catvariableof{2})\in \atomstates = \{0,1\}\times \{0,1\} \times \{0,1\}$ by
-%    \begin{align*}
-%        \formulaat{\shortcatvariables = x_{[3]}} = \catvariableof{0} \wedge (\catvariableof{1} \vee \catvariableof{2})
-%    \end{align*}
-%    is satisfiable, since $\formulaat{\shortcatvariables = (1,1,1)} = 1$, $\formulaat{\shortcatvariables = (1,0,1)} = 1$, and $\formulaat{\shortcatvariables = (1,1,0)} = 1$ and therefore $x=(1,1,1)$, $x=(1,0,1)$, and $x=(1,1,0)$ are models of $\formulaat{\shortcatvariables}$.
-%\end{example}
 
 \paragraph{CP decomposition}
 Since the tensor $\formulaat{\shortcatvariables}$ is equal to one at index $x_{[d]}$ if and only if $x_{[d]}$ is a model of $\formula$, i.e. fulfills the formula, a propositional formula can be written as the sum over the one-hot encodings of its models.
@@ -178,11 +156,11 @@ This allows to define entailment between two propositional formulas as follows.
 
 \begin{definition}[Entailment of propositional formulas]
     \label{def:logicalEntailment}
-    Given two propositional formulas $\kb$ and $\exformula$ we say that $\kb$ entails $\exformula$, denoted by $\kb\models\exformula$, if any model of $\kb$ is also a model of $\exformula$, that is
+    Given two propositional formulas $\kb$ and $\formula$ we say that $\kb$ entails $\formula$, denoted by $\kb\models\formula$, if any model of $\kb$ is also a model of $\formula$, that is
     \begin{align*}
-        \contraction{\kb,\lnot\exformula}=0 \, .
+        \contraction{\kbwith,\lnot\formulawith}=0 \, .
     \end{align*}
-    If $\kb\models\lnot\exformula$ holds (i.e. $\contraction{\kb,\exformula}$=0), we say that $\kb$ contradicts $\exformula$.
+    If $\kb\models\lnot\formula$ holds (i.e. $\contraction{\kbwith,\formulawith}$=0), we say that $\kb$ contradicts $\formula$.
 \end{definition}
 
 % Relation to classical definition of entailment

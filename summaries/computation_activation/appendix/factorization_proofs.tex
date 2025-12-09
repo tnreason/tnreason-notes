@@ -150,7 +150,7 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
 %	Then there is a Markov Network on $\graph$, which distribution is equal to $\probat{\catvariableof{\nodes}}$.
 %\end{theorem}
 \begin{proof}[Proof of \theref{the:factorizationHammersleyClifford}]
-    \alex{Need to add the other direction! Restate maybe as a single distribution factorization?}
+    $ii)\Rightarrow i)$
     By \lemref{the:contractionFactorization} we have for any index $\catindexof{\nodes}$
     \begin{align*}
         \probat{\indexedcatvariableof{\nodes}} =
@@ -187,6 +187,20 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
         & = \normalizationof{\extnetasset}{\catvariableof{\node}} \, .
     \end{align*}
     We have thus constructed a Markov Network with trivial partition function, which contraction coincides with the probability distribution.
+
+    $i)\Rightarrow ii)$:
+    Let us now show the converse statement and assume that there is a Markov Network representing the distribution $\probwithnodes$, and let us choose subsets $\nodesa,\nodesb,\nodesc\subset\nodes$ such that $\nodesc$ separates $\nodesa$ from $\nodesb$.
+    Let us denote by $\nodes_0$ the nodes with paths to $\nodesa$, which do not contain a node in $\nodesc$, and by $\nodes_1$ the nodes with paths to $\nodesb$, which do not contain a node in $\nodesc$.
+    Further, we denote by $\edges_0$ the hyperedges which contain a node in $\nodes_0$ and by $\edges_1$ the hyperedges which contain a node in $\nodes_1$.
+    By assumption of separability, both sets $\edges_0$ and $\edges_1$ are disjoint and no node in $\nodesa$ is in a hyperedge in $\edges_1$, respectively no node in $\nodesb$ is in a hyperedge in $\edges_0$, .
+    We then have
+    \begin{align*}
+        \normalizationofwrt{\extnetasset}{\catvariableof{\nodesa},\catvariableof{\nodesb}}{\indexedcatvariableof{\nodesc}}
+        = & \normalizationof{\extnetasset\cup\{\onehotmapof{\catindexof{\nodesc}}\}}{\catvariableof{\nodesa},\catvariableof{\nodesb}} \\
+        = &  \normalizationof{\{\hypercoreof{\edge}\wcols\edgein_0\}\cup\{\onehotmapof{\catindexof{\nodesc}}\}}{\catvariableof{\nodesa}} \\
+        & \quad \otimes \normalizationof{\{\hypercoreof{\edge}\wcols\edgein_1\}\cup\{\onehotmapof{\catindexof{\nodesc}}\}}{\catvariableof{\nodesb}} \, .
+    \end{align*}
+    By \defref{def:condIndependence}, this is the independence of $\catvariableof{\nodesa}$ and $\catvariableof{\nodesb}$ conditioned on $\catvariableof{\nodesc}$.
 \end{proof}
 
 \subsection{Fisher-Neyman}
