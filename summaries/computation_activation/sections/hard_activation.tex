@@ -196,7 +196,8 @@ In the tensor network representation, these entailments can be decided by contra
 
 \subsection{Efficient Representation of Knowledge Bases}
 
-We now investigate the representation of knowledge bases, which are conjunctions
+We now investigate the representation of propositional knowledge bases $\kb=\{\formulaof{\selindex}\wcols\selindexin\}$, which are sets of propositional formulas $\formulaof{\selindex}$.
+The conjunction of these formulas is the knowledge base formula
 \begin{align*}
     \kbwith
     = \bigwedge_{\selindexin} \formulaofat{\selindex}{\shortcatvariables} \, .
@@ -266,13 +267,13 @@ Here a local contraction describes the calculation of contractions along few clo
     If $\seckb\subset\kb$ and $\seckb\models\formula$ then also $\kb\models\formula$.
 \end{theorem}
 \begin{proof}
-    Since $\seckb\models\formula$ it holds that $\contraction{\seckb,\lnot\formula}=0$ and thus  $\contractionof{\seckb,\lnot\formula}{\shortcatvariables}=\zerosat{\shortcatvariables}$.
+    Since $\seckb\models\formula$ it holds that $\contraction{\seckb[\shortcatvariables],\lnot\formula[\shortcatvariables]}=0$ and thus  $\contractionof{\seckb[\shortcatvariables],\lnot\formula[\shortcatvariables]}{\shortcatvariables}=\zerosat{\shortcatvariables}$.
     Denoting by $\kb/\seckb$ the conjunctions of formulas in $\kb$ not in $\seckb$, we have
     \begin{align*}
         \contraction{\kbwith,\lnot\formulawith}
-        &= \contraction{\kb/\seckb[\shortcatvariables],\seckb,\lnot\formulawith} \\
-        &= \contraction{\kb/\seckb[\shortcatvariables],\contractionof{\seckb[\shortcatvariables],\lnot\formulawith}{\shortcatvariables}} \\
-        &= \contraction{\kb/\seckb[\shortcatvariables],\zerosat{\shortcatvariables}} \\
+        &= \contraction{(\kb/\seckb)[\shortcatvariables],\seckb[\shortcatvariables],\lnot\formulawith} \\
+        &= \contraction{(\kb/\seckb)[\shortcatvariables],\contractionof{\seckb[\shortcatvariables],\lnot\formulawith}{\shortcatvariables}} \\
+        &= \contraction{(\kb/\seckb)[\shortcatvariables],\zerosat{\shortcatvariables}} \\
         &= 0 \, .
     \end{align*}
 \end{proof}
@@ -324,7 +325,7 @@ We further directly reduce the computation of messages to their support and call
             \State Pop a $(\sedge,\redge)$ pair from $\scheduler$
             \State Compute
             \begin{align*}
-                \hypercoreat{\catvariableof{\sedge\cap \redge}}
+                \messagewith
                 = \nonzeroof{\contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}
                     \cup \{\mesfromtoat{\secsedge}{\sedge}{\catvariableof{\secsedge\cap\sedge}} \wcols (\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge\}
                 }{\catvariableof{\sedge\cap \redge}}}
