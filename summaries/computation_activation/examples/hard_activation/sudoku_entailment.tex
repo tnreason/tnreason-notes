@@ -4,7 +4,8 @@
     For each $r0,r1,c0,c1\in[n]$ and $i\in[n^2]$ we then define an atomic variable $\catvariableof{r0,r1,c0,c1,i}\in\{0,1\}$ indicating whether in the row $(r0,r1)$ and column $(co,c1)$ the number $i$ is written.
     The Sudoku rules then amount to the formula
     \begin{align*}
-        \kb^{n}  \coloneqq &\left( \bigwedge_{r0,r1,c0,c1\in[n]} \left( \woneoplus_{i\in[n^2]} \catvariableof{r0,r1,c0,c1,i} \right) \right) \land
+        \kb^{n}  \coloneqq
+        &\left( \bigwedge_{r0,r1,c0,c1\in[n]} \left( \woneoplus_{i\in[n^2]} \catvariableof{r0,r1,c0,c1,i} \right) \right) \land
         \left( \bigwedge_{r0,r1\in[n], i\in[n^2]} \left( \woneoplus_{c0,c1\in[n]} \catvariableof{r0,r1,c0,c1,i} \right) \right) \land \\
         &\left( \bigwedge_{c0,c1\in[n], i\in[n^2]} \left( \woneoplus_{c0,c1\in[n]} \catvariableof{r0,r1,c0,c1,i} \right) \right) \land
         \left( \bigwedge_{r0,c0\in[n], i\in[n^2]} \left( \woneoplus_{r1,c1\in[n]} \catvariableof{r0,r1,c0,c1,i} \right) \right) \, ,
@@ -21,11 +22,26 @@
         \label{eq:sudokukb}
         \kb \land \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in E^{\mathrm{start}}} \catvariableof{r0,r1,c0,c1,i} \right) \models \lnot\catvariableof{r0,r1,c0,c1,i} \, .
     \end{align}
-    In other words, for each assignment to the board, that fulfills the Sudoku rules and the initial board, do we write the number $n$ in row $(r0,r1)$ and column $(c0,c1)$?
+%    In other words, for each assignment to the board, that fulfills the Sudoku rules and the initial board, do we write the number $n$ in row $(r0,r1)$ and column $(c0,c1)$?
     If and only if the Sudoku has a unique solution given the initial board assignment $E^{\mathrm{start}}$, exactly one of these entailment statements holds for each $(r_0,r_1,c_0,c_1,i)\notin E^{\mathrm{start}}$.
     Deciding which is equivalent to solving of the Sudoku.
+%    We model Sudoku as a hypergraph of
+%    \begin{itemize}
+%        \item Nodes labeled by $n^6$ tuples $(r0,r1,c0,c1,i)$:
+%        \begin{align*}
+%            \nodes = \{(r0,r1,c0,c1,i) \wcols r0,r1,c0,c1 \in [n]\ncond i \in [n^2]\}
+%        \end{align*}
+%        \item Hyperedges by the $4\cdot n^4$ constraints (implementing the position, row, columns and square contraints):
+%        \begin{align*}
+%            \edges =& \big\{\{(r0,r1,c0,c1,i) \wcols r0,r1,c0,c1\in[n]\} \wcols r0,r1,c0,c1\in[n]\big\} \cup \\
+%            &\big\{\{(r0,r1,c0,c1,i) \wcols r0,r1,c0,c1\in[n]\} \wcols r0,r1\in[n], i\in[n^2]\big\} \cup \\
+%            &\big\{\{(r0,r1,c0,c1,i) \wcols r0,r1,c0,c1\in[n]\} \wcols c0,c1\in[n], i\in[n^2]\big\} \cup \\
+%            &\big\{\{(r0,r1,c0,c1,i) \wcols r0,r1,c0,c1\in[n]\} \wcols r0,c0\in[n], i\in[n^2]\big\} \cup
+%        \end{align*}
+%        Each hypercore is carried by a tensor representing the logical formula $\woneoplus$ on $n^2$ boolean variables.
+%    \end{itemize}
 
-    For example, let $n=2$ and
+    For a more detailed example, let $n=2$ and
     \begin{align*}
         E^{\mathrm{start}} = \{&(0,0,0,0,0),(0,0,1,0,2),(0,0,1,1,1), %first row
         (0,1,0,1,1), \\ %second row
@@ -46,5 +62,5 @@
             \draw[thick]([xshift=-9.5pt,yshift=0.6pt]M-2-1.south) -- ([xshift=9.5pt,yshift=0.6pt]M-2-4.south);
         \end{sudoku4x4}
     \end{center}
-    We will later demonstrate in \exaref{exa:sudokuEntailment} a solution algorithm to solve this instance.
+    We will later demonstrate in \exaref{exa:sudokuEntailment} a solution algorithm to solve this instance, after we have derived sparse tensor network representations in \exaref{exa:sudokuDecomposition}.
 \end{example}

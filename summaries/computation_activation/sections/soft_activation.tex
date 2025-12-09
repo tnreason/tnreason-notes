@@ -208,7 +208,7 @@ Let us now show a characterization of Markov Networks in terms of conditional in
 
 \input{../examples/soft_activation/coin_toss_hc.tex}
 
-\input{../examples/soft_activation/student_example}
+\input{../examples/soft_activation/student_example_hc}
 
 Equivalently, \theref{the:factorizationHammersleyClifford} states that for any strictly positive joint distribution $\probwithnodes$ whose conditional independencies are exactly those encoded by a clique–capturing hypergraph $G=(V,E)$, there exist non–negative activation cores $\tau_e[X_e]$ such that
 \begin{align*}
@@ -342,4 +342,28 @@ Note that by construction each member of an exponential family is an element in 
 
 \subsection{Efficient Contractions by Message Passing}
 
-\alex{Introduce here the Belief Propagation?}
+We now formulate the Belief Propagation algorithm based on tensor network.
+We denote $\dirovedges$ to be all tuples $(\sedge,\redge)$ of hyperedges $\sedge,\redge\in\edges$ such that $\sedge\neq\redge$ and $\sedge\cap\redge\neq\varnothing$.
+
+\begin{algorithm}[hbt!]
+    \caption{Belief Propagation}\label{alg:beliefPropagation}
+    \begin{algorithmic}
+        \Require Tensor network $\extnet$ on a hypergraph $\graph$
+        \Ensure Scheduler $\scheduler$
+        \iosepline
+        \State Initialize $\scheduler$ (differs in implementation)
+        \State Initialize messages
+        \While{$\scheduler$ not empty}
+            \State Take a $(\sedge,\redge)$ pair from $\scheduler$
+            \State Update the message
+            \begin{align*}
+                \messagewith
+                = \contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}
+                    \cup \{\mesfromtoat{\secsedge}{\sedge}{\catvariableof{\secsedge\cap\sedge}} \wcols (\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge\}
+                }{\catvariableof{\sedge\cap \redge}}
+            \end{align*}
+            \State Update $\scheduler$ (differs in implementation)
+        \EndWhile
+        \State \Return Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
+    \end{algorithmic}
+\end{algorithm}

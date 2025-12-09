@@ -1,13 +1,13 @@
 \begin{example}
-    We consider a classical example (see \cite[Example~4.3]{koller_probabilistic_2009}):
+    We consider a classical example of a graphical model (see \cite[Example~4.3]{koller_probabilistic_2009}):
     A student of intelligence ($\catvariableof{I}$) and SAT score ($\catvariableof{S}$), is assigned a test of difficulty ($\catvariableof{D}$), for which he gets a grade ($\catvariableof{G}$) depending on which he gets a recommendation letter ($\catvariableof{L}$) by its teacher.
     We make the following modelling assumptions:
     \begin{itemize}
         \item "The SAT score depends only on the students intelligence": $\condindependent{\catvariableof{S}}{\catvariableof{\{D,G,L\}}}{\catvariableof{I}}$
         \item "The recommendation letter depends only on the grade": $\condindependent{\catvariableof{L}}{\catvariableof{\{D,I,S\}}}{\catvariableof{G}}$
     \end{itemize}
-
-    These independences are modelled in the hypergraph a) and the clique capturing property is sketched in b):
+    The associated hypergraph capturing these conditional independencies is drawn in \figref{fig:studentHypergraph} a).
+    \begin{figure}
     \begin{center}
         \begin{tikzpicture}
 
@@ -72,4 +72,9 @@
             \end{scope}
         \end{tikzpicture}
     \end{center}
+        \caption{
+            Hypergraph a) capturing the conditional independences of the student example.
+            Its clique capturing property is sketched in b).
+        }\label{fig:studentHypergraph}
+    \end{figure}
 \end{example}

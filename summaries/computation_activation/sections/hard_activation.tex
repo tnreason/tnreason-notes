@@ -18,19 +18,19 @@ A tensor-based representation of propositional logic is developed by encoding bo
 %    \item and the propositional formula to be \emph{satisfiable}, if there is a model.
 %\end{itemize}
 
- \begin{definition}
-     \label{def:formulas}
-     A \emph{propositional formula} $\formulaat{\shortcatvariables}$ depending on $\atomorder$ boolean variables $\catvariableof{\atomenumerator}$ is a boolean-valued tensor
-     \begin{align*}
-         \formulaat{\shortcatvariables} \defcols \atomstates \rightarrow \ozset \subset \rr \, .
-     \end{align*}
-     We call a state $\shortcatindices \in \atomstates$ a \emph{model} of a propositional formula $\formula$, if
-     \begin{align*}
-         \formulaat{\indexedshortcatvariables}=1 \, ,
-     \end{align*}
-     where we associate $\mathrm{True}\leftrightarrow 1$ and $\mathrm{False}\leftrightarrow 0$.
-     If there is a model to a propositional formula, we say the formula is \emph{satisfiable}.
- \end{definition}
+\begin{definition}
+    \label{def:formulas}
+    A \emph{propositional formula} $\formulaat{\shortcatvariables}$ depending on $\atomorder$ boolean variables $\catvariableof{\atomenumerator}$ is a boolean-valued tensor
+    \begin{align*}
+        \formulaat{\shortcatvariables} \defcols \atomstates \rightarrow \ozset \subset \rr \, .
+    \end{align*}
+    We call a state $\shortcatindices \in \atomstates$ a \emph{model} of a propositional formula $\formula$, if
+    \begin{align*}
+        \formulaat{\indexedshortcatvariables}=1 \, ,
+    \end{align*}
+    where we associate $\mathrm{True}\leftrightarrow 1$ and $\mathrm{False}\leftrightarrow 0$.
+    If there is a model to a propositional formula, we say the formula is \emph{satisfiable}.
+\end{definition}
 
 \input{../examples/hard_activation/prop_formula_coordinatewise.tex}
 
@@ -97,12 +97,12 @@ Both $\formula$ and $\lnot\formula$ are thus \ComputationActivationNetworks{} to
 This representation of propositional formulas with respect to basis encoding thus leads to \ComputationActivationNetworks{}, which were also used to describe probability distributions in the last section.
 In this way the soft and hard logic can be combined in one framework.
 
-
 \subsection{Decomposition of Propositional Formulas}
 
 We now show, that the propositional formula allows for a decomposition into connective formulas, its basis encoding decomposes into the basis encodings of the connective formulas.
 
-\begin{lemma}\label{lem:formulaDecomp}
+\begin{lemma}
+    \label{lem:formulaDecomp}
     Let $\formulaat{\shortcatvariables}$ be a composition of a $\seldim$-ary connective formula $\exconnective$ and propositional formulas $\formulaofat{\selindex}{\shortcatvariables}$, where $\selindexin$, i.e. for $\shortcatindices\in\atomstates$ we have
     \begin{align*}
         \formulaat{\indexedshortcatvariables}
@@ -112,7 +112,7 @@ We now show, that the propositional formula allows for a decomposition into conn
     \begin{align*}
         \bencodingofat{\formula}{\headvariableof{\formula},\shortcatvariables}
         = \contractionof{
-        \{\bencodingofat{\exconnective}{\headvariableof{\formula},\headvariableof{[\seldim]}}\}
+            \{\bencodingofat{\exconnective}{\headvariableof{\formula},\headvariableof{[\seldim]}}\}
             \cup \{\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}
         }{\headvariableof{\formula},\shortcatvariables} \, .
     \end{align*}
@@ -220,9 +220,11 @@ To show efficient repesentations we will use the following identities.
     Follows directly from the definitions of the basis encodings and the connectives.
 \end{proof}
 
+\input{../examples/hard_activation/prop_formula_kb_head_sym}
+
 We use this to decompose knowledge bases into their individual formulas as follows.
 
-\begin{theorem}
+\begin{theorem}\label{the:kbDecomposition}
     For any knowledge base $\kbwith = \bigwedge_{\selindexin} \formulaofat{\selindex}{\shortcatvariables}$ it holds that
     \begin{align*}
         \kbwith
@@ -241,8 +243,9 @@ We use this to decompose knowledge bases into their individual formulas as follo
     \end{align*}
 \end{proof}
 
-\input{../examples/hard_activation/prop_formula_kb_head_sym}
 
+
+\input{../examples/hard_activation/sudoku_entailment}
 
 % BAD NOTATION!
 %Noting that for example for $x_a=x_b=\epsilon_1=[0,1]^\intercal$
@@ -258,7 +261,8 @@ We use this to decompose knowledge bases into their individual formulas as follo
 Since contracting the whole tensor is often infeasible and for instance for the Sudoku example would correspond to solving the whole problem, local contractions can be considered to decide in some cases.
 Here a local contraction describes the calculation of contractions along few closely connected legs in the tensor network. Now, if the local contraction of any legs leads to a zero-tensor in the network decomposition, the whole contraction amounts to zero, and the knowledge base entails $f$.
 
-\begin{theorem}[Monotonicity of Propositional Logics]\label{the:monotonicityPL}
+\begin{theorem}[Monotonicity of Propositional Logics]
+    \label{the:monotonicityPL}
     If $\seckb\subset\kb$ and $\seckb\models\formula$ then also $\kb\models\formula$.
 \end{theorem}
 \begin{proof}
@@ -278,7 +282,8 @@ This is sound by the above theorem, but not complete, since it can happen that n
 
 We can futhermore add entailed formulas to the knowledge base without the latter, as we show next.
 
-\begin{theorem}[Invariance of adding Entailed Formulas]\label{the:addingEntailed}
+\begin{theorem}[Invariance of adding Entailed Formulas]
+    \label{the:addingEntailed}
     If $\kb\models\formula$ then % Actually can extend to iff -> Modify the proof for that?
     \begin{align*}
         \kbwith
@@ -300,7 +305,37 @@ One can understand entailment as "making the knowledge base more accessible":
 Adding deduced statements to a knowledge base does not change the knowledge base as a tensor, but one can interpret it in an easier way.
 \theref{the:addingEntailed} justifies this intuition in our tensor network formalism.
 
+% Constraint Propagation
 This motivates an message-passing approach to decide entailment by iteratively adding entailed formulas to the knowledge base and checking entailment on smaller parts of the knowledge base.
-Such inference methods are known e.g. as Constraint Propagation.
+Let us now refine \algoref{alg:beliefPropagation} to this situation.
+Since we are only interested in the support of the contractions, we schedule new messages in the direction $(\sedge,\redge)$, once the support of a message received at $\sedge$ has been changed.
+Note that such a scheduling system is guaranteed to converge, since there can only be a finite number of message changes.
+We further directly reduce the computation of messages to their support and call the resulting \algoref{alg:constraintPropagation} Constraint Propagation.
+
+\begin{algorithm}[hbt!]
+    \caption{Constraint Propagation}\label{alg:constraintPropagation}
+    \begin{algorithmic}
+        \Require Tensor network $\extnet$ on a hypergraph $\graph$
+        %\Ensure Scheduler $\scheduler$
+        \iosepline
+        \State Initialize a queue $\scheduler = \dirovedges$ of message directions
+        \State Initialize messages $\messagewith = \onesat{\catvariableof{\sedge\cap\redge}}$ for $(\sedge,\redge)\in\dirovedges$
+        \While{$\scheduler$ not empty}
+            \State Pop a $(\sedge,\redge)$ pair from $\scheduler$
+            \State Compute
+            \begin{align*}
+                \hypercoreat{\catvariableof{\sedge\cap \redge}}
+                = \nonzeroof{\contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}
+                    \cup \{\mesfromtoat{\secsedge}{\sedge}{\catvariableof{\secsedge\cap\sedge}} \wcols (\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge\}
+                }{\catvariableof{\sedge\cap \redge}}}
+            \end{align*}
+            \If{$\hypercoreat{\catvariableof{\sedge\cap \redge}}\neq\messagewith$}
+                \State Update the message: $\messagewith\coloneqq\hypercoreat{\catvariableof{\sedge\cap \redge}}$
+                \State Add $\scheduler = \scheduler \cup \{(\redge,\secsedge) \wcols (\redge,\secsedge)\in\dirovedges\}$ % Clear?
+            \EndIf
+        \EndWhile
+        \State \Return Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
+    \end{algorithmic}
+\end{algorithm}
 
 \input{../examples/hard_activation/sudoku_message_passing.tex}
