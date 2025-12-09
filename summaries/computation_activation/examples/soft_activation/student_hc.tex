@@ -1,4 +1,4 @@
-\begin{example}
+\begin{example}\label{exa:studentHC}
     We consider a classical example of a graphical model (see \cite[Example~4.3]{koller_probabilistic_2009}):
     A student of intelligence ($\catvariableof{I}$) and SAT score ($\catvariableof{S}$), is assigned a test of difficulty ($\catvariableof{D}$), for which he gets a grade ($\catvariableof{G}$) depending on which he gets a recommendation letter ($\catvariableof{L}$) by its teacher.
     We make the following modelling assumptions:
@@ -7,7 +7,8 @@
         \item "The recommendation letter depends only on the grade": $\condindependent{\catvariableof{L}}{\catvariableof{\{D,I,S\}}}{\catvariableof{G}}$
     \end{itemize}
     The associated hypergraph capturing these conditional independencies is drawn in \figref{fig:studentHypergraph} a).
-    \begin{figure}
+\end{example}
+\begin{figure}[t]
     \begin{center}
         \begin{tikzpicture}
 
@@ -72,9 +73,9 @@
             \end{scope}
         \end{tikzpicture}
     \end{center}
-        \caption{
-            Hypergraph a) capturing the conditional independences of the student example.
-            Its clique capturing property is sketched in b).
-        }\label{fig:studentHypergraph}
-    \end{figure}
-\end{example}
+    \caption{
+        Hypergraph a) capturing the conditional independences of the student example.
+        The cliques of the node adjacency graph are higlighted in b), and coincide with hyperedges of the hypergraph.
+        The hypergraph is therefore clique-capturing (see \defref{def:ccHypergraph}).
+    }\label{fig:studentHypergraph}
+\end{figure}

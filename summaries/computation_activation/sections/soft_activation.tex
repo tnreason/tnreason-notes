@@ -192,7 +192,7 @@ This property of clique-capturing established a correspondence of hyperedges wit
 
 \begin{definition}[Clique-Capturing Hypergraph]
     \label{def:ccHypergraph}
-    We call a hypergraph $\graph$ clique-capturing, when each subset $\secnodes\subset\nodes$ is contained in a hyperedge, if for any $\nodea,\nodeb\in\secnodes$ there is a hyperedge $\edgein$ with $\nodea,\nodeb\in\secnodes$.
+    We call a hypergraph $\graph$ \emph{clique-capturing}, when each subset $\secnodes\subset\nodes$ is contained in a hyperedge, if for any $\nodea,\nodeb\in\secnodes$ there is a hyperedge $\edgein$ with $\nodea,\nodeb\in\secnodes$.
 \end{definition}
 
 Let us now show a characterization of Markov Networks in terms of conditional independencies.
@@ -208,7 +208,7 @@ Let us now show a characterization of Markov Networks in terms of conditional in
 
 \input{../examples/soft_activation/coin_toss_hc.tex}
 
-\input{../examples/soft_activation/student_example_hc}
+\input{../examples/soft_activation/student_hc}
 
 Equivalently, \theref{the:factorizationHammersleyClifford} states that for any strictly positive joint distribution $\probwithnodes$ whose conditional independencies are exactly those encoded by a clique–capturing hypergraph $G=(V,E)$, there exist non–negative activation cores $\tau_e[X_e]$ such that
 \begin{align*}
@@ -217,8 +217,6 @@ Equivalently, \theref{the:factorizationHammersleyClifford} states that for any s
 \end{align*}
 Thus, the conditional–independence structure of $\probwithnodes$ determines a global tensor–network decomposition of $\probwithnodes$.
 We refer to this correspondence between independence structure and tensor–network factorization as the \emph{\independenceMechanism{}}.
-
-\alex{Add the Student example in Koller book, demonstration of clique-capturing and Hammersley Clifford.}
 
 \subsection{The \ComputationMechanism{}: Factorization in presense of Sufficient Statistics}
 %\subsection{Sufficient statistics leading to tensor network decompositions ("the computation mechanism")}
@@ -367,3 +365,5 @@ We denote $\dirovedges$ to be all tuples $(\sedge,\redge)$ of hyperedges $\sedge
         \State \Return Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
     \end{algorithmic}
 \end{algorithm}
+
+\input{../examples/soft_activation/student_bp}
