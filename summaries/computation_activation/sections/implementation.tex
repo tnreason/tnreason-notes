@@ -1,0 +1,75 @@
+\section{Implementation in the \python{} library \tnreason{}}\label{sec:code}
+
+The concepts presented in this paper have been implemented in the \python{} library \tnreason{}\footnote{github.com/tnreason}, available on pypi.org\footnote{pypi.org/tnreason}
+%\begin{figure}[t]
+\begin{center}
+    \input{../tikz_pics/implementation/architecture_sketch}
+\end{center}
+%\end{figure}
+While we in this section explain the basic design and functionality of this library, we provide in Appendix~\ref{sec:algExaImplementation} a detailed implementation of the algorithms and examples in this work.
+
+\subsection{Architecture}
+
+In the submodule \tnreason{}.\spengine{} we implement tensors, tensor networks, contractions and normalizations.
+In the submodule \tnreason{}.\sprepresentation{} the basic tensor encoding schemes such as basis encodings are available.
+In the submodule \tnreason{}.\spreasoning{} we implement reasoning algorithms, such as generalization of the message passing algorithms presented in \algoref{alg:beliefPropagation}, \algoref{alg:constraintPropagation} and \algoref{alg:AMM_HLN}.
+In the submodule \tnreason{}.\spapplication{} one can construct tensor network encodings of propositional formulas and data sets. 
+
+\subsection{Basic usage}
+
+We demonstrate the basic usage of the \tnreason{} package on the Example~\ref{exa:propFormulaCoordinatewise}.
+Dictionaries with string keys and valued by tensors store tensor networks.
+
+
+\begin{minted}{python}
+expressionsDict = {"f0" :  ["and", ["or", "a", "b"], ["not", "c"]]}
+\end{minted}
+After importing the package by
+\begin{minted}{python}
+from tnreason import representation, application, engine
+\end{minted}
+the CAN can then be build by defining all cores. Activation cores then have suffices \mintinline{python}{_aC} and computation cores are denoted with suffices \mintinline{python}{_cC} by
+\begin{minted}{python}
+cores = application.create_cores_to_expressionsDict(expressionsDict)
+computationCores = {key: value for key, value in cores.items()
+                                                         if key.endswith("_cC")}
+\end{minted}
+The generated \mintinline{python}{computationCores} is a dictionary with the following keys and tensors of given shapes as expected in example~\ref{exa:bencodingNegCon}.
+\begin{minted}{python}
+'f0_aC', [2]
+'(and_(or_a_b)_(not_c))_cC', [2, 2, 2]
+'(or_a_b)_cC', [2, 2, 2]
+'(not_c)_cC', [2, 2]
+\end{minted}
+Based on this dictionary, the \ComputationActivationNetwork{} can be build by setting the activation network for the single output feature (the output of $f$) to a vector acting on the output of the basis encoding of $f$. Here a \mintinline{python}{SingleHybridFeature} is used, which allows for hard or soft activations. Then the value for the desired output of the feature is set to \mintinline{python}{True}.
+\begin{minted}{python}
+caNet = representation.ComputationActivationNetwork(
+    computationCoreDict=computationCores,
+    featureDict={"f0" : representation.SingleHybridFeature(
+                                    featureColor="(and_(or_a_b)_(not_c))_cV")},
+    canParamDict={"f0" : True}
+    )
+\end{minted}
+
+As in example~\ref{exa:bencodingNegCon}, the CAN then has the following form.\alex{Should we use the engine.draw() for that?}
+\input{../tikz_pics/implementation/can_decomp}
+
+The other representation in example~\ref{exa:bencodingNegCon} can also be implemented.
+Both architectures can be found the linked notebook\footnote{\url{https://colab.research.google.com/drive/14knFuMJHI683DAmUgJ-G10MQFueoXR6q\#scrollTo=vrOYBViZhX2S}}.
+Note that more efficient representations of this network are possible and the one described here is mainly for pedagogic purposes.
+Furthermore the right implementation of the formula can be checked by contractions.
+\begin{minted}{python}
+allCores = caNet.create_cores()
+formula = engine.contract(coreDict = allCores,
+                          openColors=["a_dV","b_dV", "c_dV"])
+assert formula[{"a_dV": 1, "b_dV" : 1, "c_dV" : 0}] == 1
+assert formula[{"a_dV": 1, "b_dV" : 1, "c_dV" : 1}] == 0
+\end{minted}
+The notebook also shows how the network can be normalized to represent a uniform probability distribution over all models of the formula.
+\begin{minted}{python}
+distribution = engine.normalize(coreDict = allCores,
+                                outColors = ["a_dV","b_dV", "c_dV"],
+                                inColors = [])
+assert distribution[{"a_dV": 1, "b_dV" : 1, "c_dV" : 0}] == 1/3
+assert distribution[{"a_dV": 1, "b_dV" : 1, "c_dV" : 1}] == 0
+\end{minted}

@@ -261,7 +261,7 @@ More generally, such decompositions are provided by the Fisher-Neyman Factorizat
     \begin{align*}
         \probat{\catvariable,\thirdcatvariable}
         = \contractionof{
-            \acttensorat{\headvariableof{\sstat},\thirdcatvariable}\bencodingofat{\sstat}{\headvariableof{\sstat},\catvariable},\basemeasureat{\catvariable}
+            \acttensorat{\headvariableof{\sstat},\thirdcatvariable},\bencodingofat{\sstat}{\headvariableof{\sstat},\catvariable},\basemeasureat{\catvariable}
         }{\catvariable,\thirdcatvariable} \, .
     \end{align*}
     We depict this equation diagrammatically by
@@ -337,7 +337,7 @@ Note that by construction each member of an exponential family is an element in 
 
 \begin{figure}
     \begin{center}
-        \input{/Users/goessmann/Documents/tnreason/notes/summaries/computation_activation/tikz_pics/probability_representation/expdist_elementary}
+        \input{../tikz_pics/probability_representation/expdist_elementary}
     \end{center}
     \caption{
         Tensor Network diagram of a member of an exponential family $\probfamilyofat{\sstat,\basemeasure}{\shortcatvariables}{\Theta=\canparam}$ before normalization as an \CompActNet{} with elementary activation, that is an element in $\cansof{\sstat,\elgraph,\basemeasure}$.}\label{fig:expdistElementary}
@@ -348,14 +348,16 @@ Note that by construction each member of an exponential family is an element in 
 
 \subsection{Efficient Contractions by Message Passing}
 
-We now formulate the Belief Propagation algorithm based on tensor network.
+\alex{Contractions of tensor networks are in generality hard to solve.
+We here investigate message passing algorithms, which decompose contractions into a sequence of subcontractions, which are passed as messages through the tensor network.}
+The resulting algorithm is called Belief Propagation \algoref{alg:beliefPropagation}.
 We denote $\dirovedges$ to be all tuples $(\sedge,\redge)$ of hyperedges $\sedge,\redge\in\edges$ such that $\sedge\neq\redge$ and $\sedge\cap\redge\neq\varnothing$.
 
 \begin{algorithm}[hbt!]
     \caption{Belief Propagation}\label{alg:beliefPropagation}
     \begin{algorithmic}
         \Require Tensor network $\extnet$ on a hypergraph $\graph$
-        \Ensure Scheduler $\scheduler$
+        \Ensure Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
         \iosepline
         \State Initialize $\scheduler$ (differs in implementation)
         \State Initialize messages

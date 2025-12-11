@@ -116,7 +116,7 @@ Let us now define a more generic syntactical decomposition of propositional form
         \begin{align*}
             \connectiveofat{\node}{\headvariableof{\incomingnodes}} \defcols \bigtimes_{\node\in\incomingnodes} [2] \rightarrow [2]
         \end{align*}
-        \item the node not appearing as an outgoing node are labeled by $[\atomorder]$
+        \item the nodes not appearing as an outgoing node are labeled by $[\atomorder]$
     \end{itemize}
     We say that the syntactical hypergraph is single-rooted, if exactly one node $\secnode$ does not appear as an incoming node of a hyperedge.
     In this case this unique node is called the root node. % head node
@@ -165,10 +165,10 @@ This allows to define entailment between two propositional formulas as follows.
 
 % Relation to classical definition of entailment
 Classically (see e.g. \cite{russell_artificial_2021}) entailment in propositional logics is defined as the the unsatisfiability of $\kb\land\lnot\exformula$.
-This is equivalent to \defref{def:logicalEntailment}, since $\contraction{\kb,\lnot\exformula}=0$ is equivalent to $\contraction{\kb \land (\lnot\exformula)}=0$, which is the unsatisfiability of $\kb\land\lnot\exformula$.
+This is equivalent to \defref{def:logicalEntailment}, since $\contraction{\kbwith,\lnot\formulawith}=0$ is equivalent to $\contraction{(\kb \land (\lnot\exformula))[\shortcatvariables]}=0$, which is the unsatisfiability of $\kb\land\lnot\exformula$.
 
-Entailment is the central operation of "logical inference", i.e. deduce true statements from known statements.
-In the tensor network representation, these entailments can be decided by contracting the whole representing tensor with the statement, that needs to be checked.
+%Entailment is the central operation of "logical inference", i.e. deduce true statements from known statements.
+%In the tensor network representation, these entailments can be decided by contracting the whole representing tensor with the statement, that needs to be checked.
 
 \input{../examples/hard_activation/sudoku_entailment}
 
@@ -203,7 +203,8 @@ To show efficient repesentations we will use the following identities.
 
 We use this to decompose knowledge bases into their individual formulas as follows.
 
-\begin{theorem}\label{the:kbDecomposition}
+\begin{theorem}
+    \label{the:kbDecomposition}
     For any knowledge base $\kbwith = \bigwedge_{\selindexin} \formulaofat{\selindex}{\shortcatvariables}$ it holds that
     \begin{align*}
         \kbwith
@@ -263,7 +264,7 @@ We can futhermore add entailed formulas to the knowledge base without the latter
 
 \begin{theorem}[Invariance of adding Entailed Formulas]
     \label{the:addingEntailed}
-    If $\kb\models\formula$ then % Actually can extend to iff -> Modify the proof for that?
+    If and only if $\kb\models\formula$ we have
     \begin{align*}
         \kbwith
         = \contractionof{\kbwith,\formulawith}{\shortcatvariables} \, .
@@ -275,8 +276,9 @@ We can futhermore add entailed formulas to the knowledge base without the latter
         \kbwith
         &= \contractionof{\kbwith,(\formulawith+\lnot\formulawith)}{\shortcatvariables} \\
         &= \contractionof{\kbwith,\formulawith}{\shortcatvariables}  + \contractionof{\kbwith,\lnot\formulawith}{\shortcatvariables}  \\
-        &= \contractionof{\kbwith,\formulawith}{\shortcatvariables} \, .
+       %&= \contractionof{\kbwith,\formulawith}{\shortcatvariables} \, .
     \end{align*}
+    Since $\contractionof{\kbwith,\lnot\formulawith}{\shortcatvariables}$ is boolean, we thus have that $\kbwith=\contractionof{\kbwith,\formulawith}{\shortcatvariables}$ if and only if $\contraction{\kbwith,\lnot\formulawith}=0$, that is $\kb\models\formula$.
 \end{proof}
 
 % Interpreting entailment
@@ -285,7 +287,7 @@ Adding deduced statements to a knowledge base does not change the knowledge base
 \theref{the:addingEntailed} justifies this intuition in our tensor network formalism.
 
 % Constraint Propagation
-This motivates an message-passing approach to decide entailment by iteratively adding entailed formulas to the knowledge base and checking entailment on smaller parts of the knowledge base.
+This motivates a message-passing approach to decide entailment by iteratively adding entailed formulas to the knowledge base and checking entailment on smaller parts of the knowledge base.
 Let us now refine \algoref{alg:beliefPropagation} to this situation.
 Since we are only interested in the support of the contractions, we schedule new messages in the direction $(\sedge,\redge)$, once the support of a message received at $\sedge$ has been changed.
 Note that such a scheduling system is guaranteed to converge, since there can only be a finite number of message changes.
@@ -295,7 +297,7 @@ We further directly reduce the computation of messages to their support and call
     \caption{Constraint Propagation}\label{alg:constraintPropagation}
     \begin{algorithmic}
         \Require Tensor network $\extnet$ on a hypergraph $\graph$
-        %\Ensure Scheduler $\scheduler$
+        \Ensure Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$ containing entailment statements
         \iosepline
         \State Initialize a queue $\scheduler = \dirovedges$ of message directions
         \State Initialize messages $\messagewith = \onesat{\catvariableof{\sedge\cap\redge}}$ for $(\sedge,\redge)\in\dirovedges$

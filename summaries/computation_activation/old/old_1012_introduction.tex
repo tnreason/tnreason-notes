@@ -1,0 +1,83 @@
+\section{Introduction}
+
+%%%%%%%% Needs fusion: Logic-Probabilistic, Explainability-Efficiency, StarAI, NeSy
+
+Modern artificial intelligence is dominated by large-scale neural models that excel at various tasks but mostly remain black-boxes.
+In contrast, reliability and explainability are two main concerns when integrating these architecture into safety-critical processes.
+For these goals classical symbolic approaches offer explicit logical structures and human-readable inference but cannot handle uncertainty or scale to complex real-world data.
+Probabilistic models on the other hand improved uncertainty handling at the cost of explainability.
+Bridging these paradigms, achieving both expressive architectures and transparent reasoning, defines the central goal of \emph{Neuro-Symbolic AI}, which seeks methods that combine the structural clarity of logic with the adaptability of neural computation within a single, mathematically coherent framework.
+
+%% Intrinsic explainability
+A central goal is to achieve \emph{intrinsic explainability} rather than post-hoc interpretation.
+In conventional neural models, there are various ways to interpret a model after it has been trained, e.g. based on analyzing how changing input features influence the models prediction or based on fitting simpler surrogate models~\cite{lipton_mythos_2018,barredo_arrieta_explainable_2020}.
+The proposed framework encodes symbolic relations that remain directly readable.
+Explainability is thus not added after training but built into the architecture itself.
+
+%%% Logic, Explainability and Neuro-symbolic AI
+% Logical Approach to AI
+The logical tradition of artificial intelligence is motivated by the resemblance of human thought in logics \cite{mccarthy_programs_1959}.
+Historic approaches to artificial intelligence have focused on models by vast knowledge bases and inference by logical reasoning.
+The main problem hindering the success of this approach is the inability of classical \firstOrderLogic{} to handle uncertainty of information, as present in realistic scenarios.
+
+% Statistical Relational AI and Neuro-Symbolic AI
+Towards extending the practical usage of logics, the field of Statistical Relational AI \cite{nickel_review_2016,getoor_introduction_2019} studies statistical models of logical relations.
+This directly treats uncertainty and therefore unifies logics with statistical approaches.
+These aims have more recently reframed as Neuro-Symbolic AI \cite{hochreiter_toward_2022, sarker_neuro-symbolic_2022,colelough_neuro-symbolic_2024}, with close relations to statistical relational AI \cite{marra_statistical_2024}.
+Neuro-Symbolic AI focuses on the unification of the neural and the symbolic paradigm \cite{garcez_neural-symbolic_2019}, where early approaches are \cite{towell_knowledge-based_1994,avila_garcez_connectionist_1999}.
+While the symbolic paradigm is roughly understood as human understandable reasoning in formal logics, the neural paradigm is the computational benefit of decomposing a model into layers.
+These decompositions provide both expressive and efficiently inferable model architectures.
+While modern black-box AI focuses on large (deep) neural networks, whose size and encoding structure prevents human understanding of the inference process, Neuro-Symbolic AI aims at a re-implementation of the symbolic paradigm into such architectures.
+It hence provides systematic means to formalize the encoded data and knowledge as an abstraction in an explicit form.
+
+The unification of symbolic and probabilistic approaches to interpretable model architectures has been a long-standing aim.
+Probabilistic graphical models \cite{pearl_probabilistic_1988,koller_probabilistic_2009} are means to encode variable independences in graphs and are specific instances of exponential families \cite{wainwright_graphical_2008}.
+Markov Logic Networks \cite{richardson_markov_2006} are specific instances of exponential families where also the dependencies are explicitly encoded in logical formulas.
+Further approaches treat uncertainties as generalized truth values \cite{bach_hinge-loss_2017}.
+
+%%%%%%%%
+
+%% Tensor Networks in general
+
+Tensor Networks have recently gained interest as a unifying language for AI, framed by Logical Tensor Networks \cite{badreddine_logic_2022} and Tensor Logic \cite{domingos_tensor_2025}.
+Different to the approaches therein we do not require non-linear transforms of tensors.
+Further, the MeLoCoToN approach \cite{ali_explicit_2025} applies tensor network architectures similar to \CompActNets{} in combinatorical optimization problems.
+
+Tensor networks have emerged as a highly efficient mathematical framework for handling data in high-dimensional spaces, effectively circumventing the "curse of dimensionality" that typically plagues grid-based methods ~\cite{hackbusch_tensor_2012}.
+By decomposing high-order tensors into networks of low-rank components, these structures reduce the storage and computational complexity from exponential to polynomial with respect to the dimension ~\cite{oseledets_tensor-train_2011, hackbusch_new_2009, hitchcock_expression_1927}.
+
+Historically rooted in quantum many-body physics ~\cite{white_density-matrix_1993}, this framework found its first major success with Matrix Product States (MPS), originally developed to efficiently capture the quantum dynamics and ground states of one-dimensional spin chains ~\cite{affleck_rigorous_1987}.
+This format remains a standard tool in the field, with recent contributions refining it for tasks such as large-scale stochastic simulations and variational circuit operations ~\cite{sander_large-scale_2025, sander_quantum_2025}.
+To address the topological constraints of MPS, the landscape of architectures was subsequently expanded to include Projected Entangled Pair States (PEPS) for two-dimensional lattices and the Multi-scale Entanglement Renormalization Ansatz (MERA), which utilizes a hierarchical geometry to represent scale-invariant critical systems and has recently been adapted for simulating quantum systems ~\cite{orus_tensor_2019, berezutskii_simulating_2025}.
+
+Beyond the quantum realm, these formats have been successfully adapted to applied mathematics, particularly for solving high-dimensional parametric PDEs, sampling problems, modeling complex continuous fields and learning dynamical laws ~\cite{hagemann_sampling_2025, eigel_adaptive_2017, goessmann_tensor_2020}.
+Furthermore, they exhibit properties helpful for handling these high-dimensional spaces, such as restricted isometry properties~\cite{goessmann_uniform_2021}.
+Recent advancements have demonstrated the efficacy of these methods in capturing multiscale phenomena in fluid dynamics and turbulence, proving that the tensor network formalism offers a robust alternative to classical numerical schemes ~\cite{gourianov_tensor_2025}.
+
+Most significantly for the present work, we exploit the algebraic flexibility of tensor networks to bridge the gap between continuous numerical representation and discrete symbolic reasoning.
+By interpreting tensor contractions as logical operations within a basis calculus we can rigorously map propositional logic onto the linear-algebraic substrate of tensor networks.
+%As shown in ~\cite{goessmann_tensor-network_2025},
+This very versatile and flexible framework can be applied to unify logical and probabilistic modeling, enabling a single architecture to perform exact symbolic inference while retaining the efficient learnability of high-dimensional neural representations.
+
+%% tnreason and CompActNets
+The recently developed \emph{\tnreason{}} framework \cite{goessmann_tensor-network_2025} proposes tensor networks as a unifying mathematical foundation for reasoning and probabilistic inference.
+Tensor networks factor complex systems into interconnected logical and probabilistic components. %whose contractions represent inference or computation.
+In this unifying mathematical framework, logical formulas corresponding to boolean tensors and probabilistic distributions corresponding to non-negative real tensors are combined.
+Both can be manipulated through the same algebra of tensor contraction.
+This abstraction eliminates the traditional divide between symbolic and numerical representations: logical inference and probabilistic computations become different instances of the same underlying operation on structured tensors.
+The \emph{\ComputationActivationNetworks{} (\CompActNets{})} organize reasoning into two complementary tensor substructures.
+The computation network encodes the structural relations of a problem such as logical dependencies or sufficient statistics, while the activation network assigns semantic or numerical values to these structures, representing truth assignments or probabilities.
+Their interaction defines a reasoning process as a tensor contraction between structure and activation.
+Logical inference emerges when activations are boolean, probabilistic inference when they are real-valued, and hybrid reasoning when both coexist within a shared tensor representation.
+
+
+%\subsection{Related Works}
+
+\subsection{Structure of the paper}
+
+The paper is organized as follows.
+Section~\ref{sec:notation} introduces the basic notation for categorical variables, tensors, and tensor networks, establishing the formal framework on which all subsequent reasoning structures are defined.
+Section~\ref{sec:prob_rep} develops the probabilistic representation of reasoning through soft activation, showing how exponential-family distributions can be expressed as tensor networks based on independence assumptions and sufficient statistics.
+Section~\ref{sec:log_rep} turns to hard activation, formulating propositional logic within the same tensor framework and demonstrating how logical inference, entailment, and knowledge bases can be represented by boolean tensors and contractions.
+Section~\ref{sec:hyb_rep} unifies these two perspectives in the concept of Hybrid Logic Networks, which integrate hard logical constraints with soft probabilistic activations, thereby forming the core of the computation–activation architecture.
+The paper concludes with coding examples in section~\ref{sec:code} that illustrate the expressive power and interpretability of this unified tensor-based reasoning approach.

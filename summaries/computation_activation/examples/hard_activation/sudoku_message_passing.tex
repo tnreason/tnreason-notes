@@ -1,7 +1,7 @@
 \begin{example}[Constraint Propagation for the Sudoku of \exaref{exa:sudokuEntailment}]
     \label{exa:sudokuMessagePassing}
     We iteratively solve a Sudoku puzzle by determining a possible value based on neighboring cells, rows and squares (using \theref{the:monotonicityPL}) and adding to our knowledge (using \theref{the:addingEntailed}).
-    For example, consider the following $r=2$ Sudoku puzzle, where a first entailment step uses only the knowledge of the rules and the \textcolor{\concolor}{blue} cells to determine the value $3$ in the first square:
+    For example, consider the following $\sudokunum=2$ Sudoku puzzle, where a first entailment step uses only the knowledge of the rules and the \textcolor{\concolor}{blue} cells to determine the value $3$ in the first square:
     \begin{center}
         \begin{sudoku4x4}
             \matrix[sudokumatrix] (M) at (0,0) {
@@ -42,39 +42,66 @@
     \begin{itemize}
         \item From $\textcolor{\concolor}{\catvariableof{0,1,0,1,1}}$ (i.e. the $2$ in the cell $(0,1,0,1)$) and the Sudoku rule that at the cell $(0,1,0,1)$ exactly one number is assigned, we get
         \begin{align*}
-            \left( \woneoplus_{i\in[n^2]} \catvariableof{0,1,0,1,i} \right) \land \textcolor{\concolor}{\catvariableof{0,1,0,1,1}} \models \lnot\catvariableof{0,1,0,1,2} \, ,
+            \left( \woneoplus_{i\in[\sudokunum^2]} \catvariableof{0,1,0,1,i} \right) \land \textcolor{\concolor}{\catvariableof{0,1,0,1,1}} \models \lnot\catvariableof{0,1,0,1,2} \, ,
         \end{align*}
         That is, that the number $3$ is not in the cell $(0,1,0,1)$.
-        This entailment step is performed by $4$ consecutive messages (see $\messagesymbol^{0,[4]}$ in \figref{fig:contractionPropagationSudoku}) involving decomposition cores of the position constraint in the position $(r_0,r_1,c_0,c_1)=(0,0,0,0)$.
+        This entailment step is performed by three consecutive messages (see $\messagesymbol^{(0,[3])}$ in \figref{fig:contractionPropagationSudoku}) along the directions %involving decomposition cores of the position constraint in the position $(r_0,r_1,c_0,c_1)=(0,0,0,0)$.
+        \begin{align*}
+        (\sedge,\redge)
+            \in \big[&(\{\catvariableof{0,1,0,1,1}\},\{\catvariableof{0,1,0,1,1},\decvariableof{0,1,0,1,:}\}),
+                (\{\catvariableof{0,1,0,1,1},\decvariableof{0,1,0,1,:}\},\{\catvariableof{0,1,0,1,2},\decvariableof{0,1,0,1,:}\}), \\
+                &(\{\catvariableof{0,1,0,1,2},\decvariableof{0,1,0,1,:}\},\{\catvariableof{0,1,0,1,2},\decvariableof{0,:,0,:,2}\})\big] \, .
+        \end{align*}
+        Intuitively, the messages commmunicate to the square constraint $\decvariableof{0,:,0,:,2}$, that by the position constraint $\decvariableof{0,1,0,1,:}$ the variable $3$ cannot be assigned at $(0,1,0,1)$.
         %This entailment step is performed by two consecutive messages along the directions $(\catvariableof{0,1,0,1,1},\decvariableof{0,1,0,1,:})$ and $(\decvariableof{0,1,0,1,:},\catvariableof{0,1,0,1,2})$.
         \item From $\textcolor{\concolor}{\catvariableof{0,0,1,0,2}}$ (i.e. the $3$ in the cell $(0,0,1,0)$) and the Sudoku rule that at the row $(0,0)$ exactly one number is assigned, we get
         \begin{align*}
-            \left( \woneoplus_{c0,c1\in[n]} \catvariableof{0,0,c0,c1,2} \right) \land \textcolor{\concolor}{\catvariableof{0,0,1,0,2}} \models \lnot\catvariableof{0,0,0,0,2}\land \lnot\catvariableof{0,0,0,1,2} \, ,
+            \left( \woneoplus_{c0,c1\in[\sudokunum]} \catvariableof{0,0,c0,c1,2} \right) \land \textcolor{\concolor}{\catvariableof{0,0,1,0,2}} \models \lnot\catvariableof{0,0,0,0,2}\land \lnot\catvariableof{0,0,0,1,2} \, ,
         \end{align*}
         That is, that the number $3$ is neither in the cell $(0,0,0,0)$ nor in $(0,0,0,1)$.
-        This entailment step is performed by $7$ consecutive messages (see $\messagesymbol^{1,[7]}$ in \figref{fig:contractionPropagationSudoku}) involving decomposition cores of the constraint to the number $i=3$ in the first row $(r_0,r_1)=(0,0)$.
+        This entailment step is performed by five consecutive messages (see $\messagesymbol^{(1,[5])}$ in \figref{fig:contractionPropagationSudoku}) along the directions
         %This entailment step is performed by three consecutive messages along the directions $(\catvariableof{0,0,1,0,2},\decvariableof{0,0,:,:,2})$, $(\decvariableof{0,0,:,:,2},\catvariableof{0,0,0,0,2})$ and $(\decvariableof{0,0,:,:,2},\catvariableof{0,0,0,1,2})$.
+        \begin{align*}
+        (\sedge,\redge)
+            \in \big[
+            &(\{\catvariableof{0,0,1,0,2}\},\{\catvariableof{0,0,1,0,2},\decvariableof{0,0,:,:,2}\}),
+                (\{\catvariableof{0,0,1,0,2},\decvariableof{0,0,:,:,2}\},\{\catvariableof{0,0,0,0,2},\decvariableof{0,0,:,:,2}\}), \\
+                &(\{\catvariableof{0,0,1,0,2},\decvariableof{0,0,:,:,2}\},\{\catvariableof{0,0,0,1,2},\decvariableof{0,0,:,:,2}\}),
+                (\{\catvariableof{0,0,0,0,2},\decvariableof{0,0,:,:,2}\},\{\catvariableof{0,0,0,0,2},\decvariableof{0,:,0,:,2}\}) \\
+                &(\{\catvariableof{0,0,0,1,2},\decvariableof{0,0,:,:,2}\},\{\catvariableof{0,0,0,1,2},\decvariableof{0,:,0,:,2}\})
+                \big] \, .
+        \end{align*}
+        The messages communicate that based on the decomposition cores of the constraint to the number $i=3$ in the first row $(r_0,r_1)=(0,0)$, that the number $3$ cannot be assigned at $(0,0,0,0)$ and $(0,0,0,1)$.
     \end{itemize}
     We add these formulas to our knowledge base (justified by \theref{the:addingEntailed}) and use the rule, that $3$ appears exactly once in the first square
     \begin{align*}
-        &\left( \woneoplus_{r1,c1\in[n]} \catvariableof{0,r1,0,c1,2} \right)
+        &\left( \woneoplus_{r1,c1\in[\sudokunum]} \catvariableof{0,r1,0,c1,2} \right)
         \land (\lnot\catvariableof{0,1,0,1,2})
         \land (\lnot\catvariableof{0,0,0,0,2}\land \lnot\catvariableof{0,0,0,1,2})
         \models \textcolor{\probcolor}{\catvariableof{0,1,0,0,2}} \, .
     \end{align*}
     That is, we conclude that the number $3$ must be in the cell $(0,1,0,0)$, which information is also included in the updated knowledge base for further reasoning steps.
-    This entailment step is performed by four consecutive messages (see $\messagesymbol^{2,[4]}$ in \figref{fig:contractionPropagationSudoku}) along the directions $(\catvariableof{0,1,0,1,2},\decvariableof{0,:,0,:,2})$, $(\catvariableof{0,0,0,0,2},\decvariableof{0,:,0,:,2})$, $(\catvariableof{0,0,0,1,2},\decvariableof{0,:,0,:,2})$ and $(\decvariableof{0,:,0,:,2},\catvariableof{0,1,0,0,2})$.
+    This last entailment step is performed by four consecutive messages (see $\messagesymbol^{(2,[4])}$ in \figref{fig:contractionPropagationSudoku}) along the directions
+    \begin{align*}
+    (\sedge,\redge)
+        \in \big[
+            &(\{\catvariableof{0,1,0,1,2},\decvariableof{0,:,0,:,2}\},\{\catvariableof{0,1,0,0,2},\decvariableof{0,:,0,:,2}\}),
+            (\{\catvariableof{0,0,0,1,2},\decvariableof{0,:,0,:,2}\},\{\catvariableof{0,1,0,0,2},\decvariableof{0,:,0,:,2}\}), \\
+            &(\{\catvariableof{0,0,1,0,2},\decvariableof{0,:,0,:,2}\},\{\catvariableof{0,1,0,0,2},\decvariableof{0,:,0,:,2}\}),
+            (\{\catvariableof{0,1,0,0,2},\decvariableof{0,:,0,:,2}\},\{\catvariableof{0,1,0,0,2}\})\big]
+    \end{align*}
+    The first three messages communicate, that the $3$ is not possible the positions $(0,1,0,1),(0,0,0,1)$ and $(0,0,1,0)$ and the fourth message concludes that the $3$ then has to be at position $(0,1,0,0)$.
 
-
+    %% Further reasoning steps
     We now iteratively apply similar reasoning steps and store the entailed variables in \textcolor{\probcolor}{$E^{\mathrm{entailed}}$}, until we arrive at the right side of the above sketch.
     \begin{align*}
-        \kb \land \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in E^{\mathrm{start}}} \catvariableof{r0,r1,c0,c1,i} \right)
+        \sudokukbof{2} \land \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in \sudokustartevidence} \catvariableof{r0,r1,c0,c1,i} \right)
         \models \textcolor{\probcolor}{\left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in E^{\mathrm{entailed}}} \catvariableof{r0,r1,c0,c1,i} \right)} \, .
     \end{align*}
-    Since all Sudoku rules are satisfied in the final assignment and to each cell $(r_0,r_1,c_0,c_1)$ we found exactly one $i\in[n^2]$ such that $(r_0,r_1,c_0,c_1,i)\in E^{\mathrm{start}}\cup\textcolor{\probcolor}{E^{\mathrm{entailed}}}$, there is a unique solution of the puzzle and we conclude
+    Since all Sudoku rules are satisfied in the final assignment and to each cell $(r_0,r_1,c_0,c_1)$ we found exactly one $i\in[\sudokunum^2]$ such that $(r_0,r_1,c_0,c_1,i)\in \sudokustartevidence\cup\textcolor{\probcolor}{E^{\mathrm{entailed}}}$, there is a unique solution of the puzzle and we conclude
     \begin{align*}
-        &\kb \land \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in E^{\mathrm{start}}} \catvariableof{r0,r1,c0,c1,i} \right) \\
-        &\quad= \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in E^{\mathrm{start}}} \catvariableof{r0,r1,c0,c1,i} \right)
+        &\sudokukbof{2} \land \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in \sudokustartevidence} \catvariableof{r0,r1,c0,c1,i} \right) \\
+        &\quad= \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in \sudokustartevidence} \catvariableof{r0,r1,c0,c1,i} \right)
         \land \textcolor{\probcolor}{\left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in E^{\mathrm{entailed}}} \catvariableof{r0,r1,c0,c1,i} \right)} \, .
     \end{align*}
 \end{example}
@@ -94,24 +121,25 @@
 
             \draw (7,-1) rectangle (9,1);
             \node[anchor=center] (A) at (8,0) {\corelabelsize $\hypercoreof{2}$};
-            \draw (8,-1)--(8,-3) node[midway,right] {\colorlabelsize $\catvariableof{0,1,0,0,2}$};
+            \draw (8,-1)--(8,-3); % node[midway,right] {\colorlabelsize $\catvariableof{0,1,0,0,2}$};
 
             \drawvariabledot{8}{-3}
+            \draw (8,-3) -- (7.25,-3);
             \draw[\probcolor] (7,-5) rectangle (9,-7);
             \node[anchor=center, \probcolor] (A) at (8,-6) {\corelabelsize $\tbasis$};
             \draw[\probcolor] (8,-5)--(8,-3) node[midway,right] {\colorlabelsize $\catvariableof{0,1,0,0,2}$};
 
             \draw[\newmessagecolor,dashed, ->] (6.5,-1) to [bend right = 30] (6.5,-5);
-            \node[\newmessagecolor,anchor=center] (A) at (5.25,-4) {\colorlabelsize $\messagesymbol^{2,3}$};
+            \node[\newmessagecolor,anchor=center] (A) at (5.25,-4) {\colorlabelsize $\messagesymbol^{(2,3)}$};
 
             \draw[\newmessagecolor,dashed, ->] (11,1.25) to [bend right = 30] (9,1.25);
-            \node[\newmessagecolor,anchor=center] (A) at (9.75,2) {\colorlabelsize $\messagesymbol^{2,0}$};
+            \node[\newmessagecolor,anchor=center] (A) at (9.75,2) {\colorlabelsize $\messagesymbol^{(2,0)}$};
 
             \draw[\newmessagecolor,dashed, ->] (5,1.5) to [bend right = -40] (6.8,1.1);
-            \node[\newmessagecolor,anchor=center] (A) at (6,0.75) {\colorlabelsize $\messagesymbol^{2,1}$};
+            \node[\newmessagecolor,anchor=center] (A) at (6,0.75) {\colorlabelsize $\messagesymbol^{(2,1)}$};
 
             \draw[\newmessagecolor,dashed, ->] (1,1.5) to [bend right = -40] (7,1.75);
-            \node[\newmessagecolor,anchor=center] (A) at (3.5,2) {\colorlabelsize $\messagesymbol^{2,2}$};
+            \node[\newmessagecolor,anchor=center] (A) at (3.5,2) {\colorlabelsize $\messagesymbol^{(2,2)}$};
 
 
             \draw (11,-1) rectangle (13,1);
@@ -132,21 +160,20 @@
             \node[anchor=center] (A) at (4,-6) {\corelabelsize $\hypercoreof{1}$};
             \drawvariabledot{4}{-3}
             \draw (4,-3) -- (3.25,-3);
-            \draw (4,-5)--(4,-1);% node[midway,right] {\colorlabelsize $\catvariableof{0,0,0,0,2}$};
+            \draw (4,-5)--(4,-1);
 
             \draw (-1,-7) rectangle (1,-5);
             \node[anchor=center] (A) at (0,-6) {\corelabelsize $\hypercoreof{0}$};
             \drawvariabledot{0}{-3}
             \draw (0,-3) -- (-0.75,-3);
-            \draw (0,-5)--(0,-1);% node[midway,right] {\colorlabelsize $\catvariableof{0,0,0,0,2}$};
+            \draw (0,-5)--(0,-1);
 
             \draw (-5,-7) rectangle (-3,-5);
             \node[anchor=center] (A) at (-4,-6) {\corelabelsize $\hypercoreof{2}$};
-            \draw (-4,-5)--(-4,-3); % node[midway,right] {\colorlabelsize $\catvariableof{0,0,1,0,2}$};
+            \draw (-4,-5)--(-4,-3);
 
             \drawvariabledot{-4}{-3}
             \draw (-4,-3) -- (-4.75,-3);
-            %\node[anchor=center] (A) at (-8,-2) {\corelabelsize $\ddots$};
 
             \draw[\concolor] (-5,-1) rectangle (-3,1);
             \node[anchor=center, \concolor] (A) at (-4,0) {\corelabelsize $\tbasis$};
@@ -154,25 +181,19 @@
 
             %% Messages from 3 in row 0,0
             \draw[\newmessagecolor,dashed, ->] (-5.5,-1) to [bend right = 30] (-5.5,-5);
-            \node[\newmessagecolor,anchor=center] (A) at (-6.75,-2) {\colorlabelsize $\messagesymbol^{1,0}$};
+            \node[\newmessagecolor,anchor=center] (A) at (-6.75,-2) {\colorlabelsize $\messagesymbol^{(1,0)}$};
 
             \draw[\newmessagecolor,dashed, ->] (-3,-7.25) to [bend right = 30] (-1,-7.25);
-            \node[\newmessagecolor,anchor=center] (A) at (-2,-6.75) {\colorlabelsize $\messagesymbol^{1,1}$};
+            \node[\newmessagecolor,anchor=center] (A) at (-2,-6.75) {\colorlabelsize $\messagesymbol^{(1,1)}$};
 
             \draw[\newmessagecolor,dashed, ->] (-3,-7.5) to [bend right = 40] (3,-7.25);
-            \node[\newmessagecolor,anchor=center] (A) at (0,-9) {\colorlabelsize $\messagesymbol^{1,2}$};
+            \node[\newmessagecolor,anchor=center] (A) at (0,-9) {\colorlabelsize $\messagesymbol^{(1,2)}$};
 
-            \draw[\newmessagecolor,dashed, <-] (-1.5,-1) to [bend right = 30] (-1.5,-2.75);
-            \node[\newmessagecolor,anchor=center] (A) at (-2,-0.5) {\colorlabelsize $\messagesymbol^{1,4}$};
+            \draw[\newmessagecolor,dashed, <-] (-1.5,-1) to [bend right = 30] (-1.5,-5);
+            \node[\newmessagecolor,anchor=center] (A) at (-2.75,-4) {\colorlabelsize $\messagesymbol^{(1,3)}$};
 
-            \draw[\newmessagecolor,dashed, <-] (-1.5,-3.25) to [bend right = 30] (-1.5,-5);
-            \node[\newmessagecolor,anchor=center] (A) at (-2.75,-4) {\colorlabelsize $\messagesymbol^{1,3}$};
-
-            \draw[\newmessagecolor,dashed, <-] (2.5,-1) to [bend right = 30] (2.5,-2.75);
-            \node[\newmessagecolor,anchor=center] (A) at (2,-0.5) {\colorlabelsize $\messagesymbol^{1,6}$};
-
-            \draw[\newmessagecolor,dashed, <-] (2.5,-3.25) to [bend right = 30] (2.5,-5);
-            \node[\newmessagecolor,anchor=center] (A) at (1.25,-4) {\colorlabelsize $\messagesymbol^{1,5}$};
+            \draw[\newmessagecolor,dashed, <-] (2.5,-1) to [bend right = 30] (2.5,-5);
+            \node[\newmessagecolor,anchor=center] (A) at (1.25,-4) {\colorlabelsize $\messagesymbol^{(1,4)}$};
 
             \draw (-9,-7) rectangle (-7,-5);
             \node[anchor=center] (A) at (-8,-6) {\corelabelsize $\hypercoreof{3}$};
@@ -189,7 +210,7 @@
             % I 0001: (position 0001)
             \draw (11,-7) rectangle (13,-5);
             \node[anchor=center] (A) at (12,-6) {\corelabelsize $\hypercoreof{2}$};
-            \draw (12,-5)--(12,-2.5); % node[midway,right] {\colorlabelsize $\catvariableof{0,1,0,1,2}$};
+            \draw (12,-5)--(12,-2.5);
 
             \drawvariabledot{12}{-3}
             \draw (12,-3) -- (12.5,-3);
@@ -211,16 +232,13 @@
 
             %% Messages from 2 at position 2,2,2,2
             \draw[\newmessagecolor,dashed, ->] (18.5,-1) to [bend right = 30] (18.5,-5);
-            \node[\newmessagecolor,anchor=center] (A) at (17.25,-2) {\colorlabelsize $\messagesymbol^{0,0}$};
+            \node[\newmessagecolor,anchor=center] (A) at (17.25,-2) {\colorlabelsize $\messagesymbol^{(0,0)}$};
 
             \draw[\newmessagecolor,dashed, ->] (19,-7.5) to [bend right = -40] (13,-7.25);
-            \node[\newmessagecolor,anchor=center] (A) at (16,-9) {\colorlabelsize $\messagesymbol^{0,1}$};
+            \node[\newmessagecolor,anchor=center] (A) at (16,-9) {\colorlabelsize $\messagesymbol^{(0,1)}$};
 
-            \draw[\newmessagecolor,dashed, <-] (13.5,-3.25) to [bend right = -30] (13.5,-5);
-            \node[\newmessagecolor,anchor=center] (A) at (14.75,-4) {\colorlabelsize $\messagesymbol^{0,2}$};
-
-            \draw[\newmessagecolor,dashed, <-] (13.5,-1) to [bend right = -30] (13.5,-2.75);
-            \node[\newmessagecolor,anchor=center] (A) at (14.75,-0.75) {\colorlabelsize $\messagesymbol^{0,3}$};
+            \draw[\newmessagecolor,dashed, <-] (13.5,-1) to [bend right = -30] (13.5,-5);
+            \node[\newmessagecolor,anchor=center] (A) at (14.9,-4) {\colorlabelsize $\messagesymbol^{(0,2)}$};
 
             \draw (23,-7) rectangle (25,-5);
             \node[anchor=center] (A) at (24,-6) {\corelabelsize $\hypercoreof{3}$};
@@ -237,11 +255,10 @@
         \end{tikzpicture}
     \end{center}
     \caption{
-        Tensor network decomposition of three rules for the $2^2\times2^2$ Sudoku rules, namely to the number $3$ appearing once in the $(0,0)$-square (above), the number $3$ appearing once in the $(0,0)$-row (below left) and a unique number appearing at the $(0,1,0,1)$-position (below right).
-        The tensor network therefore showcasts $3$ out of $2\cdot2^4=128$ rules in the Sudoku knowledge base (see \exaref{exa:sudokuDecomposition}).
+        The tensor network decomposition of $3$ out of $4\cdot2^2=64$ rules in the $2^2\times2^2$ Sudoku knowledge base (see \exaref{exa:sudokuDecomposition}),  namely to the number $3$ appearing once in the $(0,0)$-square (above), the number $3$ appearing once in the $(0,0)$-row (below left) and a unique number appearing at the $(0,1,0,1)$-position (below right).
         The evidence of the number $3$ assigned at the position $(0,0,1,0)$ is sketched on by a basis vector $\textcolor{\concolor}{\tbasis}$ on the left side, and the number $2$ assigned at position $(0,1,0,1)$ analogously on the right side.
-        During Constraint Propagation \algoref{alg:constraintPropagation} on the hypergraph of Sudoku rules and evidence (see \exaref{exa:sudokuMessagePassing}), this evidence leads to non-trivial messages $\messagesymbol$, which propagate the constraints by partial entailment steps and imply that $\textcolor{\probcolor}{\catvariableof{0,1,0,0,2}}$ is true, i.e. that at the position $(0,1,0,0)$ the number $3$ needs to be assigned.
-    %    Depiction of the first reasoning step in \exaref{exa:sudokuEntailment} by messages passed in the $\mathrm{While}$ loop of the .
+        During Constraint Propagation \algoref{alg:constraintPropagation} on the hypergraph of Sudoku rules and evidence (see \exaref{exa:sudokuMessagePassing}), this evidence is in three epochs of messages propagated to the constraints by partial entailment steps and imply that $\textcolor{\probcolor}{\catvariableof{0,1,0,0,2}}$ is true, i.e. that at the position $(0,1,0,0)$ the number $3$ needs to be assigned.
+        We depict the messages between the cores by dashed lines labeled by $\messagesymbol^{(0,[3])},\messagesymbol^{(1,[5])}$ and $\messagesymbol^{(2,[4])}$ and provide further interpretation in \exaref{exa:sudokuMessagePassing}.
     }\label{fig:contractionPropagationSudoku}
 \end{figure}
 

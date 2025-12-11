@@ -37,6 +37,12 @@
 \usepackage{tikz}
 \usepackage[most]{tcolorbox}
 \usepackage{minted}
+\setminted{
+    fontsize=\fontsize{8.5}{9}\selectfont,
+    linenos,
+    breaklines
+}
+
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{mathtools}
 \usepackage{algorithm}
@@ -91,15 +97,15 @@
 \input{../sections/soft_activation}
 \input{../sections/hard_activation}
 \input{../sections/hybrid_activation}
-\input{../sections/tnreason}
+%\input{../sections/tnreason}
+\input{../sections/implementation}
 \input{../sections/conclusion}
 
 \acks{We acknowledge funding through BMBF (QROM) and MATH+ (Project PaA-7).}
 
 % Manual newpage inserted to improve layout of sample file - not
 % needed in general before appendices/bibliography.
-
-\newpage
+%\newpage
 
 \vskip 0.2in
 \bibliography{../../../references.bib}
@@ -108,5 +114,6 @@
 \appendix
 
 \input{../appendix/factorization_proofs}
+\input{../appendix/algorithms_implementation}
 
 \end{document}

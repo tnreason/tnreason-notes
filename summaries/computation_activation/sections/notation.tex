@@ -50,7 +50,7 @@ We occasionally also allow for variables $\catvariable$ taking values in infinit
 %\end{example}
 
 \begin{example}[Delta Tensor]\label{exa:diracDelta}
-    Given a set of variables $\shortcatvariables=\catvariables$, where $\catorder\geq 1$, with identical dimension $\catdim$, the delta tensor is the element
+    Given a set of variables $\shortcatvariables=(\catvariables)$, where $\catorder\geq 1$, with identical dimension $\catdim$, the delta tensor is the element
     \begin{align*}
         \dirdeltawith \in \bigotimes_{\catenumeratorin} \rr^{\catdim}
     \end{align*}
@@ -242,11 +242,11 @@ Given an arbitrary set $\arbset$ we say a map
 is an enumeration map for $\arbset$.
 Given a function $\exfunction:\inset\rightarrow\outset$ between arbitrary sets, and enumerating maps $\indexinterpretationof{\insymbol}$ and $\indexinterpretationof{\outsymbol}$ for both sets we define the basis encoding of $\exfunction$ as
 \begin{align*}
-    \bencodingofat{\exfunction}{\indvariableof{\outsymbol},\indvariableof{\insymbol}}
-    = \sum_{\arbelement\in\inset} \onehotmapofat{\invindexinterpretationofat{\outsymbol}{\exfunction(\arbelement)}}{\indvariableof{\outsymbol}}
-    \otimes \onehotmapofat{\invindexinterpretationofat{\insymbol}{\arbelement}}{\indvariableof{\insymbol}} \, ,
+    \bencodingofat{\exfunction}{\headvariable,\catvariable}
+    = \sum_{\arbelement\in\inset} \onehotmapofat{\invindexinterpretationofat{\outsymbol}{\exfunction(\arbelement)}}{\headvariable}
+    \otimes \onehotmapofat{\invindexinterpretationofat{\insymbol}{\arbelement}}{\catvariable} \, ,
 \end{align*}
-where $\indvariableof{\insymbol},\indvariableof{\outsymbol}$ are variables taking values in $[\cardof{\inset}]$ and $[\cardof{\outset}]$.
+where $\catvariable,\headvariable$ are variables taking values in $[\cardof{\inset}]$ and $[\cardof{\outset}]$.
 %
 Based on these concepts the main architecture can be defined.
 
@@ -262,3 +262,16 @@ Based on these concepts the main architecture can be defined.
     We refer to any member $\probat{\shortcatvariables}\in\realizabledistsof{\sstat,\graph}$ as a \emph{\ComputationActivationNetwork{}} (\emph{\CompActNet{}}).
     We call $\bencsstatwith$ (and any decomposition of it) as the \emph{computation network} and by $\acttensorat{\headvariableof{\nodes}}$ as the \emph{activation network}.
 \end{definition}
+
+\alex{
+The elementary activated networks are representable by an elementary activation tensor, with respect to the graph
+\begin{align*}
+    \elgraph = \big(\nodes, \{\{\node\}\wcols\nodein\}\big)
+\end{align*}
+and we denote such networks by $\realizabledistsof{\sstat,\elgraph}$.
+Any \CompActNet{} is represntable with respect to the maximal hypergraph
+\begin{align*}
+    \maxgraph  = \big(\nodes,\{\nodes\}\big) \, .
+\end{align*}
+We therefore have for any graph $\realizabledistsof{\sstat,\graph}\subset\realizabledistsof{\sstat,\maxgraph}$.
+}

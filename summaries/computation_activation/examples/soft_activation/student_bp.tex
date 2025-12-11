@@ -1,12 +1,12 @@
 \begin{example}[Continuation of \exaref{exa:studentHC}]
     \label{exa:studentBP}
-    Let us now examply the Belief Propagation \algoref{alg:beliefPropagation} on the Markov Network in the student example (see \exaref{exa:studentHC}).
+    Let us now exemplify the Belief Propagation \algoref{alg:beliefPropagation} on the Markov Network in the student example (see \exaref{exa:studentHC}).
     The directions of the messages result from the hyperedge overlaps (see \figref{fig:studentMessagePassingDirections} a) and the resulting directions $\dirovedges$ are sketched in \figref{fig:studentMessagePassingDirections} b).
     The messages to $\{(\edgeof{2},\edgeof{0}),(\edgeof{0},\edgeof{2})\}$ are vectors of $\catvariableof{G}$ and the messages $\{(\edgeof{0},\edgeof{1}),(\edgeof{1},\edgeof{0})\}$ are vectors of $\catvariableof{I}$.
 
     Since the hyperedges are minimally connected, we can implement \algoref{alg:beliefPropagation} by a tree scheduler $\scheduler$:
     \begin{itemize}
-        \item The scheduler is initialized with messages from leafs, in our example $\{(\edgeof{2},\edgeof{0}),(\edgeof{1},\edgeof{0})\}$
+        \item The scheduler is initialized with messages from leafs, in our example $\{(\edgeof{2},\edgeof{0}),(\edgeof{1},\edgeof{0})\}$.
         \item Each message is placed exactly once on $\scheduler$, when at a hyperedge all but the reverse message have been received.
         In our example, after exectution of $(\edgeof{2},\edgeof{0})$ the message $(\edgeof{0},\edgeof{1})$ is placed on $\scheduler$ and after exectution of $(\edgeof{1},\edgeof{0})$ the message $(\edgeof{0},\edgeof{2})$.
     \end{itemize}

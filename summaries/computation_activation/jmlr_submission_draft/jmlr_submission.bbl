@@ -1,4 +1,4 @@
-\begin{thebibliography}{48}
+\begin{thebibliography}{45}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -30,14 +30,6 @@ Artur~S. Avila~Garcez and Gerson Zaverucha.
 \newblock ISSN 1573-7497.
 \newblock \doi{10.1023/A:1008328630915}.
 \newblock URL \url{https://doi.org/10.1023/A:1008328630915}.
-
-\bibitem[Bach et~al.(2017)Bach, Broecheler, Huang, and
-  Getoor]{bach_hinge-loss_2017}
-Stephen~H. Bach, Matthias Broecheler, Bert Huang, and Lise Getoor.
-\newblock Hinge-loss {Markov} random fields and probabilistic soft logic.
-\newblock \emph{J. Mach. Learn. Res.}, 18\penalty0 (1):\penalty0 3846--3912,
-  January 2017.
-\newblock ISSN 1532-4435.
 
 \bibitem[Badreddine et~al.(2022)Badreddine, d'Avila Garcez, Serafini, and
   Spranger]{badreddine_logic_2022}
@@ -124,14 +116,6 @@ Varun Ganapathi, David Vickrey, John Duchi, and Daphne Koller.
   {Uncertainty} in {Artificial} {Intelligence}}, {UAI}'08, pages 196--203,
   Arlington, Virginia, USA, July 2008. AUAI Press.
 \newblock ISBN 978-0-9749039-4-1.
-
-\bibitem[Garcez et~al.(2019)Garcez, Gori, Lamb, Serafini, Spranger, and
-  Tran]{garcez_neural-symbolic_2019}
-Artur~d'Avila Garcez, Marco Gori, Luis~C. Lamb, Luciano Serafini, Michael
-  Spranger, and Son~N. Tran.
-\newblock Neural-{Symbolic} {Computing}: {An} {Effective} {Methodology} for
-  {Principled} {Integration} of {Machine} {Learning} and {Reasoning}, May 2019.
-\newblock URL \url{http://arxiv.org/abs/1905.06088}.
 
 \bibitem[Getoor and Taskar(2019)]{getoor_introduction_2019}
 Lise Getoor and Ben Taskar.
@@ -232,14 +216,6 @@ Daphne Koller and Nir Friedman.
   {Techniques}}.
 \newblock The MIT Press, Cambridge, Mass., 1. edition edition, July 2009.
 \newblock ISBN 978-0-262-01319-2.
-
-\bibitem[Landsberg(2011)]{landsberg_tensors_2011}
-J.~Landsberg.
-\newblock \emph{Tensors: {Geometry} and {Applications}}, volume 128 of
-  \emph{Graduate {Studies} in {Mathematics}}.
-\newblock American Mathematical Society, December 2011.
-\newblock ISBN 978-0-8218-6907-9 978-0-8218-8481-2 978-0-8218-8483-6
-  978-1-4704-0923-4.
 
 \bibitem[Lipton(2018)]{lipton_mythos_2018}
 Zachary~C. Lipton.
