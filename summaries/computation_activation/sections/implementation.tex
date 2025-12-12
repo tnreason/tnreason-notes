@@ -39,11 +39,11 @@ The formula in \exaref{exa:propFormulaCoordinatewise} is a sum of the one-hot en
 formula = engine.create_from_slice_iterator(shape=[2,2,2], colors=["X_0","X_1","X_2"], sliceIterator=[(1,{"X_0":0,"X_1":1,"X2":0}), (1,{"X_0":1,"X_1":0,"X2":0}), (1,{"X_0":1,"X_1":1,"X2":0})])
 \end{minted}
 The slice iterator is an iterator over tuples \mintinline{python}{(val,posDict)}, which specifies elementary tensors to be summed.
-The \mintinline{python}{posDict} are \mintinline{python}{dict} instances with keys by the \mintinline{python}{str} tensor colors and values by \mintinline{python}{int}.
-Each \mintinline{python}{posDict} specifies which leg vectors of the corresponding elementary tensor are not trivial (when the corresponding key is in \mintinline{python}{posDict}), in which case the leg vector is the basis vector enumerated by the corresponding \mintinline{python}{int} value.
+The \mintinline{python}{posDict} are \mintinline{python}{dict} instances, where the keys are the \mintinline{python}{str} tensor colors and the values are \mintinline{python}{int}.
+Each \mintinline{python}{posDict} collects leg vectors of the corresponding elementary tensor that are not trivial. These leg vectors are the basis vectors enumerated by the corresponding \mintinline{python}{int} value.
 
 Single coordinates of tensors can be retrieved by subscribing them with a \mintinline{python}{posDict}.
-We can for example check whether the \mintinline{python}{{"X_0":0,"X_1":1,"X_2"}} is a model:
+We can for example check whether \mintinline{python}{{"X_0":0,"X_1":1,"X_2"}} is a model:
 \begin{minted}{python}
 assert formula[{"X_0":0,"X_1":1,"X_2"}] == 1
 \end{minted}
