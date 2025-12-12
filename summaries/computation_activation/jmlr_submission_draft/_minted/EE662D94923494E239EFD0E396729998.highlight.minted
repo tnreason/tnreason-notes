@@ -1,0 +1,3 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{contracted} \PYG{o}{=} \PYG{n}{engine}\PYG{o}{.}\PYG{n}{contract}\PYG{p}{(}\PYG{n}{fDecomp}\PYG{p}{,} \PYG{n}{openColors}\PYG{o}{=}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{X\PYGZus{}0\PYGZus{}dV}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{X\PYGZus{}1\PYGZus{}dV}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{X\PYGZus{}2\PYGZus{}dV}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}\PYG{p}{)}
+\end{MintedVerbatim}

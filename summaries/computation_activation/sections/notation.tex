@@ -117,7 +117,7 @@ Let us now exploit our graphical approach to tensor networks in the definition o
 % Open variables
 %We here defined contractions formally by only specifying the open variables, where the connectivity of the tensors is clear from the shared variables.
 When an open variable $\catvariable$ is not appearing at any tensor in a contraction, we define the contraction as a tensor product with the trivial tensor $\onesat{\catvariable}$.
-To ease notation, we will often omit the set notation by brackets $\{\cdot\}$ and specify the tensors to be contracted with the delimiter "," (see e.g. \exaref{exa:matrixProduct}).
+To ease notation, we will often omit the set notation by brackets $\{\cdot\}$. % and specify the tensors to be contracted with the delimiter "," (see e.g. \exaref{exa:tensorProduct}).
 
 \begin{figure}
     \begin{center}
@@ -129,7 +129,7 @@ To ease notation, we will often omit the set notation by brackets $\{\cdot\}$ an
     }\label{fig:contraction}
 \end{figure}
 
-\begin{example}[Tensor Product]
+\begin{example}[Tensor Product]\label{exa:tensorProduct}
     The simplest contraction is the tensor product, which maps a pair of two tensors with distinct variables onto a third tensor and has an interpretation by coordinate wise products.
     Such a contraction corresponds with a tensor network of two tensors with disjoint variables.
     Let there be two tensors
