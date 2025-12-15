@@ -1,16 +1,15 @@
 \section{The Neural Paradigm}
 
-%% TO DO: Formulas -> Functions in this section
+The neural paradigm of artificial intelligence exploits the decomposition of functions into neurons, which are aligned in layers.
+We show in this section how functions decomposeable into neurons can be represented by tensor networks.
+To this end we formalize discrete eural models in decomposition graphs and formally proof the corresponding decomposition of their basis encodings.
+Particular examples will be presented in the next section by propositional formulas with sparse syntactical descriptions.
 
-\alex{We show in this section how functions decomposeable into neurons can be represented by tensor networks.
-Use directed decomposition graphs, set enumerating functions for this in full generality.
-Examples are propositional formulas with sparse syntactical descriptions.
-}
 
 
 \begin{lemma}
     \label{lem:formulaDecomp}
-    Let $\formulaat{\shortcatvariables}$ be a composition of a $\seldim$-ary connective formula $\exconnective$ and propositional formulas $\formulaofat{\selindex}{\shortcatvariables}$, where $\selindexin$, i.e. for $\shortcatindices\in\atomstates$ we have
+    Let $\formulaat{\shortcatvariables}$ be a composition of a $\seldim$-ary connective function $\exconnective$ and functions $\formulaofat{\selindex}{\shortcatvariables}$, where $\selindexin$, i.e. for $\shortcatindices\in\atomstates$ we have
     \begin{align*}
         \formulaat{\indexedshortcatvariables}
         = \exconnective\left(\formulaofat{0}{\indexedshortcatvariables}, \dots, \formulaofat{\seldim-1}{\indexedshortcatvariables}\right) \, .
@@ -28,52 +27,78 @@ Examples are propositional formulas with sparse syntactical descriptions.
     This can be shown on each index $\shortcatindices$.
 \end{proof}
 
-For the composition of two propositional formulas $\formulaat{\shortcatvariables}$ and $\secexformula\left[\shortcatvariables\right]$ the composition by some binary connective is pictured by:
+For the composition of two functions $\formulaat{\shortcatvariables}$ and $\secexformula\left[\shortcatvariables\right]$ the composition by some binary connective is pictured by:
 \begin{center}
     \input{../tikz_pics/logic_representation/unary_binary_composition}
 \end{center}
 
-Let us now define a more generic syntactical decomposition of propositional formulas.
+Let us now define a more generic decomposition of discrete functions.
 
 \begin{definition}
-    \label{def:formulaDecomposition}
-    A syntactical hypergraph is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ such that
+    \label{def:decompositionHypergraph}
+    A decomposition hypergraph is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ such that
     \begin{itemize}
-        \item each hyperedge $\edge=(\incomingnodes,\outgoingnodes)$ has exactly one outgoing node, i.e. $\cardof{\outgoingnodes}=1$
-        \item each node $\nodein$ carries a boolean variable $\headvariableof{\node}$ and appears at most once as the outgoing node of a hyperedge % well-definedness
-        \item each hyperedge $(\incomingnodes,\{\node\})$ with $\incomingnodes\neq\varnothing$ is decorated by a propositional formula
+        \item Each node $\nodein$ is decorated by a set $\arbsetof{\node}$ of finite cardinality $\catdimof{\node}$, a variable $\catvariableof{\node}$ and an index interpretation function
         \begin{align*}
-            \connectiveofat{\node}{\headvariableof{\incomingnodes}} \defcols \bigtimes_{\node\in\incomingnodes} [2] \rightarrow [2]
+            \indexinterpretationof{\node} \defcols [\catdimof{\node}] \rightarrow \arbsetof{\node} \, .
         \end{align*}
-        \item the nodes not appearing as an outgoing node are labeled by $[\atomorder]$
+        \item Each directed hyperedge $(\incomingnodes,\outgoingnodes)$ has at least one outgoing node, i.e. $\outgoingnodes\neq\varnothing$ and is decorated by an activation function % propositional formula
+        \begin{align*}
+            \secexfunctionof{\node} \defcols
+            \bigtimes_{\node\in\incomingnodes} \arbsetof{\node}
+            \rightarrow \bigtimes_{\node\in\outgoingnodes} \arbsetof{\node} \, .
+        \end{align*}
+        \item Each node $\nodein$ appears at most once as an outgoing node. % Well-defined function
+        \item The nodes not appearing as an outgoing node are enumerated by $\node^{\insymbol}_{[\atomorder]}$, we abbreviate the $\catvariableof{\node^{\insymbol}_{[\atomorder]}}=\shortcatvariables$. % and labeled by $\nodes^{\insymbol}_{[\atomorder]}$.
+        \item The nodes not appearing as an incoming node are enumerated by $\node^{\outsymbol}_{[\seldim]}$, we abbreviate the variables by $\catvariableof{\node^{\outsymbol}_{[\selindex]}},\catvariableof{\node^{\insymbol}_{[\atomorder]}}=\headvariables$. %$[\seldim]$ are labeled by $\nodes^{\outsymbol}_{[\seldim]}$.
     \end{itemize}
-    We say that the syntactical hypergraph is single-rooted, if exactly one node $\secnode$ does not appear as an incoming node of a hyperedge.
-    In this case this unique node is called the root node. % head node
-    We assign atomic formulas to the nodes $[\atomorder]$ and recursively assign to each further node $\node$ a node formula % connective $\connectiveofat{\node}{\headvariableof{\incomingnodes}}$.
+    %We say that the syntactical hypergraph is single-rooted, if exactly one node $\secnode$ does not appear as an incoming node of a hyperedge.
+    %In this case this unique node is called the root node. % head node
+    We assign for each $\catenumeratorin$ restriction functions
     \begin{align*}
-        \formulaofat{\node}{\indexedshortcatvariables}
-        = \connectiveofat{\node}{[\formulaofat{\thirdnode}{\indexedshortcatvariables}\wcols\thirdnode\in\incomingnodes]} \quad \forall\shortcatindicesin\, ,
+        \restrictionofto{\cdot}{\node^{\insymbol}_\catenumerator}
+        \defcols \bigtimes_{\seccatenumerator\in[\catorder]} \arbsetof{\node^{\insymbol}_{\seccatenumerator}} \rightarrow \arbsetof{\node^{\insymbol}_\catenumerator}
+        \quad,\quad  \restrictionofto{\catindexof{[\catorder]}}{\catenumerator} = \catindexof{\catenumerator}
     \end{align*}
-    where $\incomingnodes$ are the incoming nodes in the unique hyperedge with outgoing nodes $\{\node\}$.
-    We call the formula $\exformulaat{\shortcatvariables}\coloneqq\formulaofat{\secnode}{\shortcatvariables}$ to the root note $\secnode$ the syntactical composition of $\graph$ and $\graph$ is a syntactical decomposition of $\exformula$.
+    to the nodes $\node^{\insymbol}_{[\atomorder]}$ and recursively assign to each further node $\node$ a node function % connective $\connectiveofat{\node}{\headvariableof{\incomingnodes}}$.
+    \begin{align*}
+        \exfunctionof{\node} \wcols \bigtimes_{\catenumeratorin} \arbsetof{\node^{\insymbol}_\catenumerator} \rightarrow \bigtimes_{\node\in\outgoingnodes} \arbsetof{\node}
+        \quad,\quad
+        \exfunctionof{\node}(\catindexof{[\catorder]})
+        = \secexfunctionof{\node}\left(\bigtimes_{\node\in\incomingnodes}\restrictionofto{\exfunctionof{\edgeof{\node}}(\catindexof{[\catorder]})}{\node}\right) \, ,
+    \end{align*}
+    where $\edgeof{\node}$ is to each $\node\in\incomingnodes$ the unique hyperedge with outgoing nodes $\{\node\}$.
+    We then call the function
+    \begin{align*}
+        \exfunctionof{\graph} \wcols \bigtimes_{\catenumeratorin} \arbsetof{\node^{\insymbol}_\catenumerator} \rightarrow \bigtimes_{\selindexin} \arbsetof{\node^{\outsymbol}_\selindex}
+        \quad,\quad
+        \exfunctionof{\graph} = \bigtimes_{\selindexin} \exfunctionof{\node^{\outsymbol}_\selindex}
+    \end{align*}
+    the composition formula to the decomposition hypergraph $\graph$.
+    %We call the formula $\exformulaat{\shortcatvariables}\coloneqq\formulaofat{\secnode}{\shortcatvariables}$ to the root note $\secnode$ the syntactical composition of $\graph$ and $\graph$ is a syntactical decomposition of $\exformula$.
 \end{definition}
 
+%We now show, that the propositional formula allows for a decomposition into connective formulas, its basis encoding decomposes into the basis encodings of the connective formulas.
+
+% Neural Paradigm
+The neural paradigm in AI can be modelled by the existence of decomposition hypergraphs for functions on large sets.
+Let us now show how decomposition hypergraphs enable the sparse representation of composition functions by tensor networks.
+
 \begin{theorem}
-    \label{the:formulaDecompositionRep}
-    For any syntactical hypergraph $\graph$ with composition $\exformula$ we have
+    \label{the:functionDecompositionRep}
+    For any decomposition hypergraph $\graph$ with composition formula $\exfunctionof{\graph}$ we have
     \begin{align*}
-        \exformulaat{\shortcatvariables}
-        = \breakablecontractionof{
-            &\left\{
-                 \bencodingofat{\connectiveof{\node}}{\headvariableof{\node},\headvariableof{\incomingnodes}} \wcols (\incomingnodes,\{\node\})\in\edges
-            \right\} \cup \\
-            & \{\identityat{\headvariableof{\atomenumerator},\catvariableof{\atomenumerator}} \wcols \atomenumeratorin\}
-            \cup \{\tbasisat{\headvariableof{\secnode}}\}
-        }{\shortcatvariables} \, .
+        \bencodingofat{\exfunctionof{\graph}}{\headvariables,\shortcatvariables}
+        = \contractionof{\left\{\bencodingofat{\secexfunctionof{\node}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}} \wcols (\incomingnodes,\outgoingnodes)\in\edges\right\}
+        }{\headvariables,\shortcatvariables} \, .
     \end{align*}
 \end{theorem}
 \begin{proof}
     One can show this theorem by induction over the node formulas of the syntactical hypergraph, from the leafs to the root and iteratively applying \lemref{lem:formulaDecomp}.
 \end{proof}
 
-Thus we have a tensor network representation of any propositional formula based on its syntactical decomposition, where the hypergraph of the syntactical decomposition equals the hypergraph of the representing tensor network.
+
+% Weights
+When neurons have tunable parameters, we can discretize those by sets $\arbsetof{\catenumerator}$ and understand them as additional input variables
+
+\input{../examples/neural_paradigm/arithmetics}

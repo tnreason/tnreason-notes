@@ -3,30 +3,33 @@
 % Neural Paradigm
 Modern artificial intelligence is dominated by large-scale neural models that excel at various tasks but mostly remain black-boxes.
 While these models offer adaptability, the two main concerns when integrating these architectures into safety-critical processes, are reliability and explainability.
+% Symbolic Paradigm: Logical & Probabilistic
+To match these demands, artificial intelligence has followed symbolic paradigms, to which probabilistic and logical approaches have been developed.
+However, these paradigms have been mostly neglected due to the success of black-box neural models.
 % Logical Paradigm
-In this regard, the logical tradition of artificial intelligence, historically motivated by the resemblance of human thought to formal logics \cite{mccarthy_programs_1959}, offers explicit structures and human-readable inference.
+The logical tradition of artificial intelligence, historically motivated by the resemblance of human thought to formal logics \cite{mccarthy_programs_1959}, offers explicit structures and human-readable inference.
 However, the main problem hindering the success of this classical approach is the inability of classical \firstOrderLogic{} to handle uncertainty or scale to complex real-world data.
 % Probabilistic Paradigm
 Probabilistic graphical models~\cite{pearl_probabilistic_1988,koller_probabilistic_2009}, provide insights based on encoded variable independences and causality \cite{pearl_causality_2009}. % and logical formulas within exponential families~\cite{wainwright_graphical_2008}.
 While probabilistic models and Statistical Relational AI~\cite{nickel_review_2016,getoor_introduction_2019} have improved uncertainty handling, bridging these paradigms remains the central goal of \emph{Neuro-Symbolic AI}~\cite{hochreiter_toward_2022, sarker_neuro-symbolic_2022, colelough_neuro-symbolic_2024}.
 Building on early connectionist approaches~\cite{towell_knowledge-based_1994,avila_garcez_connectionist_1999} and aligning with statistical relational learning~\cite{marra_statistical_2024}, the field seeks a single, mathematically coherent framework combining structural clarity with neural adaptability.
 %We demonstrate the practical power of this unified representation by benchmarking the framework on constraint satisfaction tasks like Sudoku problems from Sakana AI, confirming its ability to perform exact symbolic inference.
-Altough progress has been made, for example with Markov Logic Networks~\cite{richardson_markov_2006}, a fully unified substrate that treats logical and probabilistic inference as instances of the same operation, is still missing. % requires a more flexible linear-algebraic foundation.
+Although progress has been made, for example with Markov Logic Networks~\cite{richardson_markov_2006}, a fully unified substrate that treats logical and probabilistic inference as instances of the same operation, is still missing. % requires a more flexible linear-algebraic foundation.
 
 %% TNREASON to bridge the gap between logical and probabilistic reasoning
-We in this work propose to fill this gap between the probabilistic, neural and logical paradigm with \emph{tensor networks}, in a framework called \tnreason{}. %~\cite{goessmann_tensor-network_2025}.
+We in this work propose to fill the gap between the probabilistic, neural and logical paradigm with \emph{tensor networks}, in a framework called \tnreason{}. %~\cite{goessmann_tensor-network_2025}.
 % Representation
 Tensor spaces capture both the semantics of logical formulas (by boolean tensors) and probability distributions (by normalized non-negative tensors).
 %Most significantly for the present work, we exploit the algebraic flexibility of tensor networks to bridge the gap between continuous numerical representation and discrete symbolic reasoning.
 %To this end, we demonstrate how the fundamental principles of probabilistic and logical representation schemes are captured by tensor network decompositions.
 As naive tensors are prone to the curse of dimensionality, we turn to distributed representation schemes by tensor networks.
-We show that fundamental sparsity principles of AI, such as conditional independence, existence of sufficient statistics and model decomposition into neurons, are equivalent to tensor network decompositions.
+We show that fundamental sparsity principles of neural and symbolic AI, such as conditional independence, existence of sufficient statistics and neural model decomposition, are equivalent to tensor network decompositions.
 % Reasoning
 Moreover, we identify tensor network contraction as fundamental inference instances, which correspond with computation of marginal distributions and the decision of entailment.
-This abstraction eliminates the traditional divide between symbolic and numerical representations: logical inference and probabilistic computations become different instances of the same underlying operation.
+This abstraction eliminates the traditional divide between symbolic and neural representations: logical inference, probabilistic computations and neural inference become different instances of the same underlying operation.
 
 %% Message Passing Schemes
-Efficient schemes to perform inference are known as message passing schemes (appearing as sum-product, belief propagation, etc.).
+Efficient schemes to perform inference are known as message passing schemes (appearing as sum-product, belief propagation, etc.)..
 These schemes underly distributed approaches to contract tensor networks based on efficient local contractions.
 
 %where logical formulas (boolean tensors) and probabilistic distributions (real tensors) are manipulated through the same algebra of tensor contraction.

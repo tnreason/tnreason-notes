@@ -1367,14 +1367,6 @@
 	pages = {75--91},
 }
 
-@article{sander2025large,
-  title={Large-scale stochastic simulation of open quantum systems},
-  author={Sander, Aaron and Fr{\"o}hlich, Maximilian and Eigel, Martin and Eisert, Jens and Gel{\ss}, Patrick and Hinterm{\"u}ller, Michael and Milbradt, Richard M and Wille, Robert and Mendl, Christian B},
-  journal={Nature Communications},
-  year={2025},
-  publisher={Nature Publishing Group UK London}
-}
-
 @inproceedings{nickel_three-way_2011,
 	address = {Madison, WI, USA},
 	series = {{ICML}'11},
@@ -2687,19 +2679,6 @@ TT-format},
 	file = {APS Snapshot:/Users/goessmann/Zotero/storage/82WCDF27/PhysRevB.48.html:text/html},
 }
 
-@misc{sander_quantum_2025,
-	title = {Quantum circuit simulation with a local time-dependent variational principle},
-	url = {https://arxiv.org/abs/2508.10096v1},
-	abstract = {Classical simulations of quantum circuits are vital for assessing potential quantum advantage and benchmarking devices, yet they require sophisticated methods to avoid the exponential growth of resources. Tensor network approaches, in particular matrix product states (MPS) combined with the time-evolving block decimation (TEBD) algorithm, currently dominate large-scale circuit simulations. These methods scale efficiently when entanglement is limited but suffer rapid bond dimension growth with increasing entanglement and handle long-range gates via costly SWAP insertions. Motivated by the success of the time-dependent variational principle (TDVP) in many-body physics, we reinterpret quantum circuits as a series of discrete time evolutions, using gate generators to construct an MPS-based circuit simulation via a local TDVP formulation. This addresses TEBD's key limitations by (1) naturally accommodating long-range gates and (2) optimally representing states on the MPS manifold. By diffusing entanglement more globally, the method suppresses local bond growth and reduces memory and runtime costs. We benchmark the approach on five 49-qubit circuits: three Hamiltonian circuits (1D open and periodic Heisenberg, 2D 7x7 Ising) and two algorithmic ones (quantum approximate optimization, hardware-efficient ansatz). Across all cases, our method yields substantial resource reductions over standard tools, establishing a new state-of-the-art for circuit simulation and enabling advances across quantum computing, condensed matter, and beyond.},
-	language = {en},
-	urldate = {2025-12-08},
-	journal = {arXiv.org},
-	author = {Sander, Aaron and Fröhlich, Maximilian and Ali, Mazen and Eigel, Martin and Eisert, Jens and Hintermüller, Michael and Mendl, Christian B. and Milbradt, Richard M. and Wille, Robert},
-	month = aug,
-	year = {2025},
-	file = {Full Text PDF:/Users/goessmann/Zotero/storage/BITNBJXU/Sander et al. - 2025 - Quantum circuit simulation with a local time-dependent variational principle.pdf:application/pdf},
-}
-
 @article{berezutskii_simulating_2025,
 	title = {Simulating quantum circuits using the multi-scale entanglement renormalization ansatz},
 	volume = {7},
@@ -2873,4 +2852,40 @@ Conclusion: Neuro-Symbolic AI research has seen rapid growth since 2020, with co
 	author = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, Ł ukasz and Polosukhin, Illia},
 	year = {2017},
 	file = {Full Text PDF:/Users/goessmann/Zotero/storage/6KIPVHAB/Vaswani et al. - 2017 - Attention is All you Need.pdf:application/pdf},
+}
+
+@article{sander_large-scale_2025,
+	title = {Large-scale stochastic simulation of open quantum systems},
+	volume = {16},
+	issn = {2041-1723},
+	url = {http://arxiv.org/abs/2501.17913},
+	doi = {10.1038/s41467-025-66846-x},
+	abstract = {Understanding the precise interaction mechanisms between quantum systems and their environment is crucial for advancing stable quantum technologies, designing reliable experimental frameworks, and building accurate models of real-world phenomena. However, simulating open quantum systems, which feature complex non-unitary dynamics, poses significant computational challenges that require innovative methods to overcome. In this work, we introduce the tensor jump method (TJM), a scalable, embarrassingly parallel algorithm for stochastically simulating large-scale open quantum systems, specifically Markovian dynamics captured by Lindbladians. This method is built on three core principles where, in particular, we extend the Monte Carlo wave function (MCWF) method to matrix product states, use a dynamic time-dependent variational principle (TDVP) to significantly reduce errors during time evolution, and introduce what we call a sampling MPS to drastically reduce the dependence on the simulation's time step size. We demonstrate that this method scales more effectively than previous methods and ensures convergence to the Lindbladian solution independent of system size, which we show both rigorously and numerically. Finally, we provide evidence of its utility by simulating Lindbladian dynamics of XXX Heisenberg models up to a thousand spins using a consumer-grade CPU. This work represents a significant step forward in the simulation of large-scale open quantum systems, with the potential to enable discoveries across various domains of quantum physics, particularly those where the environment plays a fundamental role, and to both dequantize and facilitate the development of more stable quantum hardware.},
+	number = {1},
+	urldate = {2025-12-15},
+	journal = {Nature Communications},
+	author = {Sander, Aaron and Fröhlich, Maximilian and Eigel, Martin and Eisert, Jens and Gelß, Patrick and Hintermüller, Michael and Milbradt, Richard M. and Wille, Robert and Mendl, Christian B.},
+	month = dec,
+	year = {2025},
+	note = {arXiv:2501.17913 [quant-ph]},
+	keywords = {Condensed Matter - Other Condensed Matter, Quantum Physics},
+	pages = {11074},
+	annote = {Comment: 24 pages, 13 figures, 1 table (includes Methods and Appendix)},
+	file = {Preprint PDF:/Users/goessmann/Zotero/storage/YUBVCNDP/Sander et al. - 2025 - Large-scale stochastic simulation of open quantum systems.pdf:application/pdf},
+}
+
+@misc{sander_quantum_2025,
+	title = {Quantum circuit simulation with a local time-dependent variational principle},
+	url = {http://arxiv.org/abs/2508.10096},
+	doi = {10.48550/arXiv.2508.10096},
+	abstract = {Classical simulations of quantum circuits are vital for assessing potential quantum advantage and benchmarking devices, yet they require sophisticated methods to avoid the exponential growth of resources. Tensor network approaches, in particular matrix product states (MPS) combined with the time-evolving block decimation (TEBD) algorithm, currently dominate large-scale circuit simulations. These methods scale efficiently when entanglement is limited but suffer rapid bond dimension growth with increasing entanglement and handle long-range gates via costly SWAP insertions. Motivated by the success of the time-dependent variational principle (TDVP) in many-body physics, we reinterpret quantum circuits as a series of discrete time evolutions, using gate generators to construct an MPS-based circuit simulation via a local TDVP formulation. This addresses TEBD's key limitations by (1) naturally accommodating long-range gates and (2) optimally representing states on the MPS manifold. By diffusing entanglement more globally, the method suppresses local bond growth and reduces memory and runtime costs. We benchmark the approach on five 49-qubit circuits: three Hamiltonian circuits (1D open and periodic Heisenberg, 2D 7x7 Ising) and two algorithmic ones (quantum approximate optimization, hardware-efficient ansatz). Across all cases, our method yields substantial resource reductions over standard tools, establishing a new state-of-the-art for circuit simulation and enabling advances across quantum computing, condensed matter, and beyond.},
+	urldate = {2025-12-15},
+	publisher = {arXiv},
+	author = {Sander, Aaron and Fröhlich, Maximilian and Ali, Mazen and Eigel, Martin and Eisert, Jens and Hintermüller, Michael and Mendl, Christian B. and Milbradt, Richard M. and Wille, Robert},
+	month = aug,
+	year = {2025},
+	note = {arXiv:2508.10096 [quant-ph]},
+	keywords = {Condensed Matter - Other Condensed Matter, Quantum Physics},
+	annote = {Comment: 13 pages, 2 figures},
+	file = {Preprint PDF:/Users/goessmann/Zotero/storage/KSGKAEQI/Sander et al. - 2025 - Quantum circuit simulation with a local time-dependent variational principle.pdf:application/pdf;Snapshot:/Users/goessmann/Zotero/storage/8VSWN4RJ/2508.html:text/html},
 }

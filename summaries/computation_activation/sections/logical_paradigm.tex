@@ -20,7 +20,7 @@ A tensor-based representation of propositional logic is developed by encoding bo
     If there is a model to a propositional formula, we say the formula is \emph{satisfiable}.
 \end{definition}
 
-\input{../examples/hard_activation/prop_formula_coordinatewise.tex}
+\input{../examples/logical_paradigm/prop_formula_coordinatewise.tex}
 
 \paragraph{CP decomposition}
 Since the tensor $\formulaat{\shortcatvariables}$ is equal to one at index $x_{[d]}$ if and only if $x_{[d]}$ is a model of $\formula$, i.e. fulfills the formula, a propositional formula can be written as the sum over the one-hot encodings of its models.
@@ -29,7 +29,7 @@ Since the tensor $\formulaat{\shortcatvariables}$ is equal to one at index $x_{[
 \end{center}
 This decomposition corresponds to the CP decomposition of a tensor.
 
-\input{../examples/hard_activation/prop_formula_basCP.tex}
+\input{../examples/logical_paradigm/prop_formula_basCP.tex}
 
 \paragraph{Model counts by contraction}
 Each coordiante of the propositional formula is either a $1$ or $0$ encoding if the indexed state is a model of the formula or not.
@@ -61,7 +61,7 @@ In our graphical notation this property is visualized by
     \input{../tikz_pics/logic_representation/formula_bencoding.tex}
 \end{center}
 We further provide a more detailed example in coordinate sensitive notation in the following.
-\input{../examples/hard_activation/bencoding_neg_con.tex}
+\input{../examples/logical_paradigm/bencoding_neg_con.tex}
 
 \paragraph{Interpretation as \CompActNets{}}
 The propositional formula and its negation can be represented by that tensor by
@@ -81,7 +81,74 @@ In this way the soft and hard logic can be combined in one framework.
 \alex{Propositional formulas of concern often have a syntactical specification as composed functions.
 We can therefore apply the neural paradigm to find efficient representations of them.}
 
-We now show, that the propositional formula allows for a decomposition into connective formulas, its basis encoding decomposes into the basis encodings of the connective formulas.
+Thus we have a tensor network representation of any propositional formula based on its syntactical decomposition, where the hypergraph of the syntactical decomposition equals the hypergraph of the representing tensor network.
+
+
+%\begin{lemma}
+%    \label{lem:formulaDecomp}
+%    Let $\formulaat{\shortcatvariables}$ be a composition of a $\seldim$-ary connective formula $\exconnective$ and propositional formulas $\formulaofat{\selindex}{\shortcatvariables}$, where $\selindexin$, i.e. for $\shortcatindices\in\atomstates$ we have
+%    \begin{align*}
+%        \formulaat{\indexedshortcatvariables}
+%        = \exconnective\left(\formulaofat{0}{\indexedshortcatvariables}, \dots, \formulaofat{\seldim-1}{\indexedshortcatvariables}\right) \, .
+%    \end{align*}
+%    Then we have
+%    \begin{align*}
+%        \bencodingofat{\formula}{\headvariableof{\formula},\shortcatvariables}
+%        = \contractionof{
+%            \{\bencodingofat{\exconnective}{\headvariableof{\formula},\headvariableof{[\seldim]}}\}
+%            \cup \{\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}
+%        }{\headvariableof{\formula},\shortcatvariables} \, .
+%    \end{align*}
+%\end{lemma}
+%\begin{proof}
+%    This can be shown on each index $\shortcatindices$.
+%\end{proof}
+
+%\begin{definition}
+%    \label{def:formulaDecomposition}
+%    A syntactical hypergraph is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ such that
+%    \begin{itemize}
+%        \item each hyperedge $\edge=(\incomingnodes,\outgoingnodes)$ has exactly one outgoing node, i.e. $\cardof{\outgoingnodes}=1$
+%        \item each node $\nodein$ carries a boolean variable $\headvariableof{\node}$ and appears at most once as the outgoing node of a hyperedge % well-definedness
+%        \item each hyperedge $(\incomingnodes,\{\node\})$ with $\incomingnodes\neq\varnothing$ is decorated by a propositional formula
+%        \begin{align*}
+%            \connectiveofat{\node}{\headvariableof{\incomingnodes}} \defcols \bigtimes_{\node\in\incomingnodes} [2] \rightarrow [2]
+%        \end{align*}
+%        \item the nodes not appearing as an outgoing node are labeled by $[\atomorder]$
+%    \end{itemize}
+%    We say that the syntactical hypergraph is single-rooted, if exactly one node $\secnode$ does not appear as an incoming node of a hyperedge.
+%    In this case this unique node is called the root node. % head node
+%    We assign atomic formulas to the nodes $[\atomorder]$ and recursively assign to each further node $\node$ a node formula % connective $\connectiveofat{\node}{\headvariableof{\incomingnodes}}$.
+%    \begin{align*}
+%        \formulaofat{\node}{\indexedshortcatvariables}
+%        = \connectiveofat{\node}{[\formulaofat{\thirdnode}{\indexedshortcatvariables}\wcols\thirdnode\in\incomingnodes]} \quad \forall\shortcatindicesin\, ,
+%    \end{align*}
+%    where $\incomingnodes$ are the incoming nodes in the unique hyperedge with outgoing nodes $\{\node\}$.
+%    We call the formula $\exformulaat{\shortcatvariables}\coloneqq\formulaofat{\secnode}{\shortcatvariables}$ to the root note $\secnode$ the syntactical composition of $\graph$ and $\graph$ is a syntactical decomposition of $\exformula$.
+%\end{definition}
+%
+%%We now show, that the propositional formula allows for a decomposition into connective formulas, its basis encoding decomposes into the basis encodings of the connective formulas.
+%
+%\begin{theorem}
+%    \label{the:formulaDecompositionRep}
+%    For any syntactical hypergraph $\graph$ with composition $\exformula$ we have
+%    \begin{align*}
+%        \exformulaat{\shortcatvariables}
+%        = \breakablecontractionof{
+%            &\left\{
+%                 \bencodingofat{\connectiveof{\node}}{\headvariableof{\node},\headvariableof{\incomingnodes}} \wcols (\incomingnodes,\{\node\})\in\edges
+%            \right\} \cup \\
+%            & \{\identityat{\headvariableof{\atomenumerator},\catvariableof{\atomenumerator}} \wcols \atomenumeratorin\}
+%            \cup \{\tbasisat{\headvariableof{\secnode}}\}
+%        }{\shortcatvariables} \, .
+%    \end{align*}
+%\end{theorem}
+%\begin{proof}
+%    One can show this theorem by induction over the node formulas of the syntactical hypergraph, from the leafs to the root and iteratively applying \lemref{lem:formulaDecomp}.
+%\end{proof}
+%
+%Thus we have a tensor network representation of any propositional formula based on its syntactical decomposition, where the hypergraph of the syntactical decomposition equals the hypergraph of the representing tensor network.
+%
 
 
 \subsection{Contractions to decide entailment}
@@ -105,7 +172,7 @@ This is equivalent to \defref{def:logicalEntailment}, since $\contraction{\kbwit
 %Entailment is the central operation of "logical inference", i.e. deduce true statements from known statements.
 %In the tensor network representation, these entailments can be decided by contracting the whole representing tensor with the statement, that needs to be checked.
 
-\input{../examples/hard_activation/sudoku_entailment}
+\input{../examples/logical_paradigm/sudoku_entailment}
 
 \subsection{Efficient Representation of Knowledge Bases}
 
@@ -134,7 +201,7 @@ To show efficient repesentations we will use the following identities.
     Follows directly from the definitions of the basis encodings and the connectives.
 \end{proof}
 
-\input{../examples/hard_activation/prop_formula_kb_head_sym}
+\input{../examples/logical_paradigm/prop_formula_kb_head_sym}
 
 We use this to decompose knowledge bases into their individual formulas as follows.
 
@@ -160,7 +227,7 @@ We use this to decompose knowledge bases into their individual formulas as follo
 
 
 
-\input{../examples/hard_activation/sudoku_decomposition}
+\input{../examples/logical_paradigm/sudoku_decomposition}
 
 % BAD NOTATION!
 %Noting that for example for $x_a=x_b=\epsilon_1=[0,1]^\intercal$
@@ -254,4 +321,4 @@ We further directly reduce the computation of messages to their support and call
     \end{algorithmic}
 \end{algorithm}
 
-\input{../examples/hard_activation/sudoku_message_passing.tex}
+\input{../examples/logical_paradigm/sudoku_message_passing.tex}

@@ -28,7 +28,7 @@ As defined next, distributions $\probtensor$ over a discrete state space can be 
     Then a tensor $\condprobat{\shortcatvariables}{\thirdcatvariable}$ is a family of joint probability distributions, if for any $\thirdcatindex\in\mathrm{val}(\thirdcatvariable)$ the slice $\condprobat{\shortcatvariables}{\thirdcatvariable=\thirdcatindex}$ is a joint probability distribution.
 \end{definition}
 
-\input{../examples/soft_activation/coin_toss_family}
+\input{../examples/probabilistic_paradigm/coin_toss_family}
 
 A basic inference operation on probability distributions is the computation of marginal and conditional distribution.
 
@@ -224,9 +224,9 @@ We refer to this correspondence between independence structure and tensor networ
 Note, that the assumption of a positive distribution is required (i.e. for all $\shortcatindices$ we have $\probat{\indexedshortcatvariables}>0$).
 The assumption of positivity was however not required in our characterization of independencies and conditional independencies by the existence of corresponding tensor decompositions (see \defref{def:independence} and \defref{def:condIndependence}).
 
-\input{../examples/soft_activation/coin_toss_hc.tex}
+\input{../examples/probabilistic_paradigm/coin_toss_hc.tex}
 
-\input{../examples/soft_activation/student_hc}
+\input{../examples/probabilistic_paradigm/student_hc}
 
 \subsection{The Computation Mechanism: Factorization in presense of Sufficient Statistics}
 
@@ -249,7 +249,7 @@ Note that the independence in \defref{def:sufStatistic} is true if and only if
     =   \condprobat{\catvariable}{\headvariableof{\sstat}} \otimes \onesat{\thirdcatvariable} \, .
 \end{align*}
 
-\input{../examples/soft_activation/sufstat_probability}
+\input{../examples/probabilistic_paradigm/sufstat_probability}
 
 \exaref{exa:sufStatProb} hints at a connection between sufficient statistics and decompositions into \CompActNets{}.
 More generally, such decompositions are provided by the Fisher-Neyman Factorization Theorem.
@@ -287,7 +287,7 @@ We then use the \theref{the:factorizationFisherNeyman} to embed such families in
     \end{align*}
 \end{corollary}
 
-\input{../examples/soft_activation/coin_toss_ft}
+\input{../examples/probabilistic_paradigm/coin_toss_ft}
 
 The Fisher-Neyman Theorem is the fundamental motivation for the \CompActNets{} Architecture:
 \begin{itemize}
@@ -295,7 +295,7 @@ The Fisher-Neyman Theorem is the fundamental motivation for the \CompActNets{} A
     \item The decomposition of $\bencodingofat{\sstat}{\headvariables,\shortcatvariables}$ is called \emph{computation network}.
 \end{itemize}
 
-\input{../examples/soft_activation/graphical_models_as_cans}
+\input{../examples/probabilistic_paradigm/graphical_models_as_cans}
 
 \subsection{Exponential families in case of elementary activation tensors}
 
@@ -344,7 +344,7 @@ Note that by construction each member of an exponential family is an element in 
         Tensor Network diagram of a member of an exponential family $\probfamilyofat{\sstat,\basemeasure}{\shortcatvariables}{\Theta=\canparam}$ before normalization as an \CompActNet{} with elementary activation, that is an element in $\cansof{\sstat,\elgraph,\basemeasure}$.}\label{fig:expdistElementary}
 \end{figure}
 
-\input{../examples/soft_activation/two_boolean_cascade}
+\input{../examples/probabilistic_paradigm/two_boolean_cascade}
 
 
 \subsection{Efficient Contractions by Message Passing}
@@ -377,4 +377,4 @@ We denote $\dirovedges$ to be all tuples $(\sedge,\redge)$ of hyperedges $\sedge
     \end{algorithmic}
 \end{algorithm}
 
-\input{../examples/soft_activation/student_bp}
+\input{../examples/probabilistic_paradigm/student_bp}
