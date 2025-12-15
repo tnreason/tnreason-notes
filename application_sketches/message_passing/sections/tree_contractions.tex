@@ -1,0 +1,53 @@
+\section{Analysis in the tree-based implementation}
+
+We denote for each pair $(\sedge,\redge)$ the subset $\preedgeset\subset\edges$ as the subset of edges $\edgein$, for which each path to $\redge$ passes through $\sedge$.
+Note, that by construction $\sedge\in\preedgeset$.
+
+\begin{theorem}
+    \label{the:mpGuaranteeTree}
+    For any tensor network on a tree hypergraph, \algoref{alg:contractionPropagation} terminates in the tree-based implementation and returns final messages
+    \begin{align*}
+        \messagewith
+        = \contractionof{\{\edgehypercorewith\wcols\edge\in\preedgeset\}}{\catvariableof{\sedge\cap\redge}}
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We show this property by induction over the edge sets $\preedgeset$ to pairs $(\sedge,\redge)\in\dirovedges$, such that $\cardof{\preedgeset}\leq n$.
+    Notice, that since always $\sedge\in\preedgeset$ we have $n\geq1$.
+
+    $n=1$: In this case we have $\preedgeset=\{\sedge\}$ and $\sedge$ is a leaf of the tree-hypergraph $\graph$.
+    The claimed message property holds thus by definition.
+
+    $n\rightarrow n+1$: Let us assume, that the message obeys the claimed property for edge sets with cardinality up to $n$.
+    If there is no edge set with cardinality $n+1$, the property holds also for those with cardinality up to $n+1$.
+    If there is an edge set $\preedgeset$ with size $n+1$, we have
+    \begin{align*}
+        \preedgeset = \{\sedge\} \cup \left(\bigcup_{\secsedge \in\dirovedges} \preedgesetwrt{\secsedge}{\sedge}\right) \, .
+    \end{align*}
+    The message $\mesfromto{\sedge}{\redge}$ is sent, once all messages $\mesfromto{\secsedge}{\sedge}$ to $(\secsedge,\sedge)\in\dirovedges\{(\redge,\sedge)\}$ arrived.
+    By definition we have
+    \begin{align*}
+        \mesfromtowith{\sedge}{\redge}%{\catvariableof{\sedge\cap \redge}}
+        = \contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}
+            \cup \{\mesfromtowith{\secsedge}{\sedge} \wcols (\secsedge,\sedge) \in\dirovedges \ncond \secsedge \neq \redge \}
+        }{\catvariableof{\sedge\cap \redge}}
+    \end{align*}
+    Now we use the induction assumption on $\preedgesetwrt{\secsedge}{\sedge}$ (since its cardinality is at most $n$) and get
+    \begin{align*}
+        \mesfromtoat{\sedge}{\redge}{\catvariableof{\sedge\cap \redge}}
+        &= \contractionof{
+            \{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\} \cup
+            \left(\bigcup_{(\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge}
+                \contractionof{\{\hypercoreofat{\thirdsedge}{\catvariableof{\thirdsedge}} \wcols  \thirdsedge \in \preedgesetwrt{\secsedge}{\sedge}\}}{\catvariableof{\secsedge\cap \sedge}} \right)
+        }{\catvariableof{\sedge\cap \redge}} \\
+        &= \contractionof{
+            \{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\} \cup
+            \left(\bigcup_{(\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge} \{\hypercoreofat{\thirdsedge}{\catvariableof{\thirdsedge}} \wcols  \thirdsedge \in \preedgesetwrt{\secsedge}{\sedge}\} \right)
+        }{\catvariableof{\sedge\cap \redge}} \\
+        &= \contractionof{\{\edgehypercorewith\wcols\edge\in\preedgeset\}}{\catvariableof{\sedge\cap\redge}}
+    \end{align*}
+    Here we used the commutation of contraction property in the second equation, which is justified by the assumed tree property of the hypergraph.
+    Thus, the message property holds also for any edge sets of size $n+1$.
+
+    By induction, the claimed message property therefore holds for all final messages.
+\end{proof}

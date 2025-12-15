@@ -1,10 +1,5 @@
 \section{Contraction Propagation}
 
-
-%\red{Redo without cluster graphs:}
-%\begin{itemize}
-%    \item Use hypergraphs and coarse graining of those
-%\end{itemize}
 Generic algorithm:
 \begin{itemize}
     \item Variable are the hypergraph and the scheduler
@@ -27,13 +22,13 @@ We further distinguish between messages $\sedge\rightarrow\redge$ and $\redge\ri
 
 \begin{algorithm}[hbt!]
     \caption{Generic Contraction Propagation}\label{alg:contractionPropagation}
-    \begin{algorithmic}
-        \Require Tensor Network $\extnet$ on a hypergraph $\graph$
-        \Ensure Scheduler $\scheduler$
+    \begin{algorithmic}[1]
+        \Require Tensor Network $\extnet$ on a hypergraph $\graph$, scheduler $\scheduler$, message conditions $\mesconditiondict$ (optional)
+%        \Ensure Scheduler $\scheduler$
         \iosepline
-        \State Initialize $\scheduler$ (differs in implementation)
+        \State Initialize $\scheduler.init(\graph, C)$ %(differs in implementation)
         \State Initialize messages
-        \While{$\scheduler$ not empty}
+        \While{not $\scheduler.empty()$}
             \State Take a $(\sedge,\redge)$ pair from $\scheduler$
             \State Update the message
             \begin{align*}
@@ -42,32 +37,129 @@ We further distinguish between messages $\sedge\rightarrow\redge$ and $\redge\ri
                     \cup \{\mesfromtoat{\secsedge}{\sedge}{\catvariableof{\secsedge\cap\sedge}} \wcols (\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge\}
                 }{\catvariableof{\sedge\cap \redge}}
             \end{align*}
-            \State Update $\scheduler$ (differs in implementation)
+            \State $\scheduler.update((\sedge,\redge),\messagewith)$ % (differs in implementation)
         \EndWhile
         \State \Return Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
     \end{algorithmic}
 \end{algorithm}
 
+\subsection{Message Scheduler}
+
 The scheduler $\scheduler$ maintains a subset of $\dirovedges$ of messages to be sent, which updated (possibly without change) after each message.
 Once the set of messages to be sent is empty, the algorithm terminates.
-The scheduler can have different implementation, in which he possibly uses the graph and the history of the messages to decide on initializations and updates.
-
-\textbf{Tree-based implementation}: (guarantee by \theref{the:mpGuaranteeTree}) (e.g. loop-free BP):
 \begin{itemize}
-    \item Start: All leaves sending messages to their neighbors in the overlap graph.
-    \item Update: Each direction only once loaded on $\scheduler$, namely when at $\redge$ all but these messages are received.
+    \item $\mathrm{init}$: Initializes the message schedule, based on the graph
+    \item $\mathrm{pop}$: Determines the next message by poping from the message schedule
+    \item $\mathrm{update}$: Updates the message schedule
+    \item $\mathrm{empty}$: Checks whether the schedule is empty
 \end{itemize}
-Notice, that in the tree-based implementation the algorithm terminates after $2\cdot \cardof{\ovedges}$ passed messages.
 
-\textbf{Directed implementation}: (guarantee by \theref{the:mpGuaranteeBasis}, see \secref{sec:basisPropagation})
-One side of the tree-based implementation: Sent messages only in direction of the acyclic graph.
+We investigate two methods of implementing schedulers:
+\begin{itemize}
+    \item Receive Scheduler: Messages are sent exactly once, when a condition on the received messages is met.
+    \item Change Scheduler: Messages are resent, when a message received has been changed (given a criterion).
+\end{itemize}
 
+\subsection{Receive Scheduler}
+
+\begin{algorithm}
+    \caption{ReceiveScheduler}\label{alg:receiveScheduler}
+    \begin{algorithmic}[1]
+
+        \State \textbf{Data structure:} ReceiveScheduler $RS$
+        \State \quad $Q$ : queue
+        \State \quad $conditions$ : dictionary (of send conditions)
+
+        \Function{Init}{$\graph$, $conditions$}
+            \State $RS.Q \gets$ Queue()
+            \State $RS.conditions \gets conditions$
+            \For{$(\secsedge,\thirdsedge) \in RS.conditions$}
+                \If{$empty(RS.conditions[(\secsedge,\thirdsedge)])$}
+                    \State $RS.conditions.drop((\secsedge,\thirdsedge))$
+                    \State $RS.Q.append((\secsedge,\thirdsedge))$
+                \EndIf
+            \EndFor
+            \State \Return $RS$
+        \EndFunction
+
+        \Function{Update}{$RS$, $\sedge$, $\redge$}
+            \For{$(\secsedge,\thirdsedge) \in RS.conditions$}
+                \If{$(\sedge,\redge) \in RS.conditions[(\secsedge,\thirdsedge)]$}
+                    \State $RS.conditions[(\secsedge,\thirdsedge)].drop((\sedge,\redge))$
+                    \If{$empty(RS.conditions[(\secsedge,\thirdsedge)])$}
+                        \State $RS.conditions.drop((\secsedge,\thirdsedge))$
+                        \State $RS.Q.append((\secsedge,\thirdsedge))$
+                    \EndIf
+                \EndIf
+            \EndFor
+        \EndFunction
+
+        \Function{Pop}{$RS$}
+            \State \Return $RS.Q.pop()$
+        \EndFunction
+
+        \Function{Empty}{$RS$}
+            \State \Return $empty(RS.Q)$
+        \EndFunction
+
+    \end{algorithmic}
+\end{algorithm}
+
+Examples of using the Receive Scheduler (\algoref{alg:receiveScheduler}) with differing message condition dictionaries are:
+\begin{itemize}
+    \item Tree-based implementation: Any message is sent when all other message arrived (guarantee by \theref{the:mpGuaranteeTree})
+    \begin{align*}
+        \mesconditiondict = \{(\sedge,\redge):\{(\secsedge,\sedge) \wcols \secsedge\neq\redge\ncond (\secsedge,\sedge)\in\dirovedges\} \wcols (\sedge,\redge)\in\dirovedges\}
+    \end{align*}
+    \item Directed implementation: Restrict $\dirovedges$ to those aligned in directionality (guarantee by \theref{the:mpGuaranteeBasis}, see \secref{sec:basisPropagation})
+    \begin{align*}
+        \dirovedges
+        = \{ (\sedge,\redge): \sedge\cap\redge\subset\sedge^{\outsymbol} \ncond \sedge\cap\redge\subset\redge^{\insymbol} \}
+    \end{align*}
+    Then choose $\mesconditiondict$ as above.
+    Can avoid multiple message calculations using the Delta-transformed directed hypergraph.
+    \item Forward chaining: Use the Delta-transformed directed hypergraph and message directions
+    \begin{align*}
+        \dirovedges
+        = \{ (\edge,\{\node\}) :  \text{$\node$ the positive literal in the definite clause $\hypercoreof{\edge}$}\} \cup
+        \{ (\{\node\},\edge) :  \text{$\node$ a negative literal in the definite clause $\hypercoreof{\edge}$}\}
+    \end{align*}
+    \red{Message conditions are more involved:
+    Send $(\edge,\{\node\})$ if to all negative literals a message arrived and to the positive literal no message arrived.
+    Send $(\{\node\},\edge)$ if any message to $\node$ has arrived.
+    }
+\end{itemize}
+
+
+%The scheduler can have different implementation, in which he possibly uses the graph and the history of the messages to decide on initializations and updates.
+%
+%\textbf{Tree-based implementation}:(e.g. loop-free BP):
+%\begin{itemize}
+%    \item Start: All leaves sending messages to their neighbors in the overlap graph.
+%    \item Update: Each direction only once loaded on $\scheduler$, namely when at $\redge$ all but these messages are received.
+%\end{itemize}
+%Notice, that in the tree-based implementation the algorithm terminates after $2\cdot \cardof{\ovedges}$ passed messages.
+%
+%\textbf{Directed implementation}:
+%One side of the tree-based implementation: Sent messages only in direction of the acyclic graph.
+
+
+%% Termination
+Termination is trivial: Since each message is sent at most once, the $\mathrm{While}$ loop is executed at most $\cardof{\dirovedges}$ times.
+
+
+\subsection{Change Scheduler}
+
+An example for a change scheduler is the
 \textbf{Constraint-propagation implementation} (guarantee by \theref{the:mpGuaranteeBoolean} see \secref{sec:booleanPropagation}) % ! The guarantee works for arbitrary schemes
 \begin{itemize}
     \item Start: All directions.
     \item Update: When the support of a message to $\redge$ changed all directions $(\redge,\secsedge)$
     \item Efficiency increase: Replace messages by their support, need only those with nontrivial support in the contraction.
 \end{itemize}
+
+%% Termination
+To show the termination of the algorithm, it is enough to bound the number of possible changes of each message.
 In the constraint-propagation implementation each direction $(\sedge,\redge)$ is loaded at most
 \begin{align*}
     \sum_{(\secsedge,\sedge)\in\dirovgraph} \left(\prod_{\node\in\secsedge\cap\sedge}\catdimof{\node}\right)
@@ -78,58 +170,8 @@ many times onto $\scheduler$, the algorithm therefore terminates after at most
 \end{align*}
 iterations.
 
+%% Loopy Belief propagation
+Loopy BP:
+Resent messages, until a convergence citerion (e.g. norm bound of the message change, or limits of the numbers of messages) has been met.
+%Need Convergence criteria, or limits on the numbers of messages.
 
-Loopy BP: Need Convergence criteria, or limits on the numbers of messages.
-
-\subsection{Analysis in the tree-based implementation}
-
-We denote for each pair $(\sedge,\redge)$ the subset $\preedgeset\subset\edges$ as the subset of edges $\edgein$, for which each path to $\redge$ passes through $\sedge$.
-Note, that by construction $\sedge\in\preedgeset$.
-
-\begin{theorem}\label{the:mpGuaranteeTree}
-    For any tensor network on a tree hypergraph, \algoref{alg:contractionPropagation} terminates in the tree-based implementation and returns final messages
-    \begin{align*}
-        \messagewith
-        = \contractionof{\{\edgehypercorewith\wcols\edge\in\preedgeset\}}{\catvariableof{\sedge\cap\redge}}
-    \end{align*}
-\end{theorem}
-\begin{proof}
-    We show this property by induction over the edge sets $\preedgeset$ to pairs $(\sedge,\redge)\in\dirovedges$, such that $\cardof{\preedgeset}\leq n$.
-    Notice, that since always $\sedge\in\preedgeset$ we have $n\geq1$.
-
-    $n=1$: In this case we have $\preedgeset=\{\sedge\}$ and $\sedge$ is a leaf of the tree-hypergraph $\graph$.
-    The claimed message property holds thus by definition.
-
-    $n\rightarrow n+1$: Let us assume, that the message obeys the claimed property for edge sets with cardinality up to $n$.
-    If there is no edge set with cardinality $n+1$, the property holds also for those with cardinality up to $n+1$.
-    If there is an edge set $\preedgeset$ with size $n+1$, we have
-    \begin{align*}
-        \preedgeset = \{\sedge\} \cup \left(\bigcup_{\secsedge \in\dirovedges} \preedgesetwrt{\secsedge}{\sedge}\right) \, .
-    \end{align*}
-    The message $\mesfromto{\sedge}{\redge}$ is sent, once all messages $\mesfromto{\secsedge}{\sedge}$ to $(\secsedge,\sedge)\in\dirovedges\{(\redge,\sedge)\}$ arrived.
-    By definition we have
-    \begin{align*}
-        \mesfromtowith{\sedge}{\redge}%{\catvariableof{\sedge\cap \redge}}
-        = \contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}
-            \cup \{\mesfromtowith{\secsedge}{\sedge} \wcols (\secsedge,\sedge) \in\dirovedges \ncond \secsedge \neq \redge \}
-        }{\catvariableof{\sedge\cap \redge}}
-    \end{align*}
-    Now we use the induction assumption on $\preedgesetwrt{\secsedge}{\sedge}$ (since its cardinality is at most $n$) and get
-    \begin{align*}
-        \mesfromtoat{\sedge}{\redge}{\catvariableof{\sedge\cap \redge}}
-        &= \contractionof{
-            \{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\} \cup
-            \left(\bigcup_{(\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge}
-                \contractionof{\{\hypercoreofat{\thirdsedge}{\catvariableof{\thirdsedge}} \wcols  \thirdsedge \in \preedgesetwrt{\secsedge}{\sedge}\}}{\catvariableof{\secsedge\cap \sedge}} \right)
-        }{\catvariableof{\sedge\cap \redge}} \\
-        &= \contractionof{
-            \{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\} \cup
-            \left(\bigcup_{(\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge} \{\hypercoreofat{\thirdsedge}{\catvariableof{\thirdsedge}} \wcols  \thirdsedge \in \preedgesetwrt{\secsedge}{\sedge}\} \right)
-        }{\catvariableof{\sedge\cap \redge}} \\
-        &= \contractionof{\{\edgehypercorewith\wcols\edge\in\preedgeset\}}{\catvariableof{\sedge\cap\redge}}
-    \end{align*}
-    Here we used the commutation of contraction property in the second equation, which is justified by the assumed tree property of the hypergraph.
-    Thus, the message property holds also for any edge sets of size $n+1$.
-
-    By induction, the claimed message property therefore holds for all final messages.
-\end{proof}

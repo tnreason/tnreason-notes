@@ -359,9 +359,9 @@ If any constraint tensor is decomposed into a tensor product of a basis vector o
 \end{proof}
 
 
-\section{Outlook}
+\subsection{Outlook}
 
-\subsection{With backtracking: DPLL for generic SAT}
+\subsubsection{With backtracking: DPLL for generic SAT}
 
 DPLL combines backtracking search with unit clause propagation (UCP).
 A form of message passing is applied to reduce the clauses given the current partial assignment:
@@ -369,7 +369,7 @@ When guessed an assignment to a variable, the variable is removed from all claus
 If only one literal remains in a clause, the variable would be assigned accordingly (unit propagation).
 This can be directly done in the intermediate message passing scheme, or understood as the next backtracking step ("Find-Unit-Clause" in Figure 7.17 in \cite{russell_artificial_2021}).
 
-\subsection{With randomization: WalkSAT}
+\subsubsection{With randomization: WalkSAT}
 
 WalkSAT is a stochastic local search algorithm for SAT.
 It starts with a random assignment and iteratively flips variables to reduce the number of unsatisfied clauses.

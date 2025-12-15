@@ -8,14 +8,19 @@
 \input{../../macros/tc_macros.tex}
 \input{../../macros/tikz_macros.tex}
 
-\usepackage{animate}
-\usepackage{float}
+\newcommand{\mesconditiondict}{C}
 
 \begin{document}
     \title{Message Passing for Efficient Contractions}
 
     \maketitle
     \date{\today}
+
+    Motivation of message passing: Efficiency of computing contractions
+    \begin{itemize}
+        \item Global contractions with local open variables: Decomposed into efficient local contractions
+        \item Batchwise computation: Get multiple contractions with a single message passing scheme
+    \end{itemize}
 
     Guaranteed behavior of the message passing algorithm:
     \begin{itemize}
@@ -33,13 +38,15 @@
 
     \input{sections/generic_algorithm}
 
-    \input{sections/exact_contractions}
+    \input{sections/tree_contractions}
 
     \input{sections/graph_manipulation}
 
     \input{sections/boolean_propagation}
 
     \input{sections/basis_propagation}
+
+    \input{sections/generalizations}
 
     \bibliographystyle{plainnat}
     \bibliography{../../references.bib}
