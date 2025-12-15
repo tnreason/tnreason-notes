@@ -1,4 +1,5 @@
-\section{Decompositions based on Propositional Syntax}\label{sec:log_rep}
+%\section{Decompositions based on Propositional Syntax}
+\section{The Logical Paradigm}\label{sec:log_rep}
 
 A tensor-based representation of propositional logic is developed by encoding boolean variables into vectors, defining formulas as boolean tensors, and showing how logical connectives and normal forms can be expressed as tensor contractions.
 
@@ -77,77 +78,11 @@ In this way the soft and hard logic can be combined in one framework.
 
 \subsection{Decomposition of Propositional Formulas}
 
+\alex{Propositional formulas of concern often have a syntactical specification as composed functions.
+We can therefore apply the neural paradigm to find efficient representations of them.}
+
 We now show, that the propositional formula allows for a decomposition into connective formulas, its basis encoding decomposes into the basis encodings of the connective formulas.
 
-\begin{lemma}
-    \label{lem:formulaDecomp}
-    Let $\formulaat{\shortcatvariables}$ be a composition of a $\seldim$-ary connective formula $\exconnective$ and propositional formulas $\formulaofat{\selindex}{\shortcatvariables}$, where $\selindexin$, i.e. for $\shortcatindices\in\atomstates$ we have
-    \begin{align*}
-        \formulaat{\indexedshortcatvariables}
-        = \exconnective\left(\formulaofat{0}{\indexedshortcatvariables}, \dots, \formulaofat{\seldim-1}{\indexedshortcatvariables}\right) \, .
-    \end{align*}
-    Then we have
-    \begin{align*}
-        \bencodingofat{\formula}{\headvariableof{\formula},\shortcatvariables}
-        = \contractionof{
-            \{\bencodingofat{\exconnective}{\headvariableof{\formula},\headvariableof{[\seldim]}}\}
-            \cup \{\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}
-        }{\headvariableof{\formula},\shortcatvariables} \, .
-    \end{align*}
-\end{lemma}
-\begin{proof}
-    This can be shown on each index $\shortcatindices$.
-\end{proof}
-
-For the composition of two propositional formulas $\formulaat{\shortcatvariables}$ and $\secexformula\left[\shortcatvariables\right]$ the composition by some binary connective is pictured by:
-\begin{center}
-    \input{../tikz_pics/logic_representation/unary_binary_composition}
-\end{center}
-
-Let us now define a more generic syntactical decomposition of propositional formulas.
-
-\begin{definition}
-    \label{def:formulaDecomposition}
-    A syntactical hypergraph is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ such that
-    \begin{itemize}
-        \item each hyperedge $\edge=(\incomingnodes,\outgoingnodes)$ has exactly one outgoing node, i.e. $\cardof{\outgoingnodes}=1$
-        \item each node $\nodein$ carries a boolean variable $\headvariableof{\node}$ and appears at most once as the outgoing node of a hyperedge % well-definedness
-        \item each hyperedge $(\incomingnodes,\{\node\})$ with $\incomingnodes\neq\varnothing$ is decorated by a propositional formula
-        \begin{align*}
-            \connectiveofat{\node}{\headvariableof{\incomingnodes}} \defcols \bigtimes_{\node\in\incomingnodes} [2] \rightarrow [2]
-        \end{align*}
-        \item the nodes not appearing as an outgoing node are labeled by $[\atomorder]$
-    \end{itemize}
-    We say that the syntactical hypergraph is single-rooted, if exactly one node $\secnode$ does not appear as an incoming node of a hyperedge.
-    In this case this unique node is called the root node. % head node
-    We assign atomic formulas to the nodes $[\atomorder]$ and recursively assign to each further node $\node$ a node formula % connective $\connectiveofat{\node}{\headvariableof{\incomingnodes}}$.
-    \begin{align*}
-        \formulaofat{\node}{\indexedshortcatvariables}
-        = \connectiveofat{\node}{[\formulaofat{\thirdnode}{\indexedshortcatvariables}\wcols\thirdnode\in\incomingnodes]} \quad \forall\shortcatindicesin\, ,
-    \end{align*}
-    where $\incomingnodes$ are the incoming nodes in the unique hyperedge with outgoing nodes $\{\node\}$.
-    We call the formula $\exformulaat{\shortcatvariables}\coloneqq\formulaofat{\secnode}{\shortcatvariables}$ to the root note $\secnode$ the syntactical composition of $\graph$ and $\graph$ is a syntactical decomposition of $\exformula$.
-\end{definition}
-
-\begin{theorem}
-    \label{the:formulaDecompositionRep}
-    For any syntactical hypergraph $\graph$ with composition $\exformula$ we have
-    \begin{align*}
-        \exformulaat{\shortcatvariables}
-        = \breakablecontractionof{
-            &\left\{
-                 \bencodingofat{\connectiveof{\node}}{\headvariableof{\node},\headvariableof{\incomingnodes}} \wcols (\incomingnodes,\{\node\})\in\edges
-            \right\} \cup \\
-            & \{\identityat{\headvariableof{\atomenumerator},\catvariableof{\atomenumerator}} \wcols \atomenumeratorin\}
-            \cup \{\tbasisat{\headvariableof{\secnode}}\}
-        }{\shortcatvariables} \, .
-    \end{align*}
-\end{theorem}
-\begin{proof}
-    One can show this theorem by induction over the node formulas of the syntactical hypergraph, from the leafs to the root and iteratively applying \lemref{lem:formulaDecomp}.
-\end{proof}
-
-Thus we have a tensor network representation of any propositional formula based on its syntactical decomposition, where the hypergraph of the syntactical decomposition equals the hypergraph of the representing tensor network.
 
 \subsection{Contractions to decide entailment}
 
