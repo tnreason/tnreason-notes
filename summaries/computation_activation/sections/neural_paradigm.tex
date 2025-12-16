@@ -1,11 +1,9 @@
 \section{The Neural Paradigm}
 
-The neural paradigm of artificial intelligence exploits the decomposition of functions into neurons, which are aligned in layers.
+The neural paradigm of artificial intelligence exploits the decomposition of functions into neurons, which are aligned in a directed acyclic graph.
 We show in this section how functions decomposeable into neurons can be represented by tensor networks.
-To this end we formalize discrete eural models in decomposition graphs and formally proof the corresponding decomposition of their basis encodings.
+To this end we formalize discrete neural models in decomposition graphs and formally proof the corresponding decomposition of their basis encodings.
 Particular examples will be presented in the next section by propositional formulas with sparse syntactical descriptions.
-
-
 
 \begin{lemma}
     \label{lem:formulaDecomp}
@@ -54,8 +52,6 @@ Let us now define a more generic decomposition of discrete functions.
         \item The nodes not appearing as an incoming node are enumerated by $\node^{\outsymbol}_{[\seldim]}$.
         We abbreviate the variables by $\catvariableof{\node^{\outsymbol}_{[\selindex]}},\catvariableof{\node^{\insymbol}_{[\atomorder]}}=\headvariables$. %$[\seldim]$ are labeled by $\nodes^{\outsymbol}_{[\seldim]}$.
     \end{itemize}
-    %We say that the syntactical hypergraph is single-rooted, if exactly one node $\secnode$ does not appear as an incoming node of a hyperedge.
-    %In this case this unique node is called the root node. % head node
     We assign for each $\catenumeratorin$ restriction functions
     \begin{align*}
         \restrictionofto{\cdot}{\node^{\insymbol}_\catenumerator}
@@ -99,8 +95,7 @@ Let us now show how decomposition hypergraphs enable the sparse representation o
     One can show this theorem by induction over the node formulas of the syntactical hypergraph, from the leafs to the root and iteratively applying \lemref{lem:formulaDecomp}.
 \end{proof}
 
-
 % Weights
 When neurons have tunable parameters, we can discretize those by sets $\arbsetof{\catenumerator}$ and understand them as additional input variables
 
-\input{../examples/neural_paradigm/arithmetics}
+\input{../examples/neural_paradigm/mary_sum}
