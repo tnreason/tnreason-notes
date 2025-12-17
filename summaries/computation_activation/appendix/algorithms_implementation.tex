@@ -9,23 +9,38 @@
 
 The implementations of the algorithms and concepts are available at \href{https://github.com/tnreason/tnreason-py/tree/version2/demonstrations/comp_act_nets} and implemented with \tnreason{} in the version \curvertnreason{}.
 
-\subsection{Algorithm~\ref{alg:beliefPropagation} and \ref{alg:constraintPropagation}}
+\subsection{Algorithm~\ref{alg:beliefPropagation} and \ref{alg:constraintPropagation} (Belief and Constraint Propagation)}
 
 \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/algorithms/propagation.py}
 
-\subsection{Algorithm~\ref{alg:AMM_HLN}}
+\subsection{Algorithm~\ref{alg:AMM_HLN} (Alternating Moment Matching)}
 
 \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/algorithms/moment_matching.py}
 
-\subsection{Example~\ref{exa:studentHC} and \ref{exa:studentBP}}
+\subsection{Example~\ref{exa:marySum} (Integer Summation in $\catdim$-ary Representation)}
+
+Following the decomposition of summations in $\catdim$-ary into local summations, the function \mintinline{python}{get_sum_tn} produces a corresponding tensor network of basis encodings.
+We test by coordinate retrieval operations, whether the summation is performed correctly.
+
+\inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/mary_sum_example.py}
+
+\subsection{Example~\ref{exa:studentHC} and \ref{exa:studentBP} (Student Markov Network)}
+
+We here implement the Markov Network on the hypergraph of \exaref{exa:studentHC}, with tensors having independent random coordinates drawn from the uniform distribution on $[0,1]$.
+We test in a final \mintinline{python}{assert} statement, whether the messages resulting from \algoref{alg:beliefPropagation} in a tree implementation contract to the marginal distribution, which we directly compute for comparison.
+
+implications of \theref{the:treeBeliefPropagationExactness} hold
 
 \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/student_example.py}
 
-\subsection{Example~\ref{exa:sudokuEntailment}, \ref{exa:sudokuDecomposition} and \ref{exa:sudokuMessagePassing}}
+\subsection{Example~\ref{exa:sudokuEntailment}, \ref{exa:sudokuDecomposition} and \ref{exa:sudokuMessagePassing} (Sudoku Game)}
+
+We implement the $2^2\times2^2$ Sudoku with the start assignment given in \exaref{exa:sudokuEntailment} and apply the Constraint Propagation \algoref{alg:constraintPropagation} to deduce the full assignment.
+We then test whether the correct board assignment (given in \exaref{exa:sudokuMessagePassing}) has been found.
 
 \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/sudoku_example.py}
 
-\subsection{Example~\ref{exa:hlnAccountingRep} and \ref{exa:hlnAccountingAMM}}
+\subsection{Example~\ref{exa:hlnAccountingRep} and \ref{exa:hlnAccountingAMM} (Toy Accounting Model)}
 
 \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/accounting_example.py}
 
