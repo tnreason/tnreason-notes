@@ -42,12 +42,37 @@
                              \PYG{n}{otherSendKey} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{directions}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}\PYG{p}{:}
                     \PYG{n}{schedule}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{p}{(}\PYG{n}{receive}\PYG{p}{,} \PYG{n+nb}{next}\PYG{p}{)}\PYG{p}{)}
 
+    \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{directed\PYGZus{}propagation}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{edgeDirections}\PYG{p}{)}\PYG{p}{:}
+\PYG{+w}{        }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s+sd}{        Given the direction of edges in a dictionary, sent only in direction}
+\PYG{l+s+sd}{        \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+        \PYG{n}{filteredDirections} \PYG{o}{=} \PYG{p}{\PYGZob{}}
+            \PYG{n}{send}\PYG{p}{:} \PYG{p}{[}
+                \PYG{n}{receive} \PYG{k}{for} \PYG{n}{receive} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{directions}\PYG{p}{[}\PYG{n}{send}\PYG{p}{]}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n}{common} \PYG{o}{:=} \PYG{n+nb}{set}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cores}\PYG{p}{[}\PYG{n}{send}\PYG{p}{]}\PYG{o}{.}\PYG{n}{colors}\PYG{p}{)} \PYG{o}{\PYGZam{}} \PYG{n+nb}{set}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cores}\PYG{p}{[}\PYG{n}{receive}\PYG{p}{]}\PYG{o}{.}\PYG{n}{colors}\PYG{p}{)}\PYG{p}{)}
+                   \PYG{o+ow}{and} \PYG{n}{common}\PYG{o}{.}\PYG{n}{issubset}\PYG{p}{(}\PYG{n+nb}{set}\PYG{p}{(}\PYG{n}{edgeDirections}\PYG{p}{[}\PYG{n}{send}\PYG{p}{]}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}
+                   \PYG{o+ow}{and} \PYG{n}{common}\PYG{o}{.}\PYG{n}{issubset}\PYG{p}{(}\PYG{n+nb}{set}\PYG{p}{(}\PYG{n}{edgeDirections}\PYG{p}{[}\PYG{n}{receive}\PYG{p}{]}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}
+            \PYG{p}{]}
+            \PYG{k}{for} \PYG{n}{send} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{directions}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{n}{schedule} \PYG{o}{=} \PYG{p}{[}\PYG{p}{(}\PYG{n}{send}\PYG{p}{,} \PYG{n}{receive}\PYG{p}{)} \PYG{k}{for} \PYG{n}{send} \PYG{o+ow}{in} \PYG{n}{filteredDirections} \PYG{k}{for} \PYG{n}{receive} \PYG{o+ow}{in} \PYG{n}{filteredDirections}\PYG{p}{[}\PYG{n}{send}\PYG{p}{]} \PYG{k}{if}
+                    \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{edgeDirections}\PYG{p}{[}\PYG{n}{send}\PYG{p}{]}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{p}{)} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{]}
+
+        \PYG{k}{while} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{schedule}\PYG{p}{)} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{:}
+            \PYG{n}{send}\PYG{p}{,} \PYG{n}{receive} \PYG{o}{=} \PYG{n}{schedule}\PYG{o}{.}\PYG{n}{pop}\PYG{p}{(}\PYG{p}{)}
+            \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{messages}\PYG{p}{[}\PYG{n}{receive}\PYG{p}{]}\PYG{p}{[}\PYG{n}{send}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{calculate\PYGZus{}message}\PYG{p}{(}\PYG{n}{send}\PYG{p}{,} \PYG{n}{receive}\PYG{p}{)}
+            \PYG{k}{for} \PYG{n}{x} \PYG{o+ow}{in} \PYG{n+nb}{set}\PYG{p}{(}\PYG{n}{edgeDirections}\PYG{p}{[}\PYG{n}{send}\PYG{p}{]}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)} \PYG{o}{\PYGZam{}} \PYG{n+nb}{set}\PYG{p}{(}\PYG{n}{edgeDirections}\PYG{p}{[}\PYG{n}{receive}\PYG{p}{]}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{p}{)}\PYG{p}{:}
+                \PYG{n}{edgeDirections}\PYG{p}{[}\PYG{n}{receive}\PYG{p}{]}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{.}\PYG{n}{remove}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}
+            \PYG{k}{if} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{edgeDirections}\PYG{p}{[}\PYG{n}{receive}\PYG{p}{]}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{p}{)} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{:}
+                \PYG{n}{schedule} \PYG{o}{=} \PYG{n}{schedule} \PYG{o}{+} \PYG{p}{[}\PYG{p}{(}\PYG{n}{receive}\PYG{p}{,} \PYG{n+nb}{next}\PYG{p}{)} \PYG{k}{for} \PYG{n+nb}{next} \PYG{o+ow}{in} \PYG{n}{filteredDirections}\PYG{p}{[}\PYG{n}{receive}\PYG{p}{]} \PYG{k}{if} \PYG{p}{(}\PYG{n}{receive}\PYG{p}{,} \PYG{n+nb}{next}\PYG{p}{)} \PYG{o+ow}{not} \PYG{o+ow}{in} \PYG{n}{schedule}\PYG{p}{]}
+
     \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{constraint\PYGZus{}propagation}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{startSendKeys}\PYG{p}{)}\PYG{p}{:}
 \PYG{+w}{        }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
 \PYG{l+s+sd}{        Constraint implementation: Schedule new when message support changed}
 \PYG{l+s+sd}{        \PYGZdq{}\PYGZdq{}\PYGZdq{}}
         \PYG{n}{schedule} \PYG{o}{=} \PYG{p}{[}\PYG{p}{(}\PYG{n}{send}\PYG{p}{,} \PYG{n}{receive}\PYG{p}{)} \PYG{k}{for} \PYG{n}{send} \PYG{o+ow}{in} \PYG{n}{startSendKeys} \PYG{k}{for} \PYG{n}{receive} \PYG{o+ow}{in}
-                    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{directions}\PYG{p}{[}\PYG{n}{send}\PYG{p}{]} \PYG{k}{if} \PYG{n}{receive} \PYG{o}{!=} \PYG{n}{send}\PYG{p}{]}
+                    \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{directions}\PYG{p}{[}\PYG{n}{send}\PYG{p}{]}\PYG{p}{]}
         \PYG{k}{while} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{schedule}\PYG{p}{)} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{:}
             \PYG{n}{send}\PYG{p}{,} \PYG{n}{receive} \PYG{o}{=} \PYG{n}{schedule}\PYG{o}{.}\PYG{n}{pop}\PYG{p}{(}\PYG{p}{)}
             \PYG{n}{message} \PYG{o}{=} \PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{messages}\PYG{p}{[}\PYG{n}{receive}\PYG{p}{]}\PYG{p}{[}\PYG{n}{send}\PYG{p}{]}\PYG{o}{.}\PYG{n}{clone}\PYG{p}{(}\PYG{p}{)} \PYG{k}{if} \PYG{n}{send} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{messages}\PYG{p}{[}\PYG{n}{receive}\PYG{p}{]}

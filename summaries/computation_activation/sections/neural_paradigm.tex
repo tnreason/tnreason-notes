@@ -5,6 +5,8 @@ We show in this section how functions decomposeable into neurons can be represen
 To this end we formalize discrete neural models in decomposition graphs and formally proof the corresponding decomposition of their basis encodings.
 Particular examples will be presented in the next section by propositional formulas with sparse syntactical descriptions.
 
+\subsection{Function Decomposition}
+
 \begin{lemma}
     \label{lem:formulaDecomp}
     Let $\formulaat{\shortcatvariables}$ be a composition of a $\seldim$-ary connective function $\exconnective$ and functions $\formulaofat{\selindex}{\shortcatvariables}$, where $\selindexin$, i.e. for $\shortcatindices\in\atomstates$ we have
@@ -99,3 +101,48 @@ Let us now show how decomposition hypergraphs enable the sparse representation o
 When neurons have tunable parameters, we can discretize those by sets $\arbsetof{\catenumerator}$ and understand them as additional input variables
 
 \input{../examples/neural_paradigm/mary_sum}
+
+\subsection{Directed Message Passing}
+
+\begin{algorithm}[hbt!]
+    \caption{Directed Belief Propagation}\label{alg:directedBeliefPropagation}
+    \begin{algorithmic}
+        \Require Tensor network $\extnet$ on a directed hypergraph $\graph$
+        \Ensure Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
+        \iosepline
+        \State Prepare directed message directions
+        \begin{align*}
+            \dirovedges = \left\{
+                              \big((\innodes_{0},\outnodes_{0}),(\innodes_{1},\outnodes_{1})\big) \wcols
+                              \innodes_{0} \cap (\innodes_{1},\outnodes_{1}) = \varnothing
+                              \ncond
+                              \outnodes_{1} \cap (\innodes_{0},\outnodes_{0}) = \varnothing
+                              \ncond
+                               \outnodes_{0} \cap \innodes_{1} \neq \varnothing
+            \right\}
+        \end{align*}
+        \State Initialize a message queue $\scheduler=\{(\secsedge,\sedge) \wcols \secsedge \quad\text{has empty incoming nodes} \}]$
+        \While{$\scheduler$ not empty}
+            \State Pop a $(\sedge,\redge)$ pair from $\scheduler$
+            \State Update the message
+            \begin{align*}
+                \messagewith
+                = \contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}
+                    \cup \{\mesfromtoat{\secsedge}{\sedge}{\catvariableof{\secsedge\cap\sedge}} \wcols (\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge\}
+                }{\catvariableof{\sedge\cap \redge}}
+            \end{align*}
+            \State Update $\scheduler$ by all messages $(\redge,\thirdsedge)$ which have not yet been sent, if all messages $(\secsedge,\redge)$ have been sent.
+        \EndWhile
+        \State \Return Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{theorem}
+    \label{the:directedBeliefPropagationExactness}
+    \alex{
+        If all tensors are boolean and directed, then the messages in directed belief propagation gives the one-hot encodings of the node formulas evaluated at the inverse one-hot encoding at the leafs.
+        In particular, the messages are the correct contractions of the subgraph.}
+\end{theorem}
+\begin{proof}
+    By induction over the node formulas.
+\end{proof}

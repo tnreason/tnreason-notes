@@ -354,31 +354,54 @@ We here investigate message passing algorithms, which decompose contractions int
 The resulting algorithm is called Belief Propagation \algoref{alg:beliefPropagation}.
 We denote $\dirovedges$ to be all tuples $(\sedge,\redge)$ of hyperedges $\sedge,\redge\in\edges$ such that $\sedge\neq\redge$ and $\sedge\cap\redge\neq\varnothing$.
 
+%\begin{algorithm}[hbt!]
+%    \caption{Belief Propagation}\label{alg:beliefPropagation}
+%    \begin{algorithmic}
+%        \Require Tensor network $\extnet$ on a hypergraph $\graph$
+%        \Ensure Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
+%        \iosepline
+%        \State Initialize $\scheduler$ (differs in implementation)
+%        \State Initialize messages
+%        \While{$\scheduler$ not empty}
+%            \State Take a $(\sedge,\redge)$ pair from $\scheduler$
+%            \State Update the message
+%            \begin{align*}
+%                \messagewith
+%                = \contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}
+%                    \cup \{\mesfromtoat{\secsedge}{\sedge}{\catvariableof{\secsedge\cap\sedge}} \wcols (\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge\}
+%                }{\catvariableof{\sedge\cap \redge}}
+%            \end{align*}
+%            \State Update $\scheduler$ (differs in implementation)
+%        \EndWhile
+%        \State \Return Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
+%    \end{algorithmic}
+%\end{algorithm}
+
 \begin{algorithm}[hbt!]
-    \caption{Belief Propagation}\label{alg:beliefPropagation}
+    \caption{Tree Belief Propagation}\label{alg:beliefPropagation}
     \begin{algorithmic}
         \Require Tensor network $\extnet$ on a hypergraph $\graph$
         \Ensure Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
         \iosepline
-        \State Initialize $\scheduler$ (differs in implementation)
-        \State Initialize messages
+        \State Initialize $\scheduler=\{(\secsedge,\sedge) \wcols \secsedge \quad\text{a leaf in } \graph \}]$
+%        \State Initialize empty
         \While{$\scheduler$ not empty}
-            \State Take a $(\sedge,\redge)$ pair from $\scheduler$
-            \State Update the message
+            \State Pop a $(\sedge,\redge)$ pair from $\scheduler$
+            \State Compute the message
             \begin{align*}
                 \messagewith
                 = \contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}
                     \cup \{\mesfromtoat{\secsedge}{\sedge}{\catvariableof{\secsedge\cap\sedge}} \wcols (\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge\}
                 }{\catvariableof{\sedge\cap \redge}}
             \end{align*}
-            \State Update $\scheduler$ (differs in implementation)
+            \State Update $\scheduler$ by all messages $(\redge,\thirdsedge)$ which have not yet been sent, if all messages $(\secsedge,\redge)$ to $\secsedge\neq\thirdsedge$ have been sent.
         \EndWhile
         \State \Return Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
     \end{algorithmic}
 \end{algorithm}
 
 \begin{theorem}\label{the:treeBeliefPropagationExactness}
-    \alex{The final messages in the tree implementation are contracted to local marginals.}
+    \alex{The final messages in the tree belief propagation are contracted to local marginals.}
 \end{theorem}
 
 \input{../examples/probabilistic_paradigm/student_bp}

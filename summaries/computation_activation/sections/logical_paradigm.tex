@@ -305,7 +305,7 @@ We further directly reduce the computation of messages to their support and call
         \State Initialize messages $\messagewith = \onesat{\catvariableof{\sedge\cap\redge}}$ for $(\sedge,\redge)\in\dirovedges$
         \While{$\scheduler$ not empty}
             \State Pop a $(\sedge,\redge)$ pair from $\scheduler$
-            \State Compute
+            \State Update the message
             \begin{align*}
                 \messagewith
                 = \nonzeroof{\contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}
@@ -320,5 +320,17 @@ We further directly reduce the computation of messages to their support and call
         \State \Return Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
     \end{algorithmic}
 \end{algorithm}
+
+\begin{theorem}
+    \label{the:constraintPropagationSoundness}
+    \alex{All messages during constraint propagation are sound, \textbf{i.e}
+    \begin{align*}
+        \nonzeroof{\contractionof{\extnet}{\catvariableof{\sedge\cap\redge}}} \prec  \nonzeroof{\messagewith} \, .
+    \end{align*}
+    }
+\end{theorem}
+\begin{proof}
+    By induction using the monotonocity \theref{the:monotonicityPL} and invariance under adding entailed formulas \theref{the:addingEntailed}.
+\end{proof}
 
 \input{../examples/logical_paradigm/sudoku_message_passing.tex}
