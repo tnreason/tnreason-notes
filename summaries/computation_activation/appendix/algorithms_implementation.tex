@@ -9,7 +9,9 @@
 
 The implementations of the algorithms and concepts are available at \href{https://github.com/tnreason/tnreason-py/tree/version2/demonstrations/comp_act_nets} and implemented with \tnreason{} in the version \curvertnreason{}.
 
-\subsection{Algorithm~\ref{alg:beliefPropagation} and \ref{alg:constraintPropagation} (Belief and Constraint Propagation)}
+\subsection{Algorithm~\ref{alg:treeBeliefPropagation}, \ref{alg:directedBeliefPropagation} and \ref{alg:constraintPropagation} (Tree, Directed Belief and Constraint Propagation)}
+
+The three message passing algorithms are implemented as functions in a single class \mintinline{python}{ContractionPropagation}, since they share common structure.
 
 \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/algorithms/propagation.py}
 
@@ -27,9 +29,7 @@ We test by coordinate retrieval operations, whether the summation is performed c
 \subsection{Example~\ref{exa:studentHC} and \ref{exa:studentBP} (Student Markov Network)}
 
 We here implement the Markov Network on the hypergraph of \exaref{exa:studentHC}, with tensors having independent random coordinates drawn from the uniform distribution on $[0,1]$.
-We test in a final \mintinline{python}{assert} statement, whether the messages resulting from \algoref{alg:beliefPropagation} in a tree implementation contract to the marginal distribution, which we directly compute for comparison.
-
-implications of \theref{the:treeBeliefPropagationExactness} hold
+We test in a final \mintinline{python}{assert} statement, whether the messages resulting from \algoref{alg:treeBeliefPropagation} in a tree implementation contract to the marginal distribution, which we directly compute for comparison.
 
 \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/student_example.py}
 

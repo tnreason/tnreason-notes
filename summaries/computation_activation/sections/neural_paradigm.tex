@@ -7,24 +7,43 @@ Particular examples will be presented in the next section by propositional formu
 
 \subsection{Function Decomposition}
 
+As a main principle of tensor decompositions we now show that basis encodings of composition functions is the contraction of basis encodings to the components.
+
 \begin{lemma}
     \label{lem:formulaDecomp}
-    Let $\formulaat{\shortcatvariables}$ be a composition of a $\seldim$-ary connective function $\exconnective$ and functions $\formulaofat{\selindex}{\shortcatvariables}$, where $\selindexin$, i.e. for $\shortcatindices\in\atomstates$ we have
+    Let $\formulaat{\shortcatvariables}$ be a composition of a $\seldim$-ary connective function $\chainingfunction$ and functions $\formulaofat{\selindex}{\shortcatvariables}$, where $\selindexin$, i.e. for $\shortcatindices\in\atomstates$ we have
     \begin{align*}
-        \formulaat{\indexedshortcatvariables}
-        = \exconnective\left(\formulaofat{0}{\indexedshortcatvariables}, \dots, \formulaofat{\seldim-1}{\indexedshortcatvariables}\right) \, .
+        \formula(\shortcatindices)
+        = \chainingfunction\left(\formulaofat{0}{\shortcatindices}, \dots, \formulaofat{\seldim-1}{\shortcatindices}\right) \, .
     \end{align*}
     Then we have
     \begin{align*}
         \bencodingofat{\formula}{\headvariableof{\formula},\shortcatvariables}
         = \contractionof{
-            \{\bencodingofat{\exconnective}{\headvariableof{\formula},\headvariableof{[\seldim]}}\}
+            \{\bencodingofat{\chainingfunction}{\headvariableof{\formula},\headvariables}\}
             \cup \{\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}
         }{\headvariableof{\formula},\shortcatvariables} \, .
     \end{align*}
 \end{lemma}
 \begin{proof}
-    This can be shown on each index $\shortcatindices$.
+    For any $\shortcatindicesin$ we have
+    \begin{align*}
+        &\contractionof{
+            \{\bencodingofat{\chainingfunction}{\headvariableof{\formula},\headvariables}\}
+            \cup \{\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}
+        }{\headvariableof{\formula},\indexedshortcatvariables} \\
+        &\quad\quad= \contractionof{
+            \{\bencodingofat{\chainingfunction}{\headvariableof{\formula},\headvariables}\}
+            \cup \{\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\indexedshortcatvariables} \wcols \selindexin\}
+        }{\headvariableof{\formula}} \\
+        &\quad\quad= \contractionof{
+            \{\bencodingofat{\chainingfunction}{\headvariableof{\formula},\headvariables}\}
+            \cup \{\onehotmapofat{\formulaof{\selindex}(\shortcatindices)}{\headvariableof{\selindex}} \wcols \selindexin\}
+        }{\headvariableof{\formula}} \\
+        &\quad\quad= \onehotmapofat{\formula(\shortcatindices)}{\headvariableof{\formula}}\\
+        &\quad\quad= \bencodingofat{\formula}{\headvariableof{\formula},\indexedshortcatvariables} \, .
+    \end{align*}
+    Thus the tensors on both sides of the equation coincide in all slides to $\shortcatvariables$ and are thus equal.
 \end{proof}
 
 For the composition of two functions $\formulaat{\shortcatvariables}$ and $\secexformula\left[\shortcatvariables\right]$ the composition by some binary connective is pictured by:
@@ -36,7 +55,7 @@ Let us now define a more generic decomposition of discrete functions.
 
 \begin{definition}
     \label{def:decompositionHypergraph}
-    A decomposition hypergraph is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ such that
+    A \emph{decomposition hypergraph} is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ such that
     \begin{itemize}
         \item Each node $\nodein$ is decorated by a set $\arbsetof{\node}$ of finite cardinality $\catdimof{\node}$, a variable $\catvariableof{\node}$ and an index interpretation function
         \begin{align*}
@@ -44,7 +63,7 @@ Let us now define a more generic decomposition of discrete functions.
         \end{align*}
         \item Each directed hyperedge $(\incomingnodes,\outgoingnodes)$ has at least one outgoing node, i.e. $\outgoingnodes\neq\varnothing$ and is decorated by an activation function % propositional formula
         \begin{align*}
-            \secexfunctionof{\node} \defcols
+            \secexfunctionof{\edge} \defcols
             \bigtimes_{\node\in\incomingnodes} \arbsetof{\node}
             \rightarrow \bigtimes_{\node\in\outgoingnodes} \arbsetof{\node} \, .
         \end{align*}
@@ -52,7 +71,7 @@ Let us now define a more generic decomposition of discrete functions.
         \item The nodes not appearing as an outgoing node are enumerated by $\node^{\insymbol}_{[\atomorder]}$.
         We abbreviate the corresponding variables by $\catvariableof{\node^{\insymbol}_{[\atomorder]}}=\shortcatvariables$. % and labeled by $\nodes^{\insymbol}_{[\atomorder]}$.
         \item The nodes not appearing as an incoming node are enumerated by $\node^{\outsymbol}_{[\seldim]}$.
-        We abbreviate the variables by $\catvariableof{\node^{\outsymbol}_{[\selindex]}},\catvariableof{\node^{\insymbol}_{[\atomorder]}}=\headvariables$. %$[\seldim]$ are labeled by $\nodes^{\outsymbol}_{[\seldim]}$.
+        We abbreviate the variables by $\catvariableof{\node^{\outsymbol}_{[\selindex]}}=\headvariables$. %$[\seldim]$ are labeled by $\nodes^{\outsymbol}_{[\seldim]}$.
     \end{itemize}
     We assign for each $\catenumeratorin$ restriction functions
     \begin{align*}
@@ -65,7 +84,10 @@ Let us now define a more generic decomposition of discrete functions.
         \exfunctionof{\node} \wcols \bigtimes_{\catenumeratorin} \arbsetof{\node^{\insymbol}_\catenumerator} \rightarrow \bigtimes_{\node\in\outgoingnodes} \arbsetof{\node}
         \quad,\quad
         \exfunctionof{\node}(\catindexof{[\catorder]})
-        = \secexfunctionof{\node}\left(\bigtimes_{\node\in\incomingnodes}\restrictionofto{\exfunctionof{\edgeof{\node}}(\catindexof{[\catorder]})}{\node}\right) \, ,
+        = \restrictionofto{\secexfunctionof{\edge^\node}
+        \left(
+            \bigtimes_{\node\in\incomingnodes}\exfunctionof{\node}(\catindexof{[\catorder]})
+        \right)}{\node} \, ,
     \end{align*}
     where $\edgeof{\node}$ is to each $\node\in\incomingnodes$ the unique hyperedge with outgoing nodes $\{\node\}$.
     We then call the function
@@ -78,31 +100,33 @@ Let us now define a more generic decomposition of discrete functions.
     %We call the formula $\exformulaat{\shortcatvariables}\coloneqq\formulaofat{\secnode}{\shortcatvariables}$ to the root note $\secnode$ the syntactical composition of $\graph$ and $\graph$ is a syntactical decomposition of $\exformula$.
 \end{definition}
 
-%We now show, that the propositional formula allows for a decomposition into connective formulas, its basis encoding decomposes into the basis encodings of the connective formulas.
-
 % Neural Paradigm
 The neural paradigm in AI can be modelled by the existence of decomposition hypergraphs for functions on large sets.
 Let us now show how decomposition hypergraphs enable the sparse representation of composition functions by tensor networks.
 
 \begin{theorem}
     \label{the:functionDecompositionRep}
+%    \red{Merge into the message passing?}
     For any decomposition hypergraph $\graph$ with composition formula $\exfunctionof{\graph}$ we have
     \begin{align*}
         \bencodingofat{\exfunctionof{\graph}}{\headvariables,\shortcatvariables}
-        = \contractionof{\left\{\bencodingofat{\secexfunctionof{\node}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}} \wcols (\incomingnodes,\outgoingnodes)\in\edges\right\}
+        = \contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\outnodes},\catvariableof{\innodes}} \wcols \edge=(\innodes,\outnodes)\in\edges\right\}
         }{\headvariables,\shortcatvariables} \, .
     \end{align*}
 \end{theorem}
 \begin{proof}
-    One can show this theorem by induction over the node formulas of the syntactical hypergraph, from the leafs to the root and iteratively applying \lemref{lem:formulaDecomp}.
+    The claim follows by induction from the leafs to the root and iteratively applying \lemref{lem:formulaDecomp}.
 \end{proof}
 
 % Weights
-When neurons have tunable parameters, we can discretize those by sets $\arbsetof{\catenumerator}$ and understand them as additional input variables
+When neurons have tunable parameters, we can discretize those by sets $\arbsetof{\catenumerator}$ and understand them as additional input variables.
+
 
 \input{../examples/neural_paradigm/mary_sum}
 
 \subsection{Directed Message Passing}
+
+We now present an efficient inference algorithm based on tensor network contractions.
 
 \begin{algorithm}[hbt!]
     \caption{Directed Belief Propagation}\label{alg:directedBeliefPropagation}
@@ -118,7 +142,7 @@ When neurons have tunable parameters, we can discretize those by sets $\arbsetof
                               \ncond
                               \outnodes_{1} \cap (\innodes_{0},\outnodes_{0}) = \varnothing
                               \ncond
-                               \outnodes_{0} \cap \innodes_{1} \neq \varnothing
+                              \outnodes_{0} \cap \innodes_{1} \neq \varnothing
             \right\}
         \end{align*}
         \State Initialize a message queue $\scheduler=\{(\secsedge,\sedge) \wcols \secsedge \quad\text{has empty incoming nodes} \}]$
@@ -137,12 +161,46 @@ When neurons have tunable parameters, we can discretize those by sets $\arbsetof
     \end{algorithmic}
 \end{algorithm}
 
+% Application
+Let us now apply the Directed Belief Propagation Algorithm on a decomposition hypergraph, where we add hyperedges to each leaf node and assign one-hot encodings of input states.
+We then show that the messages are the one-hot encodings to the evaluations of the node functions.
+
 \begin{theorem}
     \label{the:directedBeliefPropagationExactness}
-    \alex{
-        If all tensors are boolean and directed, then the messages in directed belief propagation gives the one-hot encodings of the node formulas evaluated at the inverse one-hot encoding at the leafs.
-        In particular, the messages are the correct contractions of the subgraph.}
+    Let $\graph$ be a decomposition graph and let us add hyperedges containing single input nodes, which are decorated by one-hot encodings.
+    Then the messages computed in \algoref{alg:directedBeliefPropagation} are characterized by
+    \begin{align*}
+        \mesfromtowith{\sedge}{\redge}
+        = \bigotimes_{\node\in\sedge\cap\redge} \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \, .
+    \end{align*}
 \end{theorem}
 \begin{proof}
-    By induction over the node formulas.
+    We show the theorem inductively over the messages computed in \algoref{alg:directedBeliefPropagation}.
+    The first message is sent from an input edge $\{[\catenumerator]\}$ to an edge $\edge$ of the decomposition graph and is by assumption the one-hot encoding of an input state $\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}$.
+
+    Let us now assume, that at an arbitrary stage of the algorithm all previous messages satisfy the claimed equation.
+    The message computed in the while loop is then a contraction of one-hot encodings with basis encodings and
+    \begin{align*}
+        \mesfromtowith{\sedge}{\redge}
+        &=\contractionof{\{\bencodingofat{\secexfunctionof{\sedge}}{\catvariableof{\outnodes},\catvariableof{\innodes}}\} \cup
+            \{\mesfromtowith{\secsedge}{\sedge} \wcols (\secsedge,\sedge)\in\dirovedges\}
+        }{\catvariableof{\sedge\cap\redge}} \\
+        &=\contractionof{\{\bencodingofat{\secexfunctionof{\sedge}}{\catvariableof{\outnodes},\catvariableof{\innodes}}\} \cup
+            \{\onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \wcols \node\in\innodes\}
+        }{\catvariableof{\sedge\cap\redge}} \\
+        &= \bigotimes_{\node\in\sedge\cap\redge} \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \, .
+    \end{align*}
+    Thus also the new message is tensor product of the one-hot encodings of the evaluated node functions.
+    By induction, the property is therefore true for all messages.
 \end{proof}
+
+% Arbitrary DAG Hypergraph
+We notice, that we can interpret any directed acyclic hypergraph, for which each node appears exactly once as an outgoing node and which is decorated by boolean and directed tensors $\extnet$.
+Edges with empty incoming sets are carrying one-hot encodings of input states, and all further edges carry functions.
+
+%Let $\graph$ be a directed acyclic hypergraph, where each node appears exactly once as an outgoing node, and which is decorated by boolean and directed tensors $\extnet$.
+%We then interpret the tensors to the nodes not appearing as incoming nodes as one-hot encodings $\onehotmapofat{\shortcatindices}{\shortcatvariables}$.
+%The rest of the hypergraph is a decomposition graph with functions defined by the basis encodings $\hypercoreofat{\edge}{\catvariableof{\edge}}$.
+%If all tensors are boolean and directed, then the messages in directed belief propagation give the one-hot encodings of the node formulas evaluated at the inverse $\shortcatindices$ one-hot encoding at the leafs.
+%In particular, the messages are the correct contractions of the subgraph. % Needs the further above theorem?
+%

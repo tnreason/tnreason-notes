@@ -150,7 +150,6 @@ Thus we have a tensor network representation of any propositional formula based 
 %Thus we have a tensor network representation of any propositional formula based on its syntactical decomposition, where the hypergraph of the syntactical decomposition equals the hypergraph of the representing tensor network.
 %
 
-
 \subsection{Contractions to decide entailment}
 
 We have already seen that the contraction of a propositional formula counts its models.
@@ -278,20 +277,19 @@ We can futhermore add entailed formulas to the knowledge base without the latter
         \kbwith
         &= \contractionof{\kbwith,(\formulawith+\lnot\formulawith)}{\shortcatvariables} \\
         &= \contractionof{\kbwith,\formulawith}{\shortcatvariables}  + \contractionof{\kbwith,\lnot\formulawith}{\shortcatvariables}  \\
-       %&= \contractionof{\kbwith,\formulawith}{\shortcatvariables} \, .
+        %&= \contractionof{\kbwith,\formulawith}{\shortcatvariables} \, .
     \end{align*}
     Since $\contractionof{\kbwith,\lnot\formulawith}{\shortcatvariables}$ is boolean, we thus have that $\kbwith=\contractionof{\kbwith,\formulawith}{\shortcatvariables}$ if and only if $\contraction{\kbwith,\lnot\formulawith}=0$, that is $\kb\models\formula$.
 \end{proof}
 
 % Interpreting entailment
-One can understand entailment as "making the knowledge base more accessible":
-Adding deduced statements to a knowledge base does not change the knowledge base as a tensor, but one can interpret it in an easier way.
-\theref{the:addingEntailed} justifies this intuition in our tensor network formalism.
-
+The mechanism of \theref{the:addingEntailed} provides us with a mean to store entailment information in small order auxiliary tensors.
+%Adding deduced statements to a knowledge base does not change the knowledge base as a tensor, but one can exploit it in smaller contractions.
 % Constraint Propagation
-This motivates a message-passing approach to decide entailment by iteratively adding entailed formulas to the knowledge base and checking entailment on smaller parts of the knowledge base.
-Let us now refine \algoref{alg:beliefPropagation} to this situation.
-Since we are only interested in the support of the contractions, we schedule new messages in the direction $(\sedge,\redge)$, once the support of a message received at $\sedge$ has been changed.
+One way to exploit this accessibility of local entailment information are message passing schemes similar to \algoref{alg:treeBeliefPropagation} propagating the information.
+This approach decides local entailment by iteratively adding entailed formulas to the knowledge base and checking further entailment on neighbored tensors of the knowledge base.
+Since for entailment decisions the support of the contractions is sufficient, we can apply non-zero indicators before sending contraction messages.
+We then schedule new messages in the direction $(\sedge,\redge)$, once the support of a message received at $\sedge$ has been changed.
 Note that such a scheduling system is guaranteed to converge, since there can only be a finite number of message changes.
 We further directly reduce the computation of messages to their support and call the resulting \algoref{alg:constraintPropagation} Constraint Propagation.
 
@@ -323,14 +321,29 @@ We further directly reduce the computation of messages to their support and call
 
 \begin{theorem}
     \label{the:constraintPropagationSoundness}
-    \alex{All messages during constraint propagation are sound, \textbf{i.e}
+    All messages during constraint propagation are sound, i.e
     \begin{align*}
-        \nonzeroof{\contractionof{\extnet}{\catvariableof{\sedge\cap\redge}}} \prec  \nonzeroof{\messagewith} \, .
+        \nonzeroof{\contractionof{\extnet}{\catvariableof{\sedge\cap\redge}}} \prec  \messagewith \, .
     \end{align*}
-    }
 \end{theorem}
 \begin{proof}
-    By induction using the monotonocity \theref{the:monotonicityPL} and invariance under adding entailed formulas \theref{the:addingEntailed}.
+    We show this theorem by induction over the $\mathrm{While}$ loop of \algoref{alg:constraintPropagation}.
+    At the first iteration, we have for all messages $\messagewith=\onesat{\catvariableof{\sedge\cap\redge}}$ and thus
+    \begin{align}\label{eq:nzMessageAddingEquivalence}
+        \extnet = \contractionof{\{\extnet\}\cup\{\messagewith\wcols(\sedge,\redge)\in\dirovedges\}}{\nodevariables} \, .
+    \end{align}
+    By \theref{the:monotonicityPL} we then have for the first message send along the pair $(\sedge,\redge)$ that
+    \begin{align*}
+        \nonzeroof{\contractionof{\extnet}{\catvariableof{\sedge\cap\redge}}} \prec
+        &\nonzeroof{\contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}
+            \cup \{\mesfromtoat{\secsedge}{\sedge}{\catvariableof{\secsedge\cap\sedge}} \wcols (\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge\}
+        }{\catvariableof{\sedge\cap \redge}}} \\
+        &= \messagewith \, .
+    \end{align*}
+
+    Let us now assume that at an arbitrary state of the algorithm the inequality holds for all previous sent messages.
+    By \theref{the:addingEntailed} we can add contract the messages on the tensor network without changing it, and \eqref{eq:nzMessageAddingEquivalence} thus still holds.
+    We then conclude with \theref{the:monotonicityPL} that the claimed property also holds for the new message.
 \end{proof}
 
 \input{../examples/logical_paradigm/sudoku_message_passing.tex}
