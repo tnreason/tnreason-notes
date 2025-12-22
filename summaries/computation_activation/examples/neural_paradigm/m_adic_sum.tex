@@ -1,4 +1,4 @@
-\begin{example}[Sum of integers in $\catdim$-ary representation]
+\begin{example}[Sum of integers in $\catdim$-adic representation]
     \label{exa:marySum}
     Let us develop a tensor network representation of integer summations on the set $[\catdim^{\catorder}]=\{0,\ldots,\catdim^{\catorder}-1\}$, where $\catdim,\catorder\in\nn$,
     \begin{align*}
@@ -6,7 +6,7 @@
         \quad,\quad
         +(i,\tilde{i}) = i+\tilde{i} \,
     \end{align*}
-    which have a $\catdim$-ary representation of length $\catorder$.
+    which have a $\catdim$-adic representation of length $\catorder$.
     We define an index interpretation map
     \begin{align*}
         \indexinterpretation \defcols \bigtimes_{\catenumeratorin}[\catdim] \rightarrow [\catdim^{\catorder}]
@@ -27,15 +27,6 @@
     \end{align*}
     We notice that the tensor space of $\bencodingof{+}$ is of dimension $\catdim^{3\cdot\catorder+1}$ increasing exponentially in $\catorder$.
     Feasible representation of this tensor for large $\catorder$ therefore requires tensor network decompositions, which we now provide based on a decomposition hypergraph.
-%    The $\catdim$-ary representation of length $\catorder$ encodes numbers $i\in[\catdim^{\catdim}]$ by indices $\shortcatindices$.
-%    We understand these by index interpretation map
-%    \begin{align*}
-%        \indexinterpretation \defcols \facstates \rightarrow [\catdim^{\catorder}]
-%        \quad,\quad
-%        \indexinterpretationat{\shortcatindices}
-%        = \sum_{\catenumeratorin} \catindexof{\catenumerator} \cdot \catdim^{\catenumerator} \, .
-%    \end{align*}
-%    Let us now describe the sum of two $\catdim$-ary numbers as a decomposition hypergraph.
     The targeted function to be decomposed is the representation of the integer sum by
     \begin{align*}
         \marysumsymbol \defcols \left(\bigtimes_{\catenumeratorin}[\catdim]\right) \times \left(\bigtimes_{\catenumeratorin}[\catdim]\right) \rightarrow \bigtimes_{\catenumerator\in[\catorder+1]}[\catdim]
@@ -43,22 +34,8 @@
         \marysumsymbol(\shortcatindices,\tildecatindexof{[\catorder]}) =
         \invindexinterpretationat{\indexinterpretationat{\shortcatindices}+\indexinterpretationat{\tildecatindexof{[\catorder]}}} \, .
     \end{align*}
-%    where we denote for $\selindex\in[\catorder+1]$ the functions
-%    \begin{align*}
-%        \exfunctionof{\graph,\selindex} \defcols [\catdim^\catorder] \times [\catdim^\catorder] \rightarrow [\catdim^{\catorder+1}]
-%        \exfunctionof{\graph,\selindex}(\shortcatindices,\tildecatindexof{[\catorder]})
-%        = \left\lfloor\frac{
-%            \left(
-%                \sum_{\seccatenumerator\in[\catorder]} (\catindexof{\seccatenumerator}+\tildecatindexof{\seccatenumerator}) \cdot \catdim^{\seccatenumerator}
-%            \right) \modspace\catdim^{\selindex+1} }{\catdimof{\selindex}}\right\rfloor
-%    \end{align*}
     We build a decomposition hypergraph $\graph=(\nodes,\edges)$ (see \defref{def:decompositionHypergraph}) consistent in $4\cdot \catorder$ nodes (see \figref{fig:decompositionMarySum}a) .
     The nodes carry the $(3\cdot\catorder +1)$ variables $\shortcatvariables,\seccatvariableof{[\catorder]},\headvariableof{[\catorder+1]}$ of dimension $\catdim$ constructed above and $\catorder-1$ auxiliary variables $\thirdcatvariableof{[\catorder-1]}$ of dimension $2$ representing carry bits.
-%    \begin{itemize}
-%        \item $\catorder+\catorder$ variables $\shortcatvariables,\seccatvariableof{[\catorder]}$ of dimension $\catdim$, representing the $\catdim$-ary decomposition of the input numbers.
-%        \item $\catorder+1$ variables $\headvariableof{[\catdim+1]}$ of dimension $\catdim$, representing the $\catdim$-ary decomposition of the sum.
-%        \item $\catorder-1$ auxiliary variables $\thirdcatvariableof{[\catorder-1]}$ of dimension $2$ representing carry bits.
-%    \end{itemize}
     The directed hyperedges of $\graph$ are
     \begin{align*}
         \edges
@@ -77,7 +54,7 @@
     \end{align*}
     Since to the first hyperedge we do not have a carry bit, the decorating function is the restriction of the first argument to $0$.
 
-    It is known that the composition of the local summations $\modsumsymbol$ is the global summation $\marysumsymbol$ of integers in $\catdim$-ary representation.
+    It is known that the composition of the local summations $\modsumsymbol$ is the global summation $\marysumsymbol$ of integers in $\catdim$-adic representation.
     Thus, the composition function $\exfunctionof{\graph}$ is $\marysumsymbol$.
     By \theref{the:functionDecompositionRep} we have a decomposition of the basis encoding to $\exfunctionof{\graph}$ (see \figref{fig:decompositionMarySum}b) as
     \begin{align*}
@@ -218,7 +195,7 @@
         \end{center}
         \caption{Example of a decomposition hypergraph to the sum of integers (see \exaref{exa:marySum}).
         a) Hypergraph of directed edges $\edgeof{\catenumerator}$ for $\catenumeratorin$, each decorated by a integer summation $+$ preparing an index $\headvariableof{\catenumerator}$ of the resulting sum.
-        b) Corresponding tensor network decomposition of the basis encoded composition function, which is the sum of integers in $\catdim$-ary representation.}
+        b) Corresponding tensor network decomposition of the basis encoded composition function, which is the sum of integers in $\catdim$-adic representation.}
         \label{fig:decompositionMarySum}
     \end{figure}
 

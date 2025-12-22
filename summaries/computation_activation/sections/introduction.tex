@@ -41,6 +41,10 @@ The \emph{computation network} encodes the structural relations of a problem, su
 We generalize the standard tensor network diagrammatic notation to visually represent these components, defining the inference process as a graphical tensor contraction between structure and activation.
 Logical inference emerges when activations are boolean, probabilistic inference when they are real-valued, and hybrid reasoning when both coexist.
 
+\begin{figure}
+    \input{../tikz_pics/paradigms_sketch.tex}
+    \caption{Sketch of the Concepts in the Neural, Probabilistic and Logical Paradigms, which we define based on tensor-network decompositions and contractions.}\label{fig:paradigmsSketch}
+\end{figure}
 
 \subsection{Related works}
 
@@ -65,8 +69,6 @@ To address the topological constraints of MPS, the landscape of architectures wa
 Beyond the quantum realm, these formats have been successfully adapted to applied mathematics, particularly for solving high-dimensional parametric PDEs, sampling problems, modeling complex continuous fields and learning dynamical laws ~\cite{hagemann_sampling_2025, eigel_adaptive_2017, goessmann_tensor_2020}.
 Furthermore, they exhibit properties helpful for handling these high-dimensional spaces, such as restricted isometry properties~\cite{goessmann_uniform_2021}.
 Recent advancements have demonstrated the efficacy of these methods in capturing multiscale phenomena in fluid dynamics and turbulence, proving that the tensor network formalism offers a robust alternative to classical numerical schemes ~\cite{gourianov_tensor_2025}.
-
-
 
 
 %\subsection{Related Works}

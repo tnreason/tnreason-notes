@@ -32,7 +32,7 @@ As defined next, distributions $\probtensor$ over a discrete state space can be 
 
 A basic inference operation on probability distributions is the computation of marginal and conditional distribution.
 
-\begin{definition}
+\begin{definition}\label{def:marginalConditionalDistribution}
     For any distribution $\probat{\catvariable,\seccatvariable}$ the marginal distribution is given by the contraction
     \begin{align*}
         \probat{\catvariable} \coloneqq \contractionof{\probat{\catvariable,\seccatvariable}}{\catvariable}
@@ -344,6 +344,7 @@ Note that by construction each member of an exponential family is an element in 
         Tensor Network diagram of a member of an exponential family $\probfamilyofat{\sstat,\basemeasure}{\shortcatvariables}{\Theta=\canparam}$ before normalization as an \CompActNet{} with elementary activation, that is an element in $\cansof{\sstat,\elgraph,\basemeasure}$.}\label{fig:expdistElementary}
 \end{figure}
 
+%% NEEDED?
 \input{../examples/probabilistic_paradigm/two_boolean_cascade}
 
 \subsection{Efficient Contractions by Message Passing}

@@ -81,6 +81,10 @@ In this way the soft and hard logic can be combined in one framework.
 \alex{Propositional formulas of concern often have a syntactical specification as composed functions.
 We can therefore apply the neural paradigm to find efficient representations of them.}
 
+\begin{definition}[Syntactical Decompositions]\label{def:syntacticalDecomposition}
+    A syntactical decomposition of a propositional formula $\exformula$ is a decomposition hypergraph (see \defref{def:decompositionHypergraph}) such that all nodes are decorated with the dimension $\catdimof{\node}=2$ and composition function $\exformula$.
+\end{definition}
+
 Thus we have a tensor network representation of any propositional formula based on its syntactical decomposition, where the hypergraph of the syntactical decomposition equals the hypergraph of the representing tensor network.
 
 
