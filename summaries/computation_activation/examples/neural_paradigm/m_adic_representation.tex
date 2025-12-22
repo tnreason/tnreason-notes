@@ -1,5 +1,5 @@
 \begin{example}[Sum of integers in $\catdim$-adic representation]
-    \label{exa:marySum}
+    \label{exa:madicRepresentation}
     Let us develop a tensor network representation of integer summations on the set $[\catdim^{\catorder}]=\{0,\ldots,\catdim^{\catorder}-1\}$, where $\catdim,\catorder\in\nn$,
     \begin{align*}
         + \defcols [\catdim^\catorder] \times [\catdim^\catorder] \rightarrow [\catdim^{\catorder+1}]
@@ -60,11 +60,11 @@
     \begin{align*}
         \bencodingofat{\marysumsymbol}{\headvariableof{[\catorder+1]},\shortcatvariables,\tildecatvariableof{[\catorder]}}
         = \breakablecontractionof{
-            &\{\bencodingofat{\modsumsymbol}{\headvariableof{0},\thirdcatvariableof{0},\catvariableof{0},\tildecatvariableof{0}}\} \cup \\
-            &\{\bencodingofat{\modsumsymbol}{
+            &\{\bencodingofat{\modsumsymbol,0}{\headvariableof{0},\thirdcatvariableof{0},\catvariableof{0},\tildecatvariableof{0}}\} \cup \\
+            &\{\bencodingofat{\modsumsymbol,\catenumerator}{
             \headvariableof{\catenumerator},\thirdcatvariableof{\catenumerator},\catvariableof{\catenumerator},\tildecatvariableof{\catenumerator},\thirdcatvariableof{\catenumerator-1}
             }\wcols \catenumerator\in\{1,\ldots,\catorder-2\}\} \cup \\
-            &\{\bencodingofat{\modsumsymbol}{\headvariableof{\catorder-1},\headvariableof{\catorder},\catvariableof{\catorder-1},\tildecatvariableof{\catorder-1},\thirdcatvariableof{\catorder-2}}\}
+            &\{\bencodingofat{\modsumsymbol,\catorder-2}{\headvariableof{\catorder-1},\headvariableof{\catorder},\catvariableof{\catorder-1},\tildecatvariableof{\catorder-1},\thirdcatvariableof{\catorder-2}}\}
         }{\headvariableof{[\catorder+1]},\shortcatvariables,\tildecatvariableof{[\catorder]}} \, .
     \end{align*}
 
@@ -162,7 +162,7 @@
                 \node[anchor=east]  at (-1.5,0) {$=$};
 
                 \draw (-1,-1) rectangle (3,1);
-                \node[anchor=center] (A) at (1,0) {\corelabelsize $\bencodingof{\modsumsymbol}$};
+                \node[anchor=center] (A) at (1,0) {\corelabelsize $\bencodingof{\modsumsymbol,0}$};
                 \draw[->-] (1,1)--(1,3) node[midway,left] {\colorlabelsize $\headvariableof{0}$};
                 \draw[-<-] (0,-1)--(0,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
                 \draw[-<-] (2,-1)--(2,-2.5) node[midway,right] {\colorlabelsize $\tildecatvariableof{0}$};
@@ -170,7 +170,7 @@
 
                 \begin{scope}[shift={(7,0)}]
                     \draw (-1,-1) rectangle (3,1);
-                    \node[anchor=center] (A) at (1,0) {\corelabelsize $\bencodingof{\modsumsymbol}$};
+                    \node[anchor=center] (A) at (1,0) {\corelabelsize $\bencodingof{\modsumsymbol,1}$};
                     \draw[->-] (1,1)--(1,3) node[midway,left] {\colorlabelsize $\headvariableof{1}$};
                     \draw[-<-] (0,-1)--(0,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
                     \draw[-<-] (2,-1)--(2,-2.5) node[midway,right] {\colorlabelsize $\tildecatvariableof{1}$};
@@ -182,7 +182,7 @@
                 \begin{scope}[shift={(22,0)}]
                     \draw[->-] (-4,0)--(-1,0) node[midway,above] {\colorlabelsize $\thirdcatvariableof{\catorder\shortminus 2}$};
                     \draw (-1,-1) rectangle (3,1);
-                    \node[anchor=center] (A) at (1,0) {\corelabelsize $\bencodingof{\modsumsymbol}$};
+                    \node[anchor=center] (A) at (1,0) {\corelabelsize $\bencodingof{\modsumsymbol,\catorder-1}$};
                     \draw[->-] (1,1)--(1,3) node[midway,left] {\colorlabelsize $\headvariableof{\catorder\shortminus1}$};
                     \draw[-<-] (0,-1)--(0,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
                     \draw[-<-] (2,-1)--(2,-2.5) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catorder\shortminus1}$};
@@ -193,7 +193,7 @@
 
             \end{tikzpicture}
         \end{center}
-        \caption{Example of a decomposition hypergraph to the sum of integers (see \exaref{exa:marySum}).
+        \caption{Example of a decomposition hypergraph to the sum of integers (see \exaref{exa:madicRepresentation}).
         a) Hypergraph of directed edges $\edgeof{\catenumerator}$ for $\catenumeratorin$, each decorated by a integer summation $+$ preparing an index $\headvariableof{\catenumerator}$ of the resulting sum.
         b) Corresponding tensor network decomposition of the basis encoded composition function, which is the sum of integers in $\catdim$-adic representation.}
         \label{fig:decompositionMarySum}

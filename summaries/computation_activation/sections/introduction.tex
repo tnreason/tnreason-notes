@@ -55,14 +55,7 @@ Unlike post-hoc interpretations—which analyze input influence or fit surrogate
 
 %%% Tensor Networks
 
-%To this end,
-\emph{Tensor Networks} have recently gained interest as a unifying language for AI, framed by Logical Tensor Networks \cite{badreddine_logic_2022} and Tensor Logic \cite{domingos_tensor_2025}.
-Furthermore, the MeLoCoToN approach \cite{ali_explicit_2025} applies tensor network architectures similar to \CompActNets{} in combinatorical optimization problems.
-Specifically, tensor networks have emerged as a highly efficient mathematical framework for handling data in high-dimensional spaces, effectively circumventing the "curse of dimensionality" that typically plagues grid-based methods ~\cite{hackbusch_tensor_2012}.
-By decomposing high-order tensors into networks of low-rank components, these structures reduce the storage and computational complexity from exponential to polynomial with respect to the dimension ~\cite{oseledets_tensor-train_2011, hackbusch_new_2009, hitchcock_expression_1927}.
-
-%%% History of TN
-
+%% History of TN
 Historically rooted in quantum many-body physics ~\cite{white_density-matrix_1993}, tensor networks found its first major success with Matrix Product States (MPS), originally developed to efficiently capture the quantum dynamics and ground states of one-dimensional spin chains ~\cite{affleck_rigorous_1987}.
 This format remains a standard tool in the field, with recent contributions refining it for tasks such as large-scale stochastic simulations and variational circuit operations ~\cite{sander_large-scale_2025, sander_quantum_2025}.
 To address the topological constraints of MPS, the landscape of architectures was subsequently expanded to include Projected Entangled Pair States (PEPS) for two-dimensional lattices and the Multi-scale Entanglement Renormalization Ansatz (MERA), which utilizes a hierarchical geometry to represent scale-invariant critical systems and has recently been adapted for simulating quantum systems ~\cite{orus_tensor_2019, berezutskii_simulating_2025}.
@@ -70,8 +63,11 @@ Beyond the quantum realm, these formats have been successfully adapted to applie
 Furthermore, they exhibit properties helpful for handling these high-dimensional spaces, such as restricted isometry properties~\cite{goessmann_uniform_2021}.
 Recent advancements have demonstrated the efficacy of these methods in capturing multiscale phenomena in fluid dynamics and turbulence, proving that the tensor network formalism offers a robust alternative to classical numerical schemes ~\cite{gourianov_tensor_2025}.
 
-
-%\subsection{Related Works}
+%% Tensor Networks in AI
+\emph{Tensor Networks} have recently gained interest as a unifying language for AI, framed by Logical Tensor Networks \cite{badreddine_logic_2022} and Tensor Logic \cite{domingos_tensor_2025}.
+Furthermore, the MeLoCoToN approach \cite{ali_explicit_2025} applies tensor network architectures similar to \CompActNets{} in combinatorical optimization problems.
+Specifically, tensor networks have emerged as a highly efficient mathematical framework for handling data in high-dimensional spaces, effectively circumventing the "curse of dimensionality" that typically plagues grid-based methods ~\cite{hackbusch_tensor_2012}.
+By decomposing high-order tensors into networks of low-rank components, these structures reduce the storage and computational complexity from exponential to polynomial with respect to the dimension ~\cite{oseledets_tensor-train_2011, hackbusch_new_2009, hitchcock_expression_1927}.
 
 \subsection{Structure of the paper}
 

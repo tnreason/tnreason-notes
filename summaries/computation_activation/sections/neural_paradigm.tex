@@ -16,7 +16,7 @@ As a main principle of tensor decompositions we now show that basis encodings of
         \formula(\shortcatindices)
         = \chainingfunction\left(\formulaofat{0}{\shortcatindices}, \dots, \formulaofat{\seldim-1}{\shortcatindices}\right) \, .
     \end{align*}
-    Then we have
+    Then we have (see \figref{fig:functionDecomposition})
     \begin{align*}
         \bencodingofat{\formula}{\headvariableof{\formula},\shortcatvariables}
         = \contractionof{
@@ -46,10 +46,14 @@ As a main principle of tensor decompositions we now show that basis encodings of
     Thus the tensors on both sides of the equation coincide in all slides to $\shortcatvariables$ and are thus equal.
 \end{proof}
 
-For the composition of two functions $\formulaat{\shortcatvariables}$ and $\secexformula\left[\shortcatvariables\right]$ the composition by some binary connective is pictured by:
-\begin{center}
-    \input{../tikz_pics/logic_representation/unary_binary_composition}
-\end{center}
+\begin{figure}[t]
+    \begin{center}
+        \input{../tikz_pics/neural_paradigm/unary_binary_composition}
+    \end{center}
+    \caption{Tensor network decomposition of a the basis encoding of a function $\exformula$, which is the composition of the functions $\formulaof{0},\ldots,\formulaof{\seldim-1}$ with a function $\chainingfunction$.}
+    \label{fig:functionDecomposition}
+\end{figure}
+
 
 Let us now define a more generic decomposition of discrete functions.
 
@@ -122,7 +126,7 @@ Let us now show how decomposition hypergraphs enable the sparse representation o
 When neurons have tunable parameters, we can discretize those by sets $\arbsetof{\catenumerator}$ and understand them as additional input variables.
 
 
-\input{../examples/neural_paradigm/m_adic_sum}
+\input{../examples/neural_paradigm/m_adic_representation}
 
 \subsection{Directed Message Passing}
 
@@ -197,6 +201,9 @@ We then show that the messages are the one-hot encodings to the evaluations of t
 % Arbitrary DAG Hypergraph
 We notice, that we can interpret any directed acyclic hypergraph, for which each node appears exactly once as an outgoing node and which is decorated by boolean and directed tensors $\extnet$.
 Edges with empty incoming sets are carrying one-hot encodings of input states, and all further edges carry functions.
+
+\input{../examples/neural_paradigm/m_adic_propagation}
+
 
 %Let $\graph$ be a directed acyclic hypergraph, where each node appears exactly once as an outgoing node, and which is decorated by boolean and directed tensors $\extnet$.
 %We then interpret the tensors to the nodes not appearing as incoming nodes as one-hot encodings $\onehotmapofat{\shortcatindices}{\shortcatvariables}$.
