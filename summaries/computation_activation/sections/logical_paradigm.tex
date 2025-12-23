@@ -81,7 +81,8 @@ In this way the soft and hard logic can be combined in one framework.
 \alex{Propositional formulas of concern often have a syntactical specification as composed functions.
 We can therefore apply the neural paradigm to find efficient representations of them.}
 
-\begin{definition}[Syntactical Decompositions]\label{def:syntacticalDecomposition}
+\begin{definition}[Syntactical Decompositions]
+    \label{def:syntacticalDecomposition}
     A syntactical decomposition of a propositional formula $\exformula$ is a decomposition hypergraph (see \defref{def:decompositionHypergraph}) such that all nodes are decorated with the dimension $\catdimof{\node}=2$ and composition function $\exformula$.
 \end{definition}
 
@@ -158,6 +159,8 @@ Thus we have a tensor network representation of any propositional formula based 
 
 We have already seen that the contraction of a propositional formula counts its models.
 This allows to define entailment between two propositional formulas as follows.
+\alex{To generalize the treatment, we do not demand any more that the variables of a formula are of dimension $2$.
+We further use $\lnot\formulawith=\oneswith-\formulawith$.}
 
 \begin{definition}[Entailment of propositional formulas]
     \label{def:logicalEntailment}
@@ -283,7 +286,11 @@ We can futhermore add entailed formulas to the knowledge base without the latter
         &= \contractionof{\kbwith,\formulawith}{\shortcatvariables}  + \contractionof{\kbwith,\lnot\formulawith}{\shortcatvariables}  \\
         %&= \contractionof{\kbwith,\formulawith}{\shortcatvariables} \, .
     \end{align*}
-    Since $\contractionof{\kbwith,\lnot\formulawith}{\shortcatvariables}$ is boolean, we thus have that $\kbwith=\contractionof{\kbwith,\formulawith}{\shortcatvariables}$ if and only if $\contraction{\kbwith,\lnot\formulawith}=0$, that is $\kb\models\formula$.
+    Since $\contractionof{\kbwith,\lnot\formulawith}{\shortcatvariables}$ is boolean, we thus have that
+    \begin{align*}
+        \kbwith=\contractionof{\kbwith,\formulawith}{\shortcatvariables}
+    \end{align*}
+    if and only if $\contraction{\kbwith,\lnot\formulawith}=0$, that is $\kb\models\formula$.
 \end{proof}
 
 % Interpreting entailment
@@ -333,7 +340,8 @@ We further directly reduce the computation of messages to their support and call
 \begin{proof}
     We show this theorem by induction over the $\mathrm{While}$ loop of \algoref{alg:constraintPropagation}.
     At the first iteration, we have for all messages $\messagewith=\onesat{\catvariableof{\sedge\cap\redge}}$ and thus
-    \begin{align}\label{eq:nzMessageAddingEquivalence}
+    \begin{align}
+        \label{eq:nzMessageAddingEquivalence}
         \extnet = \contractionof{\{\extnet\}\cup\{\messagewith\wcols(\sedge,\redge)\in\dirovedges\}}{\nodevariables} \, .
     \end{align}
     By \theref{the:monotonicityPL} we then have for the first message send along the pair $(\sedge,\redge)$ that
