@@ -1,4 +1,4 @@
-\begin{thebibliography}{46}
+\begin{thebibliography}{48}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -226,6 +226,16 @@ Zachary~C. Lipton.
 \newblock \doi{10.1145/3233231}.
 \newblock URL \url{https://dl.acm.org/doi/10.1145/3233231}.
 
+\bibitem[Mackworth(1977)]{mackworth_consistency_1977}
+Alan~K. Mackworth.
+\newblock Consistency in networks of relations.
+\newblock \emph{Artificial Intelligence}, 8\penalty0 (1):\penalty0 99--118,
+  February 1977.
+\newblock ISSN 0004-3702.
+\newblock \doi{10.1016/0004-3702(77)90007-8}.
+\newblock URL
+  \url{https://www.sciencedirect.com/science/article/pii/0004370277900078}.
+
 \bibitem[Marra et~al.(2024)Marra, Dumančić, Manhaeve, and
   De~Raedt]{marra_statistical_2024}
 Giuseppe Marra, Sebastijan Dumančić, Robin Manhaeve, and Luc De~Raedt.
@@ -250,6 +260,12 @@ Kevin~P. Murphy.
 \newblock \emph{Probabilistic {Machine} {Learning}: {An} {Introduction}}.
 \newblock The MIT Press, Cambridge, Massachusetts London, England, March 2022.
 \newblock ISBN 978-0-262-04682-4.
+
+\bibitem[Mézard(2009)]{mezard_information_2009}
+Marc Mézard.
+\newblock \emph{Information, {Physics}, and {Computation}}.
+\newblock ACADEMIC, Oxford ; New York, March 2009.
+\newblock ISBN 978-0-19-857083-7.
 
 \bibitem[Nickel et~al.(2016)Nickel, Murphy, Tresp, and
   Gabrilovich]{nickel_review_2016}

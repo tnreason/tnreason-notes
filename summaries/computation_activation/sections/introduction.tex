@@ -1,7 +1,7 @@
 \section{Introduction}
 
 % Neural Paradigm
-Modern artificial intelligence is dominated by large-scale neural models that excel at various tasks but mostly remain black-boxes.
+Modern artificial intelligence is dominated by large-scale neural models that excel at various tasks but mostly remain black-boxes \cite{vaswani_attention_2017}.
 While these models offer adaptability, the two main concerns when integrating these architectures into safety-critical processes, are reliability and explainability.
 % Symbolic Paradigm: Logical & Probabilistic
 To match these demands, artificial intelligence has followed symbolic paradigms, to which probabilistic and logical approaches have been developed.
@@ -12,48 +12,35 @@ However, the main problem hindering the success of this classical approach is th
 % Probabilistic Paradigm
 Probabilistic graphical models~\cite{pearl_probabilistic_1988,koller_probabilistic_2009}, provide insights based on encoded variable independences and causality \cite{pearl_causality_2009}. % and logical formulas within exponential families~\cite{wainwright_graphical_2008}.
 While probabilistic models and Statistical Relational AI~\cite{nickel_review_2016,getoor_introduction_2019} have improved uncertainty handling, bridging these paradigms remains the central goal of \emph{Neuro-Symbolic AI}~\cite{hochreiter_toward_2022, sarker_neuro-symbolic_2022, colelough_neuro-symbolic_2024}.
-Building on early connectionist approaches~\cite{towell_knowledge-based_1994,avila_garcez_connectionist_1999} and aligning with statistical relational learning~\cite{marra_statistical_2024}, the field seeks a single, mathematically coherent framework combining structural clarity with neural adaptability.
-%We demonstrate the practical power of this unified representation by benchmarking the framework on constraint satisfaction tasks like Sudoku problems from Sakana AI, confirming its ability to perform exact symbolic inference.
+The field seeks a single, mathematically coherent framework combining structural clarity with neural adaptability.
 Although progress has been made, for example with Markov Logic Networks~\cite{richardson_markov_2006}, a fully unified substrate that treats logical and probabilistic inference as instances of the same operation, is still missing. % requires a more flexible linear-algebraic foundation.
 
-%% TNREASON to bridge the gap between logical and probabilistic reasoning
+%% TN to bridge the conceptual gap between logical, probabilistic and neural paradigms
 We in this work propose to fill the gap between the probabilistic, neural and logical paradigm with \emph{tensor networks}, in a framework called \tnreason{}. %~\cite{goessmann_tensor-network_2025}.
 % Representation
 Tensor spaces capture both the semantics of logical formulas (by boolean tensors) and probability distributions (by normalized non-negative tensors).
-%Most significantly for the present work, we exploit the algebraic flexibility of tensor networks to bridge the gap between continuous numerical representation and discrete symbolic reasoning.
-%To this end, we demonstrate how the fundamental principles of probabilistic and logical representation schemes are captured by tensor network decompositions.
+This abstraction eliminates the traditional divide between symbolic and neural representations: logical inference, probabilistic computations and neural inference become different instances of the same underlying operation.
+% Tensor Network Decompositions
 As naive tensors are prone to the curse of dimensionality, we turn to distributed representation schemes by tensor networks.
 We show that fundamental sparsity principles of neural and symbolic AI, such as conditional independence, existence of sufficient statistics and neural model decomposition, are equivalent to tensor network decompositions.
 % Reasoning
 Moreover, we identify tensor network contraction as fundamental inference instances, which correspond with computation of marginal distributions and the decision of entailment.
-This abstraction eliminates the traditional divide between symbolic and neural representations: logical inference, probabilistic computations and neural inference become different instances of the same underlying operation.
-
 %% Message Passing Schemes
-Efficient schemes to perform inference are known as message passing schemes (appearing as sum-product, belief propagation, etc.)..
-These schemes underly distributed approaches to contract tensor networks based on efficient local contractions.
+While these contractions are in general computationally hard, efficient schemes to perform inference are known as message passing schemes.
+These algorithms have appeared in different communities under names such as belief propagation \cite{pearl_probabilistic_1988,mezard_information_2009} and constraint propagation \cite{mackworth_consistency_1977}.
+We review these schemes based on our tensor network formalism.
 
-%where logical formulas (boolean tensors) and probabilistic distributions (real tensors) are manipulated through the same algebra of tensor contraction.
-%We build upon the recently developed \emph{\tnreason{}} framework~\cite{goessmann_tensor-network_2025}, which establishes tensor networks as a unifying foundation
+%% CompActNets
+To capture both logical and probabilistic models, and exploit their neural decompositions, we introduce \emph{\ComputationActivationNetworks{} (\CompActNets{})}, an expressive tensor network architecture.
+The architecture consistent in two complementary subarchitectures, which serve the purpose of computation and activation, respectively.
+The \emph{computation network} prepares auxiliary hidden variables with deterministic dependence on the main variables.
+We interpret the network as a distributed computation scheme of functions describing the dependence, which decomposition is related to sparsity concepts of the corresponding functions. %is reflected in the computation.
+These auxiliary variables represent in different contexts logical formulas or more generic statistics.
+The \emph{activation network} then assigns numerical values to the states of those auxiliary variables, and in this way activates the variables to represent factors of a model.
+Logical models emerge when the activation network is a boolean tensor, probabilistic exponential families when they are elementary positive valued tensors, and hybrid models in most general cases.
 
-%In this paper,
-To capture both logical and probabilistic models, we introduce \emph{\ComputationActivationNetworks{} (\CompActNets{})}, an architecture that organizes this reasoning into two complementary substructures.
-The \emph{computation network} encodes the structural relations of a problem, such as logical dependencies or more generic statistics, while the \emph{activation network} assigns semantic or numerical values to these structures.
-We generalize the standard tensor network diagrammatic notation to visually represent these components, defining the inference process as a graphical tensor contraction between structure and activation.
-Logical inference emerges when activations are boolean, probabilistic inference when they are real-valued, and hybrid reasoning when both coexist.
-
-\begin{figure}
-    \input{../tikz_pics/paradigms_sketch.tex}
-    \caption{Sketch of the Concepts in the Neural, Probabilistic and Logical Paradigms, which we define based on tensor-network decompositions and contractions.}\label{fig:paradigmsSketch}
-\end{figure}
 
 \subsection{Related works}
-
-%% Neuro-Symbolic
-The unification of neural, symbolic and probabilistic approaches to interpretable model architectures has been a long-standing aim.
-A central goal is to achieve \emph{intrinsic explainability}.
-Unlike post-hoc interpretations—which analyze input influence or fit surrogate models after training~\cite{lipton_mythos_2018,barredo_arrieta_explainable_2020}—the proposed framework encodes symbolic relations that remain directly readable, building explainability into the architecture itself.
-
-%%% Tensor Networks
 
 %% History of TN
 Historically rooted in quantum many-body physics ~\cite{white_density-matrix_1993}, tensor networks found its first major success with Matrix Product States (MPS), originally developed to efficiently capture the quantum dynamics and ground states of one-dimensional spin chains ~\cite{affleck_rigorous_1987}.
@@ -63,6 +50,12 @@ Beyond the quantum realm, these formats have been successfully adapted to applie
 Furthermore, they exhibit properties helpful for handling these high-dimensional spaces, such as restricted isometry properties~\cite{goessmann_uniform_2021}.
 Recent advancements have demonstrated the efficacy of these methods in capturing multiscale phenomena in fluid dynamics and turbulence, proving that the tensor network formalism offers a robust alternative to classical numerical schemes ~\cite{gourianov_tensor_2025}.
 
+%% Neuro-Symbolic AI
+The unification of neural, symbolic and probabilistic approaches to interpretable model architectures has been a long-standing aim of Neuro-Symbolic AI.
+A central goal is to achieve \emph{intrinsic explainability}, which unlike post-hoc interpretations analysing input influence after training~\cite{lipton_mythos_2018,barredo_arrieta_explainable_2020} aims at explainability of the architecture itself.
+Early connectionist approaches~\cite{towell_knowledge-based_1994,avila_garcez_connectionist_1999} towards Neuro-Symbolic AI focus on embedding logical rules into neural connectivity.
+Further, fruitful relations with statistical relational learning have been identified~\cite{marra_statistical_2024}.
+
 %% Tensor Networks in AI
 \emph{Tensor Networks} have recently gained interest as a unifying language for AI, framed by Logical Tensor Networks \cite{badreddine_logic_2022} and Tensor Logic \cite{domingos_tensor_2025}.
 Furthermore, the MeLoCoToN approach \cite{ali_explicit_2025} applies tensor network architectures similar to \CompActNets{} in combinatorical optimization problems.
@@ -71,9 +64,22 @@ By decomposing high-order tensors into networks of low-rank components, these st
 
 \subsection{Structure of the paper}
 
+\begin{figure}
+    \input{../tikz_pics/paradigms_sketch.tex}
+    \caption{Sketch of the Concepts in the Neural, Probabilistic and Logical Paradigms, which we define based on tensor-network decompositions and contractions.}\label{fig:paradigmsSketch}
+\end{figure}
+
 The paper is organized as follows.
-Section~\ref{sec:notation} introduces the basic notation for categorical variables, tensors, and tensor networks, establishing the formal framework on which all subsequent reasoning structures are defined.
-Section~\ref{sec:prob_rep} develops the probabilistic representation of reasoning through soft activation, showing how exponential-family distributions can be expressed as tensor networks based on independence assumptions and sufficient statistics.
-Section~\ref{sec:log_rep} turns to hard activation, formulating propositional logic within the same tensor framework and demonstrating how logical inference, entailment, and knowledge bases can be represented by boolean tensors and contractions.
-Section~\ref{sec:hyb_rep} unifies these two perspectives in the concept of Hybrid Logic Networks, which integrate hard logical constraints with soft probabilistic activations, thereby forming the core of the computation–activation architecture.
-The paper concludes with coding examples in section~\ref{sec:code} that illustrate the expressive power and interpretability of this unified tensor-based reasoning approach.
+We present in section~\ref{sec:notation} the basic concepts and notation for categorical variables, tensors, and tensor networks, which will be applied in the following sections.
+Sections~\ref{sec:probPar}, \ref{sec:neurPar} and \ref{sec:logPar} anchor the tensor network formalism in the basic paradigms of artificial intelligence (see \figref{fig:paradigmsSketch}). %: the probabilistic, neural, and logical paradigm, respectively.
+The \emph{probabilistic paradigm} is discussed in section~\ref{sec:probPar}, where we in particular show that concepts of independence, graphical models, and sufficient statistics correspond to specific tensor network decompositions.
+Section~\ref{sec:neurPar} is dedicated to the \emph{neural paradigm}, where we show that generic function decompositions have their analogous tensor networks.
+Section~\ref{sec:logPar} turns to the \emph{logical paradigm}, where we study tensor equivalents of propositional formulas, knowledge bases, and entailment.
+In Section~\ref{sec:hln} we then present \emph{\HybridLogicNetworks{}} as an application of the unified tensor network formalism, which combine logical and probabilistic models.
+We briefly discuss the implementation of these concepts in the \python{} package \tnreason{} in Section~\ref{sec:implementation}, before concluding the paper in section~\ref{sec:conclusion}.
+
+%Section~\ref{sec:notation} introduces the basic notation for categorical variables, tensors, and tensor networks, establishing the formal framework on which all subsequent reasoning structures are defined.
+%Section~\ref{sec:probPar} develops the probabilistic representation of reasoning through soft activation, showing how exponential-family distributions can be expressed as tensor networks based on independence assumptions and sufficient statistics.
+%Section~\ref{sec:logPar} turns to hard activation, formulating propositional logic within the same tensor framework and demonstrating how logical inference, entailment, and knowledge bases can be represented by boolean tensors and contractions.
+%Section~\ref{sec:hln} unifies these two perspectives in the concept of Hybrid Logic Networks, which integrate hard logical constraints with soft probabilistic activations, thereby forming the core of the computation–activation architecture.
+%The paper concludes with coding examples in section~\ref{sec:implementation} that illustrate the expressive power and interpretability of this unified tensor-based reasoning approach.
