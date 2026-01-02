@@ -1,4 +1,4 @@
-\begin{thebibliography}{48}
+\begin{thebibliography}{49}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -65,6 +65,12 @@ A.~V. Berezutskii, I.~A. Luchnikov, and A.~K. Fedorov.
 \newblock \doi{10.1103/PhysRevResearch.7.013063}.
 \newblock URL \url{https://link.aps.org/doi/10.1103/PhysRevResearch.7.013063}.
 \newblock Publisher: American Physical Society.
+
+\bibitem[Brown(1987)]{brown_fundamentals_1987}
+Lawrence~D. Brown.
+\newblock \emph{Fundamentals of {Statistical} {Exponential} {Families}}.
+\newblock Institute of mathematical Statistics, Hayward, Calif, June 1987.
+\newblock ISBN 978-0-940600-10-2.
 
 \bibitem[Casella and Berger(2001)]{casella_statistical_2001}
 George Casella and Roger Berger.

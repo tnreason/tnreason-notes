@@ -1,31 +1,34 @@
-\begin{example}[Order Statistic for Boolean Variables: Coin toss interpretation]\label{exa:coinToss}
-    Let there be $\catorder$ boolean variables $\shortcatvariables$ and a family $\{\probofat{\theta}{\shortcatvariables}\wcols\theta\in\Theta\}$ of distributions.
+\begin{example}[Order Statistic for Boolean Variables]\label{exa:coinToss}
+    Let there be $\catorder$ boolean variables $\shortcatvariables$ and a family $\condprobat{\shortcatvariables}{\thirdcatvariable}$ of distributions.
     The order statistic assigns to each tuple $\shortcatindices$ the ordered tuple, which effectively counts the number of $1$ coordinates in the tuple $\shortcatindices$, that is the statistic
     \begin{align*}
-        \sstatof{+} \defcols \facstates \rightarrow [\seldim] \quad, \quad \sstatof{+}(\shortcatindices) = \cardof{\{\catenumerator \wcols \catindexof{\catenumerator}=1\}} \, .
+        \sstatof{+} \defcols \facstates \rightarrow [\seldim] \quad, \quad
+        \sstatof{+}(\shortcatindices) = \cardof{\{\catenumerator \wcols \catindexof{\catenumerator}=1\}} \, .
     \end{align*}
-    When the order statistic is sufficient, the detailed order of the outcomes is uninformative about the member $\theta\in\Theta$ from which the random variables have been drawn.
+    When the order statistic is sufficient for $\thirdcatvariable$, the detailed order of the outcomes is uninformative about the member $\thirdcatindex$ from which the random variables have been drawn.
     Let us now investigate those families for which $\sstatof{+}$ is a sufficient statistic.
     By the Fisher-Neyman Factorization Theorem \theref{the:factorizationFisherNeyman} $\sstatof{+}$ is a sufficient statistic if and only if there are tensors $\basemeasurewith$ and $\acttensorat{\headvariableof{+},\Theta}$ such that for each $\theta\in\Theta$
     \begin{align*}
-        \probofat{\theta}{\shortcatvariables}
+        \condprobat{\shortcatvariables}{\indexedthirdcatvariable}
         = \contractionof{
-            \acttensorofat{\theta}{\headvariableof{+}},\bencodingofat{\sstatof{+}}{\headvariableof{+},\shortcatvariables},\basemeasurewith}{\shortcatvariables} \, .
+            \acttensorat{\headvariableof{+},\indexedthirdcatvariable},\bencodingofat{\sstatof{+}}{\headvariableof{+},\shortcatvariables},\basemeasurewith}{\shortcatvariables} \, .
     \end{align*}
-
-    The family of distributions, such that the variables $\shortcatvariables$ are i.i.d. with respect to each other (see \exaref{exa:ctHc}) are the special case, where $\basemeasurewith=\onesat{\shortcatvariables}$ and the family is labeled by $\theta\in[0,1]$ such that for $\theta\in(0,1)$ and $\catenumerator\in[\catorder+1]$
-    \begin{align*}
-        \acttensorofat{\theta}{\headvariableof{+}=\catenumerator}
-        = (1-\theta)^{\catorder-\catenumerator} \cdot \theta^{\catenumerator} \, ,
-    \end{align*}
-    and for $\theta\in\{0,1\}$
-    \begin{align*}
-        \acttensorofat{\theta}{\headvariableof{+}}  = \begin{cases}
-                                                          \onehotmapofat{0}{\headvariableof{+}} & \ifspace \theta=0 \\
-                                                          \onehotmapofat{\catorder}{\headvariableof{+}} & \ifspace \theta=1
-        \end{cases}\, .
-    \end{align*}
-    The marginal distribution $\probofat{\theta}{\headvariableof{+}}$ is then the binominal distribution $B(\catorder,\theta)$.
+    For each member $\thirdcatindex$ of the family, the probability of each sequence $\shortcatindices$ is thus the product of a base measure factor $\basemeasureat{\indexedshortcatvariables}$ and a factor $\acttensorat{\headvariableof{+}=+(\shortcatindices),\indexedthirdcatvariable}$ depending only on the count $+(\shortcatindices)$ of $1$ coordinates in $\shortcatindices$.
+    We will continue this example later in \exaref{exa:coinTossExp}, where we provide further interpretations to the case of i.i.d. variables.
+%% TO EXP FAMILY LATER
+%    The family of distributions, such that the variables $\shortcatvariables$ are i.i.d. with respect to each other (see \exaref{exa:ctHc}) are the special case, where $\basemeasurewith=\onesat{\shortcatvariables}$ and the family is labeled by $\theta\in[0,1]$ such that for $\theta\in(0,1)$ and $\catenumerator\in[\catorder+1]$
+%    \begin{align*}
+%        \acttensorofat{\theta}{\headvariableof{+}=\catenumerator}
+%        = (1-\theta)^{\catorder-\catenumerator} \cdot \theta^{\catenumerator} \, ,
+%    \end{align*}
+%    and for $\theta\in\{0,1\}$
+%    \begin{align*}
+%        \acttensorofat{\theta}{\headvariableof{+}}  = \begin{cases}
+%                                                          \onehotmapofat{0}{\headvariableof{+}} & \ifspace \theta=0 \\
+%                                                          \onehotmapofat{\catorder}{\headvariableof{+}} & \ifspace \theta=1
+%        \end{cases}\, .
+%    \end{align*}
+%    The marginal distribution $\probofat{\theta}{\headvariableof{+}}$ is then the binominal distribution $B(\catorder,\theta)$.
 
 %    We further notce, that
 %    \begin{align*}

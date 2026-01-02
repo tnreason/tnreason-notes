@@ -1,0 +1,21 @@
+\begin{example}[Exponential Family of Coin Tosses]
+    \label{exa:coinTossExp}
+    The family of distributions (see \exaref{exa:coinToss}), such that the variables $\shortcatvariables$ are i.i.d. with respect to each other (see \exaref{exa:ctHc}) are the special case, where $\basemeasurewith=\onesat{\shortcatvariables}$ and the activation tensors are %and the family is labeled by $\theta\in[0,1]$ such that for $\theta\in(0,1)$ and $\catenumerator\in[\catorder+1]$
+    \begin{align*}
+        \acttensorat{\headvariableof{+}=\catenumerator,\indexedthirdcatvariable}
+        = (1-\thirdcatindex)^{\catorder-\catenumerator} \cdot \thirdcatindex^{\catenumerator} \, .
+    \end{align*}
+%    and for $\theta\in\{0,1\}$
+%    \begin{align*}
+%        \acttensorofat{\theta}{\headvariableof{+}}
+%        = \begin{cases}
+%              \onehotmapofat{0}{\headvariableof{+}} & \ifspace \theta=0 \\
+%              \onehotmapofat{\catorder}{\headvariableof{+}} & \ifspace \theta=1
+%        \end{cases}\, .
+%    \end{align*}
+    The marginal distribution $\condprobof{\headvariableof{+}}{\indexedthirdcatvariable}$ is then the binominal distribution $B(\catorder,\theta)$.
+    When excluding the case of $\thirdcatindex\in\{0,1\}$, this is the exponential family with the head count statistic, when reparametrizing
+    \begin{align*}
+        \canparam = \lnof{\frac{\thirdcatindex}{1-\thirdcatindex}} \, .
+    \end{align*}
+\end{example}
