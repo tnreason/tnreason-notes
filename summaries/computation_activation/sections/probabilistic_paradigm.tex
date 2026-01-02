@@ -32,29 +32,27 @@ As defined next, distributions $\probtensor$ over a discrete state space can be 
 
 A basic inference operation on probability distributions is the computation of marginal and conditional distribution.
 
-\begin{definition}\label{def:marginalConditionalDistribution}
-    For any distribution $\probat{\catvariable,\seccatvariable}$ the marginal distribution is given by the contraction
+\begin{definition}
+    \label{def:marginalConditionalDistribution}
+    For any distribution $\probat{\catvariableof{0},\catvariableof{1}}$ the marginal distribution is given by the contraction (see \defref{def:contraction})
     \begin{align*}
-        \probat{\catvariable} \coloneqq \contractionof{\probat{\catvariable,\seccatvariable}}{\catvariable}
+        \probat{\catvariableof{0}}
+        \coloneqq \contractionof{\probat{\catvariableof{0},\catvariableof{1}}}{\catvariableof{0}}
     \end{align*}
     which is depicted by the diagram
     \begin{center}
         \input{../tikz_pics/probability_representation/marginalized_probability.tex}
     \end{center}
-    The conditional distribution of $\catvariable$ on $\seccatvariable$ is a tensor $\condprobat{\catvariable}{\seccatvariable}$ defined for $\seccatindex\in[\catdimof{1}]$
+    The conditional distribution of $\catvariableof{0}$ on $\catvariableof{1}$ is the normalization (see \defref{def:normalization})
     \begin{align*}
-        \condprobat{\catvariable}{\seccatvariable=\seccatindex} \coloneqq
-        \begin{cases}
-            \frac{1}{\catdim} \cdot \onesat{\catvariable} & \ifspace \contraction{\probat{\catvariable,\seccatvariable=\seccatindex}} = 0 \\
-            \frac{1}{\contraction{\probat{\catvariable,\seccatvariable=\seccatindex}}} \cdot \probat{\catvariable,\seccatvariable=\seccatindex} & \text{else}
-        \end{cases} \,
+        \condprobat{\catvariableof{0}}{\catvariableof{1}} \coloneqq \normalizationofwrt{\probat{\catvariableof{0},\catvariableof{1}}}{\catvariableof{0}}{\catvariableof{1}} \, .
     \end{align*}
-    and in the second case depicted by the diagram
-    \begin{center}
-        \input{../tikz_pics/probability_representation/conditional_probability.tex}
-    \end{center}
 \end{definition}
 
+For $\catindexof{1}\in[\catdimof{1}]$ with $\contraction{\probat{\catvariableof{0},\indexedcatvariableof{1}}}$ we depict the normalization by
+\begin{center}
+    \input{../tikz_pics/probability_representation/conditional_probability.tex}
+\end{center}
 
 % \textcolor{gray}{One of them is by employing the chain rule.
 % \begin{theorem}[Chain Rule]
