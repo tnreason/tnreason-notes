@@ -22,19 +22,24 @@ A tensor-based representation of propositional logic is developed by encoding bo
 
 \input{../examples/logical_paradigm/prop_formula_coordinatewise.tex}
 
-\paragraph{CP decomposition}
-Since the tensor $\formulaat{\shortcatvariables}$ is equal to one at index $x_{[d]}$ if and only if $x_{[d]}$ is a model of $\formula$, i.e. fulfills the formula, a propositional formula can be written as the sum over the one-hot encodings of its models.
-\begin{center}
-    \input{../tikz_pics/logic_representation/formula_direct.tex}
-\end{center}
-This decomposition corresponds to the CP decomposition of a tensor.
-
-\input{../examples/logical_paradigm/prop_formula_basCP.tex}
-
 \paragraph{Model counts by contraction}
 Each coordiante of the propositional formula is either a $1$ or $0$ encoding if the indexed state is a model of the formula or not.
 In this way, the contraction $\contraction{\formula}$ counts the number of models of the propositional formula $\formula$.
 One can therefore decide the satisfiability of a formula by checking if $\contraction{\formula}>0$.
+
+\paragraph{CP decomposition}
+Since the tensor $\formulaat{\shortcatvariables}$ is equal to one at index $x_{[d]}$ if and only if $x_{[d]}$ is a model of $\formula$, a propositional formula can be written as the sum over the one-hot encodings of its models.
+\begin{center}
+    \input{../tikz_pics/logic_representation/formula_direct.tex}
+\end{center}
+As already depicted one can exploit this summation to find a $\cpformat$ decomposition of the formula.
+To this we enumerate the models $\shortcatindices^{\decindex}$ of $\formula$ by a decomposition variable $\decvariable$ with values $\decindex\in[\contraction{\formula}]$ and define for $\catenumeratorin$ cores with slices
+\begin{align*}
+    \hypercoreofat{\catenumerator}{\catvariableof{\catenumerator},\indexeddecvariable}
+    = \onehotmapofat{\catindexof{\catenumerator}^{\decindex}}{\catvariableof{\catenumerator}} \, .
+\end{align*}
+
+\input{../examples/logical_paradigm/prop_formula_basCP.tex}
 
 \paragraph{Basis encoding}
 Representing booleans by elements in $\{0,1\}$ leads to the problem, that negation is an affine transformation and can not be represented by multilinear tensors. %~\cite[Section 4.1.1]{goessmann_tensor-network_2025}.
@@ -73,10 +78,10 @@ The propositional formula and its negation can be represented by that tensor by
     = \contractionof{\fbasisat{\headvariableof{\formula}},\bencodingofat{\formula}{\headvariableof{\formula},\shortcatvariables}}{\shortcatvariables} \, .
 \end{align*}
 Both $\formula$ and $\lnot\formula$ are thus \ComputationActivationNetworks{} to the statistic $\{\formula\}$ and the hard activation tensor $\tbasisat{\headvariableof{\formula}}$, respectively $\fbasisat{\headvariableof{\formula}}$.
-This representation of propositional formulas with respect to basis encoding thus leads to \ComputationActivationNetworks{}, which were also used to describe probability distributions in the last section.
-In this way the soft and hard logic can be combined in one framework.
+%This representation of propositional formulas with respect to basis encoding thus leads to \ComputationActivationNetworks{}, which were also used to describe probability distributions in the last section.
+%In this way the soft and hard logic can be combined in one framework.
 
-\subsection{Decomposition of Propositional Formulas}
+\subsection{Syntactical Decomposition of Propositional Formulas}
 
 \alex{Propositional formulas of concern often have a syntactical specification as composed functions.
 We can therefore apply the neural paradigm to find efficient representations of them.}
@@ -88,6 +93,7 @@ We can therefore apply the neural paradigm to find efficient representations of 
 
 Thus we have a tensor network representation of any propositional formula based on its syntactical decomposition, where the hypergraph of the syntactical decomposition equals the hypergraph of the representing tensor network.
 
+\input{../examples/logical_paradigm/prop_formula_syntax}
 
 %\begin{lemma}
 %    \label{lem:formulaDecomp}
@@ -195,12 +201,10 @@ To show efficient repesentations we will use the following identities.
     We have for the $\catorder$-ary $\land$-connective (where $\catorder\in\nn$) and the unary $\lnot$-connective that
     \begin{align*}
         \contractionof{\tbasisat{\headvariable},\bencodingofat{\land}{\headvariable,\shortcatvariables}}{\shortcatvariables}
-        =
-        \bigotimes_{\catenumeratorin} \tbasisat{\catvariableof{\catenumerator}}
+        = \bigotimes_{\catenumeratorin} \tbasisat{\catvariableof{\catenumerator}}
         \andspace
         \contractionof{\tbasisat{\headvariable},\bencodingofat{\lnot}{\headvariable,\catvariable}}{\catvariable}
-        =
-        \fbasisat{\catvariable} \, .
+        = \fbasisat{\catvariable} \, .
     \end{align*}
 \end{lemma}
 \begin{proof}
@@ -231,30 +235,24 @@ We use this to decompose knowledge bases into their individual formulas as follo
     \end{align*}
 \end{proof}
 
-
-
 \input{../examples/logical_paradigm/sudoku_decomposition}
-
-% BAD NOTATION!
-%Noting that for example for $x_a=x_b=\epsilon_1=[0,1]^\intercal$
-%\begin{center}
-%    \input{../tikz_pics/logic_representation/and_decomposition}
-%\end{center}
-%while for all other vectors $x_a,x_b$, all parts of the equations amount to $0$. This yields that a knowledge base consisting of multiple formulas connected by a $\land$ has an efficient representation by decomposing the the tensor into its individual formulas.
-%
 
 \subsection{Message-passing for Entailment}
 
-% Infeasible constractions
-Since contracting the whole tensor is often infeasible and for instance for the Sudoku example would correspond to solving the whole problem, local contractions can be considered to decide in some cases.
-Here a local contraction describes the calculation of contractions along few closely connected legs in the tensor network. Now, if the local contraction of any legs leads to a zero-tensor in the network decomposition, the whole contraction amounts to zero, and the knowledge base entails $f$.
+% Infeasible contractions
+Since contracting the whole tensor network is often infeasible, local contractions can be considered to decide entailment in some cases.
+Here a local contraction describes the calculation of contractions along few closely connected tensors in the network.
+Before presenting the resulting Constraint Propagation algorithm, we first show two important properties of local entailment motivating the procedure.
 
 \begin{theorem}[Monotonicity of Propositional Logics]
     \label{the:monotonicityPL}
     If $\seckb\subset\kb$ and $\seckb\models\formula$ then also $\kb\models\formula$.
 \end{theorem}
 \begin{proof}
-    Since $\seckb\models\formula$ it holds that $\contraction{\seckb[\shortcatvariables],\lnot\formula[\shortcatvariables]}=0$ and thus  $\contractionof{\seckb[\shortcatvariables],\lnot\formula[\shortcatvariables]}{\shortcatvariables}=\zerosat{\shortcatvariables}$.
+    Since $\seckb\models\formula$ it holds that $\contraction{\seckb[\shortcatvariables],\lnot\formula[\shortcatvariables]}=0$ and thus
+    \begin{align*}
+        \contractionof{\seckb[\shortcatvariables],\lnot\formula[\shortcatvariables]}{\shortcatvariables}=\zerosat{\shortcatvariables} \, .
+    \end{align*}
     Denoting by $\kb/\seckb$ the conjunctions of formulas in $\kb$ not in $\seckb$, we have
     \begin{align*}
         \contraction{\kbwith,\lnot\formulawith}
@@ -264,10 +262,8 @@ Here a local contraction describes the calculation of contractions along few clo
         &= 0 \, .
     \end{align*}
 \end{proof}
-
 To decide entailment, we can therefore investigate entailment on smaller parts of the knowledge base.
 This is sound by the above theorem, but not complete, since it can happen that no smaller part of the knowledge base entails the formula, but the whole knowledge base does.
-
 We can futhermore add entailed formulas to the knowledge base without the latter, as we show next.
 
 \begin{theorem}[Invariance of adding Entailed Formulas]
@@ -332,9 +328,9 @@ We further directly reduce the computation of messages to their support and call
 
 \begin{theorem}
     \label{the:constraintPropagationSoundness}
-    All messages during constraint propagation are sound, i.e
+    All messages during constraint propagation are sound, that is for all $(\sedge,\redge)\in\dirovedges$ it holds that
     \begin{align*}
-        \nonzeroof{\contractionof{\extnet}{\catvariableof{\sedge\cap\redge}}} \prec  \messagewith \, .
+        \nonzeroof{\contractionof{\extnet}{\catvariableof{\sedge\cap\redge}}} \prec \messagewith \, .
     \end{align*}
 \end{theorem}
 \begin{proof}

@@ -4,15 +4,17 @@
         \formulaat{\catvariableof{[3]}}
         &= \left(\tbasisat{\catvariableof{0}} \otimes \fbasisat{\catvariableof{1}} \otimes \fbasisat{\catvariableof{2}}\right)
         + (\fbasisat{\catvariableof{0}} \otimes \tbasisat{\catvariableof{1}} \otimes \fbasisat{\catvariableof{2}}) \\
-        &\quad+ (\tbasisat{\catvariableof{0}} \otimes \tbasisat{\catvariableof{1}} \otimes \fbasisat{\catvariableof{2}}),
+        &\quad+ (\tbasisat{\catvariableof{0}} \otimes \tbasisat{\catvariableof{1}} \otimes \fbasisat{\catvariableof{2}}) \, .
     \end{align*}
-    where we denote the vectors $\tbasisat{Y} = [0,1]^T$ and $\fbasisat{Y} = [1,0]^T$.
-    Then for the model $\catindexof{[3]} = (1,1,0)$ it holds
+    Note that we have $\contraction{\formulawith}=3$ and we can interpret this sum as a $\cpformat$ decomposition of $\formula$ with rank $3$.
+%    where we denote the vectors $\tbasisat{Y} = [0,1]^T$ and $\fbasisat{Y} = [1,0]^T$.
+    We use the decomposition to evaluate the formula $\formula$ at $\catindexof{[3]} = (1,1,0)$ and get
     \begin{align*}
         \formulaat{\indexedcatvariableof{[3]}}
         &= \left(\tbasisat{\catvariableof{0}=1} \otimes \fbasisat{\catvariableof{1}=1} \otimes \fbasisat{\catvariableof{2}=0}\right) \\
        &\quad + (\fbasisat{\catvariableof{0}=1} \otimes \tbasisat{\catvariableof{1}=1} \otimes \fbasisat{\catvariableof{2}=0}) \\
        &\quad + (\tbasisat{\catvariableof{0}=1} \otimes \tbasisat{\catvariableof{1}=1} \otimes \fbasisat{\catvariableof{2}=0}) \\
-        &=  1\cdot 0 \cdot 1 + 0\cdot 1 \cdot 1 + 1 \cdot 1 \cdot 1 = 1.
+        &=  1\cdot 0 \cdot 1 + 0\cdot 1 \cdot 1 + 1 \cdot 1 \cdot 1 = 1 \, ,
     \end{align*}
+    which verifies that $\catindexof{[3]} = (1,1,0)$ is a model of the formula $\formula$.
 \end{example}
