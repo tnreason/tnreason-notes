@@ -83,8 +83,8 @@ Both $\formula$ and $\lnot\formula$ are thus \ComputationActivationNetworks{} to
 
 \subsection{Syntactical Decomposition of Propositional Formulas}
 
-\alex{Propositional formulas of concern often have a syntactical specification as composed functions.
-We can therefore apply the neural paradigm to find efficient representations of them.}
+Propositional formulas of concern often have a syntactical specification as composed functions.
+We can therefore apply the neural paradigm to find efficient representations of them.
 
 \begin{definition}[Syntactical Decompositions]
     \label{def:syntacticalDecomposition}
@@ -161,12 +161,12 @@ Thus we have a tensor network representation of any propositional formula based 
 %Thus we have a tensor network representation of any propositional formula based on its syntactical decomposition, where the hypergraph of the syntactical decomposition equals the hypergraph of the representing tensor network.
 %
 
-\subsection{Contractions to decide entailment}
+\subsection{Entailment Decision by Contractions}
 
 We have already seen that the contraction of a propositional formula counts its models.
 This allows to define entailment between two propositional formulas as follows.
-\alex{To generalize the treatment, we do not demand any more that the variables of a formula are of dimension $2$.
-We further use $\lnot\formulawith=\oneswith-\formulawith$.}
+To generalize the treatment, we do not demand any more that the variables of a formula are of dimension $2$.
+We further use $\lnot\formulawith=\oneswith-\formulawith$.
 
 \begin{definition}[Entailment of propositional formulas]
     \label{def:logicalEntailment}
@@ -178,7 +178,7 @@ We further use $\lnot\formulawith=\oneswith-\formulawith$.}
 \end{definition}
 
 % Relation to classical definition of entailment
-Classically (see e.g. \cite{russell_artificial_2021}) entailment in propositional logics is defined as the the unsatisfiability of $\kb\land\lnot\exformula$.
+Classically (see e.g. \cite{russell_artificial_2021}) entailment in propositional logics is defined as the unsatisfiability of $\kb\land\lnot\exformula$.
 This is equivalent to \defref{def:logicalEntailment}, since $\contraction{\kbwith,\lnot\formulawith}=0$ is equivalent to $\contraction{(\kb \land (\lnot\exformula))[\shortcatvariables]}=0$, which is the unsatisfiability of $\kb\land\lnot\exformula$.
 
 %Entailment is the central operation of "logical inference", i.e. deduce true statements from known statements.
@@ -237,7 +237,7 @@ We use this to decompose knowledge bases into their individual formulas as follo
 
 \input{../examples/logical_paradigm/sudoku_decomposition}
 
-\subsection{Message-passing for Entailment}
+\subsection{Entailment Decision by Message-Passing}
 
 % Infeasible contractions
 Since contracting the whole tensor network is often infeasible, local contractions can be considered to decide entailment in some cases.

@@ -76,7 +76,7 @@ For $\catindexof{1}\in[\catdimof{1}]$ with $\contraction{\probat{\catvariableof{
 % \alex{Its important to note, that the chain rule for itself does not provide a more efficient representation of the distribution (since it is a generic decomposition). 
 % To achieve efficient tensor network decomposition, one needs to combine that with conditional independence assumptions (as in the Markov Chain case), such that conditioned variables in the conditional probability distributions can be dropped.}
 
-\subsection{The Independence Mechanism: Graphical Model Factorization}
+\subsection{The Independence Mechanism: Factorization into Graphical Models}
 
 %% Need for decomposition mechanisms: Motivation for independence considerations
 The number of coordinates in a tensor representation of probability distributions is the product
@@ -240,14 +240,15 @@ We now present the \computationMechanism{} of finding tensor network decompositi
     \end{align*}
     be a statistic.
     We are interested in the distribution $\probat{\catvariable,\thirdcatvariable,\headvariableof{\sstat}}=\contractionof{\probat{\catvariable,\thirdcatvariable},\bencodingofat{\sstat}{\headvariableof{\sstat},\catvariable}}{\catvariable,\thirdcatvariable,\headvariableof{\sstat}}$.
-    We say that $\sstat$ is a sufficient statistic for $\thirdcatvariable$ if and only if $\catvariable$ is independent of $\thirdcatvariable$ conditioned on $\headvariableof{\sstat}$.
+    We say that $\sstat$ is a sufficient statistic for $\thirdcatvariable$ if $\catvariable$ is independent of $\thirdcatvariable$ conditioned on $\headvariableof{\sstat}$.
 \end{definition}
 
-Note that the independence in \defref{def:sufStatistic} is true if and only if
-\begin{align*}
-    \condprobat{\catvariable}{\thirdcatvariable,\headvariableof{\sstat}}
-    =   \condprobat{\catvariable}{\headvariableof{\sstat}} \otimes \onesat{\thirdcatvariable} \, .
-\end{align*}
+%% Not needed
+%Note that the independence in \defref{def:sufStatistic} is true if and only if
+%\begin{align*}
+%    \condprobat{\catvariable}{\thirdcatvariable,\headvariableof{\sstat}}
+%    =   \condprobat{\catvariable}{\headvariableof{\sstat}} \otimes \onesat{\thirdcatvariable} \, .
+%\end{align*}
 
 \input{../examples/probabilistic_paradigm/sufstat_probability}
 
@@ -293,7 +294,7 @@ Any decomposition of $\bencodingofat{\sstat}{\headvariables,\shortcatvariables}$
 The activation tensor $\acttensorat{\headvariables,\indexedthirdcatvariable}$, which decomposition is called the \emph{activation network}, is specific to each member of the family.
 Let us now show in two examples, how families of distributions can be represented in \CompActNets{} by sufficient statistics.
 
-\input{../examples/probabilistic_paradigm/coin_toss_ft}
+\input{../examples/probabilistic_paradigm/coin_toss_fn}
 
 \input{../examples/probabilistic_paradigm/graphical_models_as_cans}
 
@@ -303,7 +304,7 @@ Let us now show in two examples, how families of distributions can be represente
 Let us now show, that exponential families are specific instances of \CompActNets{}, which activation tensors have elementary decompositions.
 % Universal properties
 The importance of exponential families in statistics stems from their universal properties.
-A classical theorem by Pitman-Koopman-Darmois (see \cite{pitman_sufficient_1936}) states, that whenever a family with constant support and a finite sufficient statistic for arbitrary large data sets is in an exponential family.
+A classical theorem by Pitman, Koopman and Darmois (see \cite{pitman_sufficient_1936}) states, that whenever a family with constant support and a finite sufficient statistic for arbitrary large data sets is in an exponential family.
 For a discussion of further universal properties of exponential families, such that the existence of priors and entropy maximizers, see \cite{murphy_probabilistic_2022}.
 
 \begin{definition}[Exponential Family]\label{def:expFamily}
@@ -336,12 +337,12 @@ For a discussion of further universal properties of exponential families, such t
 \end{definition}
 
 %% Connection to typical form
-To se that \defref{def:expFamily} is consistent with the typical definition of exponential families (see \cite{brown_fundamentals_1987}), let us notice that for each $\canparamin$ the normalization amounts to the division by
+To see that \defref{def:expFamily} is consistent with the typical definition of exponential families (see \cite{brown_fundamentals_1987}), let us notice that for each $\canparamin$ the normalization amounts to the division by
 \begin{align*}
     \partitionfunctionof{\canparam}
     = \contraction{\{\basemeasurewith\} \cup \{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}\cup\{\softactlegwith \wcols \selindexin\}} \, ,
 \end{align*}
-a quantity which is refered to as the partition function.
+a quantity which is referred to as the partition function.
 Then we have for each coordinate $\shortcatindicesin$
 \begin{align*}
     \expdistat{\indexedshortcatvariables}

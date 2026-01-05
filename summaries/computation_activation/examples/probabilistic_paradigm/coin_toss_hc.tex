@@ -1,5 +1,5 @@
-\begin{example}[Independent Boolean Variables: Coin toss interpretation]
-    \label{exa:ctHc}
+\begin{example}[Independent Boolean Variables]
+    \label{exa:coinTossHC}
     Let there be $\catorder$ boolean variables $\shortcatvariables$, which are i.i.d. drawn from a positive distribution $\probat{\catvariable}$.
     From the pairwise independencies of $\catvariableof{\catenumerator}$ it follows with the Hammersley-Clifford Factorization \theref{the:factorizationHammersleyClifford} that the distribution is representable by an elementary tensor network, that is
     \begin{align*}
@@ -55,7 +55,7 @@
                 \end{scope}
             \end{tikzpicture}
         \end{center}
-        \caption{Decomposition of a probability distribution with independent variables (see \exaref{exa:ctHc}).
+        \caption{Decomposition of a probability distribution with independent variables (see \exaref{exa:coinTossHC}).
         The independences are captured by the elementary hypergraph a), which edges contain single nodes.
         The corresponding tensor $\probwith$ is then represented by a Markov Network on the elementary hypergraph, where each factor is the marginal distribution of the corresponding variable.}\label{fig:ELDecomposition}
     \end{figure}

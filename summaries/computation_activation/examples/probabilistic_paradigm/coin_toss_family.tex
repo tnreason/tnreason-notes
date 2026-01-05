@@ -11,8 +11,6 @@
     For $\catorder=2$ we have more explicitly for any $\thirdcatindex\in[0,1]$
     \begin{center}
         \begin{tikzpicture}[scale=1]
-
-
             \node[anchor=east] (A) at (-2,0) {$\condprobat{\catvariableof{[2]}}{\thirdcatvariable=\thirdcatindex}\,=$};
 
             \node (A) at (1,0) {
@@ -27,17 +25,4 @@
             \node[anchor=east] (A) at (3.5,-0.55) {$\cdot$};
         \end{tikzpicture}
     \end{center}
-%    Consider two coin tosses \(\catvariableof{0},X_1\in\{0,1\}\) (1=heads). With $p \in [0,1]$ being the probability of heads. Then the probability for each toss and the joint probability have the form
-%    \begin{align*}
-%        \mathbb{P}[\catvariableof{0}] = \begin{bmatrix}
-%                                            \mathbb{P}[\catvariableof{0}=0]\\\mathbb{P}[X_1=1]
-%        \end{bmatrix} = \begin{bmatrix}
-%                            1-p\\p
-%        \end{bmatrix}, \qquad
-%        \mathbb{P}[X_{[2]}] = \begin{bmatrix}
-%        (1-p)
-%                                  ^2 & (1-p)p\\
-%                                  p(1-p) & p^2
-%        \end{bmatrix}
-%    \end{align*}
 \end{example}

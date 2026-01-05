@@ -1,21 +1,34 @@
 \begin{example}[Exponential Family of Coin Tosses]
     \label{exa:coinTossExp}
-    The family of distributions (see \exaref{exa:coinToss}), such that the variables $\shortcatvariables$ are i.i.d. with respect to each other (see \exaref{exa:ctHc}) are the special case, where $\basemeasurewith=\onesat{\shortcatvariables}$ and the activation tensors are %and the family is labeled by $\theta\in[0,1]$ such that for $\theta\in(0,1)$ and $\catenumerator\in[\catorder+1]$
+    Let us recall the family of distributions of boolean $\shortcatvariables$ from \exaref{exa:coinTossFN}, which has the order statistic $\sstatof{+}$ as a sufficient statistic.
+    We now in addition assume, that the variables $\shortcatvariables$ are i.i.d. with respect to any member of the family (see \exaref{exa:coinTossFN}).
+    For the variables to be i.i.d. we need $\basemeasurewith=\oneswith$ and can thus choose a representation such that for $\thirdcatindex\in\valof{\thirdcatvariable}$
+    \begin{align*}
+        \condprobat{\shortcatvariables}{\indexedthirdcatvariable}
+        = \contractionof{\bencodingofat{\sstatof{+}}{\headvariableof{+},\shortcatvariables},\acttensorat{\headvariableof{+},\indexedthirdcatvariable}}{\shortcatvariables}
+    \end{align*}
+    where for each $\catenumerator\in[\catorder+1]$
+    % The family of distributions (see \exaref{exa:coinTossFN}), such that the variables $\shortcatvariables$ are i.i.d. with respect to each other (see \exaref{exa:coinTossHC}) are the special case, where $\basemeasurewith=\onesat{\shortcatvariables}$ and the activation tensors are %and the family is labeled by $\theta\in[0,1]$ such that for $\theta\in(0,1)$ and $\catenumerator\in[\catorder+1]$
     \begin{align*}
         \acttensorat{\headvariableof{+}=\catenumerator,\indexedthirdcatvariable}
         = (1-\thirdcatindex)^{\catorder-\catenumerator} \cdot \thirdcatindex^{\catenumerator} \, .
     \end{align*}
-%    and for $\theta\in\{0,1\}$
-%    \begin{align*}
-%        \acttensorofat{\theta}{\headvariableof{+}}
-%        = \begin{cases}
-%              \onehotmapofat{0}{\headvariableof{+}} & \ifspace \theta=0 \\
-%              \onehotmapofat{\catorder}{\headvariableof{+}} & \ifspace \theta=1
-%        \end{cases}\, .
-%    \end{align*}
-    The marginal distribution $\condprobof{\headvariableof{+}}{\indexedthirdcatvariable}$ is then the binominal distribution $B(\catorder,\theta)$.
-    When excluding the case of $\thirdcatindex\in\{0,1\}$, this is the exponential family with the head count statistic, when reparametrizing
+    The marginal distribution $\condprobof{\headvariableof{+}}{\indexedthirdcatvariable}$ is then the binominal distribution $B(\catorder,\thirdcatindex)$.
+    When excluding the case of $\thirdcatindex\in\{0,1\}$, the family is a subset of the exponential family with the head count statistic, where each member is reparametrized by
     \begin{align*}
-        \canparam = \lnof{\frac{\thirdcatindex}{1-\thirdcatindex}} \, .
+        \canparam \coloneqq \lnof{\frac{\thirdcatindex}{1-\thirdcatindex}} \, .
     \end{align*}
+    To see that this is true, we notice that the coordinate $\headindexof{+}\in[\catorder+1]$ of the activation tensor of $\expdistof{\sstatof{+},\canparam,\trivbm}$ is
+    \begin{align*}
+        \softacttensorat{\indexedheadvariableof{+}}
+        = \expof{\headindexof{+}\cdot\canparam}
+        = \frac{\thirdcatindex^{\headindexof{+}}}{(1-\thirdcatindex)^{\headindexof{+}}} \, .
+    \end{align*}
+    Now with $\partitionfunctionof{\canparam}=\frac{1}{\thirdcatindex^{\catorder}}$ we have for any $\shortcatindices$ with $\sum_{\catenumeratorin}\catindexof{\catenumerator}=\headindexof{+}$ that
+    \begin{align*}
+        \frac{1}{\partitionfunctionof{\canparam}} \cdot \contraction{\bencodingofat{\sstatof{+}}{\headvariableof{+},\indexedshortcatvariables},\softacttensorat{\headvariableof{+}}}
+        = \thirdcatindex^{\catorder} \cdot \frac{\thirdcatindex^{\headindexof{+}}}{(1-\thirdcatindex)^{\headindexof{+}}}
+        =  \thirdcatindex^{\headindexof{+}} \cdot (1-\thirdcatindex)^{\catorder-\headindexof{+}}  \, .
+    \end{align*}
+    Comparing with the activation tensor $\acttensorat{\headvariableof{+}}$ above, we notice that $\partitionfunctionof{\canparam}$ is indeed the partition function of the exponential family and $\expdistofat{\sstatof{+},\canparam,\trivbm}{\shortcatvariables}$ coincides with the member $\condprobat{\shortcatvariables}{\indexedthirdcatvariable}$.
 \end{example}

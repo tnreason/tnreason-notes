@@ -180,7 +180,7 @@ In our graphical tensor notation, we depict normalized tensors by directed hyper
 
 Towards presenting the function encoding schemes we define one-hot encodings mapping the states of variables to basis tensors.
 
-\begin{definition}[One-hot encodings to Factored Representations]
+\begin{definition}[One-hot encoding]
     \label{def:onehotenc}
     To any variable $\catvariable$ taking values in $[\catdim]$ the one-hot encoding of any state $\catindex\in[\catdim]$ is the vector with coordinates
     \begin{align}
@@ -210,11 +210,11 @@ We now use one-hot encodings to encode functions between state sets.
 
 \begin{definition}[Basis encoding of maps between state sets]
     \label{def:functionRepresentation}
-    Let there be two systems with factored representations by variables $\shortcatvariables$ and $\headvariables$, and a map
+    Let there be two sets of variables $\shortcatvariables$ and $\headvariables$, and a map
     \begin{align*}
         \statesetfunction\defcols\facstates \rightarrow  \headstates
     \end{align*}
-    between these state sets.
+    between their state sets.
     Then the basis encoding of $\statesetfunction$ is a tensor
     \begin{align*}
         \bencodingofat{\statesetfunction}{\headvariables,\shortcatvariables}
@@ -261,7 +261,7 @@ Based on these concepts we define the most general tensor-network architecture t
               \wcols \acttensorat{\headvariableof{\nodes}} \in \tnsetof{\graph} \right\} \, .
     \end{align*}
     We refer to any member $\probat{\shortcatvariables}\in\realizabledistsof{\sstat,\graph}$ as a \emph{\ComputationActivationNetwork{}} (\emph{\CompActNet{}}).
-    We call $\bencsstatwith$ (and any decomposition of it) as the \emph{computation network} and by $\acttensorat{\headvariableof{\nodes}}$ as the \emph{activation network}.
+    We call $\bencsstatwith$ (and any decomposition of it) the \emph{computation network} and $\acttensorat{\headvariableof{\nodes}}$ the \emph{activation network}.
 \end{definition}
 
 %% Elementary and Max hypergraphs
