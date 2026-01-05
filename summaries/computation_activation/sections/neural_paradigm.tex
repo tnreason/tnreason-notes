@@ -85,7 +85,7 @@ Let us now define a more generic decomposition of discrete functions.
     \end{align*}
     to the nodes $\node^{\insymbol}_{[\atomorder]}$ and recursively assign to each further node $\node$ a node function % connective $\connectiveofat{\node}{\headvariableof{\incomingnodes}}$.
     \begin{align*}
-        \exfunctionof{\node} \wcols \bigtimes_{\catenumeratorin} \arbsetof{\node^{\insymbol}_\catenumerator} \rightarrow \bigtimes_{\node\in\outgoingnodes} \arbsetof{\node}
+        \exfunctionof{\node} \wcols \bigtimes_{\catenumeratorin} \arbsetof{\node^{\insymbol}_\catenumerator} \rightarrow \arbsetof{\node}
         \quad,\quad
         \exfunctionof{\node}(\catindexof{[\catorder]})
         = \restrictionofto{\secexfunctionof{\edge^\node}
@@ -110,25 +110,75 @@ Let us now show how decomposition hypergraphs enable the sparse representation o
 
 \begin{theorem}
     \label{the:functionDecompositionRep}
-%    \red{Merge into the message passing?}
     For any decomposition hypergraph $\graph$ with composition formula $\exfunctionof{\graph}$ we have
     \begin{align*}
         \bencodingofat{\exfunctionof{\graph}}{\headvariables,\shortcatvariables}
-        = \contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\outnodes},\catvariableof{\innodes}} \wcols \edge=(\innodes,\outnodes)\in\edges\right\}
+        = \contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}} \wcols \edge=(\incomingnodes,\outgoingnodes)\in\edges\right\}
         }{\headvariables,\shortcatvariables} \, .
     \end{align*}
 \end{theorem}
 \begin{proof}
-    The claim follows by induction from the leafs to the root and iteratively applying \lemref{lem:formulaDecomp}.
+    We show by an induction over the number of edges in $\graph$, that for any $\shortcatindicesin$ and $\node\in\nodes$ we have that
+    \begin{align}
+        \label{eq:indHypNeurThm}
+        \contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}} \wcols \edge=(\incomingnodes,\outgoingnodes)\in\edges\right\}
+        }{\catvariableof{\nodes/\node^{\insymbol}_{[\atomorder]}},\indexedshortcatvariables}
+        = \bigotimes_{\node\in\nodes/\node^{\insymbol}_{[\atomorder]}} \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \, .
+    \end{align}
+
+    $\cardof{\edges}=1$: If there is a single edge $\edge(\incomingnodes,\outgoingnodes)$ in $\edges$, we have $\shortcatvariables=\catvariableof{\incomingnodes}$ and $\nodes/\node^{\insymbol}_{[\atomorder]}=\outgoingnodes$.
+    In this case \eqref{eq:indHypNeurThm} holds since
+    \begin{align*}
+        \bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\outgoingnodes},\indexedcatvariableof{\incomingnodes}}
+        = \bigotimes_{\node\in\nodes/\node^{\insymbol}_{[\atomorder]}} \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \, .
+    \end{align*}
+
+    $(\cardof{\edges}=n)\Rightarrow(\cardof{\edges}=n+1)$:
+    Let us now assume, that \eqref{eq:indHypNeurThm} holds for all graphs with $\cardof{\edges}\leq n$ and let $\graph$ be a graph with $\cardof{\edges}=n+1$.
+    We find an edge $\secedge=(\incomingnodes,\outgoingnodes)$, such that all nodes in $\incomingnodes$ are only appearing as outgoing nodes in other edges.
+    \begin{align*}
+        &\contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\edge}} \wcols \edge\in\edges\right\}
+        }{\catvariableof{\nodes/\node^{\insymbol}_{[\atomorder]}},\indexedshortcatvariables} \\
+        &\quad=
+        \contractionof{
+            \bencodingofat{\secedge}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}},
+            \contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\edge}} \wcols \edge\in\edges/\{\secedge\}\right\}
+            }{\catvariableof{\nodes/\{\node^{\insymbol}_{[\atomorder]}\cup\outgoingnodes\}},\indexedshortcatvariables}
+        }{\catvariableof{\nodes/\node^{\insymbol}_{[\atomorder]}},\indexedshortcatvariables} \\
+        &\quad=
+        \contractionof{
+            \bencodingofat{\secedge}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}},
+            \bigotimes_{\node\in\nodes/\{\node^{\insymbol}_{[\atomorder]}\cup\outgoingnodes\}}
+            \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}}
+        }{\catvariableof{\nodes/\node^{\insymbol}_{[\atomorder]}},\indexedshortcatvariables} \\
+        &\quad=
+        \bigotimes_{\node\in\nodes/\node^{\insymbol}_{[\atomorder]}}
+        \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \, .
+    \end{align*}
+    Here we used in the second equation the induction hypothesis on the subgraph $(\nodes,\edges/\{\secedge\})$ with $\cardof{\edges/\{\secedges\}}=n$ and in the third equaltion a generic contraction property of basis encodings.
+
+    Thus, \eqref{eq:indHypNeurThm} holds always and we thus have for any $\shortcatindicesin$
+    \begin{align*}
+        \contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}} \wcols \edge=(\incomingnodes,\outgoingnodes)\in\edges\right\}
+        }{\headvariables,\indexedshortcatvariables}
+        &= \contractionof{
+            \bigotimes_{\node\in\nodes/\node^{\insymbol}_{[\atomorder]}} \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}}
+        }{\headvariables,\shortcatvariables} \\
+        & = \bigotimes_{\node\in\node^{\outsymbol}_{[\seldim]}}
+        \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \\
+        & = \onehotmapofat{\exfunctionof{\graph}}{\headvariables} \\
+        & = \bencodingofat{\exfunctionof{\graph}}{\headvariables,\indexedshortcatvariables} \, .
+    \end{align*}
+    Keeping $\shortcatvariables$ open, the claim is established.
+%    The claim follows by induction from the leafs to the root and iteratively applying \lemref{lem:formulaDecomp}.
 \end{proof}
 
 % Weights
 When neurons have tunable parameters, we can discretize those by sets $\arbsetof{\catenumerator}$ and understand them as additional input variables.
 
-
 \input{../examples/neural_paradigm/m_adic_representation}
 
-\subsection{Directed Message Passing}
+\subsection{Function Evaluation by Message Passing}
 
 We now present an efficient inference algorithm based on tensor network contractions.
 
@@ -141,12 +191,12 @@ We now present an efficient inference algorithm based on tensor network contract
         \State Prepare directed message directions
         \begin{align*}
             \dirovedges = \left\{
-                              \big((\innodes_{0},\outnodes_{0}),(\innodes_{1},\outnodes_{1})\big) \wcols
-                              \innodes_{0} \cap (\innodes_{1},\outnodes_{1}) = \varnothing
+                              \big((\incomingnodes_{0},\outgoingnodes_{0}),(\incomingnodes_{1},\outgoingnodes_{1})\big) \wcols
+                              \incomingnodes_{0} \cap (\incomingnodes_{1},\outgoingnodes_{1}) = \varnothing
                               \ncond
-                              \outnodes_{1} \cap (\innodes_{0},\outnodes_{0}) = \varnothing
+                              \outgoingnodes_{1} \cap (\incomingnodes_{0},\outgoingnodes_{0}) = \varnothing
                               \ncond
-                              \outnodes_{0} \cap \innodes_{1} \neq \varnothing
+                              \outgoingnodes_{0} \cap \incomingnodes_{1} \neq \varnothing
             \right\}
         \end{align*}
         \State Initialize a message queue $\scheduler=\{(\secsedge,\sedge) \wcols \secsedge \quad\text{has empty incoming nodes} \}]$
@@ -186,11 +236,11 @@ We then show that the messages are the one-hot encodings to the evaluations of t
     The message computed in the while loop is then a contraction of one-hot encodings with basis encodings and
     \begin{align*}
         \mesfromtowith{\sedge}{\redge}
-        &=\contractionof{\{\bencodingofat{\secexfunctionof{\sedge}}{\catvariableof{\outnodes},\catvariableof{\innodes}}\} \cup
+        &=\contractionof{\{\bencodingofat{\secexfunctionof{\sedge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}}\} \cup
             \{\mesfromtowith{\secsedge}{\sedge} \wcols (\secsedge,\sedge)\in\dirovedges\}
         }{\catvariableof{\sedge\cap\redge}} \\
-        &=\contractionof{\{\bencodingofat{\secexfunctionof{\sedge}}{\catvariableof{\outnodes},\catvariableof{\innodes}}\} \cup
-            \{\onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \wcols \node\in\innodes\}
+        &=\contractionof{\{\bencodingofat{\secexfunctionof{\sedge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}}\} \cup
+            \{\onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \wcols \node\in\incomingnodes\}
         }{\catvariableof{\sedge\cap\redge}} \\
         &= \bigotimes_{\node\in\sedge\cap\redge} \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \, .
     \end{align*}

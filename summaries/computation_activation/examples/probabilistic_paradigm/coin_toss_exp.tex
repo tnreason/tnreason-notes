@@ -18,17 +18,17 @@
     \begin{align*}
         \canparam \coloneqq \lnof{\frac{\thirdcatindex}{1-\thirdcatindex}} \, .
     \end{align*}
-    To see that this is true, we notice that the coordinate $\headindexof{+}\in[\catorder+1]$ of the activation tensor of $\expdistof{\sstatof{+},\canparam,\trivbm}$ is
+    To see that this is true, we notice that the coordinate $\headindexof{+}\in[\catorder+1]$ of the activation tensor of $\expdistof{(\sstatof{+},\canparam,\trivbm)}$ is
     \begin{align*}
         \softacttensorat{\indexedheadvariableof{+}}
         = \expof{\headindexof{+}\cdot\canparam}
         = \frac{\thirdcatindex^{\headindexof{+}}}{(1-\thirdcatindex)^{\headindexof{+}}} \, .
     \end{align*}
-    Now with $\partitionfunctionof{\canparam}=\frac{1}{\thirdcatindex^{\catorder}}$ we have for any $\shortcatindices$ with $\sum_{\catenumeratorin}\catindexof{\catenumerator}=\headindexof{+}$ that
+    Now with $\partitionfunctionof{\canparam}=\frac{1}{(1-\thirdcatindex)^{\catorder}}$ we have for any $\shortcatindices$ with $\sum_{\catenumeratorin}\catindexof{\catenumerator}=\headindexof{+}$ that
     \begin{align*}
         \frac{1}{\partitionfunctionof{\canparam}} \cdot \contraction{\bencodingofat{\sstatof{+}}{\headvariableof{+},\indexedshortcatvariables},\softacttensorat{\headvariableof{+}}}
-        = \thirdcatindex^{\catorder} \cdot \frac{\thirdcatindex^{\headindexof{+}}}{(1-\thirdcatindex)^{\headindexof{+}}}
+        = (1-\thirdcatindex)^{\catorder} \cdot \frac{\thirdcatindex^{\headindexof{+}}}{(1-\thirdcatindex)^{\headindexof{+}}}
         =  \thirdcatindex^{\headindexof{+}} \cdot (1-\thirdcatindex)^{\catorder-\headindexof{+}}  \, .
     \end{align*}
-    Comparing with the activation tensor $\acttensorat{\headvariableof{+}}$ above, we notice that $\partitionfunctionof{\canparam}$ is indeed the partition function of the exponential family and $\expdistofat{\sstatof{+},\canparam,\trivbm}{\shortcatvariables}$ coincides with the member $\condprobat{\shortcatvariables}{\indexedthirdcatvariable}$.
+    Comparing with the activation tensor $\acttensorat{\headvariableof{+}}$ above, we notice that $\partitionfunctionof{\canparam}$ is the partition function of the exponential family and $\expdistofat{(\sstatof{+},\canparam,\trivbm)}{\shortcatvariables}$ coincides with the member $\condprobat{\shortcatvariables}{\indexedthirdcatvariable}$.
 \end{example}
