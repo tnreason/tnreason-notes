@@ -17,25 +17,44 @@ Main approach: Quantum Inference scheme on Bayesian networks \cite{low_quantum_2
 
 Further literature:
 \begin{itemize}
-    \item \cite{schuld_machine_2021}: Sect 7.3.2 Reviewing the Low Approach
+    \item \cite{schuld_machine_2021}: Sect 7.3.2 Reviewing the paper \cite{low_quantum_2014} as an application of fault-tolerant quantum computing
     \item \cite{ozols_quantum_2013}: Quantum rejection sampling
+    \item \cite{wittek_quantum_2017}: Review of Markov Logic Network sampling (which are a special case of \ComputationActivationNetworks{})
 \end{itemize}
+
+Potential Advantage: \emph{Quantum Parallelism} (see \cite[Section 3.2.5]{schuld_machine_2021}).
+\begin{itemize}
+    \item Evaluation of multiple function values by single circuit evaluation.
+    \item Contraction perspective: Loop-tolerant efficient contractions.
+    \item However: Need a generic encoding scheme to exploit this advantage, which is not known yet.
+    \item We here only provide a scheme based on post-selection, which provides a quantum advantage only through amplitude amplification.
+    Without amplitude amplification and post-selection of samples, the encoded distribution is always uniform.
+\end{itemize}
+Comparison with classical side, which we can call \emph{Tensor Parallelism}:
+Message-passing schemes for efficient contractions, but exact in limited cases.
+
 
 \subsection{Related Works}
 
 Circuit preparing schemes based on approximation:
 \begin{itemize}
-    \item Q-Alchemy \cite{aroujo_low-rank_2023}, Q-Tucker CITE
+    \item Q-Alchemy \cite{araujo_low-rank_2023}, Q-Tucker CITE
     \item Tensor-Network Optimization based (alternating schemes) \cite{rudolph_synergistic_2023,rudolph_decomposition_2023}
 \end{itemize}
 
 Exact circuit preparing schemes for distributions:
 \begin{itemize}
-    \item Grover-Rudolph \cite{grover_creation_2002}, but no quantum advantage \cite{herbert_quantum_2021}
+    \item Grover-Rudolph \cite{grover_creating_2002}, but no quantum advantage \cite{herbert_no_2021}
 \end{itemize}
 
 Circuit simulation:
 Since \qcreason{} can prepare quantum circuits to arbitrary tensor networks, it can also be used to simulate quantum circuits (with an overhead!).
 \begin{itemize}
     \item \cite{sander_large-scale_2025,sander_quantum_2025}
+\end{itemize}
+
+Quantum algorithms for linear algebra:
+\begin{itemize}
+    \item Contraction by SWAP and Hadamard test (see Appendix)
+    \item HHL algorithm to solve linear equations \cite{harrow_quantum_2009}
 \end{itemize}
