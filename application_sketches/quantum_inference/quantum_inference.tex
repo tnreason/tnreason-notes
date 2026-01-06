@@ -1,106 +1,31 @@
 \documentclass[aps,onecolumn,nofootinbib,pra]{article}
 
 \usepackage{../../article_compilation/spec_files/arxiv}
-\usepackage{amsmath,amsfonts,amssymb,amsthm,bbm,graphicx,enumerate,times}
-\usepackage{mathtools}
-\usepackage[usenames,dvipsnames]{color}
-\usepackage{hyperref}
-\hypersetup{
-    breaklinks,
-    colorlinks,
-    linkcolor=gray,
-    citecolor=gray,
-    urlcolor=gray,
-    pdftitle={},
-    pdfauthor={Alex Goessmann}
-}
-
-\usepackage{tikz}
-\usepackage{graphicx}
-\usepackage{float}
-\usepackage{comment}
-\usepackage{csquotes}
-
-\usepackage{braket}
-
-\usepackage{listings}
-\usepackage{verbatim}
-\usepackage{etoolbox}
-\usepackage{braket}
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
-\usepackage[T1]{fontenc}
-\usepackage{titlesec}
-\usepackage{fancyhdr}
-\usepackage{bbm}
-\usepackage{bm}
-\usepackage{algpseudocode}
-\usepackage{algorithm}
-\usepackage{lipsum}
-
-\newtheorem{remark}{Remark}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{corollary}{Corollary}
-\newtheorem{definition}{Definition}
-\newtheorem{example}{Example}
+\input{../../article_compilation/spec_files/standard_preamble.tex}
 
 \input{../../macros/organization_macros.tex}
 \input{../../macros/general_macros.tex}
 \input{../../macros/tc_macros.tex}
 \input{../../macros/tikz_macros.tex}
 
-\pretolerance=500
-\tolerance=100
-\emergencystretch=10pt
-
-% Bibliography
-\DeclareUnicodeCharacter{FB01}{fi}
-\usepackage[round]{natbib}
-\usepackage{wasysym}
-
-
-\newcommand{\red}[1]{\textcolor{red}{#1}}
-
 \begin{document}
-    \title{Quantum Circuits for \tnreason{}}
+    \title{Quantum Inference on \ComputationActivationNetworks{}}
 
     \maketitle
     \date{\today}
-
-    By its central axioms, quantum mechanics of multiple qubits is formulated by tensors capturing states and discrete time evolutions.
-    Motivated by the structural similarity, we investigate how quantum circuits can be utilized for the tensor-network based approach towards efficient and explainable AI in the \tnreason{} framework.
-
-    We follow two main ideas:
-    \begin{itemize}
-        \item \textbf{Sampling of \ComputationActivationNetworks{}:} Prepare quantum states, which measurement statistics can be utilized to prepare samples from \ComputationActivationNetworks{}.
-        \item \textbf{Quantum Circuits as Contraction providers:} Quantum circuits are contractions of multiple tensors and therefore tensor networks, and measurement probabilities are given by contractions.
-        Here we investigate how we can exploit these as contraction provider for \tnreason{}.
-    \end{itemize}
-
-    Further literature:
-    \begin{itemize}
-        \item \cite{schuld_quantum_2021}: Sect 7.3.2
-        \item \cite{ozols_quantum_2013}: Quantum rejection sampling
-    \end{itemize}
+    \begin{abstract}
+        We study a quantum rejection sampling scheme to prepare samples from \ComputationActivationNetworks{}.
+    \end{abstract}
 
     \tableofcontents
 
-    \input{./sections/circuit_representation.tex}
-
-    \input{./sections/encoding_schemes.tex}
-
-    \input{./sections/sampling.tex}
+    \input{./sections/introduction}
+    \input{./sections/circuit_representation}
+    \input{./sections/encoding_schemes}
+    \input{./sections/sampling}
+    \input{./sections/implementation}
 
     \appendix
-
-
-    \section{Implementation}
-
-    The introduced quantum circuit preparation schemes have been implemented in the python package \qcreason{}, which consists in three layers:
-    \begin{center}
-        \input{./tikz_pics/qcreason_architecture.tex}
-    \end{center}
 
 
     \section{Extension: Sampling from proposal distributions}
@@ -211,5 +136,9 @@
         \item When we have preparation schemes for two tensors, we can control them with a common ancilla qubit and measure their contraction by a Hadamard test (alternatively, using the SWAP test and state preparation in two registers).
         \item Can we extend these schemes to contractions of more general tensor networks?
     \end{itemize}
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
+
 
 \end{document}

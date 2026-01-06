@@ -1,0 +1,41 @@
+\section{Introduction}
+
+By its central axioms, quantum mechanics of multiple qubits is formulated by tensors capturing states and discrete time evolutions.
+Motivated by the structural similarity, we investigate how quantum circuits can be utilized for the tensor-network based approach towards efficient and explainable AI in the \tnreason{} framework.
+
+We follow two main ideas:
+\begin{itemize}
+    \item \textbf{Sampling of \ComputationActivationNetworks{}:} Prepare quantum states, which measurement statistics can be utilized to prepare samples from \ComputationActivationNetworks{}.
+    \item \textbf{Quantum Circuits as Contraction providers:} Quantum circuits are contractions of multiple tensors and therefore tensor networks, and measurement probabilities are given by contractions.
+    Here we investigate how we can exploit these as contraction provider for \tnreason{}.
+\end{itemize}
+
+Main approach: Quantum Inference scheme on Bayesian networks \cite{low_quantum_2014}
+\begin{itemize}
+    \item Extend to more general tensor networks than Bayesian networks: \ComputationActivationNetworks{}
+\end{itemize}
+
+Further literature:
+\begin{itemize}
+    \item \cite{schuld_machine_2021}: Sect 7.3.2 Reviewing the Low Approach
+    \item \cite{ozols_quantum_2013}: Quantum rejection sampling
+\end{itemize}
+
+\subsection{Related Works}
+
+Circuit preparing schemes based on approximation:
+\begin{itemize}
+    \item Q-Alchemy \cite{aroujo_low-rank_2023}, Q-Tucker CITE
+    \item Tensor-Network Optimization based (alternating schemes) \cite{rudolph_synergistic_2023,rudolph_decomposition_2023}
+\end{itemize}
+
+Exact circuit preparing schemes for distributions:
+\begin{itemize}
+    \item Grover-Rudolph \cite{grover_creation_2002}, but no quantum advantage \cite{herbert_quantum_2021}
+\end{itemize}
+
+Circuit simulation:
+Since \qcreason{} can prepare quantum circuits to arbitrary tensor networks, it can also be used to simulate quantum circuits (with an overhead!).
+\begin{itemize}
+    \item \cite{sander_large-scale_2025,sander_quantum_2025}
+\end{itemize}
