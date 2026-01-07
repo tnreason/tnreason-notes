@@ -1,0 +1,88 @@
+\section{TT Face Activation}
+
+\subsection{Generic Construction}
+
+When the vertices are characterized by the sum of local terms, we can construct the face activation tensor in $\ttformat$ format, by summation cores.
+This is for example the case for the examples constructed based on Hamming distances.
+
+\subsection{Relation with Facet Complexity}
+
+Facet complexity \cite[Definition 6.2.2]{grotschel_geometric_1993} bounds the encoding length of the inequalities describing a polytope.
+
+For any face $\facesymbol$ we find a normal $\normalvec\in\parspace$ and $\normalbound\in\rr$ such that $x$
+\begin{align*}
+    \genfaceset =
+    \{\meanparamwith\in\meanset \wcols \contraction{\normalvecwith,\meanparamwith}=\normalbound \}\, .
+\end{align*}
+We can thus represent a face activating tensor by computing the contraction $\contraction{\normalvecwith,\headindex[\selvariable]}$.
+
+To this end, let $\arbset\subset\rr$ be a set with index interpretation function
+\begin{align*}
+    \indexinterpretation : [r] \rightarrow \arbset \, .
+\end{align*}
+We demand $0,\normalbound\in\arbset$.
+We can for example choose $\arbset$ as the $\catorder$-bit binary integer representation.
+
+We then define for $\selindexin$ the summation operations
+\begin{align*}
+    +^{\selindex,\normalvecat{\indexedselvariable}} \defcols \arbset \times [\headdim] \rightarrow \arbset
+\end{align*}
+which satisfies for any $\arbelementin$ and $\headindexof{\selindex}$ for which $\arbelement + \normalvecat{\indexedselvariable} \cdot \headindexof{\selindex}\in\arbset$ the equation
+\begin{align*}
+    +^{\selindex,\normalvecat{\indexedselvariable}}(\arbelement,\headindexof{\selindex})
+    = \arbelement + \normalvecat{\indexedselvariable} \cdot \headindexof{\selindex} \, .
+\end{align*}
+We further assume, that for any tuple $\headindexof{[\seldim]}\in\headstates$ and any $\secselindex\in[\seldim]$
+\begin{align*}
+    \sum_{\selindex\leq\secselindex} \normalvecat{\indexedselvariable} \cdot \headindexof{\secselindex} \in \arbset \, .
+\end{align*}
+
+%Note that we might also use an approximation scheme of the sum on $\arbset$.
+
+
+Then we have
+\begin{align*}
+    \sum_{\meanparam\in\genfaceimset} \onehotmapofat{\meanparam}{\headvariables}
+    = \contractionof{\{
+        \bencodingofat{+^{\selindex,\normalvecat{\indexedselvariable}}}{
+            \headvariableof{+^{\selindex,\normalvecat{\indexedselvariable}}},\headvariableof{\selindex}
+        }
+        \wcols\selindexin\}
+        \cup \{\onehotmapofat{\invindexinterpretationat{0}}{\headvariableof{+^{-1,\normalvecat{\selvariable=-1}}}},
+        \onehotmapofat{\invindexinterpretationat{\normalbound}}{\headvariableof{+^{\seldim-1,\normalvecat{\selvariable=\seldim-1}}}}\}
+    }{\headvariables} \, .
+\end{align*}
+The variable $\headvariableof{+^{-1,\normalvecat{\selvariable=-1}}}$ is auxiliary to initialize the sum with $0$.
+
+We can weaken the assumptions on $\arbset$:
+When $\normalvecwith$ is positive, then any partial sum which exceeds $\normalbound$ can be represented by any member of $\arbset$ which is larger than $\normalbound$.
+This brings further sparsity, since no values larger than $\normalbound$ are needed to represent the face (add for example the $\infty$ element to $\arbset$ and represent any partial sum exceeding $\normalbound$ by it).
+
+
+\begin{definition}
+    We say that a face $\facesymbol$ has \emph{TT face complexity} $r$ if there exists a normal $\normalvec\in\parspace$ and $\normalbound\in\rr$ with
+    \begin{align*}
+        \genfaceset =
+        \{\meanparamwith\in\meanset \wcols \contraction{\normalvecwith,\meanparamwith}=\normalbound \}\, .
+    \end{align*}
+    and there is a subset $\arbset$ of cardinality at most $r$, for which $0,\normalbound\in\arbset$ and for any tuple $\headindexof{[\seldim]}\in\headstates$ and any $\secselindex\in[\seldim]$
+    \begin{align*}
+        \sum_{\selindex\leq\secselindex} \normalvecat{\indexedselvariable} \cdot \headindexof{\secselindex} \in \arbset \, .
+    \end{align*}
+\end{definition}
+
+Comparison with facet complexity \cite[Definition 6.2.2]{grotschel_geometric_1993}:
+\begin{itemize}
+    \item We define complexity here without the log (which would get the string length), to make a direct connection with TT ranks.
+    \item Facet complexity considers only the representation of the equation, not the demand of computing it.
+    \item Facet complexity considers just facets, not general faces, since it makes a statement about encoding the halfspace representation of the whole polytope.
+\end{itemize}
+
+\begin{theorem}
+    Let $\facesymbol$ be a face with TT face complexity $r$.
+    Then the face activation tensor has a $\ttformat$ rank of at most $r$.
+\end{theorem}
+\begin{proof}
+    See above construction.
+\end{proof}
+
