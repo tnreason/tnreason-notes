@@ -235,3 +235,58 @@ Given a syntactical decomposition of a boolean statistics, we prepare the basis 
     \item \textbf{Fine Structure:} Represent each logical connective based on its mod2-basis+ CP decomposition, as a concatenation of \computationCircuit{}s with the same variables.
     \item \textbf{Coarse Structure:} Arrange the logical connective representing circuits according to the syntactical hypergraph, where parent head variables appear as distributed variables at their children.
 \end{itemize}
+
+\subsection{Preparation of Function encoding states}
+
+Using the \computationCircuit{} we can prepare two function encoding schemes, depending on the start state.
+
+\subsubsection{Basis encoding}
+
+When applying the \computationCircuit{} on the initial state
+\begin{align*}
+    \sqrt{\frac{1}{2^\atomorder}}\onesat{\shortcatvariables} \otimes \fbasisat{\headvariable} % insymbol?
+\end{align*}
+we get the basis encoding state
+\begin{align*}
+    \basqstateofat{\exformula}{\shortcatvariables,\headvariable}
+    = \sqrt{\frac{1}{2^\atomorder}} \sum_{\shortcatindices\in\atomstates} \onehotmapofat{\shortcatindices}{\shortcatvariables}
+    \otimes \onehotmapofat{\exformula(\shortcatindices)}{\headvariable} \, .
+\end{align*}
+
+The initial state can be prepared by applying Hadamard gates on all distributed variable qubits and preparing the head variable qubit in the ground state.
+
+\subsubsection{Sign encoding}
+
+When applying the \computationCircuit{} on the initial state
+\begin{align*}
+    \sqrt{\frac{1}{2^\atomorder}}\onesat{\shortcatvariables}
+    \otimes \sqrt{\frac{1}{2}} \left(\fbasisat{\headvariable} - \tbasisat{\headvariable}\right)
+\end{align*}
+we get the sign encoding state
+\begin{align*}
+    \signqstateofat{\exformula}{\shortcatvariables,\headvariable}
+    = \left(\sqrt{\frac{1}{2^\atomorder}} \sum_{\shortcatindices\in\atomstates} \left(-1\right)^{\exformula(\shortcatindices)} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables}\right)
+    \otimes \sqrt{\frac{1}{2}} \left(\fbasisat{\headvariable} - \tbasisat{\headvariable}\right) \, .
+\end{align*}
+
+% Preparation of the initial state
+The initial state can be prepared by applying Hadamard gates on all distributed variable qubits and preparing the head variable qubit by applying a Hadamard gate on the first basis state, i.e.
+\begin{align*}
+    \frac{1}{\sqrt{2}} \left( \tbasisat{\headvariableof{\outsymbol}} - \fbasisat{\headvariableof{\outsymbol}} \right)
+    = \hgateat{\headvariableof{\outsymbol},\headvariableof{\insymbol}} \fbasisat{\headvariableof{\insymbol}} \, ,
+\end{align*}
+
+Limitations:
+\begin{itemize}
+    \item The prepared state $\signqstateof{\exformula}$ is distinguished from the state $\signqstateof{\lnot\exformula}$ only by a non-observable phase factor
+    \begin{align*}
+        \signqstateof{\exformula}
+        = (-1) \cdot \signqstateof{\lnot\exformula}
+    \end{align*}
+    \item With this construction the statistic qubit is disentangled with the distributed qubits.
+    Further manipulation of the statistic qubits alone (as we do with \activationCircuits{}) will not retrieve any information about the encoded function.
+    \item When doing the sign encoding procedure for multiple formulas, we get a disentangled state of the head variables with the distributed variables encoded in the sign encoding state of $\bigoplus_{\exformulain}\exformula$ (where by $\bigoplus$ we denote the mod2 sum of boolean functions).
+\end{itemize}
+
+This encoding is applied in the Deutsch-Josza algorithm \cite{deutsch_rapid_1992}.
+% Multiple formulas
