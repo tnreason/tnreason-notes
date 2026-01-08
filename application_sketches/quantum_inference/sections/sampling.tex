@@ -136,7 +136,15 @@ We draw a sample $\shortcatindices$ from $\mathbb{Q}$ and accept it with the pro
 \end{align*}
 
 The acceptance probability is the $\infty$ Renyi Divergence between the proposal distribution (typically uniform) and the target distribution.
-The $\infty$ Renyi Divergence is
+
+For $0<\alpha<\infty$ and $\alpha\neq 1$ the Renyi Divergence is defined as
+\begin{align*}
+    D_{\alpha}\left[\probtensor||\mathbb{Q}\right]
+    = \frac{1}{1-\alpha} \lnof{\sum_{\shortcatindicesin}
+        \frac{\probat{\indexedshortcatvariables}^{\alpha}}{\mathbb{Q}\left[\indexedshortcatvariables\right]^{\alpha-1}}
+    } \, .
+\end{align*}
+The $\infty$ Renyi Divergence is the limit $\alpha\rightarrow\infty$
 \begin{align*}
     D_{\infty}\left[\probtensor||\mathbb{Q}\right]
     = \lnof{\max_{\shortcatindicesin}
