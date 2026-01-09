@@ -1,7 +1,7 @@
 %\section{Decomposition of Probability Distributions}
 \section{The Probabilistic Paradigm}\label{sec:probPar}
 
-We here investigate tensor network decomposition mechanisms of probability distributions.
+Here we investigate tensor network decomposition mechanisms of probability distributions.
 After introducing probability distributions as tensors we derive tensor network decompositions based on conditional independencies (applying the Hammersley-Clifford theorem \cite{clifford_markov_1971}) to motivate graphical models.
 Further we present the \ComputationMechanism{}, in which the Fisher-Neyman Factorization Theorem is used to decompose distributions in the presence of sufficient statistics.
 
@@ -27,12 +27,12 @@ As defined next, distributions $\probtensor$ over a discrete state space can be 
         = 1 \, .
     \end{align*}
     Let $\thirdcatvariable$ be another variable taking values in a possibly infinite set $\mathrm{val}(\thirdcatvariable)$.
-    Then a tensor $\condprobat{\shortcatvariables}{\thirdcatvariable}$ is a family of joint probability distributions, if for any $\thirdcatindex\in\mathrm{val}(\thirdcatvariable)$ the slice $\condprobat{\shortcatvariables}{\thirdcatvariable=\thirdcatindex}$ is a joint probability distribution.
+    Then a tensor $\condprobat{\shortcatvariables}{\thirdcatvariable}$ is a family of joint probability distributions if, for any $\thirdcatindex\in\mathrm{val}(\thirdcatvariable)$, the slice $\condprobat{\shortcatvariables}{\thirdcatvariable=\thirdcatindex}$ is a joint probability distribution.
 \end{definition}
 
 \input{../examples/probabilistic_paradigm/coin_toss_family}
 
-A basic inference operation on probability distributions is the computation of marginal and conditional distribution.
+A basic inference operation on probability distributions is the computation of marginal and conditional distributions.
 
 \begin{definition}
     \label{def:marginalConditionalDistribution}
@@ -109,14 +109,14 @@ Using tensor network diagrams we depict this property by
 \begin{center}
     \input{../tikz_pics/probability_representation/independent_decomposition}
 \end{center}
-Let us notice, that the assumption of independence reduces the degrees of freedom from $\exranddim\cdot\secexranddim-1$ to $(\exranddim-1)+(\secexranddim-1)$.
+Let us notice that the assumption of independence reduces the degrees of freedom from $\exranddim\cdot\secexranddim-1$ to $(\exranddim-1)+(\secexranddim-1)$.
 The decomposition into marginal distributions furthermore exploits this reduced freedom and provides an efficient storage.
-Having a joint distribution of multiple variables, which disjoint subsets are independent, we can iteratively apply the decomposition scheme.
+Having a joint distribution of multiple variables whose disjoint subsets are independent, we can iteratively apply the decomposition scheme.
 As a result, we can reduce the scaling of the degrees of freedom from exponential to linear by the assumption of independence.
 
 % Weakening of independence to conditional independence
 Independence is, as we observed, a strong assumption, which is often too restrictive.
-Conditional independence instead is a less demanding assumption, which still implies efficient tensor network decompositions schemes.
+Conditional independence instead is a less demanding assumption, which still implies efficient tensor network decomposition schemes.
 We introduce conditional independence as independence of variables with respect to conditional distributions.
 
 \begin{definition}[Conditional Independence]
@@ -135,7 +135,7 @@ We introduce conditional independence as independence of variables with respect 
 Conditional independence stated in \defref{def:condIndependence} has a close connection with independence stated in \defref{def:independence}.
 To be more precise, $\catvariableof{0}$ is independent of $\catvariableof{1}$ conditioned on $\catvariableof{2}$, if and only if $\catvariableof{0}$ is independent of $\catvariableof{1}$ with respect to any slice $\condprobof{\catvariableof{0},\catvariableof{1}}{\indexedcatvariableof{2}}$ of the conditional distribution $\condprobof{\catvariableof{0},\catvariableof{1}}{\catvariableof{2}}$.
 
-We can further exploit conditional independence to ﬁnd tensor network decompositions of probabilities, as we show as the next corollary.
+We can further exploit conditional independence to find tensor network decompositions of probabilities, as we show in the next corollary.
 \begin{corollary}% NEEDED?
     \label{cor:secCriterionCondIndepencence}
     Let $\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}$ be a joint distribution.
@@ -374,7 +374,7 @@ Note that by construction each member of an exponential family is an element in 
 \subsection{Efficient Contractions by Message Passing}
 
 Contractions of tensor networks are generally hard to solve.
-We here investigate message passing algorithms, which decompose global contractions into a sequence of local contractions, which results are passed as messages through the tensor network.
+Here we investigate message passing algorithms, which decompose global contractions into a sequence of local contractions, whose results are passed as messages through the tensor network.
 The resulting algorithm is called Belief Propagation \algoref{alg:treeBeliefPropagation}.
 While various scheduling strategies for the message passing exist, we here focus on the case of tree hypergraphs, for which exactness and efficiency can be shown.
 % Technical preparations for the algorithm
