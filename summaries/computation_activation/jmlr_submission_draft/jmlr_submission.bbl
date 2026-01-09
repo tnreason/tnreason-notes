@@ -1,4 +1,4 @@
-\begin{thebibliography}{45}
+\begin{thebibliography}{49}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -65,6 +65,12 @@ A.~V. Berezutskii, I.~A. Luchnikov, and A.~K. Fedorov.
 \newblock \doi{10.1103/PhysRevResearch.7.013063}.
 \newblock URL \url{https://link.aps.org/doi/10.1103/PhysRevResearch.7.013063}.
 \newblock Publisher: American Physical Society.
+
+\bibitem[Brown(1987)]{brown_fundamentals_1987}
+Lawrence~D. Brown.
+\newblock \emph{Fundamentals of {Statistical} {Exponential} {Families}}.
+\newblock Institute of mathematical Statistics, Hayward, Calif, June 1987.
+\newblock ISBN 978-0-940600-10-2.
 
 \bibitem[Casella and Berger(2001)]{casella_statistical_2001}
 George Casella and Roger Berger.
@@ -226,6 +232,16 @@ Zachary~C. Lipton.
 \newblock \doi{10.1145/3233231}.
 \newblock URL \url{https://dl.acm.org/doi/10.1145/3233231}.
 
+\bibitem[Mackworth(1977)]{mackworth_consistency_1977}
+Alan~K. Mackworth.
+\newblock Consistency in networks of relations.
+\newblock \emph{Artificial Intelligence}, 8\penalty0 (1):\penalty0 99--118,
+  February 1977.
+\newblock ISSN 0004-3702.
+\newblock \doi{10.1016/0004-3702(77)90007-8}.
+\newblock URL
+  \url{https://www.sciencedirect.com/science/article/pii/0004370277900078}.
+
 \bibitem[Marra et~al.(2024)Marra, Dumančić, Manhaeve, and
   De~Raedt]{marra_statistical_2024}
 Giuseppe Marra, Sebastijan Dumančić, Robin Manhaeve, and Luc De~Raedt.
@@ -250,6 +266,12 @@ Kevin~P. Murphy.
 \newblock \emph{Probabilistic {Machine} {Learning}: {An} {Introduction}}.
 \newblock The MIT Press, Cambridge, Massachusetts London, England, March 2022.
 \newblock ISBN 978-0-262-04682-4.
+
+\bibitem[Mézard(2009)]{mezard_information_2009}
+Marc Mézard.
+\newblock \emph{Information, {Physics}, and {Computation}}.
+\newblock ACADEMIC, Oxford ; New York, March 2009.
+\newblock ISBN 978-0-19-857083-7.
 
 \bibitem[Nickel et~al.(2016)Nickel, Murphy, Tresp, and
   Gabrilovich]{nickel_review_2016}
@@ -286,6 +308,15 @@ Judea Pearl.
   {Networks} of {Plausible} {Inference}}.
 \newblock Morgan Kaufmann, s.l., September 1988.
 \newblock ISBN 978-1-55860-479-7.
+
+\bibitem[Pearl(2009)]{pearl_causality_2009}
+Judea Pearl.
+\newblock \emph{Causality: {Models}, {Reasoning} and {Inference}.
+  {Ausgezeichnet}: {ACM} {Turing} {Award} for {Transforming} {Artificial}
+  {Intelligence} 2011}.
+\newblock Cambridge University Press, Cambridge New York, NY Port Melbourne New
+  Delhi Singapore, 2 edition, November 2009.
+\newblock ISBN 978-0-521-89560-6.
 
 \bibitem[Penrose(1987)]{penrose_spinors_1987}
 Roger Penrose.
@@ -335,16 +366,21 @@ Aaron Sander, Maximilian Fröhlich, Mazen Ali, Martin Eigel, Jens Eisert,
   Wille.
 \newblock Quantum circuit simulation with a local time-dependent variational
   principle, August 2025{\natexlab{a}}.
-\newblock URL \url{https://arxiv.org/abs/2508.10096v1}.
+\newblock URL \url{http://arxiv.org/abs/2508.10096}.
+\newblock arXiv:2508.10096 [quant-ph].
 
 \bibitem[Sander et~al.(2025{\natexlab{b}})Sander, Fröhlich, Eigel, Eisert,
   Gelß, Hintermüller, Milbradt, Wille, and Mendl]{sander_large-scale_2025}
 Aaron Sander, Maximilian Fröhlich, Martin Eigel, Jens Eisert, Patrick Gelß,
   Michael Hintermüller, Richard~M. Milbradt, Robert Wille, and Christian~B.
   Mendl.
-\newblock Large-scale stochastic simulation of open quantum systems, January
-  2025{\natexlab{b}}.
+\newblock Large-scale stochastic simulation of open quantum systems.
+\newblock \emph{Nature Communications}, 16\penalty0 (1):\penalty0 11074,
+  December 2025{\natexlab{b}}.
+\newblock ISSN 2041-1723.
+\newblock \doi{10.1038/s41467-025-66846-x}.
 \newblock URL \url{http://arxiv.org/abs/2501.17913}.
+\newblock arXiv:2501.17913 [quant-ph].
 
 \bibitem[Sarker et~al.(2022)Sarker, Zhou, Eberhart, and
   Hitzler]{sarker_neuro-symbolic_2022}

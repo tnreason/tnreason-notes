@@ -1,0 +1,378 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{wiaspreprint}[2020/12/16 v0.14 Macros for WIAS articles]
+\RequirePackage{wiascd}
+\RequirePackage[%
+   a4paper%
+  ,hcentering%
+  ,textwidth=16cm%
+  ,textheight=24.5cm%
+  ,headheight=14.5pt%
+  ,footskip=1.5cm%
+  ,marginparwidth=.7in%
+%  ,marginparsep=.05in%
+]{geometry}
+\RequirePackage{fancyhdr}
+\RequirePackage{url}
+\RequirePackage{hyperref}
+
+%%% this is from wiasa4.sty for compatibility reasons
+\providecommand*{\renewtextwidthandheight}{}
+\renewcommand*{\renewtextwidthandheight}[2]{%
+  \geometry{%
+    textwidth=#1%
+   ,textheight=#2%
+  }%
+}
+
+\setlength{\parskip}{.2cm}
+\setlength{\parindent}{\z@}
+
+\providecommand{\defaultfont}{\normalfont}
+
+\providecommand*{\email}[1]{\texttt{#1}}
+\newcommand*{\nopreprint}[1]{\renewcommand*{\@nopreprint}{#1}}
+\newcommand*{\@nopreprint}{0}
+\newcommand*{\nopreyear}[1]{\renewcommand*{\@nopreyear}{#1}}
+\newcommand*{\@nopreyear}{\number\year}
+
+\newif\if@WIAS@preprint@ams\@WIAS@preprint@amsfalse
+
+\@ifclassloaded{amsart}{\@WIAS@preprint@amstrue}{}
+\@ifclassloaded{amsbook}{\@WIAS@preprint@amstrue}{}
+\@ifclassloaded{amsproc}{\@WIAS@preprint@amstrue}{}
+
+\if@WIAS@preprint@ams
+  \newcommand*{\@andify}{\andify\authors\let\@author\authors}%
+\else
+  \newcommand*{\@xp}{}
+  \newcommand*{\@nx}{}
+  \let\@xp\expandafter
+  \let\@nx=\noexpand
+  \newcommand*{\@andify}{}%
+  \newbox\abstractbox
+  \newcommand*{\keywords}[1]{\renewcommand*{\@keywords}{#1}}%
+  \newcommand*{\@keywords}{}%
+  \newcommand*{\subjclass}[2][2020]{%
+    \renewcommand*{\@subjclass}{#2}%
+    \@ifundefined{subjclassname@#1}{%
+      \PackageWarning{wiaspreprint}{Unknown edition (#1) of Mathematics
+        Subject Classification; using '2020'.}%
+    }{%
+      \@xp\let\@xp\subjclassname\csname subjclassname@#1\endcsname
+    }%
+  }%
+  \newcommand*{\@subjclass}{}%
+  \@namedef{subjclassname@1991}{%
+    \textup{1991} Mathematics Subject Classification}%
+  \@namedef{subjclassname@2000}{%
+    \textup{2000} Mathematics Subject Classification}%
+  \@namedef{subjclassname@2010}{%
+    \textup{2010} Mathematics Subject Classification}%
+  \@namedef{subjclassname@2020}{%
+    \textup{2020} Mathematics Subject Classification}%
+  \@xp\let\@xp\subjclassname\csname subjclassname@2020\endcsname
+  %% BEGIN from amsart.cls
+  \long\def\@ifempty#1{\@xifempty#1@@..\@nil}%
+  \long\def\@xifempty#1#2@#3#4#5\@nil{%
+    \ifx#3#4\@xp\@firstoftwo\else\@xp\@secondoftwo\fi}%
+  \long\def\@ifnotempty#1{\@ifempty{#1}{}}%
+  \newcommand*{\thankses}{}%
+  \renewcommand{\thanks}[1]{%
+    \@ifnotempty{#1}{\g@addto@macro\thankses{\thanks{#1}}}%
+  }%
+  \def\@addpunct#1{%
+    \relax\ifhmode
+      \ifnum\spacefactor>\@m \else#1\fi
+    \fi}%
+  \newcommand{\keywordsname}{Key words and phrases}%
+  \renewcommand*{\title}[2][]{\gdef\shorttitle{#1}\gdef\@title{#2}}%
+  \edef\title{\@nx\@dblarg
+    \@xp\@nx\csname\string\title\endcsname}
+  \renewcommand{\author}[2][]{%
+    \ifx\@empty\authors
+      \gdef\authors{#2}%
+    \else
+      \g@addto@macro\authors{\and#2}%
+    \fi
+    \@ifnotempty{#1}{%
+      \ifx\@empty\shortauthors
+        \gdef\shortauthors{#1}%
+      \else
+        \g@addto@macro\shortauthors{\and#1}%
+      \fi
+    }%
+  }
+  \edef\author{\@nx\@dblarg
+    \@xp\@nx\csname\string\author\endcsname}
+  \newcommand*{\shortauthors}{}
+  \newcommand*{\authors}{}
+  \renewcommand*{\@author}{\authors}
+  %% END from amsart.cls
+\fi
+
+%% taken from amsart.cls and added \medskip
+\providecommand*{\@setsubjclass}{}
+\providecommand*{\@setkeywords}{}
+\providecommand*{\@setthanks}{}
+\renewcommand*{\@setsubjclass}{%
+    {\itshape\subjclassname.}\enspace\@subjclass\@addpunct.\medskip}
+\renewcommand*{\@setkeywords}{%
+    {\itshape\keywordsname.}\enspace\@keywords\@addpunct.\medskip}
+\renewcommand*{\@setthanks}{\def\thanks##1{\par##1\@addpunct.}\thankses}
+
+% based on \subjclass and friends in amsart.cls
+\newcommand*{\pacs}[2][1999]{%
+  \renewcommand*{\@pacs}{#2}%
+  \renewcommand*{\@pacsname}{%
+    \textup{#1} Physics and Astronomy Classification Scheme}%
+}
+\newcommand*{\@pacs}{}
+\newcommand*{\@pacsname}{}
+\newcommand*{\@setpacs}{%
+  {\itshape\@pacsname.}\enspace\@pacs\@addpunct.\medskip}
+
+\newcommand*{\addmark}[2]{\@addmark{#1}{#2}}
+\newcommand*{\@addmark}[2]{}
+\newcommand*{\nofnmark}{}
+\let\nofnmark\@empty
+
+%% from latex.ltx
+\renewcommand*{\endminipage}{%
+    \par
+    \unskip
+    \ifvoid\@mpfootins\else
+      \center                                                     %%% WIAS
+      \vskip\skip\@mpfootins
+      \normalcolor
+      \footnoterule
+%      \unvbox\@mpfootins
+      \unhbox\@mpfootins\endcenter\unskip                         %%% WIAS
+      \vskip-\skip\@mpfootins                                     %%% WIAS
+    \fi
+%    \@minipagefalse   %% added 24 May 89
+    \global\@minipagefalse   %% added 24 May 89                   %%% WIAS
+  \color@endgroup
+  \egroup
+  \expandafter\@iiiparbox\@mpargs{\unvbox\@tempboxa}%
+}
+
+%% from latex.ltx
+\renewcommand{\@mpfootnotetext}[1]{%
+  \global\setbox\@mpfootins
+%  \vbox{%
+%    \unvbox\@mpfootins
+  \hbox{%                                                          %%% WIAS
+    \unhbox\@mpfootins                                             %%% WIAS
+    \reset@font\footnotesize
+%    \hsize\columnwidth
+    \hsize.42\columnwidth                                          %%% WIAS
+    \@parboxrestore
+    \protected@edef\@currentlabel
+         {\csname p@mpfootnote\endcsname\@thefnmark}%
+    \color@begingroup
+      \@makefntext{%
+%        \rule\z@\footnotesep\ignorespaces#1\@finalstrut\strutbox}%
+        \rule\z@\footnotesep\ignorespaces                          %%% WIAS
+        \tabular[t]{l}#1\endtabular                                %%% WIAS
+        \hbox{~~\hspace{.4em}}\hfill                               %%% WIAS
+        \linebreak[0]\bigskip}%                                    %%% WIAS
+    \color@endgroup}%
+}
+
+%% from amsart.cls
+\providecommand{\maketitle}{}
+\renewcommand*{\maketitle}{%
+  \hypersetup{%                                                    %%% WIAS
+    pdftitle = {\@title},%                                         %%% WIAS
+    pdfauthor = {\shortauthors},%                                  %%% WIAS
+    pdfkeywords = {\@keywords},%                                   %%% WIAS
+    pdfsubject = {WIAS Preprint No~\@nopreprint, \@nopreyear}%     %%% WIAS
+  }%                                                               %%% WIAS
+  \setcounter{page}{-1}%
+  \par
+  \@topnum\z@ % this prevents figures from falling at the top of page 1
+%  \@setcopyright
+%  \thispagestyle{firstpage}% this sets first page specifications
+%  \uppercasenonmath\shorttitle
+%  \ifx\@empty\shortauthors \let\shortauthors\shorttitle
+%  \else \andify\shortauthors
+%  \fi
+%  \@maketitle@hook
+  \begingroup
+  \renewcommand*{\@addmark}[2]{%
+    $\!\!$\textsuperscript{##1}\ifx\undefined ##2\else\footnotemark[##2]\fi
+  }%
+  \renewcommand*{\nofnmark}{\let\thempfootnote\@empty}
+  \thispagestyle{empty}%
+  \begin{center}%
+    \normalfont\bfseries\large\selectfont
+    Weierstra\ss-Institut\\
+    \normalfont\bfseries\large\selectfont
+    f\"ur Angewandte Analysis und Stochastik\\[2mm]
+    \normalfont\bfseries\large\selectfont
+    Leibniz-Institut im Forschungsverbund Berlin e.\,V.
+    \bigskip
+    \par
+    \normalfont\large\wiaspublication\hfill ISSN \wiasissn
+    \par
+  \end{center}%
+  \vfill
+  \@maketitle
+%  \toks@\@xp{\shortauthors}\@temptokena\@xp{\shorttitle}%
+%  \toks4{\def\\{ \ignorespaces}}% defend against questionable usage
+%  \edef\@tempa{%
+%    \@nx\markboth{\the\toks4
+%      \@nx\MakeUppercase{\the\toks@}}{\the\@temptokena}}%
+%  \@tempa
+  \endgroup
+  \topskip10\p@                                                    %%% WIAS
+  \c@footnote\z@
+  \def\do##1{\let##1\relax}%
+  \do\maketitle \do\@maketitle \do\title \do\@xtitle \do\@title
+  \do\author \do\@xauthor \do\address \do\@xaddress
+  \do\contrib \do\contribs \do\xcontribs \do\toccontribs
+  \do\email \do\@xemail \do\curraddr \do\@xcurraddr
+  \do\commby \do\@commby
+  \do\dedicatory \do\@dedicatory \do\thanks \do\thankses
+  \do\keywords \do\@keywords \do\subjclass \do\@subjclass
+  \do\pacs\do\@pacs                                                %%% WIAS
+  \do\@author                                                      %%% WIAS
+  \do\@andify                                                      %%% WIAS
+  \do\nopreprint                                                   %%% WIAS
+%  \do\@nopreprint                           % needed for fancyhdr %%% WIAS
+  \do\nopreyear                                                    %%% WIAS
+%  \do\@nopreyear                            % needed for fancyhdr %%% WIAS
+}
+
+%%% BEGIN WIAS
+\renewcommand*{\@maketitle}{%
+  \renewcommand*{\@makefnmark}{%
+    \hbox{\textsuperscript{\normalfont\@thefnmark}}%
+  }%
+  \renewcommand*{\@makefntext}{\noindent\@makefnmark}%
+  \normalfont\normalsize
+  \let\@thefnmark\relax
+  \ifx\@empty\@subjclass\else\@footnotetext{\@setsubjclass}\fi
+  \ifx\@empty\@pacs\else\@footnotetext{\@setpacs}\fi
+  \ifx\@empty\@keywords\else\@footnotetext{\@setkeywords}\fi
+  \ifx\@empty\thankses\else\@footnotetext{%
+    \def\par{\let\par\@par}\@setthanks}%
+  \fi
+  \topskip 66\p@ % 6.5 picas to the base of the first title line
+  \vtop{%
+    \centering
+    \setlength{\baselineskip}{14\p@}%
+    \normalfont\fontseries{bx}\fontsize{17}{25}\selectfont
+    \@title\@@par
+    \global\dimen@i\prevdepth
+  }%
+  \prevdepth\dimen@i
+  \vskip 1.5em
+  {\large
+   \lineskip .5em
+   \renewcommand*{\thempfootnote}{\arabic{mpfootnote}}%
+   \begin{minipage}{\linewidth}%
+     \let\footnoterule\relax
+     \ifx\@author\@empty\else
+       \@andify
+       \setlength{\baselineskip}{32\p@}%
+       \vtop{%
+         \centering
+         \@author\@@par
+         \global\dimen@i\prevdepth
+       }%
+       \prevdepth\dimen@i
+     \fi
+     \ifx\@date\@empty\else
+       \setlength{\baselineskip}{24\p@}%
+       \vtop{%
+         \centering
+         \small
+         submitted: \@date\@@par
+         \global\dimen@i\prevdepth
+       }%
+       \prevdepth\dimen@i
+     \fi
+     \normalbaselines
+   \end{minipage}%
+   \par
+  }%
+  \normalbaselines
+  \vfill
+  \begin{center}%
+    No. \@nopreprint\\[1mm]
+    Berlin \@nopreyear
+    \vfill
+    \wiaslogo[height=2cm]
+    \vfill
+  \end{center}%
+  \pagebreak
+  \thispagestyle{empty}%
+  \setcounter{page}{0}%
+  \par
+  \vglue 1cm
+  \vfill
+  \noindent
+  \begin{tabular}{l}%
+    Edited by\\
+    Weierstra\ss-Institut f\"ur Angewandte Analysis und Stochastik (WIAS)\\
+    Leibniz-Institut im Forschungsverbund Berlin e.\,V.\\
+    Anton-Wilhelm-Amo-Stra\ss e 39\\
+    10117 Berlin\\
+    Germany
+  \end{tabular}%
+  \par
+  \noindent
+  \begin{tabular}{ll}%
+    \\
+    Fax:            & +49\,30\,20372-303\\
+    E-Mail:         & \url{preprint@wias-berlin.de}\\
+    World Wide Web: & \url{http://www.wias-berlin.de/}
+  \end{tabular}%
+  \pagebreak
+  \thispagestyle{empty}%
+  \vskip .5em
+  \begin{center}%
+    \renewcommand{\footnote}[1]{}%
+    \renewcommand{\addmark}[2]{}%
+    {\Large\textbf{\@title}\par}
+    \authors
+  \end{center}%
+  \thispagestyle{fancyfootonly}%
+  \ifvoid\abstractbox\else
+    \usebox\abstractbox\par
+  \fi
+} % end \@maketitle
+%%% END WIAS
+
+\fancyhf{}
+\fancyhead[LE]{\shortauthors}
+\fancyhead[LO]{\@ifempty{\shorttitle}{\@title}{\shorttitle}}
+\fancyhead[R]{\thepage}
+\fancyfoot[L]{\@pagefootleft}
+\fancyfoot[R]{\@pagefootright}
+\fancypagestyle{fancyfootonly}{%
+  \fancyhf{}%
+  \fancyfoot[L]{\@pagefootleft}%
+  \fancyfoot[R]{\@pagefootright}%
+  \renewcommand{\headrulewidth}{\z@}%
+  \renewcommand{\footrulewidth}{\z@}%
+}
+\AtBeginDocument{%
+  \pagestyle{fancy}%
+}
+
+\newcommand*{\pagefootleft}[1]{\renewcommand*{\@pagefootleft}{#1}}
+\newcommand*{\pagefootright}[1]{\renewcommand*{\@pagefootright}{#1}}
+\newcommand*{\@pagefootleft}{}
+\newcommand*{\@pagefootright}{}
+
+\pagefootleft{DOI 10.20347/WIAS.PREPRINT.\@nopreprint}
+\pagefootright{Berlin \@nopreyear}
+
+\date{\today}
+
+\newcommand*{\wiaspublication}{Preprint}
+\newcommand*{\wiasissn}{2198-5855}
+
+\endinput

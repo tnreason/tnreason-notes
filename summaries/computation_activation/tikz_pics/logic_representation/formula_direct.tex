@@ -10,11 +10,11 @@
 
     \node[anchor=center] (text) at (7,-2) {${=}$};
 
-    \node[anchor=center] (text) at (12,-2.5) {${\sum\limits_{\atomindices\in\atomstates}}$};
-    \node[anchor=center] (text) at (12,-4) {\colorlabelsize $\exformula(\atomindices)=1$};
+    \node[anchor=center] (text) at (12,-2.5) {$\sum\limits_{\shortcatindicesin}$};
+    \node[anchor=center] (text) at (12,-4.25) {\colorlabelsize $\formulaat{\indexedshortcatvariables}=1$};
 
     \begin{scope}
-        [shift={(19.5,1)}]
+    [shift={(19.5,1)}]
 
         \draw (-3,-2) rectangle (-1,-4);
         \node[anchor=center] (text) at (-2,-3) {\corelabelsize $\onehotmapof{\atomlegindexof{0}}$};
@@ -25,6 +25,33 @@
         \draw (3,-2) rectangle (5,-4);
         \node[anchor=center] (text) at (4,-3) {\corelabelsize $\onehotmapof{\atomlegindexof{\atomorder\shortminus1}}$};
         \draw[->-] (4,-4)--(4,-6) node[midway,right] {\colorlabelsize $\catvariableof{\atomorder\shortminus1}$};
+
+    \end{scope}
+
+    \node[anchor=center] (text) at (26,-2) {${=}$};
+
+    \begin{scope}[shift={(29,-2.5)}]
+
+        \draw (-1,-1) rectangle (1,1);
+        \node[anchor=center] (A) at (0,0) {\corelabelsize $\hypercoreof{0}$};
+        \draw (0,-1)--(0,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+
+        \draw (3,-1) rectangle (5,1);
+        \node[anchor=center] (A) at (4,0) {\corelabelsize $\hypercoreof{1}$};
+        \draw (4,-1)--(4,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+
+        \node[anchor=center] (text) at (8,0) {$\hdots$};
+
+        \draw (11,-1) rectangle (13,1);
+        \node[anchor=center] (A) at (12,0) {\corelabelsize $\hypercoreof{\catorder\shortminus1}$};
+        \draw (12,-1)--(12,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
+
+        \drawvariabledot{6}{4}
+        \node[anchor=south] (text) at (6,4) {\colorlabelsize $\decvariable$};
+
+        \draw (6,4) to[bend right= 20] (0,1);
+        \draw (6,4) to[bend right= 10] (4,1);
+        \draw (6,4) to[bend right= -20] (12,1);
 
     \end{scope}
 

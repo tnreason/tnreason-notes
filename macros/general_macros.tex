@@ -15,6 +15,9 @@
 \newcommand{\ozset}{\{0,1\}}
 \newcommand{\ozbasisset}{\{\fbasisat{\catvariable},\tbasisat{\catvariable}\}}
 
+
+\newcommand{\modspace}{\,\,\,\mathrm{mod}\,\,}
+
 \newcommand{\uniquantwrtof}[2]{\forall{#1}:{#2}}
 \newcommand{\existquantwrtof}[2]{\exists{#1}:{#2}}
 \newcommand{\imppremhead}[2]{\left(#1\right)\Rightarrow\left(#2\right)}
@@ -836,6 +839,8 @@
 \newcommand{\normalvec}{a}
 \newcommand{\normalbound}{b}
 \newcommand{\normalvecofat}[2]{\normalvec_{#1}\left[#2\right]}
+\newcommand{\normalvecat}[1]{\normalvec\left[#1\right]}
+\newcommand{\normalvecwith}{\normalvecat{\selvariable}}
 \newcommand{\normalboundof}[1]{\normalbound_{#1}}
 \newcommand{\normalboundofat}[2]{\normalbound_{#1}\left[#2\right]}
 \newcommand{\halfspaceparams}{\left( (\normalvecofat{i}{\selvariable},\normalboundof{i}) \wcols i \in[n]\right)}
@@ -991,6 +996,7 @@
 \newcommand{\exfunctionofat}[2]{\exfunctionof{#1}(#2)}
 \newcommand{\secexfunction}{g}
 \newcommand{\secexfunctionat}[1]{\secexfunction(#1)}
+\newcommand{\secexfunctionof}[1]{\secexfunction^{#1}}
 
 \newcommand{\realvaluedfunction}{\exfunction}
 \newcommand{\realvaluedfunctionev}[1]{\realvaluedfunction\left(#1\right)} % Evaluated
@@ -1049,6 +1055,8 @@
 \newcommand{\trueucon}{\mathrm{T}}
 
 \newcommand{\woneoplus}{\bigoplus^{(1)}}
+\newcommand{\modsumsymbol}{\tilde{+}}
+\newcommand{\marysumsymbol}{+^{\catdim}}
 
 \newcommand{\indexinterpretation}{I}
 \newcommand{\indexinterpretationof}[1]{\indexinterpretation_{#1}}
@@ -1100,3 +1108,13 @@
 \newcommand{\sudokunum}{n}
 \newcommand{\sudokustartevidence}{E^{\mathrm{start}}}
 \newcommand{\sudokukbof}[1]{\kb^{#1}}
+
+\newcommand{\basqstateof}[1]{\qstate^{\mathrm{bas}}_{#1}}
+\newcommand{\basqstateofat}[2]{\basqstateof{#1}\left[#2\right]}
+
+\newcommand{\signqstateof}[1]{\qstate^{\mathrm{sign}}_{#1}}
+\newcommand{\signqstateofat}[2]{\signqstateof{#1}\left[#2\right]}
+
+% Hadamard
+\newcommand{\hgate}{H}
+\newcommand{\hgateat}[1]{\hgate\left[#1\right]}

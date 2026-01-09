@@ -1,0 +1,11 @@
+\section{Implementation}
+
+The introduced quantum circuit preparation schemes have been implemented in the python package \qcreason{}, which consists in three layers:
+\begin{center}
+    \input{./tikz_pics/qcreason_architecture.tex}
+\end{center}
+
+\subsection{Generic Contraction}
+
+So far, the generic contraction routine consists in activation circuits preparing for each tensor an ancilla variable, and post-selecting the measurements where the ancilla variable is $1$.
+The resulting tensor of the contraction is a $\mathrm{PandasCore}$ storing the post-selected measurement results in a dataframe.

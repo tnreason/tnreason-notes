@@ -1,4 +1,4 @@
-\section{Notation and Basic Concepts}\label{sec:notation}
+\section{Foundations}\label{sec:notation}
 
 We in this section introduce our hypergraph-based tensor network formalism and define the architecture of \CompActNets{} based on this formalism.
 
@@ -180,7 +180,7 @@ In our graphical tensor notation, we depict normalized tensors by directed hyper
 
 Towards presenting the function encoding schemes we define one-hot encodings mapping the states of variables to basis tensors.
 
-\begin{definition}[One-hot encodings to Factored Representations]
+\begin{definition}[One-hot encoding]
     \label{def:onehotenc}
     To any variable $\catvariable$ taking values in $[\catdim]$ the one-hot encoding of any state $\catindex\in[\catdim]$ is the vector with coordinates
     \begin{align}
@@ -210,11 +210,11 @@ We now use one-hot encodings to encode functions between state sets.
 
 \begin{definition}[Basis encoding of maps between state sets]
     \label{def:functionRepresentation}
-    Let there be two systems with factored representations by variables $\shortcatvariables$ and $\headvariables$, and a map
+    Let there be two sets of variables $\shortcatvariables$ and $\headvariables$, and a map
     \begin{align*}
         \statesetfunction\defcols\facstates \rightarrow  \headstates
     \end{align*}
-    between these state sets.
+    between their state sets.
     Then the basis encoding of $\statesetfunction$ is a tensor
     \begin{align*}
         \bencodingofat{\statesetfunction}{\headvariables,\shortcatvariables}
@@ -237,21 +237,22 @@ We further generalize basis encodings to arbitrary functions between finite sets
 Given an arbitrary set $\arbset$ we say a map
 \begin{align*}
     \indexinterpretation \defcols
-    [\cardof{\arbset}] \rightarrow \arbset
+    \bigtimes_{\catenumeratorin}[\catdimof{\catenumerator}] \rightarrow \arbset
 \end{align*}
-is an enumeration map for $\arbset$.
+is an enumeration map of $\arbset$ by $\catorder$ variables $\catvariableof{\catenumerator}$ taking values in $\catdimof{\catenumerator}$.
 Given a function $\exfunction:\inset\rightarrow\outset$ between arbitrary sets, and enumerating maps $\indexinterpretationof{\insymbol}$ and $\indexinterpretationof{\outsymbol}$ for both sets we define the basis encoding of $\exfunction$ as
 \begin{align*}
-    \bencodingofat{\exfunction}{\headvariable,\catvariable}
-    = \sum_{\arbelement\in\inset} \onehotmapofat{\invindexinterpretationofat{\outsymbol}{\exfunction(\arbelement)}}{\headvariable}
-    \otimes \onehotmapofat{\invindexinterpretationofat{\insymbol}{\arbelement}}{\catvariable} \, ,
+    \bencodingofat{\exfunction}{\headvariables,\shortcatvariables}
+    = \sum_{\arbelement\in\inset} \onehotmapofat{\invindexinterpretationofat{\outsymbol}{\exfunction(\arbelement)}}{\headvariables}
+    \otimes \onehotmapofat{\invindexinterpretationofat{\insymbol}{\arbelement}}{\shortcatvariables} \, ,
 \end{align*}
 where $\catvariable,\headvariable$ are variables taking values in $[\cardof{\inset}]$ and $[\cardof{\outset}]$.
+We present in \exaref{exa:madicRepresentation} index enumeration maps for summations in $\catdim$-adic integer representations.
 %
-Based on these concepts the main architecture can be defined.
+Based on these concepts we define the most general tensor-network architecture to be applied in the rest of this work.
 
 \begin{definition}[\ComputationActivationNetwork{} (\CompActNets{})]
-    \label{def:realizableStatDistributions}
+    \label{def:compActNets}
     Given a function $\sstat : \facstates \rightarrow \parspace$, and a hypergraph $\graph=(\nodes,\edges)$ with nodes $[\seldim]\subset\nodes$ containing the image coordinates of $\sstat$, we define the by $\sstat$ computable and by $\graph$ activated family of distributions by
     \begin{align*}
         \realizabledistsof{\sstat,\graph}
@@ -260,10 +261,10 @@ Based on these concepts the main architecture can be defined.
               \wcols \acttensorat{\headvariableof{\nodes}} \in \tnsetof{\graph} \right\} \, .
     \end{align*}
     We refer to any member $\probat{\shortcatvariables}\in\realizabledistsof{\sstat,\graph}$ as a \emph{\ComputationActivationNetwork{}} (\emph{\CompActNet{}}).
-    We call $\bencsstatwith$ (and any decomposition of it) as the \emph{computation network} and by $\acttensorat{\headvariableof{\nodes}}$ as the \emph{activation network}.
+    We call $\bencsstatwith$ (and any decomposition of it) the \emph{computation network} and $\acttensorat{\headvariableof{\nodes}}$ the \emph{activation network}.
 \end{definition}
 
-\alex{
+%% Elementary and Max hypergraphs
 The elementary activated networks are representable by an elementary activation tensor, with respect to the graph
 \begin{align*}
     \elgraph = \big(\nodes, \{\{\node\}\wcols\nodein\}\big)
@@ -274,4 +275,4 @@ Any \CompActNet{} is representable with respect to the maximal hypergraph
     \maxgraph  = \big(\nodes,\{\nodes\}\big) \, .
 \end{align*}
 We therefore have for any graph $\realizabledistsof{\sstat,\graph}\subset\realizabledistsof{\sstat,\maxgraph}$.
-}
+

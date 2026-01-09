@@ -1,0 +1,132 @@
+\begin{example}[Continuation of \exaref{exa:madicRepresentation}]%[Computation of the sum of $\catdim$-adic integers]
+    \label{exa:madicPropagation}
+    Let us now show how \algoref{alg:directedBeliefPropagation} can be exploited to compute by an efficient message passing algorithm the digits of the $\catdim$-adic sum.
+    Given two numbers in $\catdim$-adic representation by the tuples $\shortcatindices$ and $\tildecatindexof{[\catorder]}$, we add the hyperedges with empty incoming nodes and single outgoing node
+    \begin{align*}
+        \bigcup_{\catenumeratorin}\left\{(\varnothing,\{\catvariableof{\catenumerator}\}),(\varnothing,\{\tildecatvariableof{\catenumerator}\})\right\}
+    \end{align*}
+    to the hypergraph of \exaref{exa:madicRepresentation} and decorate them by the digit one-hot encodings $\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}$ and $\onehotmapofat{\tildecatindexof{\catenumerator}}{\tildecatvariableof{\catenumerator}}$ (see \figref{fig:propagationMary}.
+    We then apply the Directed Belief Propagation \algoref{alg:directedBeliefPropagation}.
+    The initial messages queue consists then in the messages from the digit encoding.
+    As sketched in \figref{fig:propagationMary} to each digit there are three messages (with the exception of the last being two), which can be scheduled in consecutive epochs $\messagesymbol^{(\catenumerator,[3])}$.
+    %, namely
+%    \begin{align*}
+%        \scheduler =&
+%        \left\{
+%            \big((\varnothing,\{\catvariableof{0}\}),(\{\catvariableof{0},\tildecatvariableof{0}\},\{\headvariableof{0},\thirdcatvariableof{0}\})\big),
+%            \big((\varnothing,\{\tildecatvariableof{0}\}),(\{\catvariableof{0},\tildecatvariableof{0}\},\{\headvariableof{0},\thirdcatvariableof{0}\})\big)
+%        \right\} \cup \\
+%&        \left(\bigcup_{\catenumerator\in\{1,\ldots,\catorder-2\}}\left\{
+%                                                               \big((\varnothing,\{\catvariableof{\catenumerator}\}),(\{\catvariableof{\catenumerator},\tildecatvariableof{\catenumerator},\thirdcatvariableof{\catenumerator-1}\},\{\headvariableof{\catenumerator},\thirdcatvariableof{\catenumerator}\})\big),
+%                                                               \big((\varnothing,\{\tildecatvariableof{\catenumerator}\}),(\{\catvariableof{\catenumerator},\tildecatvariableof{\catenumerator},\thirdcatvariableof{\catenumerator-1}\},\{\headvariableof{\catenumerator},\thirdcatvariableof{\catenumerator}\})\big)
+%        \right\}\right) \\
+%        & \cup  \Big\{
+%            \big((\varnothing,\{\catvariableof{\catorder-1}\}),(\{\catvariableof{\catorder-1},\tildecatvariableof{\catorder-1},\thirdcatvariableof{\catenumerator-2}\},\{\headvariableof{\catorder-1},\thirdcatvariableof{\catorder-1}\})\big), \\
+%        & \big((\varnothing,\{\tildecatvariableof{\catorder-1}\}),(\{\catvariableof{\catorder-1},\tildecatvariableof{\catorder-1},\thirdcatvariableof{\catenumerator-2}\},\{\headvariableof{\catorder-1},\thirdcatvariableof{\catorder-1}\})\big)
+%        \Big\}
+%    \end{align*}
+    We then have by \theref{the:directedBeliefPropagationExactness} for $\catenumerator\in[\catorder-1]$ that
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\modsumsymbol,\catenumerator}{\headvariableof{\catenumerator},\thirdcatvariableof{\catenumerator},\catvariableof{\catenumerator},\tildecatvariableof{\catenumerator},\thirdcatvariableof{\catenumerator-1}},
+            \messagesymbol^{(\catenumerator-1,2)}[\thirdcatvariableof{\catenumerator-1}],
+            \messagesymbol^{(\catenumerator,0)}[\catvariableof{\catenumerator}],
+            \messagesymbol^{(\catenumerator,1)}[\tildecatvariableof{\catenumerator}]
+        }{\thirdcatvariableof{\catenumerator}}
+        =
+        \onehotmapofat{\thirdcatindexof{\catenumerator}}{\thirdcatvariableof{\catenumerator}}
+    \end{align*}
+    where $\thirdcatindexof{\catenumerator}$ is the value of the $\catenumerator$-th carry bit.
+    The $\catenumerator$-th digit of the sum $\headindexof{\catenumerator}$ can further be read of by the contraction
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\modsumsymbol,\catenumerator}{\headvariableof{\catenumerator},\thirdcatvariableof{\catenumerator},\catvariableof{\catenumerator},\tildecatvariableof{\catenumerator},\thirdcatvariableof{\catenumerator-1}},
+            \messagesymbol^{(\catenumerator-1,2)}[\thirdcatvariableof{\catenumerator-1}],
+            \messagesymbol^{(\catenumerator,0)}[\catvariableof{\catenumerator}],
+            \messagesymbol^{(\catenumerator,1)}[\tildecatvariableof{\catenumerator}]
+        }{\headvariableof{\catenumerator}}
+        =
+        \onehotmapofat{\headindexof{\catenumerator}}{\headvariableof{\catenumerator}} \, .
+    \end{align*}
+    % Tree belief also working
+    We notice, that the hypergraph representing this instance is a tree and by \theref{the:treeBeliefPropagationExactness} also the message passing scheme of \algoref{alg:treeBeliefPropagation} is guaranteed to produce the exact contractions.
+    We can exploit this fact for example in the efficient computation of averages of the summation digits, when we have an elementary distribution of input digits.
+    We strengthen that the directed belief propagation \algoref{alg:treeBeliefPropagation} is exact even if the hypergraph fails to be a tree, provided that we have directed and boolean tensors..
+
+    \begin{figure}[t]
+        \begin{center}
+            \begin{tikzpicture}[scale=0.5, thick]
+
+                \draw (-1,-1) rectangle (3,1);
+                \node[anchor=center] (A) at (1,0) {\corelabelsize $\bencodingof{\modsumsymbol,0}$};
+                \draw[->-] (1,1)--(1,3) node[midway,left] {\colorlabelsize $\headvariableof{0}$};
+                \draw[-<-] (0,-1)--(0,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+                \draw (-0.75,-2.5) rectangle (0.75,-4);
+                \node[anchor=center] (A) at (0,-3.25) {\corelabelsize $\onehotmapof{\catindexof{0}}$};
+                \draw[\newmessagecolor,dashed, ->] (-1.25,-3.25) to [bend right = -30] (-1.25,-1);
+                \node[\newmessagecolor,anchor=center] (A) at (-1.75,-3.6) {\colorlabelsize $\messagesymbol^{(0,0)}$};
+                \draw[-<-] (2,-1)--(2,-2.5) node[midway,right] {\colorlabelsize $\tildecatvariableof{0}$};
+                \draw (1.25,-2.5) rectangle (2.75,-4);
+                \node[anchor=center] (A) at (2,-3.25) {\corelabelsize $\onehotmapof{\tildecatindexof{0}}$};
+                \draw[\newmessagecolor,dashed, ->] (3.25,-3.25) to [bend right = 30] (3.25,-1);
+                \node[\newmessagecolor,anchor=center] (A) at (3.8,-3.6) {\colorlabelsize $\messagesymbol^{(0,1)}$};
+                \draw[->-] (3,0)--(6,0) node[midway,above] {\colorlabelsize $\thirdcatvariableof{0}$};
+                \draw[\newmessagecolor,dashed, ->] (3,1.25) to [bend right = -30] (6,1.25);
+                \node[\newmessagecolor,anchor=center] (A) at (4.5,2.25) {\colorlabelsize $\messagesymbol^{(0,2)}$};
+
+                \begin{scope}[shift={(7,0)}]
+                    \draw (-1,-1) rectangle (3,1);
+                    \node[anchor=center] (A) at (1,0) {\corelabelsize $\bencodingof{\modsumsymbol,1}$};
+                    \draw[->-] (1,1)--(1,3) node[midway,left] {\colorlabelsize $\headvariableof{1}$};
+                    \draw[-<-] (0,-1)--(0,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
+                    \draw (-0.75,-2.5) rectangle (0.75,-4);
+                    \node[anchor=center] (A) at (0,-3.25) {\corelabelsize $\onehotmapof{\catindexof{1}}$};
+                    \draw[\newmessagecolor,dashed, ->] (-1.25,-3.25) to [bend right = -30] (-1.25,-1);
+                    \node[\newmessagecolor,anchor=center] (A) at (-1.75,-3.6) {\colorlabelsize $\messagesymbol^{(1,0)}$};
+                    \draw[-<-] (2,-1)--(2,-2.5) node[midway,right] {\colorlabelsize $\tildecatvariableof{1}$};
+                    \draw (1.25,-2.5) rectangle (2.75,-4);
+                    \node[anchor=center] (A) at (2,-3.25) {\corelabelsize $\onehotmapof{\tildecatindexof{1}}$};
+                    \draw[\newmessagecolor,dashed, ->] (3.25,-3.25) to [bend right = 30] (3.25,-1);
+                    \node[\newmessagecolor,anchor=center] (A) at (3.8,-3.6) {\colorlabelsize $\messagesymbol^{(1,1)}$};
+                    \draw[->-] (3,0)--(6,0) node[midway,above] {\colorlabelsize $\thirdcatvariableof{1}$};
+                    \draw[\newmessagecolor,dashed, ->] (3,1.25) to [bend right = -30] (6,1.25);
+                    \node[\newmessagecolor,anchor=center] (A) at (4.5,2.25) {\colorlabelsize $\messagesymbol^{(1,2)}$};
+                \end{scope}
+
+                \node[anchor=center] at (15.5,0) {$\cdots$};
+
+                \begin{scope}[shift={(22,0)}]
+                    \draw[\newmessagecolor,dashed, ->] (-4,1.25) to [bend right = -30] (-1,1.25);
+                    \node[\newmessagecolor,anchor=center] (A) at (-2.5,2.25) {\colorlabelsize $\messagesymbol^{(\catorder\shortminus2,2)}$};
+
+                    \draw[->-] (-4,0)--(-1,0) node[midway,above] {\colorlabelsize $\thirdcatvariableof{\catorder\shortminus 2}$};
+                    \draw (-1,-1) rectangle (3,1);
+                    \node[anchor=center] (A) at (1,0) {\corelabelsize $\bencodingof{\modsumsymbol,\catorder\shortminus1}$};
+                    \draw[->-] (1,1)--(1,3) node[midway,left] {\colorlabelsize $\headvariableof{\catorder\shortminus1}$};
+                    \draw[-<-] (0,-1)--(0,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
+                    \draw (-0.75,-2.5) rectangle (0.75,-4);
+                    \node[anchor=center] (A) at (0,-3.25) {\corelabelsize $\onehotmapof{\catindexof{\catorder\shortminus1}}$};
+                    \draw[\newmessagecolor,dashed, ->] (-1.5,-3.25) to [bend right = -45] (-1.5,-0.75);
+                    \node[\newmessagecolor,anchor=center] (A) at (-2.3,-3.8) {\colorlabelsize $\messagesymbol^{(\catorder\shortminus1,0)}$};
+                    \draw[-<-] (2,-1)--(2,-2.5) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catorder\shortminus1}$};
+                    \draw (1.25,-2.5) rectangle (2.75,-4);
+                    \draw[\newmessagecolor,dashed, ->] (3.5,-3.25) to [bend right = 45] (3.5,-0.75);
+                    \node[\newmessagecolor,anchor=center] (A) at (4.3,-3.8) {\colorlabelsize $\messagesymbol^{(\catorder\shortminus1,1)}$};
+                    \node[anchor=center] (A) at (2,-3.25) {\corelabelsize $\onehotmapof{\tildecatindexof{\catorder\shortminus1}}$};
+                    \draw (3,0)--(4.5,0) -- (4.5,1);
+                    \draw[->-] (4.5,1)--(4.5,3) node[midway,left] {\colorlabelsize $\headvariableof{\catorder}$};
+                \end{scope}
+
+
+            \end{tikzpicture}
+        \end{center}
+        \caption{Computation of the integer sum in $\catdim$-adic representation by the Directed Belief Propagation \algoref{alg:directedBeliefPropagation} (see \exaref{exa:madicPropagation}).
+        The summands are represented by one-hot encodings of the digits $\shortcatindices$ and $\tildecatindexof{[\catorder]}$, from which the messages start.
+        The $\catenumerator$-th digit (for $\catenumerator\in\{0,\ldots,\catorder-1\}$) of the sum is computed based on the first messages of the epoch labeled by $\messagesymbol^{(\catenumerator,[2])}$,
+            The third message $\messagesymbol^{(\catenumerator,2)}$ in each epoch communicates the carry bit to the next digit summation core.
+            In the last message epoch the digit $\catorder-1$ and $\catorder$ are computed based.
+        }
+        \label{fig:propagationMary}
+    \end{figure}
+
+\end{example}

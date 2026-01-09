@@ -362,7 +362,7 @@
 \newcommand{\facspace}{\catspace}
 \newcommand{\secfacspace}{\bigotimes_{\secatomenumerator\in[\seccatorder]} \rr^{\catdimof{\secatomenumerator}}}
 
-\newcommand{\indexedcatvariables}{\indexedcatvariableof{0},\ldots,\indexedcatvariableof{\atomorder-1}} 
+\newcommand{\indexedcatvariables}{\indexedcatvariableof{0},\ldots,\indexedcatvariableof{\atomorder-1}}
 \newcommand{\tildeindexedcatvariables}{\catvariableof{0}=\tilde{\catindex}_0,\ldots,\catvariableof{\atomorder-1}=\tilde{\catindex}_{\atomorder-1}} 
 
 \newcommand{\seccatenumerator}{\tilde{\catenumerator}}
@@ -373,7 +373,9 @@
 \newcommand{\seccatorder}{p} % Has to coincide with seldim for basis encoding def
 
 \newcommand{\thirdcatvariable}{Z}
+\newcommand{\thirdcatvariableof}[1]{\thirdcatvariable_{#1}}
 \newcommand{\thirdcatindex}{z}
+\newcommand{\thirdcatindexof}[1]{\thirdcatindex_{#1}}
 \newcommand{\indexedthirdcatvariable}{\thirdcatvariable=\thirdcatindex}
 \newcommand{\thirdcatdim}{n}
 
@@ -388,7 +390,10 @@
 \newcommand{\seccatindexof}[1]{\seccatindex_{#1}}
 
 \newcommand{\catindices}{\catindexlist}
-\newcommand{\tildecatindexof}[1]{\tilde{\catindex}_{#1}}
+\newcommand{\tildecatvariable}{\tilde{\catvariable}}
+\newcommand{\tildecatvariableof}[1]{\tildecatvariable_{#1}}
+\newcommand{\tildecatindex}{\tilde{\catindex}}
+\newcommand{\tildecatindexof}[1]{\tildecatindex_{#1}}
 \newcommand{\tildecatindices}{\tildecatindexof{0},\ldots,\tildecatindexof{\atomorder-1}}
 \newcommand{\seccatindices}{{\seccatindexof{0},\ldots,\seccatindexof{\secatomorder-1}}}
 \newcommand{\tildeshortcatindices}{\tildecatindexof{[\catorder]}}
@@ -397,6 +402,10 @@
 
 \newcommand{\catzeropositions}{\{\atomenumerator\wcols\catindexof{\atomenumerator}=0\}}
 \newcommand{\catonepositions}{\{\atomenumerator\wcols\catindexof{\atomenumerator}=1\}}
+
+\newcommand{\secdecvariable}{\tilde{\decvariable}}
+\newcommand{\secdecvariableof}[1]{\secdecvariable_{#1}}
+\newcommand{\secdecindexof}[1]{\tilde{\decindex}_{#1}}
 
 %% Cores
 \newcommand{\categoricalmap}{e}

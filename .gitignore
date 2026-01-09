@@ -8,7 +8,6 @@ scrbook_tnreason*
 
 .DS_Store
 .idea
-sketchGenerator*
 
 application_sketches/llm_reasoning/*
 !application_sketches/llm_reasoning/llm_lib.bib

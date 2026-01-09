@@ -1,5 +1,5 @@
 %\section{Decomposition of Probability Distributions}
-\section{The Probabilistic Paradigm}\label{sec:prob_rep}
+\section{The Probabilistic Paradigm}\label{sec:probPar}
 
 We here investigate tensor network decomposition mechanisms of probability distributions.
 After introducing probability distributions as tensors we derive tensor network decompositions based on conditional independencies (applying the Hammersley-Clifford theorem \cite{clifford_markov_1971}) to motivate graphical models.
@@ -11,10 +11,11 @@ As defined next, distributions $\probtensor$ over a discrete state space can be 
 
 \begin{definition}[Joint Probability Distribution]
     \label{def:probabilityDistribution} % From the axioms of Kolmogorov!
-    Let there be for each $\catenumeratorin$ a categorical variable $\catvariableof{\catenumerator}$ taking values in $[\catdimof{\atomenumerator}]$.
+    Let there be for each $\catenumeratorin$ a categorical variable $\catvariableof{\catenumerator}$ taking values in $[\catdimof{\catenumerator}]$.
     A joint probability distribution of these categorical variables is a function
     \begin{align*}
-        \probwith \defcols \facstates \rightarrow \rr
+        \probwith
+        \defcols \facstates \rightarrow \rr
     \end{align*}
     which is non-negative, that is for any $\shortcatindicesin$ it holds
     \begin{align*}
@@ -22,39 +23,38 @@ As defined next, distributions $\probtensor$ over a discrete state space can be 
     \end{align*}
     and which is normalized, that is
     \begin{align*}
-        \contraction{\probat{\shortcatvariables}} = 1 \, .
+        \contraction{\probat{\shortcatvariables}}
+        = 1 \, .
     \end{align*}
     Let $\thirdcatvariable$ be another variable taking values in a possibly infinite set $\mathrm{val}(\thirdcatvariable)$.
     Then a tensor $\condprobat{\shortcatvariables}{\thirdcatvariable}$ is a family of joint probability distributions, if for any $\thirdcatindex\in\mathrm{val}(\thirdcatvariable)$ the slice $\condprobat{\shortcatvariables}{\thirdcatvariable=\thirdcatindex}$ is a joint probability distribution.
 \end{definition}
 
-\input{../examples/soft_activation/coin_toss_family}
+\input{../examples/probabilistic_paradigm/coin_toss_family}
 
 A basic inference operation on probability distributions is the computation of marginal and conditional distribution.
 
 \begin{definition}
-    For any distribution $\probat{\catvariable,\seccatvariable}$ the marginal distribution is given by the contraction
+    \label{def:marginalConditionalDistribution}
+    For any distribution $\probat{\catvariableof{0},\catvariableof{1}}$ the marginal distribution is given by the contraction (see \defref{def:contraction})
     \begin{align*}
-        \probat{\catvariable} \coloneqq \contractionof{\probat{\catvariable,\seccatvariable}}{\catvariable}
+        \probat{\catvariableof{0}}
+        \coloneqq \contractionof{\probat{\catvariableof{0},\catvariableof{1}}}{\catvariableof{0}}
     \end{align*}
     which is depicted by the diagram
     \begin{center}
         \input{../tikz_pics/probability_representation/marginalized_probability.tex}
     \end{center}
-    The conditional distribution of $\catvariable$ on $\seccatvariable$ is a tensor $\condprobat{\catvariable}{\seccatvariable}$ defined for $\seccatindex\in[\catdimof{1}]$
+    The conditional distribution of $\catvariableof{0}$ on $\catvariableof{1}$ is the normalization (see \defref{def:normalization})
     \begin{align*}
-        \condprobat{\catvariable}{\seccatvariable=\seccatindex} \coloneqq
-        \begin{cases}
-            \frac{1}{\catdim} \cdot \onesat{\catvariable} & \ifspace \contraction{\probat{\catvariable,\seccatvariable=\seccatindex}} = 0 \\
-            \frac{1}{\contraction{\probat{\catvariable,\seccatvariable=\seccatindex}}} \cdot \probat{\catvariable,\seccatvariable=\seccatindex} & \text{else}
-        \end{cases} \,
+        \condprobat{\catvariableof{0}}{\catvariableof{1}} \coloneqq \normalizationofwrt{\probat{\catvariableof{0},\catvariableof{1}}}{\catvariableof{0}}{\catvariableof{1}} \, .
     \end{align*}
-    and in the second case depicted by the diagram
-    \begin{center}
-        \input{../tikz_pics/probability_representation/conditional_probability.tex}
-    \end{center}
 \end{definition}
 
+For $\catindexof{1}\in[\catdimof{1}]$ with $\contraction{\probat{\catvariableof{0},\indexedcatvariableof{1}}}$ we depict the normalization by
+\begin{center}
+    \input{../tikz_pics/probability_representation/conditional_probability.tex}
+\end{center}
 
 % \textcolor{gray}{One of them is by employing the chain rule.
 % \begin{theorem}[Chain Rule]
@@ -76,7 +76,7 @@ A basic inference operation on probability distributions is the computation of m
 % \alex{Its important to note, that the chain rule for itself does not provide a more efficient representation of the distribution (since it is a generic decomposition). 
 % To achieve efficient tensor network decomposition, one needs to combine that with conditional independence assumptions (as in the Markov Chain case), such that conditioned variables in the conditional probability distributions can be dropped.}
 
-\subsection{The Independence Mechanism: Graphical Model Factorization}
+\subsection{The Independence Mechanism: Factorization into Graphical Models}
 
 %% Need for decomposition mechanisms: Motivation for independence considerations
 The number of coordinates in a tensor representation of probability distributions is the product
@@ -184,7 +184,7 @@ While we so far have defined Markov Networks as decomposed probability distribut
 As we will see, the sets of conditional independencies encoded by a hypergraph are captured by its separation properties, as we define next.
 
 \begin{definition}[Separation of Hypergraph]
-    A path in a hypergraph is a sequence of nodes $\node_{\atomenumerator}$ for $\atomenumeratorin$, such that for any $\atomenumerator\in[\atomorder-1]$ we find a hyperedge $\edgein$ such that $(\node_{\atomenumerator}, \node_{\atomenumerator+1})\subset \edge$.
+    A path in a hypergraph is a sequence of nodes $\node_{\catenumerator}$ for $\catenumeratorin$, such that for any $\catenumerator\in[\atomorder-1]$ we find a hyperedge $\edgein$ such that $(\node_{\catenumerator}, \node_{\catenumerator+1})\subset \edge$.
     Given disjoint subsets $\nodesa$, $\nodesb$, $\nodesc$ of nodes in a hypergraph $\graph$ we say that $\nodesc$ separates $\nodesa$ and $\nodesb$ with respect to $\graph$, when any path starting at a node in $\nodesa$ and ending in a node in $\nodesb$ contains a node in $\nodesc$.
 \end{definition}
 
@@ -224,11 +224,11 @@ We refer to this correspondence between independence structure and tensor networ
 Note, that the assumption of a positive distribution is required (i.e. for all $\shortcatindices$ we have $\probat{\indexedshortcatvariables}>0$).
 The assumption of positivity was however not required in our characterization of independencies and conditional independencies by the existence of corresponding tensor decompositions (see \defref{def:independence} and \defref{def:condIndependence}).
 
-\input{../examples/soft_activation/coin_toss_hc.tex}
+\input{../examples/probabilistic_paradigm/coin_toss_hc.tex}
 
-\input{../examples/soft_activation/student_hc}
+\input{../examples/probabilistic_paradigm/student_hc}
 
-\subsection{The Computation Mechanism: Factorization in presense of Sufficient Statistics}
+\subsection{The Computation Mechanism: Factorization based on Sufficient Statistics}
 
 We now present the \computationMechanism{} of finding tensor network decompositions of probability distributions.
 
@@ -240,16 +240,17 @@ We now present the \computationMechanism{} of finding tensor network decompositi
     \end{align*}
     be a statistic.
     We are interested in the distribution $\probat{\catvariable,\thirdcatvariable,\headvariableof{\sstat}}=\contractionof{\probat{\catvariable,\thirdcatvariable},\bencodingofat{\sstat}{\headvariableof{\sstat},\catvariable}}{\catvariable,\thirdcatvariable,\headvariableof{\sstat}}$.
-    We say that $\sstat$ is a sufficient statistic for $\thirdcatvariable$ if and only if $\catvariable$ is independent of $\thirdcatvariable$ conditioned on $\headvariableof{\sstat}$.
+    We say that $\sstat$ is a sufficient statistic for $\thirdcatvariable$ if $\catvariable$ is independent of $\thirdcatvariable$ conditioned on $\headvariableof{\sstat}$.
 \end{definition}
 
-Note that the independence in \defref{def:sufStatistic} is true if and only if
-\begin{align*}
-    \condprobat{\catvariable}{\thirdcatvariable,\headvariableof{\sstat}}
-    =   \condprobat{\catvariable}{\headvariableof{\sstat}} \otimes \onesat{\thirdcatvariable} \, .
-\end{align*}
+%% Not needed
+%Note that the independence in \defref{def:sufStatistic} is true if and only if
+%\begin{align*}
+%    \condprobat{\catvariable}{\thirdcatvariable,\headvariableof{\sstat}}
+%    =   \condprobat{\catvariable}{\headvariableof{\sstat}} \otimes \onesat{\thirdcatvariable} \, .
+%\end{align*}
 
-\input{../examples/soft_activation/sufstat_probability}
+\input{../examples/probabilistic_paradigm/sufstat_probability}
 
 \exaref{exa:sufStatProb} hints at a connection between sufficient statistics and decompositions into \CompActNets{}.
 More generally, such decompositions are provided by the Fisher-Neyman Factorization Theorem.
@@ -287,26 +288,32 @@ We then use the \theref{the:factorizationFisherNeyman} to embed such families in
     \end{align*}
 \end{corollary}
 
-\input{../examples/soft_activation/coin_toss_ft}
+%% Fisher-Neyman as motivation for CompActNets
+The Factorization Theorem of Fisher-Neyman provides the fundamental motivation for the \CompActNets{} Architecture.
+Any decomposition of $\bencodingofat{\sstat}{\headvariables,\shortcatvariables}$ is called a \emph{computation network}, and common to all members of a family with sufficient statistic $\sstat$.
+The activation tensor $\acttensorat{\headvariables,\indexedthirdcatvariable}$, which decomposition is called the \emph{activation network}, is specific to each member of the family.
+Let us now show in two examples, how families of distributions can be represented in \CompActNets{} by sufficient statistics.
 
-The Fisher-Neyman Theorem is the fundamental motivation for the \CompActNets{} Architecture:
-\begin{itemize}
-    \item The decomposition of $\acttensorwith$ is called \emph{activation network}.
-    \item The decomposition of $\bencodingofat{\sstat}{\headvariables,\shortcatvariables}$ is called \emph{computation network}.
-\end{itemize}
+\input{../examples/probabilistic_paradigm/coin_toss_fn}
 
-\input{../examples/soft_activation/graphical_models_as_cans}
+\input{../examples/probabilistic_paradigm/graphical_models_as_cans}
 
-\subsection{Exponential families in case of elementary activation tensors}
+\subsection{Exponential Families}
 
+%We now restrict the activation cores to specific elementary tensors, which correspond with further assumptions on the dependence of $\probtensor$ and $\sstat$ made by exponential families.
+Let us now show, that exponential families are specific instances of \CompActNets{}, which activation tensors have elementary decompositions.
 % Universal properties
-A classical theorem by Pitman-Koopman-Darmois (see \cite{pitman_sufficient_1936}) states, that whenever a family with constant support and a finite sufficient statistic for arbitrary large data sets is in an exponential family.
-We now restrict the activation cores to specific elementary tensors, which correspond with further assumptions on the dependence of $\probtensor$ and $\sstat$ made by exponential families.
+The importance of exponential families in statistics stems from their universal properties.
+A classical theorem by Pitman, Koopman and Darmois (see \cite{pitman_sufficient_1936}) states, that whenever a family with constant support and a finite sufficient statistic for arbitrary large data sets is in an exponential family.
 For a discussion of further universal properties of exponential families, such that the existence of priors and entropy maximizers, see \cite{murphy_probabilistic_2022}.
 
-\begin{definition}[Exponential Family]
+\begin{definition}[Exponential Family]\label{def:expFamily}
     %\alex{was \theref{the:expFamilyTensorRep}}
-    Given a base measure $\basemeasure$ and a statistic $\sstat:\facstates\rightarrow\parspace$ we enumerate for each coordinate $\selindexin$ the image $\imageof{\sstatcoordinateof{\selindex}}$ by an interpretation map
+    Given a base measure $\basemeasure$ and a statistic
+    \begin{align*}
+        \sstat:\facstates\rightarrow\parspace
+    \end{align*}
+    we enumerate for each coordinate $\selindexin$ the image $\imageof{\sstatcoordinateof{\selindex}}$ by an interpretation map
     \begin{align*}
         \indexinterpretationof{\selindex} \defcols
         [\cardof{\imageof{\sstatcoordinateof{\selindex}}}] \rightarrow \imageof{\sstatcoordinateof{\selindex}} \, .
@@ -329,6 +336,21 @@ For a discussion of further universal properties of exponential families, such t
     the exponential family to the statistic $\sstat$ and the base measure $\basemeasure$.
 \end{definition}
 
+%% Connection to typical form
+To see that \defref{def:expFamily} is consistent with the typical definition of exponential families (see \cite{brown_fundamentals_1987}), let us notice that for each $\canparamin$ the normalization amounts to the division by
+\begin{align*}
+    \partitionfunctionof{\canparam}
+    = \contraction{\{\basemeasurewith\} \cup \{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}\cup\{\softactlegwith \wcols \selindexin\}} \, ,
+\end{align*}
+a quantity which is referred to as the partition function.
+Then we have for each coordinate $\shortcatindicesin$
+\begin{align*}
+    \expdistat{\indexedshortcatvariables}
+    &= \frac{1}{\partitionfunctionof{\canparam}}
+    \contractionof{\{\basemeasurewith\} \cup \{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}\cup\{\softactlegwith \wcols \selindexin\}}{\indexedshortcatvariables} \\
+    &= \frac{1}{\partitionfunctionof{\canparam}} \cdot \basemeasureat{\indexedshortcatvariables} \cdot \expof{\sum_{\selindexin} \canparamat{\indexedselvariable} \cdot \sstatcoordinateofat{\selindex}{\indexedshortcatvariables}} \, .
+\end{align*}
+
 %% In Elementary Activations
 Note that by construction each member of an exponential family is an element in a \CompActNet{} with elementary activation cores, that is
 \begin{align*}
@@ -344,37 +366,124 @@ Note that by construction each member of an exponential family is an element in 
         Tensor Network diagram of a member of an exponential family $\probfamilyofat{\sstat,\basemeasure}{\shortcatvariables}{\Theta=\canparam}$ before normalization as an \CompActNet{} with elementary activation, that is an element in $\cansof{\sstat,\elgraph,\basemeasure}$.}\label{fig:expdistElementary}
 \end{figure}
 
-\input{../examples/soft_activation/two_boolean_cascade}
+\input{../examples/probabilistic_paradigm/coin_toss_exp}
 
+%% NEEDED?
+%\input{../examples/probabilistic_paradigm/two_boolean_cascade}
 
 \subsection{Efficient Contractions by Message Passing}
 
-\alex{Contractions of tensor networks are generally hard to solve.
-We here investigate message passing algorithms, which decompose contractions into a sequence of subcontractions, which are passed as messages through the tensor network.}
-The resulting algorithm is called Belief Propagation \algoref{alg:beliefPropagation}.
+Contractions of tensor networks are generally hard to solve.
+We here investigate message passing algorithms, which decompose global contractions into a sequence of local contractions, which results are passed as messages through the tensor network.
+The resulting algorithm is called Belief Propagation \algoref{alg:treeBeliefPropagation}.
+While various scheduling strategies for the message passing exist, we here focus on the case of tree hypergraphs, for which exactness and efficiency can be shown.
+% Technical preparations for the algorithm
 We denote $\dirovedges$ to be all tuples $(\sedge,\redge)$ of hyperedges $\sedge,\redge\in\edges$ such that $\sedge\neq\redge$ and $\sedge\cap\redge\neq\varnothing$.
+For our purposes we call a hypergraph $\graph$ a tree, when the graph with nodes by the hyperedges $\dirovedges$ and edges by $\dirovedges$ is a tree (for an example see \figref{fig:studentMessagePassingDirections}).
 
 \begin{algorithm}[hbt!]
-    \caption{Belief Propagation}\label{alg:beliefPropagation}
+    \caption{Tree Belief Propagation}\label{alg:treeBeliefPropagation}
     \begin{algorithmic}
         \Require Tensor network $\extnet$ on a hypergraph $\graph$
         \Ensure Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
         \iosepline
-        \State Initialize $\scheduler$ (differs in implementation)
-        \State Initialize messages
+        \State Initialize $\scheduler=\{(\secsedge,\sedge) \wcols \secsedge \quad\text{a leaf in } (\edges,\dirovedges)\}]$
         \While{$\scheduler$ not empty}
-            \State Take a $(\sedge,\redge)$ pair from $\scheduler$
-            \State Update the message
+            \State Pop a $(\sedge,\redge)$ pair from $\scheduler$
+            \State Compute the message
             \begin{align*}
                 \messagewith
                 = \contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}
                     \cup \{\mesfromtoat{\secsedge}{\sedge}{\catvariableof{\secsedge\cap\sedge}} \wcols (\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge\}
                 }{\catvariableof{\sedge\cap \redge}}
             \end{align*}
-            \State Update $\scheduler$ (differs in implementation)
+            \State Update $\scheduler$ by all messages $(\redge,\thirdsedge)$ which have not yet been sent, if all messages $(\secsedge,\redge)$ with $\secsedge\neq\thirdsedge$ have been sent.
         \EndWhile
         \State \Return Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
     \end{algorithmic}
 \end{algorithm}
 
-\input{../examples/soft_activation/student_bp}
+For an implementation of \algoref{alg:treeBeliefPropagation} in the \python{} package \tnreason{}, see \secref{sec:propAlgsImplementation}.
+
+\begin{theorem}
+    \label{the:treeBeliefPropagationExactness}
+    Let $\extnet$ be a tensor network on a tree hypergraph $\graph$ (i.e. the graph $(\edges,\dirovedges)$ is a tree).
+    The messages in the tree belief propagation \algoref{alg:treeBeliefPropagation} are contracted to local marginals, that is for each $\sedge\in\edges$ we have
+    \begin{align*}
+        \contractionof{\extnet}{\catvariableof{\sedge}}
+        =\contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}\cup
+            \{\mesfromtowith{\secsedge}{\sedge} \wcols (\secsedge,\sedge)\in\dirovedges\}}{\catvariableof{\edge}} \, .
+    \end{align*}
+\end{theorem}
+
+We show \theref{the:treeBeliefPropagationExactness} based on the following lemma.
+We denote for each pair $(\sedge,\redge)$ the subset $\preedgeset\subset\edges$ as the subset of edges $\edgein$, for which each path to $\redge$ passes through $\sedge$.
+Note, that by construction $\sedge\in\preedgeset$.
+
+\begin{lemma}
+    \label{lem:messageAsContraction}
+    For any tensor network on a tree hypergraph, \algoref{alg:treeBeliefPropagation} terminates in the tree-based implementation and returns final messages
+    \begin{align*}
+        \messagewith
+        = \contractionof{\{\edgehypercorewith\wcols\edge\in\preedgeset\}}{\catvariableof{\sedge\cap\redge}}
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    We show this property by induction over the edge sets $\preedgeset$ to pairs $(\sedge,\redge)\in\dirovedges$, such that $\cardof{\preedgeset}\leq n$.
+    Notice, that since always $\sedge\in\preedgeset$ we have $n\geq1$.
+
+    $n=1$: In this case we have $\preedgeset=\{\sedge\}$ and $\sedge$ is a leaf of the tree-hypergraph $\graph$.
+    The claimed message property holds thus by definition.
+
+    $n\rightarrow n+1$: Let us assume, that the message obeys the claimed property for edge sets with cardinality up to $n$.
+    If there is no edge set with cardinality $n+1$, the property holds also for those with cardinality up to $n+1$.
+    If there is an edge set $\preedgeset$ with size $n+1$, we have
+    \begin{align*}
+        \preedgeset
+        = \{\sedge\} \cup \left(\bigcup_{\secsedge \in\dirovedges} \preedgesetwrt{\secsedge}{\sedge}\right) \, .
+    \end{align*}
+    The message $\mesfromto{\sedge}{\redge}$ is sent, once all messages $\mesfromto{\secsedge}{\sedge}$ to $(\secsedge,\sedge)\in\dirovedges\{(\redge,\sedge)\}$ arrived.
+    By definition we have
+    \begin{align*}
+        \mesfromtowith{\sedge}{\redge}
+        = \contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}
+            \cup \{\mesfromtowith{\secsedge}{\sedge} \wcols (\secsedge,\sedge) \in\dirovedges \ncond \secsedge \neq \redge \}
+        }{\catvariableof{\sedge\cap \redge}}
+    \end{align*}
+    Now we use the induction assumption on $\preedgesetwrt{\secsedge}{\sedge}$ (since its cardinality is at most $n$) and get
+    \begin{align*}
+        \mesfromtoat{\sedge}{\redge}{\catvariableof{\sedge\cap \redge}}
+        &= \contractionof{
+            \{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\} \cup
+            \left(\bigcup_{(\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge}
+                \contractionof{\{\hypercoreofat{\thirdsedge}{\catvariableof{\thirdsedge}} \wcols  \thirdsedge \in \preedgesetwrt{\secsedge}{\sedge}\}}{\catvariableof{\secsedge\cap \sedge}} \right)
+        }{\catvariableof{\sedge\cap \redge}} \\
+        &= \contractionof{
+            \{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\} \cup
+            \left(\bigcup_{(\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge} \{\hypercoreofat{\thirdsedge}{\catvariableof{\thirdsedge}} \wcols  \thirdsedge \in \preedgesetwrt{\secsedge}{\sedge}\} \right)
+        }{\catvariableof{\sedge\cap \redge}} \\
+        &= \contractionof{\{\edgehypercorewith\wcols\edge\in\preedgeset\}}{\catvariableof{\sedge\cap\redge}}
+    \end{align*}
+    Here we used the commutation of contraction property in the second equation, which is justified by the assumed tree property of the hypergraph.
+    Thus, the message property holds also for any edge sets of size $n+1$.
+
+    By induction, the claimed message property therefore holds for all final messages.
+\end{proof}
+
+\begin{proof}[Proof of \theref{the:treeBeliefPropagationExactness}]
+    Since the hypergraph is by assumption a tree, we can partition $\edges$ into disjoint subsets $\{\sedge\}$ and $\preedgesetwrt{\secsedge}{\sedge}$ for $(\secsedge,\sedge)\in\dirovedges$.
+    We then have
+    \begin{align*}
+        \contractionof{\extnet}{\catvariableof{\sedge}}
+        =& \contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}
+            \cup \left\{\contractionof{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edge\in\preedgesetwrt{\secsedge}{\sedge}}{\catvariableof{\edge\cap\secsedge}} \wcols (\secsedge,\sedge)\in\dirovedges \right\}
+        }{\catvariableof{\sedge}} \\
+        =& \contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\} \cup \{\mesfromtowith{\secsedge}{\sedge} \wcols (\secsedge,\sedge)\in\dirovedges\}}{\catvariableof{\sedge}} \, .
+    \end{align*}
+    Here we used \lemref{lem:messageAsContraction} in the second equation.
+\end{proof}
+
+% Example by Student Markov Network
+We illustrate the usage of \algoref{alg:treeBeliefPropagation} on the Markov Network of \exaref{exa:studentHC}.
+
+\input{../examples/probabilistic_paradigm/student_bp}

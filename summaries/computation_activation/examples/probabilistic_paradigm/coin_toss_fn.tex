@@ -1,0 +1,19 @@
+\begin{example}[Order Statistic for Boolean Variables]
+    \label{exa:coinTossFN}
+    Let there be $\catorder$ boolean variables $\shortcatvariables$ and a family $\condprobat{\shortcatvariables}{\thirdcatvariable}$ of distributions.
+    The order statistic assigns to each tuple $\shortcatindices$ the ordered tuple, which effectively counts the number of $1$ coordinates in the tuple $\shortcatindices$, that is the statistic
+    \begin{align*}
+        \sstatof{+} \defcols \facstates \rightarrow [\seldim] \quad, \quad
+        \sstatof{+}(\shortcatindices) = \cardof{\{\catenumerator \wcols \catindexof{\catenumerator}=1\}} \, .
+    \end{align*}
+    %Let us now investigate those families for which the order statistic $\sstatof{+}$ is a sufficient.
+    When the order statistic is sufficient for $\thirdcatvariable$, the detailed order of the outcomes is uninformative about the member $\thirdcatindex$ from which the random variables have been drawn.
+    By the Fisher-Neyman Factorization Theorem \theref{the:factorizationFisherNeyman} $\sstatof{+}$ is a sufficient statistic if and only if there are tensors $\basemeasurewith$ and $\acttensorat{\headvariableof{+},\Theta}$ such that for each $\theta\in\Theta$
+    \begin{align*}
+        \condprobat{\shortcatvariables}{\indexedthirdcatvariable}
+        = \contractionof{
+            \acttensorat{\headvariableof{+},\indexedthirdcatvariable},\bencodingofat{\sstatof{+}}{\headvariableof{+},\shortcatvariables},\basemeasurewith}{\shortcatvariables} \, .
+    \end{align*}
+    For each member $\thirdcatindex$ of the family, the probability of each sequence $\shortcatindices$ is thus the product of a base measure factor $\basemeasureat{\indexedshortcatvariables}$ and a factor $\acttensorat{\headvariableof{+}=+(\shortcatindices),\indexedthirdcatvariable}$ depending only on the count $+(\shortcatindices)$ of $1$ coordinates in $\shortcatindices$.
+    We will continue this example later in \exaref{exa:coinTossExp}, where we provide further interpretations to the case of i.i.d. variables.
+\end{example}
