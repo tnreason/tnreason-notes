@@ -1,12 +1,12 @@
 \section{Foundations}\label{sec:notation}
 
-We in this section introduce our hypergraph-based tensor network formalism and define the architecture of \CompActNets{} based on this formalism.
+In this section, we introduce our hypergraph-based tensor network formalism and define the architecture of \CompActNets{} based on this formalism.
 
 \subsection{Tensors}
 \label{sec:tensors}
 
 Tensors are multiway arrays and a generalization of vectors and matrices to higher orders.
-We will first provide a formal definition as real maps from index sets enumerating the coordinates of vectors, matrices and larger order tensors.
+We will first provide a formal definition as real maps from index sets enumerating the coordinates of vectors, matrices, and higher-order tensors.
 
 \begin{definition}[Tensor]
     \label{def:tensor}
@@ -23,13 +23,13 @@ We will first provide a formal definition as real maps from index sets enumerati
     \begin{align*}
         \bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} \,,
     \end{align*}
-    which is a linear space, enriched with the operations of coordinate wise summation and scalar multiplication.
+    which is a linear space, enriched with the operations of coordinate-wise summation and scalar multiplication.
     We call a tensor $\hypercoreat{\shortcatvariables}$ boolean, when all coordinates are in $\{0,1\}$, and positive, when all coordinates are greater than $0$.
     To ease the notation, we abbreviate sets as $[\catorder]=\{0,\ldots,\catorder-1\}$, tuples of state indices by $\catindexof{[\catorder]}=\catindexof{0},\ldots,\catindexof{\catorder-1}$ and tuples of variables by $\catvariableof{[\catorder]}=\catvariableof{0},\ldots,\catvariableof{\catorder-1}$.
 \end{definition}
 
-We here introduced tensors in a non-canonical way based on categorical variables assigned to its axis.
-While coming as syntactic sugar at this point, this will allow us to define contractions without further specification of axes, based on comparisons of shared variables.
+We introduced tensors here in a non-canonical way based on categorical variables assigned to their axes.
+While this may look like syntactic sugar at this point, it will allow us to define contractions without further specification of axes, based on comparisons of shared variables.
 %\subsection{Continuous Variables} % Needed for families of distributions
 We occasionally also allow for variables $\catvariable$ taking values in infinite sets such as $\rr$, in which case we denote the set of values to a variable by $\valof{\catvariable}$.
 %Contractions are then performed by generic integrations with respect to e.g. the Lebesgue measure -> But not needed!
@@ -62,19 +62,19 @@ We occasionally also allow for variables $\catvariable$ taking values in infinit
             0 & \text{else}
         \end{cases} \, .
     \end{align}
-    We will depict this tensor by black dots, which will sometimes appear auxiliarly in tensor network diagrams (see e.g. \figref{fig:contraction}).
-    For $\catorder=1$, the delta tensor is the trivial vector, which coordinates are constant $1$, which we denote by $\onesat{\catvariable}$.
+    We will depict this tensor by black dots, which will sometimes appear as auxiliary elements in tensor network diagrams (see e.g. \figref{fig:contraction}).
+    For $\catorder=1$, the delta tensor is the trivial vector, whose coordinates are constantly $1$, which we denote by $\onesat{\catvariable}$.
 \end{example}
 
 \subsection{Tensor Networks and Contractions}
 
 % Diagrammatic representation in factor graphs
 We will use a standard visualization of tensors (dating back to \cite{penrose_spinors_1987}) by blocks with lines depicting the axes of the tensor.
-In addition we denote to each axis of the tensor the corresponding variable $\catvariableof{\atomenumerator}$:
+In addition, we assign to each axis of the tensor the corresponding variable $\catvariableof{\atomenumerator}$:
 \begin{center}
     \input{../tikz_pics/notation_basic_concepts/hypercore}
 \end{center}
-Drawing on the association of variables with nodes and of tensors with hyperedges build by the assigned variables we continue with the definition of tensor networks.
+Drawing on the association of variables with nodes and of tensors with hyperedges built from the assigned variables, we continue with the definition of tensor networks.
 
 \begin{definition}[Tensor Network]
     \label{def:tensorNetwork}
@@ -84,7 +84,7 @@ Drawing on the association of variables with nodes and of tensors with hyperedge
     where we denote by $\catvariableof{\edge}$ the set of categorical variables $\catvariableof{\node}$ with $\node\in\edge$.
     Then we call the set
     \[ \tnetofat{\graph}{\catvariableof{\nodes}} = \{\hypercoreofat{\edge}{\catvariableof{\edge}}  \wcols \edge\in\edges\} \]
-    the Tensor Network of the decorated hypergraph $\graph$.
+    the tensor network of the decorated hypergraph $\graph$.
     The set of tensor networks on $\graph$, such that all tensors have non-negative coordinates, is denoted by $\tnsetof{\graph}$.
 \end{definition}
 
@@ -116,7 +116,7 @@ Let us now exploit our graphical approach to tensor networks in the definition o
 
 % Open variables
 %We here defined contractions formally by only specifying the open variables, where the connectivity of the tensors is clear from the shared variables.
-When an open variable $\catvariable$ is not appearing at any tensor in a contraction, we define the contraction as a tensor product with the trivial tensor $\onesat{\catvariable}$.
+When an open variable $\catvariable$ does not appear in any tensor in a contraction, we define the contraction as a tensor product with the trivial tensor $\onesat{\catvariable}$.
 To ease notation, we will often omit the set notation by brackets $\{\cdot\}$. % and specify the tensors to be contracted with the delimiter "," (see e.g. \exaref{exa:tensorProduct}).
 
 \begin{figure}
@@ -130,7 +130,7 @@ To ease notation, we will often omit the set notation by brackets $\{\cdot\}$. %
 \end{figure}
 
 \begin{example}[Tensor Product]\label{exa:tensorProduct}
-    The simplest contraction is the tensor product, which maps a pair of two tensors with distinct variables onto a third tensor and has an interpretation by coordinate wise products.
+    The simplest contraction is the tensor product, which maps a pair of two tensors with distinct variables onto a third tensor and has an interpretation by coordinate-wise products.
     Such a contraction corresponds with a tensor network of two tensors with disjoint variables.
     Let there be two tensors
     \begin{align*}
@@ -178,11 +178,11 @@ In our graphical tensor notation, we depict normalized tensors by directed hyper
 
 \subsection{Function encoding and \ComputationActivationNetworks{}}
 
-Towards presenting the function encoding schemes we define one-hot encodings mapping the states of variables to basis tensors.
+Towards presenting the function encoding schemes, we define one-hot encodings mapping the states of variables to basis tensors.
 
 \begin{definition}[One-hot encoding]
     \label{def:onehotenc}
-    To any variable $\catvariable$ taking values in $[\catdim]$ the one-hot encoding of any state $\catindex\in[\catdim]$ is the vector with coordinates
+    To any variable $\catvariable$ taking values in $[\catdim]$, the one-hot encoding of any state $\catindex\in[\catdim]$ is the vector with coordinates
     \begin{align}
         \onehotmapofat{\catindex}{\catvariable=\tilde{\catindex}}
         \coloneqq \begin{cases}
@@ -190,7 +190,7 @@ Towards presenting the function encoding schemes we define one-hot encodings map
                       0 & \text{else} \, .
         \end{cases}
     \end{align}
-    To any tuple $(\catvariables)$ of variables taking values in $\facstates$ the one-hot encoding of a state tuple $\shortcatindices=(\catindexof{0},\ldots,\catindexof{\catorder-1})$ is the tensor product
+    To any tuple $(\catvariables)$ of variables taking values in $\facstates$, the one-hot encoding of a state tuple $\shortcatindices=(\catindexof{0},\ldots,\catindexof{\catorder-1})$ is the tensor product
     \begin{align*}
         \onehotmapofat{\shortcatindices}{\shortcatvariables}
         \coloneqq \bigotimes_{\catenumeratorin} \onehotmapofat{\catindexof{\atomenumerator}}{\catvariableof{\atomenumerator}} \, .
@@ -210,7 +210,7 @@ We now use one-hot encodings to encode functions between state sets.
 
 \begin{definition}[Basis encoding of maps between state sets]
     \label{def:functionRepresentation}
-    Let there be two sets of variables $\shortcatvariables$ and $\headvariables$, and a map
+    Let there be two sets of variables $\shortcatvariables$ and $\headvariables$, and let there be a map
     \begin{align*}
         \statesetfunction\defcols\facstates \rightarrow  \headstates
     \end{align*}
