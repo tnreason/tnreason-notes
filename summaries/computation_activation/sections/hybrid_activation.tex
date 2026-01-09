@@ -104,7 +104,7 @@ where
         \cup\{\softactsymbolof{\secselindex,\canparam} \wcols \secselindex\in[\seldim]\ncond\secselindex\neq\selindex\}
         \cup\{\basemeasure\}}{\headvariableof{\selindex}} \, .
 \end{align*}
-Based on an interpretation of the coordinate descent steps as matching steps for the mean parameters (moments) to $\formulaof{\selindex}$, we call this method alternating moment matching for \HybridLogicNetworks{} and provide pseudocode for it in \algoref{alg:AMM_HLN}.
+Based on an interpretation of the coordinate descent steps as matching steps for the mean parameters or moments to $\formulaof{\selindex}$, we call this method alternating moment matching for \HybridLogicNetworks{} and provide pseudocode for it it in \algoref{alg:AMM_HLN}.
 %% Forward inference in inner loop
 We notice that, during the coordinate descent steps, computing the marginal probability of the variable $\headvariableof{\selindex}$ with respect to the current network parameters is required.
 This is the computational bottleneck of the algorithm and can be approached by various approximate inference methods, e.g., variational inference (see for example the CAMEL method \cite{ganapathi_constrained_2008}).

@@ -6,8 +6,8 @@
     breaklines
 }
 
-The concepts presented in this paper have been implemented in the \python{} library \tnreason{}\footnote{\tnreason{} is available in version 2.0.0 at \url{pypi.org/tnreason} and maintained at  \url{github.com/tnreason/tnreason-py}.}.
-While in this section, we explain the basic design and functionality of this library, we provide in Appendix~\ref{sec:algExaImplementation} a detailed implementation of the algorithms and examples in this work.
+The concepts presented in this paper have been implemented in the \python{} library \tnreason{}\footnote{\tnreason{} is available in version 2.0.0 at \url{pypi.org/tnreason} and maintained at \url{github.com/tnreason/tnreason-py}.}.
+In this section, we explain the basic design and functionality of this library; Appendix~\ref{sec:algExaImplementation} provides detailed implementations of the algorithms and examples in this work.
 
 \subsection{Architecture}
 
@@ -17,10 +17,10 @@ The package consists of four subpackages and three layers of abstraction:
     \input{../tikz_pics/implementation/architecture_sketch}
 \end{center}
 %\end{figure}
-In the subpackage \tnreason{}.\spengine{} we implement tensors, tensor networks, contractions and normalizations.
+In the subpackage \tnreason{}.\spengine{} we implement tensors, tensor networks, contractions, and normalizations.
 In the subpackage \tnreason{}.\sprepresentation{} the basic tensor encoding schemes such as basis encodings are available.
-In the subpackage \tnreason{}.\spreasoning{} we implement reasoning algorithms, such as generalization of the message passing algorithms presented in \algoref{alg:treeBeliefPropagation}, \algoref{alg:constraintPropagation} and \algoref{alg:AMM_HLN}.
-In the subpackage \tnreason{}.\spapplication{} one can construct tensor network encodings of propositional formulas and data sets.
+In the subpackage \tnreason{}.\spreasoning{} we implement reasoning algorithms, such as generalizations of the message-passing algorithms presented in \algoref{alg:treeBeliefPropagation}, \algoref{alg:constraintPropagation}, and \algoref{alg:AMM_HLN}.
+In the subpackage \tnreason{}.\spapplication{} one can construct tensor network encodings of propositional formulas and datasets.
 
 \subsection{Basic usage}
 
@@ -42,8 +42,8 @@ The slice iterator is an iterator over tuples \mintinline{python}{(val,posDict)}
 The \mintinline{python}{posDict} are \mintinline{python}{dict} instances, where the keys are the \mintinline{python}{str} tensor colors and the values are \mintinline{python}{int}.
 Each \mintinline{python}{posDict} collects leg vectors of the corresponding elementary tensor that are not trivial. These leg vectors are the basis vectors enumerated by the corresponding \mintinline{python}{int} value.
 
-Single coordinates of tensors can be retrieved by subscribing them with a \mintinline{python}{posDict}.
-We can for example check whether \mintinline{python}{{"X_0":0,"X_1":1,"X_2"}} is a model:
+Single tensor coordinates can be retrieved by indexing with a \mintinline{python}{posDict}.
+We can, for example, check whether \mintinline{python}{{"X_0":0,"X_1":1,"X_2":0}} is a model:
 \begin{minted}{python}
 assert formula[{"X_0":0,"X_1":1,"X_2"}] == 1
 \end{minted}
@@ -55,15 +55,15 @@ For example a tensor network is created from the propositional syntax of the abo
 \begin{minted}{python}
 fDecomp = application.create_cores_to_expressionsDict({"f0": ["and",["or","X_0","X_1"],["not","X_2"]]})
 \end{minted}
-Here we apply a nested list description of syntactical hypergraphs (see \defref{def:formulaDecomposition}) with a specification of the logical connectives at the first position of the list (by \mintinline{python}{"and","or","not"} we refer to the connectives $\land,\lor,\lnot$).
+Here we apply a nested-list description of syntactic hypergraphs (see \defref{def:formulaDecomposition}) with a specification of the logical connectives in the first position of the list (by \mintinline{python}{"and","or","not"} we refer to the connectives $\land,\lor,\lnot$).
 Equivalently, we can exploit the $\land$ symmetry and create it by multiple formulas:
 \begin{minted}{python}
 fDecomp = application.create_cores_to_expressionsDict({"f0": ["or","X_0","X_1"], "f1": ["not","X_2"]})
 \end{minted}
-A depiction of the underlying hypergraph as a factor graph, which highlights edges by blue blocks and nodes by red blocks is can be created by \mintinline{python}{engine.draw_factor_graph(fDecomp)} (see \figref{fig:factorGraphPlt}).
+A depiction of the underlying hypergraph as a factor graph, which highlights edges as blue blocks and nodes as red blocks, can be created with \mintinline{python}{engine.draw_factor_graph(fDecomp)} (see \figref{fig:factorGraphPlt}).
 %The \mintinline{python}{str} keys to the created cores carry the suffices \mintinline{python}{"_cC"} and \mintinline{python}{"_aC"} indicating whether they are part of the computation or the activation network.
 %Further, colors get the suffices \mintinline{python}{"_dV"} and \mintinline{python}{"_cV"} indicating whether they are distributed variables or computed and therefore auxiliary.
-Single tensors can be retrieved by contractions depending on a tensor network and a specification of the open variables (for explanation of the suffices see \figref{fig:factorGraphPlt}), for example:
+Single tensors can be obtained by contracting a tensor network while specifying the open variables (for an explanation of the suffixes, see \figref{fig:factorGraphPlt}), for example:
 \begin{minted}{python}
 contracted = engine.contract(fDecomp, openColors=["X_0_dV","X_1_dV","X_2_dV"])
 \end{minted}
@@ -74,8 +74,8 @@ By default the contractions are performed using \mintinline{python}{numpy.einsum
         \includegraphics[width=15cm]{../tikz_pics/factor_graph_plt.png}
     \end{center}
     \caption{
-        Factor graph highlighting a tensor network decomposition of the syntactical decomposition of the propositional formula of \exaref{exa:propFormulaHeadSym}.
-        Blue blocks highlight hyperedges carrying tensors and red blocks variables.
+        Factor graph highlighting a tensor network decomposition of the syntactic decomposition of the propositional formula of \exaref{exa:propFormulaHeadSym}.
+        Blue blocks highlight hyperedges carrying tensors and red blocks highlight variables.
         The tensor label suffices \mintinline{python}{"_cC"} and \mintinline{python}{"_aC"} indicate whether the tensor is part of the computation network or the activation network.
         The variable label suffices \mintinline{python}{"_dV"} and \mintinline{python}{"_cV"} indicate whether the variable is distributed or computed and therefore auxiliary.
         This graph has been generated with the method \mintinline{python}{tnreason.engine.draw_factor_graph} of \tnreason{}.
