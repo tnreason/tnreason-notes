@@ -23,7 +23,7 @@ A tensor-based representation of propositional logic is developed by encoding bo
 \input{../examples/logical_paradigm/prop_formula_coordinatewise.tex}
 
 \paragraph{Model counts by contraction}
-Each coordiante of the propositional formula is either a $1$ or $0$ encoding if the indexed state is a model of the formula or not.
+Each coordinate of the propositional formula is either a $1$ or $0$, indicating whether the indexed state is a model of the formula or not.
 In this way, the contraction $\contraction{\formula}$ counts the number of models of the propositional formula $\formula$.
 One can therefore decide the satisfiability of a formula by checking if $\contraction{\formula}>0$.
 
@@ -32,8 +32,8 @@ Since the tensor $\formulaat{\shortcatvariables}$ is equal to one at index $x_{[
 \begin{center}
     \input{../tikz_pics/logic_representation/formula_direct.tex}
 \end{center}
-As already depicted one can exploit this summation to find a $\cpformat$ decomposition of the formula.
-To this we enumerate the models $\shortcatindices^{\decindex}$ of $\formula$ by a decomposition variable $\decvariable$ with values $\decindex\in[\contraction{\formula}]$ and define for $\catenumeratorin$ cores with slices
+As already depicted, one can exploit this summation to find a $\cpformat$ decomposition of the formula.
+To this end, we enumerate the models $\shortcatindices^{\decindex}$ of $\formula$ by a decomposition variable $\decvariable$ with values $\decindex\in[\contraction{\formula}]$ and define, for $\catenumeratorin$, cores with slices
 \begin{align*}
     \hypercoreofat{\catenumerator}{\catvariableof{\catenumerator},\indexeddecvariable}
     = \onehotmapofat{\catindexof{\catenumerator}^{\decindex}}{\catvariableof{\catenumerator}} \, .
@@ -42,9 +42,9 @@ To this we enumerate the models $\shortcatindices^{\decindex}$ of $\formula$ by 
 \input{../examples/logical_paradigm/prop_formula_basCP.tex}
 
 \paragraph{Basis encoding}
-Representing booleans by elements in $\{0,1\}$ leads to the problem, that negation is an affine transformation and can not be represented by multilinear tensors. %~\cite[Section 4.1.1]{goessmann_tensor-network_2025}.
+Representing Booleans by elements in $\{0,1\}$ leads to the problem that negation is an affine transformation and cannot be represented by multilinear tensors. %~\cite[Section 4.1.1]{goessmann_tensor-network_2025}.
 Therefore, instead of using this \emph{coordinate calculus} an approach based on \emph{basis calculus} is employed, which is explained in this section.
-To be able to express different kinds of connectives and finally any propositional formula by multi-linear tensors, booleans are encoded by one-hot encodings as defined in \defref{def:onehotenc}.
+To be able to express different kinds of connectives and, finally, any propositional formula by multilinear tensors, booleans are encoded by one-hot encodings as defined in \defref{def:onehotenc}.
 Propositional formulas $\formula$ can be expressed in terms of a tensor describing the mapping and its negation by
 \begin{align}
     \label{eq:basisencboolean}
@@ -69,7 +69,7 @@ We further provide a more detailed example in coordinate sensitive notation in t
 \input{../examples/logical_paradigm/bencoding_neg_con.tex}
 
 \paragraph{Interpretation as \CompActNets{}}
-The propositional formula and its negation can be represented by that tensor by
+The propositional formula and its negation can be represented by this tensor via
 \begin{align*}
     \formulaat{\shortcatvariables}
     = \contractionof{\tbasisat{\headvariableof{\formula}},\bencodingofat{\formula}{\headvariableof{\formula},\shortcatvariables}}{\shortcatvariables}
@@ -83,15 +83,15 @@ Both $\formula$ and $\lnot\formula$ are thus \ComputationActivationNetworks{} to
 
 \subsection{Syntactical Decomposition of Propositional Formulas}
 
-Propositional formulas of concern often have a syntactical specification as composed functions.
+Propositional formulas of concern often have a syntactic specification as composed functions.
 We can therefore apply the neural paradigm to find efficient representations of them.
 
-\begin{definition}[Syntactical Decompositions]
+\begin{definition}[Syntactic Decompositions]
     \label{def:syntacticalDecomposition}
-    A syntactical decomposition of a propositional formula $\exformula$ is a decomposition hypergraph (see \defref{def:decompositionHypergraph}) such that all nodes are decorated with the dimension $\catdimof{\node}=2$ and composition function $\exformula$.
+    A syntactic decomposition of a propositional formula $\exformula$ is a decomposition hypergraph (see \defref{def:decompositionHypergraph}) such that all nodes are decorated with the dimension $\catdimof{\node}=2$ and the composition function $\exformula$.
 \end{definition}
 
-Thus we have a tensor network representation of any propositional formula based on its syntactical decomposition, where the hypergraph of the syntactical decomposition equals the hypergraph of the representing tensor network.
+Thus we have a tensor network representation of any propositional formula based on its syntactic decomposition, where the hypergraph of the syntactic decomposition equals the hypergraph of the representing tensor network.
 
 \input{../examples/logical_paradigm/prop_formula_syntax}
 
@@ -165,7 +165,7 @@ Thus we have a tensor network representation of any propositional formula based 
 
 We have already seen that the contraction of a propositional formula counts its models.
 This allows to define entailment between two propositional formulas as follows.
-To generalize the treatment, we do not demand any more that the variables of a formula are of dimension $2$.
+To generalize the treatment, we no longer demand that the variables of a formula are of dimension $2$.
 We further use $\lnot\formulawith=\oneswith-\formulawith$.
 
 \begin{definition}[Entailment of propositional formulas]
@@ -194,7 +194,7 @@ The conjunction of these formulas is the knowledge base formula
     \kbwith
     = \bigwedge_{\selindexin} \formulaofat{\selindex}{\shortcatvariables} \, .
 \end{align*}
-To show efficient repesentations we will use the following identities.
+To show efficient representations, we will use the following identities.
 
 \begin{lemma}[Computation Network Symmetries]
     \label{lem:comNetSymmetries}
@@ -264,7 +264,7 @@ Before presenting the resulting Constraint Propagation algorithm, we first show 
 \end{proof}
 To decide entailment, we can therefore investigate entailment on smaller parts of the knowledge base.
 This is sound by the above theorem, but not complete, since it can happen that no smaller part of the knowledge base entails the formula, but the whole knowledge base does.
-We can futhermore add entailed formulas to the knowledge base without the latter, as we show next.
+We can furthermore add entailed formulas to the knowledge base without changing it, as we show next.
 
 \begin{theorem}[Invariance of adding Entailed Formulas]
     \label{the:addingEntailed}
@@ -290,11 +290,11 @@ We can futhermore add entailed formulas to the knowledge base without the latter
 \end{proof}
 
 % Interpreting entailment
-The mechanism of \theref{the:addingEntailed} provides us with a mean to store entailment information in small order auxiliary tensors.
+The mechanism of \theref{the:addingEntailed} provides us with a means to store entailment information in small-order auxiliary tensors.
 %Adding deduced statements to a knowledge base does not change the knowledge base as a tensor, but one can exploit it in smaller contractions.
 % Constraint Propagation
 One way to exploit this accessibility of local entailment information are message passing schemes similar to \algoref{alg:treeBeliefPropagation} propagating the information.
-This approach decides local entailment by iteratively adding entailed formulas to the knowledge base and checking further entailment on neighbored tensors of the knowledge base.
+This approach decides local entailment by iteratively adding entailed formulas to the knowledge base and checking further entailment on neighboring tensors of the knowledge base.
 Since for entailment decisions the support of the contractions is sufficient, we can apply non-zero indicators before sending contraction messages.
 We then schedule new messages in the direction $(\sedge,\redge)$, once the support of a message received at $\sedge$ has been changed.
 Note that such a scheduling system is guaranteed to converge, since there can only be a finite number of message changes.
@@ -349,8 +349,8 @@ We further directly reduce the computation of messages to their support and call
         &= \messagewith \, .
     \end{align*}
 
-    Let us now assume that at an arbitrary state of the algorithm the inequality holds for all previous sent messages.
-    By \theref{the:addingEntailed} we can add contract the messages on the tensor network without changing it, and \eqref{eq:nzMessageAddingEquivalence} thus still holds.
+    Let us now assume that at an arbitrary state of the algorithm the inequality holds for all previously sent messages.
+    By \theref{the:addingEntailed} we can contract the messages with the tensor network without changing it, and \eqref{eq:nzMessageAddingEquivalence} thus still holds.
     We then conclude with \theref{the:monotonicityPL} that the claimed property also holds for the new message.
 \end{proof}
 
