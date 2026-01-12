@@ -1,11 +1,3 @@
-article_compilation/article_tnreason*
-!article_compilation/spec_files/arxiv.sty
-!article_compilation/spec_files/standard_preamble.tex
-
-scrbook_tnreason*
-!scrbook_tnreason.tex
-!scrbook_tnreason.pdf
-
 .DS_Store
 .idea
 
@@ -26,12 +18,6 @@ application_sketches/parity_check_codes/*
 !application_sketches/parity_check_codes/parity_check_codes.tex
 !application_sketches/parity_check_codes/parity_check_codes.pdf
 
-out/*
-
-sketchGenerator/*
-
-article_compilation/*
-
 *.aux
 *.log
 *.out
@@ -41,3 +27,5 @@ article_compilation/*
 *.blg
 *.run.xml
 *.toc
+*.nav
+*.snm

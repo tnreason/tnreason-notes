@@ -1,0 +1,349 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[Tensor Networks]{
+	\techwschapterone \\
+	{\huge Formalization of Tensor Networks}
+}
+
+\begin{document}
+
+{\frame[plain]{\titlepage}}
+
+
+\begin{frame}{Tensor Networks}
+
+Tensor Networks are build by
+\begin{itemize}
+	\item Separated Combination of Tensors $\hypercoreof{\edge_1},\hypercoreof{\edge_2}, \hypercoreof{\edge_3}$: \emph{Tensor Products}
+	\only<2->{
+	\item Connecting Tensors along common legs and closing legs: \emph{Contractions}
+	}
+\end{itemize}
+
+\vfill
+
+\begin{center}
+	\input{./tikz_pics/product_contraction.tex}
+\end{center}
+
+
+\end{frame}
+
+
+\section{Tensor Products}
+
+\begin{frame}{Separated Combination of Tensors: \\ Tensor Products}
+
+\begin{definition}[Tensor Product]\label{def:tensorProduct}
+	Let there be two tensor
+	\begin{align*}
+		\hypercore \facstates \rightarrow \rr \quad \text{and} \quad  \sechypercore \facstates \rightarrow \rr \, . 
+	\end{align*}
+	Then there tensor product is the map
+	\begin{align*}
+		\hypercore \otimes \sechypercore :  \left(\facstates\right) \times \left(\secfacstates\right) \rightarrow \rr
+	\end{align*}
+	defined for $\catindices\in\facstates$ and $\seccatindices\in\secfacstates$ as
+	\begin{align*}
+		\hypercore \otimes \sechypercore(\catindices,\seccatindices) 
+		=  \hypercore(\catindices)\cdot \sechypercore(\seccatindices) \, .
+	\end{align*}
+\end{definition}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Example}
+
+\textbf{Example:} The one-hot encoding $\onehotmapof{(0,2,1)} \in  \bigotimes_{\atomenumerator\in[3]}\rr^4$
+	with the coordinates 
+\begin{align*}
+	\onehotmapof{(0,2,1)}(\catindexof{0},\catindexof{1},\catindexof{2}) = \begin{cases}
+	1 & \text{  if  } \catindexof{0} = 0, \,\, \catindexof{1} = 2 \text{  and  } \catindexof{2} = 1 \\
+	0 & \text{ else}
+	\end{cases}
+\end{align*}
+is the tensor product of 
+\begin{align*}
+	\onehotmapof{(0)}(\catindexof{0}) = \begin{cases}
+	1 & \text{  if  } \catindexof{0} = 0 \\
+	0 & \text{ else}
+	\end{cases} 
+	\quad  , \quad 
+	\onehotmapof{(2)}(\catindexof{1}) = \begin{cases}
+	1 & \text{  if  } \catindexof{1} = 2 \\
+	0 & \text{ else}
+	\end{cases} 	
+\end{align*}
+and
+\begin{align*}
+	\onehotmapof{(1)}(\catindexof{2}) = \begin{cases}
+	1 & \text{  if  } \catindexof{2} = 1 \\
+	0 & \text{ else}
+	\end{cases} \, .
+\end{align*}
+
+
+\end{frame}
+
+
+\begin{frame}{Generic one-hot encodings}
+	\begin{definition}[One-hot encoding of Factored Systems]
+		The one-hot encoding of a factored systems with variables $\{\catvariableof{\atomenumerator} \, : \, \atomenumeratorin \}$ in state $\catindices$ is the tensor product 
+ 		\begin{align}
+			\onehotmapof{(\catindices)} = \bigotimes_{\atomenumeratorin} \onehotmapof{\catindexof{\atomenumerator}} 
+		\end{align}
+		of the one-hot encodings of the variables.
+	\end{definition}
+	We can depict the one-hot encoding by
+	\begin{center}
+		\input{./tikz_pics/one_hot_tensorproduct.tex}
+	\end{center}
+\end{frame}
+
+
+
+
+%\begin{frame}{Curse of dimensionality of factored representations}
+%
+%One-hot encodings of the state of factored systems are elements of the tensor space
+%	\[ \bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} \]
+%with dimension 
+%	\[ \mathrm{dim}\left[ 
+%	\bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} 
+%	\right] =
+%	\prod_{\atomenumeratorin}  \catdimof{\atomenumerator} \, . \]
+%
+%Even if we have found a way to depict these objects without specifying all coordinates:
+%	\begin{center}
+%		How can we apply the tensor formalism to overcome the curse of dimensionality?
+%	\end{center}
+%
+%\end{frame}
+
+
+
+
+
+\section{Contractions: Decorated Hypergraphs}
+
+
+
+\begin{frame}{Depicting common legs: Hypergraphs}
+
+\begin{definition}{Hypergraph}
+	A hypergraph $\graph=(\nodes,\edges)$ consists of two sets:
+	\begin{itemize}
+		\item Nodes $\node\in\nodes$ 
+		\item Hyperedges $\edge\in\edges$, where each is is a subset $\edge\subset\nodes$ of nodes
+	\end{itemize}
+\end{definition}
+
+
+We depict nodes by gray circles and hyperedges as connections of them:
+\begin{center}
+	\input{./tikz_pics/hypergraph.tex}
+\end{center}
+In this example:
+\begin{itemize}
+	\item $\nodes = \{0,1,2,3\}$
+	\item $\edges = \big\{ \{0,1,2\}, \{1,2\}, \{2,3\}  \big\}$
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Associating tensors with hyperedges}
+
+Let us use the hypergraph formalism to depict tensor networks
+\begin{itemize}
+	\item Nodes are decorated by the categorical variables on the tensor legs:
+		\[  \{0,\ldots,\atomorder-1\} \quad \text{represent the variables } \quad \{\catvariableof{0},\ldots,\catvariableof{\atomorder-1}\}\]
+		Further, we associate the dimensions $\catdimof{\node}$ of the respective variable with them.
+	\item Hyperedges are decorated by tensors 
+		\[ \edge = \{\node \, : \, \node \in \edge \} \quad \text{represents the tensor} \quad \hypercoreof{\edge} \in \bigotimes_{\node\in\edge} \rr^{\catdimof{\node}}\]
+\end{itemize}
+
+We now decorate hyperedges by tensors 
+\begin{center}
+	\input{./tikz_pics/hypercore.tex}
+\end{center}
+
+\end{frame}
+
+
+
+\begin{frame}{Tensor Networks}
+
+\begin{definition}[Tensor Network]
+	Let $\graph=(\nodes,\edges)$ be a hypergraph (that is edges are arbitrary nonempty subsets of nodes) with nodes decorated by random variables $\catvariableof{\node}$ with dimensions
+		\[ \catdimof{\node} \in \mathbb{N} \]	
+	and hyperedges $\edge\in\edges$ decorated by core tensors
+		\[ \hypercoreof{\edge} \in \bigotimes_{\node\in\edge}\rr^{\catdimof{\node}} \, . \]
+	Then we call the set 
+		\[ \tnetof{\graph} = \{\hypercoreof{\edge} \, : \, \edge\in\edges\} \]
+	the Tensor Network of the decorated hypergraph $\graph$.
+\end{definition}
+
+\end{frame}
+
+\begin{frame}{Graphical Representation of Tensor Networks}
+
+\textbf{Example of a tensor network}:
+\begin{itemize}
+	\item Four categorical variables $\nodes = \{\catvariableof{0},\catvariableof{1},\catvariableof{2},\catvariableof{3}\}$ appearing as nodes and decorated by their dimensions $\catdimof{:}$.
+	\item Hyperedges  $\edge_0=\{\catvariableof{0},\catvariableof{1},\catvariableof{2}\}$, $\edge_1=\{\catvariableof{1},\catvariableof{2}\}$ and $\edge_2=\{\catvariableof{2},\catvariableof{3}\}$ decorated with tensors
+\end{itemize}
+
+\begin{center}
+	\input{./tikz_pics/network.tex}
+\end{center}
+
+We choose two diagrammatic depictions:
+\begin{itemize}
+	\item[a)] The defining Hypergraph
+	\item[b)] The contraction diagram
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}{Contraction of Tensor Networks}
+
+\begin{definition}[Contraction]
+	Let $\tnetof{\graph}$ be a tensor network on a decorated hypergraph $\graph=(\nodes,\edges)$.
+	For any subset $\secnodes\subset\nodes$ we define the contraction  to be the tensor 
+	\begin{align}
+		\contractionof{\tnetof{\graph}}{\secnodes} \in \bigotimes_{\node\in\secnodes} \rr^{\catdimof{\node}}
+	\end{align}
+	defined coordinatewise by the sum	
+	\begin{align}
+		\contractionof{\tnetof{\graph}}{\secnodes}_{\{\catindexof{\node} \, : \, \node\in\secnodes\}} = 
+		\sum_{\{\catindexof{\node} \in \catdimof{\node} \, : \, \node \in \nodes/\secnodes\}}
+		 \prod_{\edge\in\edges}\hypercoreof{\edge}_{\{\catindexof{\node} : \node\in\edge\}} \, . 
+	\end{align}
+\end{definition}
+
+\end{frame}
+
+
+\begin{frame}{Example: Matrix Vector Multiplication}
+	Matrices 
+		\[ M \in \rr^{\catdimof{A}} \otimes \rr^{\catdimof{B}} \]
+	are depicted by blocks with two legs.
+	\medskip 
+	The contraction with a vector 
+		\[ V \in \rr^{\catdimof{B}}\]
+	defined coordinatewise as
+		\[ (VM)_{\catindexof{A}} = \sum_{\catindexofin{B}} V_{\catindexof{B}} M_{\catindexof{B}\catindexof{A}}\]
+	is depicted by
+	\begin{center}
+		\input{./tikz_pics/one_hot_matrix.tex}
+	\end{center}
+\end{frame}
+
+
+\begin{frame}{Example of a Tensor Contraction: Hadamard Product}
+
+	Let $V^k\in\rr^p$ be vectors for $\atomenumeratorin$. Their \emph{Hadamard product} is the vector
+	\begin{align}
+		V^1\circ V^2 \circ \ldots \circ V^{\atomorder-1} \in \rr^p
+	\end{align}
+	defined by
+	\begin{align}
+		\left( V^1\circ V^2 \circ \ldots \circ V^{\atomorder-1} \right)_\catindex = \prod_{\atomenumeratorin} V^\atomenumerator_\catindex \, . 
+	\end{align}
+
+	We visualize the product by leg connection of multiple vectors:
+	\begin{center}
+		\input{./tikz_pics/hadamard.tex}
+	\end{center}
+		
+\end{frame}
+
+
+
+\begin{frame}{Graphical Representation of Contractions}
+
+\textbf{Example of a contraction}:
+\begin{itemize}
+	\item Four categorical variables $\nodes = \{\catvariableof{0},\catvariableof{1},\catvariableof{2},\catvariableof{3}\}$ appearing as nodes and decorated by their dimensions $\catdimof{:}$.
+	\item Hyperedges  $\edge_0=\{\catvariableof{0},\catvariableof{1},\catvariableof{2}\}$, $\edge_1=\{\catvariableof{1},\catvariableof{2}\}$ and $\edge_2=\{\catvariableof{2},\catvariableof{3}\}$ decorated with tensors
+	\item Contraction leaving $\{\catvariableof{1},\catvariableof{3}\}$ open, by summing over the states of $\{\catvariableof{0},\catvariableof{2}\}$
+\end{itemize}
+
+\begin{center}
+	\input{./tikz_pics/contraction.tex}
+\end{center}
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}{Curse of dimensionality of factored representations}
+
+Tensor spaces have a problem with exponential increase of dimensions as 
+	\[ \mathrm{dim}\left[ 
+	\bigotimes_{\node\in\nodes} \rr^{\catdimof{\node}} 
+	\right] =
+	\prod_{\node\in\nodes} \catdimof{\node} \, . \]
+
+
+Tensor Networks can break this curse of dimensionality by storing the decorating tensors instead
+\begin{align*}
+	\sum_{\edge\in\edges} \mathrm{dim}\left[  \bigotimes_{\node\in\edge} \rr^{\catdimof{\node}} \right]
+	= 	\sum_{\edge\in\edges}  \left(\prod_{\node\in\edge} \catdimof{\node}\right)
+\end{align*}
+
+
+\begin{block}{Representation strategy}
+ 	Store the recipe (that is the core tensors), not the result (the contracted tensor network).
+\end{block}
+
+\end{frame}
+
+
+
+\end{document}
+
+
+
+
+\begin{frame}{Singular Value Decomposition}
+
+Decompositions of Matrices
+
+\end{frame}
+
+
+
+
+\begin{frame}{Schmidt-Mirsky Eckard-Young Theorem}
+
+Among the rank $r$ matrices, the matrix built from the $r$ largest singular values approximates a generic matrix best.
+
+\end{frame}
+
+
+\begin{frame}{Multiple generalization of ranks to tensor networks}
+
+\end{frame}
+
+
+

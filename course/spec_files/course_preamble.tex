@@ -1,0 +1,221 @@
+%% Beamer Template
+\usepackage{../../spec_files/beamer_template/beamercolorthemeclaw}
+\usepackage{../../spec_files/beamer_template/beamerfontthemeclaw}
+\usepackage{../../spec_files/beamer_template/beamerinnerthemeclaw}
+\usepackage{../../spec_files/beamer_template/beamerouterthemeclaw}
+
+\usepackage{tikz}
+
+\input{../../../macros/general_macros}
+\input{../../../macros/tc_macros}
+\input{../../../macros/tikz_macros}
+\input{../../../macros/organization_macros}
+
+\usepackage{mathtools}
+\usepackage{tcolorbox}
+\usepackage{braket}
+\usepackage{algorithmic}
+
+% Configuration
+
+% Path for images
+\graphicspath{{./images/}}
+
+% OPTIONAL: Insert additional slide at begin of each section
+%\AtBeginSection{\frame{\sectionpage}}
+
+% OPTIONAL: Background image with logos
+\usebackgroundtemplate{
+    \begin{tikzpicture}
+        %\node at (11.2,0) {\includegraphics[width=0.16\paperwidth]{/Users/alexgoessmann/Documents/ENEXA/latex_macros/images/enexa.png}};
+        %\node at (0,0) {\includegraphics[width=0.065\paperwidth]{/Users/alexgoessmann/Documents/ENEXA/latex_macros/images/DATEV.png}};
+    \end{tikzpicture}
+
+}
+% German UPB logo
+%\usebackgroundtemplate{\includegraphics[width=\paperwidth]{background-upb-dice-german}}
+% Reduce max. frame title width (no logo overlap)
+\renewcommand{\frametitlewidth}{.8\textwidth}
+
+% OPTIONAL: Replace blue with specific blue
+\colorlet{textblue}{textbluespecific}
+\colorlet{elementblue}{elementbluespecific}
+\colorlet{lightblue}{lightbluespecific}
+\colorlet{backgroundblue}{backgroundbluespecific}
+
+% OPTIONAL: Less space inside blocks
+% https://tex.stackexchange.com/a/94189
+%\makeatletter
+%\addtobeamertemplate{block begin}{
+%\def\@listi{\leftmargin\leftmargini
+%\topsep    0pt
+%\parsep    0pt
+%\itemsep   3pt plus 2pt minus 3pt}
+%\partopsep 0pt }
+%\makeatother
+%\makeatletter
+%\addtobeamertemplate{block example begin}{
+%\def\@listi{\leftmargin\leftmargini
+%\topsep    0pt
+%\parsep    0pt
+%\itemsep   3pt plus 2pt minus 3pt}
+%\partopsep 0pt }
+%\makeatother
+%\makeatletter
+%\addtobeamertemplate{block alerted begin}{
+%\def\@listi{\leftmargin\leftmargini
+%\topsep    0pt
+%\parsep    0pt
+%\itemsep   3pt plus 2pt minus 3pt}
+%\partopsep 0pt }
+%\makeatother
+
+
+% Packages
+
+% inputenc - Accept different input encodings
+% https://ctan.org/pkg/inputenc
+\usepackage[utf8x]{inputenc}
+
+% babel - Multilingual support for Plain TEX or LATEX
+% https://ctan.org/pkg/babel
+\usepackage[english]{babel}
+%\usepackage[german]{babel}
+
+% hyperref – Extensive support for hypertext in LATEX
+% https://ctan.org/pkg/hyperref
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=footertext,
+    urlcolor=urls
+}
+
+% appendixnumberbeamer – Manage frame numbering in appendixes in beamer
+% https://ctan.org/pkg/appendixnumberbeamer
+\usepackage{appendixnumberbeamer}
+
+
+% Fonts
+% https://tug.org/FontCatalogue/
+% https://ctan.org/pkg/free-math-font-survey
+
+% fontenc – Standard package for selecting font encodings
+% https://ctan.org/pkg/fontenc
+\usepackage[T1]{fontenc}
+
+% Serif font
+\usepackage{bera}
+
+% Mono font
+\usepackage{nimbusmononarrow}
+
+% Sans-Serif font (fallback)
+% tgheros
+\usepackage{tgheros}
+
+% Font Roboto Condensed
+% https://tug.org/FontCatalogue/robotocondensed/
+% https://ctan.org/pkg/roboto
+\usepackage[sfdefault,condensed]{roboto}
+
+% Alternative: Arial Narrow
+% Fontspec requires XeTeX or LuaTeX, not PDFLaTeX
+%\usepackage{fontspec}
+%\setsansfont[Ligatures=TeX]{Arial Narrow}
+
+
+% Optional packages
+% Can be removed if not used
+
+% pgf – Create PostScript and PDF graphics in TEX
+% https://www.ctan.org/pkg/pgf
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning}
+\usetikzlibrary{arrows.meta,arrows}
+\tikzset{resource/.style={draw,rectangle,fill=lightblue,rounded corners,inner sep=5pt} }
+\tikzset{literal/.style={draw,rectangle,fill=lightyellow,inner sep=5pt}}
+\tikzset{>=triangle 45}
+\tikzset{every picture/.style=thick}
+\tikzstyle{every node}=[font=\small]
+
+% listings – Typeset source code listings using LATEX
+% https://ctan.org/pkg/listings
+\usepackage{listings}
+\lstset{
+    basicstyle=\small\ttfamily,
+%
+    keywordstyle=\color{textblue},
+    commentstyle=\color{textgray},
+    emphstyle=\color{textpurple},
+%
+    numbers=left,
+    numbersep=7pt,
+    numberstyle=\scriptsize\color{textgray}\ttfamily,
+%
+    tabsize=2,
+    breaklines=true
+}
+
+
+% Beamer settings
+
+% Disable navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+% Move title page contents down
+\addtobeamertemplate{title page}{\vspace{2\baselineskip}}{}
+
+% OPTIONAL: Alternative footer
+%\useoutertheme{infolines}
+%\setbeamertemplate{headline}{}
+%\setbeamerfont{title in head/foot}{series=\mdseries}
+
+% OPTIONAL: Alternative header/footer colors
+%\setbeamercolor{palette primary}{bg=lightgray}
+%\setbeamercolor{palette secondary}{bg=lightgray}
+%\setbeamercolor{palette tertiary}{bg=lightgray}
+%\setbeamercolor{frametitle}{bg=lightgray}
+
+
+% Commands
+
+% Text color
+\newcommand{\bluedark}[1]{\textcolor{textbluedark}{#1}}
+\newcommand{\blue}[1]{\textcolor{textblue}{#1}}
+\newcommand{\gray}[1]{\textcolor{textgray}{#1}}
+%
+\newcommand{\magenta}[1]{\textcolor{textmagenta}{#1}}
+\newcommand{\orange}[1]{\textcolor{textorange}{#1}}
+\newcommand{\purple}[1]{\textcolor{textpurple}{#1}}
+%
+\newcommand{\red}[1]{\textcolor{textred}{#1}}
+\newcommand{\turquoise}[1]{\textcolor{textturquoise}{#1}}
+\newcommand{\green}[1]{\textcolor{textgreen}{#1}}
+
+% Predefined text concepts
+\renewcommand{\alert}[1]{\textbf{\red{#1}}}
+\renewcommand{\emph}[1]{\blue{#1}}
+\newcommand{\good}[1]{\turquoise{#1}}
+\newcommand{\bad}[1]{\purple{#1}}
+\newcommand{\heading}[1]{\textbf{#1}\\\vspace*{.05cm}}
+\newcommand{\tech}[1]{\gray{\texttt{#1}}}
+%\newcommand{\term}[1]{\gray{\textit{#1}}}
+
+% OPTIONAL: Example blocks in green instead of turquoise
+%\setbeamercolor{block title example}{bg=lightgreen,fg=templatetext}
+%\setbeamercolor{block body example}{bg=backgroundgreen}
+% OPTIONAL: Positive highlights in green instead of turquoise
+%\renewcommand{\good}[1]{\green{#1}}
+
+% OPTIONAL: Alert blocks in red instead of purple
+%\setbeamercolor{block title alerted}{bg=lightred,fg=templatetext}
+%\setbeamercolor{block body alerted}{bg=backgroundred}
+% OPTIONAL: Negative highlights in red instead of purple
+%\renewcommand{\bad}[1]{\red{#1}}
+
+% OPTIONAL: Alert blocks in magenta instead of purple
+%\setbeamercolor{block title alerted}{bg=lightmagenta,fg=templatetext}
+%\setbeamercolor{block body alerted}{bg=backgroundmagenta}
+% OPTIONAL: Negative highlights in magenta instead of purple
+%\renewcommand{\bad}[1]{\magenta{#1}}

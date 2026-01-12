@@ -1,0 +1,154 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[\tnreason]{
+	\techwschapterone \\
+	{\huge Implementations in \tnreason{}}
+}
+
+\begin{document}
+
+{\frame[plain]{\titlepage}}
+
+
+\begin{frame}{Demonstration package in python: \tnreason{}}
+
+\begin{center}
+	\emph{tnreason} = \emph{T}ensor-\emph{N}etwork \emph{Reason}ing
+\end{center}
+
+Functionality:
+\begin{itemize}
+	\item Inference of Factored Systems based on logical and probabilistic concepts
+	\item Neuro-Symbolic Reasoning Methods based on parametrized logics
+\end{itemize}
+
+%Submodules:
+%\begin{itemize}
+%	\item \textbf{engine}: Representation and contraction of Tensor Networks
+%	\item \textbf{encoding}: Creation of Tensor Networks based on logics
+%	\item \textbf{algorithms}: Tensor Network algorithms applied in reasoning
+%	\item \textbf{knowledge}: Deductive and inductive reasoning given knowledge and data
+%\end{itemize}
+
+\tnreason is structured in four subpackages and three layers
+\begin{itemize}
+	\item Layer 1: Storage and numerical manipulations, by subpackage \spengine, "Tensor Networks" -> building "tn" of \tnreason
+	\item Layer 2: Specification of workload, subpackage \sprepresentation{} specific for storage, subpackage \spreasoning{} specific for manipulations
+	\item Layer 3: Applications in reasoning, by subpackage \spapplication{}, "Reasoning" -> building "reason" of \tnreason
+\end{itemize}
+
+
+%Demonstrations in Colab:
+%\href{https://drive.google.com/drive/folders/1CpeWP2TTFKjjcvwDgxOrq-baZ7nyCpI1}{TN Reason Demos}
+
+\end{frame}
+
+
+
+\begin{frame}{Implementation in \tnreason: \\
+Subpackage \spengine}
+
+The subpackage \spengine is dedicated to tensor networks and contractions.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.27]
+
+\draw[dashed] (-30,15) -- (12,15) -- (12,-3) -- (-30,-3) -- (-30,15);
+
+\draw (-10,10) rectangle (10,14); 
+\node [anchor=center] at (0,12) {\spapplication{}};
+
+\node [anchor=center] at (-20,12) {\layerthreespec};
+\draw[dashed] (-30,9) -- (12,9);
+\node [anchor=center] at (-20,6) {\layertwospec};
+
+\draw[->] (6,10) -- (6,8);
+\draw (2,4) rectangle (10,8); 
+\node [anchor=center] at (6,6) {\spreasoning{}};
+\draw[->] (6,4) -- (6,2);
+
+\draw[->] (-6,10) -- (-6,8);
+\draw (-10,4) rectangle (-2,8); 
+\node [anchor=center] at (-6,6) {\sprepresentation{}};
+\draw[->] (-6,4) -- (-6,2);
+
+\draw[dashed] (-30,3) -- (12,3);
+\node [anchor=center,blue] at (-20,0) {\layeronespec};
+
+\draw[blue] (-10,-2) rectangle (10,2); 
+\node [anchor=center,blue] at (0,0) {\spengine};
+\end{tikzpicture}
+\end{center}
+
+
+\end{frame}
+
+
+
+\begin{frame}{Subpackage \spengine : Cores}
+
+Each Tensor core has attributes
+\begin{itemize}
+	\item \emph{values} (array-like): storing the value of the coordinates
+	\item \emph{colors} (list of str): specifying the name of the variables represented by its axes
+	\item \emph{name} (str): to distinguish from other cores
+\end{itemize} 
+The implemented core types differ in the values argument.
+Cores are instantiated by
+\begin{centeredscript}
+	\emph{engine.getCore(coreType)(coreValues, coreColors, coreName)}
+\end{centeredscript}
+
+\end{frame}
+
+
+\begin{frame}{Subpackage \spengine : Contractions}
+
+Reflected in the notation
+	\[ \contractionof{\tnetof{\graph}}{\nodes} \]
+a contraction is defined by
+\begin{itemize}
+	\item Tensor Network $\tnetof{\graph}$, i.e. a dictionary of tensor cores
+	\item Open Variables $\nodes$
+\end{itemize}
+Contraction calls are done by
+\begin{centeredscript}
+	\emph{engine.contract(contractionMethod, coreDict, openColors)}
+\end{centeredscript}
+Where
+\begin{itemize}
+	\item \emph{contractionMethod:} str, chooses one of the contraction providers
+	\item \emph{coreDict}: Dictionary of TensorCores (of the above formats), representing the Tensor Network $\tnetof{\graph}$ 
+	\item \emph{openColors}: List $\nodes$ of str, each str identifying a color, that is a variable to be left open in the contraction
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{Installation}
+
+\tnreason is maintained on github:
+\begin{center}
+	\href{https://github.com/EnexaProject/enexa-tensor-reasoning}{https://github.com/EnexaProject/enexa-tensor-reasoning}
+\end{center}
+
+Installation using pip:
+\begin{centeredscript}
+	!pip install tnreason
+\end{centeredscript}
+
+
+
+
+
+\end{frame}
+
+\end{document}
+
+

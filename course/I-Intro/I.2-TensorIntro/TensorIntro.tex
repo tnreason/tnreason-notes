@@ -1,0 +1,122 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[Formalization of Tensors]{
+	\techwschapterone \\
+	{\huge Formalization of Tensors}
+}
+
+\begin{document}
+
+{\frame[plain]{\titlepage}}
+
+
+\begin{frame}{Motivation: Factored Systems}
+
+We think of tensors as an alignment of real numbers, where each axis is one direction of the alignment.
+\begin{itemize}
+	\item \emph{Vectors} (Order-1 Tensors): Alignment in one direction
+	\item \emph{Matrices} (Order-2 Tensors): Alignment in two directions
+	\item Order-3 Tensors: Alignment in three directions, for example:
+
+\begin{align*}
+	\onehotmapof{(0,2,1)} 
+	= \onehotmapof{0} \otimes \onehotmapof{2} \otimes \onehotmapof{1}=
+	\begin{bmatrix}
+		0 \\ 0 \\ 1 \\ 0
+	\end{bmatrix}
+	\otimes 	
+	\begin{bmatrix}
+		1 & 0 & 0 & 0
+	\end{bmatrix}
+	\otimes 
+	\begin{matrix}
+	& & & 0 ] \\ 
+	& & 0 & \\
+	& 1 & & \\
+	[0 & & &  
+	\end{matrix}
+\end{align*}
+\end{itemize}
+
+\begin{center}
+	\bf When encoding more than three variables we need a more abstract graphical notation!
+\end{center}
+
+\end{frame}
+
+
+
+\begin{frame}{Formalization: Tensors are Maps}
+
+\begin{definition}[Tensor]
+	 A \emph{tensor} of order $\atomorder\in\nn$ and leg dimensions $\{\catdimof{\atomenumerator} \, : \, \atomenumeratorin \}$ is a map
+		\[ \hypercore : \facstates \rightarrow \rr \, . \]
+	\begin{itemize}
+		\item We refer to $\hypercore(\catindices)\in\rr$ by the \emph{coordinate} of $\hypercore$ with the indices $\catindices$.
+		\item By scalar multiplation and addition of maps, tensors build linear spaces called \emph{tensor spaces} 
+			\[ \hypercore \in \facspace \, . \]
+	\end{itemize}
+\end{definition}
+
+\end{frame}
+
+
+
+\begin{frame}{Example}
+
+\textbf{Example:} The one-hot encoding of the state ${(0,2,1)}$ is the tensor 
+	\[ \onehotmapof{(0,2,1)} \in  \bigotimes_{\atomenumerator\in[3]}\rr^4  \]
+	with the coordinates 
+\begin{align*}
+	\onehotmapof{(0,2,1)}(\catindexof{0},\catindexof{1},\catindexof{2}) = \begin{cases}
+	1 & \text{  if  } \catindexof{0} = 0, \,\, \catindexof{1} = 2 \text{  and  } \catindexof{2} = 1 \\
+	0 & \text{ else}
+	\end{cases}
+\end{align*}
+
+\end{frame}
+
+
+
+\begin{frame}{Depiction of Tensors}
+	We will depict 
+	\begin{itemize}
+		\item \emph{tensors by blocks}
+		\item affected \emph{categorical variables by open legs}
+	\end{itemize}
+	For example, given the categorical variables
+		\[ \{\catvariableof{\atomenumerator} \, : \, \atomenumeratorin \} \]
+	with respective dimensions $\catdimof{\atomenumerator}\in\mathbb{N}$ we depict a tensor
+		\[ \hypercore \in \bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} \]
+	as 
+	\begin{center}
+		\input{./tikz_pics/tensor.tex}
+	\end{center}
+\end{frame}
+
+
+\begin{frame}{Example: Depiction of Vectors}
+	For example, a vector
+		\[ V \in \rr^{m}\]
+ 	with an index variable $\catvariable\in[m]$ is depicted by a block with a single open leg
+	\begin{center}
+		\input{./tikz_pics/vector.tex}
+	\end{center}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

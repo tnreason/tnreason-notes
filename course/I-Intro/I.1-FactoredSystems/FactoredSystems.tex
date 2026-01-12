@@ -1,0 +1,414 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[One-hot encodings]{
+	\techwschapterone \\
+	{\huge One-hot encoding of Factored Systems}
+}
+
+\begin{document}
+
+{\frame[plain]{\titlepage}}
+
+
+\begin{frame}{Systems of Categorical Variables}
+
+\begin{block}{Categorical Variables}
+	Categorical variables $\catvariable$ are assigned by elements of finite sets, which we enumerate by
+		\[\catvariable \in \{0,\ldots,\catdim-1 \} = [\catdim]\]
+\end{block}
+
+In artificial intelligence we distinguish between 
+\begin{itemize}
+	\item \emph{Atomic} Systems: Described by a single categorical variable
+	\item \emph{Factored} Systems: Described by a fixed set of categorical variables
+	\item \emph{Structured} Systems: Described by a varying set of categorical variables
+\end{itemize}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Example: Atomic System of a Student}
+
+\begin{block}{Example: Semester Variable}
+	We describe a student $s$ by the semester $\catvariableof{s}$ the student is in.
+	We can choose (given a four semester program)
+		\[ \catvariableof{s} \in \{0,1,2,3\} = [4] \, . \]
+\end{block}
+
+A single student is an \emph{atomic} system, described by the semester variable.
+
+\medskip
+
+When knowing that $\catvariableof{s}=2$, our knowledge is stored by the real number
+	\[ 2 \in \rr \, .\]
+But how to store the knowledge, that a student
+\begin{itemize}
+	\item is either in the semester $0$ or $2$ (since we have a summer semester)?
+	\item is with $80\%$ in semester $2$ and with $20\%$ in semester $0$ (since electives are typically attended in semester $2$)?
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Single numbers are not enough!}
+
+But how to store the knowledge, that a student
+\begin{itemize}
+	\item is either in the semester $0$ or $2$ (since we have a summer semester)? \\
+		\emph{Just summing both representations would result in
+			\[ 0 + 2 = 2 \]
+		and certainly does not help us.}
+	\item is with $80\%$ in semester $2$ and with $20\%$ in semester $0$ (since electives are typically attended in semester $2$)? \\
+		\emph{When just representing our knowledge by the average
+			\[ 2\cdot 80\% + 0 \cdot 20\% = 1.6 \]
+		we do not capture everything.}
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{One-hot encodings: \\
+ Mapping Categorical Variables to Vectors}
+	Arranged collections of $\catdim$ numbers are richer: \emph{Vectors}, which are elements of the space
+		\[ \rr^{\catdim} \, . \]
+	\begin{definition}[One-hot Encoding]
+		The one-hot encoding of a categorical variable is a map
+			\[ \onehotmap : \{0,1,\ldots,\catdim-1\} \rightarrow \rr^{\catdim}\]
+		defined by mapping $\catindexofin{}$ to basis vectors
+		\begin{align*}
+			\onehotmap \left( \catindex \right) = 
+			\onehotmapof{\catindex} = \begin{bmatrix}
+			0 & \cdots & 0 & 1 &  0 & \cdots & 0
+			\end{bmatrix} \, ,
+		\end{align*}
+		where the $1$ is at the $\catindex$th coordinate of the vector.
+	\end{definition}
+\end{frame}
+
+
+
+\begin{frame}{Example: System of Students}
+
+\begin{block}{Example: Semester Variable}
+	We describe each student $s$ by the semester $\catvariableof{s}$ they are in.
+	We can choose
+		\[ \catvariableof{s} \in \{0,1,2,3\} = [4] \, . \]
+\end{block}
+
+The one-hot encoding of the semester variable is one of the four basis vectors 
+\begin{align}
+	\onehotmapof{\catindexof{s}} \in \left\{
+	\begin{bmatrix}
+		1 \\ 0 \\ 0 \\ 0
+	\end{bmatrix},
+	\begin{bmatrix}
+		0 \\ 1 \\ 0 \\ 0
+	\end{bmatrix},
+	\begin{bmatrix}
+		0 \\ 0 \\ 1 \\ 0
+	\end{bmatrix},
+	\begin{bmatrix}
+		0 \\ 0 \\ 0 \\ 1
+	\end{bmatrix}
+\right\} \, . 
+\end{align}
+
+%A single student is interpreted as an \emph{atomic system}, described by a single variable.
+
+\end{frame}
+
+
+
+\begin{frame}{Calculus of one-hot encodings}
+
+\begin{block}{Advantage of one-hot encodings}
+	Knowledge about the system can be stored in the coordinates.
+\end{block}
+
+\only<2-3>{
+\textbf{Back to the example:} Store the knowledge, that a student is either in the semester $0$ or $2$! \\
+}
+\only<3>{
+\emph{Just sum up the one-hot encodings of the states
+\begin{align*}
+	\onehotmapof{0} + \onehotmapof{2} = &  
+	\begin{bmatrix}
+		1 & 0 & 0 & 0 
+	\end{bmatrix} 
+	+
+	\begin{bmatrix}
+		0 & 0 & 1 & 0 
+	\end{bmatrix}  \\
+	= & 
+	\begin{bmatrix}
+		1 & 0 & 1 & 0 
+	\end{bmatrix} \, .
+\end{align*}
+To retrieve the possible semesters, we simply look at the $1$ coordinates.
+}
+}
+
+
+\only<4-5>{
+\textbf{Back to the example:} Store the knowledge, that a student is with $80\%$ probability in semester $2$ and with $20\%$ probability in semester $0$! \\
+}
+\only<5>{
+\emph{Build the weighted sum of one-hot encodings 
+\begin{align*}
+	20\% \cdot \onehotmapof{0} + 80\% \cdot \onehotmapof{2} = &  
+	\begin{bmatrix}
+		0.2 & 0 & 0 & 0 
+	\end{bmatrix} 
+	+
+	\begin{bmatrix}
+		0 & 0 & 0.8 & 0 
+	\end{bmatrix}  \\
+	= & 
+	\begin{bmatrix}
+		0.2 & 0 & 0.8 & 0 
+	\end{bmatrix} \, .
+\end{align*}
+To retrieve the probability of the semester, we simply look at the respective coordinates.
+}
+}
+
+\end{frame}
+
+
+
+\begin{frame}{More general: Representation of any Probability Distribution}
+
+	\begin{example}
+		Let $\probtensor_\catindex \in [0,1]$ express for $\catindexofin{}$ the probability that the variable $\catvariable$ is in state $\catindex$.
+		In order to describe a probability distribution we need 
+			\[ \sum_{\catindex\in[\catdim]}\probtensor_\catindex=1 \, .  \]
+	\end{example}
+	%for $\catindex\in[\catdim]$ with $\sum_{\catindex\in[\catdim]}\probtensor_\catindex=1$ with the interpretation that $\probtensor_\catindex$ is the probability of a system being in state $\catindex$. 
+	We can represent our knowledge of the system by storing $\probtensor_\catindex$ in the $\catindex$th coordinate of a vector $\probtensor\in\rr^{\catdim}$ defined as
+	\[ \probtensor = \sum_{\catindex\in[\catdim]} \probtensor_\catindex \cdot \onehotmapof{\catindex} =
+		\begin{bmatrix}
+		\probtensor_0 & \probtensor_1 & \cdots & \probtensor_{\catdim-1}
+		\end{bmatrix} \, . 
+	\]
+\end{frame}
+
+
+
+
+\begin{frame}{Example of a Factored System: Collection of Students}
+
+\begin{block}{Example: Students in a class}
+	We now have a collection of $\atomorder$ students attending a class and want to represent the semester of each.
+	Each student enumerated by $\atomenumeratorin$ is represented by 
+		\[ \catvariableof{\atomenumerator} \in \{0,1,2,3\} = [4] \, . \]
+\end{block}
+
+We assume  
+\begin{itemize}
+	\item a fixed number of students 
+	\item knowledge about all students
+\end{itemize}
+
+All students together are an example of a \emph{factored system}, described by a fixed collection of semester variables.
+
+\end{frame}
+
+
+
+\begin{frame}{How to represent a Factored Systems}
+
+\begin{block}{Exponential growth of the number of states}
+	The number of possible states grows exponentially: 
+	Adding a student to $\atomorder$ students results in increase of the number of states from $4^{\atomorder}$ to 
+		\[ 4^{\atomorder}\cdot 4 = 4^{\atomorder+1} \, . \]
+\end{block}
+
+We can always just enumerate all states by the tuples $(\catindices)$ and use the atomic encoding
+	\[ \onehotmap : [4^\atomorder] \rightarrow \rr^{\left(4^{\atomorder}\right)} \]
+but we will end up with large amounts of numbers which are hard to store and process!
+
+\begin{center}
+	\bf How can we avoid dealing with these large amounts of numbers?
+\end{center}
+
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{One-hot encoding of two students: Matrices}
+
+\textbf{Example:} Student $0$ is in semester $\catvariableof{0}=2$ and student $2$ in semester $\catvariableof{2}=0$.
+Then we have
+\begin{align}
+	\onehotmapof{(0,2)} 
+	=
+	\begin{bmatrix}
+		0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 \\
+		1 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 
+	\end{bmatrix} \in \rr^{16}\, . 
+\end{align}
+
+\begin{block}{Observation: Matrix Structure}
+	When enumerating states by tuples, there is a matrix structure to exploit!
+\end{block}
+
+\end{frame}
+
+
+
+
+%\begin{frame}{Tensor Product of one-hot encodings}
+%
+%	\begin{definition}
+%		The tensor product of two vectors $V\in\rr^{m_1}$ and $W\in\rr^{m_2}$ is the matrix
+%			\[ (V \otimes W) \in \rr^{m_1} \otimes \rr^{m_2} \cong \rr^{m_1\times m_2} \]
+%		which is coordinatewise defined by the product of real numbers
+%			\[ (V \otimes W)_{ij} = V_i \cdot W_j \, . \]
+%	\end{definition}
+%
+%	\begin{definition}
+%		The one-hot encoding of the state $(\catindexof{1},\catindexof{2})$ of two categorical variables $\catvariableof{1},\catvariableof{2}$ is the \emph{tensor product}
+%		\begin{align}
+%			\onehotmapof{\catindexof{1},\catindexof{2}} = \onehotmapof{\catindexof{1}} \otimes \onehotmapof{\catindexof{2}} \, .
+%		\end{align}
+%	\end{definition}
+%\end{frame}
+
+
+
+\begin{frame}{One-hot encoding of two students: Matrices}
+
+\textbf{Example:} Student $0$ is in semester $\catvariableof{0}=2$ and student $2$ in semester $\catvariableof{2}=0$.
+Then we have
+\begin{align}
+	\onehotmapof{(0,2)} 
+	= \onehotmapof{0} \otimes \onehotmapof{2} =
+	\begin{bmatrix}
+		0 \\ 0 \\ 1 \\ 0
+	\end{bmatrix}
+	\otimes 	
+	\begin{bmatrix}
+		1 & 0 & 0 & 0
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 \\
+		1 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 
+	\end{bmatrix} \, . 
+\end{align}
+
+\begin{block}{Observation: Storage efficiency}
+	To store the matrix $\onehotmapof{0,2}$ we need $16$ numbers, to store $\onehotmapof{0}$ and $\onehotmapof{2}$ just $8$ numbers.
+	This is a simple example of a \emph{tensor network decomposition}.
+\end{block}
+
+\end{frame}
+
+
+
+%\begin{frame}{One-hot encoding of multiple students: Tensors}
+%
+%	\begin{definition}[Tensor Products]
+%		Let there be vectors $V^{(\atomenumerator)}\in\rr^{\catdimof{\atomenumerator}}$ for $\atomenumerator$.
+%		We define their tensor product 
+%			\[ \bigotimes_{\atomenumeratorin} V^{(\atomenumerator)} \in \bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} \cong  \rr^{\prod_{\atomenumeratorin} \catdimof{\atomenumerator}} \]
+%		coordinatewise by
+%			\[ \left( \bigotimes_{\atomenumeratorin} V^{(\atomenumerator)} \right)_{\catindices}  = \prod_{\atomenumeratorin} V^{(\atomenumerator)}_{\catindexof{\atomenumerator}} \, . \]
+%	\end{definition}
+%
+%\end{frame}
+
+
+
+
+\begin{frame}{One-hot encoding of multiple students: Tensors}
+
+	\begin{definition}[One-hot encoding of Factored Systems]
+		The one-hot encoding of a factored systems with variables $\{\catvariableof{\atomenumerator} \, : \, \atomenumeratorin \}$ in state $\catindices$ is the tensor product 
+ 		\begin{align}
+			\onehotmapof{(\catindices)} = \bigotimes_{\atomenumeratorin} \onehotmapof{\catindexof{\atomenumerator}} 
+		\end{align}
+		of the one-hot encodings of the variables.
+	\end{definition}
+	
+	
+\end{frame}
+
+
+\begin{frame}{Visualization of Tensors}
+
+We think of tensors as an alignment of real numbers, where each axis is one direction of the alignment.
+\begin{itemize}
+	\item \emph{Vectors} (Order-1 Tensors): Alignment in one direction
+	\item \emph{Matrices} (Order-2 Tensors): Alignment in two directions
+	\item Order-3 Tensors: Alignment in three directions, for example:
+
+\begin{align*}
+	\onehotmapof{(0,2,1)} 
+	= \onehotmapof{0} \otimes \onehotmapof{2} \otimes \onehotmapof{1}=
+	\begin{bmatrix}
+		0 \\ 0 \\ 1 \\ 0
+	\end{bmatrix}
+	\otimes 	
+	\begin{bmatrix}
+		1 & 0 & 0 & 0
+	\end{bmatrix}
+	\otimes 
+	\begin{matrix}
+	& & & 0 ] \\ 
+	& & 0 & \\
+	& 1 & & \\
+	[0 & & &  
+	\end{matrix}
+\end{align*}
+\end{itemize}
+
+\begin{center}
+	\bf When encoding more than three variables we need a more abstract graphical notation!
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Outlook}
+
+Let us think of more general situations
+\begin{itemize}
+	\item number of students is differing over time
+	\item students have specific properties, semester being just one
+\end{itemize}
+
+\medskip
+
+Students are seen as objects of the system, which number is differing from state to state.
+This is an example of a \emph{structured system}.
+
+\medskip
+
+\begin{block}{Focus of this course}
+	We will focus on \emph{factored systems} in this course, since they can be represented by tensors of fixed orders.
+\end{block}
+
+%\medskip
+%Similar to object-oriented programming!
+
+\end{frame}
+
+
+
+
+
+\end{document}

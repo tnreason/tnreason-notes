@@ -1,0 +1,18 @@
+% Usage:  \useinnertheme{claw}
+% Source: https://github.com/adibaba/templates
+% Author: Adrian Wilke
+% Date:   2021-03-08
+
+% TOC
+\setbeamertemplate{section in toc}{%
+\hbox{\raise1.4pt\hbox{\donotcoloroutermaths\small$\blacktriangleright$}~~\inserttocsection}
+}
+\setbeamertemplate{subsection in toc}{%
+~~~~\hbox{\raise1.4pt\hbox{\donotcoloroutermaths\small$\blacktriangleright$}~~\inserttocsubsection}
+}
+
+% Itemize symbol
+\setbeamertemplate{itemize items}{\raise1.4pt\hbox{\donotcoloroutermaths\small$\blacktriangleright$}}
+
+% References
+\setbeamertemplate{bibliography item}[text]

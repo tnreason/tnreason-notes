@@ -1,0 +1,425 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[Models for KGs]{
+	\techwschapterfour \\
+	{\huge Statistical Models of Knowledge Graphs}
+}
+\usepackage{algorithmic}
+\begin{document}
+
+{\frame[plain]{\titlepage}}
+
+
+
+%% From THWS Kolloquium
+\newcommand{\stanspace}{\hspace{0.5cm}\\}
+\newcommand{\urisize}{\small}
+\newcommand{\rdfscolor}{magenta}
+\newcommand{\rdfcolor}{red}
+\newcommand{\owlcolor}{blue}
+\newcommand{\rulecolor}{black!40!green}
+\newcommand{\eqspace}{\quad\quad\quad}
+
+
+
+
+
+
+
+\begin{frame}{Knowledge Graphs: Data stored in Graphs}
+
+Resource Description Framework (RDF):
+\begin{itemize}
+\item Data is stored in form of triples (Subject,Predicate,Object)
+\only<2-3>{
+\item All entities are described by Uniform Resource Identifiers (URI), using prefix notation (e.g.: loc)
+}
+\end{itemize}
+\begin{center}
+\begin{tikzpicture}[thick,scale=0.8]
+	\draw (0,0) ellipse (2 and 1) node[above] {\textbf{Subject:}} 
+							node[below] {\only<2-3>{loc:}THWS};
+	\draw[->] (2,0) -- (6,0)  node[midway,above] {\textbf{Predicate:}} node[midway,below] {\only<2-3>{loc:}hasCampusIn};
+	\draw (8,0) ellipse (2 and 1) node[above] {\textbf{Object:}} 
+							node[below] {\only<2-3>{loc:}Schweinfurt};
+\end{tikzpicture}
+\end{center}
+
+\only<3>{
+Representation in Turtle syntax:\\
+\medskip
+$\mathrm{@prefix} \quad   \mathrm{loc}$:$ \quad  \mathrm{<www.locationdemo.de/location/ontology \# >} \quad  . $  \\
+\medskip
+$\mathrm{loc}$:$\mathrm{THWS} \quad \mathrm{loc}$:$\mathrm{hasCampusIn} \quad  \mathrm{loc}$:$\mathrm{Schweinfurt} \quad .$
+}
+
+\end{frame}
+
+
+\begin{frame}{RDF, RDFS and OWL: Relation to Formal Logic}
+
+%}-\mathrm{
+$\mathrm{@prefix} \quad \mathrm{rdf:} \quad <\text{http://www.w3.org/1999/02/22-rdf-syntax-ns\#}>  .$
+$\mathrm{@prefix} \quad \mathrm{rdfs:} \quad <\text{http://www.w3.org/2000/01/rdf-schema\#}> .$
+$\mathrm{@prefix} \quad \mathrm{owl:} \quad <\text{http://www.w3.org/2002/07/owl\# }>.$\\
+
+\stanspace
+
+\textcolor{\rdfcolor}{RDF} and \textcolor{\rdfscolor}{RDF Schema (RDFS)}:
+\begin{itemize}
+	\item {\bf Class memberships:} $\mathrm{City(Schweinfurt)}$ \\
+		$\eqspace \mathrm{loc:Schweinfurt} \quad \textcolor{\rdfcolor}{\mathrm{rdf:type}}  \quad \mathrm{{loc:City}}  \quad .$
+	\item {\bf Subclass hierarchies:} $\forall x : \mathrm{City} (x) \rightarrow \mathrm{Location}(x)$ \\
+		$\eqspace \mathrm{loc:City} \quad \textcolor{\rdfscolor}{\mathrm{rdfs:subClassOf}}  \quad \mathrm{loc:Location} \quad . $
+\end{itemize}
+
+\stanspace
+
+\textcolor{\owlcolor}{Web Ontology Language (OWL)}
+\begin{itemize}
+	\item {\bf Classes:} $\mathrm{Class(City)}$ \\
+		$ \eqspace \mathrm{loc:City} \quad \textcolor{\rdfcolor}{\mathrm{rdf:type}}  \quad \textcolor{\owlcolor}{\mathrm{owl:Class}}  \quad . $
+	\item {\bf Object properties:} $\mathrm{Property(hasCampusIn)}$ \\
+		$ \eqspace \mathrm{loc:hasCampusIn} \quad \textcolor{\rdfcolor}{\mathrm{rdf:type}} \quad \textcolor{\owlcolor}{\mathrm{owl:ObjectProperty}} \quad . $
+\end{itemize}
+%\end{spacing}
+\end{frame}
+
+
+\begin{frame}{Inference Example: \\
+RDFS Subclass Relation}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.55,thick]
+
+	\draw (8,0) ellipse (2 and 1) node[] {\urisize loc:Schweinfurt};	
+	\textcolor{\rdfcolor}{
+	\draw[->] (10,0) -- (14,0)  node[midway,above] {\urisize \textcolor{\rdfcolor}{rdf:type}};}
+	\draw (16,0) ellipse (2 and 1) node[] {loc:City};
+	\textcolor{\rdfcolor}{
+	\draw[->] (18,0) -- (22,0)  node[midway,above]  {\urisize rdf:type};
+	} 
+	\textcolor{\owlcolor}{
+	\draw (24,0) ellipse (2 and 1) node[] {\urisize owl:Class};	}
+
+	\textcolor{\rdfscolor}{
+	\draw[->] (16,-1) -- (16,-2)  node[midway,right] {\urisize rdfs:subClassOf};}
+	\draw (16,-3) ellipse (2 and 1) node[] {\urisize loc:Location};	
+	\textcolor{\rdfcolor}{
+	\draw[->] (18,-3) -- (24,-1)  node[midway,right]  {\urisize rdf:type};
+	} 
+	
+	\only<3>{
+	\textcolor{\rulecolor}{
+	\draw[thick,->] (8,-1) -- (14,-3) node[midway,left] {\urisize rdf:type};
+	}}
+\end{tikzpicture}
+\end{center}
+
+\visible<2->{
+\textcolor{\rulecolor}{
+We apply the built-in rule of RDFS: \\
+\stanspace 
+$ \forall x,y,z: \quad \mathrm{rdf}$:$\mathrm{type}(x,y) \cap \mathrm{rdfs}$:$\mathrm{subClassOf}(y,z) \rightarrow  \mathrm{rdf}$:$\mathrm{type}(x,z)  $
+}
+}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Inference Example: \\
+OWL Role Inclusion Axiom}
+
+
+\begin{center}
+\begin{tikzpicture}[scale=0.55,thick]
+	 \textcolor{\rdfcolor}{
+	\draw[->] (0,1) -- (0,2)  node[midway,right] {\urisize \textcolor{\rdfcolor}{rdf:type}};}
+	\draw (0,3) ellipse (2 and 1) node[] {\urisize loc:University};	
+	
+	\draw (0,0) ellipse (2 and 1) node[] {\urisize loc:THWS};
+	\draw[->] (2,0) -- (6,0)  node[midway,above] {\urisize loc:hasCampusIn};
+	\draw (8,0) ellipse (2 and 1) node[] {\urisize loc:Schweinfurt};	
+	 \textcolor{\rdfcolor}{
+	\draw[->] (10,0) -- (14,0)  node[midway,above] {\urisize \textcolor{\rdfcolor}{rdf:type}};}
+	\draw (16,0) ellipse (2 and 1) node[] {loc:Location};
+	
+	\draw[->] (8,-1) -- (8,-2)  node[midway,right] {\urisize loc:locatedIn};
+	\draw (8,-3) ellipse (2 and 1) node[] {\urisize loc:Germany};	
+	 \textcolor{\rdfcolor}{
+	\draw[->] (10,-3) -- (16,-1)  node[midway,right] {\urisize rdf:type};}
+	\textcolor{\owlcolor}{
+	\draw (8,3) ellipse (2 and 1) node[] {\urisize owl:Class};	}
+	
+	 \textcolor{\rdfcolor}{
+	\draw[->] (2,3) -- (6,3)  node[midway,above]  {\urisize rdf:type};
+	\draw[->] (16,1) -- (10,3)  node[midway,above]  {\urisize rdf:type};
+	} 
+	
+	\only<3>{
+	\textcolor{\rulecolor}{
+	\draw[thick,->] (0,-1) -- (6,-3) node[midway,left] {\urisize loc:hasCampusIn};
+	}
+	}
+\end{tikzpicture}
+\end{center}
+
+\visible<2->{
+\textcolor{\rulecolor}{
+Let us infer using a role inclusion axiom defined by hand:
+\[ \forall x,y,z: \left ( \mathrm{hasCampusIn}(x,y) \cap \mathrm{locatedIn}(y,z) \right) \rightarrow \mathrm{hasCampusIn}(x,z) \]
+expressed in owl as: \\
+$  \quad  \quad \quad \mathrm{loc}$:$\mathrm{hasCampusIn} \,\,  \mathrm{owl}$:$\mathrm{propertyChainAxiom} $ \\
+$  \quad \quad\quad \quad \quad \quad\quad \quad \quad \quad\quad \quad \quad \quad \quad\quad  (\mathrm{loc}$:$\mathrm{hasCampusIn} \,\, \mathrm{loc}$:$\mathrm{locatedIn} )\,\,  . $
+%\begin{align*}
+% 	\mathrm{loc:hasCampusIn} \quad & \mathrm{owl:propertyChainAxiom} \\
+% & \quad (\mathrm{loc:hasCampusIn} \quad \mathrm{loc:locatedIn} ) \quad . 
+%\end{align*}
+}
+}
+
+\end{frame}
+
+
+\begin{frame}{Demonstration: Knowledge Graph for THWS}
+
+\begin{itemize}
+	\item Link to Protege Project (can be downloaded in turtle format): \\
+	\href{https://webprotege.stanford.edu/\#projects/db1f026b-b34c-4955-8cd0-d5dc167098dc/edit/}{https://webprotege.stanford.edu/}
+	\item Link to WebVOWL (need to upload ontology in turtle format):
+		\href{https://service.tib.eu/webvowl/}{https://service.tib.eu/webvowl/}
+	\item Link to Colab Notebook:
+	 \href{https://drive.google.com/file/d/1mah8aZj2VXjYxT6q6HtBdUi89tjP9RKD/view?usp=sharing}{drive.google.com/}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}{Limitation of OWL Expressivity}
+
+	\textbf{Example:} Estimate whether a student lives at her parents
+	\begin{align*}
+	 	\forall x,y,z: \big(
+		\mathrm{studiesAt}(x,y) \cap & \mathrm{hasCampusIn}(y,z) \cap \mathrm{isBornIn}(x,z) \big) \\
+		 & \rightarrow \mathrm{livesAtParents}(x) 
+	\end{align*}
+	
+	This amounts to looking for patterns like this:
+	\begin{center}
+	\begin{tikzpicture}[scale=0.55,thick]
+	
+		\draw (0,0) ellipse (2 and 1) node[] {\urisize loc:Alice};
+		\draw[->] (2,0) -- (6,0)  node[midway,above] {\urisize loc:studiesAt};
+		\draw (8,0) ellipse (2 and 1) node[] {\urisize loc:THWS};	
+	
+		\draw[->] (8,-1) -- (8,-2)  node[midway,right] {\urisize loc:hasCampusIn};
+		\draw (8,-3) ellipse (2 and 1) node[] {\urisize loc:Schweinfurt};	
+
+		\draw[thick,->] (0,-1) -- (6,-3) node[midway,left] {\urisize loc:isBornIn};
+	\end{tikzpicture}
+	\end{center}
+	
+	\textbf{Limitation of OWL (and other Description Logics)}
+	\begin{itemize}
+		\item Cannot represent the formula without enlarging the ontology
+		\item Uncertainties are not supported in classical logics
+	\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{$\sparql$ Queries }
+	
+The formula
+	\begin{align*}
+	 	\forall x,y,z: \big(
+		\mathrm{studiesAt}(x,y) \cap & \mathrm{hasCampusIn}(y,z) \cap \mathrm{isBornIn}(x,z) \big) \\
+		 & \rightarrow \mathrm{livesAtParents}(x) 
+	\end{align*}
+can be materialized by the $\sparql$ Query	
+\begin{centeredscript}
+INSERT\{ \\
+\hspace{2cm} ?x  rdf:type  loc:livesAtParents . \\
+\hspace{1cm} \} \\
+\hspace{1cm}  WHERE\{ \\
+\hspace{2cm} ?x  loc:studiesAt  ?y .\\
+\hspace{2cm} ?y  loc:hasCampusIn ?z .\\
+\hspace{2cm} ?x  loc:isBornIn  ?z .\\ 
+ \hspace{1cm} \}
+\end{centeredscript}
+	
+
+\end{frame}
+
+
+
+\begin{frame}{Grounding Tensors}
+
+Towards expressing $\sparql$ Queries in Tensor Networks
+
+\begin{definition}[Grounding Tensor]
+	Given a specific world $\worldvariables$, with a set of objects $\variableset$, the grounding of a formula $\exformula$ with $\individualorder$ arguments is the tensor
+		\[ \groundingof{\exformula} :  \bigtimes_{\variableenumeratorin} \variableset \rightarrow [2] \]
+	defined as
+		\[ \groundingof{\exformula} \left(\individuals \right) = 
+			\begin{cases}
+				1 \quad \text{if $\exformula\left(\individuals\right)=1$ given the world $\worldvariables$}  \\
+				0 \quad \text{else}
+			\end{cases} \, . 
+		\]
+\end{definition}
+
+\end{frame}
+
+
+
+\begin{frame}{Knowledge Graphs as grounding tensors}
+
+Knowledge Graphs $\kg$ are worlds $\worldvariables$, which are fully specified by the $\rdf$ formula.
+Having a set of variables $\variableset$ we represent a Knowledge Graph $\kg$ by the tensor
+\begin{align*}
+	\kggroundingof{\rdf} : \variableset \times \variableset \times \variableset \rightarrow [2]
+\end{align*}
+where
+\begin{align*}
+	\kggroundingof{\rdf}(\variableof{s}, \variableof{p}, \variableof{o}) =
+	\begin{cases}
+	1 \quad & \text{if triple $\braket{\variableof{s}, \variableof{p}, \variableof{o}}$ is in Knowledge Graph $\kg$} \\
+	0  \quad & \text{else}
+	\end{cases} \, .
+\end{align*} 
+
+
+\begin{center}
+\input{./fol_models/kg_formula_tensor}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Basic Graph Patterns}
+
+Basic Graph Patterns are restrictions of the $\rdf$ formula on specific arguments, for example
+\begin{itemize}
+	\item Unary triple pattern with one variable, representing a formula with a single projection variable.
+	 	For example: $\exunarytriple$ 
+	\item Binary triple pattern with two variables, representing a formula with two projection variables.
+		For example: $\exbinarytriple$ 
+\end{itemize}
+
+Their grounding tensors are slices of the $\rdf$
+
+\begin{center}
+\input{./fol_models/kg_triple_patterns}
+\end{center}
+
+\end{frame}
+
+
+
+\begin{frame}{Statistical Models of Knowledge Graphs}
+	
+	Limitation of Knowledge Graphs:
+	\begin{itemize}
+		\item Handling of \emph{Uncertainty}: How to reason given uncertain knowledge?
+		\item \emph{Expressivity} of Logics: Which relations can be modelled?
+	\end{itemize}
+	
+	\begin{columns}
+		\column{0.35 \linewidth}
+		\begin{center}
+			\textbf{Knowledge Graph} \\
+			{Data described in logics} \\
+			Logical reasoning about \\ 
+			\emph{connectivity}
+		\end{center}
+		\column{0.125 \linewidth}		
+			\centering
+			\begin{tikzpicture}
+  				\draw[->, ultra thick] (0,0) -- (1,0);
+			\end{tikzpicture}
+
+		\column{0.475 \linewidth}
+		\begin{center}
+		\textbf{Statistical ("Graphical") Models} \\
+			{Statistical dependencies of links} \\
+			Probabilistic reasoning about \emph{samples}
+		\end{center}
+		
+	\end{columns}
+
+	\ \\ 
+	
+	\begin{block}{Connectivity to Samples: Towards building statistical models}
+		\begin{itemize}
+			\item Identify subgraphs of the Knowledge Graph to be interpreted as independent samples
+			\item Learn and infer graphical models to reason about subgraphs
+		\end{itemize}
+	\end{block}
+
+%	Techniques being applied:
+%		\begin{itemize}
+%			\item \emph{Tensorization}: Store truth of statements in sparse tensors 
+%			\item \emph{Propositionalization}: Represent theory in propositional logics
+%		\end{itemize}	
+\end{frame}
+
+
+
+\begin{frame}{Extraction of samples for statistical models}
+
+The extraction is specified by
+\begin{itemize}
+	\item \textbf{Extraction query} $\exquery$ specifying the conditions on a pair of individuals to represent a sample
+	\item \textbf{Atom queries} $\atomicqueryof{\atomenumerator}$ extracting the satisfaction of the atom for each pair of individuals 
+\end{itemize}
+
+By contraction we get an empirical distribution by
+\begin{center}
+\input{./fol_models/empirical_generation}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Representation in Data Cores}
+
+Having a CP Decomposition of $\kggroundingof{\exquery}$  we build datacores by
+\begin{center}
+\input{./fol_models/datacore_generation}
+\end{center}
+and have a representation 
+\begin{align*}
+	\datanum \cdot \contractionof{\empdistribution}{\enumeratedatoms} = \contractionof{\datacoreof{0},\ldots,\datacoreof{\atomorder-1}}{\enumeratedatoms} \, .
+\end{align*}
+
+This amounts to a CP Decomposition of $\empdistribution$, which \textbf{can introduce storage overheads}!
+
+\end{frame}
+
+
+\begin{frame}{Statistical Models of Knowledge Graphs}
+
+\textbf{Learning}:
+\begin{itemize}
+	\item Extract samples based on the extraction query and the atom queries
+	\item Train a Markov Logic Model based on neuro-symbolic architectures and parameter estimation
+\end{itemize}
+
+\medskip
+
+\textbf{Inference}:
+\begin{itemize}
+	\item Estimate the probability of missing links (by modification of atom truths)
+	\item Generate Knowledge Graphs based on samples of the statistical model
+\end{itemize}
+
+\end{frame}
+
+\end{document}

@@ -1,0 +1,100 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[Applications of \tnreason]{
+	\techwschapterfour \\
+	{\huge Applications of \tnreason}
+}
+\usepackage{algorithmic}
+\begin{document}
+
+{\frame[plain]{\titlepage}}
+
+
+%% Repetation?
+%\begin{frame}{Requirements on AI}
+%
+%	\begin{columns}
+%		\column{0.5 \linewidth}
+%		\textbf{Explainability} \\ 
+%		In purest form: Formal Logics
+%
+%		\column{0.5 \linewidth}
+%		\textbf{Efficiency} \\
+%	\end{columns}
+%\end{frame}	
+
+
+\begin{frame}{Contraction Calculus}
+
+Tensors \emph{appear naturally when representing factored systems}, such as in 
+\begin{itemize}
+	\item Probabilistic Representation: Probability tensors
+	\item Logical Representation: Semantic tensors
+\end{itemize}
+
+\medskip
+
+Reasoning amounts to \emph{calculate contractions of the representations}
+\begin{itemize}
+	\item Probabilistic Inference: Marginal distributions  
+	\item Locial Inference: Model counts (to decide entailment) 
+\end{itemize}
+\medskip
+
+\begin{block}{\tnreason is a tool for contraction calculus}
+	\sprepresentation{} represents semantic and probability tensors and \spengine executes their contractions.
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}{Efficient Contraction Calculus}
+
+Efficient tensor representations by contractions of \emph{tensor networks}
+\begin{itemize}
+	\item Representation of empirical distributions $\empdistribution$ by datacores $\datacoreof{\atomenumerator}$
+	\item Representations of complex formulas $\exformula$ by connective encodings $\bencodingof{\exconnective}$
+\end{itemize}
+\medskip
+
+Localized algorithms demand only contractions with \emph{small number of open variables}
+\begin{itemize}
+	\item Gibbs Sampling
+	\item Alternating Weight Optimization
+\end{itemize}
+
+\medskip
+
+Advanced: Algorithms with \emph{small number of tensor cores} based on \textit{Message Passing Approaches}.
+
+\end{frame}	
+
+
+\begin{frame}{Approaching Use Cases with \tnreason}
+
+\textbf{Buildtime} (Generation of a model): 
+\emph{$\mathrm{tnreason.knowledge.HybridKnowledgeBase}$}
+\begin{itemize}
+	\item Elicitation from experts: Generation of formulas 
+	\item Calibration on Data: Optimization of weights to probabilistic formulas given data
+	\item \textit{Advanced Approach: Neuro-Symbolic AI}
+\end{itemize}
+\medskip 
+
+\textbf{Runtime} (Usage of the model): 
+ \emph{$\mathrm{tnreason.knowledge.InferenceProvider}$}
+\begin{itemize}
+	\item Analysis of distributions by queries
+	\item Infering missing information based on evidence
+	\item Sampling random data from the model
+\end{itemize}
+
+\end{frame}
+
+
+
+
+\end{document}

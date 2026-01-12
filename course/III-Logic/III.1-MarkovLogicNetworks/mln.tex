@@ -1,0 +1,312 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[Markov Logic Networks]{
+	\techwschapterthree \\
+	{\huge Markov Logic Networks}
+}
+
+\begin{document}
+
+
+{\frame[plain]{\titlepage}}
+
+
+\begin{frame}{From Logics to Probability}
+
+Why is logical reasoning not enough?
+\begin{itemize}
+	\item Evidence is \emph{incomplete}: Not all conditions to rules might be known
+	\item Evidence is \emph{uncertain}: There might be errors in the  data
+\end{itemize}
+
+\medskip
+
+Enhancement of semantics (upgrade of epistemologic assumptions):
+\begin{itemize}
+	\item \emph{Logic}: Possible/impossible 
+	\item \emph{Probability}: Numeric uncertainties beyond possible/impossible
+\end{itemize}
+
+\medskip 
+\medskip
+
+Judea Pearl in Probabilistic Reasoning in Intelligent Systems (1988):
+\begin{center}
+	\it Research [...] should bring together \emph{logics} aptitude for \emph{handling the visible} and \emph{probabilities} ability to \emph{summarize the invisible}. %p23 end of 1.4
+\end{center}
+
+\end{frame}
+
+
+
+\begin{frame}{Tensors as a common framework}
+
+\begin{columns}
+	\column{0.5 \linewidth} \centering 
+	\textbf{Propositional Logics} \\
+	\medskip
+	Representation of semantics by
+		\[ \exformula: \atomstates \rightarrow [2] = \{0,1\} \]	
+	Tensor Networks by formula compositions \\
+	\medskip
+	Contractions decide entailment by checking
+		\[ \mathcal{C}(\{{\kb},\bencodingof{\exformula}\}\{\catvariableof{\exformula}\}) \parallel \onehotmapof{1} \]
+	\column{0.5 \linewidth} \centering 
+	\textbf{Probabilities} \\
+	\medskip
+	Representation of uncertainties by
+		\[ \probtensor : \facstates \rightarrow [0,1] \]
+	Tensor Networks by conditional independencies\\
+	\medskip
+	Contractions answer probabilistic queries
+		\[ \probof{\catvariable} = \contractionof{\probtensor}{\catvariable} \]
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}{Probabilistic Interpretations of Logics}
+
+Uniform distribution of the models of $\exformula$ is a distribution
+\begin{align*}
+	\probtensor^{\exformula} = \frac{1}{\contractionof{\{\exformula\}}{\varnothing}} \exformula
+\end{align*}
+where $\exformula$ is a \emph{hard constraint}: 
+States $\atomindices\in\atomstates$ with $\exformula(\atomindices)=0$ have vanishing probability. \\
+\medskip
+We build a \emph{soft constraint} by a weight $\weight\in\rr$ tuning the quotient of probabilities 
+\begin{align*}
+	\expof{\weight \cdot \exformula}(\atomindices) = \begin{cases}
+	1 & \text{  if  } \exformula(\atomindices) = 0 \\
+	\expof{\weight} &  \text{  if  } \exformula(\atomindices) = 1 \\
+	\end{cases}
+\end{align*}
+and normate to get a probability tensor
+\begin{align*}
+	\probtensor^{(\exformula,\weight)} = \frac{1}{\contractionof{\{\expof{\weight\cdot \exformula}\}}{\varnothing}} \expof{\weight\cdot\exformula} \, .
+\end{align*}
+
+\end{frame}
+
+
+
+\begin{frame}{Collection of weighted formulas}
+
+\begin{definition}[Markov Logic Network]
+	The \emph{Markov Logic Network} to as set of formulas $\formulaset$ weighted by $\weight: \formulaset \rightarrow \rr$ is the distribution
+	\begin{align*}
+		\probtensor^{(\formulaset, \weight)} = \frac{1}{\partitionfunctionof{\formulaset,\weight}}
+		\contractionof{\expof{\weightof{\exformula}\cdot \exformula} \, : \, \exformulain}{\enumeratedatoms}
+	\end{align*}
+	where
+	\begin{align*}
+		\partitionfunctionof{\formulaset,\weight} = \contractionof{\left\{\expof{\weightof{\exformula}\cdot \exformula} \, : \, \exformulain\right\}}{\varnothing}
+	\end{align*}
+	is called the partition function.
+\end{definition}
+
+\end{frame}
+
+
+
+%\begin{frame}{Tensor Calculus for Complex Sentences}
+%
+%\begin{block}{Representation of Complex Sentences}
+%	The semantics of complex sentences are retrieved by \emph{contractions} of their connective semantics, which are summations of tensor coordinates among shared axes.
+%	\begin{itemize}
+%		\item Choose distributed representation to avoid contractions
+%		\item Only execute those contractions required by reasoning 
+%	\end{itemize}
+%\end{block}
+%
+%Contractions can be depicted graphically by a \emph{Tensor Network}:
+%\begin{center}
+%	\input{./tikz_pics/ft_decomposition.tex}
+%\end{center}
+%
+%\end{frame}
+
+
+
+
+\begin{frame}{Tensor Network Representation}
+
+
+Markov Logic Networks are represented by
+\begin{itemize}
+	\item 
+\end{itemize}
+
+\textbf{Markov Logic Networks combine logical and probabilistic approaches:}
+\begin{itemize}
+	\item Encoding of logical connectives are factors of the graphical model
+	\item Further factors implement hard and soft constraints
+\end{itemize}
+
+\medskip
+
+\textbf{Example:} Distribution over the atomic variables $a,b,c$ where
+\begin{itemize}
+	\only<1> {\item All worlds of equal probability ($\probtensor=\frac{1}{2^3}\ones$)}
+	\only<2->{\item \textcolor{\concolor}{$ c \Rightarrow \big( a \lor b \big)$ is always true}}
+	\only<3->{\item  \textcolor{\probcolor}{$a \lor b$ is likely to be true, tuned by a weight $\weightof{a \lor b}$}}
+\end{itemize}
+
+\begin{center}
+	\input{./tikz_pics/activated_heads.tex}
+\end{center}
+
+
+\end{frame}
+
+
+
+
+\begin{frame}{Infering Markov Logic Networks}
+
+	\textbf{Logical:} \emph{Model counts} by tensor network contractions
+	\begin{itemize}
+		\item Global contractions: \emph{Model-theoretic Entailment}
+		\item Local contractions: \emph{Constraint Propagation} 
+	\end{itemize}
+	
+	\textbf{Probabilistic:} \emph{Conditional probabilities} by tensor network contractions	
+	\begin{itemize}
+		\item Exact Inference: \emph{Belief Propagation}
+		\item Approximate Inference: \emph{Gibbs Sampling}, \emph{Loopy Belief Propagation}
+	\end{itemize}
+
+\begin{block}{Tradeoff}
+	The size of tensor network contractions is a tradeoff between
+	\begin{center}
+		Completeness/Exactness  $\leftrightarrow$  Efficiency (Demand of the contraction)
+	\end{center}
+\end{block}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Application of Markov Logic Networks}
+
+(Ante-hoc \& globally) \emph{Explainable Generative Models} 
+\begin{itemize}
+	\item Human-machine interface based on interpretable logical sentences
+	\item Expert evaluation and manipulation of models
+	\item Generation of synthetic data (e.g. for test purposes)
+\end{itemize}
+\ \\ \ \\
+\emph{Logic and Probabilistic Programming}
+\begin{itemize}
+	\item Generation by declarative programming or learned from data
+	\item Prediction of unseen variables given evidence
+	\item Explainability built-in by logics
+	\item Uncertainty assessment built-in by probabilities
+\end{itemize}
+\ \\ \ \\
+%Generation of \emph{Synthetic Data}
+%\begin{itemize}
+%	\item Structured generation of synthetic data
+%	\item No privacy restriction apply
+%\end{itemize}
+	
+\end{frame}
+
+
+
+\begin{frame}{Implementation in \tnreason: \\
+Subpackage \spapplication{}}
+
+The subpackage \spapplication{} implements generalizations of Markov Logic Networks and corresponding reasoning tasks.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.27]
+
+\draw[dashed] (-30,15) -- (12,15) -- (12,-3) -- (-30,-3) -- (-30,15);
+
+\draw[blue] (-10,10) rectangle (10,14); 
+\node [blue, anchor=center] at (0,12) {\spapplication{}};
+
+\node [anchor=center,blue] at (-20,12) {\layerthreespec};
+\draw[dashed] (-30,9) -- (12,9);
+\node [anchor=center] at (-20,6) {\layertwospec};
+
+\draw[blue,->] (6,10) -- (6,8);
+\draw[] (2,4) rectangle (10,8); 
+\node [anchor=center] at (6,6) {\spreasoning{}};
+\draw[->] (6,4) -- (6,2);
+
+\draw[blue,->] (-6,10) -- (-6,8);
+\draw[] (-10,4) rectangle (-2,8); 
+\node [anchor=center] at (-6,6) {\sprepresentation{}};
+\draw[->] (-6,4) -- (-6,2);
+
+\draw[dashed] (-30,3) -- (12,3);
+\node [anchor=center] at (-20,0) {\layeronespec};
+
+\draw (-10,-2) rectangle (10,2); 
+\node [anchor=center] at (0,0) {\spengine};
+\end{tikzpicture}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Extension of Script Language $\sencodingof{\cdot}$}
+
+Formulas with hard logical interpretation are stored as before in \emph{fact dictionaries}:
+\begin{centeredscript}
+	\{key($\exformula$) : $\sencodingof{\exformula}$ for $\exformula\in\formulaset$\}
+\end{centeredscript}
+
+\medskip
+
+Formulas with soft logical interpretation (as in Markov Logic Networks) are stored in \emph{weighted formulas dictionaries}:
+\begin{centeredscript}
+	\{key($\exformula$) : $\sencodingof{\exformula}$ + [$\weightof{\exformula}$] for $\exformula\in\formulaset$\}
+\end{centeredscript}
+
+\end{frame}
+
+
+\begin{frame}{Hybrid Knowledge Bases}
+
+Probability distributions, which are specified by propositional formulas are captured by the class
+\begin{centeredscript}
+	knowledge.HybridKnowledgeBase
+\end{centeredscript}
+initialized with arguments
+\begin{itemize}
+	\item \emph{facts:} Dictionary of propositional formulas stored as $\sencodingof{\exformula}$ representing hard logical constraints
+	\item \emph{weightedFormulas:} Dictionary of propositional formulas stored as $\sencodingof{\exformula}$+$[\weightof{\exformula}]$ representing soft logical constraints
+	\item \emph{evidence:} Dictionary of atomic formulas, where key are the formulas in string representation and values the certainty in $[0,1]$ (float or int) of the atom being true
+	\item \emph{categoricalConstraints:} Dictionary of categorical constrained, which values are lists of atomic formulas stored as strings $\sencodingof{\atomicformula}$
+\end{itemize}
+
+\end{frame}
+
+
+%\begin{frame}{Semantics of }
+%
+%Connective Cores are created to represent all required formulas
+%
+%Generic head cores:
+%\begin{itemize}
+%	\item $\onehotmapof{1}$ for hard constraints
+%	\item $[1 \, \expof{\weight}]$ for soft constraints
+%\end{itemize}
+%
+%Both in 
+%\begin{centeredscript}
+%	knowledge.HybridKnowledgeBase()
+%\end{centeredscript}
+%
+%\end{frame}
+
+
+
+\end{document}

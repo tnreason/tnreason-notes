@@ -1,0 +1,120 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[Parameter Estimation]{
+	\techwschapterthree \\
+	{\huge Estimating the Parameters of an MLN}
+}
+
+\begin{document}
+
+
+{\frame[plain]{\titlepage}}
+
+
+
+
+
+\begin{frame}{Entropies}
+
+\begin{definition}
+	The Shannon entropy of a probability distribution is defined as 
+		\[ \sentropyof{\probtensor} % = \expectationof{\lnof{\probtensorof{i}}} 
+		= \sum_{\catindices\in\facstates} \probtensor(\catindices) \cdot \lnof{\probtensor(\catindices)} \]
+%		= \contractionof{\{\lnof{\probtensor},\probtensor\}}{\varnothing} \]
+\end{definition}
+
+Application in
+\begin{itemize}
+	\item \textbf{Information Theory:} Minimal averaged code length to communicate samples
+	\item \textbf{Machine Learning:} Measuring the \emph{degree of structure} in a model
+\end{itemize}
+
+Further entropies
+\begin{itemize}
+	\item Cross entropy: Likelihood of data for objective design
+	\item Relative entropy (Kullback-Leibler divergence): Overhead by cross entropy as a distance measure of distributions
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Likelihood of Data}
+
+Let there be a dataset of $\datanum$ samples in the form of a mapping
+%\begin{itemize}
+	%\item Data map of observed states
+		\[ \datamap : [\datanum] \rightarrow \atomstates \]
+	%\item Independent Data
+%\end{itemize}
+to observed states.
+\medskip
+The likelihood is the product 
+\begin{align*}
+	\probtensor^{(\mlnparameters)}[\datamap] = \prod_{\datindexin} \mlnprobabilityof{\datapointof{\datindex}} \, .
+\end{align*}
+\medskip
+The averaged negative log-likelihood is the cross entropy
+\begin{align*}
+	 \lossof{\mlnparameters} = -\frac{1}{\datanum}\sum_{\datindexin} \lnof{\mlnprobabilityof{\datapointof{\datindex}} } =  \centropyof{\empdistribution}{\mlnprob}
+\end{align*}
+
+\end{frame}
+
+
+\begin{frame}{Optimization of the Likelihood}
+
+For each $\exformulain$ we have
+\begin{align*}
+	\frac{\partial}{\partial \weightof{\exformula}} \lossof{\mlnparameters} = \expectationofwrt{\exformula}{\empdistribution} - \expectationofwrt{\exformula}{\mlnprob}
+\end{align*}
+
+\begin{block}{Algorithm: Alternating Weight Optimization}
+	Iterate through $\exformulain$ until convergence and adjust $\weightof{\exformula}$ such that $\frac{\partial}{\partial \weightof{\exformula}} \lossof{\mlnparameters} = 0$.
+\end{block}
+
+\end{frame}
+
+
+
+\begin{frame}{Entropy Maximization}
+
+\begin{block}{Learning Task}
+	Find a distribution with \emph{minimal structure} reproducing \emph{key observed features}.
+\end{block}
+
+Formalize
+\begin{itemize}
+	\item \emph{minimal structure} by \emph{maximal entropy}
+	\item \emph{key observed features} by a set $\formulaset$ such that
+		\[ \forall \exformulain : \quad \expectationofwrt{\exformula(x)}{x\sim\probtensor^{\theta}} = \expectationofwrt{\exformula(x)}{x\sim\empdistribution}  \]
+\end{itemize}
+
+We state the \textbf{Entropy Maximation Problem}
+\begin{align*}\tag{$P_{\Gamma,\formulaset,\datamap}$}
+	\argmax_{\theta\in \Gamma} \,  \sentropyof{\theta} \quad \text{subject to } \quad \forall \exformulain : \, \expectationofwrt{\exformula(x)}{x\sim\probtensor^{\theta}} = \expectationofwrt{\exformula(x)}{x\sim\empdistribution} 
+\end{align*}
+
+\end{frame}
+
+\begin{frame}{Characterization of the solution}
+
+By variational calculus one can proof the following:
+
+\begin{theorem}
+	Among the distributions $\probtensor$ satisfying 
+	 	\[ \forall \exformulain : \, \expectationofwrt{\exformula(x)}{x\sim\probtensor} = \expectationofwrt{\exformula(x)}{x\sim\empdistribution}  \]
+	the one with maximal entropy is the Markov Logic Network to $\formulaset$ and the maximum likelihood weight $\weight$.
+\end{theorem}
+
+\begin{itemize}
+	\item We did not assume that $\probtensor$ is a Markov Logic Network, this is the result of the theorem!
+	\item Removing the constraint that $\exformula$ is a map to $[2]$, we can generalize to exponential families.
+\end{itemize}
+
+\end{frame}
+
+
+
+\end{document}

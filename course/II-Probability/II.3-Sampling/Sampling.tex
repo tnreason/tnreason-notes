@@ -1,0 +1,102 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[Gibbs Sampling]{
+	\techwschaptertwo \\
+	{\huge Gibbs Sampling}
+}
+\begin{document}
+
+{\frame[plain]{\titlepage}}
+
+
+
+\begin{frame}{How to draw random samples?}
+
+\begin{block}{Sampling a distribution $\probtensor$}
+	Sampling is a random procedure to get index pairs $\catindices\in\facstates$ such that the probability of $\catindices$ is $\probtensor(\catindices)$.
+\end{block}
+
+{A naive approach would not succeed:} Typically, the tensors $\probtensor$ is too large to be created.
+
+\medskip
+
+\begin{block}{Approach}
+	Use the representations like Markov Networks
+		\[ \probtensor = \normalizationofwrt{\{\hypercoreof{\edge} : \edge \in \edges\}}{\nodes}{\varnothing}  \]
+	to draw samples.
+\end{block}
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{Gibbs Sampling}
+
+
+Draw State for atom $\atomenumerator$ a state $\atomlegindexof{\atomenumerator}$ from marginalized distribution 
+	\[ \probof{\catvariableof{\atomenumerator}} = \frac{\contractionof{\probtensor}{\catvariableof{\atomenumerator}}
+		}{
+		\contractionof{\{\probtensor\}}{\varnothing}
+		} \]
+
+\medskip
+
+Iterate over $\atomenumeratorin$ and draw $\atomlegindexof{\atomenumerator}$ from 
+		\[ \condprobof{\catvariableof{\atomenumerator}}{\{\onehotmapof{\atomlegindexof{\secatomenumerator}} \, : \secatomenumerator \neq \atomenumerator\}} = 
+		\frac{
+		\contractionof{\{\probtensor\} \cup \{\onehotmapof{\atomlegindexof{\secatomenumerator}} \, : \secatomenumerator \neq \atomenumerator \}}{\catvariableof{\atomenumerator}}
+		}{
+		\contractionof{\{\probtensor\} \cup \{\onehotmapof{\atomlegindexof{\secatomenumerator}} \, : \secatomenumerator \neq \atomenumerator \}}{\varnothing}
+		} \]
+
+\begin{block}{Intuition}
+	While we initialize with an independent sample, the resampling iterations implement the dependencies of the variables with respect to each other.
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}{Implementation in \tnreason: \\
+Subpackage \spreasoning{}}
+
+The subpackage \spreasoning{} implements algorithms such as Gibbs Sampling.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.27]
+
+\draw[dashed] (-30,15) -- (12,15) -- (12,-3) -- (-30,-3) -- (-30,15);
+
+\draw (-10,10) rectangle (10,14); 
+\node [anchor=center] at (0,12) {\spapplication{}};
+
+\node [anchor=center] at (-20,12) {\layerthreespec};
+\draw[dashed] (-30,9) -- (12,9);
+\node [anchor=center,blue] at (-20,6) {\layertwospec};
+
+\draw[->,blue] (6,10) -- (6,8);
+\draw[blue] (2,4) rectangle (10,8); 
+\node [anchor=center,blue] at (6,6) {\spreasoning{}};
+\draw[->,blue] (6,4) -- (6,2);
+
+\draw[->] (-6,10) -- (-6,8);
+\draw[] (-10,4) rectangle (-2,8); 
+\node [anchor=center] at (-6,6) {\sprepresentation{}};
+\draw[->] (-6,4) -- (-6,2);
+
+\draw[dashed] (-30,3) -- (12,3);
+\node [anchor=center] at (-20,0) {\layeronespec};
+
+\draw (-10,-2) rectangle (10,2); 
+\node [anchor=center] at (0,0) {\spengine};
+\end{tikzpicture}
+\end{center}
+
+\end{frame}
+
+\end{document}

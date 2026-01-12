@@ -1,0 +1,290 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[Probabilistic Reasoning]{
+	\techwschaptertwo \\
+	{\huge Probabilistic Reasoning}
+}
+\begin{document}
+
+{\frame[plain]{\titlepage}}
+
+
+
+%\begin{frame}{Average of the Observation}
+%
+%The \emph{empirical distribution} is the average of the one-hot encoded observed states:
+%\begin{align*}
+%	\empdistribution \coloneqq \frac{1}{\datanum}\sum_{\datindexin} \onehotmapof{\catindicesof{\datindex}}
+%\end{align*}
+%
+%In a contraction diagram we denote the average by % Already the decomposition!
+%\begin{center}
+%	\input{./tikz_pics/empirical_distribution.tex}
+%\end{center}
+%
+%\end{frame}
+
+
+
+
+\begin{frame}{Example: Being at a dentist}
+
+We are reasoning about a factored system with three variables:
+\begin{itemize}
+	\item \emph{Toothache} $i\in[2]$, whether your tooth hurts
+	\item \emph{Cavity} $j\in[2]$, whether there is a cavity in your tooth
+	\item \emph{Catch} $k\in[2]$, whether the dentist catches in your tooth 
+\end{itemize}
+
+\begin{center}
+	\includegraphics[width=12cm]{images/toothache_prob} 
+\end{center}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Formal Definition of Probability Tensors}
+
+\begin{definition}[Probability Tensor]
+	Let there be a factored system $\facsystem$ defined by variables $\catvariableof{\atomenumerator}$ taking values in $[\catdimof{\atomenumerator}]$. 
+	A probability distribution over the states of $\facsystem$ is a map
+		\[ \probtensor : \facstates \rightarrow [0,\infty) \]
+	such that $ \sum_{\catindices} \probtensor(\catindices)= 1$.
+\end{definition}
+
+We depict 
+\begin{center}
+	\input{./tikz_pics/probability_tensor.tex}
+\end{center}
+
+\end{frame}
+
+
+
+\begin{frame}{Directed Tensors}
+
+We depict the condition, that coordinate sums are one, by directions on the legs.
+
+\begin{definition}[Directed Tensor]
+	A tensor 
+		\[ \hypercore \in \bigotimes_{\nodein}\rr^{\catdimof{\node}} \]
+	is said to be directed with incoming variables $\innodes$ and outgoing variables $\outnodes$, where $\nodes=\innodes\dot{\cup}\outnodes$, when
+		\[ \contractionof{\{\hypercore\}}{\innodes} =  \onesof{\innodes} \]
+	where $\onesof{\innodes}$ denoted the trivial tensor in  $\bigotimes_{\node\in\innodes}\rr^{\catdimof{\node}}$ which coordinates are all $1$.
+\end{definition}
+
+\end{frame}
+
+
+\begin{frame}{Example: Marginal Distributions}
+
+What is the probability that there is a cavity?
+
+\begin{align}
+	\probtensor^{\mathrm{Dentist},\mathrm{Cavity}}[\mathrm{Cavity}] 
+	= \sum_{j\in[2]} \sum_{k\in[2]} \probtensor^{\mathrm{Dentist}}(:,j,k)
+\end{align}
+
+This is called a \emph{marginal} distribution.
+
+\begin{block}{Exercise}
+	Calculate the marginal probability of \emph{Cavity} given the probability tensor $\probtensor^{\mathrm{Dentist}}$.
+\end{block}
+\begin{center}
+	\includegraphics[width=12cm]{images/toothache_prob} 
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Formal Definition of Marginal Distributions}
+
+\begin{definition}[Marginal Probability]\label{def:marginalProbability}
+	Given a distribution $\probtensor$ of the categorical variables $\exrandom$ and $\secexrandom$ the marginal distribution of the categorical variable $\exrandom$ is defined for each $\catindexof{\exrandom}$ as
+		\[ 
+		\margprobof{\exrandom=\catindexof{\exrandom}}{\exrandom}
+		 = \sum_{\catindexof{\secexrandom}\in[\catdimof{\secexrandom}]} \probof{\exrandom=\catindexof{\exrandom},\secexrandom=\catindexof{\secexrandom}} \, . \]
+\end{definition}
+
+Marginal probabilities are contractions
+\begin{align*}
+	\probof{\exrandom} = \contractionof{\probtensor}{\exrandom}
+\end{align*}
+depicted by
+\begin{center}
+	\input{./tikz_pics/marginalized_probability.tex}
+\end{center}
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{Marginal Distributions in Contraction Formalism}
+
+Contractions are useful to
+\begin{itemize}
+	\item Specify the Probability Tensor, or a decomposition of it
+	\item Specify the variables to marginalize over as the ones left open
+\end{itemize}
+
+\begin{center}
+	\input{./tikz_pics/marginalized_probability.tex}
+\end{center}
+
+\medskip 
+
+Directed notation preserved: Marginal probabilities are again probability distributions, since
+\begin{align}
+	\sum_{i\in[2]}\probtensor^{\mathrm{Dentist},\mathrm{Cavity}}[i] = \sum_{i\in[2]} \sum_{j\in[2]} \sum_{k\in[2]} \probtensor^{\mathrm{Dentist}}_{i,j,k} = 1 \, . 
+\end{align}
+
+
+\end{frame}
+
+
+\begin{frame}{Example: Conditional Distributions}
+
+What is the probability of having a cavity when having a toothache?
+
+\begin{align}
+	\probtensor^{\mathrm{Dentist}}[\mathrm{Cavity}|\mathrm{Toothache}] 
+	=\frac{ \sum_{j\in[2]} \probtensor^{\mathrm{Dentist}}_{:,j,:} }
+	{ \sum_{j,k\in[2]} \probtensor^{\mathrm{Dentist}}_{:,j,k} }
+\end{align}
+
+\medskip
+
+This is called a \emph{conditional} distribution.
+
+\medskip
+
+\begin{block}{Exercise}
+	Calculate the probability of \emph{Cavity} conditioned on \emph{Toothache}. %given the probability tensor $\probtensor^{\mathrm{Dentist}}$.
+\end{block}
+
+\begin{center}
+	\includegraphics[width=12cm]{images/toothache_prob} 
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Formal Definition of Conditional Distributions}
+
+\begin{definition}[Conditional Probability]
+	Given a distribution $\probtensor$ of the categorical variables $\catvariable$ and $Y$, the conditioned distribution of $\catvariable$ is defined by
+		\[ \condprobof{\catvariable=\catindexof{\catvariable}}{Y=\catindexof{Y}}
+		= \frac{\probof{\catvariable = \catindexof{\catvariable},Y=\catindexof{Y}}}{\probof{Y=\catindexof{Y}}} \, . \]
+\end{definition}
+
+\begin{center}
+	\input{./tikz_pics/conditional_probability.tex}
+\end{center}
+
+\end{frame}
+
+
+
+\begin{frame}{Normations}
+
+\begin{definition}[Normation of Tensor Networks]
+	A tensor network $\extnet$ on variables $\nodes$ can be normed on $\secnodes$, if the coordinates of no slice with respect to $\secnodes$ sum to $0$.
+	Then we define the normed tensor
+		\[ \normalizationofwrt{\extnet}{\outnodes}{\innodes}
+		\in \left( \bigotimes_{\node\in\innodes} \rr^{\catdimof{\node}} \right) \otimes \left( \bigotimes_{\node\in\outnodes} \rr^{\catdimof{\node}} \right) \]
+	by
+	 \begin{align*}
+	 	\normalizationofwrt{\extnet}{\outnodes}{\innodes}
+		= \sum_{\atomlegindexof{\innodes}\in\bigtimes_{\node\in\innodes}\catdimof{\node}} 
+		\onehotmapof{\atomlegindexof{\innodes}} \otimes \frac{
+		\contractionof{\extnet\cup\{\onehotmapof{\atomlegindexof{\innodes}}\}}{\outnodes}
+		}{
+		\contractionof{\extnet\cup\{\onehotmapof{\atomlegindexof{\innodes}}\}}{\varnothing}
+		} \, . 
+	 \end{align*}
+\end{definition}
+
+\end{frame}
+
+
+
+\begin{frame}{Conditional Distributions by Normations}
+
+Conditioning is the normation
+	\[ \condprobof{\exrandom}{\secexrandom} = \normalizationofwrt{\probtensor}{\exrandom}{\secexrandom} \]
+depicted by
+\begin{center}
+	\input{./tikz_pics/conditional_probability.tex}
+\end{center}
+
+The directed notation highlights \emph{Conditions} by incoming legs and \emph{Distributions} by outgoing legs.
+
+
+\end{frame}
+
+
+\begin{frame}{The Bayes Theorem}
+
+The Bayes Theorem relates conditional probabilities:
+
+\begin{theorem}[Bayes Theorem]
+	For any joint distribution of two categorical variables $\exrandom$ and $\secexrandom$ it holds that
+	\[ \condprobof{\exrandom}{\secexrandom} = \frac{\probof{\exrandom,\secexrandom}}{\probof{\secexrandom}} 
+	= \frac{\condprobof{\secexrandom}{\exrandom}\probof{\exrandom}}{\probof{\secexrandom}}  \, . \]
+\end{theorem}	
+
+\end{frame}
+
+
+\begin{frame}{Bayes Theorem in the Dentist Example}
+
+Directions of Reasoning
+\begin{itemize}
+	\item \emph{Causal direction}: Toothache is caused by cavity
+	\item \emph{Diagnostic direction}: Cavity is probable because of toothache
+\end{itemize}
+
+\medskip
+
+Bayes Theorem allows us to reason in diagnostic direction, given an underlying causal influence:
+\begin{align*}
+	& \probtensor^{\mathrm{Dentist}}[\mathrm{Cavity}|\mathrm{Toothache}] \\
+	 & \quad\quad\quad =  
+	\probtensor^{\mathrm{Dentist}}[\mathrm{Toothache}|\mathrm{Cavity}] 
+	\frac{\probtensor^{\mathrm{Dentist}}[\mathrm{Cavity}] }{\probtensor^{\mathrm{Dentist}}[\mathrm{Toothache}]}
+\end{align*}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}{Contraction Calculus for Probability Tensors}
+
+Probabilistic queries can be answered by contractions
+\begin{itemize}
+	\item Marginal probabilities 
+		\[ \probof{\exrandom} = \contractionof{\probtensor}{\exrandom} \]
+	\item Conditional probabilities
+		\[ \condprobof{\exrandom}{\secexrandom} = \normalizationofwrt{\probtensor}{\exrandom}{\secexrandom} \]
+\end{itemize}
+
+\medskip 
+
+Outlook: \emph{Tensor network decompositions of $\probtensor$} increase the execution efficiency!
+
+\end{frame}
+
+
+\end{document}
+
+

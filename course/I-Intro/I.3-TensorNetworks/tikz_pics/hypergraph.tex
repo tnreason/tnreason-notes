@@ -1,0 +1,31 @@
+\begin{tikzpicture}[scale=0.35,thick] % , baseline = -3.5pt
+
+
+
+\node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (P1) at (0,-3) {\tiny $0$};	
+\node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (P2) at (3,-3) {\tiny $1$};
+\node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (P3) at (6,-3) {\tiny $2$};
+
+\node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (P4) at (9,-3) {\tiny $3$};;
+
+
+\draw (P1) to[bend right=-20] (3,0);
+\draw (P2) to[bend right=0] (3,0);
+\draw (P3) to[bend right=20] (3,0);
+\node[anchor=center] (text) at (3,0.5) {$\edge_1 = \{0,1,2\}$};
+
+\draw (P2) to[bend right=20] (4.5,-6);
+\draw (P3) to[bend right=-20] (4.5,-6);
+
+\node[anchor=center] (text) at (3,-6.5) {$\edge_2 = \{1,2\}$};
+
+\draw (P3) to[bend right=20] (7.5,-6);
+\draw (P4) to[bend right=-20] (7.5,-6);
+
+\node[anchor=center] (text) at (9,-6.5) {$\edge_3 = \{2,3\}$};
+
+
+
+
+
+\end{tikzpicture}

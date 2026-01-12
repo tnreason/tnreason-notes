@@ -1,0 +1,188 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[Empirical Distributions]{
+	\techwschaptertwo \\
+	{\huge Empirical Distributions: Representation of Samples}
+}
+
+\begin{document}
+
+{\frame[plain]{\titlepage}}
+
+
+
+%
+%\begin{frame}{Observations of a Factored System}
+%
+%\begin{example}[Students and their semester]
+%	We ask (pairs of) students about their semester and want to capture the statistics.
+%\end{example}
+%
+%\begin{block}{Task: Representation of Observations}
+%	Let there be observations of the system by a set of states
+%		\[ \{(\catindicesof{\datindex}) \, : \, \datindexin \} \, . \]
+%	How to capture them by tensors?
+%\end{block}
+%
+%Aim: 
+%\begin{itemize}
+%	\item Represent the observations for querying
+%	\item Find models making sense out of the observations
+%\end{itemize}
+%
+%\end{frame}
+%
+%
+%\begin{frame}{Formalization with a sample selector map}
+%
+%Given a dataset $\{(\catindicesof{\datindex}) \, : \, \datindexin \}$ of samples of the factored system we define the sample selector map
+%	\[ \datamap : [\datanum] \rightarrow \facstates \]
+%
+%\medskip
+%
+%\begin{block}{Idea}
+%	Enrich the factored system with variables $\catvariables$ by a data selection variable $\datvariable$ and encode $\datacore$ using the one-hot encoding of the larger system.
+%\end{block}
+%
+%
+%\end{frame}
+
+
+
+\section{Empirical Distributions}
+
+
+\begin{frame}{Observations of a Factored System}
+
+\begin{example}[Students and their semester]
+	We ask students about their semester and want to capture the statistics.
+\end{example}
+
+\begin{block}{Task: Representation of Observations}
+	Let there be observations of the system by a set of states
+		\[ \{(\catindicesof{\datindex}) \, : \, \datindexin \} \, . \]
+	How to capture them by tensors?
+\end{block}
+
+Aim: 
+\begin{itemize}
+	\item Represent the observations for querying
+	\item Find models making sense out of the observations
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Formalization with a sample selector map}
+
+Given a dataset $\{(\catindicesof{\datindex}) \, : \, \datindexin \}$ of samples of the factored system we define the sample selector map
+	\[ \datacore : [\datanum] \rightarrow \facstates \]
+
+\medskip
+
+\begin{block}{Idea}
+	Enrich the factored system with variables $\catvariables$ by a data selection variable $\aselectionvariable$ and encode $\datacore$ using the one-hot encoding of the larger system.
+\end{block}
+
+
+\end{frame}
+
+
+\begin{frame}{More general: Encoding of maps between Factored Systems}
+
+\begin{definition}
+	Let $\exfunction$ be a function
+		\[ \exfunction : \facstates \rightarrow  \secfacstates \]
+	which maps the states of a factored system to variables $\catvariables$ to the states of another factored system with variables $\seccatvariables$.
+	Then the tensor representation of $\exfunction$ is a tensor
+		\[ \bencodingof{\exformula} \in \left(\exfunctiontargetspace\right)  \otimes \left(\facspace\right) \]
+	defined by
+		\[ \bencodingof{\exformula} = \sum_{\catindexofin{0}} \cdots  \sum_{\catindexofin{\atomenumerator-1}}  \onehotmapof{\exfunction(\catindices)} \otimes \onehotmapof{\catindices} \, . \]
+\end{definition}
+
+\end{frame}
+
+
+
+\begin{frame}{Data tensor}
+
+In the case of the sample selection map
+	\[ \datamap : [\datanum] \rightarrow \facstates \]
+we have a representation tensor called the \emph{data tensor}
+	\[ \datacore = \sum_{\datindexin} \onehotmapof{\datindex} \otimes \onehotmapof{\catindicesof{\datindex}} \,  \]
+depicted as 
+\begin{center}
+	\input{./tikz_pics/data_tensor.tex}
+\end{center}
+
+\begin{block}{Representation of Data}
+	The one-hot encoding of each observation is stored on a slice of the data tensor.
+\end{block}
+
+\end{frame}
+
+
+%\begin{frame}{}
+%\end{frame}
+
+
+\begin{frame}{Average of the Observation}
+
+The \emph{empirical distribution} is the average of the one-hot encoded observed states:
+\begin{align*}
+	\empdistribution \coloneqq \frac{1}{\datanum}\sum_{\datindexin} \onehotmapof{\catindicesof{\datindex}}
+\end{align*}
+
+In a contraction diagram we denote the average by % Already the decomposition!
+\begin{center}
+	\input{./tikz_pics/empirical_distribution.tex}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{More efficient data representation}
+
+The storage demand of $\datacore$ \emph{increases exponentially }
+	\[ \mathrm{dim}\left[\datacore\right] = \left( \facdim \right) \cdot \datanum \, . \]
+
+\begin{block}{Store the values $\catvariableof{\atomenumerator}$ separately for each $\atomenumeratorin$!}
+
+\medskip
+
+The collection of encoding tensors
+	\[ \datacoreof{\atomenumerator} \in \rr^{\catdimof{\atomenumerator}\times\datanum} \]
+to the maps
+	\[ \datamap_{\atomenumerator} :[\datanum] \rightarrow [\catdimof{\atomenumerator}] \quad , \quad  \datamap_{\atomenumerator}(\datindex) =  \catindex^{\datindex}_{\atomenumerator}\]
+%defined by
+%	\[ \datacoreof{\atomenumerator}_{: \datindex} =\onehotmapof{\catindexof{\atomenumerator}^\datindex} \]
+has a \emph{linearly increasing} storage demand of 
+	\[ \sum_{\atomenumeratorin} \mathrm{dim}\left[\datacoreof{\atomenumerator}\right] = \sum_{\atomenumeratorin} \catdimof{\atomenumerator}\cdot \datanum \, .  \]
+
+\end{block}
+\end{frame}
+
+
+\begin{frame}{Representation of the Empirical in a CP Format}
+
+The data tensor can be stored by the contraction
+	\[ \contractionof{\bencodingof{\datamap}}{\catvariableof{0},\ldots,\catvariableof{\atomenumerator-1},\datvariable} =
+	\contractionof{\datacoreof{0},\ldots,\datacoreof{\atomorder-1}}{\catvariableof{0},\ldots,\catvariableof{\atomorder-1},\datvariable} \]
+depicted as
+\begin{center}
+	\input{./tikz_pics/data_decomposition_cp.tex}
+\end{center}
+This is called a \emph{CP Tensor Decomposition}.
+
+\begin{block}{CP Decomposition of Empirical Distributions}
+	Instead of storing the datacore $\datacore$, store the encodings $\datacoreof{\atomenumerator}$.
+\end{block}
+
+\end{frame}
+
+
+
+\end{document}
