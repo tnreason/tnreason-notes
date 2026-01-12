@@ -122,7 +122,7 @@ We introduce conditional independence as independence of variables with respect 
 \begin{definition}[Conditional Independence]
     \label{def:condIndependence} %% Was {the:condIndependenceProductCriterion} in the report!
     Given a joint distribution of variables $\catvariableof{0}$, $\catvariableof{1}$ and $\catvariableof{2}$, such that $\margprobat{\catvariableof{2}}$ is positive.
-    We say that $\catvariableof{0}$ is independent of $\catvariableof{1}$ conditioned on $\catvariableof{2}$ if for any states $\exrandindin,\secexrandindin$ and $\thirdexrandindin$
+    We say that $\catvariableof{0}$ is independent of $\catvariableof{1}$ conditioned on $\catvariableof{2}$ if %for any states $\exrandindin,\secexrandindin$ and $\thirdexrandindin$
     \begin{align*}
         \condprobof{\catvariableof{0},\catvariableof{1}}{\catvariableof{2}}
         = \contractionof{
@@ -277,21 +277,21 @@ More generally, such decompositions are provided by the Fisher-Neyman Factorizat
 
 %%
 Notice, that the definition of sufficient statistic does not make use of the marginal distribution $\probat{\thirdcatvariable}$.
-We therefore can define sufficient statistics also for families of distributions $\condprobat{\catvariable}{\thirdcatvariable}$, with respect to arbitrary non-degenerate marginal distribution $\probat{\thirdcatvariable}$.
-We then use the \theref{the:factorizationFisherNeyman} to embed such families in \CompActNets{}.
+We therefore can define sufficient statistics also for families of distributions $\condprobat{\catvariable}{\thirdcatvariable}$, with respect to arbitrary non-degenerate marginal distributions $\probat{\thirdcatvariable}$.
+We then use \theref{the:factorizationFisherNeyman} to embed such families in \CompActNets{}.
 
 \begin{corollary}
     Let $\condprobof{\shortcatvariables}{\thirdcatvariable}$ be an arbitrary family of distributions of $\shortcatvariables$, and $\sstat$ a sufficient statistic for $\thirdcatvariable$.
-    Then there is a tensor $\basemeasurewith$ and a activation tensors $\acttensorat{\headvariables,\thirdcatvariable}$ such that for any $\thirdcatindex\in\mathrm{val}(\thirdcatvariable)$
+    Then there is a tensor $\basemeasurewith$ and an activation tensors $\acttensorat{\headvariables,\thirdcatvariable}$ such that for any $\thirdcatindex\in\mathrm{val}(\thirdcatvariable)$
     \begin{align*}
-        \condprobat{\shortcatvariables}{\thirdcatvariable=\thirdcatindex} \in\cansof{\sstat,\maxgraph,\basemeasure} \, .
+        \condprobat{\shortcatvariables}{\thirdcatvariable=\thirdcatindex} \in\cansof{\sstat,\maxgraph, \acttensor} \, . %\basemeasure} \, .
     \end{align*}
 \end{corollary}
 
 %% Fisher-Neyman as motivation for CompActNets
 The Factorization Theorem of Fisher-Neyman provides the fundamental motivation for the \CompActNets{} Architecture.
 Any decomposition of $\bencodingofat{\sstat}{\headvariables,\shortcatvariables}$ is called a \emph{computation network}, and common to all members of a family with sufficient statistic $\sstat$.
-The activation tensor $\acttensorat{\headvariables,\indexedthirdcatvariable}$, which decomposition is called the \emph{activation network}, is specific to each member of the family.
+The activation tensor $\acttensorat{\headvariables,\indexedthirdcatvariable}$, whose decomposition is called the \emph{activation network}, is specific to each member of the family.
 Let us now show in two examples, how families of distributions can be represented in \CompActNets{} by sufficient statistics.
 
 \input{../examples/probabilistic_paradigm/coin_toss_fn}
