@@ -186,7 +186,7 @@ We now present an efficient inference algorithm based on tensor network contract
     \caption{Directed Belief Propagation}\label{alg:directedBeliefPropagation}
     \begin{algorithmic}
         \Require Tensor network $\extnet$ on a directed hypergraph $\graph$
-        \Ensure Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
+        \Ensure Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$ \janina{is e0, e1 fixed? then i would change the notation in the loop. if not, i would write it in the set.}
         \iosepline
         \State Prepare directed message directions
         \begin{align*}
@@ -199,7 +199,7 @@ We now present an efficient inference algorithm based on tensor network contract
                               \outgoingnodes_{0} \cap \incomingnodes_{1} \neq \varnothing
             \right\}
         \end{align*}
-        \State Initialize a message queue $\scheduler=\{(\secsedge,\sedge) \wcols \secsedge \quad\text{has empty incoming nodes} \}]$
+        \State Initialize a message queue $\scheduler=\{(\secsedge,\sedge) \wcols \secsedge \text{ has empty incoming nodes} \}$ \janina{What would that be in Fig 10?}
         \While{$\scheduler$ not empty}
             \State Pop a $(\sedge,\redge)$ pair from $\scheduler$
             \State Update the message
@@ -209,7 +209,7 @@ We now present an efficient inference algorithm based on tensor network contract
                     \cup \{\mesfromtoat{\secsedge}{\sedge}{\catvariableof{\secsedge\cap\sedge}} \wcols (\secsedge,\sedge)\in\dirovedges \ncond \secsedge\neq \redge\}
                 }{\catvariableof{\sedge\cap \redge}}
             \end{align*}
-            \State Update $\scheduler$ by all messages $(\redge,\thirdsedge)$ which have not yet been sent, if all messages $(\secsedge,\redge)$ have been sent.
+            \State Update $\scheduler$ by all messages $(\redge,\thirdsedge)$, which have not yet been sent, if all messages $(\secsedge,\redge)$ have been sent.
         \EndWhile
         \State \Return Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
     \end{algorithmic}
