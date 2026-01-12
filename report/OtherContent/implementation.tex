@@ -1,0 +1,923 @@
+\chapter{Implementation in the \tnreason{} package}\label{cha:implementation}
+
+We here document the implementation of the discussed concepts in the \python{} package \tnreason{}, in the version \curvertnreason
+
+% Name
+\tnreason{} is an abbreviation of \textbf{t}ensor \textbf{n}etwork \textbf{reason}ing, by which we emphasize the capabilities of this package to represent and answer reasoning tasks by tensor network contractions.
+
+% Installation
+The package can be installed either by cloning the repository
+\begin{center}
+    \href{https://github.com/EnexaProject/enexa-tensor-reasoning}{https://github.com/EnexaProject/enexa-tensor-reasoning}
+\end{center}
+or by
+\begin{lstlisting}
+!pip install tnreason==2.0.0
+\end{lstlisting}
+
+\sect{Architecture}
+
+\tnreason{} is structured in four subpackages and three layers
+\begin{itemize}
+    \item Layer 1: Storage and numerical manipulations, by subpackage \spengine{}
+    \item Layer 2: Specification of workload, subpackage \sprepresentation{} specific for storage, subpackage \spreasoning{} specific for manipulations
+    \item Layer 3: Applications in reasoning, by subpackage \spapplication{}
+\end{itemize}
+
+We sketch this structure by
+\begin{center}
+    \input{./OtherContent/tikz_pics/implementation/architecture_sketch.tex}
+\end{center}
+
+
+\sect{Implementation of basic notation}
+
+First of all, we explain how the basis notation explained in \charef{cha:notation} is reflected in the implementation.
+
+\subsect{\bncategoricals}
+Categorical Variables are identified by strings, which then appear as colors of the corresponding tensor axes.
+Their dimension is stored in shapeDicts, but most practically these shapes are stored in the tensors in which variables appear.
+Suffixes in the color string (defined in \inlinecode{representation.suffixes}) denote the type of the variable:
+\begin{itemize}
+    \item Distributed variables with color suffix \disVarSuf: $\catvariableof{\cdot}$
+    \item Computed variables with color suffix \comVarSuf: $\headvariableof{\cdot}$
+    \item Selection variables with color suffix \selVarSuf: $\selvariableof{\cdot}$
+    \item Term variables with color suffix \terVarSuf: $\indvariableof{\cdot}$
+\end{itemize}
+
+\subsect{\bntensors}
+
+\paragraph{Tensors} are objects of classes inheriting \inlinecode{engine.TensorCore} with main attributes
+\begin{itemize}
+    \item \inlinecode{values}: Storing the coordinates of the tensors (individual realization for different cores)
+    \item \inlinecode{colors}: List of the variables $[\headvariableof{\formula},\catvariableof{0},\catvariableof{1}]$
+    \item \inlinecode{name}: Reflecting the notation such as $\bencodingof{\formula}$
+    \item \inlinecode{shape}: Storing the dimension of each appearing variable, as a list of integers with the same length as colors.
+\end{itemize}
+
+Suffixes in the name string (defined in \inlinecode{representation.suffixes}) highlight the origin and purpose of the tensor.
+Cores are named with suffixes based on their functionality
+\begin{itemize}
+    \item Computation core with name suffix \comCoreSuf: They represent the computation of a function in basis calculus, and are directed cores.
+    Their colors are \inlinecode{[headColors] + [inputColors]}, where \inlinecode{[inputColors]} are either distributed variables or, if having a composition of formulas.
+    When the function is a selection augmentation of other functions, selection colors are listed in the end of \inlinecode{[inputColors]}.
+    \item Activation core with name suffix \actCoreSuf: two-dimensional vectors representing of the activation core to a formula
+\end{itemize}
+
+Both the cores and the colors are further refined by infixes before the suffices to denote specific instantiations.
+
+\begin{itemize}
+    \item \selCoreIn: Involving a selection variable
+    \item \eviCoreIn: Storing evidence about a variable
+    \item \heaIn: Head of a function, typically the variable computed at a activation selector
+    \item \funIn: Function selection variables
+    \item \posIn+\stringof{i}: Variable selection for argument at position $i$
+    \item \datIn: Involving data (data cores and colors)
+\end{itemize}
+
+Further infixes are strings denoting atom names and neuron names.
+
+Exploiting efficient representation tricks we further have the tensor name suffices:
+\begin{itemize}
+    \item \atoCoreSuf: Atomization core, for sparse representation of categorical constraints
+    \item \vselCoreSuf: Variable selection core: For sparse representation of variable selectors
+\end{itemize}
+
+\paragraph{Initialization}
+Tensors are instantiated by
+\begin{lstlisting}
+engine.getCore(coreType)(values, colors, name, shape)
+\end{lstlisting}
+where \inlinecode{coreType} is a string further specifying a specific implementation of tensors (see for more detail \secref{sec:implementationEngine}).
+The default tensor implementation \defaultCoreType is chosen, when \inlinecode{coreType} is not specified.
+
+
+One-hot encodings are specific tensors created in \sprepresentation{}.
+
+\subsect{\bncontractions}
+
+\paragraph{Tensor networks} $\tnetof{\graph}=\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edge\in\edges\}$ are stored as dictionaries of tensors, where the keys coincide with the names of the corresponding tensors.
+The edges of the hypergraph $\graph$ used in the definition of tensor networks in \defref{def:tensorNetwork} are here labeled by the names of the tensors and the affected variables by the list of colors, being an attribute of each tensor.
+
+\paragraph{Contractions} are implemented in the subpackage \spengine{}, orienting on \defref{def:contraction}.
+Reflected in the notation
+\begin{align*}
+    \contractionof{\tnetof{\graph}}{\secnodevariables}
+\end{align*}
+a contraction is defined by
+\begin{itemize}
+    \item Tensor Network $\tnetof{\graph}$, specified by a dictionary of tensor names as keys and valued by tensor cores.
+    \item Open Variables $\secnodes$, specified by a list of colors to the variables.
+\end{itemize}
+Contraction calls are implemented as
+\begin{lstlisting}
+engine.contract(contractionMethod, coreDict, openColors, dimensionDict, evidenceColorDict)
+\end{lstlisting}
+where the arguments are
+\begin{itemize}
+    \item \inlinecode{contractionMethod}: str, chooses one of the contraction providers. The default contraction method \defaultContractionMethod is chosen, when
+    \item \inlinecode{coreDict}: Dictionary of TensorCores (of the above formats), representing the Tensor Network $\tnetof{\graph}$
+    \item \inlinecode{openColors}: List of str, each str identifying a color, that is a variable to be left open in the contraction
+    \item \inlinecode{dimensionDict}: Dict valued by int and keys by str, storing dimensions to each variable. This is of optional usage, when a color in openColors does not appear in the coreDict.
+    \item \inlinecode{evidenceColorDict}: Dict valued by int and keys by str, indicating sliced variables
+\end{itemize}
+
+Coordinates of tensors can be retrieved by
+\begin{align*}
+    \contractionof{\hypercoreat{\nodevariables}}{\secnodevariables=\catindexof{\secnodes}} \, .
+\end{align*}
+We implement this by leaving \inlinecode{openColors} empty and passing $\catindexof{\secnodes}$ as the \inlinecode{evidenceColorDict}, as a dictionary with keys by the \inlinecode{str} colors to the variables and values by the corresponding \inlinecode{int} indices.
+
+Graphical illustrations can be generated by
+\begin{lstlisting}
+engine.draw_factor_graph(coreDict)
+\end{lstlisting}
+where \inlinecode{coreDict} is a tensor network to be visualized.
+
+
+\subsect{\bnencoding}
+Encoding schemes are implemented in the subpackage \sprepresentation{}.
+
+
+
+\sect{Subpackage \spengine{}}\label{sec:implementationEngine}
+
+The \spengine{} subpackage is for the storage and numerical manipulation of tensors and tensor networks.
+We organize the subpackage as the lowest layer of \tnreason{}, specializing in storage of Tensor Networks and performing the contractions.
+
+\subsect{Basis+ $\cpformat$ Decompositions storing \inlinecode{values}}
+
+\paragraph{Specification of basis+ elementary tensors}
+We orient on basis+ sparse tensor decomposition in the initialization of tensor cores, as discussed in detail in \charef{cha:sparseRepresentation}.
+The basis+ elementary tensors have basis+ $\cpformat$ rank of $1$ and admit a decomposition as (see \defref{def:polynomialSparsity})
+\begin{align*}
+    \hypercoreat{\nodevariables}
+    = \slicescalar \cdot \contractionof{\onehotmapofat{\catindexof{\variableset}}{\catvariableof{\variableset}}}{\nodevariables} \, .
+\end{align*}
+Elementary basis+ tensors are in \tnreason{} stored by a tuple
+\begin{lstlisting}
+(value, posDict)
+\end{lstlisting}
+where \inlinecode{posDict} specifies the values to the variables, which do not have a trivial leg vector, and \inlinecode{value} a scalar scaling the basis vector.
+Comparing with the notation of \charef{cha:sparseRepresentation}, the keys of \inlinecode{posDict} correspond with $\variableset$, the values of \inlinecode{posDict} with $\catindexof{\variableset}$ and \inlinecode{value} corresponds with $\slicescalar$.
+
+\paragraph{Elementary Iterators}
+The initialization, coordinate retrieval and conversion operations of all tensor cores are oriented on basis+ $\cpformat$ Decompositions \eqref{eq:decIntoMonomials} of tensors.
+A tensor
+\begin{align*}
+    \hypercoreat{\nodevariables}
+    = \sum_{\slicetupleof{}\in\sliceset} \slicescalar \cdot \contractionof{\onehotmapofat{\catindexof{\variableset}}{\catvariableof{\variableset}}}{\nodevariables} \, .
+\end{align*}
+corresponds with an iterator over tuples \inlinecode{(value,posDict)}, each specifying a basis+ elementary tensor in the sum.
+%Each tensor core can be iterated, where the iterations are over tuples \inlinecode{(value,posDict)} specifying a basis+ tensor.
+
+\paragraph{Core Arithmetics}
+When subscribing an instance \inlinecode{exampleCore} of \inlinecode{engine.TensorCore} by
+\begin{lstlisting}
+exampleCore[posDict] = value
+\end{lstlisting}
+a basis+ elementary tensor specified by \inlinecode{(value,posDict)} is added to its values, that is
+\begin{align*}
+    \hypercoreat{\shortcatvariables} \algdefsymbol \hypercoreat{\shortcatvariables} + \contractionof{\onehotmapofat{\catindexof{\variableset}}{\catvariableof{\variableset}}}{\shortcatvariables} \, .
+\end{align*}
+The linear structure of tensors spaces are more further reflected in sums of \inlinecode{engine.TensorCore} instances, which are implemented with the same \inlinecode{coreType}, as
+\begin{lstlisting}
+summed = exampleCore1 + exampleCore2
+\end{lstlisting}
+and scalar multiplication, where a scalar \inlinecode{value} of type \inlinecode{int} or \inlinecode{float}
+\begin{lstlisting}
+multiplied = value * exampleCore
+\end{lstlisting}
+Both operations are performed as manipulations of the tensors \inlinecode{values}.
+Contraction of two \inlinecode{engine.TensorCore} instances are performed by
+\begin{lstlisting}
+contracted = exampleCore1.contract_with(exampleCore2)
+\end{lstlisting}
+and are used in corewise contraction, where \inlinecode{contractionMethod="CorewiseContractor"}.
+
+\paragraph{Initialization}
+Any instance of \inlinecode{engine.TensorCore} is initialized as a vanishing tensor $\onesat{\nodevariables}$, when \inlinecode{values} is not specified.
+The values are then assigned by iteration over a \inlinecode{sliceIterator} over \inlinecode{(value,posDict)} tuples specifying elementary basis+ tensors, where the $\cpformat$ rank is the length of the iterator
+%A basis+ $\cpformat$ tensor is specified by an iterator \inlinecode{sliceIterator} over elementary basis+ tensors, where the $\cpformat$ rank is the length of the iterator
+This initialization is by applied in the method
+\begin{lstlisting}
+engine.create_from_slice_iterator(shape, colors, sliceIterator, coreType, name)
+\end{lstlisting}
+where \inlinecode{shape, colors, coreType, name} are used in the call of an empty core by \\
+\inlinecode{engine.get_core} and \inlinecode{sliceIterator} used to iterative add the basis+ elementary tensors to create the tensor.
+
+\paragraph{Storage of basis+ $\cpformat$ decompositions}
+The implemented tensor classes derived from \\
+\inlinecode{engine.TensorCore} differ in their implementation of \inlinecode{values}.
+Motivated from basis+ $\cpformat$ decompositions, most classes rely on a data base storing the \inlinecode{(value,posDict)} tuples.
+An overview over the derived classes is provided in \figref{tab:tensorClasses}.
+Here \inlinecode{PandasCore}, \inlinecode{TentrisCore} and \inlinecode{PolynomialCore} support sparse basis+ $\cpformat$ decompositions, by utilizing \inlinecode{pandas.DataFrame}, \inlinecode{tentris.hypertrie} and \inlinecode{list} as storage data base.
+These are implementations of the matrix representation of \remref{rem:matStorageBasPlus}.
+The \inlinecode{NumpyCore} class on the other hand is based relies on arrays as \inlinecode{numpy.array} as storage solution, which corresponds with the demand that each \inlinecode{posDict} contains all colors of the tensor.
+Effectively, this amounts to restricting to basis $\cpformat$ decomposition, which demanded ranks are always larger than basis+ $\cpformat$ decompositions (see \theref{the:rankCascade}).
+
+\begin{figure}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|}
+            \hline
+            \textbf{coreType}           & \textbf{Used Package}                       & \text{Storage of \inlinecode{values}}             & \textbf{Sparse basis+ $\cpformat$ support} \\
+            \hline
+            \inlinecode{NumpyCore}      & \inlinecode{numpy}                          & \inlinecode{numpy.array}                          & No                                         \\
+            \hline
+            \inlinecode{PandasCore}     & \inlinecode{pandas}                         & \inlinecode{pandas.DataFrame}                     & Yes                                        \\
+            \hline
+            \inlinecode{TentrisCore}    & \inlinecode{tentris}  \cite{bigerl_tentris_2020} & \inlinecode{tentris.hypertrie} & Yes\\
+            \hline
+            \inlinecode{PolynomialCore} & $--$                                        & \inlinecode{list} of \inlinecode{(value,posDict)} & Yes\\
+            \hline
+        \end{tabular}
+    \end{center}
+    \caption{Derived classes from \inlinecode{engine.TensorCore}, differing in the implemented storage of \inlinecode{values}.}\label{tab:tensorClasses}
+\end{figure}
+
+
+
+
+\subsect{Contractions}
+
+%\textbf{Binary CP Decomposition}
+%
+%Based on the monomial decomposition $\polsparsityof{\cdot}$ as specified in \defref{def:polynomialSparsity}.
+%To store the values of a tensor we store the slices of tensors by the indices $\catindexof{\variableset}$.
+%
+%% Trick -> To BinaryCP
+%Contractions can be performed by partially contracting the cores of the decomposition.
+%In this way, one can avoids coordinatewise storages of high-order tensors, which can be intractable.
+
+
+% Contraction Method List
+The supported contraction methods are listed in \figref{tab:contractionMethods}.
+
+\begin{figure}
+    \begin{center}
+        \begin{tabular}{|p{\threecolumnwidth}|p{\threecolumnwidth}|p{\threecolumnwidth}|}
+            \hline
+            \textbf{contractionMethod} (str)   & \textbf{Package}                            & \textbf{Applied procedure}                                \\
+            \hline
+            \stringof{NumpyEinsum}             & \inlinecode{numpy}                          & Einstein summation \inlinecode{numpy.einsum}              \\
+%        \hline
+%        \stringof{TensorFlowEinsum}        & $\mathrm{tensorflow}$ & Einstein summation of $\mathrm{tensorflow}$ tensors         \\
+%        \hline
+%        \stringof{TorchEinsum}             & $\mathrm{torch}$      & Einstein summation of $\mathrm{torch}$ tensors              \\
+            %\hline
+            \stringof{TentrisEinsum}           & \inlinecode{tentris}  \cite{bigerl_tentris_2020} & Einstein summation \inlinecode{tentris.einsum}            \\
+            %\hline
+            \stringof{PgmpyVariableEliminator} & \inlinecode{pgmpy}                          & Variable Elimination of \inlinecode{pgmpy.DiscreteFactor} \\
+            %\hline
+            \stringof{CorewiseContractor}      & $--$                                        & Contraction using \inlinecode{core.contract_with()}       \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \caption{Implemented contraction methods in \tnreason{}.}
+    \label{tab:contractionMethods}
+\end{figure}
+
+\paragraph{Einstein Summation}
+is a syntax of specifying the contractions of arrays.
+Different possibilities are available to optimize over possible contraction paths, for example in \inlinecode{numpy} by the \inlinecode{numpy.einsum_path}.
+%Contractions represented as Einstein summation, as implemented in:
+%\begin{itemize}
+%	\item numpy
+%	\item tensorflow
+%	\item pytorch
+%	\item tentris
+%\end{itemize}
+
+\paragraph{Variable Elimination}
+contracts along a junction tree, build by variable elimination.
+We here use an implementation in the \inlinecode{pgmpy} package.
+
+\paragraph{Corewise Contraction}
+uses the \inlinecode{contract_with} method of tensor cores to contract in a given order.
+
+
+
+
+
+\sect{Subpackage \sprepresentation{}}\label{sec:implementationRepresentation}
+
+The \sprepresentation{} subpackage consists in a collection of core creation methods.
+%Here the basis encodings $\bencodingof{\exfunction}$ of various maps $\exfunction$ are created.
+We arrange the \sprepresentation{} subpackage into the second layer of the \tnreason{} architecture, since it specifies tensor cores which formats are specified in \spengine{}.
+
+\paragraph{Coordinate Calculus}
+Coordinatewise transformations (see \defref{def:coordinatewiseTransform}) are supported by
+\begin{lstlisting}
+engine.coordinatewise_transform(coresList, transformFunction)
+\end{lstlisting}
+where \inlinecode{coresList} is a list of $\seldim$ tensors with identical variables and \inlinecode{transformFunction} a function $\chainingfunction: \parspace \rightarrow \rr$.
+
+\paragraph{Basis Calculus}
+Basis encodings (see \defref{def:functionRelationEncoding}) of functions $\exfunction:\facstates \rightarrow \secfacstates$ are created by
+\begin{lstlisting}
+engine.create_relational_encoding_from_lambda(inshape, outshape, incolors, outcolors, indicesToIndices)
+\end{lstlisting}
+where \inlinecode{indicesToIndices} is a lambda-function representing $\exfunction$ and \inlinecode{inshape, outshape, incolors, outcolors} specify the input and output variables.
+Let us notice, that this procedure produces sums of $\facdim$ basis tensors corresponding with a basis $\cpformat$ decompositions.
+More involved initialization procedures based on basis+ elementary tensors calling \\
+\inlinecode{engine.create_from_iterator} might result in sparser representations.
+
+\paragraph{Propositional Connectives} are represented by strings.
+\figref{tab:connectives} lists the supported logical connectives, which are implemented in \inlinecode{representation.basisplus_calculus}.
+If the \inlinecode{str} to the connective starts with \stringof{n}, then the negated connective is encoded.
+
+\begin{figure}
+    \begin{center}
+        \begin{tabular}{|p{\fivecolumnwidth}|p{\fivecolumnwidth}|p{\threecolumnwidth}|p{\fivecolumnwidth}|p{\fivecolumnwidth}|}
+            \hline
+            \textbf{$\exconnective$}          & \textbf{$\synencodingof{\exconnective}$} & \textbf{Notes} & $\baspluscprankof{\exconnective}$ & $\baspluscprankof{\bencodingof{\exconnective}}$ \\
+            \hline
+            $\land$                           & \stringof{and}                           &                                                                   & 1                                 & 3                                               \\
+            %\hline
+            $\lor$                            & \stringof{or}                            &                                                                   & 2                                 & 3                                               \\
+            %\hline
+            $\Rightarrow$                     & \stringof{imp}                           & last variable as head, others premises                            & 2                                 & 3                                               \\
+            %\hline
+            $\oplus$                          & \stringof{xor}                           & implemented as the negation of \stringof{eq}, i.e. \stringof{neq} & 3 & 5 \\
+            %\hline
+            $\Leftrightarrow$                 & \stringof{eq}                            &                                                                   & 2                                 & 5                                               \\
+            %\hline
+            $\catvariableof{\atomenumerator}$ & \stringof{pas} + "$\atomenumerator$"     & $\atomenumerator$th atom & 1 & 2 \\
+            %\hline
+            $\lnot$                           & \stringof{not}                           & negation of the first argument, i.e. \stringof{npas0}             & 1                                 & 2                                               \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \caption{Supported connectives in the script language.
+    The arity of all connectives is not restricted.
+    We notice that the basis+ rank $\baspluscprankof{\bencodingof{\exconnective}}$ is independent of the arity and in most cases less than the naive bound of $2^{\catorder}$.
+    }\label{tab:connectives}
+\end{figure}
+
+
+% WOLFRAM Numbers
+
+\paragraph{Wolfram codes} provide a classification scheme of propositional formuals by natural numbers, which is supported in the script language.
+%They provide a generic representation scheme of propositional formulas by the so-called
+The Wolfram code has been designed for the classification of cellular automaton rules \cite{wolfram_statistical_1983} and popularized in the book \cite{wolfram_new_2002}.
+Along this, the coordinate encodings of $\catorder$-ary connectives $\exconnective$ are flattened and interpreted as a binary number, which is transformed into a decimal number and represented as a string $\synencodingof{\exconnective}$.
+To be more precise, to each $\catorder$-ary connective its Wolfram code is calculated by
+\begin{align*}
+    N(\exconnective) = \sum_{\catindex\in[2^\catorder]} 2^{2^{\catorder}-\catindex-1} \cdot \exconnective(\catindex) \, .
+\end{align*}
+In the script language, the connective is represented by the string concatenation of the arity and the Wolfram code as
+\begin{align*}
+    \synencodingof{\exconnective} = "\catorder" + "_" + "N(\exconnective)" \, .
+\end{align*}
+
+\subsect{Computation Activation Networks}
+
+\paragraph{Features} are generation procedures of activation cores given canonical parameters.
+They are initialized by
+\begin{lstlisting}
+ComputedFeature(featureColors, affectedComputationCores, shape, name)
+\end{lstlisting}
+where
+\begin{itemize}
+    \item \inlinecode{featureColors} is a list of \inlinecode{str} variable colors, which are assigned to a created activation core
+    \item \inlinecode{affectedComputationCores} is a list of \inlinecode{str} names of computation cores, which are required to compute the feature colors
+    \item \inlinecode{shape} is a list of \inlinecode{int} dimensions to the variables
+\end{itemize}
+Mean parameters to features are computed by
+\begin{lstlisting}
+exampleFeature.compute_meanParam(environmentMean)
+\end{lstlisting}
+where \inlinecode{environmentMean} is the contraction of a tensor network with open colors by the \\
+\inlinecode{featureColors}.
+They are further capable of computing local changes to canonical parameter in order to match mean parameters by
+\begin{lstlisting}
+exampleFeature.local_update(environmentMean, meanParam)
+\end{lstlisting}
+To customize their purposes, individual feature classes are derived from \\
+\inlinecode{representation.ComputedFeature}, as listed in \figref{tab:featureTypes}.
+
+\begin{figure}
+    \begin{center}
+        \begin{tabular}{|p{\fourcolumnwidth}|p{\fourcolumnwidth}|p{\fourcolumnwidth}|p{\fourcolumnwidth}|}
+            \hline
+            \textbf{featureType} & \textbf{Purpose} & \textbf{Canonical Parameter} & \textbf{Activation Core} \\
+            \hline
+            \stringof{SingleSoftFeature} & $\sstatcoordinateof{\selindex}$ of a statistic
+            & Scalar (\inlinecode{int} or \inlinecode{float})  & $\expof{\canparam \cdot \indexinterpretationofat{\imageof{\sstatcoordinateof{\selindex}}}{\headvariableof{\selindex}}}$           \\
+            \hline
+            \stringof{SoftPartitionFeature} & Partition statistics (see \defref{def:partitionStatistic}) $\sstat$ %(Boolean statistic $\sstat$ such that $\contractionof{\sencsstat}{\nodevariables}=\onesat{\nodevariables}$
+            & $\canparamat{\selvariable}$  & $\expof{\canparamat{\selvariable}}$   \\
+            \hline
+            \stringof{HardPartitionFeature} & Partition statistics (see \defref{def:partitionStatistic})
+            & Boolean tensor $\canparamat{\selvariable}$  & $\canparamat{\selvariable}$ \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \caption{Features derived from \inlinecode{representation.ComputedFeature}, which are implemented in \inlinecode{representation.features}.}
+    \label{tab:featureTypes}
+\end{figure}
+
+\paragraph{Computation Activation Networks} are the most general models representable in \tnreason{}.
+They generalize distributions such as those computable by a statistic (see \defref{def:realizableStatDistributions}) as well as constraint satisfaction problems (see \defref{def:csp}).
+Computation Activation Networks are initialized by
+\begin{lstlisting}
+representation.ComputationActivationNetwork(featureDict, computationCoreDict, baseMeasureCoreDict, canParamDict)
+\end{lstlisting}
+where
+\begin{itemize}
+    \item \inlinecode{featureDict} is a dictionary of features, where the keys correspond with the names of the features
+    \item \inlinecode{computationCoreDict} is a tensor network of computation cores, which needs to contain all names of computation cores required to compute all feature colors
+    \item \inlinecode{baseMeasureCoreDict} is a tensor network representing of $\basemeasureat{\nodevariables}$
+    \item \inlinecode{canParamDict} is a dictionary of canonical parameters (see \figref{tab:featureTypes})
+\end{itemize}
+Computation Activation Networks can be instantiated as cores by \\
+\inlinecode{exampleCANetwork.create_cores()} or as an energy dictionary by \\
+\inlinecode{exampleCANetwork.get_energy_dict()}.
+Energy dictionaries are stored as dictionaries with values by tuples \inlinecode{value, tensorNetwork}, representing a by \inlinecode{value} weighted sum of the \inlinecode{tensorNetwork}.
+
+\begin{example}[Representation of a member of an exponential family]\label{exa:expFamilyCARep}
+    To represent $\expdistof{\sstat,\canparam,\basemeasure}$ we initialize a
+    \begin{itemize}
+        \item \inlinecode{featureDict} as a dictionary of \inlinecode{representation.SingleSoftFeature} to each feature $\sstatcoordinateof{\selindex}$
+        \item \inlinecode{computationCoreDict} $\extnet$ of computation cores such that
+        \begin{align*}
+            \extnetat{\headvariables,\nodevariables} = \bencodingofat{\sstat}{\headvariables,\nodevariables} \, .
+        \end{align*}
+        Decompositions and redundancies between coordinates $\sstatcoordinateof{\selindex}$ can be exploited to find an efficient tensor network.
+        \item \inlinecode{baseMeasureCoreDict} $\secextnet$ to represent the base measure $\basemeasure$
+        \item \inlinecode{canParamDict} of canonical parameters, valued by the coordinates $\canparamat{\indexedselvariable}$
+    \end{itemize}
+\end{example}
+
+
+
+\sect{Subpackage \spreasoning{}}\label{sec:implementationReasoning}
+
+
+The \spreasoning{} subpackage implements contraction-based reasoning algorithm on representation.ComputationActivationNetworks.
+%basic tensor network algorithms with calls of specific execution in \spengine{}.
+As the \sprepresentation{} subpackage it is arranged in the second layer of the \tnreason{} architecture, since it specifies the manipulation of tensor networks in the \spengine{} subpackage.
+
+\subsect{Sampling}
+
+Sampling is performed by MCMC methods calling local sampling methods, which are derived classes from \inlinecode{reasoning.SampleCoreBase}.
+
+The energy-based algorithms execute reasoning tasks solely on energy dictionaries, which are created by \inlinecode{representation.ComputationActivationNetwork.get_energy_dict()}.
+\begin{lstlisting}
+reasoning.EnergyBasedGibbs
+\end{lstlisting}
+
+
+\subsect{Variational Inference}
+An overview over the variational inference methods in presented in \figref{tab:inferenceMethods}.
+
+\paragraph{Forward mappings} are implemented by \inlinecode{reasoning.ForwardContractor} as contraction of all cores, and in \inlinecode{reasoning.ExpectationPropagator} as a message-passing approach.
+
+\paragraph{Backward mappings} (see \secref{sec:backwardMap}) are implemented by \inlinecode{reasoning.BackwardAlternator} as alternating algorithms iteratively updating the canonical parameters to single features (see \algoref{alg:AMM}).
+
+\paragraph{Mean field methods} are approximation methods of energy tensors by tractable exponential families (see \secref{sec:meanField}).
+Given an energy dictionary the naive mean field method is implemented as %(e.g. created by \inlinecode{exampleCANetwork.get_energy_dict()})
+\begin{lstlisting}
+reasoning.NaiveMeanField(energyDict)
+\end{lstlisting}
+and the more general markov network based mean field method by
+\begin{lstlisting}
+reasoning.GenericMeanField(energyDict, edgeColorDict)
+\end{lstlisting}
+where \inlinecode{edgeColorDict} specifies the graph of the approximating markov network.
+
+
+\begin{figure}
+    \begin{center}
+        \begin{tabular}{|p{\threecolumnwidth}|p{\threecolumnwidth}|p{\threecolumnwidth}|}
+            \hline
+            \textbf{inferenceMethod} (str)   & \textbf{Applied procedure}                               & \textbf{Dependency}                                               \\
+            \hline
+            \stringof{ForwardContractor}     & Contraction of all cores keeping the feature colors open  & $--$\\
+            %\hline
+            \stringof{BackwardAlternator}    & Iterative local updates to match the mean parameters & Forward inferer to iteratively update the mean parameters \\
+            %\hline
+            \stringof{ExpectationPropagator} & Iterative updates of messages between feature clusters & Forward and backward inferer used for the computation of messages \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \caption{Implemented inference methods in \tnreason{}.}
+    \label{tab:inferenceMethods}
+\end{figure}
+
+
+
+\subsect{Optimization}
+
+Optimization is a reasoning task of finding a maximal coordinate given a tensor network.
+The supported methods are implemented in \inlinecode{reasoning.optimization_handling} and listed in \figref{tab:optimizationMethods}.
+
+\begin{figure}
+    \begin{center}
+        \begin{tabular}{|p{\threecolumnwidth}|p{\threecolumnwidth}|p{\threecolumnwidth}|}
+            \hline
+            \textbf{optimizationMethod} (str) & \textbf{Package}      & \textbf{Applied procedure}                                                 \\
+            \hline
+            \stringof{numpyArgMax}            & \inlinecode{numpy}    & Transformation into a numpy core and solution by \inlinecode{numpy.argmax} \\
+            %\hline
+            \stringof{gurobi}                 & \inlinecode{gurobipy} & Transformation into an ILP and solution by \inlinecode{gurobipy.optimize}  \\
+            %\hline
+            \stringof{gibbsSample}            & $--$                  & Simulated annealing based on gibbs sampling                                \\
+            %\hline
+            \stringof{meanFieldSample}        & $--$                  & Mean field approximation combined with \stringof{gibbsSample}              \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \caption{Implemented optimization methods in \tnreason{}.}
+    \label{tab:optimizationMethods}
+\end{figure}
+
+
+
+\sect{Subpackage \spapplication{}}\label{sec:implementationApplication}
+
+With the \spapplication{} subpackage we provide an interface for reasoning workload.
+It builds a third layer, since it used \sprepresentation{} to represent knowledge by tensor networks and \spreasoning{} in the execution of reasoning tasks.
+%
+A user-friendly high-level syntax of script language (logical formulas or neuro-symbolic architectures) for the specification of tensor networks creation, such as propositional formulas or categorical constraints, is introduced.
+Given a specification of a formula $\exformula$ in script language $\synencodingof{\cdot}$, the task amounts to building a semantic representation based on the syntactic specification.
+
+
+\subsect{Representation of formulas}
+
+Propositional formulas $\exformula$ are represented in three schemes:
+\begin{itemize}
+    \item Syntactical representation by a script language $\synencodingof{\exformula}$ as nested lists (see \secref{subsec:scriptLanguage}).
+    %Most practical to choose a formula from a neuro-symbolic architecture.
+    \item Syntactical representation by a \inlinecode{str} specifying a color to the categorical variables $\headvariableof{\exformula}$.
+    \item Representation of formulas by tensor networks being contracted to $\bencodingofat{\exformula}{\headvariableof{\exformula},\nodevariables}$
+\end{itemize}
+
+Conversions of the formats:
+\begin{itemize}
+    \item $\synencodingof{\exformula}$ to color by
+    \begin{lstlisting}
+application.get_formula_color(S(f))
+    \end{lstlisting}
+    Here the nested lists are turned in a string by concatenating all elements of a list with \stringof{\_} and adding \stringof{[} and \stringof{]} at the beginning and end of each list.
+    \item  $\synencodingof{\exformula}$ to tensor network
+    \begin{lstlisting}
+application.create_raw_cores(S(f))
+    \end{lstlisting}
+    This creates the connective cores for the semantic representation of $\bencodingof{\exformula}$.
+    We encode them by iterative calls of \inlinecode{engine.create_from_iterators}.
+\end{itemize}
+
+%When encoding formulas with hard interpretation, we furthermore add a head core of type \stringof{truthEvaluation} since we have
+%\[ {\exformula} = \contractionof{\bencodingof{\exformula},\tbasis}{\catvariableof{\exformula}} \, . \]
+
+\subsect{Script Language}\label{subsec:scriptLanguage}
+
+To specify propositional sentences, neuro-symbolic architectures and \MarkovLogicNetworks{}, we developed a script language.
+
+% Atoms
+
+\paragraph{Atomic Formulas} are represented by arbitrary strings, which are not used for the representation of connectives.
+We further avoid the symbols \{\stringof{(}, \stringof{)}, \stringof{\_}\} in the names of atoms, to not confuse them with colors of categorical variables.
+
+% Composed Formulas
+
+\paragraph{Composed Formulas} are represented by nested lists, where each sublist is either specifying an atomic formula (if string) or another composed formula.
+For example, a formula $\exformula_1\exconnective,\exformula_2$ is represented by
+\begin{centeredscript}
+    $\synencodingof{\exformula_1\exconnective,\exformula_2}$ = [$\synencodingof{\exconnective}$, $\synencodingof{\exformula_1}$, $\synencodingof{\exformula_2}$]
+\end{centeredscript}
+where we apply the conventions
+\begin{itemize}
+    \item Connectives are at the 0th position in each list
+    \item Further entries are either atoms as strings or encoded formulas itself
+\end{itemize}
+The nested lists follows a grammar, which is provided in \figref{tab:bnFunctions} in its Backus-Naur form.
+
+
+% Backus-Naur
+\begin{figure}
+    \begin{center}
+        \begin{tabular}{|p{2cm}|p{8cm}|}
+            %\hline
+            %Unary Connective  & \stringof{not} | \stringof{id}                                                  \\
+            \hline
+            $\atomorder$-ary connective & \stringof{and} | \stringof{or} | \stringof{imp} | \stringof{xor}  | \stringof{eq} | \stringof{not} | $\cdots$ \\
+            & \stringof{\atomorder} + "$\_$" + \stringof{N}, where $N<2^{2^{\atomorder}-1}$                               \\
+            \hline
+            Atomic Formula              & Set of strings not in Connectives                                                                           \\
+            \hline
+            Complex Formula             & Atomic Formula | [$\atomorder$-ary connective, $\atomorder$ Complex Formulas]                               \\
+            %& [Binary Connective, Complex Formula, Complex Formula]                           \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \caption{Backus-Naur form of the grammar producing the nested list expressions.
+    The string connectives are either appearing in the list of \figref{tab:connectives}, or represented by a Wolfram code.
+    }\label{tab:bnFunctions}
+\end{figure}
+
+
+
+\begin{example}[Encoding of the Wet Street example]
+    For example we have
+    \begin{itemize}
+        \item
+        Atomic variable $\var{Rained}$ by
+        \begin{centeredscript}
+            $\synencodingof{\var{Rained}}$
+			= \stringof{Rained}
+        \end{centeredscript}
+        \item
+        Negative literal $\lnot\var{Rained}$ by
+        \begin{centeredscript}
+            $\synencodingof{\lnot\var{Rained}}$
+			= [\stringof{not},\stringof{Rained}]
+        \end{centeredscript}
+        \item
+        Horn clause $\left(\var{Rained}\Rightarrow\var{Wet}\right)$ by
+        \begin{centeredscript}
+            $\synencodingof{\var{Rained}\Rightarrow\var{Wet}}$
+			= [\stringof{imp},\stringof{Rained},\stringof{Wet}]
+        \end{centeredscript}
+        \item
+        Knowledge Base
+        $(\lnot\var{Rained})\land(\var{Rained}\Rightarrow\var{Wet})$ by
+        \begin{centeredscript}
+            $\synencodingof{\lnot\var{Rained})\land(\var{Rained}\Rightarrow\var{Wet}}$
+			=  [\stringof{and}, [\stringof{not}, \stringof{Rained}], [\stringof{imp}, \stringof{Rained}, \stringof{Wet}]]
+        \end{centeredscript}
+    \end{itemize}
+\end{example}
+
+
+
+
+\textbf{Knowledge Bases}
+
+% Should distinguish these in knowledge?
+We distinguish here formulas, with propositional logic interpretation and formulas which have a soft logic interpretation.
+%\textbf{Facts.}
+The formulas with hard interpretation are called facts in a knowledge base $\kb$ and encoded by dictionaries
+\begin{centeredscript}
+    \{key($\exformula$) : $\synencodingof{\exformula}$ for $\exformula\in\kb$ \}
+\end{centeredscript}
+
+\textbf{\MarkovLogicNetworks{}}
+
+%\textbf{Weighted formulas.}
+The formulas with soft interpretation are called weighted formulas and encoded by $\expof{\weightof{\exformula}\cdot\exformula}$.
+We thus require a specification of the weights, which we do by adding $\weightof{\exformula}$ as a $\mathrm{float}$ or an $\mathrm{int}$ to the list $\synencodingof{\exformula}$.
+We then store \MarkovLogicNetworks{} by dictionaries
+\begin{centeredscript}
+    \{key($\exformula$) : $\synencodingof{\exformula}$ + [$\weightof{\exformula}$] for $\exformula\in\formulaset$\}
+\end{centeredscript}
+
+\textbf{Neuro-Symbolic Architecture by Nested Lists}
+
+% Generalizing the script language to specify architectures
+To specify neuro-symbolic architectures in terms of formula selecting maps, as has been the subject of \charef{cha:formulaSelection} we further exploit the nested list structure of encoding propositional logics.
+We replace, in each hierarchy of the nested structure each entry by a list of possible choices.
+In this way, we reinterpret the list index as the choice indices $\selindex$ introduced for connective and formula selections (see \defref{def:connectiveSelector} and \ref{def:formulaSelector}).
+More formally, the production rules are formalized in \figref{tab:bnNeurons} by the extension of the Backus-Naur form in \figref{tab:bnFunctions}.
+
+% Neurons
+\paragraph{Connective selectors} (see \defref{def:connectiveSelector}) are encoded by the list
+\begin{centeredscript}
+    $\synencodingof{\exconnective}$
+			= [$\synencodingof{\exconnective_{0}}$, $\ldots$, $\synencodingof{\exconnective_{\seldim\shortminus1}}$]
+\end{centeredscript}
+and a formula selector (see \defref{def:formulaSelector}) by
+\begin{centeredscript}
+    $\synencodingof{\fselectionmap}$
+			= [$\synencodingof{\exconnective_{0}}$, $\ldots$, $\synencodingof{\exconnective_{\seldim\shortminus1}}$]
+\end{centeredscript}
+
+\paragraph{A logical neuron} of order $\selorder$ (see \defref{def:fsNeuron}), defined by a connective selector $\exconnective$, and a formula selector $\fselectionmap_\atomenumerator$ on each argument $\atomenumerator\in[\selorder]$, is encoded by
+\begin{centeredscript}
+    $\synencodingof{\lneuron}$
+			= [$\synencodingof{\exconnective}$, $\synencodingof{\fselectionmap_0}$, $\ldots$,  $\synencodingof{\fselectionmap_{\selorder-1}}$]
+\end{centeredscript}
+Only the unary $\selorder=1$ and the $\selorder=2$ cases are supported.
+
+
+% Confusing?
+The resulting nested lists indices have an alternating interpretation at each level compared with the elements of each list.
+That is, when $\synencodingof{\lneuron}$ is the encoding of a neuron, then any element $x\in\synencodingof{\lneuron}$ represents a list of choices.
+When $x$ is not the first element, then each choice is either the encoding $\synencodingof{\catvariable}$ of an atomic formula, or another neuron.
+
+% Find another symbol?
+
+\paragraph{A neural architecture} $\larchitecture$ is then represented in the dictionary
+\begin{centeredscript}
+    $\synencodingof{\larchitecture}$ = \{key($\lneuron$) : $\synencodingof{\lneuron}$ for $\exformula\in\larchitecture$\}
+\end{centeredscript}
+%To store this structure, we choose dictionaries of neuron spe
+%\begin{centeredscript}
+%	\{key($\lneuron$) : $\synencodingof{\lneuron}$ for $\exformula\in\formulaset$\}
+%\end{centeredscript}
+where key($\lneuron$) is a string, which can be used in the formula selections of other neurons.
+
+% Important for well-definedness
+It is important that the directed graph of neurons induced by the choice possibilities is acyclic, to ensure a well-defined architecture.
+
+
+\begin{figure}
+    \begin{center}
+        \begin{tabular}{|p{2cm}|p{8cm}|}
+            %\hline
+            %Unary Connectives  & [Unary Connective] | [Unary Connective] + Unary Connectives    \\
+            \hline
+            $\atomorder$-ary connectives & [$\atomorder$-ary connective] | [$\atomorder$-ary connective] + $\atomorder$-ary connectives \\
+            %\hline
+            %Neuron Name & Any set of strings not used for atoms or connectives \\
+            \hline
+            Dependency Choice            & Atomic Formula | Neuron                                                                      \\
+            \hline
+            Dependency Choices           & [Dependency Choice] | [Dependency Choice] + Dependency Choices                               \\
+            \hline
+            Neuron                       & [$\atomorder$-ary connectives, $\atomorder$ Dependency Choices]                              \\
+            % & [Binary Connectives, Dependency Choices, Dependency Choices]   \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \caption{Extension of the grammar in Backus-Naur form in \figref{tab:bnFunctions} to describe selections of functions.}\label{tab:bnNeurons}
+\end{figure}
+
+
+\begin{example}[Neuro-Symbolic Architecture for the Wet Street]
+    Following the wet street example, we can define a neuron by
+    \begin{centeredscript}
+        $\synencodingof{\lneuron}$ = [[\stringof{imp},\stringof{eq}],[\stringof{Wet},\stringof{Sprinkler}],[\stringof{Street}]]
+    \end{centeredscript}
+    from which the formulas
+    \begin{centeredscript}
+        [\stringof{imp}, \stringof{Wet}, \stringof{Street}] \\
+		\hspace{0.25cm} [\stringof{eq}, \stringof{Wet}, \stringof{Street}] \\
+		\hspace{1cm}[\stringof{imp}, \stringof{Sprinkler}, \stringof{Street}] \\
+		\hspace{1cm}[\stringof{eq}, \stringof{Sprinkler}, \stringof{Street}]
+    \end{centeredscript}
+    can be chosen.
+    Combining this neuron with further neurons, e.g. by the architecture
+    \begin{centeredscript}
+        $\synencodingof{\larchitecture}$ = \{ \stringof{neur1}: [[\stringof{imp},\stringof{eq}],[\stringof{neur2}],[\stringof{Street}]] , \\
+		\hspace{1.8cm}\stringof{neur2}: [[\stringof{lnot},\stringof{id}],[\stringof{Wet},\stringof{Sprinkler}],[\stringof{Street}]] \}
+    \end{centeredscript}
+    the expressitivity increases.
+    In this case, the further neuron provides the flexibility of the first atoms to be replaced by its negation.
+\end{example}
+
+
+
+\subsect{Distributions}
+
+%\paragraph{}
+%We encode Markov Networks by specifying a set of tensor cores.
+Distributions are procedures to specify \inlinecode{representation.ComputationActivationNetworks} and are derived from the base class \inlinecode{representation.DistributionBase}.
+Each distribution needs to have a routine
+\begin{lstlisting}
+exampleDistribution.create_caNetwork()
+\end{lstlisting}
+creating the corresponding network.
+%creating the factor cores and
+%\begin{lstlisting}%
+%	.get_partition_function()
+%\end{lstlisting}
+%calculating the partition function.
+%Although the partition function can be calculated by the contraction of all cores, we separate the method since there are situations where a faster calculation can be performed.
+
+\paragraph{Markov Networks} are distributions, which do not have computation cores.
+The positive coordinates of the factors are represented by \inlinecode{representation.SoftPartitionFactors} and the support of the factors \inlinecode{representation.HardPartitionFactors}.
+%\begin{lstlisting}
+%	application.
+%\end{lstlisting}
+
+\paragraph{Empirical Distributions} are special instances of Markov Networks specifying distributions of sample data.
+We represent the values as a $\cpformat$ Format of data cores as specified in \secref{sec:empDistribution}.
+They are initialized by
+\begin{lstlisting}
+application.get_empirical_distribution(sampleDf, atomColumns, interpretation, dimensionsDict)
+\end{lstlisting}
+where
+\begin{itemize}
+    \item \inlinecode{sampleDf} is a \inlinecode{pandas.DataFrame} specifying the data
+    \item \inlinecode{atomColumns} is a list of column names in \inlinecode{sampleDf} to be extracted as variables of the distribution.
+    \item \inlinecode{interpretation} is either \stringof{atomic} or \stringof{categorical}, specifying whether the entries in \inlinecode{sampleDf} are interpreted as uncertainties in the interval $[0,1]$, or as assignments to
+\end{itemize}
+
+Here the partition function is the number of samples used in the creation of the empirical distribution.
+
+
+\textbf{HybridKnowledgeBases} are probability distributions, which are specified by propositional formulas in the script language.
+\begin{lstlisting}
+application.HybridKnowledgeBase
+\end{lstlisting}
+They are initialized with arguments
+\begin{itemize}
+    \item facts: Dictionary of propositional formulas stored as $\synencodingof{\exformula}$ representing hard logical constraints
+    \item weightedFormulas: Dictionary of propositional formulas stored as $\synencodingof{\exformula}$+$[\weightof{\exformula}]$ representing soft logical constraints
+    \item evidence: Dictionary of atomic formulas, where key are the formulas in string representation and values the certainty in $[0,1]$ (float or int) of the atom being true
+    \item categoricalConstraints: Dictionary of categorical constrained, which values are lists of atomic formulas stored as strings $\synencodingof{\atomicformula}$
+\end{itemize}
+
+
+\subsect{Inference}
+
+To simplify deductive inference on models a class
+\begin{lstlisting}
+application.InferenceProvider
+\end{lstlisting}
+taking a \inlinecode{representation.ComputationActivationNetwork} or \inlinecode{application.Distribution} has been implemented.
+
+% Probabilistic Queries
+
+\paragraph{Probabilistic queries} as specified \defref{def:queries})  by
+\begin{lstlisting}
+.query(variableList, evidenceDict)
+\end{lstlisting}
+
+\paragraph{Mode queries} by
+\begin{lstlisting}
+.exact_map_query()
+\end{lstlisting}
+%or by
+%\begin{lstlisting}
+%	.annealed_sample()
+%\end{lstlisting}
+%using Simulated Annealing (see Remark~\ref{rem:simulatedAnnealing}) to find an approximate maximum.
+%The second method circumvents the creation of the coordinatewise representation of the distribution and circumvents therefore, at the expense of potentially approximative solutions, a bottleneck in case of many query variables.
+
+% Entailment Queries
+
+\paragraph{Entailment} from the distribution (\defref{def:probEntailment}) is be decided by
+\begin{lstlisting}
+.ask(queryFormula, evidenceDict)
+\end{lstlisting}
+where queryFormula is the formula $\exformula$ to be tested for entailment in the representation $\synencodingof{\exformula}$.
+
+% Sampling
+
+\paragraph{Samples} can be drawn by
+\begin{lstlisting}
+.draw_samples(sampleNum, variableList, annealingPattern)
+\end{lstlisting}
+based on Gibbs sampling, where
+\begin{itemize}
+    \item sampleNum (int) gives the number of samples to be drawn
+    \item variableList (list of str) defines the variables to be represented by the samples (default: all atoms in the distribution)
+    \item annealingPattern specifies an annealing pattern
+\end{itemize}
+
+
+%\subsect{Parameter Estimation}
+%
+%\textbf{EntropyMaximizer} implements Algorithm~\ref{alg:AWO}, which is motivated by the maximum entropy principle (see \secref{sec:maxEntProblem}) to optimize \MarkovLogicNetworks{}.
+%The class
+%\begin{lstlisting}
+%	application.EntropyMaximizer
+%\end{lstlisting}
+%is initialized with the arguments
+%\begin{itemize}
+%    \item expressionsDict: Dictionary of formulas in the format $\synencodingof{\exformula}$
+%    \item satisfactionDict: Dictionary of the satisfaction rates (mean parameters) to be matched by the optimal distribution
+%\end{itemize}
+%The optimization is then performed by
+%\begin{lstlisting}
+%	.alternating_optimization(sweepNum, updateKeys)
+%\end{lstlisting}
+%method, where the iteration in  through the updateKeys is performed sweepNum times.
+
+\subsect{Learning}
+
+To learn instances of \inlinecode{application.HybridKnowledegBase} on data the class
+\begin{lstlisting}
+application.HybridLearner
+\end{lstlisting}
+is initialized with the arguments
+\begin{itemize}
+    \item knowledgeBase: Distribution representing a current model to be improved
+    \item specDict: A neuro-symbolic architecture encoded in a dictionary of neurons
+\end{itemize}
+
+\paragraph{Formula Selecting Neural Networks} (\defref{def:fsNeuron})
+are specified to define a proposal distribution.
+They are encoded by creating all formula selecting neurons, each involving a
+\begin{itemize}
+    \item a connective selection map (\defref{def:connectiveSelector})
+    \item variable selection cores (\defref{def:variableSelector}) to each argument using the decomposition of \theref{the:varSelectorDecomposition}.
+\end{itemize}
+Each selection variable of each neuron comes with a control variable with suffix \stringof{\_sV}.
+
+\paragraph{Structure Learning}
+is performed by
+\begin{lstlisting}
+application.HybridLearner.propose_candidate()
+\end{lstlisting}
+where a proposal distribution is instantiated and then sampled given the specified inference method.
+
+\paragraph{Weight Estimation}
+is performed by
+\begin{lstlisting}
+application.HybridLearner.infer_weights_on_data(empDistribution)
+\end{lstlisting}
+where \inlinecode{empDistribution} is used to infer the mean parameters to be matched by the canonical parameters of \inlinecode{knowledgeBase.weightedFormulas}.

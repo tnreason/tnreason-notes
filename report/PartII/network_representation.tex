@@ -1,0 +1,1401 @@
+\chapter{\chatextnetworkRepresentation}\label{cha:networkRepresentation}
+
+\HybridLogicNetworks{} are graphical models with an interpretation by propositional logics.
+Since they unify probabilistic and logical reasoning, we call them hybrid.
+In this chapter we investigate their representation based on tensor networks, while the reasoning mechanisms are discussed in \charef{cha:networkReasoning}.
+We first distinguish between \MarkovLogicNetworks{}, which are an approach to soft logics in the framework of exponential families, and \HardLogicNetworks{}, which correspond with propositional knowledge bases.
+Then we exploit non-trivial boolean base measures to unify both approaches by \HybridLogicNetworks{}, which are itself in exponential families.
+We then investigate the corresponding mean parameter polytopes of \HybridLogicNetworks{} and show expressivity results.
+
+\sect{\MarkovLogicNetworks{}}
+
+\MarkovLogicNetworks{} exploit the efficiency and interpretability of logical calculus as well as the expressivity of graphical models.
+
+\subsect{\MarkovLogicNetworks{} as Exponential Families}
+
+We introduce \MarkovLogicNetworks{} in the formalism of exponential families (see \secref{sec:exponentialFamilies}).
+
+\begin{definition}[\MarkovLogicNetwork]
+    \label{def:mln}
+    \MarkovLogicNetworks{} are exponential families $\mlnexpfamily$ with sufficient statistics by functions
+    \begin{align*}
+        \hlnstat \defcols\atomstates \rightarrow \bigtimes_{\exformulain}[2] \subset \rr^{\cardof{\formulaset}}
+    \end{align*}
+    defined coordinatewise by propositional formulas $\exformulain$.
+\end{definition}
+
+% Characterization of MLNs among exponential families\defcolsWhen choosing binary features
+Since the image of each coordinate $\sstatcoordinateof{\selindex}$ is contained in $\ozset$, each is a propositional formulas (see \defref{def:formulas}).
+%Conversely, any boolean feature $\sstatcoordinateof{\selindex}$ of an exponential family defines a propositional formula (see \defref{def:formulas}).
+Thus, any exponential family of distributions of $\atomstates$, such that $\imageof{\sstatcoordinateof{\selindex}}\subset\ozset$ for all $\selindexin$ is a set of \MarkovLogicNetworks{} with fixed formulas.
+
+\begin{remark}[Alternative Definitions]
+    We here defined \MarkovLogicNetworks{} on \propositionalLogic{}, while originally they are defined in the more expressive \firstOrderLogic{} \cite{richardson_markov_2006}.
+    The relation of both frameworks will be discussed further in \charef{cha:folModels}.
+\end{remark}
+
+
+
+\subsect{Tensor Network Representation}
+
+Based on the previous discussion on the representation of exponential families by tensor networks in \secref{sec:exponentialFamilies} we now derive a representation for \MarkovLogicNetworks{}.
+
+\subsubsect{Basis Encodings for Distributions}
+
+\begin{theorem}[Basis encodings for \MarkovLogicNetworks{}]
+    \label{the:mlnTensorRep}
+    A \MarkovLogicNetwork{} to a set of formulas $\formulaset = \{\enumformula \wcols \selindexin\}$ is represented as
+    \begin{align*}
+        \mlnprobat{\shortcatvariables} =
+        \normalizationof{\{\enumformulaccwith \wcols \selindexin \} \cup \{\softactlegwith \wcols \selindexin \}
+        }{\shortcatvariables}
+    \end{align*}
+    where we denote for each $\selindexin$ an activation core
+    \begin{align*}
+        \softactleg\left[\indexedheadvariableof{\selindex}\right]
+        = \begin{cases}
+              1 & \ifspace \headindexof{\selindex} = 0 \\
+              \expof{\canparamat{\indexedselvariable}} & \ifspace \headindexof{\selindex}  = 1
+        \end{cases}  \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    \MarkovLogicNetworks{} are exponential families, which base measure is trivial and which statistic consist of boolean features.
+    We apply the tensor network decomposition of more generic exponential families \theref{the:expFamilyTensorRep} to this case and get
+    \begin{align*}
+        \mlnprobat{\shortcatvariables} =
+        \normalizationof{\{\onesat{\shortcatvariables}\}
+        \cup \{\bencodingofat{\sstatcoordinateof{\selindex}}{\sstatcatof{\selindex},\shortcatvariables} \wcols \selindexin\}
+        \cup\{\softactlegwith \wcols \selindexin\}}{\shortcatvariables} \, .
+    \end{align*}
+    While the base measure tensor is trivial, it can be ignored in the contraction.
+    Since the image of each feature $\enumformula$ is in $[2]$, we choose the index interpretation function by the identity $\indexinterpretation \defcols[2] \rightarrow \ozset$ and get
+%	We further choose the standard index interpretation for booleans (see \secref{sec:booleanEncoding}) and get
+    \begin{align*}
+        \softactleg\left[\indexedheadvariableof{\selindex}\right]
+        &= \expof{\canparamat{\indexedselvariable} \cdot \indexinterpretationofat{\selindex}{\headindexof{\selindex}} }
+        = \expof{\canparamat{\indexedselvariable} \cdot \headindexof{\selindex}} \\
+        &= \begin{cases}
+               1 & \ifspace \headindexof{\selindex} = 0 \\
+               \expof{\canparamat{\indexedselvariable}} & \ifspace \headindexof{\selindex}  = 1
+        \end{cases} \, . \qedhere
+    \end{align*}
+\end{proof}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{PartII/tikz_pics/network_representation/factor.tex}
+    \end{center}
+    \caption{Factor of a \MarkovLogicNetwork{} to a formula $\enumformula$, represented as the contraction of a computation core $\enumformulacc$ and an activation core $\softactleg$.
+    While the computation core $\enumformulacc$ prepares based on basis calculus a categorical variable representing the value of the statistic formula $\enumformula$ dependent on assignments to the distributed variables, the activation core multiplies an exponential weight to coordinates satisfying the formula.
+    }
+    \label{fig:mlnFactor}
+\end{figure}
+
+% Graphical model representation
+\theref{the:mlnTensorRep} provides a decomposition of \MarkovLogicNetworks{} by a tensor network of computation cores $\bencodingof{\enumformula}$ and accompanying activation cores $\softactleg$.
+Since the head variable $\headvariableof{\selindex}$ appears exclusively in these pairs, we can contract each computation core with the corresponding activation core to get a factor, see \figref{fig:mlnFactor}.
+With this we get the decomposition
+\begin{align*}
+    \mlnprobat{\shortcatvariables}
+    = \normalizationof{\{\expof{\canparamat{\indexedselvariable}\cdot\enumformulaat{\shortcatvariables}} \wcols \selindexin\}}{\shortcatvariables} \, .
+\end{align*}
+More precisely, this transformation of the decomposition holds by \theref{the:splittingContractions} to be shown in \charef{cha:messagePassing}, stating that the contraction of computation and activation cores can be performed before the global contraction of the result.
+
+% Sparsification by trivial variables
+While in the decomposition of \theref{the:mlnTensorRep} the basis encodings of the features carry all distributed variables $\shortcatvariables$, we now seek towards sparser decompositions.
+To each $\selindexin$ we denote by $\nodesof{\selindex}$ the maximal subset of $[\catorder]$ such that there is a reduced function
+$\tilde{\formula}_{\selindex} \defcols\bigtimes_{\catenumerator\in\nodesof{\selindex}}[\catdimof{\catenumerator}] \rightarrow [2]$
+with
+\begin{align*}
+    \enumformulaat{\shortcatvariables}
+    = \contractionof{\tilde{\formula}_{\selindex}[\catvariableof{\nodesof{\selindex}}]}{\shortcatvariables} \, .
+\end{align*}
+We often account for such situations of sparse formulas, when $\enumformula$ has a syntactical decomposition involving only the atomic variables $\nodesof{\selindex}$.
+As a consequence we have
+\begin{align*}
+    \bencodingofat{\enumformula}{\shortcatvariables}
+    = \bencodingofat{\tilde{\formula}_{\selindex}}{\catvariableof{\nodesof{\selindex}}}
+\end{align*}
+and
+\begin{align*}
+    \mlnprobat{\shortcatvariables}
+    = \normalizationof{\{\expof{\canparamat{\indexedselvariable}\cdot\tilde{\formula}_{\selindex}[\catvariableof{\nodesof{\selindex}}]} \wcols \selindexin\}}{\shortcatvariables} \, .
+\end{align*}
+Thus, any \MarkovLogicNetwork{} has a sparse representation by a markov network on the graph
+\begin{align*}
+    \graphof{\formulaset} = ([\catorder],\{\nodesof{\selindex} \wcols \selindexin\}) \, .
+\end{align*}
+This sparsity inducing mechanism is analogous to the decomposition of probability distributions based on conditional independence assumptions, when understanding each formula in the \MarkovLogicNetwork{} as an introduced dependency among the affected variables $\nodesof{\selindex}$.
+
+
+\begin{figure}[t]
+    \begin{center}
+        \input{PartII/tikz_pics/network_representation/decomposed_representation.tex}
+    \end{center}
+    \caption{Example of a decomposed Markov Network representation of a \MarkovLogicNetwork{} with formulas $\{\formulaof{0} = a\lor b, \formulaof{1} = a \lor b \lor \lnot c\}$.
+    Since both formulas share the subformula $a\lor b$, their contracted factors have a representation by a connected tensor network.}
+    \label{fig:mlnDecRep}
+\end{figure}
+
+
+% Sparsity by decomposition
+A further sparsity introducing mechanism is through exploiting redundancy in the computation of $\enumformula$, when a decomposition of the feature is known.
+For the propositional formulas $\enumformula$ this amounts to a syntactic representation of the formula as a composition of logical connectives is available (see \figref{fig:mlnDecRep}). % Make a precise definition in logicRepresentation and link it!
+In this case, we exploit the representation by tensor networks of the basis encodings (shown as \theref{the:compositionByContraction} in \charef{cha:basisCalculus})
+Note, that this decomposition scheme introduces further auxiliary variables $\headvariable$ with deterministic dependence on the distributed variables $\shortcatvariables$.
+Such variables are often referred to as hidden.
+
+% Shared formulas
+We can further exploit common syntactical structure in the formulas $\enumformula\in\formulaset$ to reduce the number of basis encodings of connectives.
+This is the case, when the syntax graph of two or more formulas share a subgraph.
+In that case, the respective syntax graph needs to be represented only once an can be incorporated into the decomposition of all formulas, which share this subgraph.
+For an example see \figref{fig:mlnDecRep}, where the syntactical representation of the formula $\formulaof{0}$ is a subgraph of the syntactical representation of $\formulaof{1}$.
+
+
+%Since any member of an exponential family is a Markov Network with tensors to each coordinate of the statistic, also \MarkovLogicNetworks{} are Markov Networks.
+
+%\begin{corollary}\label{cor:MLNasMN}
+%	Given a set $\formulaset$ of formulas on atomic variables $\catvariableof{\nodes}$, we construct a $\graph=(\nodes,\edges)$, where $\nodes$ are decorated by the atoms and
+%		\[ \edges = \{ \nodesof{\formula}: \formula\in\formulaset \} \, , \]
+%	where by $\nodesof{\formula}$ we denote the minimal set such that there exists a tensor $\hypercoreat{\catvariableof{\nodesof{\formula}}}$ with
+%		\[ \formulaat{\catvariableof{\nodes}} = \hypercoreat{\catvariableof{\nodesof{\formula}}} \otimes \onesat{\catvariableof{\nodes/\nodesof{\formula}}} \, . \]
+%	Any \MarkovLogicNetwork{} $\mlnprobat{\shortcatvariables}$ is then a Markov Network given the graph $\graphof{\formulaset}$
+%	$\{\expof{\canparamat{\indexedselvariable}\cdot\enumformula}
+%\, :\,\selindexin\}$.
+%\end{corollary}
+
+
+% MLN as graphical models
+%\MarkovLogicNetworks{} are Markov Networks with the factors given in a restricted form from the weighted truth of a formula.
+%Each formula is seen as a factor of the graphical model.
+
+To summarize, our sparse representations of \MarkovLogicNetworks{} implement the two sparsity mechanisms described in \parref{par:one}, originating from graphical models and propositional syntax:
+\begin{itemize}
+    \item \textbf{\IndependenceMechanism{}} (see \secref{sec:independenceMechanism}):
+    Formulas often depend only on subsets of atoms, and therefore the variable $\formulavar$ is independent on some atomic variables $\catvariableof{\atomenumerator}$.
+    This exploits the main sparsity mechanism in graphical models, where factors in sparse representations depend only on a subset of variables.
+    \item \textbf{\ComputationMechanism{}} (see \secref{sec:computationMechanism}):
+    When the features of an exponential family are compositions of smaller formulas, the computation core is decomposed into a tensor network of their basis encodings.
+    This can be regarded as the main sparsity mechanism of propositional logics, where syntactical decompositions of formulas are exploited.
+    Further, when the structure of the smaller formulas is shared among different features, the respective basis encodings need to be instantiated only once.
+\end{itemize}
+
+
+\subsubsect{Selection Encodings for Energy Tensors}
+
+%% Tensor Representation of MLN
+
+As for generic exponential families, we can represent \MarkovLogicNetworks{} in terms of their energy tensors
+%The energy tensor of an \MarkovLogicNetwork{} is the contraction
+\begin{align}
+    \mlnenergy\left[\shortcatvariables\right]
+    = \sum_{\selindexin} \canparamat{\indexedselvariable} \cdot \enumformulaat{\shortcatvariables}
+    = \contractionof{\sencodingofat{\formulaset}{\shortcatvariables,\selvariable},\canparamat{\selvariable}}{\shortcatvariables} \, .
+\end{align}
+The energy tensor provides an exponential representation of the distribution by
+\begin{align}
+    \mlnprobat{\shortcatvariables} = \normalizationof{\expof{\mlnenergy}}{\shortcatvariables} \, .
+\end{align}
+
+In case of a common structure of the formulas in a \MarkovLogicNetwork{}, formula selecting networks (see \charef{cha:formulaSelection}) can be applied to represent their energies.
+% Energy representation
+%The weighted sum of formulas is then the energy of the \MarkovLogicNetwork{}.
+We represent the superposition of formulas as a contraction with a parameter tensor.
+Given a factored parametrization of formulas $\exformula_{\selindices}$ with indices $\selindexof{\selenumerator}$ we have the superposition by the network representation:
+\begin{center}
+    \input{PartII/tikz_pics/network_representation/energy_contraction.tex}
+\end{center}
+
+
+% Representation 
+If the number of atoms and parameters gets large, it is important to represent the tensor ${\exformula_{\selindices}}$ efficiently in tensor network format and avoid contractions.
+Such efficient decomposition schemes can be found using \decompositionSparsity{}, see \secref{sec:selectionSparsityHLN}.
+To avoid inefficiency issues, we also have to represent the parameter tensor $\canparam$ in a tensor network format to improve the variance of estimations (see \charef{cha:concentration}) and provide efficient numerical algorithms.
+
+% Fail of full probability representation
+However, when required to instantiate the probability distribution of a \MarkovLogicNetwork{} as a tensor network, we need to exponentiate and normalize the energy tensor, a task for which basis encodings are required.
+For such tasks, contractions of formula selecting networks are not sufficient and each formula with a nonvanishing weight needs to be instantiated as a factor tensor of a Markov Network.
+
+
+
+
+
+
+\subsect{Expressivity}\label{sec:MLNMaxMintermRep}
+
+Based on \MarkovLogicNetworks{} containing only maxterms and minterms (see \defref{def:clauses}), we now show that any positive probability distribution has a representation by a \MarkovLogicNetwork{}.
+
+\begin{theorem}
+    \label{the:maximalClausesRepresentation}\label{the:mintermExpressivityMLN}
+    Let there be a positive probability distribution
+    \[ \probat{\shortcatvariables} \in \bigotimes_{\atomenumeratorin}\rr^2 \, . \]
+    Then the \MarkovLogicNetwork{} of minterms (see \defref{def:clauses})
+    \[ \mintermformulaset = \{\mintermof{\atomindices} \wcols \atomindices\in\atomstates \}\]
+    with parameters %with nonzero weights at the maxterms indexed by $\atomindicesin$
+    \[ \canparamat{\selvariableof{0}=\catindexof{0},\ldots,\selvariableof{\atomorder-1}=\catindexof{\atomorder-1}}% \weightof{\mintermof{\atomindices}}
+    = \ln \probat{\indexedcatvariables} \]
+    coincides with $\probat{\shortcatvariables}$.
+
+    Further, the \MarkovLogicNetwork{} of maxterms
+    \[ \maxtermformulaset = \{\maxtermof{\atomindices} \wcols \atomindices\in\atomstates \}\]
+    with parameters
+    \[ \canparamat{\selvariableof{0}=\catindexof{0},\ldots,\selvariableof{\atomorder-1}=\catindexof{\atomorder-1}} %\weightof{\maxtermof{\atomindices}}
+    = - \ln\probat{\indexedcatvariables} \]
+    coincides with $\probat{\shortcatvariables}$.
+\end{theorem}
+\begin{proof}
+    It suffices to show, that in both cases of choosing $\formulaset$ by minterms or maxterms with the respective parameters
+    \[ \mlnenergy =  \ln\probat{\shortcatvariables} \]
+    and therefore
+    \[ \mlnprobat{\shortcatvariables}
+    = \normalizationof{\expof{\mlnenergy}}{\shortcatvariables}
+    =  \contractionof{\expof{\mlnenergy}}{\shortcatvariables}
+    = \probat{\shortcatvariables}\, . \]
+
+    In the case of minterms, we notice that for any $\atomindicesin$
+    \[ \mintermof{\atomindices}[\shortcatvariables] = \onehotmapofat{\atomindices}{\shortcatvariables} \]
+    and thus with the weights in the claim
+    \[ \sum_{\atomindicesin}
+    \left( \ln \probat{\indexedcatvariables} \right) \cdot \mintermof{\atomindices}[\shortcatvariables]
+    = \ln\probat{\shortcatvariables} \, .
+    \]
+
+    For the maxterms we have analogously
+    \[ \maxtermof{\atomindices}[\shortcatvariables] = \onesat{\shortcatvariables} - \onehotmapofat{\catindices}{\shortcatvariables} \]
+    and thus that the maximal clauses coincide with the one-hot encodings of respective states.
+    We thus have
+    \begin{align*}
+        & \sum_{\atomindicesin}
+        \left( - \ln \probat{\indexedcatvariables} \right) \cdot \maxtermof{\atomindices}[\shortcatvariables] \\
+        & =
+        \left(  \sum_{\nodes_0\subset [\atomorder]}
+        \left( - \ln \probat{\indexedcatvariables} \right) \cdot \onesat{\shortcatvariables} \right) \\
+        & \quad +
+        \left(  \sum_{\nodes_0\subset [\atomorder]}
+        \left(  \ln \probat{\indexedcatvariables} \right) \cdot
+        \onehotmapofat{\catindices}{\shortcatvariables}
+        \right)
+        \\
+        & = \ln\probat{\shortcatvariables} + \lambda \cdot  \onesat{\shortcatvariables}\,,
+    \end{align*}
+    where $\lambda$ is a constant.
+\end{proof}
+
+We note, that there are $2^{\atomorder}$ maxterms and $2^{\atomorder}$ minterms, which would have to be instantiated by basis encodings to get a tensor network decomposition.
+This large number of features originates from the generality of the representation scheme.
+As a fundamental tradeoff, efficient representations come at the expense of a smaller expressivity of the representation scheme.
+
+
+% Redundant parametrization
+%In general, this representation is redundant, since any offset of the weight by $\lambda\cdot\ones$ results in the same distribution.
+%However, the only $\bar{\canparam}$ are multiples of $\onesat{\shortcatvariables}$.
+
+% Comparison with previous schemes
+\theref{the:maximalClausesRepresentation} is the analogue in Markov Logic to \theref{the:tensorToMaxMinTerms}, which shows that any binary tensor has a representation by a logical formula, to probability tensors.
+Here we require positive distributions for well-defined energy tensors.
+
+% Markov Networks
+Sparser representation formats based on the same principle as used in \theref{the:maximalClausesRepresentation} can be constructed to represent markov networks by \MarkovLogicNetworks{}.
+Here, we can separately instantiate the factors by combinations of terms and clauses only involving the variables containted in the factor.
+\red{The reason for this is, that minterms form a partition statistics, which will be discussed in more detail in \charef{cha:basisCalculus}, see \defref{def:partitionStatistic}.}
+
+\subsect{Examples}
+
+Let us now provide examples of \MarkovLogicNetworks{}.
+
+\subsubsect{Distribution of Independent Variables}
+
+We show next, the independent positive distributions are representable by tuning the $\atomorder$ weights of the atomic formulas and keeping all other weights zero.
+
+\begin{theorem}
+    \label{the:independentAtomicMLN}
+    Let $\probat{\shortcatvariables}$ be a positive probability distribution, such that atomic formulas are independent from each other.
+    Then $\probat{\shortcatvariables}$ is the \MarkovLogicNetwork{} of atomic formulas
+    \[ \atomformulaset = \{\atomicformulaof{\catenumerator} \wcols \catenumeratorin \} \]
+    and parameters
+    \[ \canparamat{\selvariable=\catenumerator}
+    = \lnof{\frac{
+        \contractionof{\probtensor}{\catvariableof{\catenumerator}=1}
+    }{
+        \contractionof{\probtensor}{\catvariableof{\catenumerator}=0}
+    }} \]
+%	Any distribution such that the atom satisfaction is independent from each other is reproducible by a MLN with nonzero weights only for the atomic formulas.
+\end{theorem}
+\begin{proof}
+%	Using the independent assumptions, the probability tensor factorizes into normalized vectors to each atom, with are transformed atomic formulas (leaving out the neutral ones tensors).
+%	We then find a weight to each atom such that the vector is reproduced by the contraction with the activation core.
+
+    By \theref{the:independenceProductCriterion} we get a decomposition
+    \[ \probat{\shortcatvariables} = \bigotimes_{\catenumeratorin} \probofat{\catenumerator}{\catvariableof{\catenumerator}} \,  \]
+    where
+    \[ \probofat{\catenumerator}{\catvariableof{\catenumerator}} = \contractionof{\probtensor}{\catvariableof{\catenumerator}} \, . \]
+
+    By assumption of positivity, the vector $\probofat{\catenumerator}{\catvariableof{\catenumerator}}$ is positive for each $\catenumeratorin$ and the parameter
+    \[ \canparamat{\selvariable=\catenumerator}
+    = \lnof{\frac{
+        \probofat{\catenumerator}{\catvariableof{\catenumerator}=1}
+    }{
+        \probofat{\catenumerator}{\catvariableof{\catenumerator}=0}
+    }} \]
+    well-defined.
+
+    We then notice, that
+    \[ \expdistofat{(\{\atomicformulaof{\catenumerator}\},\canparamat{\selvariable=\catenumerator})}{\catvariableof{\catenumerator}}
+    = \probofat{\catenumerator}{\catvariableof{\catenumerator}}\]
+    and therefore with the parameter vector of dimension $\seldim=\catorder$ defined as
+    \[ \canparamat{\selvariable} = \sum_{\catenumeratorin} \canparamat{\selvariable=\catenumerator} \cdot \onehotmapofat{\catenumerator}{\selvariable}  \]
+    we have
+    \begin{align*}
+        \expdistofat{(\{\atomicformulaof{\catenumerator} \wcols \catenumeratorin\},\canparam)}{\shortcatvariables}
+        & = \bigotimes_{\catenumeratorin} \expdistofat{(\{\atomicformulaof{\catenumerator}\},\canparamat{\selvariable=\catenumerator})}{\catvariableof{\catenumerator}} \\
+        & = \bigotimes_{\catenumeratorin} \probofat{\catenumerator}{\catvariableof{\catenumerator}} \\
+        & = \probat{\shortcatvariables} \, . \qedhere
+    \end{align*}
+\end{proof}
+
+%In general, the statistic to an atomic formula measures the marginal distribution. -> To Parameter Estimation
+
+% Failing to be positive -> Hybrid networks
+In \theref{the:independentAtomicMLN} we made the assumption of positive distributions.
+If the distribution fails to be positive, we still get a decomposition into distributions of each variable, but there is at least one factor failing to be positive.
+Such factors need to be treated by \HybridLogicNetworks{}, that is they are base measure for an exponential family coinciding with a logical literal (see \secref{sec:hardNetworks}).
+
+% Energy representation
+All atomic formulas can be selected by a single variable selecting tensor, that is
+\[ \energytensorofat{(\{\atomicformulaof{\catenumerator} \wcols \catenumeratorin\},\canparam)}{\shortcatvariables}
+= \contractionof{\vselectionmapat{\shortcatvariables,\selvariable},\canparamat{\selvariable}}{\shortcatvariables} \, .
+\]
+
+% Holds also more generally for any formula! -> Place it earlier?
+In case of negative coordinates $\canparamat{\selvariable=\catenumerator}$ it is convenient to replace $\atomicformulaof{\catenumerator}$ by $\lnot\atomicformulaof{\catenumerator}$, in order to facilitate the interpretation.
+The probability distribution is left invariant, when also replacing $\canparamat{\selvariable=\catenumerator}$ by $-\canparamat{\selvariable=\catenumerator}$.
+
+
+
+\subsubsect{Boltzmann Machines}\label{sec:boltzmannMachines}
+
+A Boltzmann machine is a distribution of boolean variables $\shortcatvariables$ depending on a weight matrix %(see e.g. Chapter 43 in \cite{mackay_information_2003})
+\begin{align*}
+    W[\selvariableof{\vselectionsymbol,0},\selvariableof{\vselectionsymbol,1}] \in\rr^{\catorder}\otimes\rr^{\catorder}
+    \quad \text{and a bias vector} \quad b[\selvariableof{\vselectionsymbol,0}] \in\rr^{\catorder} \, .
+\end{align*}
+Its distribution is
+\begin{align*}
+    \probofat{W,b}{\shortcatvariables} = \normalizationof{\expof{\energytensorofat{W,b}{\shortcatvariables}}}{\shortcatvariables}
+\end{align*}
+where its energy tensor is
+\begin{align*}
+    \energytensorofat{W,b}{\indexedshortcatvariables} =
+    \sum_{\atomenumerator,\secatomenumerator \in [\atomorder]}
+    W[\selvariableof{\vselectionsymbol,0}=\atomenumerator, \selvariableof{\vselectionsymbol,1}=\secatomenumerator] \cdot \catindexof{\atomenumerator} \cdot \catindexof{\secatomenumerator}
+    + \sum_{\atomenumerator\in[\atomorder]} b[\selvariableof{\vselectionsymbol,0}=\atomenumerator] \cdot \catindexof{\atomenumerator}\, .
+\end{align*}
+We notice that this tensor coincides with the energy tensor of a \MarkovLogicNetwork{} with formula set
+\begin{align*}
+    \formulaset = \{ \catvariableof{\atomenumerator} \Leftrightarrow \catvariableof{\secatomenumerator} \wcols \atomenumerator,\secatomenumerator \in[\atomorder] \}
+    \cup \{ \catvariableof{\atomenumerator}\wcols \atomenumeratorin \} \,
+\end{align*}
+with cardinality $\atomorder^2+\atomorder$.
+For an sparse representation of this energy tensor using a formula selecting network, see \exaref{exa:boltzmannEnergySelection}.
+Therefore, Boltzmann machines are specific \MarkovLogicNetworks{} with the statistic being biimplications between atoms and atoms itself.
+Generic \MarkovLogicNetworks{} are more expressive than Boltzmann machines, by the flexibility to create further features by propositional formulas.
+
+\sect{\HardLogicNetworks{}}\label{sec:hardNetworks} % To be dropped in the unification with the MLN chapter
+
+% Hard logic vs markov logic
+While exponential families are positive distributions, in logics probability distributions can assign states zero probability.
+As a consequence, \MarkovLogicNetworks{} have a soft logic interpretation in the sense that violation of activated formulas have nonzero probability.
+We now discuss their hard logic counterparts, where worlds not satisfying activated formulas have zero probability.
+
+The probability function of \MarkovLogicNetworks{} with positive weights mimics the tensor network representation of the knowledge base, which is the conjunction of the formulas.
+The maxima of the probability function coincide with the models of the corresponding knowledge base, if the latter is satisfiable.
+However, since the \MarkovLogicNetwork{} is defined as a normalized exponentiation of the weighted formula sum, it is a positive distribution whereas uniform distributions among the models of a knowledge base assign zero probability to world failing to be a model.
+Since both distributions are tensors in the same space to a factored system, we can take the limits of large weights and observe, that \MarkovLogicNetworks{} indeed converge to normalized knowledge bases.
+
+\begin{lemma}
+    \label{lem:localHardLimit}
+    Given a formula $\exformula$ we have in the limit of $\invtemp\rightarrow\infty$ the coordinatewise convergence
+    \begin{align*}
+        \normalizationof{\expof{\invtemp\cdot\canparam\cdot\formulaat{\shortcatvariables}}}{\shortcatvariables} \rightarrow
+        \begin{cases}
+            \normalizationof{\exformula}{\shortcatvariables} & \ifspace \text{$\exformula$ satisfiable and } \canparam>0\\
+            \normalizationof{\ones}{\shortcatvariables} & \ifspace \text{$\exformula$ or $\lnot\exformula$ not satisfiable or } \canparam=0 \\
+            \normalizationof{\lnot\exformula}{\shortcatvariables} & \ifspace \text{$\lnot\exformula$ satisfiable and } \canparam<0\\
+        \end{cases} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    The statement is trivial for the case of $\exformula$ or $\lnot\exformula$ being satisfiable, or $\canparam=0$, since then for all $\invtemp\in\rr$
+    \begin{align*}
+        \normalizationof{\expof{\invtemp\cdot\canparam\cdot\formulaat{\shortcatvariables}}}{\shortcatvariables} = \normalizationof{\ones}{\shortcatvariables} \, .
+    \end{align*}
+    In the case of $\exformula$ being satisfiable and $\canparam>0$ we have
+    \begin{align*}
+        %\partitionfunctionof{\mlnparameters}
+        \contraction{\expof{\invtemp\cdot\canparam\cdot\formulaat{\shortcatvariables}}}
+        = \left(\prod_{\atomenumeratorin} \catdimof{\atomenumerator}\right) - \contraction{\exformula} + \contraction{\exformula} \cdot \expof{\invtemp\cdot\canparam}
+    \end{align*}
+    and therefore for any $\shortcatindices\in\atomstates$ with $\formulaat{\indexedshortcatvariables}=1$
+    \begin{align*}
+        \normalizationof{\expof{\invtemp\cdot\canparam\cdot\exformula}}{\indexedshortcatvariables}
+        &= \frac{
+            \expof{\invtemp\cdot\canparam}
+        }{
+            \left(\prod_{\atomenumeratorin} \catdimof{\atomenumerator} \right) - \contraction{\exformula} + \contraction{\exformula} \cdot \expof{\invtemp\cdot\canparam}
+        } \\
+        & \rightarrow \frac{1}{\contraction{\exformula}}
+        = \normalizationof{\exformula}{\indexedcatvariables} \, .
+    \end{align*}
+    For any $\atomindices\in\atomstates$ with $\formulaat{\indexedshortcatvariables}=0$ we have on the other side
+    \begin{align*}
+        \normalizationof{\expof{\invtemp\cdot\canparam\cdot\exformula}}{\indexedcatvariables}
+        &= \frac{
+            1
+        }{
+            \left(\prod_{\atomenumeratorin} \catdimof{\atomenumerator}\right) - \contraction{\exformula} + \contraction{\exformula} \cdot \expof{\invtemp\cdot\canparam}
+        } \\
+        & \rightarrow 0
+        = \normalizationof{\exformula}{\indexedcatvariables} \, .
+    \end{align*}
+    This shows the statement in the case of $\exformula$ being satisfiable and $\canparam>0$.
+    The case of $\lnot\exformula$ being satisfiable and $\canparam<0$ follows from a similar argument.
+\end{proof}
+
+\lemref{lem:localHardLimit} only characterizes the annealing limits in exponential families with statistics by single formulas.
+If there are multiple formulas the limiting distribution gets more involved.
+We will characterize the generic limiting distributions later in \secref{sec:hardLogicLimit} based on face measures in corresponding mean parameter polytopes.
+
+% Representation by activation cores
+We can represent the local limiting distribution in the three cases by an activation core contracted to the computation core $\bencodingofat{\exformula}{\formulavar,\shortcatvariables}$.
+When choosing
+\begin{align*}
+    \kcoreat{\headvariableof{\exformula}} =
+    \begin{cases}
+        \tbasisat{\headvariableof{\exformula}} & \ifspace \text{$\exformula$ satisfiable and } \canparam>0\\
+        \onesat{\headvariableof{\exformula}} & \ifspace \text{$\exformula$ or $\lnot\exformula$ not satisfiable or } \canparam=0 \\
+        \fbasisat{\headvariableof{\exformula}} & \ifspace \text{$\lnot\exformula$ satisfiable and } \canparam<0\\
+    \end{cases}
+\end{align*}
+we have
+\begin{align*}
+    \normalizationof{\expof{\canparam\cdot\formulaat{\shortcatvariables}}}{\shortcatvariables} \rightarrow
+    \normalizationof{\bencodingofat{\exformula}{\headvariableof{\exformula},\shortcatvariables},\kcoreat{\headvariableof{\exformula}}}{\shortcatvariables} \, .
+\end{align*}
+
+We notice that these three activation cores are all non-vanishing boolean cores in dimension $2$.
+This motivates the definition of \HardLogicNetworks{} as follows.
+
+\begin{definition}[\HardLogicNetwork{}]
+    \label{def:hardLogicNetwork}
+    Given a boolean statistic $\hlnstat$, a subset $\hardlegset\subset[\seldim]$ and a tuple $\headindexof{\hardlegset}\in\bigtimes_{\selindex\in\hardlegset}[2]$ the \HardLogicNetwork{} is the distribution
+    \begin{align*}
+        \probofat{\hlnstat,\hardparam}{\shortcatvariables}
+        = \normalizationof{\hlnstatccwith,\hardacttensorwith}{\shortcatvariables}
+    \end{align*}
+    where $\hardacttensorwith=\bigotimes_{\selindexin}\hardactlegwith$ and for $\selindexin$
+    \begin{align*}
+        \hardactlegwith =
+        \begin{cases}
+            \onehotmapofat{\headindexof{\selindex}}{\headvariableof{\selindex}} & \ifspace \selindex\in\hardlegset  \\
+            \onesat{\headvariableof{\selindex}} & \ifspace \selindex\notin\hardlegset \\
+        \end{cases} \, ,
+    \end{align*}
+    provided that the normalization exists.
+\end{definition}
+
+We notice that with the parametrization by the tuple $\hardparam$, we can represent and non-vanishing elementary boolean tensor in $\bigotimes_{\selindexin}\rr^2$.
+Any activation leg core $\onesat{\headvariableof{\selindex}}$ furthermore results in a trivial contraction with the corresponding computation core.
+Based on these insights we can characterize \HardLogicNetworks{} by propositional formulas.
+
+\begin{theorem}
+    \label{the:hlnFormulaCharacterization}
+    For a boolean statistics $\hlnstat$ and parameters $\hardparam$ the \HardLogicNetwork{} exists, if and only if the formula
+    \begin{align*}
+        \hlnformula =
+        \left(\bigwedge_{\selindex\in\hardlegset\wcols\headindexof{\selindex}=1} \enumformulaat{\shortcatvariables}\right)
+        \land
+        \left(\bigwedge_{\selindex\in\hardlegset\wcols\headindexof{\selindex}=0} \lnot\enumformulaat{\shortcatvariables}\right)
+    \end{align*}
+    is satisfiable.
+    In that case we have
+    \begin{align*}
+        \probofat{\hlnstat,\hardparam}{\shortcatvariables}
+        = \normalizationof{\hlnformula}{\shortcatvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We apply that
+    \begin{align*}
+        \contractionof{\bencodingofat{\enumformula}{\headvariableof{\selindex},\shortcatvariables},\hardactlegwith}{\shortcatvariables}
+        = \begin{cases}
+              \enumformulawith &  \ifspace \hardactlegwith=\tbasisat{\headvariableof{\selindex}} \\% CAN BE SHORTENED BY \selindex\in\hardlegset!
+              \lnot\enumformulawith & \ifspace \hardactlegwith=\fbasisat{\headvariableof{\selindex}} \\
+              \onesat{\shortcatvariables} & \ifspace \hardactlegwith=\onesat{\headvariableof{\selindex}}
+        \end{cases}
+    \end{align*}
+    With the definition of $\hardacttensorwith$ in \defref{def:hardLogicNetwork} we get
+    \begin{align*}
+        &\contractionof{\bencodingofat{\hlnstat}{\headvariables,\shortcatvariables},\hardacttensorwith}{\shortcatvariables} \\
+        & \quad = \contractionof{
+            \bigcup_{\selindexin}\{\bencodingofat{\enumformula}{\headvariableof{\selindex},\shortcatvariables},\hardactlegwith\}
+        }{\shortcatvariables} \\
+        & \quad =   \contractionof{
+            \left\{
+            \contractionof{\bencodingofat{\enumformula}{\headvariableof{\selindex},\shortcatvariables},\hardactlegwith}{\shortcatvariables}
+            \wcols\selindexin\right\}
+        }{\shortcatvariables} \\
+        & \quad = \contractionof{
+            \{
+            \enumformulaat{\shortcatvariables}
+            \wcols\hardactlegwith = \tbasisat{\headvariableof{\selindex}}
+            \}
+            \cup
+            \{
+            \enumformulaat{\shortcatvariables}
+            \wcols\hardactlegwith = \fbasisat{\headvariableof{\selindex}}
+            \}
+        }{\shortcatvariables} \\
+        & \quad = \hlnformulawith \, .
+    \end{align*}
+    The normalization of this contraction exists if and only if $\contraction{\hlnformula}>0$, that is if and only if $\hlnformula$ is satisfiable.
+    In that case we have
+    \begin{align*}
+        \probofat{\hlnstat,\hardparam}{\shortcatvariables}
+        = \frac{\hlnformulawith}{\contraction{\hlnformula}}
+        = \normalizationof{\hlnformula}{\shortcatvariables} \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+
+
+\sect{\HybridLogicNetworks{}}\label{sec:hybridNetworks}
+
+\MarkovLogicNetworks{} are by definition positive distributions and are represented by positive activation tensors in $\elrealizabledistsof{\hlnstat}$ (see \figref{fig:elementaryComputableSketch}).
+In contrary, \HardLogicNetworks{} model uniform distributions over model sets of the respective Knowledge Base and therefore have vanishing coordinates.
+They are represented by boolean activation tensors in $\elrealizabledistsof{\hlnstat}$.
+Having discussed these representation approaches, let us now investigate the general case of distributions in $\elrealizabledistsof{\hlnstat}$, which we call \HybridLogicNetworks{}.
+
+\subsect{Definition}
+
+Towards defining \HybridLogicNetworks{}, we represent any distribution computable by $\hlnstat$ and $\elgraph$, as a normalization of a \HardLogicNetwork{} and a \MarkovLogicNetwork{}.
+
+\begin{theorem}
+    \label{the:hybridNetworkRepresentation}
+    Any distribution $\probwith\in\elrealizabledistsof{\hlnstat}$ is a normalized contraction of a \HardLogicNetwork{} and a \MarkovLogicNetwork{}, that is there are for $\selindexin$ boolean cores $\hardactlegwith$ and a weight vector $\canparamat{\selvariable}$ such that
+    \begin{align*}
+        \probwith =
+        \normalizationof{
+            \{\bencodingofat{\hlnstat}{\headvariables,\shortcatvariables}\}
+            \cup \left(\bigcup_{\selindexin}\{\hardactlegwith,\softactlegwith\}\right)
+        }{\shortcatvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We show the claim by splitting the activation cores into a contraction of hard (i.e. logical) and soft (i.e. probabilistic) activation cores.
+    Since $\probwith\in\elrealizabledistsof{\hlnstat}$ we find for $\selindexin$ non-negative vectors $\acttensorlegwith$ such that
+    \begin{align*}
+        \probwith =
+        \normalizationof{
+            \{\bencodingofat{\hlnstat}{\headvariables,\shortcatvariables}\}
+            \cup \{\acttensorlegwith\wcols\selindexin\}
+        }{\shortcatvariables} \, .
+    \end{align*}
+    We now define for $\selindexin$ boolean cores by
+    \begin{align*}
+        \hardactlegwith =
+        \greaterzeroof{\acttensorlegwith} \,
+    \end{align*}
+    and coordinates of the canonical parameter vector $\canparamwith$ by
+    \begin{align*}
+        \canparamat{\indexedselvariable} =
+        \begin{cases}
+            0 & \ifspace \hardactlegwith\neq\onesat{\headvariableof{\selindex}} \\
+            \lnof{\frac{\acttensorlegat{\headvariableof{\selindex}=1}}{\acttensorlegat{\headvariableof{\selindex}=0}}} & \text{else} \\
+        \end{cases} \, .
+    \end{align*}
+    For all $\selindexin$ we have that $\canparamat{\indexedselvariable}$ is well-defined, since by assumption $\acttensorlegwith$ is positive, if $\hardactlegwith=\onesat{\headvariableof{\selindex}}$.
+    If for $\selindexin$ we have $\hardactlegwith\neq\onesat{\headvariableof{\selindex}}$, then $\acttensorlegwith\in\{\tbasisat{\headvariableof{\selindex}},\fbasisat{\headvariableof{\selindex}}\}$, since $\acttensorlegwith=\zerosat{\headvariableof{\selindex}}$ would lead to a vanishing contraction with the basis encoding of $\hlnstat$.
+    Then is a real number $\lambda_{\selindex}>0$ such that
+    \begin{align*}
+        \acttensorlegwith
+        = \lambda_{\selindex} \cdot \hardactlegwith
+    \end{align*}
+    and, since $\softactsymbolofat{\selindex,0}{\headvariableof{\selindex}} = \onesat{\headvariableof{\selindex}}$ also
+    \begin{align*}
+        \acttensorlegwith
+        = \lambda_{\selindex} \cdot \contractionof{\hardactlegwith,\softactlegwith}{\headvariableof{\selindex}} \, .
+    \end{align*}
+    Conversely, if for $\selindexin$ we have $\hardactlegwith=\onesat{\headvariableof{\selindex}}$, then there is a scalar $\lambda_{\selindex}>0$ such that
+    \begin{align*}
+        \acttensorlegwith
+        &= \lambda_{\selindex} \cdot \softactlegwith \\
+        &= \lambda_{\selindex} \cdot \contractionof{\hardactlegwith,\softactlegwith}{\headvariableof{\selindex}} \, .
+    \end{align*}
+    We therefore have
+    \begin{align*}
+        &\contractionof{
+            \{\bencodingofat*{\hlnstat}{\headvariables,\shortcatvariables}\}
+            \cup \{\acttensorlegwith\wcols\selindexin\}
+        }{\shortcatvariables}\\
+        &\quad =\left(\prod_{\selindexin}\lambda_{\selindex}\right)\cdot\contractionof{
+            \{\bencodingofat{\hlnstat}{\headvariables,\shortcatvariables}\}
+            \cup \left(\bigcup_{\selindexin}\{\hardactlegwith,\softactlegwith\}\right)
+        }{\shortcatvariables}
+    \end{align*}
+    and the claim follows, since the normalization of a tensor is invariant under multiplication with the positive scalar $\left(\prod_{\selindexin}\lambda_{\selindex}\right)$.
+\end{proof}
+
+Motivated by this decomposition, we now define and parametrize \HybridLogicNetworks{}.
+
+\begin{definition}[\HybridLogicNetwork{}]
+    \label{def:hybridLogicNetwork}
+    Given a boolean statistic $\hlnstat$ we call any element of $\elrealizabledistsof{\hlnstat}$ a \HybridLogicNetwork{} (HLN).
+    The extended canonical parameter set to $\hlnstat$ is the set
+    \begin{align*}
+        \hybridparamset\coloneqq
+        \{\hardparam\wcols \variableset\subset[\seldim]\ncond \headindexof{\variableset}\in\bigtimes_{\selindex\in\variableset}[2]\} \times \parspace \, .
+    \end{align*}
+    To each \HybridLogicNetwork{} $\hlnwith$ we find a tuple $\hybridparam$ consistent of a subset $\hardlegset\subset[\seldim]$, a tuple $\headindexof{\hardlegset}\in\bigtimes_{\selindex\in\hardlegset}[2]$ and $\canparamwithin$ such that
+    \begin{align*}
+        \hlnwith
+        = \normalizationof{\hlnstatccwith,\paracttensorwith}{\shortcatvariables}
+    \end{align*}
+    where the activation core is
+    \begin{align*}
+        \paracttensorwith = \contractionof{\softacttensorwith,\hardacttensorwith}{\headvariables} \, .
+    \end{align*}
+\end{definition}
+
+Note that by \theref{the:hybridNetworkRepresentation} we find for any \HybridLogicNetwork{} a parametrization by a tuple $\hybridparam$.
+We further relate with the formalism of exponential families and determine the base measures which are used to build \HybridLogicNetworks{}.
+
+\begin{theorem}
+    Given a boolean statistic $\hlnstat$, we build for any $\hardlegset\subset[\seldim]$ and $\headindexof{\hardlegset}\in\bigtimes_{\selindex\in\hardlegset}[2]$ the formula
+    \begin{align*} % Already used to classify Hard Logic Networks
+        \hlnformula =
+        \left(\bigwedge_{\selindex\in\hardlegset\wcols\headindexof{\selindex}=1} \enumformulaat{\shortcatvariables}\right)
+        \land
+        \left(\bigwedge_{\selindex\in\hardlegset\wcols\headindexof{\selindex}=1} \lnot\enumformulaat{\shortcatvariables}\right) \, .
+    \end{align*}
+    Then we have
+    \begin{align*}
+        \elrealizabledistsof{\hlnstat}
+        = \bigcup_{\hardlegset\subset[\seldim]} \,\, \bigcup_{\headindexof{\hardlegset}\in\bigtimes_{\selindex\in\hardlegset}[2]\wcols\contraction{\hlnformula}>0} \expfamilyof{\hlnstat,\hlnformula} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    \theref{the:hybridNetworkRepresentation} implies that $\probwith\in\elrealizabledistsof{\hlnstat}$ is equivalent to the existence of parameters $\hybridparam$ with $\probwith=\hlnwith$.
+    We further have that $\hlnwith$ is the member of the exponential family $\expfamilyof{\hlnstat,\hlnformula}$ with canonical parameter $\canparam$, since
+    \begin{align*}
+        \hlnwith
+        &= \normalizationof{\hlnstatccwith,\softacttensorwith,\hardacttensorwith}{\shortcatvariables} \\
+        &= \normalizationof{\hlnstatccwith,\softacttensorwith,\contractionof{\hlnstatccwith,\hardacttensorwith}{\shortcatvariables}}{\shortcatvariables} \\
+        &= \normalizationof{\hlnstatccwith,\softacttensorwith,\hlnformulawith}{\shortcatvariables} \, ,
+    \end{align*}
+    where we used \theref{the:hlnFormulaCharacterization} in the last equation.
+    We therefore have $\probwith\in\elrealizabledistsof{\hlnstat}$ if and only if there is a tuple $\hardparam$ with $\probwith\in\expfamilyof{\hlnstat,\hlnformula}$.
+\end{proof}
+
+% Base Measure trick
+We can thus understand \HybridLogicNetworks{}, as a union of exponential families, where the union is over all boolean activation cores understood as generating a base measure.
+This trick is known to the field of variational inference, see for Example~3.6 in \cite{wainwright_graphical_2008}.
+For an example of a tensor network representation of a \HybridLogicNetwork{} see \figref{fig:hlnRepresentationExample}.
+
+\begin{figure}[t]
+    \begin{center}
+        \input{PartII/tikz_pics/network_representation/hln_representation_example.tex}
+    \end{center}
+    \caption{Tensor network representation of a \HybridLogicNetwork{} with statistics $\hlnstat=(\catvariableof{a}\lor\catvariableof{b},\catvariableof{a}\lor\catvariableof{b}\lor \lnot c)$, following \theref{the:hybridNetworkRepresentation}.
+    Besides the computation cores required to compute the statistics, we have one non-trivial \textcolor{\probcolor}{probabilistic soft activation core $\softactsymbolofat{0,\canparamat{\selvariable=0}}{\headvariableof{a\lor b}}$} and one non-trivial \textcolor{\concolor}{constraint hard activation core $\kcoreofat{1}{\headvariableof{a\lor b \lor \lnot c}}$}.
+    The trivial activation cores $\kcoreofat{0}{\headvariableof{a\lor b}}$ and $\softactsymbolofat{1,0}{\headvariableof{a\lor b \lor \lnot c}}$ are omitted from the diagram, since leaving the contraction invariant.}
+    \label{fig:hlnRepresentationExample}
+\end{figure}
+
+\subsect{Logical Reasoning Properties}
+
+Deciding probabilistic entailment (see \defref{def:probEntailment}) with respect to \HybridLogicNetworks{} can be reduced to the hard logic parts of the network.
+
+\begin{theorem}
+    \label{the:hlnEntailmentReduction}
+    Let $\hlnwith$ be a \HybridLogicNetwork{}.
+    Given a query formula $\exformula$ we have that
+    \begin{align*}
+        \hlnwith \models \exformula
+    \end{align*}
+    if and only if
+    \begin{align*}
+        \hlnformula \models \exformula \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    This follows from \theref{the:factorReduction} and
+    \begin{align*}
+        \greaterzeroof{\hlnwith} = \hlnformula
+    \end{align*}
+    using the representation of \HybridLogicNetworks{} as exponential distributions in \theref{the:hybridNetworkRepresentation}, and the fact that the support of any member of an exponential family is the base measure.
+\end{proof}
+
+Formulas in $\softformulaset$, which are entailed or contradicted by $\hardformulaset$ are redundant, as we show next.
+
+\begin{theorem}%\label{the:hlnRepRedundancy}
+    If for a \HybridLogicNetwork{} $\hlnwith$ and any formula $\enumformula\in\formulaset$ we have
+    \begin{align*}
+        \hlnformula\models\enumformula  \quad \text{or} \quad \hlnformula\models\lnot\enumformula
+    \end{align*}
+    then
+    \begin{align*}
+        \hlnwith = \probofat{\hlnstat/\{\enumformula\},(\hardlegset/\{\selindex\},\headindexof{\hardlegset/\{\selindex\}},\tilde{\canparam})}{\shortcatvariables}
+    \end{align*}
+    where $\tilde{\canparam}$ denotes the tensor $\canparam$, where the coordinate to $\enumformula$ is dropped.
+\end{theorem}
+\begin{proof}
+    The theorem can be shown by isolation of the factor to the hard formula, which is constant for all situations.
+\end{proof}
+
+%% Now in the 
+A similar statement holds for the hard formulas itself, as shown in \theref{the:ReduncancyOfEntailed}.
+
+% Utility in Contraction KB implementation
+These results are especially interesting for the efficient implementation of \algoref{alg:contractionKB}, which has been introduced in \charef{cha:logicalReasoning}.
+By \theref{the:hlnEntailmentReduction} only the hard logic parts of a \HybridLogicNetwork{} are required in the ASK operation.
+
+
+\sect{Sparse Representation Mechanisms}
+
+Let us now investigate sparsity mechanisms, which can be exploited for efficient representations of \HybridLogicNetworks{}.
+
+\subsect{Decomposition Sparsity}
+
+\DecompositionSparsity{} aims at a tensor network representation of the computation network.
+It is a generalization of the syntactic decomposition of single propositional formulas as introduced in \charef{cha:logicalRepresentation}.
+When each formula coincides with some node formula of a node in a decomposition graph (see \defref{def:formulaDecomposition}), then the tensor network representation of the decomposition graph serves as computation network.
+Denoting the nodes to $\enumformula$ by $\node_\selindex$ we get
+\begin{align*}
+    \bencodingofat{\hlnstat}{\headvariables,\shortcatvariables} =
+    \breakablecontractionof{
+        &\left\{
+        \bencodingofat{\connectiveof{\node}}{\headvariableof{\node},\headvariableof{\incomingnodes}} \wcols (\incomingnodes,\{\node\})\in\edges
+        \right\} \cup \\
+        & \{\identityat{\headvariableof{\atomenumerator},\catvariableof{\atomenumerator}} \wcols \atomenumeratorin\} \cup \\
+        &\left\{
+        \identityat{\headvariableof{\selindex},\headvariableof{\node_{\selindex}}} \wcols \selindexin
+        \right\}
+    }{\shortcatvariables} \, .
+\end{align*}
+In \figref{fig:hlnRepresentationExample} is an example of a \HybridLogicNetwork{}, which computation network is represented using \decompositionSparsity{}.
+
+\subsect{Selection Sparsity}\label{sec:selectionSparsityHLN}
+
+\SelectionSparsity{} exploits formula selecting networks, which expressivity is the statistic $\hlnstat$ to a \HybridLogicNetwork{}.
+In this sense \selectionSparsity{} is more flexible than \DecompositionSparsity{}, since it does not demand identical subformulas, but only an identical decomposition graph.
+The limitation of this scheme is that it can only represent weighted sums of the formulas by contractions of the formula selecting tensor with a weight tensor.
+Such weighted sums appear in the energy tensor of \MarkovLogicNetworks{}, but note that the energy tensor of generic \HybridLogicNetworks{} is not defined.
+In \exaref{exa:boltzmannEnergySelection} we now demonstrate this representation mechanism on the energy tensors of Boltzmann machines.
+
+\begin{example}[Energy tensors of Boltzmann machines]
+    \label{exa:boltzmannEnergySelection}
+    In \secref{sec:boltzmannMachines} we have described Boltzmann machines as an example of \MarkovLogicNetworks{}, with formulas by
+    \begin{align*}
+        \formulaset = \{ \catvariableof{\atomenumerator} \Leftrightarrow \catvariableof{\secatomenumerator} \wcols \atomenumerator,\secatomenumerator \in[\atomorder] \}
+        \cup \{ \catvariableof{\atomenumerator}\wcols \atomenumeratorin \} \,
+    \end{align*}
+    To demonstrate a representation of the energy tensor of a Boltzmann machine using \SelectionSparsity{}, we now define a formula selecting network to $\formulaset$ (see \figref{fig:boltzmannEnergy}).
+    Each formula is in the expressivity of an architecture consisting of a single binary logical neuron selecting any variable of $\shortcatvariables$ in each argument and selecting connectives $\{\eqbincon,\lpasbincon\}$, where by $\lpasbincon$ we refer to a connective passing the first argument, defined for $\catindexofin{0}, \catindexofin{1}$ as
+    \begin{align*}
+        \lpasbincon[\indexedcatvariableof{0},\indexedcatvariableof{1}] = \vselectionmapat{\indexedcatvariableof{0},\indexedcatvariableof{1},\selvariableof{\vselectionsymbol}=0} \, .
+    \end{align*}
+    Given a weight matrix $W[\selvariableof{\vselectionsymbol,0},\selvariableof{\vselectionsymbol,1}] \in\rr^{\catorder}\otimes\rr^{\catorder}$ and a bias vector $b[\selvariableof{\vselectionsymbol,0}] \in\rr^{\catorder}$ we choose a canonical parameter as
+    \begin{align*}
+        \canparamat{\selvariableof{\cselectionsymbol},\selvariableof{\vselectionsymbol,0},\selvariableof{\vselectionsymbol,1}}
+        = \onehotmapofat{0}{\selvariableof{\cselectionsymbol}} \otimes W[\selvariableof{\vselectionsymbol,0},\selvariableof{\vselectionsymbol,1}]
+        + \tbasisat{\selvariableof{\cselectionsymbol}} \otimes b[\selvariableof{\vselectionsymbol,0}] \otimes  \onehotmapofat{0}{\selvariableof{\vselectionsymbol,1}} \, .
+    \end{align*}
+    We then have (see \figref{fig:boltzmannEnergy})
+    \begin{align*}
+        \energytensorofat{W,b}{\shortcatvariables} =
+        \contractionof{\fsnnat{\shortcatvariables,\selvariableof{\cselectionsymbol},\selvariableof{\vselectionsymbol,0},\selvariableof{\vselectionsymbol,1}},
+            \canparamat{\selvariableof{\cselectionsymbol},\selvariableof{\vselectionsymbol,0},\selvariableof{\vselectionsymbol,1}}}{\shortcatvariables} \, .
+    \end{align*}
+\end{example}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{PartII/tikz_pics/network_representation/boltzmann_energy.tex}
+    \end{center}
+    \caption{Tensor network representation of the energy of a Boltzmann machine}
+    \label{fig:boltzmannEnergy}
+\end{figure}
+
+\subsect{Polynomial Sparsity}\label{sec:HLNpolyRepresentation}
+
+%% First occurance of bas+ tensors and polynomial sparsity
+We now introduce a further mechanism to find sparse representation formats for the introduced \HybridLogicNetwork{}s, which we call \polynomialSparsity{}.
+The motivation of this mechanism is the observation, that terms and clauses can be represented storing the signs of the literals only.
+
+This is an application of the basis+ $\cpformat$ format introduced in \charef{cha:sparseRepresentation}, which is connected to polynomial decompositions of boolean functions.
+First of all, we establish a sparsity result for terms and clauses (see \defref{def:clauses}).
+
+\begin{lemma}
+    \label{lem:clauseTermBasisPlus}
+    Any term is representable by a single monomial and any clause is representable by a sum of at most two monomials. %, any term of basis+ with rank 1. %Use also \baspluscprankof{}
+\end{lemma}
+\begin{proof}
+    Let $\nodes_0$ and $\nodes_1$ be disjoint subsets of $\nodes$, then we have
+    \begin{align*}
+        \termof{\nodes_0}{\nodes_1} = \onehotmapofat{
+            \{\catindexof{\atomenumerator} = 0 \wcols \atomenumerator\in\nodes_0\} \cup \{\catindexof{\atomenumerator} = 1 \wcols \atomenumerator\in\nodes_1\}
+        }{\catvariableof{\nodes_0\cup\nodes_1}} \otimes \onesat{\catvariableof{\nodes/(\nodes_0\cup\nodes_1)}}
+    \end{align*}
+    and
+    \begin{align*}
+        \clauseof{\nodes_0}{\nodes_1} = \onesat{\catvariableof{\nodes}} - \onehotmapofat{
+            \{\catindexof{\atomenumerator} = 0 \wcols \atomenumerator\in\nodes_0\} \cup \{\catindexof{\atomenumerator} = 1 \wcols \atomenumerator\in\nodes_1\}
+        }{\catvariableof{\nodes_0\cup\nodes_1}}
+        \otimes \onesat{\catvariableof{\nodes/(\nodes_0\cup\nodes_1)}} \, .
+    \end{align*}
+    We notice that any tensors $\ones$ and $\onehotmapof{\catindex}\otimes \ones$ habe basis+-rank of $1$ and therefore $\termof{\nodes_0}{\nodes_1}$ of $1$ and $\clauseof{\nodes_0}{\nodes_1}$ of at most $2$.
+\end{proof}
+
+A formula in conjunctive normal form is a conjunction of clauses, where clauses are disjunctions of literals being atoms (positive literals) or negated atoms (negative literals).
+Based on these normal forms, we show representations of formulas as sparse polynomials. %, which will be discussed in more detail in \charef{cha:sparseRepresentation} (see \defref{def:polynomialSparsity}).
+We apply \lemref{lem:clauseTermBasisPlus} to show the following sparsity bound. % on the energy tensor of \MarkovLogicNetworks{}.
+
+\begin{theorem}
+    \label{the:formulaSlicePolynomialDecomposition}
+    Any formula $\exformula$ with a conjunctive normal form of $\clausedim$ clauses satisfies
+    \[ \polsparsityof{\exformula} \leq 2^{\clausedim} \, . \]
+\end{theorem}
+\begin{proof}
+    Let $\exformula$ have a conjunctive normal form with clauses indexed by $\clauseenumeratorin$ and each clause represented by subsets $\nodes_0^\clauseenumerator, \nodes_1^\clauseenumerator$, that is
+    \[ \exformula = \bigwedge_{\clauseenumeratorin} \clauseof{\nodes_0^\clauseenumerator}{\nodes_1^\clauseenumerator} \, . \]
+    We now use the rank bound of \theref{the:CPrankContractionBound} and \lemref{lem:clauseTermBasisPlus} to get
+    \begin{align*}
+        \polsparsityof{\exformula} \leq \prod_{\clauseenumeratorin} \polsparsityof{\clauseof{\nodes_0^\clauseenumerator}{\nodes_1^\clauseenumerator}} \leq 2^{\clausedim} \, .
+    \end{align*}
+\end{proof}
+
+We apply this result on the sparse representation of a single formula to derive sparse representations for \HardLogicNetworks{} and the energy tensor of \HybridLogicNetworks{}.
+Both results use in addition to \theref{the:formulaSlicePolynomialDecomposition} sparsity bounds, which are shown by explicit representation construction in \charef{cha:sparseRepresentation}.
+
+\begin{corollary}
+    Any \HardLogicNetwork{} $\hardformulaset$ obeys
+    \begin{align*}
+        \polsparsityof{\hardformulaset} \leq \prod_{\exformula\in\hardformulaset} 2^{\clausedimof{\exformula}}
+    \end{align*}
+\end{corollary}
+\begin{proof}
+    We apply the contraction bound \theref{the:CPrankContractionBound} for the decomposition
+    \begin{align*}
+        \kbat{\shortcatvariables} = \contractionof{\{\formulaat{\shortcatvariables} \wcols \formula\in\hardformulaset\}}{\shortcatvariables}
+    \end{align*}
+    and get
+    \begin{align*}
+        \polsparsityof{\kb} \leq \prod_{\formula\in\hardformulaset} \polsparsityof{\formula} \, .
+    \end{align*}
+    The claimed bound follows with \theref{the:formulaSlicePolynomialDecomposition}.
+\end{proof}
+
+\begin{corollary}
+    The energy tensor of a \HybridLogicNetwork{} with statistic $\hlnstat$
+    \begin{align*}
+        \polsparsityof{\contractionof{\sencmlnstatwith,\canparamwith}{\shortcatvariables}} \leq \sum_{\selindexin\wcols\canparamat{\indexedselvariable}\neq0} 2^{\clausedimof{\enumformula}} \, .
+    \end{align*}
+    where $\clausedimof{\enumformula}$ denotes the number of clauses in a conjunctive normal form of $\enumformula$.
+\end{corollary}
+\begin{proof}
+    We decompse the energy into the sum
+    \begin{align*}
+        \contractionof{\sencmlnstatwith,\canparamwith}{\shortcatvariables}
+        = \sum_{\selindexin\wcols\canparamat{\indexedselvariable}\neq0} \canparamat{\indexedselvariable} \cdot \enumformulawith
+    \end{align*}
+    and apply \theref{the:CPrankSumBound} to get
+    \begin{align*}
+        \polsparsityof{\contractionof{\sencmlnstatwith,\canparamwith}{\shortcatvariables}}
+        \leq \sum_{\selindexin\wcols\canparamat{\indexedselvariable}\neq0} \polsparsityof{\enumformulawith}
+        \leq \sum_{\selindexin\wcols\canparamat{\indexedselvariable}\neq0}2^{\clausedimof{\enumformula}} \, .
+    \end{align*}
+\end{proof}
+
+
+\sect{Mean Parameters of \HybridLogicNetworks{}}
+
+% Polytope
+While mean parameter polytopes $\genmeanset$ to generic exponential families have been subject to \charef{cha:probReasoning}, we in this section restrict to the mean polytopes of \HybridLogicNetworks{}, which we characterize using propositional logics.
+\HybridLogicNetworks{} are exponential families, which statistic $\sstat$ consists of coordinates with $\imageof{\sstatcoordinateof{\selindex}}\subset\ozset$ and are therefore propositional formulas.
+The convex polytope of mean parameters (see \defref{def:meanPolytope}) is for a statistic $\hlnstat$ of propositional formulas and a base measure $\basemeasure$ the set
+\begin{align*}
+    \hlnmeanset = \left\{ \contractionof{\probwith,\sencmlnstatwith}{\selvariable} \wcols \probwith\in\bmrealprobof{\basemeasure} \right\} \, ,
+\end{align*}
+where by $\bmrealprobof{\basemeasure}$ we denote the set of all by $\basemeasure$ representable probability distributions.
+By \theref{the:meanPolytopeConvHull} the convex polytope has a characterization as a convex hull
+\begin{align}
+    \label{eq:hlnMeansetConvCharacterization}
+    \hlnmeanset
+    = \convhullof{\sencodingofat{\formulaset}{\indexedshortcatvariables,\selvariable} \wcols \shortcatindices\in\atomstates, \, \basemeasureat{\indexedshortcatvariables}=1} \, .
+\end{align}
+
+% 0/1 Polytopes
+We notice that for boolean statistics $\formulaset$ all $\sencodingofat{\formulaset}{\indexedshortcatvariables,\selvariable}$ are boolean vectors in $\parspace$.
+The mean parameter polytopes are thus $0/1$-polytopes \cite{ziegler_lectures_2000,gillmann_01-polytopes_2007}, from which a few obvious properties follow.
+Since those are convex subsets of the cube $[0,1]^\seldim$, which vertices are all boolean vectors in $\parspace$, also each $\sencodingofat{\formulaset}{\indexedshortcatvariables,\selvariable}$ (with $\basemeasureat{\indexedshortcatvariables}=1$) is a vertex.
+Further, if for any $\selindexin$ we have $\meanparamat{\indexedselvariable}\in\ozset$, then $\meanparamwith$ is on a proper face of the cube and thus also of $\hlnmeanset$.
+\red{In the following, we characterize the faces of the mean parameter polytope.}
+
+\subsect{Vertices by \HardLogicNetworks{}} % -> More general: Face measures by \HardLogicNetworks{}
+
+First of all, we show that the vertices of $\hlnmeanset$ are the boolean vectors contained in $\hlnmeanset$.
+
+\begin{theorem}
+    \label{the:vertexByHardLogicNetworks}
+    Given a boolean statistic $\formulaset$, a base measure $\basemeasurewith$ and let $\meanparamwith\in\hlnmeanset$.
+    Then the following are equivalent:
+    \begin{itemize}
+        \item[(i)] The set $\{\meanparamwith\}$ is a vertex of $\hlnmeanset$
+        \item[(ii)] $\meanparamwith$ is boolean
+    \end{itemize}
+\end{theorem}
+\begin{proof}
+(i)
+    $\Rightarrow$(ii):
+    We use that any set of vectors, which convex hull forms a polytope, contains all vertices of that polytope (see Proposition 2.2 in \cite{ziegler_lectures_2013}).
+    %For any polytope, and any set of vectors spanning the polytope as convex hull, all vertices are contained in all sets, which convex hull is $\hlnmeanset$,
+    Since by definition $\hlnmeanset$ is the convex hull of boolean vectors $\sencmlnstatat{\indexedshortcatvariables,\selvariable}$, all vertices are boolean vectors.
+
+    (ii)$\Rightarrow$(i):
+    Since $\hlnmeanset$ is contained in $\fullparcube$ and all boolean vectors in $\fullparcube$ are vertices, whenever a boolean vector is contained in $\hlnmeanset$ it is a vertex.
+\end{proof}
+
+We can further provide an equivalent criterion for a vertex by the satisfaction of a corresponding formula.
+
+\begin{theorem}
+    Let there be a boolean statistic $\formulaset$ and let $\meanparamwith$ be a boolean vector.
+    Then the following are equivalent:
+    \begin{itemize}
+        \item[(i)] The set $\{\meanparamwith\}$ is a vertex of $\hlnmeanset$.
+        \item[(ii)] The formula
+        \begin{align*}
+            \vertexformula = \bigwedge_{\selindexin} \lnot^{(1-\meanparamat{\indexedselvariable})} \enumformulaat{\shortcatvariables}
+        \end{align*}
+        is satisfiable.
+        \item[(iii)] The \HardLogicNetwork{} $\probofat{\hlnstat,([\seldim],\meanparam)}{\shortcatvariables}$ exists. % There is a \HardLogicNetwork{} $\probwith\in\hlnsetof{\hlnstat}$ such that
+%        \begin{align*}
+%            \meanparamwith = \contractionof{\probwith,\sencmlnstatwith}{\selvariable} \, .
+%        \end{align*}
+    \end{itemize}
+    Here we denote by $\lnot^0$ the identity connective and by $\lnot^1=\lnot$ the logical negation.
+\end{theorem}
+\begin{proof}
+(i)
+    $\Rightarrow$(ii):
+    If $\{\meanparamwith\}$ is a vertex of $\hlnmeanset$, then there is $\shortcatindices\in\atomstates$ such that % in particular $\meanparamwith\in$.
+    \begin{align*}
+        \meanparamwith = \sencodingofat{\formulaset}{\indexedshortcatvariables,\selvariable} \, .
+    \end{align*}
+    For all $\selindexin$ we have
+    \begin{align*}
+        \lnot^{(1-\meanparamat{\indexedselvariable})}\enumformulaat{\indexedshortcatvariables} \, .
+    \end{align*}
+    The index $\shortcatindices$ is therefore a model of $\vertexformula$ and $\vertexformula$ is satisfiable.
+
+    (ii)$\Rightarrow$(iii):
+    This follows from \theref{the:hlnFormulaCharacterization}.
+
+    (iii)$\Rightarrow$(i):
+    The mean parameter is reproduced by $\probofat{\hlnstat,([\seldim],\meanparam)}{\shortcatvariables}$ and therefore $\meanparamwith\in\hlnmeanset$.
+    Since $\meanparamwith$ is further boolean, \theref{the:vertexByHardLogicNetworks} implies that $\{\meanparamwith\}$ is a vertex.
+\end{proof}
+
+
+\subsect{Faces represented by \HardLogicNetworks{}}
+
+With \theref{the:vertexByHardLogicNetworks} we showed that all vertices are reproduced by \HardLogicNetworks{}.
+In general, as we show next, \HardLogicNetworks{} are face measures to a set of faces which we characterize in the next theorem.
+
+\begin{theorem}
+    \label{the:faceMeasureHardLogicNetworks}
+    Let $\hlnfaceset$ be a face of $\hlnmeanset$, then the following are equivalent:
+    \begin{itemize}
+        \item[(i)] There is a face $\cubeface$ of $\fullparcube$ such that $\hlnfaceset=\hlnmeanset\cap\cubeface$.
+        \item[(ii)] There is a \HardLogicNetwork{} which coincides with the normalized face measure $\normalizationof{\basemeasureof{\formulaset,\facecondset}}{\shortcatvariables}$.
+        \item[(iii)] The normalized face measure $\normalizationof{\basemeasureof{\formulaset,\facecondset}}{\shortcatvariables}$ is in $\realizabledistsof{\sstat,\elgraph,\basemeasure}$.
+    \end{itemize}
+\end{theorem}
+\begin{proof}
+(i)
+    $\Rightarrow$(ii):
+    Given the face $\cubeface$ such that $\hlnfaceset=\hlnmeanset\cap\cubeface$, we construct a boolean and basis+ elementary tensor (see \charef{cha:sparseRepresentation}), such that
+    \begin{align*}
+        \basemeasureofat{\sstat,\facecondset}{\shortcatvariables}
+        = \contractionof{\bencodingofat{\formulaset}{\headvariables,\shortcatvariables},\kcoreofat{\facecondset}{\headvariables}}{\shortcatvariables} \, .
+    \end{align*}
+    For each $\selindexin$ we build the vectors
+    \begin{align*}
+        \hardactlegwith
+        = \begin{cases}
+              \tbasisat{\headvariableof{\selindex}} & \ifspace \uniquantwrtof{\meanparam\in\cubeface}{\meanparamat{\indexedselvariable}=1} \\
+              \fbasisat{\headvariableof{\selindex}} & \ifspace \uniquantwrtof{\meanparam\in\cubeface}{\meanparamat{\indexedselvariable}=0} \\
+              \onesat{\headvariableof{\selindex}} & \text{else}
+        \end{cases}
+    \end{align*}
+    and get the activation tensor as
+    \begin{align*}
+        \kcoreofat{\facecondset}{\headvariables}
+        = \bigotimes_{\selindexin} \hardactlegwith \, .
+    \end{align*}
+
+    (ii)$\Rightarrow$(iii):
+    By definition any \HardLogicNetwork{} is in $\realizabledistsof{\sstat,\elgraph,\basemeasure}$.
+
+    (iii)$\Rightarrow$(i):
+    If the normalized face measure $\normalizationof{\basemeasureof{\formulaset,\facecondset}}{\shortcatvariables}$ is in $\realizabledistsof{\sstat,\elgraph,\basemeasure}$,
+    Then there is a boolean and elementary tensor $\kcoreofat{\facecondset}{\headvariables}$ such that the face measure is
+    \begin{align*}
+        \basemeasureofat{\sstat,\facecondset}{\shortcatvariables}
+        = \contractionof{\bencodingofat{\formulaset}{\headvariables,\shortcatvariables},\kcoreofat{\facecondset}{\headvariables}}{\shortcatvariables} \, .
+    \end{align*}
+    Boolean and elementary tensors in leg-dimension two are basis+ elementary tensors.
+    Given a basis+ elementary tensor decomposition of $\kcoreof{\facecondset}$ we construct a face of the cube $\fullparcube$ by sets
+    \begin{align*}
+        \arbsetof{\selindex} = \begin{cases}
+                                   \{0\} & \ifspace \hardactlegwith = \fbasisat{\headvariableof{\selindex}} \\
+                                   \{1\} & \ifspace \hardactlegwith = \tbasisat{\headvariableof{\selindex}} \\
+                                   [0,1] & \text{else}
+        \end{cases}
+    \end{align*}
+    and define a face by the cartesian product of these sets as
+    \begin{align*}
+        \cubeface = \bigtimes_{\selindexin} \arbsetof{\selindex} \, .
+    \end{align*}
+    We then notice, that
+    \begin{align*}
+        \contractionof{\bencodingofat{\formulaset}{\headvariables,\shortcatvariables},\kcoreofat{\facecondset}{\headvariables}}{\indexedshortcatvariables} = 1
+    \end{align*}
+    if and only if $\sencmlnstatat{\indexedshortcatvariables,\selvariable}\in\cubeface$.
+    Therefore, the parametrized face is the intersection of $\hlnmeanset$ with $\cubeface$.
+\end{proof}
+
+% \HardLogicNetwork{}
+\theref{the:faceMeasureHardLogicNetworks} characterizes the faces, which measures are reproducible by \HardLogicNetworks{}.
+The corresponding mean parameters are the face centers.
+
+
+% Generalization to non-boolean features
+\begin{remark}
+    For non-boolean statistics $\sstat$, we can derive limited versions of \theref{the:faceMeasureHardLogicNetworks}.
+    Any face, which is the intersection with faces of the distorted cube
+    \begin{align*}
+        \bigtimes_{\selindexin} [\min_{\catindex}\sstatcoordinateofat{\selindex}{\indexedcatvariable},\max_{\catindex}\sstatcoordinateofat{\selindex}{\indexedcatvariable}]
+    \end{align*}
+    has a representation of its encoded pre-image with an activation tensor of basis+ rank 1.
+    Since for leg dimensions larger than 2 the boolean tensors with elementary decomposition contain more tensors than the basis+ tensors of rank 1, we can represent further faces.
+\end{remark}
+
+\subsect{Generic Faces}
+
+When the normalized face measure to a face is not reproduceable by a \HardLogicNetwork{}, it does not lie in $\realizabledistsof{\sstat,\elgraph,\basemeasure}$.
+On the other side, \theref{the:faceMeasureCharacterization} implies, that in general $\sstat$ is a sufficient statistic and it thus lies in $\realizabledistsof{\sstat,\maxgraph,\basemeasure}$.
+The core $\kcoreofat{\facecondset}{\headvariables}$ has then $\cpformat$ rank of at least two.
+In general, we can express any face measure to faces of $\hlnmeanset$ by a propositional formula.
+
+\begin{theorem}
+    \label{the:faceMeasureCharacterizationHLN}
+    Let $\hlnfaceset$ be a face of $\hlnmeanset$.
+    Then the face measure is given by the formula
+    \begin{align*}
+        \hlnfacemeasure
+        = \bigvee_{\meanparam\in\hlnfaceset\cap\boundaryparcube} \vertexformula
+        = \bigvee_{\meanparam\in\hlnfaceset\cap\boundaryparcube}
+        \bigwedge_{\selindexin} \lnot^{(1-\meanparamat{\indexedselvariable})} \enumformulaat{\shortcatvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    By \theref{the:faceMeasureCharacterization} we have
+    \begin{align*}
+        \hlnfacemeasureat{\shortcatvariables}
+        =\contractionof{\hlnstatccwith,\kcoreofat{\facecondset}{\headvariables}}{\shortcatvariables}
+    \end{align*}
+    where
+    \begin{align*}
+        \kcoreofat{\facecondset}{\headvariables}
+        = \sum_{\meanparam\in\hlnfaceset\cap\imageof{\sstatencoding}} \onehotmapofat{\headindex^{\meanparam}_{[\seldim]}}{\headvariables} \, .
+    \end{align*}
+    We notice that for each mean parameter $\meanparam\in\hlnfaceset\cap\imageof{\sstatencoding}$ the boolean tensors
+    \begin{align*}
+        \contractionof{\hlnstatccwith,\onehotmapofat{\headindex^{\meanparam}_{[\seldim]}}{\headvariables}}{\shortcatvariables}
+    \end{align*}
+    coincide with $\vertexformula$.
+    Further, the formulas $\vertexformula$ have disjoint model sets and their disjunction is therefore represented by their sum.
+    We therefore have
+    \begin{align*}
+        \hlnfacemeasureat{\shortcatvariables}
+        &=\sum_{\meanparam\in\hlnfaceset\cap\imageof{\sstatencoding}} \vertexformulaat{\shortcatvariables} \\
+        &=\bigvee_{\meanparam\in\hlnfaceset\cap\boundaryparcube}
+        \bigwedge_{\selindexin} \lnot^{(1-\meanparamat{\indexedselvariable})} \enumformulaat{\shortcatvariables} \, . \qedhere
+    \end{align*}
+\end{proof}
+
+
+\subsect{Mean Parameters reproducible by \HybridLogicNetworks{}}\label{sec:HLNrepMean} % Generalize to any mean parameter reproduction by \HybridLogicNetworks{}
+
+Based on the representation results for face measures, we now study the mean parameters of \HybridLogicNetworks{}.
+Let us find conditions on a mean parameter $\meanparamwith$ for the existence of a \HybridLogicNetwork{} reproducing it. %$\meanparamwith$.
+
+\begin{theorem}
+    \label{the:hlnInteriorCharacterization}
+    \HybridLogicNetworks{} reproduce exactly those mean parameters $\meanparamwith$, which are in the effective interior of cube faces $\fullparcube$ (see \defref{def:effectiveInterior}), i.e. for which there is a face $\hlnfaceset$ of $\hlnmeanset$ and a face $\cubeface$ of the cube $\fullparcube$ such that
+    \begin{align*}
+        \meanparamwith\in\sbinteriorof{\hlnfaceset} \andspace \hlnfaceset = \hlnmeanset\cap\cubeface \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    \theref{the:faceMeasureHardLogicNetworks} implies that the normalization of the face measure $\basemeasureof{\sstat,\facecondset}$ to $\hlnfaceset$ is a \HardLogicNetwork{} and in $\elrealizabledistsof{\formulaset}$.
+    By assumption, $\meanparamwith$ is in the effective interior of $\meansetof{\formulaset,\basemeasureof{\sstat,\facecondset}}$ and therefore reproduced by a distribution $\probwith$ in $\expfamilyof{\formulaset,\basemeasureof{\sstat,\facecondset}}$.
+    Since $\probwith\in\elrealizabledistsof{\formulaset}$ we found a \HybridLogicNetwork{} reproducing $\meanparamwith$.
+\end{proof}
+
+We now provide a procedure to investigate, whether a mean parameter $\meanparamwith\in\hlnmeanset$ is reproduceable by a \HybridLogicNetwork{} in $\elrealizabledistsof{\formulaset}$.
+To this end, we first determine the minimal face with respect to face inclusion (the partial order of the face lattice, see \cite{ziegler_lectures_2013}), which includes $\meanparamwith$.
+
+\begin{lemma}
+    \label{lem:minimalContainingFace}
+    For each mean parameter $\meanparamwith\in\hlnmeanset$ the minimal face of the cube $\fullparcube$ containing $\meanparamwith$ is
+    \begin{align*}
+        \cubeface^{\meanparam}
+        = \bigtimes_{\selindexin} \arbsetof{\selindex} \, .
+    \end{align*}
+    where for each $\selindexin$
+    \begin{align*}
+        \arbsetof{\selindex} = \begin{cases}
+                                   \{\meanparamat{\indexedselvariable}\} & \ifspace \meanparamat{\indexedselvariable} \in \ozset \\
+                                   [0,1] & \text{else}
+        \end{cases} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    Since $\hlnmeanset\subset\fullparcube$, $\meanparamwith$ is always contained in the maximal face $\fullparcube=\bigtimes_{\selindexin}[0,1]$ of the cube, and the smallest face containing $\meanparamwith$ exists.
+    Any face of the cube has a representation as a cartesian product of $\arbsetof{\selindex}\in\{\{0\},\{1\},[0,1]\}$ and contains $\meanparamwith$ if and only if
+    \begin{align*}
+        \uniquantwrtof{\selindexin}{\left(\arbsetof{\selindex}=\{0\} \Rightarrow \meanparamat{\indexedselvariable}=0 \right) \land \left(\arbsetof{\selindex}=\{1\} \Rightarrow \meanparamat{\indexedselvariable}=1 \right)} \, .
+    \end{align*}
+    The minimal face containing $\meanparamwith$ is therefore $\cubeface^{\meanparam}$.
+\end{proof}
+
+% Determine whether reproducible
+\begin{lemma}
+    $\meanparamwith$ is reproducible by a \HybridLogicNetwork{}, if and only if it is in the effective interior of the set
+    \begin{align*}
+        \hlnmeanset\cap \cubeface^{\meanparam} \, .
+    \end{align*}
+    Here $\cubeface^{\meanparam}$ is the minimal face of the cube containing $\meanparamwith$.
+\end{lemma}
+\begin{proof}
+    This follows from \theref{the:hlnInteriorCharacterization} and \lemref{lem:minimalContainingFace}.
+\end{proof}
+
+% Extension towards arbitrary hypergraphs
+We can extend the discussion to $\realizabledistsof{\formulaset,\graph}$, where $\graph$ is an arbitrary hypergraph.
+Whenever a normalized face measure is in $\realizabledistsof{\formulaset,\graph}$, then the all mean parameters on the interior of the face can be reproduced by $\realizabledistsof{\formulaset,\graph}$.
+
+%By \theref{the:meanPolytopeInterior} the interior points are those realizable by a \HybridLogicNetwork{} with statistics $\hlnstat$ and base measure $\basemeasure$, as we state in the following Corollary.
+%
+%\begin{corollary}
+%    \label{cor:interiorCharacterizationHLN}
+%    If $\meanparamwith\in\interiorof{\hlnmeanset}$, or equivalently the statistic is minimal and $\meanparamwith$ is reproduceable by a distribution positive with respect to $\basemeasure$, then there is $\canparamat{\selvariable}$ such that $\expdistof{\formulaset,\canparam,\basemeasure}$ reproduces $\meanparamwith$.
+%\end{corollary}
+
+
+
+\subsect{Expressivity of \HybridLogicNetworks{}}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{PartII/tikz_pics/network_representation/reproducible_sketch.tex}
+    \end{center}
+    \caption{Sketch of distributions and their mean parameters with respect to .
+    The \HybridLogicNetworks{} are also maximum entropy distribution, as we will show in \charef{cha:networkReasoning}.}
+    \label{fig:reproducibleSketch}
+\end{figure}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{PartII/tikz_pics/network_representation/meanset_sketch_hln.tex}
+    \end{center}
+    \caption{Sketch of the mean polytope ${\hlnmeanset}$ to a statistic $\hlnstat$ which is minimal with respect to $\basemeasure$, as a special case of the more generic sketch \figref{fig:meansetSketchGeneric}.
+    The mean polytope is a subset of the $\seldim$-dimensional cube $\fullparcube$ (dashed in the sketch), where each mean parameter in one of the three cases $\meanparamof{1},\meanparamof{2}$ or $\meanparamof{3}$.
+    \textcolor{\concolor}{Face centers} $\meanparamof{1}$ (in particular the vertices $\hlnmeanset\cap\boundaryparcube$) are reproducible by a \HardLogicNetwork{} given $\hlnstat$.
+    Mean points on non-vertex faces outside the interior $\meanparamof{2}\in\hlnmeanset/(\interiorof{\hlnmeanset}\cap\boundaryparcube)$ are reproducible by \HybridLogicNetworks{} with statistic $\hlnstat$ and refined base measure $\secbasemeasure$.
+    \textcolor{\probcolor}{Interior points} $\meanparamof{3}\in\interiorof{\hlnmeanset}$ are reproducible by a \MarkovLogicNetwork{} with statistic $\hlnstat$.
+    }\label{fig:meansetSketch}
+\end{figure}
+
+In \figref{fig:reproducibleSketch} we classify the distributions by their mean parameters in $\hlnmeanset$ and draw a corresponding sketch of the mean parameter polytope in \figref{fig:meansetSketch}.
+We have already shown, that the distributions in $\realizabledistsof{\formulaset,\maxgraph}$ suffice to reproduce all mean parameters in $\hlnmeanset$.
+The \HybridLogicNetworks{} are the subset $\hlnsetof{\formulaset}\subset\realizabledistsof{\formulaset,\maxgraph}$, which can be computed with elementary activation cores.
+% Reduction to \HybridLogicNetworks{}, question of sufficient expressivity
+%Let us recall, that the set $\hlnsetof{\formulaset}$ contains all \HybridLogicNetworks{}, which can be realized as tensor networks with the same structure of computation and activation cores.
+We now investigate, in which cases also $\hlnsetof{\formulaset}$ suffices to reproduce all mean parameters in $\hlnmeanset$, that is in which cases $\hlnmeanset$ coincides with
+%whether we can reduce the set of probability distributions in the definition of the convex polytope of mean parameters to the set $\hlnsetof{\formulaset}$ , that is
+\begin{align*}
+    %\hlnmeanset|_{\hlnsetof{\formulaset}}
+    %=
+    \left\{ \contractionof{\probtensor,\sencmlnstat}{\selvariable} \wcols \probtensor\in\hlnsetof{\formulaset} \right\} \, .
+\end{align*}
+While this set is obviously a subset of $\hlnmeanset$, we investigate, for which $\formulaset$ there is an equivalence.
+We will refer to the equality of both sets as sufficient expressivity of $\hlnsetof{\formulaset}$.
+In the next example we provide a class of formulas, for which $\hlnsetof{\formulaset}$ does not have sufficient expressivity.
+
+% Insufficient Expressivity
+\begin{example}[Insufficient expressivity of $\hlnsetof{\formulaset}$ in cases of disjoint models]
+    \label{exa:insufficientHLNsetExpressivity}
+    To provide an example, where the set of \HybridLogicNetworks{} does not suffice to reproduce all possible mean parameters, consider the formulas
+    \[ \formulaof{0} = \exrandom \land \secexrandom \quad, \quad \formulaof{1} = \lnot\exrandom \land \lnot\secexrandom \, . \]
+    The probability distributions on the facet with normal $\canparam=[1\,\, 1]$ are those with support on the models of $\formulaof{0}\lor\formulaof{1}$.
+    The \HybridLogicNetworks{} can only reproduce those with are supported on the model of $\formulaof{0}$ or the model of $\formulaof{1}$, but not their convex combinations.
+
+    %% EXTENSION
+    %More generally, one can construct similar examples by arbitrary sets of formulas with pairwise disjoint model sets.
+    %If they do not sum to $\ones$, i.e. there is a world which is not a model to any formula, the statistic is minimal.
+    %The vector $\canparamat{\selvariable} = \onesat{\selvariable}$ is then the normal of the facet with
+    %All probabilities supported on the models of the formulas have mean parameters on this facet.
+    %Such statistics will be further investigated as partition statistics in \secref{sec:partitionStatistics}. % Most precise: Partition statistics do sum to one
+\end{example}
+
+
+%\subsect{Examples}
+
+We can relate our two standard examples of the atomic and the minterm formula sets to well-studied polytopes, namely the $\catorder$-dimensional hypercube and the standard simplex (see Lecture~0 in \cite{ziegler_lectures_2013}).
+
+\begin{example}[Atomic formulas]
+    \label{exa:atomicFormulasHypercube}
+    %The assumption of \theref{the:sufficientHLNExpressivity} is satisfied in
+    Let us consider the case of atomic formulas. % where the formulas $\formulaof{\formulaset,\canparam}$ are the atoms.
+    The mean polytope in this case is the $\catorder$-dimensional hypercube
+    \begin{align*}
+        \meansetof{\atomformulaset,\ones} = \fullparcube
+    \end{align*}
+    which is called a simple polytope, since each vertex is contained in the minimal number of $\catorder$ facets.
+    %Since the cube $\fullparcube$ is a face of itself, \theref{the:sufficientHLNExpressivity} implies $\hlnmeanset|_{\hlnsetof{\atomformulaset}}=\hlnmeanset$.
+
+    The faces of a hypercube are enumerated in the following way.
+    Each face is characterized by the projections onto each variable, which is either $\{0\}$, $\{1\}$ or $[0,1]$.
+    The projections are represented by the tuple $\hardparam$ defined in the following way:
+    \begin{itemize}
+        \item We define the set $\hardlegset\subset[\atomorder]$ of variables, such that the projection onto the variable is $\{0\}$ or $\{1\}$
+        \item We define to each $\selindex\in\hardlegset$ an index $\headindexof{\selindex}=0$ if the projection is $\{0\}$ and $\headindexof{\selindex}=1$ if the projection is $\{1\}$.
+    \end{itemize}
+
+%    There are thus $2^{\atomorder}$ different sets $\hardlegset$, each with $2^{\hardlegset}$ faces by a choice of $\headindexof{\selindex}$.
+
+    Trivially, each face of the hypercube is a cube face and $\elmeansetof{\atomformulaset}=\meansetof{\atomformulaset}$.
+\end{example}
+
+%\subsect{Elementary realizable mean parameters}
+
+With the findings of the above sections and the enumeration of cube faces, we can not characterize the set of mean parameters realizable by \HybridLogicNetworks{}.
+
+\begin{definition}
+    \label{def:elementaryRealizableMeanParams}
+    The elementary realizable mean parameters to a statistic $\hlnstat$ and a base measure $\basemeasure$ is the set
+    \begin{align*}
+        \elmeansetof{\hlnstat,\basemeasure}
+        = \bigcup_{\hardlegset\subset[\seldim]} \bigcup_{\headindexof{\hardlegset}\in\bigtimes_{\selindex\in\hardlegset}[2]}
+        \sbinteriorof{\meansetof{\hlnstat,\basemeasure}\cup\cubeface^{\hardlegset,\headindexof{\hardlegset}}}
+    \end{align*}
+    where $\cubeface^{\hardlegset,\headindexof{\hardlegset}}$ is the face of the hypercube (see \exaref{exa:atomicFormulasHypercube}).
+    We say, that a mean polytope $\genmeanset$ is cube-like, if all mean parameters are elementary realizable, that is
+    \begin{align*}
+        \elmeansetof{\hlnstat,\basemeasure}=\genmeanset \, .
+    \end{align*}
+\end{definition}
+
+We have
+\begin{align*}
+    \elmeansetof{\hlnstat,\basemeasure}
+    = \left\{ \contractionof{\probtensor,\sencmlnstat}{\selvariable} \wcols \probtensor\in\hlnsetof{\formulaset} \right\} \, .
+\end{align*}
+A further example of cube-like polytopes, i.e. where $\elmeansetof{\hlnstat,\basemeasure}=\hlnmeanset$, are families of minterm statistics.
+
+\begin{example}[Minterm formulas]
+    \label{exa:mintermHLNSet}
+    The mean polytope is in the case of the minterm statistic (also referred to as universal statistic) and a base measure $\basemeasure$ the $\contraction{\basemeasure}-1$-dimensional standard simplex
+    \begin{align*}
+        \elmeansetof{\mintermformulaset,\basemeasure}
+        = \convhullof{\onehotmapofat{\shortcatindices}{\shortcatvariables}\wcols\shortcatindicesin\ncond\basemeasureat{\indexedshortcatvariables}=1} \, .
+    \end{align*}
+    In this case, $\hlnsetof{\mintermformulaset}$ contains any distribution and therefore trivially realizes any mean parameter in $\meansetof{\mintermformulaset,\ones}$.
+
+    The faces of the standard simplex are itself standard simplices to base measures $\secbasemeasure$ with $\secbasemeasure\prec\basemeasure$.
+    We store them by the tuple $\hardparam$, where $\hardlegset$ is the support of $\secbasemeasure$ and $\headindexof{\selindex}=0$ for $\selindex\in\hardlegset$.
+    Each face is a cube face, since it is the intersection of $\hlnsetof{\mintermformulaset}$ with the cube face $\hardparam$.
+    In particular, we have $\elmeansetof{\mintermformulaset}=\meansetof{\mintermformulaset}$.
+\end{example}
+
+
+\subsect{The Limit of Hard Logic}\label{sec:hardLogicLimit}
+
+While \lemref{lem:localHardLimit} describes the limiting distributions of a statistic consistent of a single formula under annealing, we now turn towards statistics of multiple formulas.
+
+\begin{theorem}
+    \label{the:limitingDistribution}
+    Let $\hlnstat$ be a boolean statistics, $\canparamwithin$ and $\hlnfaceset$ the face such that $\canparamwith\in\hlnmaxcone$.
+    In the limit $\invtemp\rightarrow\infty$ the distribution $\probofat{\formulaset,\invtemp\cdot\canparam}{\shortcatvariables}$ converges coordinatewise to the normalized face measure $\hlnfacemeasure$, that is for any $\shortcatindices\in\facstates$ we have
+    \begin{align*}
+        \probofat{\formulaset,\invtemp\cdot\canparam}{\indexedshortcatvariables}
+        \rightarrow \frac{1}{\contraction{\hlnfacemeasureat{\shortcatvariables}}} \cdot \hlnfacemeasureat{\indexedshortcatvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    The limit is supported on the set of states, for which $\contraction{\canparamat{\selvariable},\sencodingofat{\formulaset}{\indexedshortcatvariables,\selvariable}}$ is maximal.
+    This set has an basis encoding by the face measure (see \defref{def:faceMeasure}) and the limiting distribution is thus the normalized face measure.
+\end{proof}
+
+We can now use characterizations of the face measure in case of satisfiable formulas to get a more explicit representation of the limiting distribution.
+
+\begin{theorem}
+    If for a $\canparamwithin$ the formula
+    \begin{align*}
+        \exformula =
+        \bigwedge_{\selindex\wcols\canparamat{\indexedselvariable}\neq0} \lnot^{(1-\greaterzeroof{\canparamat{\indexedselvariable}})} \enumformula
+    \end{align*}
+    is satisfiable, then $\probofat{\formulaset,\invtemp\cdot\canparam}{\shortcatvariables}$ converges for $\invtemp\rightarrow\infty$ coordinatewise to the normalized uniform distribution among the models of $\exformula$.
+\end{theorem}
+\begin{proof}
+    If $\exformula$ is satisfiable, then the face measure $\hlnfacemeasure$ to the face $\hlnfaceset$ with $\canparamwith\in\hlnmaxcone$ is the uniform distribution among the models of $\exformula$.
+    The claim follows from \theref{the:limitingDistribution}.
+\end{proof}
+
+We notice that $\exformula$ is computable with elementary activation cores, that is for
+\begin{align*}
+    \kcoreat{\headvariables}
+    = \left(\bigotimes_{\selindex\wcols\canparamat{\indexedselvariable}=0} \onesat{\headvariableof{\selindex}}\right)
+    \otimes \left(\bigotimes_{\selindex\wcols\canparamat{\indexedselvariable}>0} \tbasisat{\headvariableof{\selindex}}\right)
+    \otimes \left(\bigotimes_{\selindex\wcols\canparamat{\indexedselvariable}<0} \fbasisat{\headvariableof{\selindex}}\right)
+\end{align*}
+we have
+\begin{align*}
+    \formulaat{\shortcatvariables} =
+    \normalizationof{\bencodingofat{\hlnstat}{\headvariables,\shortcatvariables},\kcoreat{\headvariables}}{\shortcatvariables} \, .
+\end{align*}
+
+
+\sect{Discussion}
+
+We understand \HybridLogicNetworks{} as neuro-symbolic models:
+\begin{itemize}
+    \item \textbf{Neural Paradigm} is the representation of models as compositions of smaller models.
+    For \HybridLogicNetworks{}, the decompositions of logical formulas into their connectives implements this neural paradigm.
+    In more generality the decompositions of sufficient statistics into composed functions has a tensor network representation based on basis calculus.
+    Deeper nodes as carrying correlations of lower nodes.
+    \item \textbf{Symbolic Paradigm} refers to the formalization of reasoning by human-interpretable symbols.
+    Since the sufficient statistics of \HybridLogicNetworks{} are propositional formulas, they can be verbalized and interpreted based on their syntactical decompositions.
+\end{itemize}
+
+%\HybridLogicNetwork{}s are trainable Machine Learning models:
+%\begin{itemize}
+%    \item Expressivity: Can represent any positive distribution, as shown by \theref{the:maximalClausesRepresentation}, with $2^d$ formulas.
+%    %\item Efficiency: Can only handle small subsets of possible formulas, since their possible number is huge.
+%    %Tensor networks provide means to efficiently represent formulas depending on many variables and reason based on contractions.
+%    \item Continuous parameterization: Distributions are differentiable functions dependent on their activation cores (e.g. in exponential parametrization).
+%    The log-likelihood of data is therefore also differentiable function of their weights and we can exploit first-order methods in their optimization.
+%\end{itemize}

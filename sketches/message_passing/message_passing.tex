@@ -1,0 +1,55 @@
+\documentclass[aps,onecolumn,nofootinbib,pra]{article}
+
+\usepackage{../../spec_files/arxiv}
+\input{../../spec_files/standard_preamble.tex}
+
+\input{../../macros/organization_macros.tex}
+\input{../../macros/general_macros.tex}
+\input{../../macros/tc_macros.tex}
+\input{../../macros/tikz_macros.tex}
+
+\newcommand{\mesconditiondict}{C}
+
+\begin{document}
+    \title{Message Passing for Efficient Contractions}
+
+    \maketitle
+    \date{\today}
+
+    Motivation of message passing: Efficiency of computing contractions
+    \begin{itemize}
+        \item Global contractions with local open variables: Decomposed into efficient local contractions
+        \item Batchwise computation: Get multiple contractions with a single message passing scheme
+    \end{itemize}
+
+    Guaranteed behavior of the message passing algorithm:
+    \begin{itemize}
+        \item Tree hypergraphs
+        \item Boolean propagation: Always sound, complete when doing exact logical reasoning schemes of 2-SAT and Horn-SAT (might put the latter in the propositional inference chapter)
+        \item Basis propagation: Show with the data example, that single datapoint is exact, batchwise not. Can also think of this as formulas (e.g. if $\catvariable$ then $\lnot\headvariable$, if $\lnot\catvariable$ then $\headvariable$)
+    \end{itemize}
+
+    For \CompActNets{}:
+    Expectation Propagation schemes.
+    \begin{itemize}
+        \item Reduce to contraction propagation in case of graphical models
+        \item Flexibility to model freedom: Hard / soft / hybrid
+    \end{itemize}
+
+    \input{sections/generic_algorithm}
+
+    \input{sections/tree_contractions}
+
+    \input{sections/graph_manipulation}
+
+    \input{sections/boolean_propagation}
+
+    \input{sections/basis_propagation}
+
+    \input{sections/generalizations}
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
+
+
+\end{document}

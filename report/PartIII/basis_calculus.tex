@@ -1,0 +1,1368 @@
+\chapter{\chatextbasisCalculus}\label{cha:basisCalculus}
+
+Basis Calculus stores information in the selection of basis elements, while coordinate calculus uses the coordinates to each index for storage.
+While coordinate calculus is more expressive, basis calculus can be exploited in sparse representations of composed functions.
+
+
+\sect{Basis Encoding of Subsets}
+
+Based on the concept of one-hot encodings of states we in this chapter develop the construction of encodings to sets, relations and functions.
+We start with the definition of subset encodings, which represent set memberships in their boolean coordinates.
+
+\begin{definition}[Basis encoding of subsets]
+    \label{def:subsetEncoding}
+    We say that an arbitrary finite set $\arbset$ is enumerated by an enumeration variable $\indvariableof{\arbset}$ taking values in $[\inddimof{\arbset}]$, when $\inddimof{\arbset}=\absof{\arbset}$ and there is a bijective index interpretation function
+    \begin{align*}
+        \indexinterpretation \defcols [\inddimof{\arbset}] \rightarrow \arbset \, .
+    \end{align*}
+    Given an set $\arbset$ enumerated by the variable $\indvariableof{\arbset}$, any subset $\arbsubset\subset\arbset$ is encoded by the tensor $\onehotmapto{\arbsubset}[\indvariable]$ defined for $\indindex\in[\absof{\arbset}]$ as
+    \begin{align*}
+        \onehotmapofat{\arbsubset}{\indexedindvariable}
+        = \begin{cases}
+              1 & \ifspace \indexinterpretationat{\indindex} \in \arbsubset \\
+              0 & \text{else}
+        \end{cases} \, .
+    \end{align*}
+\end{definition}
+
+% Decomposition
+In a one-hot basis decomposition we have
+\begin{align*}
+    \onehotmapofat{\arbsubset}{\indvariable}
+    \coloneqq \sum_{\indindex\in[\inddimof{\arbset}]\,:\,\indexinterpretationat{\indindex}\in\arbsubset}\onehotmapofat{\indindex}{\indvariable} \, .
+\end{align*}
+
+
+The inclusion of subsets is represented by the partial ordering of tensors.
+Let us first define this property for arbitrary tensors.
+
+% Here for general tensors, not just propositional formulas!
+\begin{definition}[Partial ordering of tensors]
+    \label{def:partialOrder}
+    We say that two tensors $\exformulaat{\shortcatvariables}$ and $\secexformulaat{\shortcatvariables}$ attached with the same variables are partially ordered, denoted by
+    \begin{align*}
+    {\exformula}
+        \prec{\secexformula} \, ,
+    \end{align*}
+    if for all $\shortcatindices\in\facstates$
+    \begin{align*}
+        \exformulaat{\indexedshortcatvariables} \leq \secexformulaat{\shortcatindices}  \, .
+    \end{align*}
+\end{definition}
+
+For boolean tensors, the partially ordering is equal to a subset relation of the coordinates with value $1$, as we show next.
+
+\begin{theorem}
+    \label{the:subsetRelationSubsetEncoding}
+    Let $\arbset$ be an arbitrary set enumerated by the variable $\indvariable$ and index interpretation function $\indexinterpretation$.
+    For two subsets $\arbsetof{0},\arbsetof{1}$ of $\arbset$ we have
+    \begin{align*}
+        \arbsetof{0} \subset \arbsetof{1}
+    \end{align*}
+    if and only if
+    \begin{align*}
+        \onehotmapofat{\arbsetof{0}}{\indvariable} \prec \onehotmapofat{\arbsetof{1}}{\indvariable} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We have $\arbsetof{0} \subset \arbsetof{1}$ if and only if
+    \begin{align*}
+        \forall{\indindex\in[\cardof{\arbset}]} \big(\indexinterpretationat{\indindex}\in\arbsetof{0}\big) \Rightarrow \big(\indexinterpretationat{\indindex}\in\arbsetof{1}\big) \, ,
+    \end{align*}
+    which is equal to
+    \begin{align*}
+        \forall{\indindex\in[\cardof{\arbset}]} \big(\onehotmapofat{\arbsetof{0}}{\indexedindvariable}=1\big) \Rightarrow \big(\onehotmapofat{\arbsetof{0}}{\indexedindvariable}=1\big)  \, .
+    \end{align*}
+    Since subset encodings are boolean tensors, this is equivalent to
+    \begin{align*}
+        \onehotmapofat{\arbsetof{0}}{\indvariable} \prec \onehotmapofat{\arbsetof{1}}{\indvariable} \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+\subsect{Binary Relations}
+
+% Explanation
+%Encoding of subsets as vectors: Each coordinate associated with a possible element, $\{0,1\}$ encoding whether in subset.
+%The encodings is thus a boolean tensor.
+%Any subset encoding is a boolean tensor.
+
+% Relation
+Since relations are subsets of cartesian products between two sets, their encoding is a straightforward generalization of \defref{def:subsetEncoding}.
+
+\begin{definition}[Basis encoding of binary relations]
+    A relation between two finite sets $\inset$ and $\outset$ is a subset of their cartesian product
+    \begin{align*}
+        \exrelation \subset \inset \times \outset \, .
+    \end{align*}
+    Given an enumeration of $\inset$ and $\outset$ by the categorical variables $\indvariableof{\insymbol}$ and $\indvariableof{\outsymbol}$ and interpretation maps $\indexinterpretationof{\insymbol}$, $\indexinterpretationof{\outsymbol}$, we define the basis encoding of this subset as the tensor $\onehotmapto{\exrelation}[\indvariableof{\insymbol},\indvariableof{\outsymbol}]$ with the coordinates
+    \begin{align*}
+        \onehotmapofat{\exrelation}{\indexedindvariableof{\insymbol},\indexedindvariableof{\outsymbol}}
+        = \begin{cases}
+              1 & \ifspace (\indexinterpretationofat{\insymbol}{\indindexof{\insymbol}},\indexinterpretationofat{\outsymbol}{\indindexof{\outsymbol}}) \in \exrelation \\
+              0 & \text{else}
+        \end{cases} \, .
+    \end{align*}
+\end{definition}
+
+% Decomposition
+The basis encoding has a decomposition into one-hot encodings as
+\begin{align*}
+    \onehotmapofat{\exrelation}{\indvariableof{\insymbol},\indvariableof{\outsymbol}}
+    = \sum_{\indindexof{\insymbol},\indindexof{\outsymbol} \wcols (\indexinterpretationofat{\insymbol}{\indindexof{\insymbol}},\indexinterpretationofat{\outsymbol}{\indindexof{\outsymbol}}) \in \exrelation}
+    \onehotmapofat{\indindexof{\insymbol}}{\indvariableof{\insymbol}}  \otimes \onehotmapofat{\indindexof{\outsymbol}}{\indvariableof{\outsymbol}}  \, .
+\end{align*}
+
+basis encodings have a matrix structure by the cartesian product, which can be further folded to tensors, when the sets itself are cartesian products.
+The basis encoding is a bijection between the relations of two sets and the boolean tensors with their enumeration variables.
+
+%They provide representations of generic relations by boolean tensors, in the sense that each relation between two sets is represented
+%\begin{theorem}
+%	The basis encoding is a bijection between the set of relations and the set of boolean tensors.
+%\end{theorem}
+%\begin{proof}
+%	% =>
+%	By definition, a basis encoding is the encoding of a subset and thus a boolean tensor.
+%	% <=
+%	Any matrification of a boolean tensor marks by its $1$ coordinates the elements of a relation.
+%\end{proof}
+%
+%% Significance
+%We can thus understand any matrification of a boolean tensor as the encoding of a relation and vice versa.
+
+
+
+\subsect{Higher-Order Relations}
+
+We can extend this contraction to relations of higher order, and arrive at encoding schemes usable for relational databases.
+
+\begin{definition}[Basis encoding of $\atomorder$-ary relations]
+    \label{def:daryRelation}
+    Given sets $\arbsetof{\atomenumerator}$ for $\atomenumeratorin$, a $\atomorder$-ary relation is a subset of a their cartesian product, that is
+    \begin{align*}
+        \exrelation \subset\bigtimes_{\atomenumeratorin} \arbsetof{\atomenumerator} \, .
+    \end{align*}
+    Given an enumeration of each set $\arbsetof{\atomenumerator}$ by a variable $\indvariableof{\atomenumerator}$ and an interpretation map $\indexinterpretationof{\atomenumerator}$, we define the basis encoding of the relation as the tensor $\onehotmapto{\exrelation}[\indvariableof{[\atomorder]}]$ with coordinates
+    \begin{align*}
+        \onehotmapofat{\exrelation}{\indexedindvariableof{[\catorder]}}
+        = \begin{cases}
+              1 & \ifspace (\indexinterpretationofat{0}{\indindexof{0}},\ldots,\indexinterpretationofat{\atomorder-1}{\indindexof{\atomorder-1}}) \in \exrelation \\
+              0 & \text{else}
+        \end{cases} \, .
+    \end{align*}
+\end{definition}
+
+%\begin{example}[Propositional Formulas]
+Let there be for $\atomenumeratorin$ sets $\arbsetof{\atomenumerator}$ of truth assignments to the $\atomenumerator$-th atom, which are all enumerated by $[2]$.
+A propositional formula then corresponds with a $\atomorder$-ary relation and we directly defined them in \defref{def:formulas} by their basis encoding.
+%\end{example}
+
+% Minterm interpretation
+%If we demand $\catdimof{\atomenumerator}=2$, we can interpret the one-hot encoding of  propositional formulas.
+
+% Knowledge Bases
+\begin{theorem}
+    The encoding of any $\catorder$-ary relation
+    \begin{align*}
+        \exrelation = \{ \shortcatindices^{\decindex} \wcols \decindexin \} \subset \bigtimes_{\catenumeratorin} \truthset \,
+    \end{align*}
+    where the objects in $\truthset$ are enumerated by $\catvariableof{\atomenumerator}$ with the standard index interpretation function (see \secref{sec:booleanEncoding})
+    \begin{align*}
+        \indexinterpretationat{\truesymbol} = 1 \andspace \indexinterpretationat{\falsesymbol} = 0 \, ,
+    \end{align*}
+    coincides with the propositional formula
+    \begin{align*}
+        \formulaat{\shortcatvariables} = \bigvee_{\decindexin} \termof{\catindex_{[\atomorder]}^{\decindex}} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    By definition, the encoding $\onehotmapof{\exrelation}$ is decomposed as
+    \begin{align*}
+        \onehotmapofat{\exrelation}{\shortcatvariables}
+        = \sum_{\decindexin} \onehotmapofat{\shortcatindices^{\decindex}}{\shortcatvariables} \, .
+    \end{align*}
+    By \theref{the:tensorToMaxMinTerms} this is equal to
+    \begin{align*}
+        \hypercoreat{\shortcatvariables} = \left( \bigvee_{\hyperonecoordinates}
+        \termof{\catzeropositions}{\catonepositions}
+        \right)[\shortcatvariables]
+        = \bigvee_{\decindexin} \termof{\catindex_{[\atomorder]}^{\decindex}} \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+
+\begin{example}[Relational Databases]
+    Relational Databases can be encoded as tensors using the relation encoding scheme.
+    Each column is thereby understood as an enumeration variable, which values form the sets $\arbsetof{\catenumerator}$.
+\end{example}
+
+% Sparse Representations
+Let us notice, that the dimensionality of the tensor space used for representing a relation is
+\begin{align*}
+    \prod_{\catenumeratorin} \cardof{\arbsetof{\catenumerator}}
+\end{align*}
+and therefore growing exponentially with the number of variables.
+Relations are however often sparse, in the sense that
+\begin{align*}
+    \cardof{\exrelation} << \prod_{\catenumeratorin} \cardof{\arbsetof{\catenumerator}} \, .
+\end{align*}
+It is therefore often beneficially to choose sparse encoding schemes, for example by restricted CP formats (see \charef{cha:sparseRepresentation}) to represent $\onehotmapof{\exrelation}$.
+
+
+\sect{Basis Encoding of Functions}
+
+Let us now restrict to relations, which have an expression by functions.
+We in this section then show, how contractions of their encodings can be exploited in function evaluation.
+
+\subsect{Definition}
+
+%We now generalize the representation scheme towards maps between arbitrary unstructured sets.
+
+\begin{definition}[Basis encoding of maps]
+    \label{def:functionRelationEncoding}
+    Any map
+    \begin{align*}
+        \exfunction\defcols \inset \rightarrow \outset
+    \end{align*}
+    can be represented by a relation
+    \begin{align*}
+        \exrelationof{\exfunction} \coloneqq \left\{ \big(x,\exfunction(x)\big) \wcols x \in\inset \right\} \subset \inset \times \outset \, .
+    \end{align*}
+    Given a enumeration of the sets by $\indvariableof{\insymbol}$ and $\indvariableof{\outsymbol}$ we define the basis encoding of $\exfunction$ as the tensor
+    \begin{align*}
+        \bencodingofat{\exfunction}{\indvariableof{\outsymbol},\indvariableof{\insymbol}}
+        = \onehotmapofat{\exrelationof{\exfunction}}{\indvariableof{\insymbol},\indvariableof{\outsymbol}}  \, .
+    \end{align*}
+\end{definition}
+
+\begin{remark}[Reduction to images]
+    % Image enumeration
+    When $\exfunction$ maps into a set of infinite cardinality, we restrict $\outset$ to the image of $\exfunction$ and enumerate the image by a variable $\indvariableof{\exfunction}$.
+    This scheme is applied, when $\exfunction$ is itself a tensor, i.e. $\outset=\rr$.
+    While the variable $\indvariableof{\exfunction}$ can in general be of the same cardinality as the domain set $\inset$, it will be valued in $[2]$ when considering boolean tensors.
+\end{remark}
+
+% Characterization of the directed and boolean tensors
+We notice that any basis representation of a function is also a directed tensor with incoming variables to the domain and outgoing variables to the image.
+It furthermore holds, that the set of directed and boolean tensors is characterized by the basis encoding of functions.
+This is shown in the next theorem, by the claim that any boolean tensor which is directed is the basis representation of a function.
+
+\begin{theorem}
+    \label{the:bencodingDirected}
+    Let $\inset,\outset$ be sets and $\exrelation\subset\inset\times\outset$ a relation.
+    If and only if there exists a map $\exfunction:\inset\rightarrow\outset$ such that $\exrelation=\exrelationof{\exfunction}$, the basis encoding $\bencodingof{\exfunction}$ is a directed tensor with $\indvariableof{\insymbol}$ incoming and $\indvariableof{\outsymbol}$ outgoing.
+\end{theorem}
+\begin{proof}
+    \proofrightsymbol{}:
+    When $\exfunction$ is a function, we have for any $\indindexofin{\insymbol}$
+    \begin{align*}
+        \sum_{\indindexofin{\outsymbol}} \bencodingofat{\exfunction}{\indexedindvariableof{\outsymbol},\indexedindvariableof{\insymbol}}
+        =  \bencodingofat{\exfunction}{\indvariableof{\outsymbol}=\invindexinterpretationofat{\outsymbol}{\exfunctionat{\indexinterpretationofat{\insymbol}{\indindexof{\insymbol}}}},\indexedindvariableof{\insymbol}}
+        = 1 \, .
+    \end{align*}
+    Thus, $\bencodingofat{\exfunction}{\indvariableof{\outsymbol},\indvariableof{\insymbol}}$ is a directed tensor with variables $\indvariableof{\insymbol}$ incoming and $\indvariableof{\outsymbol}$ outgoing.
+
+    \proofleftsymbol{}:
+    Conversely let there be a relation $\exrelation$, such that $\bencodingof{\exrelation}$ is directed.
+    To this end, we observe that for any $\indindexofin{\insymbol}$ the tensor
+    \begin{align*}
+        \onehotmapofat{\exrelation}{\indexedindvariableof{\insymbol},\indvariableof{\outsymbol}}
+    \end{align*}
+    is a boolean tensor with coordinate sum one and therefore a basis vector.
+    It follows that the function $\exfunction : \inset \rightarrow \outset $ defined for $x\in\inset$ as
+    \begin{align*}
+        \exfunctionat{x}
+        = \indexinterpretationofat{\outsymbol}{\invonehotmapof{\onehotmapofat{\exrelation}{\indvariableof{\insymbol}=\invindexinterpretationofat{\insymbol}{x},\indvariableof{\outsymbol}}}}
+    \end{align*}
+    is well-defined.
+    We then have by construction
+    \begin{align*}
+        \bencodingofat{\exfunction}{\indvariableof{\outsymbol},\indvariableof{\insymbol}}
+        & = \sum_{\indindexofin{\insymbol}}
+        \onehotmapofat{\exfunction(\indindexof{\insymbol})}{\indvariableof{\outsymbol}} \otimes
+        \onehotmapofat{\indindexof{\insymbol}}{\indvariableof{\insymbol}} \\
+        & =  \sum_{\indindexofin{\insymbol}} \onehotmapofat{\exrelation}{\indexedindvariableof{\insymbol},\indvariableof{\outsymbol}} \otimes
+        \onehotmapofat{\indindexof{\insymbol}}{\indvariableof{\insymbol}} \\
+        & = \onehotmapofat{\exrelation}{\indvariableof{\outsymbol},\indvariableof{\insymbol}}
+    \end{align*}
+    and therefore by \defref{def:functionRelationEncoding} $\exrelation=\exrelationof{\exfunction}$.
+\end{proof}
+
+% Grid sets
+We are specially interested in sets of states of a factored system, which amounts to the case in \defref{def:functionRepresentation}.
+Those state sets have a decomposition into a cartesian product of $\atomorder$ sets
+\[ \arbset = \facstates \, . \]
+The most obvious enumeration of the set $\arbset$ is therefore by the collection of state variables $\{\catvariableof{\atomenumerator}\wcols \atomenumeratorin \}$.
+Functions between states of factored systems with $\atomorder_{\insymbol}$ and $\atomorder_{\outsymbol}$ state variables can be represented by $\atomorder_{\insymbol}+\atomorder_{\outsymbol}$-ary relations and \defref{def:functionRelationEncoding} has an obvious generalization to this case with multiple enumeration variables.
+
+%% NOT NEEDED -> Done in propositional logics
+%% Conditional
+%Since the basis encoding of any map between factored systems is directed, it can be interpreted by a conditional probability tensor, as we state next.
+%
+%%% Maps
+%\begin{corollary}%\label{the:condProbFunctionRepresentation}
+%	The basis encoding $\bencodingof{\exfunction}$ (see \defref{def:functionRepresentation}) of a function $\exfunction$ between factored systems is a conditional probability tensor, where the legs to the image system are the conditions and the legs to the target system the distribution legs.
+%\end{corollary}
+%
+%%% Deterministic by construction
+%These are deterministic conditional probability tensors, in the sense that any slice with respect to the input variables is a basis tensor.
+%Through contractions with distribution tensors (e.g. distributions in domain systems) they get stochastic.
+%This is for example the case in the empirical distribution, which can be understood as the forwarding of the uniform distribution on the sample enumeration.
+
+
+
+\subsect{Function Evaluation}
+
+We now justify the nomenclature of basis calculus, by showing that contraction with basis elements produce the one-hot encoded function evaluation.
+
+\begin{theorem}[Function evaluation in Basis Calculus]
+    \label{the:basisCalculus}
+    Retrieving the value of the function $\exfunction$ at a specific state is then the contraction of the tensor representation with the one-hot encoded state.
+    For any $\arbelement\in\inset$ we have
+    \begin{align*}
+        \onehotmapofat{\invindexinterpretationofat{\outsymbol}{\exfunctionat{\arbelement}}}{\indvariableof{\outsymbol}}
+        = \contractionof{
+            \bencodingofat{\exformula}{\indvariableof{\outsymbol},\indvariableof{\insymbol}},
+            \onehotmapofat{\invindexinterpretationofat{\insymbol}{\arbelement}}{\indvariableof{\insymbol}}
+        }{\indvariableof{\outsymbol}} \, .
+    \end{align*}
+    Thus, we can retrieve the function evaluation by the inverse one-hot mapping as
+    \begin{align*}
+        \exfunctionat{\arbelement} = \invonehotmapof{\contractionof{
+            \bencodingofat{\exformula}{\indvariableof{\outsymbol},\indvariableof{\insymbol}},
+            \onehotmapofat{\invindexinterpretationofat{\insymbol}{\arbelement}}{\indvariableof{\insymbol}}
+        }{\indvariableof{\outsymbol}}} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    From the representation
+    \begin{align*}
+        \bencodingofat{\exfunction}{\indvariableof{\outsymbol},\indvariableof{\insymbol}}
+        & =  \sum_{\indindexofin{\insymbol}}
+        \onehotmapofat{(\invindexinterpretationof{\outsymbol} \circ \exfunction \circ \indexinterpretationof{\insymbol}) \indindexof{\insymbol}
+        }{\indvariableof{\insymbol}}
+        \otimes
+        \onehotmapofat{\indindexof{\insymbol}}{\indvariableof{\insymbol}}
+    \end{align*}
+    and the orthonormality of the one-hot encodings of the input enumeration we get
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\exformula}{\indvariableof{\outsymbol},\indvariableof{\insymbol}},
+            \onehotmapofat{\invindexinterpretationofat{\insymbol}{\arbelement}}{\indvariableof{\insymbol}}
+        }{\indvariableof{\outsymbol}}
+        = \onehotmapofat{\invindexinterpretationofat{\outsymbol}{\exfunctionat{\arbelement}}}{\indvariableof{\outsymbol}} \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+% Comparsion with coordinate calculus
+In comparison with the Coordinate Calculus scheme (see \theref{the:coordinateCalculus}), the Basis Calculus produces basis vectors of a functions evaluation instead of scalars.
+While this seems to produce unnecessary redundancy in representing a function, we will see in the following section, that this scheme is efficient in representing compositions of functions.
+
+\sect{Decomposition of Basis Encodings}
+
+We now show the utility of basis encodings for functions, by developing tensor network representation to composed functions.
+We in this section use the notation of factored system representation, as developed in \parref{par:one} and enumerate states of factored systems by variables $\catvariable$ with states in $[\catdim]$, instead of combinations of variables $\indvariable$ with index interpretation functions $\indexinterpretation$ enumerating arbitrary sets.
+
+\subsect{Composition of Function}
+
+We have already used (see \defref{def:formulaDecomposition}), that combination of propositional formulas by connectives can be represented by contractions.
+We now show in a more general perspective, that in basis calculus, any composition of functions in its basis encoding the contraction of the encoded functions.
+
+\begin{theorem}[Composition of Functions]
+    \label{the:compositionByContraction}
+    Let there be two maps between factored systems
+    \begin{align*}
+        \exfunction \defcols \nodestatesof{\nodesone} \rightarrow \nodestatesof{\nodestwo}
+    \end{align*}
+    and
+    \begin{align*}
+        \secexfunction \defcols \nodestatesof{\nodestwo} \rightarrow \nodestatesof{\nodesthree}
+    \end{align*}
+    with the image system of $\exfunction$ is the domain system of $\secexfunction$.
+    Then the basis encoding of the composition
+    \begin{align*}
+        \compositionof{\secexfunction}{\exfunction}\defcols \nodestatesof{\nodesone} \rightarrow \nodestatesof{\nodesthree}
+    \end{align*}
+    is the contraction
+    \begin{align*}
+        \bencodingofat{\compositionof{\secexfunction}{\exfunction}}{\catvariableof{\nodesthree},\catvariableof{\nodesone}}
+        = \contractionof{
+            \bencodingofat{\secexfunction}{\catvariableof{\nodesthree},\catvariableof{\nodestwo}},
+            \bencodingofat{\exfunction}{\catvariableof{\nodestwo},\catvariableof{\nodesone}},
+        }{\catvariableof{\nodesthree},\catvariableof{\nodesone}} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    By definition we have the basis encoding of the composition as
+    \begin{align*}
+        \bencodingofat{\compositionof{\secexfunction}{\exfunction}}{\catvariableof{\nodesthree},\catvariableof{\nodesone}}
+        = \sum_{\catindexof{\nodesone}\in\nodestatesof{\nodesone}}
+        \onehotmapofat{\compositionofat{\secexfunction}{\exfunction}{\catindexof{\nodesone}}}{\catvariableof{\nodesthree}} \otimes
+        \onehotmapofat{\catindexof{\nodesone}}{\catvariableof{\nodesone}}  \, .
+    \end{align*}
+    By using a similar representation for $\bencodingof{\secexfunction}$ and $\bencodingof{\exfunction}$ we now show, that this coincides with the contraction of these basis encodings with closed variables $\catvariableof{\nodestwo}$.
+    By the linearity of the contraction operation we get
+    \begin{align*}
+        \contractionof{\bencodingof{\exfunction},\bencodingof{\secexfunction}}{\catvariableof{\nodesthree},\catvariableof{\nodesone}}
+        & = \sum_{\catindexof{\nodesone}\in\bigtimes_{\node\in\nodesone}[\catdimof{\node}]}
+        \sum_{\catindexof{\nodestwo} \in \bigtimes_{\node\in\nodestwo}[\catdimof{\node}]}
+        \breakablecontractionof{
+            \left( \onehotmapofat{\secexfunctionat{\catindexof{\nodestwo}}}{\catvariableof{\nodesthree}} \otimes
+            \onehotmapofat{\catindexof{\nodestwo}}{\catvariableof{\nodestwo}} \right), \\
+            & \hspace{4.5cm} \left( \onehotmapofat{\exfunctionat{\catindexof{\nodesone}}}{\catvariableof{\nodestwo}} \otimes
+            \onehotmapofat{\catindexof{\nodesone}}{\catvariableof{\nodesone}} \right)
+        }{\catvariableof{\nodesthree},\catvariableof{\nodesone}} \\
+        & = \sum_{\catindexof{\nodesone}\in\bigtimes_{\node\in\nodesone}[\catdimof{\node}]}
+        \delta_{\catindexof{\nodestwo},\catindexof{\nodesone}} \, \cdot \,
+        \onehotmapofat{\secexfunctionat{\catindexof{\nodestwo}}}{\catvariableof{\nodesthree}} \otimes
+        \onehotmapofat{\catindexof{\nodesone}}{\catvariableof{\nodesone}} \\
+        & = \sum_{\catindexof{\nodesone}\in\nodestatesof{\nodesone}}
+        \onehotmapofat{\compositionofat{\secexfunction}{\exfunction}{\catindexof{\nodesone}}}{\catvariableof{\nodesthree}} \otimes
+        \onehotmapofat{\catindexof{\nodesone}}{\catvariableof{\nodesone}} \\
+        & = \bencodingofat{\compositionof{\secexfunction}{\exfunction}}{\catvariableof{\nodesthree},\catvariableof{\nodesone}} \, ,
+    \end{align*}
+    where we exploited the orthonormality of the one-hot encodings to the states of $\catvariableof{\nodestwo}$, which contraction thus results in the delta symbol $\delta$ applied on the respective states.
+\end{proof}
+
+% Iterative usage
+We can use \theref{the:compositionByContraction} iteratively to further decompose the function $\secexfunction$.
+In this way, the basis encoding of a function consistent of multiple compositions can be represented as the contractions of all the functions.
+This has been applied in syntactical compositions (see \defref{def:formulaDecomposition}) to efficiently represent propositional formulas, for which syntactical expressions are given.
+
+\subsect{Compositions with Real Functions}
+
+We here investigate how the composition of a tensor
+\begin{align*}
+    \hypercore \defcols \facstates \rightarrow \rr
+\end{align*}
+with arbitrary functions
+\begin{align*}
+    \chainingfunction \defcols \rr \rightarrow \rr
+\end{align*}
+can be represented.
+This is for example relevant, when representing coordinatewise tensor transforms (see \secref{sec:coordinatewiseTransforms}) based on tensor network contractions.
+To this end we understand the tensor $\hypercoreat{\shortcatvariables}$ as a map of the states $\facstates$ onto its by a variable $\indvariableof{\hypercore}$ and index interpretation $\indexinterpretation$ enumerated image $\imageof{\hypercore}$.
+We then define the restriction of $\chainingfunction$ onto $\imageof{\hypercore}$ as the tensor $\restrictionofto{\chainingfunction}{\imageof{\hypercore}}\left[\indvariableof{\hypercore}\right]$ with coordinates $\indindexof{\hypercore}$
+\begin{align*}
+    \restrictionofto{\chainingfunction}{\imageof{\hypercore}}\left[\indexedindvariableof{\hypercore}\right]
+    = \compositionofat{\chainingfunction}{\indexinterpretation}{\indindexof{\hypercore}} \, .
+\end{align*}
+Let us now show, how contractions with these vectors represents compositions with tensors.
+
+\begin{theorem}
+    \label{the:tensorFunctionComposition}
+    The coordinatewise transform of any tensor $\hypercore$ (see \defref{def:coordinatewiseTransform}) by a real function $\chainingfunction$ is the contraction (see \figref{fig:tensorFunctionComposition})
+    \begin{align*}
+        \chainingfunction(\hypercore)[\shortcatvariables]
+        = \contractionof{\bencodingofat{\hypercore}{\indvariableof{\hypercore},\shortcatvariables},\restrictionofto{\chainingfunction}{\imageof{\hypercore}}\left[\indvariableof{\hypercore}\right] }{\shortcatvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    By the basis calculus \theref{the:basisCalculus} we have for any state $\shortcatindices\in\facstates$, that
+    \begin{align*}
+        \contractionof{\bencodingofat{\hypercore}{\indvariableof{\hypercore},\shortcatvariables},\restrictionofto{\chainingfunction}{\imageof{\hypercore}}\left[\indvariableof{\hypercore}\right]}{\indexedshortcatvariables}
+        &= \contraction{\bencodingofat{\hypercore}{\indvariableof{\hypercore},\indexedshortcatvariables},\restrictionofto{\chainingfunction}{\imageof{\hypercore}}\left[\indvariableof{\hypercore}\right]} \\
+        & = \contraction{\onehotmapofat{\indexinterpretationof{\hypercoreat{\indexedshortcatvariables}}}{\indvariableof{\hypercore}},\restrictionofto{\chainingfunction}{\imageof{\hypercore}}\left[\indvariableof{\hypercore}\right]} \\
+        & = \chainingfunction(\hypercore)[\indexedshortcatvariables] \, .
+    \end{align*}
+    Since both tensors coincide on all coordinates, they are equal.
+\end{proof}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{./PartIII/tikz_pics/basis_calculus/chaining_formula.tex}
+    \end{center}
+    \caption{Representation of the composition of a tensor $\hypercore$ with a real function $\chainingfunction$.}
+    \label{fig:tensorFunctionComposition}
+\end{figure}
+
+
+\begin{corollary}
+    \label{cor:rhoToNormal}
+    For any tensor $\hypercoreat{\shortcatvariables}$ we have
+    \begin{align*}
+        \hypercoreat{\shortcatvariables}
+        = \contractionof{\bencodingofat{\hypercore}{\indvariableof{\hypercore},\shortcatvariables},\idrestrictedto{\imageof{\hypercore}}\left[\indvariableof{\hypercore}\right]}{\shortcatvariables} \, .
+    \end{align*}
+\end{corollary}
+\begin{proof}
+    This follows from \theref{the:tensorFunctionComposition} using $\chainingfunction=\idsymbol$ and by noticing that
+    \begin{align*}
+        \hypercoreat{\shortcatvariables} = \idsymbol(\hypercore)[\shortcatvariables] \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+\begin{remark}[Transform of basis into coordinate encodings]
+    \corref{cor:rhoToNormal} states in particular the transformation of the basis encoding of a function into its coordinate encoding.
+    Given a real function $\exfunction:\facstates\rightarrow\rr$ we have
+    \begin{align*}
+        \cencodingofat{\exfunction}{\shortcatvariables}
+        = \contractionof{\bencodingofat{\exfunction}{\headvariableof{\exfunction},\shortcatvariables},\indexinterpretationofat{\exfunction}{\headvariableof{\exfunction}}}{\shortcatvariables} \, ,
+    \end{align*}
+    where $\headvariableof{\exfunction}$ is a variable, which enumerates the image of $\exfunction$ with the interpretation $\indexinterpretationofat{\exfunction}{\headvariableof{\exfunction}}$.
+\end{remark}
+
+
+\begin{corollary}
+    \label{cor:onesHead}
+    For any tensor $\hypercore$, which is directed with $\shortcatvariables$ incoming, we have
+    \[ \onesat{\shortcatvariables} = \contractionof{\bencodingof{\hypercore}}{\shortcatvariables} \, . \]
+\end{corollary}
+\begin{proof}
+    This follows from \theref{the:tensorFunctionComposition} using $\chainingfunction=\ones$ and by noticing that
+    \begin{align*}
+        \onesat{\shortcatvariables} = \ones(\hypercore)[\shortcatvariables] \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+
+%% COULD STATE SLICING THEOREM AS A COMPOSITION OF CHAININGS! But unclear, wheter needed
+%\begin{theorem}
+%	\begin{align*}
+%		\coordinatetrafowrtofat{\chainingfunction}{\contractionof{\exvector[\indvariableof{\exfunction}],\bencodingofat{\hypercore}{\indvariableof{\exfunction},\shortcatvariables}}{\shortcatvariables}}{\shortcatvariables}
+%		= \coordinatetrafowrtofat{\left(\coordinatetrafowrtofat{\chainingfunction}{\exvector}{\indvariableof{\exfunction}}\right)}{\hypercore}{\shortcatvariables}
+%	\end{align*}
+%\end{theorem}
+%\begin{proof}
+%	Simply by compositions of transforms.
+%\end{proof}
+%
+%
+%% Replacement of Slicing Theorem
+%\begin{corollary}\label{cor:directedTrafo}
+%	Let $\basisslices$ be a directed and boolean tensor with incoming variables being $\shortcatvariables$, and $\gentensor$ a tensor, which variables are the outgoing variables of $\basisslices$.
+%	Let further $\chainingfunction:\rr\rightarrow\rr$ be any real function.
+%	Then
+%		\[ \chainingfunction \circ \contractionof{\basisslices,\gentensor}{\shortcatvariables}
+%		= \contractionof{\basisslices,\chainingfunction\circ\gentensor}{\shortcatvariables} \, . \]
+%\end{corollary}
+%\begin{proof}
+%	Since $\basisslices$ is a directed and boolean tensor, we find a map
+%		\[ \exfunction\defcols \facstates \rightarrow \secfacstates \]
+%	such that $\basisslices=\bencodingof{\exfunction}$ and a map $V$ such that $\gentensor=\restrictionofto{V}{\imageof{\exfunction}}$.
+%	Then \theref{the:tensorFunctionComposition} implies that
+%		\[ \contractionof{\basisslices,\gentensor}{\shortcatvariables} = V \circ \exfunction \, . \]
+%	It follows that
+%	\begin{align*}
+%		\chainingfunction \circ \contractionof{\basisslices,\gentensor}{\shortcatvariables} = \chainingfunction \circ V \circ \exfunction
+%	\end{align*}
+%	and by another application of \theref{the:tensorFunctionComposition} that
+%	\begin{align*}
+%		\chainingfunction \circ V \circ \exfunction
+%		& = \contractionof{\bencodingof{\exfunction}, \restrictionofto{\chainingfunction \circ V}{\imageof{\exfunction}}}{\shortcatvariables} \\
+%		& = \contractionof{\basisslices,\chainingfunction\circ\gentensor}{\shortcatvariables} \, .
+%	\end{align*}
+%	The claim follows as a combination of both equations.
+%\end{proof}
+
+
+
+
+
+\subsect{Decomposition in Case of Structured Images}
+
+When a set is structured as the cartesian product of other sets, that is
+\begin{align*}
+    \outset = \bigtimes_{\catenumeratorin} \arbsetof{\catenumerator} \, ,
+\end{align*}
+we can enumerate it by a collection $\{\indvariableof{\catenumerator} \wcols \catenumeratorin\}$ of enumeration variables, each with respective index interpretation maps.
+When the image of a function admits such a cartesian representation, we now show that the basis encoding can be represented by a contraction of basis encodings to each image coordinate.
+
+\begin{theorem}
+    \label{the:functionImageDecompositionContraction}
+    Let $\exfunction$ be a function between factored systems
+    \begin{align*}
+        \exfunction\defcols [\catdim] \rightarrow  \facstates
+    \end{align*}
+    and denote by
+    \begin{align*}
+        \exfunctionof{\catenumerator}\defcols [\catdim] \rightarrow [\catdimof{\catenumerator}]
+    \end{align*}
+    the image coordinate restrictions of $\exfunction$, that is we have $\exfunction=(\exfunctionof{0},\ldots,\exfunctionof{\catorder-1})$.
+    Let us assign the variable $\catvariable$ to the factored system in the domain system of $\exfunction$ and the variables $\catvariableof{\atomenumerator}$ for $\atomenumeratorin$ to the image system of $\exfunction$.
+    We can then decompose the basis encoding of $\exfunction$ into the basis encodings of its image coordinate restrictions, that is
+    \begin{align*}
+        \bencodingofat{\exfunction}{\shortcatvariables,\catvariable}
+        = \contractionof{
+            \{\bencodingofat{\exfunctionof{\atomenumerator}}{\catvariableof{\atomenumerator},\catvariable} \wcols \atomenumeratorin \}
+        }{\shortcatvariables,\catvariable} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    For any $\catindexin$ we have
+    \begin{align*}
+        \bencodingofat{\exfunction}{\shortcatvariables,\indexedcatvariable}
+        &= \onehotmapofat{\exfunctionat{\catindex}}{\shortcatvariables} \\
+        &= \bigotimes_{\atomenumeratorin} \bencodingofat{\exfunctionof{\atomenumerator}}{\catvariableof{\atomenumerator},\indexedcatvariable} \\
+        &= \contractionof{
+            \{\bencodingofat{\exfunctionof{\atomenumerator}}{\catvariableof{\atomenumerator},\indexedcatvariable} \wcols \atomenumeratorin\}
+        }{\shortcatvariables} \\
+        &= \contractionof{
+            \{\bencodingofat{\exfunctionof{\atomenumerator}}{\catvariableof{\atomenumerator},\catvariable} \wcols \atomenumeratorin\}
+        }{\shortcatvariables,\indexedcatvariable}
+    \end{align*}
+    and therefore equality of both tensors.
+\end{proof}
+
+% Continue discussion in Sparse TC
+In \charef{cha:sparseRepresentation} we will apply \theref{the:functionImageDecompositionContraction} in \theref{the:functionDecompositionBasisCP} to show sparse basis $\cpformat$ decompositions to $\bencodingof{\exfunction}$.
+These decompositions are then applied for efficient representation of the empirical distribution, which involve the basis encoding of data maps (see \exaref{exa:empDistCP}), and for exponential families, which statistics have images, which are included in cartesian products of the images to each coordinate (see \exaref{exa:expFamCP}).
+
+
+
+\sect{Selection Encodings}
+
+Selection encodings as introduced in \defref{def:selectionEncoding} are best understood in terms of linear mapping interpretations of tensors.
+We will first provide by basis representations a generic relation between the coordinatewise tensor definitions in this work and linear maps.
+
+We then show the utility of this perspective in the representation of composed linear functions.
+The results are applicable in the exponential family theory, in the tensor representation of energies and means.
+
+\subsect{Basis Representations of Linear Maps}
+
+% Matrices
+Basis representations are standard linear algebra tools, where matrices are understood as linear maps between vector spaces.
+The state sets $\facstates$ can be interpreted as an enumeration of basis elements $\onehotmapof{\catindex}$ of the tensor space $\facspace$.
+Along this interpretation, tensors have an interpretation as maps between tensor spaces.
+Any tensor and any partition of its variables into two sets can be interpreted as the basis elements of a linear map between the tensor spaces of the respective variables.
+Tensor valued functions on state sets $\facstates$ are an intermediate representation.
+
+\begin{definition}
+    Let there be two tensor spaces $V_1$ and $V_2$ with basis by sets $\arbsetof{1}\subset V_1$ and $\arbsetof{2}\subset V_2$ of cardinality $\inddimof{1}$ and $\inddimof{2}$, which are enumerated by variables $\indvariableof{1},\indvariableof{2}$ and index interpretation functions $\indexinterpretationof{1},\indexinterpretationof{2}$.
+    The basis representation of any linear map $\linmap\in\linmapspace(V_1,V_2)$ is then the tensor
+    \begin{align*}
+        \brepresentationofat{\exfunction}{\indvariableof{1},\indvariableof{2}} \in \rr^{\inddimof{1}} \otimes \rr^{\inddimof{2}}
+    \end{align*}
+    defined for $\indindexofin{1}$ and $\indindexofin{2}$ by
+    \begin{align*}
+        \brepresentationofat{\linmap}{\indexedindvariableof{1},\indexedindvariableof{2}}
+        = \contraction{\linmapof{\indexinterpretationofat{1}{\indindexof{1}}},\indexinterpretationofat{2}{\indindexof{2}}} \, .
+    \end{align*}
+\end{definition}
+
+Basis representations for compositions of linear functions can be computed via contractions of the respective basis representations, as we show next.
+
+\begin{theorem}
+    \label{the:linearCompositionBasisEncoding}
+    If $\linmapof{1}$ is a linear function between $V_1$ and $V_2$  and $\linmapof{2}$ between $V_2$ and $V_3$, and let $\indvariableof{1},\,\indvariableof{2}$ and $\indvariableof{3}$ be enumerations of orthonormal bases in the spaces with index interpretation functions $\indexinterpretationof{1},\,\indexinterpretationof{2}$ and $\indexinterpretationof{3}$.
+    We have
+    \begin{align*}
+        \brepresentationofat{\linmapof{2}\circ\linmapof{1}}{\indvariableof{1},\indvariableof{3}}
+        = \contractionof{
+            \brepresentationofat{\linmapof{2}}{\indvariableof{2},\indvariableof{3}}, \brepresentationofat{\linmapof{1}}{\indvariableof{1},\indvariableof{2}}
+        }{\indvariableof{1},\indvariableof{3}}  \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    For arbitrary $\indindexofin{1}$ and $\indindexofin{3}$ we have to show that
+    \begin{align*}
+        \brepresentationofat{\linmapof{2}\circ\linmapof{1}}{\indexedindvariableof{1},\indexedindvariableof{3}}
+        = \contraction{
+            \brepresentationofat{\linmapof{2}}{\indvariableof{2},\indexedindvariableof{3}},\brepresentationofat{\linmapof{1}}{\indexedindvariableof{1},\indvariableof{2}}
+        } \, .
+    \end{align*}
+    By definition we have
+    \begin{align*}
+        \brepresentationofat{\linmapof{2}\circ\linmapof{1}}{\indexedindvariableof{1},\indexedindvariableof{3}}
+        = \contraction{\linmapof{2}\circ\linmapof{1}(\indexinterpretationofat{1}{\indindexof{1}}),\indexinterpretationofat{3}{\indindexof{3}}} \, .
+    \end{align*}
+    Decomposing the linear maps using their basis representation we get
+    \begin{align*}
+        \contraction{\linmapof{2}\circ\linmapof{1}(\indexinterpretationofat{1}{\indindexof{1}}),\indexinterpretationofat{3}{\indindexof{3}}}
+        &= \contraction{\linmapofat{2}{\sum_{\indindexofin{2}} \brepresentationofat{\linmapof{1}}{\indexedindvariableof{1},\indexedindvariableof{2}} \cdot \indexinterpretationofat{2}{\indindexof{2}}},\indexinterpretationofat{3}{\indindexof{3}}} \\
+        &= \sum_{\indindexofin{2}} \contraction{\linmapofat{2}{\brepresentationofat{\linmapof{1}}{\indexedindvariableof{1},\indexedindvariableof{2}} \cdot \indexinterpretationofat{2}{\indindexof{2}}},\indexinterpretationofat{3}{\indindexof{3}}} \\
+        &= \sum_{\indindexofin{2}} \contraction{\brepresentationofat{\linmapof{1}}{\indexedindvariableof{1},\indexedindvariableof{2}} \cdot \brepresentationofat{\linmapof{2}}{\indexedindvariableof{2},\indexedindvariableof{1}}} \\
+        &= \contraction{
+            \brepresentationofat{\linmapof{2}}{\indvariableof{2},\indexedindvariableof{3}},\brepresentationofat{\linmapof{1}}{\indexedindvariableof{1},\indvariableof{2}}
+        } \, .
+    \end{align*}
+    Therefore, both tensors are equivalent.
+\end{proof}
+
+% Comparison with basis representations
+For basis representations we thus have a similar composition theorem as for basis encodings of arbitrary functions (see \theref{the:compositionByContraction}).
+What is more, one can understand each basis encodings as a basis representation of a linear function.
+Along this line, the composition theorem \theref{the:linearCompositionBasisEncoding} as the principle of linear algebra, which underlies \theref{the:compositionByContraction}.
+% Matrix Multiplication
+A typical interpretation of \theref{the:linearCompositionBasisEncoding} is matrix multiplication, where matrices understood since matrices are basis representations of linear maps.
+
+\begin{example}[Basis encodings as basis representations]
+    Let us justify that we referred to the contractions of basis encodings by basis calculus, by describing that basis encodings are a special case of basis representations.
+    To that end, we understand the sets $\inset=[\inddimof{\insymbol}]$ and $\outset=[\inddimof{\outsymbol}]$ as labels of a basis in $\rr^{\inddimof{\insymbol}}$ and $\rr^{\inddimof{\outsymbol}}$.
+    Then, given a relation $\exrelation \subset \inset \times \outset$, we define a linear map $\linmap : \rr^{\inddimof{\insymbol}} \rightarrow \rr^{\inddimof{\outsymbol}}$ through the action on the $i\in[\inddimof{\insymbol}]$-th basis element as
+    \begin{align*}
+        \linmap(\onehotmapof{i}) = \sum_{j\in[\inddimof{\outsymbol}]\wcols (i,j) \in \exrelation} \onehotmapof{j} \, .
+    \end{align*}
+    Comparing the coefficients of the basis representation of $\linmap$ and the basis encoding $\exrelation$ we get
+    \begin{align*}
+        \brepresentationofat{\linmap}{\indexedindvariableof{\outsymbol},\indexedindvariableof{\insymbol}}
+        = \onehotmapofat{\exrelation}{\indexedindvariableof{\outsymbol},\indexedindvariableof{\insymbol}} \, .
+    \end{align*}
+\end{example}
+
+
+
+\subsect{Selection Encodings as Basis Representations}
+
+Selection encodings (see \defref{def:selectionEncoding}) are related to basis representations of linear maps as we show in the next theorem.
+
+\begin{theorem}
+    \label{the:selectionToBasisEncoding}
+    Let there be tensor spaces $\facstates$ and $\selspace$ with basis by the one-hot encodings, enumerated by the categorical variables $\shortcatvariables$ and $\shortselvariables$ with index interpretation functions by the one-hot map $\onehotmap$.
+    Given a function
+    \begin{align*}
+        \exfunction\defcols \facstates \rightarrow \selspace
+    \end{align*}
+    we define a linear map $\linmapof{\exfunction}\in\linmapspace(\facspace,\selspace)$ by the action on the basis elements to $\shortcatindices\in\facstates$ as the tensors %and $\catindexof{2}\in\selstates$ by
+    \begin{align*}
+        \linmapof{\exfunction}(\onehotmapof{\shortcatindices}) \coloneqq \exfunctionat{\shortcatindices} \,
+    \end{align*}
+    carrying the variables $\shortselvariables$.
+    We then have
+    \begin{align*}
+        \sencodingofat{\exfunction}{\shortcatvariables,\shortselvariables}
+        = \brepresentationofat{\linmapof{\exfunction}}{\shortcatvariables,\shortselvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We show equality on each slice with respect to the variables $\shortcatvariables$ and therefore choose arbitrary $\shortcatindices$. % and $\shortselindices$.
+    It holds by definition of selection encodings and the map $\linmapof{\exfunction}$ that
+    \begin{align*}
+        \sencodingofat{\exfunction}{\indexedshortcatvariables,\selvariables}
+        = \exfunctionat{\shortcatindices}[\shortselvariables]
+        = \linmapof{\exfunction}(\onehotmapof{\shortcatindices})[\shortselvariables] \, .
+    \end{align*}
+    We further have
+    \begin{align*}
+        \linmapof{\exfunction}(\onehotmapof{\shortcatindices})[\shortselvariables]
+        &= \sum_{\shortselindices} \contraction{\linmapof{\exfunction}(\onehotmapof{\shortcatindices})[\indexedshortselvariables],\onehotmapofat{\shortselindices}{\shortselvariables}} \cdot \onehotmapofat{\shortselindices}{\shortselvariables} \\
+        &= \sum_{\shortselindices} \brepresentationofat{\linmapof{\exfunction}}{\indexedshortcatvariables,\indexedshortselvariables} \cdot \onehotmapofat{\shortselindices}{\shortselvariables} \\
+        &= \brepresentationofat{\linmapof{\exfunction}}{\indexedshortcatvariables,\shortselvariables} \, .
+    \end{align*}
+    For arbitrary $\shortcatindices$ the slices of $\sencodingof{\exfunction}$ and $\brepresentationof{\linmapof{\exfunction}}$ thus coincide, which proves the equivalence of both tensors.
+\end{proof}
+
+% Comparison with basis encodings - definition
+While basis encoding works for maps from $\facstates$ to arbitrary sets (which are enumerated), selection encodings as introduced in \defref{def:selectionEncoding} require and exploit that their image is embedded in a tensor space.
+
+% Slicing
+Given a selection encoding of a function, the function is retrieved by slicing with respect to the
+\begin{align*}
+    \exfunction(\catindex) = \sencodingofat{\exfunction}{\indexedcatvariable,\selvariable} \, .
+\end{align*}
+More generally, we show in the next Lemma how to construct to any tensor and any partition of its variables functions by slicing operations, such that the tensor is the selection encoding of the function.
+
+\begin{theorem}
+    \label{the:inverseSelectionEncoding} % To be used for MLN - proposal distribution
+    Let $\hypercoreat{\nodevariables}$ be a tensor in $\bigotimes_{\nodein}\rr^{\catdimof{\node}}$ and let $\nodesa$, $\nodesb$ be a disjoint partition of $\nodes$, that is $\nodesa\dot{\cup}\nodesb=\nodes$.
+    Then the function
+    \begin{align*}
+        \exfunction\defcols \bigtimes_{\node\in\nodesa}[\catdimof{\node}] \rightarrow \bigotimes_{\node\in\nodesb} \rr^{\catdimof{\node}}
+    \end{align*}
+    defined for $\catindexof{\nodesa}\in\nodestatesof{\nodesa}$ as
+    \begin{align*}
+        \exfunctionat{\catindexof{\nodesa}} \coloneqq \hypercoreat{\indexedcatvariableof{\nodesa},\catvariableof{\nodesb}}
+    \end{align*}
+    obeys
+    \begin{align*}
+        \sencodingofat{\exfunction}{\catvariableof{\nodesa},\catvariableof{\nodesb}} = \hypercoreat{\nodevariables} \, ,
+    \end{align*}
+    where we understand the variables $\catvariableof{\nodesb}$ as selection variables.
+\end{theorem}
+\begin{proof}
+    We have for any $\catindexof{\nodesb}$ that
+    \begin{align*}
+        \sencodingofat{\exfunction}{\catvariableof{\nodesa},\indexedcatvariableof{\nodesb}}
+        &= \sum_{\catindexof{\nodesa}\in\nodestatesof{\nodesa}} \onehotmapofat{\catindexof{\nodesa}}{\catvariableof{\nodesa}}
+        \otimes \exfunction(\catindexof{\nodesa})[\indexedcatvariableof{\nodesb}] \\
+        &= \sum_{\catindexof{\nodesa}\in\nodestatesof{\nodesa}} \onehotmapofat{\catindexof{\nodesa}}{\catvariableof{\nodesa}}
+        \otimes \hypercoreat{\indexedcatvariableof{\nodesa},\indexedcatvariableof{\nodesb}} \\
+        &= \hypercoreat{\catvariableof{\nodesa},\indexedcatvariableof{\nodesb}}
+    \end{align*}
+    and the equivalence follows.
+%    From \theref{the:linearCompositionBasisEncoding} using the basis representation equivalence of \theref{the:selectionToBasisEncoding}.
+\end{proof}
+
+
+\begin{example}[\MarkovLogicNetworks{} and Proposal Distributions]
+    % Via inverse selection encodings
+    While the statistic of MLN (namely $\fselectionmap$) and the proposal distribution (namely $\tranfselectionmap$) have a common selection encoding, both result from the inverse selection encoding described in \theref{the:inverseSelectionEncoding}.
+    We can construct $\tranfselectionmap$ by first building the selection encoding to $\fselectionmap$ and then applying the construction of \theref{the:inverseSelectionEncoding} with $\nodesa=\selvariable$ and $\nodesb=\shortcatvariables$.
+\end{example}
+
+
+% Composition
+We use selection encodings to represent weighted sums of functions, based on the next theorem.
+
+\begin{theorem}[Weighted formula sums by selection encodings]
+    \label{the:linCompSelEncoding}
+    Let $\sstat$ be a tensor valued function from $\facstates$ to $\parspace$ with image coordinates $\sstatcoordinate$ and let $\canparamat{\selvariable}$ be a tensor.
+    Then
+    \[ \left(\sum_{\selindexin}\canparamat{\indexedselvariable} \cdot \sstatcoordinate \right) [\shortcatvariables] \defcols \facstates \rightarrow \rr \]
+    is represented as
+    \[ \left(\sum_{\selindexin}\canparamat{\indexedselvariable}\cdot \sstatcoordinate \right) [\shortcatvariables]
+    = \contractionof{\sencodingofat{\sstat}{\shortcatvariables,\selvariable} , \canparamat{\selvariable}}{\shortcatvariables} \, . \]
+\end{theorem}
+\begin{proof}
+    The representation holds, since for any $\shortcatindicesin$ we have
+    \begin{align*}
+        \contractionof{\sencodingofat{\sstat}{\shortcatvariables,\selvariable},\canparamat{\selvariable}}{\indexedshortcatvariables}
+        = \sum_{\selindexin}\exfunctionat{\indexedselvariable}\cdot\sstatcoordinateofat{\selindex}{\indexedshortcatvariables} \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+% Linear
+This theorem shows, that while relation encodings can represent any composition with another function by a contractions, selection encodings can be used to represent linear transforms.
+To see this, we interpret $\sstat$ and $\exfunction$ in \theref{the:linCompSelEncoding} as basis decompositions of linear maps.
+
+
+\sect{Indicator Features to Functions}\label{sec:indicatorFeatures}
+
+We here provide a subspace perspective for the sparse representation of decomposable functions as tensor networks in the $\bencodingof{\cdot}$ basis encoding scheme of basis calculus.
+
+\begin{definition}
+    Given any function $\exfunction:\inset\rightarrow\outset$ and index interpretation functions $\indexinterpretationof{\insymbol},\indexinterpretationof{\outsymbol}$ enumerating $\inset$ and $\outset$ we define the corresponding indicator subspace of $\rr^{\cardof{\inset}}$ as
+    \begin{align*}
+        \subspaceof{\exfunction}
+        = \left\{ \contractionof{
+            \bencodingofat{\exfunction}{\indvariableof{\outsymbol},\indvariableof{\insymbol}},\acttensorat{\indvariableof{\outsymbol}}
+        }{\indvariableof{\outsymbol},\indvariableof{\insymbol}} \wcols \acttensorat{\indvariableof{\outsymbol}} \in \rr^{\inddimof{\outsymbol}}
+        \right\} \, .
+    \end{align*}
+\end{definition}
+
+% Trivial tensor included
+For any function $\exfunction$ we have $\onesat{\shortcatvariables}\in\subspaceof{\exfunction}$, when choosing $\acttensorat{\indvariableof{\outsymbol}}=\onesat{\indvariableof{\outsymbol}}$.
+
+% Indicator features to functions
+We now characterize the indicator subspace as a span of boolean indicator features, indicating whether the function value coincides with an element $\exfunctionimageelement\in\imageof{\exfunction}$.
+Each indicator feature is a tensor $\indicatorofat{\exfunction=\exfunctionimageelement}{\indvariableof{\insymbol}}$ with coordinates
+\begin{align*}
+    \indicatorofat{\exfunction=\exfunctionimageelement}{\indexedindvariableof{\insymbol}}
+    = \begin{cases}
+          1 & \ifspace \exfunction(\indexinterpretationof{\insymbol}(\indindexof{\insymbol}))=\exfunctionimageelement \\
+          0 & \text{else}
+    \end{cases} \, .
+\end{align*}
+
+\begin{lemma}
+    A value subspace is spanned by the boolean indicator features of the underlying function, that is
+    \begin{align*}
+        \subspaceof{\exfunction}
+        = \spanof{\indicatorofat{\exfunction=\exfunctionimageelement}{\indvariableof{\insymbol}} \wcols \exfunctionimageelement\in\imageof{\exfunction}} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    By linearity of contractions we have
+    \begin{align*}
+        \subspaceof{\exfunction} = \spanof{
+            \contractionof{\bencodingofat{\exfunction}{\indvariableof{\outsymbol},\indvariableof{\insymbol}}, \onehotmapofat{\indindexof{\outsymbol}}{\indvariableof{\outsymbol}}}{\indvariableof{\insymbol}}
+            \wcols \indindexof{\outsymbol} \in [\inddimof{\outsymbol}]
+        } \, .
+    \end{align*}
+    It further holds that
+    \begin{align*}
+        \indicatorofat{\exfunction=\indexinterpretationof{\indindexof{\outsymbol}}}{\indvariableof{\insymbol}}
+        = \contractionof{\bencodingofat{\exfunction}{\indvariableof{\outsymbol},\indvariableof{\insymbol}}, \onehotmapofat{\indindexof{\outsymbol}}{\indvariableof{\outsymbol}}}{\indvariableof{\insymbol}} \, .
+    \end{align*}
+    The claim follows as a combination of both equations.
+\end{proof}
+
+
+
+
+
+\subsect{Connections with Computable Families}
+
+% Application on exponential families
+We now apply indicator spaces to provide further intuition into computable families (see \defref{def:realizableStatDistributions}).
+
+
+\begin{lemma}
+    For any statistic $\sstat : \facstates\rightarrow\parspace$ we have
+    \begin{align*}
+        \realizabledistsof{\sstat,\maxgraph} = \subspaceof{\sstat} \cup \subsphere
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    For any non-negative $\probwith$ we have $\probwith\in\realizabledistsof{\sstat,\maxgraph}$ if and only if $\contraction{\probwith}=1$ and there is an activation core $\acttensorat{\headvariables}$ with
+    \begin{align*}
+        \probwith = \contractionof{\bencodingofat{\sstat}{\headvariables}}{\shortcatvariables} \, .
+    \end{align*}
+    This is equivalent to $\probwith\in\subspaceof{\sstat} \cup \subsphere$.
+\end{proof}
+
+In the other extreme of tensor network formats for the activation tensor, we have the elementary graph $\elgraph$.
+To provide a characterization of $\realizabledistsof{\sstat,\elgraph}$, we understand any statistic as a cartesian product of its features $\sstatcoordinateof{\selindex}$.
+For cartesian products we can show that the distributions realizable with elementary activation tensors coincide with the subspace contraction of the spaces $\subspaceof{\sstatcoordinateof{\selindex}}$ to be introduced next.
+
+\begin{definition}
+    Given two subspaces $\subspaceof{1},\subspaceof{2}$ of tensors with variables $\catvariableof{\nodesone}$, $\catvariableof{\nodestwo}$, their contraction is
+    \begin{align*}
+        \contractionof{\subspaceof{1},\subspaceof{2}}{\catvariableof{\secnodes}}
+        = \left\{ \contractionof{\hypercoreofat{1}{\catvariableof{\nodesone}},\hypercoreofat{2}{\catvariableof{\nodestwo}}}{\catvariableof{\secnodes}}
+        \wcols \hypercoreofat{1}{\catvariableof{\nodesone}}\in\subspaceof{1}, \, \hypercoreofat{2}{\catvariableof{\nodestwo}}\in\subspaceof{2} \right\} \, .
+    \end{align*}
+\end{definition}
+
+We notice that the contraction of two subspaces is in general not a subspace.
+This fact will in the following become clearer, where we characterize contractions of subspaces with elementarily computable distributions, which are known to not be linear subspaces.
+%Elementary tensors are here known to not form a subspace.
+
+%in the characterization of distributions for which a statistic $\sstat$ is sufficient.
+The cartesian product of functions on the same input set $\inset$ and output sets $\arbsetof{1,\outsymbol}$, $\arbsetof{2,\outsymbol}$ is the function
+\begin{align*}
+(\exfunction,\secexfunction)
+   \defcols \inset \rightarrow \arbsetof{1,\outsymbol} \times \arbsetof{2,\outsymbol}
+\end{align*}
+with
+\begin{align*}
+(\exfunction,\secexfunction)(z)
+    = (\exfunctionat{z},\secexfunctionat{z}) \, .
+\end{align*}
+Its indicator subspace is the contraction of indicator subspaces
+\begin{align*}
+    \contractionof{\subspaceof{\exfunction},\subspaceof{\secexfunction}}{\indvariableof{\insymbol}}
+    & = \contractionof{
+        \spanof{\{\indicatorofat{\exfunction=\exfunctionimageelement}{\indvariableof{\insymbol}} \wcols \exfunctionimageelement\in\imageof{\exfunction}\}},
+        \spanof{\{\indicatorofat{\secexfunction=\exfunctionimageelement}{\indvariableof{\insymbol}} \wcols \exfunctionimageelement\in\imageof{\secexfunction}\}}
+    }{\indvariableof{\insymbol}} \\
+    & = \realizabledistsof{\{\exfunction, \secexfunction\},\elgraph} \, .
+\end{align*}
+We generalize this in the next lemma to cartesian products of multiple features using that any statistic $\sstat$ is the cartesian product of its features $\sstatcoordinateof{\selindex}$.
+
+\begin{lemma}
+    For any statistic $\sstat:\facstates\rightarrow\parspace$ we have
+    \begin{align*}
+        \realizabledistsof{\sstat,\elgraph} = \contractionof{\subspaceof{\sstatcoordinateof{\selindex}} \wcols \selindexin}{\shortcatvariables}  \cup \subsphere \, .
+    \end{align*}
+    where $\subsphere$ is the sphere of normalized tensors in $\facspace$.
+\end{lemma}
+\begin{proof}
+    For any non-negative tensor $\probwith$ we have $\probwith\in\realizabledistsof{\sstat,\elgraph}$ if and only if
+    \begin{align*}
+        \contraction{\probwith}=1
+    \end{align*}
+    and there exist activation cores $\acttensorofat{\selindex}{\headvariableof{\selindex}}$ such that
+    \begin{align*}
+        \probwith
+        = \contractionof{\bigcup_{\selindexin}\{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables},\acttensorofat{\selindex}{\headvariableof{\selindex}}\}}{\shortcatvariables} \, .
+    \end{align*}
+    Since for any $\selindexin$ we have
+    \begin{align*}
+        \left\{\contractionof{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables},\acttensorofat{\selindex}{\headvariableof{\selindex}}}{\shortcatvariables} \wcols
+        \acttensorofat{\selindex}{\headvariableof{\selindex}} \in \rr^{\headdimof{\selindex}}
+        \right\} = \subspaceof{\sstatcoordinateof{\selindex}}
+    \end{align*}
+    $\probwith\in\realizabledistsof{\sstat,\elgraph}$ is equal to
+    \begin{align*}
+        \probwith \in \contractionof{\subspaceof{\sstatcoordinateof{\selindex}}\wcols\selindexin}{\shortcatvariables} \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+
+Since always $\onesat{\shortcatvariables}\in\subspaceof{\exfunction}$, we have for any subspace $\subspaceof{1}$
+\begin{align*}
+    \contractionof{\subspaceof{1}}{\catvariableof{\secnodes}}
+    \subset \contractionof{\subspaceof{1},\subspaceof{\exfunction}}{\catvariableof{\secnodes}} \, .
+\end{align*}
+We can therefore understand the addition of a feature to a set of feature as a monotonously increasing set of elementarily computable distributions, that is
+\begin{align*}
+    \realizabledistsof{\sstat,\elgraph} \subset \realizabledistsof{\sstat\cup\{\exfunction\},\elgraph} \, .
+\end{align*}
+
+
+We now relate the by a function $\exfunction$ computable distributions with those, which are computable by its indicator features with elementary activation cores.
+
+\begin{lemma}
+    \label{lem:computableByFunctionEqualElementaryIndicators}
+    For any function $\exfunction:\facstates\rightarrow\outset$ we have
+    \begin{align*}
+        \realizabledistsof{\exfunction,\maxgraph}
+        = \realizabledistsof{\{\indicatorof{\exfunction=\exfunctionimageelement}\wcols\exfunctionimageelement\in\imageof{\exfunction}\},\elgraph}
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    "$\subset$":
+    For any $\probwith\in\realizabledistsof{\exfunction,\maxgraph}$ we find an activation core $\acttensorat{\headvariable}$ such that
+    \begin{align*}
+        \probwith = \contractionof{\bencodingofat{\exfunction}{\headvariable,\shortcatvariables},\acttensorat{\headvariable}}{\shortcatvariables} \, .
+    \end{align*}
+    Given this activation tensor $\acttensorat{\headvariable}$ we construct an elementary activation tensor
+    \begin{align*}
+        \bigotimes_{\selindexin}\acttensorofat{\selindex}{\headvariableof{\selindex}}
+    \end{align*}
+    which reproduces $\probwith$ by contraction with the basis encoding of the indicator features to $\exfunction$. %$\contractionof{}$
+    To this end, we define for $\selindexin$ two-dimensional leg vectors
+    \begin{align*}
+        \acttensorofat{\selindex}{\headvariableof{\selindex}}
+        = \begin{bmatrix}
+              \acttensorat{\headvariable=\selindex} \\
+              1
+        \end{bmatrix}[\headvariableof{\selindex}] \, .
+    \end{align*}
+    For these head variables we have for any index tuple $\shortcatindices$
+    \begin{align*}
+        \contractionof{\bigcup_{\selindexin}\{\bencodingofat{\indicatorof{\exfunction=\indexinterpretationof{\selindex}}}{\headvariableof{\selindex}},\acttensorat{\headvariable=\selindex}\}}{\indexedshortcatvariables}
+        & = \acttensorofat{\exfunctionat{\shortcatindices}}{\headvariableof{\selindex}=1} \cdot \prod_{\selindexin \wcols \exfunctionat{\shortcatindices} \neq \selindex} \acttensorofat{\exfunctionat{\shortcatindices}}{\headvariableof{\selindex}=0} \\
+        & = \acttensorofat{\exfunctionat{\shortcatindices}}{\headvariableof{\selindex}=1} \\
+        & = \contractionof{\bencodingofat{\exfunction}{\headvariable,\shortcatvariables},\acttensorat{\headvariable}}{\indexedshortcatvariables} \\
+        & = \probat{\indexedshortcatvariables} \, .
+    \end{align*}
+
+    "$\supset$":
+    Conversely, given $\probwith\in\realizabledistsof{\{\indicatorof{\exfunction=\exfunctionimageelement}\wcols\exfunctionimageelement\in\imageof{\exfunction}\},\elgraph}$ we find an elementary activation tensor
+    \begin{align*}
+        \bigotimes_{\selindexin}\acttensorofat{\selindex}{\headvariableof{\selindex}}
+    \end{align*}
+    such that
+    \begin{align*}
+        \probwith = \contractionof{\bigcup_{\selindexin}\{\bencodingofat{\indicatorof{\exfunction=\indexinterpretationof{\selindex}}}{\headvariableof{\selindex}},\acttensorat{\headvariable=\selindex}\}}{\shortcatvariables}
+    \end{align*}
+    If $\acttensorofat{\selindex}{\headvariableof{\selindex}=0}=0$ for an $\selindex$, then we have $\probwith=\normalizationof{\indicatorofat{\exfunction=\indexinterpretationof{\selindex}}{\shortcatvariables}}{\shortcatvariables}$, which is an element of $\realizabledistsof{\exfunction,\maxgraph}$ since then
+    \begin{align*}
+        \probwith = \normalizationof{\bencodingofat{\exfunction}{\headvariable,\shortcatvariables},\onehotmapofat{\selindex}{\headvariable}}{\shortcatvariables} \, .
+    \end{align*}
+    In all other cases we multiply scalars to the leg tensors such that $\acttensorofat{\selindex}{\headvariableof{\selindex}=0}=1$.
+    Notice, that the product of all such scalars needs to be $1$ since $\contraction{\probwith}=1$.
+    We then construct an activation core $\acttensorat{\headvariable}$
+    \begin{align*}
+        \acttensorat{\headvariable=\selindex} = \acttensorofat{\selindex}{\headvariableof{\selindex}=1}
+    \end{align*}
+    and have with a similar argument as in the converse proof direction
+    \begin{align*}
+        \probwith = \contractionof{\bencodingofat{\exfunction}{\headvariable,\shortcatvariables},\acttensorat{\headvariable}}{\shortcatvariables} \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+
+\subsect{Composition of Functions} % TO DO: Connect with HT Formats, when doing compositions with multiple argument connectives!
+
+Let $\exfunction: \arbsetof{1}\rightarrow\arbsetof{2}$ and $\chainingfunction:\arbsetof{2}\rightarrow\arbsetof{3}$ be arbitrary functions, then the indicator of their composition obeys
+\begin{align*}
+    \subspaceof{\chainingfunction\circ\exfunction} \subset \subspaceof{\exfunction} \, .
+\end{align*}
+
+
+%Composition of functions are then understood as contractions of their corresponding subspaces.
+%The subspace of a composition satisfied an inclusion relation, which is the opposite of those for cartesian products, that is
+%\begin{align}
+%    \subspaceof{\exconnective(\exfunction,\secexfunction)}
+%    \subset \subspaceof{(\exfunction,\secexfunction)} \, .
+%\end{align}
+
+\begin{example}[Propositional Formulas]
+    Each formula defines by its basis encoding the subspace of $\atomspace$
+    \begin{align*}
+        \subspaceof{\exformula} = \spanof{\lnot\formulaat{\shortcatvariables},\formulaat{\shortcatvariables}} \, .
+    \end{align*}
+    For composition of formulas $\exformula,\secexformula$ with a connective $\exconnective$ acting on their images we have % is then a choice of a subspace %\contractionof{\subspaceof{(\exformula,\secexformula)}}
+    \begin{align*}
+        \subspaceof{\exconnective(\exformula,\secexformula)}
+        \subset\subspaceof{(\exformula,\secexformula)} \, .
+    \end{align*}
+    A connective $\exconnective$ can thus be understood as a selection of a two-dimensional subspace in the four-dimensional subspace of the cartesian product of the connected formulas.
+    The contraction of atomic subspaces further span the space
+    \begin{align*}
+        \atomspace = \spanof{\contractionof{
+            \subspaceof{\atomicformulaof{\atomenumerator}} \wcols \atomenumeratorin
+        }{\shortcatvariables}} \, .
+    \end{align*}
+\end{example}
+
+
+\subsect{Effective Representation of Partition Statistics}\label{sec:partitionStatistics}
+
+\begin{definition}
+    \label{def:partitionStatistic}
+    We call a statistic $\sstat : \facstates \rightarrow \bigtimes_{\selindexin}[2]$ a partition statistic if
+    \begin{align*}
+        \contractionof{\sencsstatwith}{\shortcatvariables} = \onesat{\shortcatvariables} \, .
+    \end{align*}
+\end{definition}
+
+We now show, that partition statistics are exactly those statistics, which are collections of indicator features to a function.
+
+\begin{lemma}
+    \label{lem:partitionStatisticFunctionIndicator}
+    A statistic $\sstat$ is a partition statistic, if and only if there exists a function $\exfunction:\facstates\rightarrow\outset$ with an image interpretation $\indexinterpretation : [\seldim] \rightarrow \outset$ such that for all $\selindexin$
+    \begin{align*}
+        \sencsstatat{\shortcatvariables,\indexedselvariable} = \indicatorofat{\exfunction=\indexinterpretationat{\selindex}}{\shortcatvariables} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    \proofleftsymbol{}:
+    Given any function $\exfunction:\facstates\rightarrow \outset$ we have
+    \begin{align*}
+        \sum_{\selindexin} \indicatorofat{\exfunction=\indexinterpretationat{\selindex}}{\shortcatvariables} =1
+    \end{align*}
+    and the selection tensor of indicator features is thus a partition statistic.
+
+    \proofrightsymbol{}:
+    Conversely, given a partition statistic $\sstat$, we can construct a function $\exfunctionof{\sstat}$ such that the partition statistic coincides with the collection of indicator features to the function.
+    To this end we notice that for any index tuple $\shortcatindices$ there is a unique $\selindexin$ such that
+    \begin{align*}
+        \sencsstatat{\indexedshortcatvariables,\indexedselvariable} = 0 \, .
+    \end{align*}
+    This follows from $\sencsstatwith$ being boolean by assumption and $\contractionof{\sencsstatwith}{\indexedshortcatvariables}=1$.
+    We define a function $\exfunctionof{\sstat}:\facstates\rightarrow[\seldim]$ with image interpretation by the identity on $[\seldim]$ coordinatewise by
+    \begin{align*}
+        \exfunctionofat{\sstat}{\indexedshortcatvariables} = \selindex
+    \end{align*}
+    and have for each $\selindexin$
+    \begin{align*}
+        \sencsstatat{\shortcatvariables,\indexedselvariable} = \indicatorofat{\exfunctionof{\sstat}=\selindex}{\shortcatvariables} & \qedhere
+    \end{align*}
+\end{proof}
+
+\begin{example}[Edge statistics of Markov Networks]
+    Each edge statistics $\sstatcoordinateof{\edge}$ of a Markov Network (see \theref{the:markovNetworkExponentialFamilies}) defines a partition statistic
+    \begin{align*}
+        \sstatcoordinateof{\edge}(\catindexof{\nodes}) = \catindexof{\edge} \, .
+    \end{align*}
+    This holds since for any $\catindexof{\nodes}$ we have
+    \begin{align*}
+        \contractionof{\sencodingofat{\sstatcoordinateof{\edge}}{\nodevariables,\selvariableof{\edge}}}{\indexednodevariables}
+        &= \sum_{\selindexof{\edge}\in[\catdimof{\edge}]} \sencodingofat{\sstatcoordinateof{\edge}}{\indexednodevariables,\indexedselvariableof{\edge}} \\
+        &= \sencodingofat{\sstatcoordinateof{\edge}}{\indexednodevariables,\selvariableof{\edge}=\catvariableof{\edge}} \\
+        &= 1 \, .
+    \end{align*}
+    The corresponding indicators stated in \lemref{lem:partitionStatisticFunctionIndicator} are enumerated by the image elements $\selindexof{\edge}\in\catdimof{\edge}$ and given by
+    \begin{align*}
+        \sstatcoordinateofat{\edge,\selindexof{\edge}}{\catindexof{\nodes}}
+        = \begin{cases}
+              1 & \ifspace \catindexof{\edge} = \selindexof{\edge} \\
+              0 & \text{else}
+        \end{cases} \, .
+    \end{align*}
+\end{example}
+
+We have already observed in \charef{cha:probRepresentation}, that Markov Networks have a tensor-network representation involving the selection encodings of their edge statistics.
+This efficiency gain compared with featurewise releational encodings is in the following generalized to arbitrary partition statistics.
+
+\begin{theorem}
+    \label{the:selectionRepresentationPartitionStatistics}
+    For any partition statistic and any elementary activation tensor $\bigotimes_{\selindexin}\acttensorofat{\selindex}{\headvariableof{\selindex}}$ we have
+    \begin{align*}
+        \contractionof{\bigcup_{\selindexin}\{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables},\acttensorofat{\selindex}{\headvariableof{\selindex}}\}}{\shortcatvariables}
+        = \contractionof{\sencsstatwith,\acttensorat{\headvariable}}{\shortcatvariables}
+    \end{align*}
+    where
+    \begin{align*}
+        \acttensorat{\headvariable}
+        =
+        \begin{cases}
+            \left(\prod_{\selindexin} \acttensorofat{\selindex}{\headvariableof{\selindex}=0} \right) \sum_{\selindexin}\acttensorofat{\selindex}{\headvariableof{\selindex}=1} \cdot \onehotmapofat{\selindex}{\headvariable}
+            & \ifspace \uniquantwrtof{\selindexin}{\acttensorofat{\selindex}{\headvariableof{\selindex}=0}\neq 0} \\ %\forall_{\selindexin} :  \\
+            \acttensorofat{\secselindex}{\headvariableof{\secselindex}=1} \cdot \prod_{\selindex\neq\secselindex}\acttensorofat{\secselindex}{\headvariableof{\secselindex}=0}
+            & \ifspace \existquantwrtof{\secselindex\in[\seldim]}{\acttensorofat{\secselindex}{\headvariableof{\secselindex}=0}=0} %\ncond \forall_{\selindex\neq\secselindex} \acttensorofat{\selindex}{\headvariableof{\selindex}=0}=0
+        \end{cases} \, .
+    \end{align*}
+    We notice that by definition $\acttensorat{\headvariable}=\zerosat{\headvariable}$ if there is more than one $\selindexin$ with $\acttensorofat{\selindex}{\headvariableof{\selindex}=0}=0$.
+\end{theorem}
+\begin{proof}
+    \lemref{lem:partitionStatisticFunctionIndicator} implies, that there is a function $\exfunction$ such that the features of the partition statistics are the indicator features to $\exfunction$.
+    Now, as in the proof of \lemref{lem:computableByFunctionEqualElementaryIndicators} we transform the activation cores to arrive at the statement.
+\end{proof}
+%Let us now characterize the set of by $\exfunction$ and $\maxgraph$ (respectively $\elgraph$) computable distributions
+
+\theref{the:selectionRepresentationPartitionStatistics} is especially useful, when instantiating the distribution of a \HybridLogicNetwork{} with a subset $\secformulaset\subset\formulaset$ of features satisfying
+\begin{align*}
+    \sum_{\exformula\in\secformulaset} \formulaat{\shortcatvariables} \prec \onesat{\shortcatvariables} \, .
+\end{align*}
+If $\sum_{\exformula\in\secformulaset} \formulaat{\shortcatvariables} \neq \onesat{\shortcatvariables}$ we can add a dummy feature $\onesat{\shortcatvariables}-\sum_{\exformula\in\formulaset} \formulaat{\shortcatvariables}$ to $\secformulaset$ with trivial activation core to get a partition statistics.
+Now, given a partition statistic $\secformulaset$ we can instantiate the to $\secformulaset$ corresponding tensors in the tensor network representation of \theref{the:expFamilyTensorRep} by the selection encoding $\sencodingofat{\secformulaset}{\shortcatvariables,\selvariable}$ as
+\begin{align*}
+    \contractionof{\sencodingofat{\secformulaset}{\shortcatvariables,\selvariable},\expof{\canparamat{\selvariable}}}{\shortcatvariables}
+    = \contractionof{\bigcup_{\selindexin}\{\bencodingofat{\enumformula}{\headvariableof{\selindex},\shortcatvariables},\expof{\canparamat{\indexedselvariable}\cdot\indexinterpretationofat{\selindex}{\headvariableof{\selindex}}}\}}{\shortcatvariables} \, .
+\end{align*}
+
+
+\sect{Hybrid Basis and Coordinate Calculus}\label{sec:hybridCalculus}
+
+% Motivation: Effective Coordinate Calculus
+In some situations, we can perform basis calculus more effectively by avoiding image enumeration variables, and instead apply coordinatewise transforms on tensors (see \defref{def:coordinatewiseTransform}).
+As we show here, these include conjunctions, which correspond with coordinatewise multiplication, and negation, which correspond with coordinatewise subtraction from the trivial tensor.
+Such schemes are applied for example in \cite{tsilionis_tensor-based_2024} in batchwise logical inference.
+
+\begin{figure}
+    \begin{center}
+        \input{./PartIII/tikz_pics/basis_calculus/skeleton_elements.tex}
+    \end{center}
+    \caption{Decomposition schemes by hybrid calculus, using coordinatewise transforms of tensors (see \defref{def:coordinatewiseTransform}).
+    a) Conjunction performed by coordinatewise multiplications.
+    b) Negations performed by coordinatewise subtraction from one.}\label{fig:ConNegDecomposition}
+\end{figure}
+
+\begin{theorem}
+    \label{the:effectiveConjunction}
+    For any formulas $\exformula,\secexformula$ we have
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\land}{\headvariableof{\exformula\land\secexformula},\formulavar,\secexformulavar},\tbasisat{\headvariableof{\exformula\land\secexformula}}
+        }{\formulavar,\secexformulavar}
+        = \tbasisat{\formulavar} \otimes \tbasisat{\secexformulavar} \, .
+    \end{align*}
+    In particular, it holds that (see \figref{fig:ConNegDecomposition}a)
+    \begin{align*}
+    (\exformula\land\secexformula)[\shortcatvariables]
+        = \contractionof{\exformula,\secexformula}{\shortcatvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We decompose
+    \begin{align*}
+        \bencodingofat{\land}{\headvariableof{\exformula\land\secexformula},\formulavar,\secexformulavar}
+        = \tbasisat{\headvariableof{\exformula\land\secexformula}} \otimes \tbasisat{\formulavar} \otimes \tbasisat{\secexformulavar}
+        + \fbasisat{\headvariableof{\exformula\land\secexformula}} \left( \onesat{\formulavar,\secexformulavar} -  \tbasisat{\formulavar} \otimes \tbasisat{\secexformulavar} \right)
+    \end{align*}
+    and get the first claim as
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\land}{\headvariableof{\exformula\land\secexformula},\formulavar,\secexformulavar},\tbasisat{\headvariableof{\exformula\land\secexformula}}
+        }{\formulavar,\secexformulavar}
+        & = \contractionof{
+            \tbasisat{\headvariableof{\exformula\land\secexformula}} \otimes \tbasisat{\formulavar} \otimes \tbasisat{\secexformulavar},\tbasisat{\headvariableof{\exformula\land\secexformula}}
+        }{\formulavar,\secexformulavar} \\
+        & = \tbasisat{\formulavar} \otimes \tbasisat{\secexformulavar} \, .
+    \end{align*}
+    To show the second claim we use
+    \begin{align*}
+    (\exformula\land\secexformula)[\shortcatvariables]
+        &= \contractionof{
+            \bencodingofat{\exformula}{\formulavar,\shortcatvariables},
+            \bencodingofat{\secexformula}{\secexformulavar,\shortcatvariables},
+            \bencodingofat{\land}{\headvariableof{\exformula\land\secexformula},\formulavar,\secexformulavar},
+            \tbasisat{\headvariableof{\exformula\land\secexformula}}
+        }{\shortcatvariables} \\
+        &  = \contractionof{
+            \bencodingofat{\exformula}{\formulavar,\shortcatvariables},
+            \bencodingofat{\secexformula}{\secexformulavar,\shortcatvariables},
+            (\tbasisat{\formulavar}\otimes \tbasisat{\secexformulavar})
+        %\bencodingofat{\land}{\formulavar,\secexformulavar,\headvariableof{\exformula\land\secexformula}}
+        }{\shortcatvariables} \\
+        &= \contractionof{\exformula,\secexformula}{\shortcatvariables} \, . \qedhere
+    \end{align*}
+\end{proof}
+
+A similar decomposition holds for negations, as we show next.
+
+\begin{theorem}
+    For any formula $\exformula$ we have
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\lnot}{\headvariableof{\lnot\exformula},\formulavar},\tbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar}
+        = \fbasisat{\formulavar} =  \onesat{\formulavar} - \tbasisat{\formulavar} \, .
+    \end{align*}
+    and
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\lnot}{\formulavar,\headvariableof{\lnot\exformula}},\fbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar}
+        = \tbasisat{\formulavar} \, .
+    \end{align*}
+    In particular, it holds that (see \figref{fig:ConNegDecomposition}b)
+    \begin{align*}
+    (\lnot\exformula)[\shortcatvariables]
+        = \onesat{\shortcatvariables} - \formulaat{\shortcatvariables}  \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We have
+    \begin{align*}
+        \bencodingofat{\lnot}{\headvariableof{\lnot\exformula},\formulavar}
+        = \tbasisat{\headvariableof{\lnot\exformula}} \otimes \fbasisat{\formulavar}
+        +\fbasisat{\headvariableof{\lnot\exformula}} \otimes \tbasisat{\formulavar}
+    \end{align*}
+    and therefore get the second claim by contraction with $\fbasisat{\headvariableof{\lnot\exformula}}$
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\lnot}{\formulavar,\headvariableof{\lnot\exformula}},\fbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar}
+        &=  \contractionof{
+            \tbasisat{\headvariableof{\lnot\exformula}} \otimes \fbasisat{\formulavar},\fbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar} \\
+        &\quad +  \contractionof{
+            \fbasisat{\headvariableof{\lnot\exformula}} \otimes \tbasisat{\formulavar},\fbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar}
+        \\
+        &= \tbasisat{\formulavar} \, .
+    \end{align*}
+    The first equation of the first claim follows similarly by contraction with $\tbasisat{\headvariableof{\lnot\exformula}}$ as
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\lnot}{\headvariableof{\lnot\exformula},\formulavar},\tbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar}
+        = \fbasisat{\formulavar}
+    \end{align*}
+    and the second equation using that $\onesat{\catvariable}=\fbasisat{\catvariable}+\tbasisat{\catvariable}$ and hence
+    \begin{align*}
+        \fbasisat{\formulavar} =  \onesat{\formulavar} - \tbasisat{\formulavar} \, .
+    \end{align*}
+    To show the third claim, we contract the computation tensor $\bencodingofat{\exformula}{\formulavar,\shortcatvariables}$ to the formula $\exformula$ on both sides of the first claim and get
+    \begin{align*}
+        &\contractionof{
+            \bencodingofat{\exformula}{\formulavar,\shortcatvariables},\bencodingofat{\lnot}{\headvariableof{\lnot\exformula},\formulavar},\tbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar} \\
+        &\quad=
+        \contractionof{\bencodingofat{\exformula}{\formulavar,\shortcatvariables},\onesat{\formulavar}}{\formulavar}
+        - \contractionof{\bencodingofat{\exformula}{\formulavar,\shortcatvariables},\tbasisat{\formulavar}}{\formulavar} \, .
+    \end{align*}
+    We simplify this equation using the trivial head contraction identity of directed tensors of \corref{cor:onesHead} stating that % and \lemref{lem:formulaEncodingDecomposition}
+%    For any formula $\formulaat{\shortcatvariables}$ we further have by \lemref{lem:formulaEncodingDecomposition}
+    \begin{align*}
+        \formulaat{\shortcatvariables} = \contractionof{\bencodingofat{\exformula}{\formulavar,\shortcatvariables},\tbasisat{\formulavar}}{\shortcatvariables}
+        \andspace
+        \lnot\formulaat{\shortcatvariables} = \contractionof{\bencodingofat{\exformula}{\formulavar,\shortcatvariables},\fbasisat{\formulavar}}{\shortcatvariables}
+    \end{align*}
+    and arrive at the third claim
+    \begin{align*}
+    (\lnot\exformula)[\shortcatvariables]
+        = \onesat{\shortcatvariables} - \formulaat{\shortcatvariables}  \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+% Usage
+These theorems provide a mean to represent logical formulas by sums of one-hot encodings.
+Since any propositional formula can be represented by compositions of negations and conjunctions, they are universal.
+We further notice, that the resulting decomposition is a basis+ CP format, as further discussed in \charef{cha:sparseRepresentation}.
+In \figref{fig:DecompositionExample} we provide an example of this decomposition.
+
+
+\begin{figure}
+    \begin{center}
+        \input{./PartIII/tikz_pics/basis_calculus/skeleton_example.tex}
+    \end{center}
+    \caption{
+        Example of a decomposition by hybrid calculus of a formula
+        $\formulaat{\catvariableof{1},\catvariableof{2}} = \textcolor{blue}{\lnot} \secexformula^{(1)}[\catvariableof{1},\catvariableof{2}] \textcolor{red}{\land}  \secexformula^{(2)}[\catvariableof{1},\catvariableof{2}]$ into a sum of contractions.
+    }\label{fig:DecompositionExample}
+\end{figure}
+
+
+\sect{Applications in Machine Learning}
+
+% Neural paradigm
+Basis calculus provides a tool suited to represent decompositions of function by efficient tensor networks.
+The decomposition of function into smaller components, called neurons, is often referred to as the neural paradigm of machine learning.
+Our model of the neural paradigm are tensor network decompositions, seen as decomposition of functions into smaller functions, which take each other as input.
+Summations along input axis are avoided, when having directed and boolean tensor networks with basis calculus interpretation.
+Inference is then performed by contractions with basis tensors representing the input, as shown in \theref{the:basisCalculus}.
+These contractions can further be executed neuron-wise.
+
+% + Symbolic -> Neuro-symbolic
+What is more, basis calculus provides an efficient scheme to represent symbols such as logical connectives by their basis encodings.
+Basis calculus is therefore a tool for neuro-symbolic AI \cite{garcez_neural-symbolic_2019, sarker_neuro-symbolic_2022, marra_statistical_2024}.
+
+% ADD?
+% \secref{sec:hybridCalculus} -> Connection to conjunction-based knownledge bases
+% \secref{sec:indicatorFeatures} -> Connection with factor-wise graphical model contractions
+
+
+%The neural paradigm of Machine Learning describes the relevance of sparse function to be effective models in the sense of learning and approximation.
+% Neural Paradigm by Tensor Network Decompositions
+% Basis Calculus
+%We have already observed in \theref{the:basisCalculus}, that the value of discrete maps can be calculated by contractions of the directed boolean relation encodings.
+%This has been framed as Basis Calculus.
+%What is more, tensor network decompositions into directed boolean tensors correspond with representation of functions as compositions of smaller functions.
+%We can understand each composition as marking a neuron in an architecture and thus have established a neural perspective on boolean directed tensor networks.

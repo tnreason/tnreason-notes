@@ -1,0 +1,73 @@
+\chapter{Introduction to \parref{par:two}}
+
+\begin{highlight}
+	Research [...] should bring together logic`s aptitude for handling the visible and probability`s ability to summarize the invisible. - \text{Judea Pearl \cite{pearl_probabilistic_1988}}
+\end{highlight}
+
+After having explored the tensor formalism in the logical and probabilistic foundations of artificial intelligence in \parref{par:one}, we now investigate \HybridLogicNetworks{}, which unify the two approaches.
+
+\sect{\HybridLogicNetworks{} as \ComputationActivationNetworks{}}
+
+% Computation Activation Networks in part \parref{par:one}:
+The unification is along the framework of \ComputationActivationNetworks{} (see \defref{def:realizableStatDistributions}), which is common to the tensor network representations in probabilistic and logical models:
+\begin{itemize}
+    \item Probability distributions, which have a sufficient statistics can be represented by a computation network of the statistic and an activation tensor.
+    We are especially interested in distributions with elementary activation tensor, which is the case for exponential families.
+    \item Propositional formulas can be computed based on their syntactical decompositions (see \charef{cha:logicalRepresentation}).
+    The uniform distributions over their models has the formula itself as a sufficient statistic and can be instantiated by a boolean activation cores.
+\end{itemize}
+By allowing for arbitrary elementary activation tensors, we can unify both approaches, when focusing on boolean valued statistics.
+The resulting \ComputationActivationNetworks{} are called \HybridLogicNetworks{}, since they unify logical and probabilistic models.
+In \charef{cha:networkRepresentation} we focus on the representation of such networks and introduce the following (see \figref{fig:elementaryComputableSketch}):
+\begin{itemize}
+    \item \textbf{\MarkovLogicNetworks{}:} By demanding positive and elementary activation tensors, we parametrize positive distributions interpreted as uncertainty-tolerant soft logical knowledge bases.
+    \item \textbf{\HardLogicNetworks{}:} By demanding boolean and elementary activation tensors, we parametrize propositional formulas interpreted by hard logical knowledge bases.
+    \item \textbf{\HybridLogicNetworks{}:} Both the soft and the hard parametrizations are unified when admitting generic elementary activation tensors.
+\end{itemize}
+In \charef{cha:networkReasoning} we characterize these networks as maximum entropy distributions and then focus on the inference properties of such networks.
+
+Regarding the representation of \HybridLogicNetworks{}, we investigate sparsity mechanisms to result in efficient tensor network representations:
+\begin{itemize}
+	\item \textbf{\DecompositionSparsity{}:} When the sufficient statistics is decomposable into logical connectives, we find tensor network representation by basis encodings of the component functions.
+    This mechanism has been exploited in \charef{cha:logicalRepresentation} for a single propositional formula and will in \charef{cha:networkRepresentation} be extended to sets of propositional formulas.
+    \item \textbf{\SelectionSparsity{}:} We will investigate representation schemes for sets of formulas, which share a common structure, in \charef{cha:formulaSelection}.
+%    To capture sparse mechanisms we define formula selecting networks in \charef{cha:formulaSelection}.
+%    This allows for sparse representation of weighted sums of formulas, which appear in energy tensors.
+    \item \textbf{\PolynomialSparsity{}:} Tensors are decomposed into sums of restricted elementary tensors, which are interpreted by monomials.
+    We will describe such decompositions in \secref{sec:HLNpolyRepresentation} and relate it later in \charef{cha:sparseRepresentation} to restricted $\cpformat$ decompositions, which we call basis+.
+\end{itemize}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{PartII/tikz_pics/pII_intro/elementary_computable_sketch.tex}
+    \end{center}
+    \caption{Sketch of distributions with sufficient statistics by a set of propositional formulas $\hlnstat$.
+    In most generality, any distribution with a sufficient statistics can be represented by an arbitrary activation tensor and is therefore in $\realizabledistsof{\hlnstat,\maxgraph}$.
+    The \HybridLogicNetworks{} are those with elementary activation tensor, that is the elements of $\realizabledistsof{\hlnstat,\elgraph}$.
+    By further demanding positive activation tensors we characterize the \MarkovLogicNetworks{} $\hlnstat$ and by demanding boolean activation tensors we the \HardLogicNetworks{} $\hlnstat$.
+    }
+    \label{fig:elementaryComputableSketch}
+\end{figure}
+
+\sect{Extensions towards First-Order Logics}
+
+While so-far the focus had been on propositional logic as an explainable framework in machine learning, we show in \charef{cha:folModels} extensions towards more expressive \firstOrderLogic{}.
+We therein encounter two mechanisms in logic introducing tensor structures:
+\begin{itemize}
+    \item \textbf{\SubstitutionStructure{}:} Assigning objects to variables results in a vector of possible substitutions.
+    When there are formulas with multiple variables, these lists of substitutions carry a tensor structure.
+    \item \textbf{\SemanticStructure{}:} Mapping all possible worlds defined by $\atomorder$ atoms requires $2^{\atomorder}$ dimensions, which are at best represented by a space of order $\atomorder$ tensors.
+    This is analogous to the factored representations of a system.
+\end{itemize}
+
+\sect{Probabilistic Guarantees}
+
+Besides that, probabilistic guarantees on the success of the learning problems are derived in \charef{cha:concentration}.
+Here we also focus on boolean statistics, which coordinates are Bernoulli variables.
+Due to their boundedness, they and their averages are sub-Gaussian variables with favorable concentration properties.
+
+\sect{Outline}
+
+We first investigate in \charef{cha:formulaSelection} efficient representation schemes for propositional formulas.
+In \charef{cha:networkRepresentation} and \charef{cha:networkReasoning} we develop the hybrid reasoning scheme for logical and probabilistic approaches, which we call \HybridLogicNetworks{}.
+We extend the scheme towards \firstOrderLogic{} in \charef{cha:folModels} and derive probabilistic guarantees on the success of the learning problems in \charef{cha:concentration}.

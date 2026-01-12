@@ -1,0 +1,1769 @@
+\chapter{\chatextfolModels}\label{cha:folModels}
+
+We in this chapter extend the tensor network based treatment of \propositionalLogic{} towards \firstOrderLogic{}.
+In contrast to \propositionalLogic{}, worlds in \firstOrderLogic{} contain objects, which have relations between each others.
+We show in this chapter, how these relations are captured by the \substitutionStructure{} of each world and derive tensor representations of each world.
+The \substitutionStructure{} is then combined with the \semanticStructure{}, which enumerates possible worlds in a theory.
+We then generalize \HybridLogicNetworks{} to the situation of \firstOrderLogic{}s and show in particular, that the likelihood of \HybridLogicNetworks{} on a single \firstOrderLogic{} world is in some cases equivalent to the likelihood of a dataset in propositoinal logics.
+
+\sect{Syntax and Semantics of \firstOrderLogic{}}
+
+%Since \firstOrderLogic{} follows structured representations of a system, a \firstOrderLogic{} world consists in objects and relations between them.
+The framework of \firstOrderLogic{} generalizes \propositionalLogic{} analogously to the generalization of factored system representations towards structured system representations \cite{russell_artificial_2021}.
+This more expressive framework is designed to reason about relations and functions between objects.
+To capture this framework by tensors we here first define the syntax and then investigate tensor representations of the semantics.
+
+\subsect{Syntax}
+
+A \firstOrderLogic{} theory consists in a finite set of constant symbols $\worlddomain$, a set of function symbols $\{\folfunctionof{\secatomenumerator}\wcols\secatomenumeratorin\}$, a set of predicate symbols $\{\folpredicateof{\atomenumerator}\wcols\atomenumeratorin\}$ and an arity map assigning the arity $\indorderof{\secatomenumerator}$ to the function $\folfunctionof{\secatomenumerator}$ and the arity $\indorderof{\atomenumerator}$ to the predicate $\folpredicateof{\atomenumerator}$.
+
+\subsect{Tensor Representation of Semantics}
+
+We here follow the model-theoretic semantics of \firstOrderLogic{}, where sets of possible worlds are considered.
+% Database
+We only treat in this work database semantics, where we assume that the domain $\worlddomain$ of each world has a one-to-one mapping to the constants of the theory and is therefore constant among the worlds.
+Database semantics is central to combine the \semanticStructure{} with the \substitutionStructure{}.
+Under this assumption, the dimension of the \substitutionStructure{} does not depend on the specific world, and we can combine both structures in a single tensor space to be defined in the next sections.
+
+% Index interpretation of world domain
+To each world there is a world domain $\worlddomain$ of objects, which we assume to be finite.
+We exploit the set-encoding formalism discussed in more detail in \charef{cha:basisCalculus} and use bijective index interpretation maps
+\begin{align*}
+    \indexinterpretation \defcols [\inddim] \rightarrow \worlddomain \, .
+\end{align*}
+A so-called term variable $\indvariable$ takes states $\indindexin$, which represent objects
+\begin{align*}
+    \indexinterpretationat{\indindex} \in \worlddomain \, .
+\end{align*}
+
+% Relations
+The relations between objects are described by $\indorder$-ary predicates $\folpredicate$.
+Given a specific world $\worldindices$ the truth of relations is represented by boolean tensors
+\begin{align*}
+    \groundingof{\folpredicate} \defcols \symindstates\rightarrow\ozset \, .
+\end{align*}
+Given a tuple $\indindexlist\in\symindstates$ the boolean
+\begin{align*}
+    \groundingofat{\folpredicate}{\indexedindvariableof{0},\ldots,\indexedindvariableof{\indorder-1}} \in\ozset
+\end{align*}
+is called a grounding and encodes, whether the relation $\folpredicate$ is satisfied in the world $\worldindices$ for the objects $\indexinterpretationat{\indindexof{0}},\ldots,\indexinterpretationat{\indindexof{\indorder-1}}$.
+
+% Functions
+Functions in \firstOrderLogic{} are object-valued maps
+\begin{align*}
+    \groundingof{\folfunction}\defcols \worlddomain^{\inddim} \rightarrow \worlddomain \, .
+\end{align*}
+While relations are represented by their coordinate encodings, functions are represented by directed basis encodings
+\begin{align*}
+    \bencodingofat{\groundingof{\folfunction}}{\indvariableof{\folfunction},\shortindvariables}
+\end{align*}
+where to each object tuple $\indexinterpretationat{\indindexof{0}},\ldots,\indexinterpretationat{\indindexof{\indorder-1}}$ the vector $\bencodingofat{\groundingof{\folfunction}}{\indvariableof{\folfunction},\indexedshortindvariables}$ is the one-hot encoding of the object, that is
+\begin{align*}
+    \bencodingofat{\groundingof{\folfunction}}{\indvariableof{\folfunction},\indexedshortindvariables}
+    = \onehotmapofat{\groundingofat{\folfunction}{\indexinterpretationat{\indindexof{0}},\ldots,\indexinterpretationat{\indindexof{\indorder-1}}}}{\indvariableof{\folfunction}} \, .
+\end{align*}
+
+
+%\subsect{Database semantics}
+
+% Database Semantics
+%\begin{align*}
+%    \bigotimes_{\atomenumeratorin,\shortindindices\in[\inddim]^{\indorder}} \rr^2 \, .
+%\end{align*}
+
+\subsect{Two Tensor Structures}
+
+In comparison with \propositionalLogic{}, \firstOrderLogic{} bears two natural tensor structures.
+\begin{itemize}
+    \item \textbf{\SemanticStructure{}:} As in \propositionalLogic{}, we enumerate possible worlds by a collection of variables $\catvariable$.
+    This is a representation of the model-theoretic semantics, where subsets of worlds are represented by boolean tensors.
+    \item \textbf{\SubstitutionStructure{}:}
+    Different to \propositionalLogic{}, a formula can have variables and the evaluation of a formula on a world is represented by its grounding tensor.
+    Given a world which contains objects in the domain $\worlddomain$, we can substitute variables by objects in the domain.
+    In this way, each predicate with $\inddim$ variables is represented in that world as a boolean tensor of order $\inddim$.
+\end{itemize}
+% Russel reference
+While the \semanticStructure{} appears already in factored representations of systems, the \substitutionStructure{} arises in more generality when treating structured representations of systems \cite{russell_artificial_2021}.
+
+
+
+\sect{Substitution Structure}
+
+We in this section investigate the structure of terms and formulas in a single \firstOrderLogic{} world, which we for now index by $\worldindices$.
+As we have derived in \charef{cha:logicalRepresentation} for \propositionalLogic{}, we develop efficient tensor network representations of the representing tensors based on the corresponding syntax.
+
+\subsect{Grounding Tensors}
+
+Given a \firstOrderLogic{} world $\worldindices$, arbitrary formulas are interpreted in terms of the satisfactions of their groundings.
+We define their semantic first, and then relate their syntactical decomposition to tensor networks, similar to our approach to \propositionalLogic{} in \charef{cha:logicalRepresentation}.
+
+\begin{definition}[Grounding of a first-order formula given a world]
+    Given a specific world $\worldindices$, with a domain $\worlddomain$ enumerated by $[\inddim]$, the grounding of a formula $\folexformula$ with variables $\indvariableof{\folexformula}$  is the tensor
+    \begin{align*}
+        \groundingofat{\folexformula}{\indvariableof{\folexformula}} :
+        \bigtimes_{\indenumerator\in[\indvariableof{\folexformula}]} [\inddim] \rightarrow \ozset \, .
+    \end{align*}
+    Each coordinate represents thereby the boolean, whether the substitution of the variables in the formula is satisfied given a world $\worldindices$, that is
+    \begin{align*}
+        \groundingofat{\folexformula}{\indexedindvariableof{\folexformula}} = 1
+    \end{align*}
+    if and only if the substitution of $\folexformula$ with the variables $\indvariableof{\folexformula}$ replaced by the objects $\indexinterpretationat{\indindexof{\indenumerator}}$ is satisfied on the world $\worldindices$.
+\end{definition}
+
+
+%% Basis encoding
+%When interpreting this map as a basis encoding, formulas are tensors in the tensor space
+%\begin{align*}
+% 	\left(\bigotimes_{\atomenumeratorin, \indindexlist\in[\inddim]} \rr^{2} \right) \otimes
+%	\left(  \bigotimes_{\atomenumeratorin, \indindexof{0},\ldots,\indindexof{\indorder_{\folexformula}}\in[\inddim]} \rr^{2} \right) \, .
+%\end{align*}
+
+\subsect{Terms}
+
+Terms are object valued maps on $\worlddomain^{n}$.
+The basis encoding of each term corresponds is a boolean and directed tensor.
+% Constants: Functions with $n=0$
+Constants are the functions with $n=0$, and are represented by basis vectors in $\rr^{\cardof{\worlddomain}}$.
+Given database semantics, this basis vector does not vary among different worlds.
+% General terms
+Most general terms are combinations of functions and constants and their basis encodings are acyclic contractions of basis encodings to functions.
+
+
+%\subsect{Substitution by slicing}
+% Slicing interpretation
+%Slicing the grounding tensor of a formula a first-order formula amounts to substitution of the respective variable by the constant at the enumeration index.
+
+%\subsect{Syntactical Decomposition of quantifier-free formulas}
+
+\subsect{Formula Synthesis by Connectives}\label{sec:folConnectiveRepresentation}
+
+In order to have a sound semantic, the grounding of \firstOrderLogic{} formulas is determined by the syntax of the formula, i.e. a decomposition of the formula into connectives and quantifiers acting on atomic formulas.
+
+% Formulas as maps from worlds to groundings
+Quantifier-free formulas are connectives acting on atomic formulas.
+We can describe them as in the case of \propositionalLogic{} in the $\bencodingof{}$-formalism.
+While the atomic formulas where delta tensors copying states, they are more involved here.
+
+\begin{theorem}
+    For any connective $\exconnective$ and formulas $\folexformula_1$ and $\folexformula_2$ we have
+    \begin{align}
+        &\groundingofat{(\folexformula_1\exconnective\folexformula_2)}{\indvariableof{\folexformula_1}\cup\indvariableof{\folexformula_2}} \\
+        &\quad=
+        \contractionof{
+            \bencodingofat{\groundingof{\folexformula_1}}{\headvariableof{\folexformula_1},\indvariableof{\folexformula_1}},
+            \bencodingofat{\groundingof{\folexformula_2}}{\headvariableof{\folexformula_2},\indvariableof{\folexformula_2}},
+            \bencodingofat{\exconnective}{\headvariableof{\folexformula_1\exconnective\folexformula_2}, \headvariableof{\folexformula_1}, \headvariableof{\folexformula_2}},
+            \tbasisat{\headvariableof{\folexformula_1\exconnective\folexformula_2}}
+        }
+        {\shortindvariablelist} \, .
+    \end{align}
+\end{theorem}
+\begin{proof}
+    This directly follows from \theref{the:compositionByContraction}.
+%	By the semantic interpretation of the groundings, which has to be sound.
+\end{proof}
+
+% Shared variables
+Here, variables can be shared by the connected formulas, therefore the variables in the combined formula are unions of the possible not disjoint variables of the connected formulas.
+
+%% Propositional interpretation
+%When we understand the head variables in the basis encoding of atoms as the categorical variables, and get a similar interpretation of the tensor network decomposition as in the propositional case.
+%\subsect{Propositionalization}
+
+When interpreting the head variables of relational encoded atomic formulas as the atoms of a propositional theory, we find a propositional formula $\exformula$ associated with any decomposable \firstOrderLogic{} formula.
+
+\begin{definition}
+    \label{def:propositionalEquivalent}
+    Given a formula $\folexformula$ in \firstOrderLogic{}, we say that a propositional formula $\formulaat{\shortcatvariables}$ is the propositional equivalent to $\folexformula$ given atomic formulas $\extformulaof{\atomenumerator}$ in \firstOrderLogic{}, when for any world $\worldindices$ we have
+    \begin{align*}
+        \groundingofat{\folexformula}{\indvariableof{\folexformula}}
+        = \contractionof{
+            \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\atomenumerator},\indvariableof{\extformulaof{\atomenumerator}}} : \atomenumeratorin\}
+            \cup \{\formulaat{\shortcatvariables}\}
+        }{\indvariableof{\folexformula}} \, .
+    \end{align*}
+    We here denote the head variables of the basis encoding to $\bencodingof{\groundingof{\extformulaof{\atomenumerator}}}$ by $\catvariableof{\atomenumerator}$ to highlight their interpretation as propositional atoms.
+\end{definition}
+
+We depict the relation of a grounding tensor to a propositional formula as:
+\begin{center}
+    \input{./PartII/tikz_pics/fol_models/propositionalization.tex}
+\end{center}
+
+
+\subsect{Quantifiers}
+
+Existential and universal quantifiers appear in generic \firstOrderLogic{} and are besides substitutions further means to reduce the number of variables in a formula.
+%They are not representable as linear transform of the respective quantifier-free formula.
+
+
+% Definition of existential and universal quantifiction needed!
+The semantics of existential quantification consists in a formula being true, if at least one state of the quantified variable is true, as we define next.
+
+\begin{definition}
+    Given a grounding tensor
+    \begin{align*}
+        \groundingofat{\folexformula}{\indvariableof{0},\ldots,\indvariableof{\indorder-1}} \,
+    \end{align*}
+    the existential and universal quantification with respect to the first variable are the tensors
+    \begin{align*}
+        \groundingofat{\left(\exists_{\indindexof{0}}\folexformula\right)}{\indvariableof{1},\ldots,\indvariableof{\indorder-1}} \andspace
+        \groundingofat{\left(\forall_{\indindexof{0}}\folexformula\right)}{\indvariableof{1},\ldots,\indvariableof{\indorder-1}} \,
+    \end{align*}
+    with coordinates as follows.
+    For an assignment $\indindexof{1},\ldots,\indindex$ to the non-quantified variables we have
+    \begin{align*}
+        \groundingofat{\left(\exists_{\indindexof{0}}\folexformula\right)}{\indexedindvariableof{1},\ldots,\indexedindvariableof{\indorder-1}} = 1
+    \end{align*}
+    if and only if there is an assignment $\indindexofin{0}$ such that
+    \begin{align*}
+        \groundingofat{\folexformula}{\indexedindvariableof{0},\indexedindvariableof{1},\ldots,\indexedindvariableof{\indorder-1}} = 1 \, .
+    \end{align*}
+    Conversely, we have for the universal quantification that
+    \begin{align*}
+        \groundingofat{\left(\forall_{\indindexof{0}}\folexformula\right)}{\indexedindvariableof{1},\ldots,\indexedindvariableof{\indorder-1}} = 1
+    \end{align*}
+    if and only if for any assignment $\indindexofin{0}$ we have
+    \begin{align*}
+        \groundingofat{\folexformula}{\indexedindvariableof{0},\indexedindvariableof{1},\ldots,\indexedindvariableof{\indorder-1}} = 1 \, .
+    \end{align*}
+\end{definition}
+
+
+Let us now show, that existential and universal quantification are coordinatewise transforms (see \defref{def:coordinatewiseTransform}) of contracted grounding tensors.
+To this end, let us introduce the greater-$z$ indicator $\greaterthanfunction{z}$, where $z\in\rr$, as the function
+\begin{align*}
+    \greaterthanfunction{z} : \rr \rightarrow \ozset
+    \quad, \quad \greaterthanfunctionof{z}{x} =
+    \begin{cases}
+        1 & \ifspace x > z\\
+        0 & \text{else}
+    \end{cases} \, .
+\end{align*}
+
+\begin{theorem}
+    For any formula $\folexformula$ with variables $\shortindvariablelist$ we have
+    \begin{align*}
+        \groundingofat{\left(\exists{\indindexof{0}}\folexformula\right)}{\indvariableof{1},\ldots,\indvariableof{\indorder-1}} =
+        \coordinatetrafowrtofat{\existquanttrafo}{\contractionof{\groundingof{\folexformula}}{\indvariableof{1},\ldots,\indvariableof{\indorder-1}}}{\indvariableof{1},\ldots,\indvariableof{\indorder-1}}
+    \end{align*}
+    and
+    \begin{align*}
+        \groundingofat{\left(\forall{{\indindexof{0}}} \folexformula\right)}{\indvariableof{1},\ldots,\indvariableof{\indorder-1}}=
+        \coordinatetrafowrtofat{\universalquanttrafo}{\contractionof{\groundingof{\folexformula}}{\indvariableof{1},\ldots,\indvariableof{\indorder-1}}}{\indvariableof{1},\ldots,\indvariableof{\indorder-1}}
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We proof the claimed equalities to arbitrary slices of the remaining variables, which amount to arbitrary substitutions of the formulas.
+    For any indices $\indindexofin{1},\ldots,\indindexofin{\indorder-1}$ We notice that
+    \begin{align*}
+        \contractionof{\groundingof{\folexformula}}{\indexedindvariableof{1},\ldots,\indexedindvariableof{\indorder-1}}
+        &= \sum_{\indindexofin{0}} \groundingofat{\folexformula}{\indexedindvariableof{0},\ldots,\indexedindvariableof{\indorder-1}} \\
+        &= \cardof{\indindexofin{0} \wcols \groundingofat{\folexformula}{\indexedindvariableof{0},\ldots,\indexedindvariableof{\indorder-1}}=1} \, .
+    \end{align*}
+    We can thus understand the contracted grounding tensor as storing in its coordinates the count of the coordinate extensions to the zeroth variable, such that the grounding tensor is satisfied.
+    This is analogous to our interpretation of contracted propositional formulas as world counts.
+    From this it is obvious, that the existential quantification is satisfied, if the count is different from zero, which is captured by the coordinatewise transform with $\existquanttrafo$.
+    We therefore arrive at
+    \begin{align*}
+        \groundingofat{\left(\exists_{\indindexof{0}}\folexformula\right)}{\indexedindvariableof{1},\ldots,\indexedindvariableof{\indorder-1}} =
+        \coordinatetrafowrtofat{\existquanttrafo}{\contractionof{\groundingof{\folexformula}}{\indvariableof{1},\ldots,\indvariableof{\indorder-1}}}{\indexedindvariableof{1},\ldots,\indexedindvariableof{\indorder-1}} \, .
+    \end{align*}
+    The first claim follows, since the assignment to the non-quantified variables was arbitrary.
+    The universal quantification is satisfied, when all extensions are satisfied, and the count is $\inddim$.
+    Since $\inddim$ is the maximal count, this is captured by the coordinatewise transform with $\universalquanttrafo$ and we get
+    \begin{align*}
+        \groundingofat{\left(\forall{\indindexof{0}}\folexformula\right)}{\indexedindvariableof{1},\ldots,\indexedindvariableof{\indorder-1}} =
+        \coordinatetrafowrtofat{\universalquanttrafo}{\contractionof{\groundingof{\folexformula}}{\indvariableof{1},\ldots,\indvariableof{\indorder-1}}}{\indexedindvariableof{1},\ldots,\indexedindvariableof{\indorder-1}} \, .
+    \end{align*}
+    With the same argument, the second claim is established.
+\end{proof}
+
+% Customized quantifiers
+We can extend this discussion towards more generic counting quantifiers, of which the existential and the universal quantifier are extreme cases.
+One can define quantifiers by demanding that at least $z\in\nn$ compatible groundings are satisfied, and show that they amount to coordinatewise transforms with $\greaterthanfunction{z}$.
+What is more, quantifiers demanding that at most $z\in\nn$ are satisfied would be representable by transforms with an analogously defined function $\ones_{\leq z}$.
+Such customized quantifiers appear for example in the $\mathrm{OWL\,2}$ standard of description logics (see \cite{rudolph_foundations_2011} and \secref{sec:kgRepresentation}).
+
+% basis encodings
+As will be discussed in \charef{cha:basisCalculus}, any coordinatewise transform can be performed by a contraction of a basis encoding of the tensor with a head vector prepared by the transform function (see \theref{the:tensorFunctionComposition}).
+In the case here, a direct implementation would require a dimension of these head variables by $\inddim$, which can be infeasible when having large object sets.
+
+% Prenex
+To summarize, let us assume a formula is in its prenex normal form, that is a collection of quantifiers are acting on a quantifier free part.
+We can represent its grounding tensor in three steps:
+\begin{itemize}
+    \item Instantiations of the atom groundings with the assigned variables, as contractions of the basis encoding of the world tensor with atom selecting tensors.
+    \item Propositional formula acting on the head variables of the predicate instantiations, representing the connectives combining the formula.
+    \item Quantifiers as a composition of contractions closing the quantified variable and coordinatewise transforms with the respective greater-than indicators.
+\end{itemize}
+
+
+
+\subsect{Storage in Basis CP Decomposition}\label{sec:basisCPgrounding}
+
+In many situations, grounding cores are sparse and representations as single tensor cores comes with a drastic overhead.
+We often encounter sparse grounding tensors, where the number of non-zero coordinates (to be investigated by basis CP ranks in \charef{cha:sparseRepresentation}) satisfies
+\begin{align*}
+    \sparsityof{\groundingof{\folexformula}} << \inddim^{\cardof{\indvariableof{\folexformula}}} \, .
+\end{align*}
+In this case, since most coordinates vanish, the basis CP decomposition (see \secref{sec:basisCP}) enables a representation of the grounding with significantly lower storage demand, see \theref{the:sparseBasisCP}.
+This is particularly useful for representing large relational databases, where each object has only a few relations with others, while the majority of possible relations remains unsatisfied.
+We depict such CP decomposition of a formula grounding in \theref{fig:groundingCP}.
+
+% Standard KB Encoding and Assumptions
+Most logical syntaxes exploit $\ell_0$-sparsity, explicitly storing only known assertions.
+The interpretation of unspecified assertions depends on the underlying assumptions.
+Under the Closed World Assumption, for example, all unspecified assertions are assumed to be false.
+
+\begin{figure}[t]
+    \begin{center}
+        \input{./PartII/tikz_pics/fol_models/grounding_decomposition.tex}
+    \end{center}
+    \caption{Basis CP Decomposition of the grounding of $\folexformula$, following the scheme of \theref{the:sparseBasisCP}.
+    Instead of direct storage of the grounding tensor $\groundingof{\folexformula}$, the non-zero coordinates are enumerated by a variable $\datvariable$ and the corresponding coordinates stored in leg-matrices $\legcoreof{\folexformula,\indenumerator}$.}
+    \label{fig:groundingCP}
+\end{figure}
+
+\subsect{Summary}
+
+Let us summarize the tensor encodings of the representations of the different concepts, given a single \firstOrderLogic{} world:
+\begin{center}
+    \begin{tabular}{|p{\threecolumnwidth}|p{\threecolumnwidth}|p{\threecolumnwidth}|}
+        \hline
+        \textbf{Concept}        & \textbf{Representation}                       & \textbf{Decomposition}                             \\
+        \hline
+        Constant Symbol         & Basis vector                                  &                                                    \\
+        \hline
+        Function Symbol         & \BasisEncoding{}: Boolean and directed tensor &                                                    \\
+        Term                    & ""                                            & Acyclic tensor network of represented functions    \\
+        \hline
+        Predicate Symbol        & \CoordinateEncoding{}: Boolean tensor         &                                                    \\
+%        Relation & Boolean tensor \\
+        Quantifier-free Formula & ""                                            & Contraction of represented terms with relations    \\
+        Formula                 & ""                                            & Transform of corresponding quantifier-free formula \\
+        \hline
+    \end{tabular}
+\end{center}
+
+
+\subsect{Example: Relational Databases}
+
+A database is understood as a specific \firstOrderLogic{} world, and are operations on such a single world.
+Queries are described by a formula $\impformula$, which are asked against a specific world $\worldindices$ to retrieve the grounding $\groundingof{\impformula}$.
+The variables of such formulas are called projection variables.
+The answer $\groundingof{\impformula}$ of a query is most conveniently represented as a list of solution mappings from the projection variables to objects in the world, such that the query formula is satisfied.
+Answering a query by solution mappings corresponds with finding the basis CP Decomposition (see \secref{sec:basisCP}) of $\groundingof{\impformula}$.
+We can understand these solution mappings as stored in the leg-matrices $\legcoreof{\folexformula,\indenumerator}$ (see \figref{fig:groundingCP}).
+
+Let us give with the outer join an example of a popular operation to define queries, which efficient execution and storage can be improved based on considerations in the tensor network formalism.
+
+\begin{definition}[Outer join]
+    Let there be a world $\worldindices$ and formulas $\extformulaof{\selindex}$ depending on variables $\indvariableof{\nodesof{\selindex}}$, which have grounding tensors by
+    \begin{align*}
+        \groundingofat{\extformulaof{\selindex}}{\indvariableof{\node}} \wcols  \bigtimes_{\node\in\nodesof{\selindex}}[\inddimof{\node}] \rightarrow \ozset \, .
+    \end{align*}
+    Then their (outer) $\joinsymbol$ is defined as the grounding of their conjunctions, as
+    \begin{align*}
+        \groundingofat{\joinsymbol\left(\extformulaof{0},\ldots,\extformulaof{\seldim-1}\right)}{\bigcup_{\selindexin}\indvariableof{\nodesof{\selindex}}}
+        = \contractionof{\groundingofat{\extformulaof{\selindex}}{\indvariableof{\nodesof{\selindex}}}\,:\,\selindexin}{\bigcup_{l\in[p]}\indvariableof{\nodesof{\selindex}}} \, .
+    \end{align*}
+\end{definition}
+
+%Visualization and efficiency
+We can understand the $\joinsymbol$ of groundings by a factor graph, where each grounding tensor decorates the hyperedge to the node set $\nodesof{\selindex}$.
+The projection variable assignment to each formula combined in a $\joinsymbol$ operation provide a basic tensor network format to store the output of the operation.
+There are thus situations, in which the solution map storage corresponding with a CP Decomposition comes with unnecessary overheads compared with other formats.
+
+% Coordinatewise transform
+We can also understand the $\joinsymbol$ operation as a coordinatewise transform (see \defref{def:coordinatewiseTransform}) with the product as transform function.
+To make this connection solid, one would need to extend each joined formula trivially to the variables appearing in other formulas.
+
+% Evaluation similar constraint propagation
+The efficiency of evaluating the contraction to a $\joinsymbol$ operation might be improved by understanding it as an Constraint Satisfaction Problem (see \charef{cha:logicalReasoning}).
+When applying efficient Message Passing algorithms such as Knowledge Propagation (see \algoref{alg:knowledgePropagation}), the groundings can be sparsified by local constraint propagation operations before turning to more global and more demanding contraction operations.
+Here the groundings $\groundingof{\extformulaof{\selindex}}$ would be used to initialize Knowledge Cores $\kcoreof{\edge}$ and sequentially sparsified during the algorithm.
+
+%\begin{example} % WOULD NEED OVERWORK: DRAW!
+%	For example take a query with many basic graph patterns with pairwise different projection variables.
+%	The global CP Decomposition would come here with an exponential storage overhead compared with storage as a tensor product of CP Decompositions to each Basic graph pattern.
+%\end{example}
+
+%% CONFUSING?
+%\begin{remark}[Distinguishing from probabilistic queries]
+%	Let us distinguish the discussion here from those of queries in probabilistic reasoning, which have two main differences.
+%	First, we ask queries against all possible pairs of variables, instead of asking the probability of satisfaction of a specific formula.
+%	Second, since we made the epistemologic assumption of knowing possibilities and not probabilities in logics, a query is answered by a truth value.
+%	We then only output in the shape of solution mappings the variable assignments where the query formula is true.
+% 	Thus, the queries here can be thought of as a batch of probabilistic queries with Boolean answers.
+%	% Alternative -> Later?
+%	Probabilistic queries can furthermore be understood in terms of the data extraction process described in this section.
+%	We can ask the query in probabilistic form (decomposed into atomic formulas) on the resulting empirical distribution.
+%	This results in the ratio of the worlds satisfying the query among those worlds satisfying the extraction query $\impformula$.
+%\end{remark}
+
+
+
+
+
+
+
+\sect{Semantic Structure}
+
+We now investigate the \semanticStructure{} of a \firstOrderLogic{} theory, when restricting to database semantics.
+This involves the representation of collections of worlds, where each has a \substitutionStructure{} as discussed above.
+
+\subsect{World Enumerating Variables}
+
+Given database semantics, we have a finite set of worlds, which we enumerate by tuples of variables $\catvariable$.
+
+\begin{definition}[World enumerating variables]
+    \label{def:worldEnumeratingVariables}
+    Given a \firstOrderLogic{} theory with constant symbols $\worlddomain$, function symbols $\{\folfunctionof{\secatomenumerator}\wcols\secatomenumeratorin\}$ and predicate symbols $\{\folpredicateof{\atomenumerator}\wcols\atomenumeratorin\}$, we enumerate the world under database semantics by a tuple
+    \begin{align*}
+        \worldvariables
+        = \left(\bigtimes_{\seccatenumeratorin}\bigtimes_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}} \catvariableof{\seccatenumerator,\indindexof{\seccatenumerator}} \right)
+        \times \left(\bigtimes_{\catenumeratorin}\bigtimes_{\indindexof{\catenumerator}\in\in[\inddim]^{\indorderof{\catenumerator}}} \catvariableof{\catenumerator,\indindexof{\catenumerator}} \right)
+    \end{align*}
+    of boolean variables.
+    In the world indexed by $\worldindices$, the grounding tensor of the function $\folfunctionof{\secatomenumerator}$ is
+    \begin{align*}
+        \bencodingofat{\groundingof{\folfunctionof{\secatomenumerator}}}{\indvariableof{\secatomenumerator},\indvariableof{[\inddimof{\secatomenumerator}]}}
+        = \sum_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}\wcols\indindexof{\seccatenumerator}=1} \onehotmapofat{\indindexof{\seccatenumerator}}{\indvariableof{\seccatenumerator}}
+    \end{align*}
+    and of the predicate $\folpredicateof{\atomenumerator}$
+    \begin{align*}
+        \groundingofat{\folpredicateof{\atomenumerator}}{\indvariableof{[\inddimof{\atomenumerator}]}}
+        = \sum_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\atomenumerator}}\wcols\indindexof{\atomenumerator}=1}
+        \onehotmapofat{\indindexof{\atomenumerator}}{\indvariableof{\atomenumerator}} \, .
+    \end{align*}
+\end{definition}
+
+We further have the restriction that each basis encoded function is a directed tensor.
+To restrict to those worlds, where this is true, we further introduce the validation base measure $\basemeasureat{\worldvariables}$ with coordinates
+\begin{align*}
+    \basemeasureat{\indexedworldvariables} =
+    \begin{cases}
+        1 & \ifspace \uniquantwrtof{\secatomenumeratorin}{\sum_{\indindexof{\secatomenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}}=1} \\
+        0 & \text{else}
+    \end{cases} \, .
+\end{align*}
+
+\subsect{Representation of Terms and Formulas}
+
+Combining its \substitutionStructure{} and \semanticStructure{} we represent a \firstOrderLogic{} term $\folterm$ with arity $\inddimof{\folterm}$ as a tensor
+\begin{align*}
+    \bencodingofat{\folterm}{\indvariableof{\folterm},\indvariableof{[\inddimof{\folterm}]},\worldvariables} =
+    \sum_{\worldindices\wcols\basemeasureat{\indexedworldvariables}=1}
+    \bencodingofat{\groundingof{\folterm}}{\indvariableof{\folterm},\indvariableof{[\inddimof{\folterm}]}}
+    \otimes \onehotmapofat{\worldindices}{\worldvariables} \, .
+\end{align*}
+and a formula as the tensor
+\begin{align*}
+    \folexformulawith =
+    \sum_{\worldindices\wcols\basemeasureat{\indexedworldvariables}=1} \groundingofat{\folexformula}{\indvariableof{\folexformula}}
+    \otimes \onehotmapofat{\worldindices}{\worldvariables} \, .
+\end{align*}
+
+From \defref{def:worldEnumeratingVariables} the representation of predicate and function symbols are directly derived from the $\worldvariables$, that is
+\begin{align*}
+    \folpredicateofat{\atomenumerator}{\indvariableof{[\inddimof{\atomenumerator}]},\indexedworldvariables}
+    = \sum_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}\wcols\indindexof{\seccatenumerator}=1}
+    \onehotmapofat{\indindexof{\seccatenumerator}}{\indvariableof{\seccatenumerator}}
+\end{align*}
+and
+\begin{align*}
+    \bencodingofat{\folfunctionof{\secatomenumerator}}{\indvariableof{\secatomenumerator},\indvariableof{[\inddimof{\secatomenumerator}]},\indexedworldvariables}
+    = \sum_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}\wcols\indindexof{\seccatenumerator}=1} \onehotmapofat{\indindexof{\seccatenumerator}}{\indvariableof{\seccatenumerator}}
+\end{align*}
+
+\subsect{Case of Propositional Logic}
+
+\PropositionalLogic{} as discussed in (see \charef{cha:logicalRepresentation}) is the special case of \firstOrderLogic{} with empty sets of constant and function symbols, and $\indorderof{\atomenumerator}=0$ for the predicate symbols.
+With the convention $[]^{0}=[2]$ the worlds are enumerated by the tuple
+\begin{align*}
+    \worldvariables = \bigtimes_{\atomenumeratorin} \catvariableof{\atomenumerator}
+\end{align*}
+which we have in previous chapters abbreviated by $\shortcatindices$.
+
+
+To represent logical formulas as sets of possible worlds, and distributions of worlds, we applied in \parref{par:one} one-hot encodings of possible worlds.
+For the case of \propositionalLogic{}, this is
+\begin{align*}
+    \onehotmapofat{\worldindices}{\shortcatvariables}
+    = \bigotimes_{\atomenumeratorin} \onehotmapofat{\catindexof{\atomenumerator}}{\catvariableof{\atomenumerator}} \, .
+\end{align*}
+
+\subsect{One-hot Encoding of Worlds}
+
+Let us now generalize the one-hot encodings of propositional logic worlds to worlds of \firstOrderLogic{}.
+To encode the boolean tensors $\worldindices$ describing \firstOrderLogic{}s as basis elements of a tensor space, we take the one-hot encoding
+\begin{align*}
+    \onehotmap \defcols \worldindexset \rightarrow \worldtensorspace
+\end{align*}
+defined by
+\begin{align*}
+    \onehotmapofat{\worldindices}{\worldvariables}
+    =
+    \left(\bigotimes_{\seccatenumeratorin}\bigotimes_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}}
+        \onehotmapofat{\catindexof{\seccatenumerator,\indindexof{\seccatenumerator}}}{\catvariableof{\seccatenumerator,\indindexof{\seccatenumerator}}}\right)
+    \otimes\left(\bigotimes_{\atomenumeratorin}\bigotimes_{\indindexof{\atomenumerator}\in[\inddim]^{\indorderof{\atomenumerator}}}
+        \onehotmapofat{\catindexof{\catenumerator,\indindexof{\catenumerator}}}{\catvariableof{\catenumerator,\indindexof{\catenumerator}}} \right)
+\end{align*}
+This is a tensor of order $\catorder\cdot\inddim^{\indorder}$, in a tensor space of dimension $2^{\left(\catorder\cdot\inddim^{\indorder}\right)}$.
+Storage of such tensors in naive formats would not be possible.
+However, the basis $\cpformat$ format discussed in \charef{cha:sparseRepresentation} still provides storage with demand linear in the order $\catorder\cdot\inddim^{\indorder}$.
+
+
+\subsect{Probability Distributions}
+
+Having established the formalism of one-hot encodings also in the case of \firstOrderLogic{} worlds, we can now proceed with the definition of distributions and formulas, analogously to the development in \parref{par:one}.
+Probability distributions over worlds coinciding on their domain are then non-negative and normalized tensors $\probat{\worldvariables}$ where each coordinate of a world $\worldindices$ is captured by a boolean random variable $\catvariableof{\atomenumerator,\shortindindices}$, indicating whether the $\atomenumerator$-th predicate holds on the object tuple indexed by $\shortindindices$.
+
+% High-dimensional - watch out for repetitions!
+We notice that by definition these probability distributions are distributions of
+\begin{align*}
+    \left(\sum_{\catenumeratorin}\inddim^{\indorderof{\catenumerator}}\right) +  \left(\sum_{\seccatenumeratorin}\inddim^{\indorderof{\seccatenumerator}}\right)
+\end{align*}
+Booleans.
+% One-hot encodings minimal
+Unfortunately, it is not possible to design encoding spaces of smaller dimension, when our aim is to get any distribution over possible worlds by an element in the encoding space.
+This is due to the fact, that one-hot encodings provide a basis in the tensor space, as will be shown in \charef{cha:coordinateCalculus}.
+The reason for the large encoding space dimension is therefore rooted in the equal number of possible worlds and not in an overhead in the dimension of the one-hot encoding space.
+We will later in this chapter investigate methods to handle such high-dimensional distributions in the formalism of exponential families.
+
+
+
+
+
+\sect{Representation of Knowledge Graphs}\label{sec:kgRepresentation}
+
+Let us now represent a specific fragment of \firstOrderLogic{}, namely Description Logics which Knowledge Bases are often referred to as Knowledge Graphs.
+We here use the $\mathrm{OWL\,2}$ standard, which encodes the syntax of the description logic $\mathcal{SROIQ(D)}$ \cite{rudolph_foundations_2011}.
+
+\subsect{Representation as Unary and Binary Predicates}
+
+% Reduction to binary
+Predicates in knowledge graphs are binary (owl:ObjectProperties) and unary (owl:Class).
+%Larger formulas are created by logical connections of these atomic formulas using disjunctions, conjunctions etc.
+We enumerate the predicates by $[\folpredicateorder]$, the objects in the domain $\worlddomain$ by $[\inddim]$, and extend the unary predicates to binaries by tensor product with $\onehotmapofat{0}{\indvariableof{1}}$.
+A Knowledge Graph on the set $\worlddomain$ of constants (owl:NamedIndividuals) is then the tensor
+\begin{align*}
+    \kgat{\selvariable,\indvariableof{0},\indvariableof{1}} : [\folpredicateorder] \times [\inddim] \times [\inddim] \rightarrow \ozset \, .
+\end{align*}
+
+
+\subsect{Representation as Ternary Predicate}\label{subsec:knowledgeGraphTernaryRep}
+
+It has been particularly convenient to represent a Knowledge Graph instead as a grounding of a single ternary predicate $\rdf$.
+To this end, the predicates $\folpredicateof{\catenumerator}$ and another object $\mathrdftype$ are added to a domain $\worlddomain$, by extending the $\inddim$ and the index interpretation function accordingly.
+
+
+% RDF triple: Alternative viewpoint to collection of unary and binary predicates!
+Following our notation we understand a Knowledge Graph as a grounding of the rdf triple relation $\rdf$ (being a formula of order 3) on a specific world $\kg$ with individuals $\worlddomain$
+
+We then construct a grounding tensor $\kggroundingof{\rdf}$ out of the world $\kgat{\selvariable,\indvariableof{0},\indvariableof{1}}$ by
+\begin{align*}
+    \kggroundingof{\rdf} : [\inddim] \times [\inddim] \times [\inddim] \rightarrow \ozset
+\end{align*}
+where
+\begin{align*}
+    &\kggroundingofat{\rdf}{\indexedindvariableof{s}, \indexedindvariableof{p}, \indexedindvariableof{o}} \\
+    &\quad =
+    \begin{cases}
+        \kgat{\selvariable=\indindexof{s},\indvariableof{0}=\indindexof{o},\indvariableof{1}=0}
+        & \ifspace \indindexof{p} = \invindexinterpretationat{\mathrdftype} \\
+        \kgat{\selvariable=\indindexof{p},\indvariableof{0}=\indindexof{s},\indvariableof{1}=\indindexof{o}}
+        & \ifspace \indindexof{p} = \invindexinterpretationat{\folpredicateof{\catenumerator}} \quad \text{for some} \quad \catenumerator \\
+        0  \quad & \text{else}
+    \end{cases} \, .
+\end{align*}
+
+
+Slicing the tensor $\kggroundingof{\rdf}$ along the predicate axis retrieves specific information about roles and can be efficiently be performed on these formats.
+The role $\mathrdftype$ has a specific meaning, since it contains from a DL perspective classifications (memberships of named concepts).
+Further slicing the tensor along object axis therefore results in membership lists for specific classes (concepts).
+One can thus regard $\mathrdftype$ as a placeholder for unitary formulas in a space of binary formulas.
+
+% Triple Stores, sparsity
+Exploiting the $\ell_0$-sparsity now leads to a so-called triple store, where $\kggroundingof{\rdf}$ is stored by a listing of those triples $\indindexof{\subsymbol},\indindexof{\predsymbol},\indindexof{\objsymbol}$ such that $\kggroundingofat{\rdf}{\indexedindvariableof{s}, \indexedindvariableof{p}, \indexedindvariableof{o}}=1$
+A recent implementation of a triple store exploiting these intuitions is $\mathrm{TENTRIS}$, see \cite{bigerl_tentris_2020}.
+In this work, such decompositions are generalized into more generic CP formats, see \charef{cha:sparseRepresentation}.
+% Approximation of KG Groundings
+Approximations of grounding tensors by decompositions leads to embeddings of the individuals such as $\mathrm{Tucker}$, $\mathrm{ComplEx}$ and $\mathrm{RESCAL}$ (see \cite{nickel_review_2016}).
+
+% Sparse representation
+%Sparse representation of the grounding tensor to a knowledge graph is of central importance, as investigated in \cite{bigerl_tentris_2020}.
+%We here do basis CP for sparse representation.
+
+
+% basis encoding
+For our purposes of evaluating logical formulas such as $\sparql$ queries we use the basis encoding of the groundings, which are depicted by
+\begin{center}
+    \input{./PartII/tikz_pics/fol_models/kg_formula_tensor.tex}
+\end{center}
+
+
+
+
+\subsect{$\sparql$ Queries}
+
+The $\sparql$ query language is a syntax to express \firstOrderLogic{} formulas $\folexformula$ and intended to be evaluated given a Knowledge Graph.
+We here consider tensor network representations of the $\mathrm{WHERE}{\cdot}$ block.
+Given a specific knowledge graph $\kggroundingof{\rdf}$, the execution of query is the interpretation $\groundingof{\folexformula}$, typical represented in a sparse basis CP format where each slice represents a solution mapping.
+
+\subsubsect{Triple Patterns}
+
+\red{Central to $\sparql$ queries are triple patterns, which we understand as slicings of the tensor $\kggroundingof{\rdf}$.}
+To each so-called triple pattern we build a corresponding creation tensor. %(see \defref{def:atomCreatingTensor}).
+The triple pattern is then evaluated by contraction of the atom creating tensor with $\kggroundingof{\rdf}$.
+
+Let us now provide examples of such pattern tensors.
+A unary triple patterns contains a single projection variable, typically related with the subject variable $\sindvariable$ of $\kggroundingof{\rdf}$.
+The corresponding pattern tensor is then
+\begin{align*}
+    \atomcreatorofat{\kgtriple{\provariable}{\mathrdftype}{\folpredicateof{\catenumerator}}}{
+        \sindvariable, \pindvariable, \oindvariable, \provariable
+    }
+    = \identityat{\sindvariable,\provariable}
+    \otimes \onehotmapofat{\invindexinterpretationat{\mathrdftype}}{\pindvariable}
+    \otimes \onehotmapofat{\invindexinterpretationat{\folpredicateof{\atomenumerator}}}{\oindvariable} \, .
+\end{align*}
+
+Binary triple patterns come with two projection variables, typically related with the subject and the object variables $\sindvariable$ and $\oindvariable$.
+The pattern tensor to the $\catenumerator$-th predicate is then
+\begin{align*}
+    \atomcreatorofat{\kgtriple{\provariableof{0}}{\folpredicateof{\catenumerator}}{\provariableof{1}}}{
+        \sindvariable, \pindvariable, \oindvariable, \provariableof{0}, \provariableof{1}
+    }
+    = \identityat{\sindvariable,\provariableof{0}}
+    \otimes \onehotmapofat{\invindexinterpretationat{\folpredicateof{\atomenumerator}}}{\pindvariable}
+    \otimes \identityat{\oindvariable,\provariableof{1}} \, .
+\end{align*}
+
+Contraction with these pattern tensor evaluated the specific triple pattern, and outputs in a boolean tensor the indicator, which objects are members of a specific class (for unary patterns) or which pair of objects are related by a specific relation.
+Again, the output of such contractions is a subset encodings of the set of solutions (see \defref{def:subsetEncoding}).
+
+%%%%%%%%%%%% END OF FRIDAY 14.3.
+%%%%%%%%%%%%
+
+% Examples
+Examples of triple patterns, drawn in \figref{fig:triplePatterns} are
+\begin{itemize}
+    \item Unary triple pattern with one variable, representing a formula with a single projection variable.
+    For the example $\exunarytriple$ see \figref{fig:triplePatterns}a.
+    \begin{align*}
+        \atomcreatorofat{\kgtriple{\provariable}{\mathrdftype}{\folpredicateof{\catenumerator}}}{
+            \sindvariable, \pindvariable, \oindvariable, \provariable
+        }
+        = \identityat{\sindvariable,\provariable}
+        \otimes \onehotmapofat{\invindexinterpretationat{\mathrdftype}}{\pindvariable}
+        \otimes \onehotmapofat{\invindexinterpretationat{\exaunaryrelation}}{\oindvariable}
+    \end{align*}
+    If and only if the output slice is $\tbasis$, then the corresponding object encoded by the input indices is of class $\exaunaryrelation$.
+    \item Binary triple pattern with two variables, representing a formula with two projection variables.
+    For the example  $\exbinarytriple$ see \figref{fig:triplePatterns}b.
+    If and only if the output slice is $\tbasis$, then the corresponding object tuple encoded by the input indices has a relation $\exabinaryrelation$.
+\end{itemize}
+
+% Projection picture
+The composition $\psi (\psi^T)$ of the matrification of the tensor $\psi$ is an orthogonal projection.
+That means that applying $\psi (\psi^T)$ is the same map as applying once.
+
+
+\begin{figure}[t]
+    \begin{center}
+        \input{./PartII/tikz_pics/fol_models/kg_triple_patterns.tex}
+    \end{center}
+    \caption{Triple patterns of $\sparql$ as tensor networks.
+    a) Example of unary triple pattern $\exunarytriple$ specifying whether an individual $\indexinterpretationof{\indindexof{1}}$ is a member of class $C$.
+    %Here by $0$ we denote the element $\invindexinterpretationat{\mathrdftype}$
+    b) Example of a binary triple pattern $\exbinarytriple$ specifying whether individuals $\indexinterpretationof{\indindexof{1}}$ and $\indexinterpretationof{\indindexof{2}}$ have a relation $R$.
+    By $\onehotmapof{\invrdftypesymbol},\onehotmapof{\exaunaryrelation},\onehotmapof{\exabinaryrelation}$ we denote the one-hot encodings of the enumeration of the resources $rdf:type, C$ and $R$.
+    }
+    \label{fig:triplePatterns}
+\end{figure}
+
+
+
+
+\subsubsect{Basic Graph Patterns}
+
+Generic $\sparql$ queries are compositions of triple patterns by logical connectives. % Except for some stuff like regex
+These triple patterns possibly share projection variables.
+Statements in $\sparql$ can be translated into \propositionalLogic{} combining the triple patterns:
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{$\sparql$}                                        & \textbf{\PropositionalLogic{}} & \textbf{Tensor Representation}                                                                   \\
+        \hline
+        $\{f_1, f_2\}$                                            & $f_1\land f_2$                 & $\bencodingofat{\land}{\headvariableof{f_1\land f_2},\headvariableof{f_1},\headvariableof{f_2}}$ \\
+        \hline
+        $\mathrm{UNION}\{f_1, f_2\} $                             & $f_1\lor f_2$                  & $\bencodingofat{\lor}{\headvariableof{f_1\lor f_2},\headvariableof{f_1},\headvariableof{f_2}}$   \\
+        \hline
+        $\mathrm{FILTER}\,\,\mathrm{NOT}\,\,\mathrm{EXISTS}\{f\}$ & $\lnot f$                      & $\bencodingofat{\lnot}{\headvariableof{\lnot f},\headvariableof{f}}$                             \\
+        \hline
+    \end{tabular}
+\end{center}
+
+If a $\sparql$ query consists of these keywords, we find a straight forward corresponding network of triple patterns and encoded logical connectives, by applying our findings of \secref{sec:folConnectiveRepresentation}.
+To this end, we prepare for each appearing triple pattern the corresponding pattern tensor, and a copy of $\kggroundingof{\rdf}$.
+Here we also copy the term variables $\sindvariable,\pindvariable$ and $\oindvariable$, to ensure that each copy of $\kggroundingof{\rdf}$ shares variables with a single pattern tensor.
+Projection variables are not copied, since we need to keep track of them shared among triple patterns.
+Then we prepare the basis encoding of logical connectives according to the hierarchy specified in the $\sparql$ query.
+Finally we add a $\tbasis$-vector to the final head variable representing the complete $\sparql$ query, to restrict the support to coordiantes corresponding with solution mappings.
+We then contract the resulting tensor network, leaving all projection variables open.
+
+If a projection variable is not appearing in the $\mathrm{SELECT}$ statement in front of the $\mathrm{WHERE}\{\cdot\}$-block, we simply exclude it from the open variables of the described contraction.
+Note that in that case, the coordinates contain solution counts, i.e. how many assignments to the dropped variable have been a $1$ coordinate.
+We can drop this additional information simply by performing a coordinatewise transform with the greater zero indicator $\existquanttrafo$.
+
+% Effective calculus alternative
+Here we represented a $\sparql$ query $\impformula$ consistent of multiple triple pattern by instantiating a head variables to each triple pattern.
+Alternatively, the more direct hybrid calculus developed in \secref{sec:hybridCalculus} can be applied and the additional head variables avoided.
+This is especially compelling, when the $\mathrm{WHERE}\{\cdot\}$-block does not contain further keywords, i.e. it is the conjunction of all triple patterns.
+In that case, we avoid the instantiation of head variables (i.e. close the head variables separately by $\tbasis$-vectors) and represent the query by a contraction of all triple pattern tensors.
+
+% Expressivity
+We further notice, that any propositional formula acting on the head variables of the triple patterns can be expressed by a hierarchical combination of the key words in the above table.
+To find the expression, one can transform a given formula into its conjunctive or disjunctive normal form and apply the statements according to the apperaing operations $\land,\lor$ and $\lnot$.
+
+
+%% Further $\sparql$ features
+%Further $\sparql$ features, which cannot be expressed by a tensor network are:
+%\begin{itemize}
+%    \item $\mathrm{FILTER}\{\cdot\}$ does not depend on triple patterns (e.g. numeric inequalities, regex functions on strings).
+%    We can regard it as another basic formula, which does not result from a slicing of the $\rdf$ grounding tensor.
+%    Besides that, we can understand it as formulas and include it in compositions.
+%    \item $\mathrm{OPTIONAL}\{\cdot\}$ would result in $\ones$ leg vectors, when there is a missing variable assignment resulting.
+%\end{itemize}
+
+
+
+\sect{Probabilistic Relational Models}
+
+% MLN in FOL and PL
+So far we have studied \MarkovLogicNetworks{} in \propositionalLogic{} as probability distributions over worlds.
+In FOL they define probability distributions over relations in worlds with a fixed set of objects.
+More generally, such models are probabilistic relational models (see for an overview \cite{getoor_introduction_2019}.
+
+
+We in this section treat random worlds in \firstOrderLogic{} with fixed domains $\worlddomain$.
+
+%
+We in this section show, when and how we can interpret likelihoods of \MarkovLogicNetworks{} in \firstOrderLogic{} in terms of samples of a \MarkovLogicNetwork{} in \propositionalLogic{}.
+
+\subsect{\HybridFOLNetworks{}}
+
+% Templates
+Following \cite{richardson_markov_2006} \MarkovLogicNetworks{} in \firstOrderLogic{} are templates for distributions, which instantiate random worlds when choosing a set of objects $\worlddomain$.
+Given a fixed set of constants, they then define a distribution over the worlds, which objects correspond with the constants. % this is database semantics!
+This applies database semantics, where only those worlds are considered, where the unique name and domain closure assumptions given a set of constants are satisfied.
+
+We count the number of true groundings to a formula by
+\begin{align*}
+    \countquantifier\enumfolformula|_{\worldindices}
+    = \contraction{\groundingofat{\enumfolformula}{\indvariableof{\enumfolformula}}} \, .
+\end{align*}
+Using these counts as statistics, we now define \HybridFOLNetworks{} as a Computation Activation Network.
+
+\begin{definition}[\HybridFOLNetworks{} (HFLN)]
+    Let there be a set $\worlddomain$ of objects and a set $\folformulaset$ of \firstOrderLogic{} formulas.
+    Further let $\hybridparam$ as in \defref{def:hybridLogicNetwork} be a tuple of a subset $\hardlegset\subset[\seldim]$, a tuple $\headindexof{\hardlegset}\in\bigtimes_{\selindex\in\hardlegset}[2]$ and $\canparamwithin$.
+    We then define the \HybridFOLNetwork{} as the distribution
+    \begin{align*}
+        \probofat{\folhlnparameters}{\worldvariables}
+        &= \breakablenormalizationof{\{\bencodingofat{\countquantifier\enumfolformula}{\headvariableof{\selindex},\worldvariables}\wcols\selindexin\} \\
+        & \quad \cup \{\softactlegwith\wcols\selindexin\}
+        \cup \{\kcoreofat{\selindex,\hardparam}{\headvariableof{\selindex}}\wcols\selindexin\}
+        }{\worldvariables}
+    \end{align*}
+    where
+    \begin{align*}
+        \kcoreofat{\selindex,\hardparam}{\headvariableof{\selindex}}
+        = \begin{cases}
+              \fbasisat{\headvariableof{\selindex}} & \ifspace \selindex\in\hardlegset \ncond \headindexof{\selindex} = 0 \\
+              \onehotmapofat{\headdimof{\selindex}-1}{\headvariableof{\selindex}} & \ifspace \selindex\in\hardlegset \ncond \headindexof{\selindex} = 1 \\
+              \onesat{\headvariableof{\selindex}} & \text{else} \, .
+        \end{cases}
+    \end{align*}
+\end{definition}
+
+
+
+The mean parameter polytope is the convex hull of the vectors
+\begin{align*}
+    \sencodingofat{\folformulaset}{\indexedworldvariables,\selvariable}
+\end{align*}
+to the worlds $\worldindices$ with $\basemeasureat{\indexedworldvariables}=1$.
+These vectors store are the counts of satisfied groundings to each formula, that is
+\begin{align*}
+    \sencodingofat{\folformulaset}{\indexedworldvariables,\selvariable} = \cardof{
+        \{\indindexof{\enumfolformula} \wcols \groundingofat{\enumfolformula}{\indexedindvariableof{\enumfolformula}} = 1 \}
+    } \, .
+\end{align*}
+
+\subsect{Propositionalization}
+
+% Propositionalization
+Let us notice, that different to the case of propositional \HybridLogicNetworks{} treated in \charef{cha:networkRepresentation}, the statistic does not consist of boolean features, when formulas contain variables and we have multiple objects.
+One could, however, replace each $\enumfolformula$ by the set of the possible groundings, i.e. substitutions of the formulas variables by any tuple of objects in $\worlddomain$.
+The resulting distribution would be an \HybridLogicNetwork{} with boolean statistic, which coincides with the \HybridFOLNetwork{} when posing certain weight sharing conditions on $\canparam$.
+The downside of this construction is the increase in the number of features from $\seldim$ to $\sum_{\selindexin} \cardof{\worlddomain}^{\cardof{\indvariableof{\enumfolformula}}}$.
+This polynomial in the cardinality of the domain set increase poses significant computational challenges, see \cite{richardson_markov_2006}.
+
+We now show that the \HybridFOLNetwork{} can be propositionalized to a \HybridLogicNetwork{} in \propositionalLogic{}.
+
+\begin{lemma}
+    We have
+    \begin{align*}
+        &\contractionof{\bencodingofat{\countquantifier\enumfolformula}{\headvariableof{\selindex},\worldvariables},\softactlegwith}{\worldvariables} \\
+        &\quad = \contractionof{
+            \{\bencodingofat{\groundingofat{\enumfolformula}{\worldindices,\indindexof{\enumfolformula}}}{\headvariableof{\indindexof{\enumfolformula}}} \wcols \indindexofin{\enumfolformula}\}
+            \cup
+            \{\softactlegat{\headvariableof{\indindexof{\enumfolformula}}} \wcols \indindexofin{\enumfolformula}\}
+        }{\worldvariables}
+    \end{align*}
+    and
+    \begin{align*}
+        &\contractionof{\bencodingofat{\countquantifier\enumfolformula}{\headvariableof{\selindex},\worldvariables},\kcoreofat{\selindex,\hardparam}{\headvariableof{\selindex}}}{\worldvariables} \\
+        &\quad = \contractionof{
+            \{\bencodingofat{\groundingofat{\enumfolformula}{\worldindices,\indindexof{\enumfolformula}}}{\headvariableof{\indindexof{\enumfolformula}}} \wcols \indindexofin{\enumfolformula}\}
+            \cup
+            \{\kcoreofat{\selindex,\hardparam}{\headvariableof{\indindexof{\enumfolformula}}} \wcols \indindexofin{\enumfolformula}\}
+        }{\worldvariables} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    The first claim holds, since for any world $\worldindices$ we have
+    \begin{align*}
+        &\contractionof{\bencodingofat{\countquantifier\enumfolformula}{\headvariableof{\selindex},\worldvariables},\softactlegwith}{\indexedworldvariables} \\
+        &\quad = \prod_{\indindexof{\enumfolformula}\wcols\groundingofat{\enumfolformula}{\worldindices,\indindexof{\enumfolformula}}=1} \expof{\indexedcanparam} \\
+        &\quad = \contractionof{
+            \{\bencodingofat{\groundingofat{\enumfolformula}{\worldindices,\indindexof{\enumfolformula}}}{\headvariableof{\indindexof{\enumfolformula}}} \wcols \indindexofin{\enumfolformula}\}
+            \cup
+            \{\softactlegat{\headvariableof{\indindexof{\enumfolformula}}} \wcols \indindexofin{\enumfolformula}\}
+        }{\indexedworldvariables} \, .
+    \end{align*}
+    For $\selindex\notin\hardlegset$ the second claim is trivial, since any contraction of a basis encoding with a trivial head is trivial.
+    If $\selindex\in\hardlegset$ and $\headindexof{\selindex}=0$ then
+    \begin{align*}
+        &\contractionof{\bencodingofat{\countquantifier\enumfolformula}{\headvariableof{\selindex},\worldvariables},\kcoreofat{\selindex,\hardparam}{\headvariableof{\selindex}}}{\indexedworldvariables} \\
+        &\quad=
+        \begin{cases}
+            1 & \ifspace \forall \indindexof{\enumfolformula} \defcols  \groundingofat{\enumfolformula}{\worldindices,\indindexof{\enumfolformula}} = 0\\
+            0 & \text{else}
+        \end{cases} \\
+        &\quad= \contractionof{
+            \{\bencodingofat{\groundingofat{\enumfolformula}{\worldindices,\indindexof{\enumfolformula}}}{\headvariableof{\indindexof{\enumfolformula}}} \wcols \indindexofin{\enumfolformula}\}
+            \cup
+            \{\kcoreofat{\selindex,\hardparam}{\headvariableof{\indindexof{\enumfolformula}}} \wcols \indindexofin{\enumfolformula}\}
+        }{\indexedworldvariables} \, .
+    \end{align*}
+    For $\headindexof{\selindex}=1$ this holds analogously.
+\end{proof}
+
+Each substitution of the variables in $\enumfolformula$ by objects in $\worlddomain$, which satisfies the formula in the world $\worldindices$, therefore provides a factor of $\expof{\canparamat{\indexedselvariable}}$ to the probability of $\worldindices$.
+
+
+%\red{Here we directly define them as exponential families distributing $\worldvariables$ for a given set of objects $\worlddomain$.}
+%\red{To avoid a similar discussion as in \charef{cha:networkRepresentation} we directly allow for boolean base measures and call the distributions \HybridFOLNetworks{}.}
+%
+%\begin{definition}[\HybridFOLNetworks{} (HFLN)]
+%    Let there be a set $\folformulaset$ of \firstOrderLogic{} formulas with maximal arity $\indorder$, which is enumerated by a selection variable $\selvariable$ of dimension $\seldim$.
+%    Further, let there be a set of objects $\worlddomain$ and a boolean base measure $\basemeasureat{\shortindvariables}$.
+%    The family of \HybridFOLNetworks{} $\expfamilyof{\restfolformulaset,\basemeasure}$ defined by the tuple $(\folformulaset,\worlddomain,\basemeasure)$ is the exponential family of joint distributions to the variables $\worldvariables$ with the statistics
+%    \begin{align*}
+%        \sstat^{\restfolformulaset}_{\selindex}\left[\indexedworldvariables\right]
+%        = \contraction{\groundingof{\enumfolformula}}
+%    \end{align*}
+%    and the base measure $\basemeasure$.
+%%    The \MarkovLogicNetwork{} instantiated for a given set of objects $\worlddomain$ and a base measure $\basemeasure$ is the random world, which is a member of the exponential family with sufficient statistics
+%%    \begin{align*}
+%%        \sstatcoordinateofat{\selindex}{\indexedworldvariables} = \contraction{\groundingof{\enumfolformula}}
+%%        %\sstat_{\selindex}(\worldindices)  = \contraction{\groundingof{\folexformula_\selindex}} % Formulas can have different
+%%    \end{align*}
+%%    and canonical parameters $\weight$.
+%\end{definition}
+%
+%Each element of the family $\expfamilyof{\restfolformulaset,\basemeasure}$ is represented by a canonical parameter $\canparamat{\selvariable}$.
+
+
+%We will in the next sections explore an alternative way to apply the theory of \charef{cha:networkRepresentation} and \charef{cha:networkReasoning}, namely based on importance formulas.
+
+
+%% Interpretation
+%The statistics
+%\begin{align*}
+%    \contraction{\groundingof{\folexformula_\selindex}} % Formulas can have different
+%\end{align*}
+%can be interpreted as the number of substitutions to a formula, such that the formula ist satisfied.
+%Each substitution satisfying a formula adds a factor of $\expof{\canparam_\selindex}$ to the probability of the respective world before normalization.
+
+
+%
+%When constructing a world tensor to a theory with predicates of different order, we already argued that we extend the arity of predicates by tensor products with $\onehotmapof{0}$.
+%To define random world tensors, we then restrict the corresponding base measure to be supported only on those worlds where the extended predicates hold only at the individual $\exindividualof{0}$ at the extended axis.
+
+
+% Comparison with PL MLN
+%We choose extraction formulas $\extformulaof{\atomenumerator}$ such that any formula in the FOL MLN has a propositional equivalent (see \defref{def:propositionalEquivalent}).
+%The statistic map is then a formula selecting tensor as in the propositional logic case contracted with the groundings of $\extformulaof{\atomenumerator}$.
+
+
+
+
+
+
+\subsect{Conditioning on an Importance Formula}
+
+%\red{Analogous to a guard formula in \cite[Definition 6.11]{koller_probabilistic_2009}!}
+
+%The boolean base measure $\basemeasure$ of a \HybridFOLNetwork{} is the subset encoding of the possible worlds which have a non-vanishing probability with respect to any member of the family.
+%We now construct specific base measures based on a fixed grounding tensor of an importance formula.
+%This will reduce the number of object tuples influencing the probability distribution in order to arrive at an interpretation of FOL MLNs as likelihoods to datasets of propositional MLNs.
+
+To reduce the number of object tuples influencing the probability distribution, we now condition \HybridFOLNetworks{} on situations where a formula, called the importance formula, has a fixed grounding tensor.
+
+To this end, we mark pairs of term indices relevant to the distributions by an auxiliary index $\datindexin$.
+Given a set $\{\indindexof{[\indorder]}^{\datindex} \wcols \datindexin \}$ of indices to the important tuples we build a set encoding (see \defref{def:subsetEncoding})
+\begin{align*}
+    \fixedimpformula = \sum_{\datindexin} \left(
+    \bigotimes_{\indenumeratorin} \onehotmapofat{\indindexof{\indenumerator}^{\datindex}}{\indvariableof{\indenumerator}}
+    \right) \, .
+\end{align*}
+
+% Interpretation as grounding
+We interpret the tensor $\fixedimpformula$ as the grounding of a formula, which we call the importance formula.
+
+% Restricting to worlds with identical grounding
+To have a constant importance formula we define a syntactic representation and restrict the support of the \HybridFOLNetwork{} to those world coinciding with groundings of the importance formula coinciding with $\fixedimpformula$ by designing a base measure
+\begin{align*}
+    \fixedimpbm
+    = \begin{cases}
+          1 & \ifspace \groundingofat{\impformula}{\indvariableof{\impformula}} = \fixedimpformula \\
+          0 & \text{else}
+    \end{cases} \, .
+\end{align*}
+
+% Conditioning on exquery
+The base measure restricts the \HybridFOLNetwork{} to be those worlds, where $\groundingof{\impformula}$ is coincides with the fixed tensor $\fixedimpformula$.
+Intuitively, $\groundingof{\impformula}$ represents certain evidence about a \firstOrderLogic{} world, whereas other formulas are uncertain.
+
+
+%\begin{assumption}
+%    \label{ass:importanceBasemeasure}
+%    Given a base measure $\fixedimpbm$, we assume that there is an importance formula $\impformulaat{\shortindvariables}$ such that
+%    \begin{align*}
+%        \fixedimpbm
+%        = \begin{cases}
+%              1 & \ifspace \groundingofat{\impformula}{\indvariableof{\impformula}} = \fixedimpformula \\
+%              0 & \text{else}
+%        \end{cases} \, .
+%    \end{align*}
+%\end{assumption}
+
+
+\subsect{Decomposition of the Log Likelihood}
+
+
+% Extraction query
+To reduce the likelihood of a world to we make the assumption that all formulas in a \HybridFOLNetwork{} are of the form
+\begin{align}
+    \label{eq:folImplicationForm}
+%    \folexformula_{\selindex}(\individuals) =
+    \enumfolformulaat{\indvariableof{\enumfolformula}}
+    = \left( \impformulaat{\shortindvariables} \Rightarrow \headfolformulaofat{\selindex}{\indvariableof{\enumfolformula}} \right)
+\end{align}
+that is a rule with the importance formula being the premise.
+In particular, we assume, that they depend on all term variables $\shortindvariables$.
+If this is not the case, we extend the formula trivially on the missing term variables.
+When this assumption holds, we can think of the importance formula as a conditions on individuals to satisfy a statistical relation given by $\headfolexformula$.
+
+Towards connecting with \propositionalLogic{}, we further make the assumption, that we can decompose the formula $\headfolformulaof{\selindex}$ in what we will call extraction formulas.
+
+\begin{assumption}
+    \label{ass:propositionalHeads}
+    We assume that there exist formulas $\{\extformulaofat{\catenumerator}{\worldvariables,\shortindvariables} \wcols \catenumeratorin\}$, which we refer to as atom extraction formulas, and an importance formula $\impformulaat{\shortindvariables}$ such that the following holds.
+    To each \firstOrderLogic{} formula $\enumfolformula$ there is another \firstOrderLogic{} formula $\headfolformulaofat{\selindex}{\indvariableof{\enumfolformula}}$ and a propositional formula $\enumformulaat{\shortcatvariables}$ such that
+    \begin{align*}
+        \enumfolformulaat{\worldvariables,\shortindvariables}
+        = \left( \impformulaat{\worldvariables,\shortindvariables} \Rightarrow \headfolformulaofat{\selindex}{\worldvariables,\shortindvariables} \right)
+    \end{align*}
+    and
+    \begin{align*}
+        \headfolformulaofat{\selindex}{\shortindvariables} =
+        \contractionof{
+            \{\enumformulaat{\shortcatvariables}\} \cup \{\bencodingofat{\extformulaof{\catenumerator}}{\catvariableof{\catenumerator},\worldvariables,\shortindvariables}
+            \wcols \catenumeratorin\}
+        }{\shortindvariables} \, .
+    \end{align*}
+\end{assumption}
+
+We depict the assumption, that any formula is of the form \eqref{eq:folImplicationForm} in the diagram
+\begin{center}
+    \input{./PartII/tikz_pics/fol_models/implication_propositionalization.tex}
+\end{center}
+where the second summand depends only on the query $\impformula$ and therefore does not appear in the likelihood.
+
+
+%\begin{example}[Trivial importance formula]
+%	When the importance formula is always satisfied, any tuple of objects contributes to the likelihood. 
+%	This original approach to \MarkovLogicNetworks{} \cite{richardson_markov_2006} however leads to many datapoints which are also dependent on each other.
+%\end{example}
+
+
+\subsect{Reduction to Propositional Logic}
+
+We now make additional assumptions to decompose the partition function of an \HybridFOLNetwork{} as a product of \HybridLogicNetwork{} partition functions.
+
+\begin{assumption}
+    \label{ass:independentTuples}
+    Given an importance formula $\impformula$ and a tensor $\fixedimpformula$ we consider the base measure
+    \begin{align*}
+        \fixedimpbm
+        = \begin{cases}
+              1 & \ifspace \groundingofat{\impformula}{\indvariableof{\impformula}} = \fixedimpformulawith \\
+              0 & \text{else}
+        \end{cases}
+    \end{align*}
+    of worlds with grounding of $\impformula$ by $\fixedimpformula$.
+    Let further enumerate by $\datindexin$ the support of $\fixedimpformula$, that is $\sampleind$ are the indices of $\shortindvariables$ with $\fixedimpformulaat{\shortindvariables=\sampleind}=1$.
+    We assume that with respect to $\fixedimpformula$ the variables
+    \begin{align}
+        \left(\groundingofat{\extformulaof{\atomenumerator}}{\shortindvariables=\sampleind}\right)
+    \end{align}
+    are for $\atomenumeratorin$ and $\datindexin$ independent and uniformly distributed.
+\end{assumption}
+
+When the above assumption holds, we now show that the probability of a \firstOrderLogic{} world with respect to a \HybridFOLNetwork{} coincides with the likelihood of a dataset in a propositional \HybridLogicNetwork{}.
+
+\begin{theorem}
+    \label{the:FOLworldToPLdataset}
+    Let there be a set of formulas $\folformulaset$ such that \assref{ass:propositionalHeads} and \assref{ass:independentTuples} hold with an importance formula $\impformula$ and a tensor $\fixedimpformula$.
+    Then for any $\hybridparam$ and any world $\catindexof{\folworldsymbol}$ with $\groundingof{\impformula}=\fixedimpformula$ we have
+    \begin{align*}
+        \frac{1}{\datanum} \lnof{\condprobwrtof{\folhlnparameters}{\indexedworldvariables}{\groundingof{\impformula}=\fixedimpformula}}
+        = \centropyof{\empdistribution}{\probof{\hlnparameters}} -
+        \frac{\lnof{\contraction{\fixedimpbm}}}{\datanum}
+    \end{align*}
+    where $\formulaset$ is the set of propositional equivalents to $\folformulaset$ (see \assref{ass:propositionalHeads}) and $\datamap$ the data map with evaluation at $\datindexin$ by the enumerated non-vanishing coordinates of $\fixedimpformulawith$
+    \begin{align*}
+        \datapoint
+        = \big(\groundingofat{\extformulaof{0}}{\shortindvariables=\sampleind},\ldots,\groundingofat{\extformulaof{\atomorder-1}}{\shortindvariables=\sampleind}\big) \, .
+    \end{align*}
+\end{theorem}
+
+To show the theorem, we show first in the following lemma the factorization of the partition function of the \HybridFOLNetwork{}.
+
+% NEW
+\begin{lemma}
+    \label{lem:FOLpartitionfunctionfactorization}
+    Under the assumptions of \theref{the:FOLworldToPLdataset}, we have
+    \begin{align*}
+        &\contraction{
+            \bencodingofat{\restfolformulaset}{\headvariables,\worldvariables},\hypercoreofat{\hybridparam}{\headvariables},\fixedimpbm
+        } \\
+        &\quad=\contraction{\fixedimpbm} \cdot
+        \left(  \prod_{\shortindindices\wcols\fixedimpformulaat{\indexedshortindvariables}=0} \hypercoreofat{\selindex,\hybridparam}{\headvariable=1}\right) \cdot \\
+        &\quad\quad \left(\frac{1}{2^{\atomorder}}
+        \cdot \contraction{\hlnstatccwith,\hypercoreofat{\hybridparam}{\headvariables}}
+        \right)^{\datanum} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    Using the assumption on the structure of the formulas we have
+    \begin{align*}
+        \groundingof{\countquantifier\enumfolformula}
+        = \groundingof{\countquantifier\lnot\impformula} + \groundingof{\countquantifier(\impformula\land\headfolformulaof{\selindex})}
+    \end{align*}
+    and for any $\worldindices$
+    \begin{align*}
+        &\contractionof{\bencodingofat{\countquantifier\enumfolformula}{\headvariableof{\selindex}},\hypercoreofat{\selindex,\hybridparam}{\headvariable},\fixedimpbm}{\indexedworldvariables} \\
+        &\quad = \left(\prod_{\shortindindices\wcols\fixedimpformulaat{\indexedshortindvariables}=0} \hypercoreofat{\selindex,\hybridparam}{\headvariable=1}\right) \cdot
+        \contractionof{\bencodingofat{\countquantifier(\impformula\land\headfolformulaof{\selindex})}{\headvariableof{\selindex}},\hypercoreofat{\selindex,\hybridparam}{\headvariableof{\selindex}},\fixedimpbm}{\indexedworldvariables} \\
+    \end{align*}
+    Here by $\hypercoreofat{\selindex,\hybridparam}{\headvariable}$ we denote the two-dimensional realization of the activation core.
+    We use that the grounding tensor of $\impformula$ is constant among the by $\fixedimpbm$ supported worlds and thus
+    \begin{align*}
+        &\contractionof{\bencodingofat{\countquantifier(\impformula\land\headfolformulaof{\selindex})}{\headvariableof{\selindex}},\hypercoreofat{\selindex,\hybridparam}{\headvariableof{\selindex}},\fixedimpbm}{\worldvariables} \\
+        % Using that impformula is constant
+        &\quad =
+        \contractionof{
+            \bigcup_{\datindexin}\left\{\bencodingofat{\groundingofwrt{\headfolformulaof{\selindex}}{\sampleind}}{\headvariableof{\selindex,\datindex}},\hypercoreofat{\selindex,\hybridparam}{\headvariableof{\selindex,\datindex}}\right\}
+            \cup\{\fixedimpbm\}
+        }{\worldvariables} \, .
+    \end{align*}
+    For each $\datindexin$ we have by \assref{ass:propositionalHeads}
+    \begin{align*}
+        % Using that headformula decomposes to propositional
+        &\contractionof{
+            \bencodingofat{\groundingofwrt{\headfolformulaof{\selindex}}{\sampleind}}{\headvariableof{\selindex,\datindex}},\hypercoreofat{\selindex,\hybridparam}{\headvariableof{\selindex,\datindex}}
+        }{\worldvariables} \\
+        & \quad =
+        \contractionof{
+            \{\bencodingofat{\groundingofwrt{\extformulaof{\atomenumerator}}{\sampleind}}{\headvariableof{\atomenumerator,\datindex}} \wcols \atomenumeratorin \}
+            \cup \{\bencodingofat{\enumformula}{\formulavar,\headvariableof{\atomenumerator,\datindex}},\hypercoreofat{\selindex,\hybridparam}{\formulavar}\}
+        }{\worldvariables} \, .
+    \end{align*}
+    From \assref{ass:independentTuples} we know
+    \begin{align*}
+        \contractionof{
+            \{\bencodingofat{\groundingofwrt{\extformulaof{\atomenumerator}}{\sampleind}}{\headvariableof{\atomenumerator,\datindex}}
+            \wcols \atomenumeratorin \ncond \datindexin \} \cup \{\fixedimpbm\}
+        }{\headvariableof{[\atomorder]\times[\datanum]}}
+        = \frac{\contraction{\fixedimpbm}}{2^{\atomorder\cdot\datanum}} \cdot \onesat{\headvariableof{[\atomorder]\times[\datanum]}} \, .
+    \end{align*}
+    Combining the above we get
+    \begin{align*}
+        &\contraction{
+            \bencodingofat{\restfolformulaset}{\headvariables,\worldvariables},\hypercoreofat{\hybridparam}{\headvariables},\fixedimpbm
+        } \\
+        &\quad=
+        \frac{\contraction{\fixedimpbm}}{2^{\atomorder\cdot\datanum}} \cdot \\
+        &\quad\quad \left(  \prod_{\shortindindices\wcols\fixedimpformulaat{\indexedshortindvariables}=0} \hypercoreofat{\selindex,\hybridparam}{\headvariable=1}\right)
+        \prod_{\datindexin}\contraction{
+            \bencodingofat{\hlnstat}{\headvariables,\headvariableof{[\atomorder]\times\{\datindex\}}},\hypercoreofat{\hybridparam}{\headvariables}
+        } \\
+        &\quad=\contraction{\fixedimpbm} \cdot
+        \left(  \prod_{\shortindindices\wcols\fixedimpformulaat{\indexedshortindvariables}=0} \hypercoreofat{\selindex,\hybridparam}{\headvariable=1}\right) \\
+        &\quad\quad \left(\frac{1}{2^{\atomorder}}
+        \cdot \contraction{\hlnstatccwith,\hypercoreofat{\hybridparam}{\headvariables}}
+        \right)^{\datanum} \, . \qedhere
+    \end{align*}
+\end{proof}
+
+% For
+We notice that for the event $\groundingof{\impformula}=\fixedimpformula$ to be of non-vanishing probability, we need to have $\headindexof{\hardlegset}=\ones_\hardlegset$ or $\fixedimpformulawith=\onesat{\indvariableof{\impformula}}$.
+With this lemma, we are now show \theref{the:FOLworldToPLdataset}.
+
+\begin{proof}[Proof of \theref{the:FOLworldToPLdataset}]
+    We have
+    \begin{align*}
+        \lnof{\condprobwrtof{\folhlnparameters}{\indexedworldvariables}{\groundingof{\impformula}=\fixedimpformula}}
+        &= \lnof{\contractionof{
+            \bencodingofat{\restfolformulaset}{\headvariables,\worldvariables},\hypercoreofat{\hybridparam}{\headvariables},\fixedimpbm
+        }{\indexedworldvariables}} \\
+        &\quad - \lnof{\contraction{
+            \bencodingofat{\restfolformulaset}{\headvariables,\worldvariables},\hypercoreofat{\hybridparam}{\headvariables},\fixedimpbm
+        }}
+    \end{align*}
+    While the second term is decomposed by \lemref{lem:FOLpartitionfunctionfactorization} we now derive a decomposition of the first term.
+    By \assref{ass:propositionalHeads} and $\groundingof{\impformula}=\fixedimpformula$ we have
+    \begin{align*}
+        &\contractionof{
+            \bencodingofat{\restfolformulaset}{\headvariables,\worldvariables},\hypercoreofat{\hybridparam}{\headvariables},\fixedimpbm
+        }{\indexedworldvariables} \\
+        &\quad =
+        \left(\prod_{\shortindindices\wcols\fixedimpformulaat{\indexedshortindvariables}=0} \hypercoreofat{\selindex,\hybridparam}{\headvariable=1}\right)
+        \cdot \\
+        &\quad\quad \prod_{\datindexin}
+        \contraction{
+            \{\bencodingofat{\groundingofwrt{\extformulaof{\atomenumerator}}{\sampleind}}{\headvariableof{\atomenumerator},\indexedworldvariables} \wcols \atomenumeratorin \}
+            \cup \{\hlnstatccwith,\hypercoreof{\hybridparam}{\headvariables}\}
+        } \, .
+    \end{align*}
+    With \lemref{lem:FOLpartitionfunctionfactorization} we then have
+    \begin{align*}
+        &\frac{1}{\datanum}\lnof{\condprobwrtof{\folhlnparameters}{\indexedworldvariables}{\groundingof{\impformula}=\fixedimpformula}} \\
+        &\quad= \frac{1}{\datanum}\sum_{\datindexin} \lnof{\contraction{
+            \{\bencodingofat{\groundingofwrt{\extformulaof{\atomenumerator}}{\sampleind}}{\headvariableof{\atomenumerator},\indexedworldvariables} \wcols \atomenumeratorin \}
+            \cup \{\hlnstatccwith,\hypercoreof{\hybridparam}{\headvariables}\}
+        }} \\
+        &\quad\quad - \lnof{\contraction{
+            \{\bencodingofat{\groundingofwrt{\extformulaof{\atomenumerator}}{\sampleind}}{\headvariableof{\atomenumerator},\worldvariables} \wcols \atomenumeratorin \}
+            \cup \{\hlnstatccwith,\hypercoreof{\hybridparam}{\headvariables}\}
+        }} - \frac{\lnof{\contraction{\fixedimpbm}}}{\datanum} \\
+        &\quad = \centropyof{\empdistribution}{\probof{\hlnparameters}} - \frac{\lnof{\contraction{\fixedimpbm}}}{\datanum} \, . \qedhere
+    \end{align*}
+\end{proof}
+
+% Independent data investigation
+Let us now investigate, in which cases the \assref{ass:independentTuples} of independent data can be matched.
+
+\begin{example}
+    If the $\impformula$ and $\extformulas$ are predicates applied on variables, and the index tuples $\sampleind$ are pairwise different, then \assref{ass:independentTuples} is met.
+    This is the case, since the values $\groundingof{\extformulaofat{\atomenumerator}{\shortindvariables=\sampleind}}$ are determined by different variables in $\worldvariables$.
+\end{example}
+
+
+
+There are situations, where \assref{ass:independentTuples} is violated.
+\begin{itemize}
+    \item extraction formula being a) conjunctions of predicates: Probability that they are satisfied decreases
+    b) disjunctions of predicates: Probability that they are satisfied increases
+    \item extraction formula coinciding with importance formula: Always satisfied, in this case still boolean
+    \item extraction formulas contradicting each other, more general not independent from each other
+\end{itemize}
+
+%Let us notice, that non-boolean base measures could be treated in a same manner, but several developments in this work, such as cross-entropy decompositions in \charef{cha:probReasoning} would receive further terms.
+
+
+
+\begin{remark}[Approximation by Independent Samples]
+    As argued above, we do not have independent samples in general.
+    As a consequence, we cannot apply \lemref{lem:FOLpartitionfunctionfactorization} to decompose the partition function term of the log-probability into factors to each solution map of $\impformula$.
+    In this case, it might be still benefitial to use the reduction to the likelihood of a HLN, but needs to understand it as a approximation to the true world probability.
+
+    %
+    If the expectations of each sample with respect to the marginalized distributions coincide, the average of empirical distribution also coincides with these (by linearity).
+    When the creation of samples has sufficient mixing properties, the empirical distribution converges to this expectation in the asymptotic case of large numbers of samples.
+
+\end{remark}
+
+
+
+\subsect{Sample Extraction from First-Order Logic Worlds}
+
+We have observed that in certain situations the log-likelihood of a \firstOrderLogic{} world with respect to a \HybridFOLNetwork{} coincides with the likelihood of a data set in a propositional \HybridLogicNetwork{}.
+Let us now investigate the extraction process of these data set.
+%The decomposition of the likelihood suggests the following approach to generate samples from groundings:
+%%We propose the following approach to generate datacores from groundings:
+%\begin{itemize}
+%    \item Define an importance formula $\impformula$, which we decompose in the basis CP decomposition and interpret each slice as the one-hot encoding of the datapoint.
+%    \item Define for $\atomenumeratorin$ extraction formulas $\extformulaof{\atomenumerator}$ generating the atoms $\catvariableof{\atomenumerator}$.
+%    %Predicates along with assignment of variables / constants to its positions.
+%    \item Contract the groundings of each formula $\extformulaof{\atomenumerator}$ with the grounding of $\impformula$ to build a data core.
+%\end{itemize}
+%\subsubsect{Representation by Tensor Networks}
+We model the extraction process as a relation between a tuple of individuals and the extracted world in the factored system of atoms $\catvariableof{\atomenumerator}$.
+
+\begin{definition}
+    \label{def:extractionRelation}
+    Given a \firstOrderLogic{} world $\worldindices$, an importance formula $\impformula$ and extraction formulas $\extformulaof{\catenumerator}$ for $\catenumeratorin$, we define the extraction relation
+    \begin{align*}
+        \extractionrelation \subset \left(\symindstates\right) \otimes \left(\atomstates\right)
+    \end{align*}
+    by
+    \begin{align*}
+        \extractionrelation
+        = \{ (\shortindindices, \shortcatindices)
+        \wcols  \groundingofat{\impformula}{\indexedshortindvariables} = 1 \ncond \uniquantwrtof{\catenumeratorin}{\catindexof{\atomenumerator} = \extformulaofat{\atomenumerator}{\indexedshortindvariables}} \} \, .
+    \end{align*}
+\end{definition}
+
+The encoding of an extraction relation is the tensor
+\begin{align*}
+    \bencodingofat{\extractionrelation}{\shortindvariables,\shortcatvariables} \subset \left(\indspace\right) \otimes \left(\atomspace\right) \,
+\end{align*}
+and drawn in a contraction diagram by
+\begin{center}
+    \input{./PartII/tikz_pics/fol_models/extraction_relation.tex}
+\end{center}
+Here the contraction of $\bencodingof{\impformula}$ with the truth vector $\tbasis$ represents the matching condition posed by $\impformula$ when extracting pairs of individuals.
+
+%% Empirical Distribution
+The empirical distribution of the extracted data is then the normalized contraction leaving only the legs to the extracted atomic formulas open, that is
+\begin{align*}
+    \empdistribution
+    = \frac{
+        \contractionof{\bencodingof{\extractionrelation}}{\shortcatvariables}
+    }{
+        \contraction{\bencodingof{\extractionrelation}}
+    }  \, .
+\end{align*}
+Here the number of extracted data is the denominator
+\begin{align*}
+    \datanum
+    = \contraction{\bencodingof{\extractionrelation}}
+    = \contraction{\bencodingofat{\impformula}{\headvariableof{\impformula},\shortindvariables},\tbasisat{\headvariableof{\impformula}}}\, .
+\end{align*}
+
+We depict this by
+\begin{center}
+    \input{./PartII/tikz_pics/fol_models/empirical_generation.tex}
+\end{center}
+
+%\subsubsect{Decomposition of extracted data}
+
+To connect with the empirical distribution introduced in \secref{sec:empDistribution} we now show how the empirical distribution extracted from the interpretations of the formulas $\impformula,\extformulas$ on a \firstOrderLogic{} world $\worldindices$ can be represented by tensor networks.
+
+First of all, we decompose the importance formula into a basis $\cpformat$ format (see \charef{cha:sparseRepresentation}), that is a decomposition
+\begin{align*}
+    \groundingofat{\impformula}{\shortindvariables}
+    = \contractionof{
+        \{\legcoreofat{\indenumerator}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin \}
+    }{\shortindvariables}
+\end{align*}
+such that all $\legcoreofat{\indenumerator}{\indvariableof{\indenumerator},\datvariable}$ are directed and boolean tensors.
+Here an auxiliary variables $\datvariable$ taking values in $[\datanum]$ is introduced, which we call the data variable, which enumerates the non-vanishing coordinates of $\groundingof{\impformula}$.
+With this decomposition, we can understand the decomposition of $\groundingofat{\impformula}{\shortindvariables}$ as a basis encoding of an term selection map $\secdatamap$ with coordinate maps defined such that
+\begin{align*}
+    \bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable}
+    = \legcoreofat{\indenumerator}{\indvariableof{\indenumerator},\datvariable} \, .
+\end{align*}
+We depict this decomposition by:
+\begin{center}
+    \input{./PartII/tikz_pics/fol_models/impformula_cp.tex}
+\end{center}
+
+Based on these construction, we now provide a tensor network decomposition of the extracted empirical distribution.
+
+\begin{theorem}
+    \label{the:extractionrelationDecomposition}
+    Given a \firstOrderLogic{} world $\worldindices$, an importance formula $\impformula$ and extraction formulas $\extformulaof{\catenumerator}$ for $\catenumeratorin$, we have
+    \begin{align*}
+        \bencodingofat{\extractionrelation}{\shortindvariables,\shortcatvariables} =
+        \contractionof{
+            \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables} \wcols \catenumeratorin\}
+            \cup \{\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+        }{\shortindvariables,\shortcatvariables}
+    \end{align*}
+    and thus
+    \begin{align*}
+        \empdistributionat{\shortcatvariables} =
+        \frac{1}{\datanum}  \contractionof{
+            \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables} \wcols \catenumeratorin\}
+            \cup \{\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+        }{\shortcatvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    To show the first claim, let us choose arbitrary state tuples $\shortindindices$ and $\shortcatindices$.
+    We then have
+    \begin{align*}
+        &\contractionof{
+            \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables} \wcols \catenumeratorin\}
+            \cup \{\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+        }{\indexedshortindvariables,\indexedshortcatvariables} \\
+        & \quad  =  \contraction{
+            \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\indexedcatvariableof{\catenumerator},\indexedshortindvariables} \wcols \catenumeratorin\}
+            \cup \{\bencodingofat{\secdatamap_{\indenumerator}}{\indexedindvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+        } \, .
+    \end{align*}
+    This contraction evaluates to $1$, if and only if for all $\catenumeratorin$ we have $\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables}=1$ and
+    \begin{align*}
+        \contraction{\{\bencodingofat{\secdatamap_{\indenumerator}}{\indexedindvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}}  = 1 \, .
+    \end{align*}
+    The first condition is equal to $\catindexof{\atomenumerator} = \extformulaofat{\atomenumerator}{\indexedshortindvariables}$ for all $\catenumeratorin$ and the second to
+    \begin{align*}
+        \groundingofat{\impformula}{\indexedshortindvariables} = 1 \, .
+    \end{align*}
+    Comparing with the definition of the extraction relation (see \defref{def:extractionRelation}), we notice that these conditions are equal to $(\shortindindices,\shortcatindices)\in\extractionrelation$ and therefore to
+    \begin{align*}
+        \bencodingofat{\extractionrelation}{\indexedshortindvariables,\indexedshortcatvariables} \, .
+    \end{align*}
+    The first claim follows, since $\bencodingof{\extractionrelation}$ is boolean, as is the contraction of the cores $\bencodingof{\groundingof{\extformulaof{\atomenumerator}}}$ with the cores $\bencodingof{\secdatamap_{\indenumerator}}$, which leaves the outgoing variables $\shortcatvariables$ open.
+    The second claim follows from the first using that $\empdistributionat{\shortcatvariables}=\frac{1}{\datanum}\contractionof{\bencodingof{\extractionrelation}}{\shortcatvariables}$.
+\end{proof}
+
+To connect with the representation of empirical distributions based on data cores (see \secref{sec:empDistribution}), we now form data cores by contractions with the grounding of extraction formulas with the cores $\bencodingof{\secdatamap_{\indenumerator}}$ (see \figref{fig:datacoreGeneration}),
+\begin{align*}
+    \datacoreofat{\atomenumerator}{\catvariableof{\catenumerator},\datvariable}
+    = \contractionof{
+        \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables}\}
+        \cup \{ \legcoreofat{\indenumerator}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+    }{\catvariableof{\atomenumerator},\datvariable} \, .
+\end{align*}
+
+% Empirical distribution
+The empirical distribution is then a tensor network of these tensors, as we show next.
+
+\begin{theorem}
+    \label{the:extractionDataCores}
+    We have
+    \begin{align*}
+        \contractionof{\bencodingof{\extractionrelation}}{\shortcatvariables}
+        = \contractionof{\{\datacoreofat{\atomenumerator}{\datvariable,\catvariableof{\atomenumerator}} \wcols \atomenumeratorin\}}{\shortcatvariables}
+    \end{align*}
+    and thus
+    \begin{align*}
+        \empdistributionat{\shortcatvariables}
+        = \frac{1}{\datanum} \contractionof{\{\datacoreofat{\atomenumerator}{\datvariable,\catvariableof{\atomenumerator}}  \wcols \atomenumeratorin\}}{\shortcatvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    By \theref{the:extractionrelationDecomposition} we have
+    \begin{align*}
+        \bencodingofat{\extractionrelation}{\shortindvariables,\shortcatvariables} =
+        \contractionof{
+            \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables} \wcols \catenumeratorin\}
+            \cup \{\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+        }{\shortindvariables,\shortcatvariables} \, .
+    \end{align*}
+    Since $\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable}$ are directed and boolean, they can be copied and separately contracted with each $\groundingof{\extformulaof{\atomenumerator}}$, without changing the contraction.
+    We arrive at
+    \begin{align*}
+        &\bencodingofat{\extractionrelation}{\shortindvariables,\shortcatvariables} \\
+        &\quad = \contractionof{
+            \big\{\contractionof{
+                \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables}\}
+                \cup \{\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+            }{\catvariableof{\catenumerator},\datvariable} \wcols \catenumeratorin \big\}
+        }{\shortindvariables,\shortcatvariables} \\
+        & \quad =  \contractionof{\{\datacoreofat{\atomenumerator}{\datvariable,\catvariableof{\atomenumerator}}  \wcols \atomenumeratorin\}}{\shortcatvariables} \, ,
+    \end{align*}
+    which established the claim.
+\end{proof}
+
+% Efficient contraction: Do also basis decomposition of the extraction query and use efficient contraction!
+%Towards efficient calculation of the data cores, we build a basis CP decomposition of $\groundingof{\impformula}$, where we further demand $\scalarcore=\ones$.
+%This is a collection of basis leg cores $\legcoreof{\fixedimpformula,\indenumerator}$ such that
+%\begin{align*}
+%    \fixedimpformula[\shortindvariablelist]
+%    = \contractionof{ \left\{ \legcoreofat{\fixedimpformula,\indenumerator}{\datvariable,\indvariableof{\indenumerator}} \wcols \indenumeratorin \right\} }{\shortindvariablelist} \, .
+%\end{align*}
+
+% Data enumeration -> To representation
+%We can further utilize any decomposition of $\impformula$ into a directed and binary CP Format to enumerate the datapoints by the slice index $\datindex$. % Approaches like SPARQL directly give us these by solution mappings.
+%Understanding $\impformula$ as a query on the world being the database, such decomposition is given by the set of solution mappings.
+
+
+\begin{figure}[t]
+    \begin{center}
+        \input{./PartII/tikz_pics/fol_models/datacore_generation.tex}
+    \end{center}
+    \caption{Generation of a data core for the variable $\catvariableof{\catenumerator}$ given an extraction formula $\extformulaof{\catenumerator}$ and an importance formula, which grounding is decomposed into a basis CP format with leg vectors $\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable}$.
+    Term variables, which are appearing in the importance formula, but not in the extraction formula $\extformulaof{\catenumerator}$ can be treated trivally by contraction with the trivial tensor (here $\indvariableof{4},\ldots,\indvariableof{\indorder-1})$.
+    }
+    \label{fig:datacoreGeneration}
+\end{figure}
+
+
+% Comment: Exploitation of common structure
+When many atom extraction formulas differ only by a constant, we can replace the constant by an auxiliary term variable.
+The atoms are then the atomizations of this variable (see \secref{sec:categoricalTN}), treated as a categorical variable, with respect to the constant in the extraction query.
+The advantages are that we can avoid the $\bencodingof{}$-formalism and directly model the categorical distributions.
+
+This also enables a batchwise computation of multiple $\sparql$ queries, which differ only in one constant.
+
+
+%\subsect{Design of the Formulas}
+%
+%Most intuitive when labeling individuals by classes.
+%Extraction formulas $\extformulas$ can then be defined by subclasses of the member of a class and relations between objects of different classes. % Koller calls atomic formulas the template attributes
+%We then choose $\formulaset$ as more involved formulas decomposed into connectives acting on these atoms.
+%The importance formula $\impformula$ is then designed based on class memberships to ensure, that the arguments of the formulas are always of specific classes. % Koller specifies to each argument of the attributes a class
+%
+%% Approach
+%We propose to
+%\begin{itemize}
+%    \item Execute an extraction query to get pairs of individuals (the pairDf).
+%    \item Propositionalize the FOL Formulas independently on each tuple taking the individuals as a set of constant and filtering on the possible properties of each individuals.
+%    (Can understand as adding knowledge that most of the relations do not hold)
+%    \item Understand each such generated knowledge base as datapoint and average over them to get the empirical distribution to be fit.
+%    \item Fit a MLN describing the statistical relations of unseen results of the extraction query, based on likelihood maximation.
+%\end{itemize}
+
+
+
+
+\sect{Generation of First-Order Logic Worlds}
+
+\red{
+    So far we have discussed, how Probabilistic Relational Models for \firstOrderLogic{} Knowledge Bases such as Knowledge Graphs can be built by extracting data.
+    Conversely, any binary tensor can be interpreted as a Knowledge Graph.
+    To be more precise, we follow the intuition that the ones coordinates mark possible worlds compatible with the knowledge about a factored system.
+    Each possible world can then be encoded in a subgraph of the Knowledge Graph representing the world.
+%
+    This amounts to an "inversion" of the data generation process described in the subsection above.
+}
+
+In the previous section we have described a way to extract an effective empirical distribution for the likelihood of a \firstOrderLogic{} world given a \HybridFOLNetwork{}.
+We now want to investigate methods to reproduce an empirical distribution based on a constructed \firstOrderLogic{} world.
+
+\begin{definition}[Reproduction of Empirical Distributions]
+    Given an empirical distribution $\empdistribution\in\atomspace$, we say that a triple $(\worldindices,\impformula,\shortextformulas)$ of a \firstOrderLogic{} world $\worldindices$ an importance formula $\impformula$ and extraction formulas $\shortextformulas=\{\extformulaof{\atomenumerator}\,:\,\atomenumeratorin\}$ reproduces $\empdistribution$, when
+    \begin{align*}
+        \empdistribution
+        = \normalizationof{\{\groundingofat{\impformula}{\shortindvariables}\}\cup
+        \{\bencodingofat{\kggroundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables} \wcols \atomenumeratorin\}
+        }{\shortcatvariables} \, .
+    \end{align*}
+\end{definition}
+
+% If \datamap is not known
+Note that for distribution $\probtensor$ to be reproducible, it needs to have rational coordinates. %, since each coordinate can be interpreted as the frequency of the respective world in the data $\datamap$.
+If any only if all coordinates are rational, we find a $\datanum\in\nn$ such that $\imageof{\datanum\cdot\probtensor}\subset\nn$.
+We can then interpret $\datanum$ as the number of samples, and construct a sample selector map by understanding each coordinate of $\datanum\cdot\probtensor$ as the number of appearances of the respective world in the samples.
+
+We show different schemes and give examples on Knowledge Graphs, where we provide examples for importance and extraction formulas by $\sparql$ queries.
+
+
+%\subsect{Example: Generation of Knowledge Graphs} % To generation of \firstOrderLogic{} worlds?
+%
+% Having a directed and binary CP decomposition of $\exformula$, each possible world is encoded by a slice.
+
+
+% Formalization
+%\begin{definition}[Reproduction of Empirical Distributions]
+%    Given an empirical distribution $\empdistribution\in\bigotimes_{\atomenumeratorin}\rr^2$, we say that a tuple $(\kg,\impformula,\{\extformulas\})$ of a Knowledge Graph $\kg$ and queries $\impformula,\extformulaof{\atomenumerator}$ reproduces $\empdistribution$, when
+%    \[\empdistribution = \normalizationof{\{\kggroundingof{\impformula}\}\cup\{\bencodingof{\kggroundingof{\extformulaof{\atomenumerator}}\wcols \atomenumeratorin}\}}{\shortcatvariables} \, .  \]
+%\end{definition}
+
+%
+
+%In a frequentist interpretation we instantiate each world according to the rate $\probtensor(\atomindices)$.
+%This interpretation requires a rounding of the real probabilities by rational numbers.
+
+
+\subsect{Samples by Single Objects}
+
+%\subsect{Samples by single objects}
+
+In the first reproduction scheme we construct datapoints by dedicated objects, which represent a sample, that is we choose a domain $\worlddomain=[\datdim]$.
+
+\begin{theorem}
+    \label{the:reproducingSingleObjects}
+    Let there be an empirical distribution $\empdistribution$ to a sample selector map $\datamap$ (see \defref{def:dataMap}), we construct a world $\worldindices[\selvariable,\indvariable]$ with $\atomorder$ unary predicates by
+    \begin{align*}
+        \worldindices[{\selvariable,\indvariable}]
+        = \sum_{\atomenumeratorin} \sum_{\datindexin \wcols \datamap_{\atomenumerator}(\datindex)=1} \onehotmapofat{\atomenumerator}{\selvariable} \otimes \onehotmapofat{\datindex}{\indvariable} \, .
+    \end{align*}
+    We further choose a trivial importance query, that is
+    \begin{align*}
+        \groundingofat{\impformula}{\indvariable} = \onesat{\indvariable} \, ,
+    \end{align*}
+    and extraction queries coinciding with the unary predicates, that is for $\atomenumeratorin$
+    \begin{align*}
+        \extformulaof{\atomenumerator} = \folpredicateof{\atomenumerator} \, .
+    \end{align*}
+    Then, the triple $(\worldindices,\impformula,\shortextformulas)$ reproduces $\empdistribution$.
+%    reproduces with the trivial importance query and extraction queries coinciding with the predicates the dataset $\datamap$.
+\end{theorem}
+\begin{proof}
+    By \theref{the:extractionDataCores} it is enough to show, that the data cores constructed from the data extraction process coincide with those of $\empdistribution$.
+    We enumerate to this end the non-vanishing coordinates of $\groundingof{\impformula}$ by the data variable $\datvariable$ taking values $\datindexin$, as
+    \begin{align*}
+        \groundingofat{\impformula}{\indvariable=\datindex} = 1 \,
+    \end{align*}
+    and choose
+    \begin{align*}
+        \secdatamap = \identity \, .
+    \end{align*}
+    For arbitrary $\atomenumeratorin$ and $\datindexin$ we now have
+    \begin{align*}
+        \datacoreofat{\atomenumerator}{\catvariableof{\catenumerator},\indexeddatvariable}
+        &= \contractionof{
+            \bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\indvariable},
+            \legcoreofat{0}{\indvariable,\indexeddatvariable}
+        }{\catvariableof{\atomenumerator},\datvariable} \\
+        &= \contractionof{
+            \bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\indvariable},
+            \onehotmapofat{\secdatamap(\datindex)}{\indvariable}
+        }{\catvariableof{\atomenumerator},\indexeddatvariable} \\
+        &= \onehotmapofat{\datamap_\atomenumerator(\datindex)}{\catvariableof{\catenumerator}} \, .
+    \end{align*}
+    This coincides with the slice of the data core of the CP representation of empirical distributions used in \theref{the:empCPRep}.
+    Since the slice and the core was arbitrary, the tensor network representations in \theref{the:empCPRep} and \theref{the:extractionDataCores} are equal and thus the triple $(\worldindices,\impformula,\shortextformulas)$ reproduces $\empdistribution$.
+\end{proof}
+
+
+We now give by the next theorem an example of a Knowledge Graph with $\sparql$ queries reproducing and arbitrary empirical distribution.
+
+\begin{theorem}
+    \label{the:reproducingKGSingelObjects}
+    Let $\empdistribution$ be an empirical distribution to the sample selector $\datamap$.
+    We construct a Knowledge Graph of the resources $\worlddomain = \{s_\datindex \wcols \datindexin\} \cup \{C\} \cup \{C_\atomenumerator \wcols \atomenumeratorin\}$, where $s_{\datindex}$ represent samples and $C_\atomenumerator$ unary predicates, by
+    \begin{align*}
+        \kggroundingof{\rdf}
+        =
+        \sum_{\datindexin}
+        \onehotmapof{\indexinterpretationof{s_\datindex}}{\sindvariable}
+        \otimes \onehotmapof{\indexinterpretationof{\mathrdftype}}{\pindvariable}
+        \otimes \onehotmapof{\indexinterpretationof{C}}{\oindvariable}
+        +
+        \sum_{\datindexin} \sum_{\atomenumeratorin \wcols \datamap_{\atomenumerator}(\datindex)=1}
+        \onehotmapof{\indexinterpretationof{s_\datindex}}{\sindvariable}
+        \otimes \onehotmapof{\indexinterpretationof{\mathrdftype}}{\pindvariable}
+        \otimes \onehotmapof{\indexinterpretationof{C_\atomenumerator}}{\oindvariable} \, .
+    \end{align*}
+    We further define an importance formula by the $\sparql$ query
+    \begin{centeredscript}
+        \impformula = SELECT \{ ?x \} WHERE \{ ?x \quad \rdftype\quad C \, .\}
+    \end{centeredscript}
+    and for each $\atomenumeratorin$ an extraction formula by the query
+    \begin{centeredscript}
+        $\extformulaof{\atomenumerator}$ = SELECT \{ ?x \} WHERE \{ ?x \quad \rdftype \quad $C_\atomenumerator$ \, .\} \, .
+    \end{centeredscript}
+    Then the triple $(\kg,\impformula,\shortextformulas)$ reproduces $\empdistribution$.
+\end{theorem}
+\begin{proof}
+    We show the theorem analogously to \theref{the:reproducingSingleObjects}, with the slide difference in the importance formula.
+    We have for the grounding of $\impformula$ on $\kg$ that
+    \begin{align*}
+        \kggroundingofat{\impformula}{\indvariable} = \sum_{\datindexin}  \onehotmapof{\indexinterpretationof{s_\datindex}}{\indvariable}
+    \end{align*}
+    and enumerate the non-vanishing coordinates by $\datvariable$.
+
+    For each extraction formula we have
+    \begin{align*}
+        \kggroundingofat{\extformulaof{\atomenumerator}}{\indvariable} = \sum_{\datindexin \wcols \datamap_{\atomenumerator}(\datindex)=1} \onehotmapof{\indexinterpretationof{s_\datindex}}{\indvariable} \,.
+    \end{align*}
+    It follows that the data cores used in \theref{the:extractionDataCores} are
+    \begin{align*}
+        \bencodingofat{\datamap_\atomenumerator}{\catvariableof{\atomenumerator},\datindex}
+        = \onehotmapofat{0}{\catvariableof{\atomenumerator}} \otimes \left(\sum_{\datindexin \, : \, \datamap_{\atomenumerator}(\datindex)=0} \onehotmapofat{\datindex}{\datvariable}\right)
+        +\tbasisat{\catvariableof{\atomenumerator}} \otimes \left(\sum_{\datindexin \, : \, \datamap_{\atomenumerator}(\datindex)=1} \onehotmapofat{\datindex}{\datvariable}\right)
+    \end{align*}
+    and they thus coincide with those in the decomposition in \theref{the:empCPRep}.
+    The claim follows therefore with the same argumentation as in the proof of \theref{the:reproducingSingleObjects}.
+\end{proof}
+
+%
+Let us provide some more insights on the construction of the reproducing Knowledge Graph in \theref{the:reproducingKGSingelObjects}.
+By the insertions to the one-hot encodings $\onehotmapof{\indexinterpretationof{s_\datindex}}{\sindvariable} \otimes \onehotmapof{\indexinterpretationof{\mathrdftype}}{\pindvariable} \otimes \onehotmapof{\indexinterpretationof{C}}{\oindvariable}$ we mark each sample representing resource by a class and ensure its appearance as a $\mathrm{owl:NamedIndividual}$ in the graph.
+The insertions $\onehotmapof{\indexinterpretationof{s_\datindex}}{\sindvariable}\otimes \onehotmapof{\indexinterpretationof{\mathrdftype}}{\pindvariable} \otimes \onehotmapof{\indexinterpretationof{C_\atomenumerator}}{\oindvariable}$ on the other side encode the sample selecting map, by inserting exactly the assertions corresponding with the respective sample.
+% 
+In this simple Knowledge Graph, Description Logic is expressive enough to represent any formula $\folexformula$ composed of the formulas $\extformulas$.
+
+%
+%\begin{theorem}
+%    Let there any empirical distribution $\empdistribution\in\bigotimes_{\atomenumeratorin}\rr^2$ and $\datanum\in\nn$ such that $\imageof{\datanum\cdot\empdistribution}\subset\nn$.
+%    Then the tuple $(\kg,\impformula,\{\extformulas\})$ defined by a Knowledge Graph
+%    \begin{align}
+%        \kg =
+%        & \bigcup_{\atomindicesin}  \{(
+%        s_{j, \atomindices} \quad \mathrm{rdf:type} \quad C ) : j \in [\datanum\cdot\empdistribution(\atomindices)] \}  \\
+%        &\bigcup_{\atomindicesin}  \{(
+%        s_{j, \atomindices} \quad \mathrm{rdf:type} \quad C_\atomenumerator
+%        ) : j \in [\datanum\cdot\empdistribution(\atomindices)], \atomenumeratorin , \atomlegindexof{\atomenumerator}=1\}
+%    \end{align}
+%    further an importance formula by the query
+%    \begin{centeredscript}
+%        \impformula = SELECT \{ ?x \} WHERE \{ ?x \quad \rdftype\quad C \, .\}
+%    \end{centeredscript}
+%    and extraction formulas for each $\atomenumeratorin$ by the query
+%    \begin{centeredscript}
+%        $\extformulaof{\atomenumerator}$ = SELECT \{ ?x \} WHERE \{ ?x \quad \rdftype \quad $C_\atomenumerator$ \, .\}
+%    \end{centeredscript}
+%    reproduces $\empdistribution$.
+%\end{theorem}
+%\begin{proof}
+%    With respect to any enumeration of the resources of $\kg$ we have
+%    \begin{align}
+%        \kggroundingof{\impformula}
+%        = \sum_{\atomindicesin} \sum_{j \in [\datanum\cdot\empdistribution(\atomindices)]} \onehotmapof{s_{j, \atomindices} }
+%    \end{align}
+%    and
+%    \begin{align}
+%        \kggroundingof{\extformulaof{\atomenumerator}}
+%        = \sum_{\atomindicesin \, : \, \atomlegindexof{\atomenumerator} = 1} \sum_{j \in [\datanum\cdot\empdistribution(\atomindices)]} \onehotmapof{s_{j, \atomindices} } \, .
+%    \end{align}
+%    Summing over the resource variables of these tensors in a contraction we get
+%    \begin{align}
+%        \contractionof{\{\kggroundingof{\impformula}\}\cup\{\bencodingof{\kggroundingof{\extformulaof{\atomenumerator}}\, : \, \atomenumeratorin}\}}{\shortcatvariables}
+%        & = \sum_{\atomenumeratorin}  \datanum\cdot\empdistribution(\atomindices) \cdot \onehotmapof{\atomindices} = \datanum \cdot \empdistribution
+%    \end{align}
+%    and therefore
+%    \begin{align}
+%        \normalizationof{\{\kggroundingof{\impformula}\}\cup\{\bencodingof{\kggroundingof{\extformulaof{\atomenumerator}}}\, : \, \atomenumeratorin\}}{\shortcatvariables} = \empdistribution \, .
+%    \end{align}
+%\end{proof}
+
+
+
+
+
+
+
+\subsect{Samples by Tuples of Objects}
+
+%\paragraph{TBox:} The categorical variables of the factored system are the classes.
+%We define atomic formulas by the state indicators of each categorical variable as in \secref{sec:categoricalTN}.
+%Each such atomic formula corresponds with a sub-class of the classes.
+%By definition, each collection of state indicators define thus pairwise disjoint subclasses.
+%
+%\paragraph{ABox:} The samples are represented by single individuals in the Knowledge Graph.
+%Their sub-class memberships corresponding with the categorical variables of the system are instantiated whenever the atom is true in the sample.
+%%\subsubsect{Samples by pairs of resources}
+%
+%\begin{remark}[Refinement of the Samples]
+%    We can split each sample node into a pair of individuals.
+%    For this we need to specify, which each class membership will be encoded in a unary or binary attribute of the splitted individuals.
+%    This specification is possible based on the extraction query and the atomic formulas.
+%\end{remark}
+%
+%%
+%Taking any importance query $\impformula$, which has no permutation symmetries, we can instantiate each projection variable for each sample and prepare the links according to the triple patterns.
+%When the atom queries $\extformulas$ have different triple patterns compared with $\impformula$, we instantiate those in cases where $\atomlegindexof{\atomenumerator}=1$.
+
+
+%
+We now instantiate multiple objects for each datapoint, one for each variable of the importance formula, i.e. $\worlddomain=[\datdim]\times[\indorder]$
+Label individuals $s_{\datindex,\indenumerator}$ by data index and variable index.
+
+\begin{lemma}
+    Let there a data map $\datamap$, queries $\impformula,\shortextformulas$ and a \firstOrderLogic{} world containing objects $s_{\datindex,\indenumerator}$ for $\datindexin$ and $\indenumeratorin$
+    If
+    \begin{align*}
+        \kggroundingof{\impformula}
+        = \sum_{\datindexin} \bigotimes_{\indenumeratorin} \onehotmapofat{\indexinterpretationof{s_{\datindex,\indenumerator}}}{\indvariableof{\indenumerator}}
+    \end{align*}
+    and for any $\atomenumeratorin$
+    \begin{align*}
+        \kggroundingof{\extformulaof{\atomenumerator}}
+        = \sum_{\datindex : \datamap_{\atomenumerator}(\datindex)=1} \bigotimes_{\indvariableof{\indenumerator} \in \indvariableof{\extformulaof{\atomenumerator}}}
+        \onehotmapofat{\indexinterpretationof{s_{\datindex,\indenumerator}}}{\indvariableof{\indenumerator}} \, .
+    \end{align*}
+%    \[ \kggroundingof{\extformulaof{\atomenumerator}}
+%    = \sum_{\datindex : \datamap^{\atomenumerator}(\datindex)=1} \bigotimes_{\indenumerator \in \extformulaof{\atomenumerator}} \onehotmapof{\datindex,\indenumerator} \, . \]
+    Then the tuple $(\kg,\impformula,\{\extformulas\})$ reproduces $\empdistribution$.
+\end{lemma}
+\begin{proof}
+    We notice that the grounding of the importance formula is in a basis CP format, since by assumption
+    \begin{align*}
+        \kggroundingof{\impformula}
+        = \sum_{\datindexin} \bigotimes_{\indenumeratorin} \onehotmapofat{\indexinterpretationof{s_{\datindex,\indenumerator}}}{\indvariableof{\indenumerator}} \, .
+    \end{align*}
+    We choose $\datvariable$ to enumerate the non-vanishing entries and get a term selecting map
+    \begin{align*}
+        \secdatamap_{\indenumerator}(\datindex) = \indexinterpretationof{s_{\datindex,\indenumerator}} \, .
+    \end{align*}
+    From this we have
+    \begin{align*}
+        \contractionof{
+            \{\bencodingofat{\kggroundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\atomenumerator},\indvariableof{\extformulaof{\atomenumerator}}}\} \cup
+            \{\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable} \, : \, \indenumeratorin\}
+        }{\catvariableof{\catenumerator},\datvariable}
+        = \bencodingofat{\datamap_{\atomenumerator}}{\catvariableof{\catenumerator},\datvariable}
+    \end{align*}
+    and the claim follows with the same argumentation as in the proof of \theref{the:reproducingSingleObjects}.
+\end{proof}
+
+
+%Let us construct a Knowledge Graph
+%\begin{align*}
+%        \kggroundingof{\rdf}
+%        =
+%        \sum_{\datindexin}\sum_{\indenumeratorin}
+%        \onehotmapof{\indexinterpretationof{s_{\datindex,\indenumerator}}}{\sindvariable}
+%        \otimes \onehotmapof{\indexinterpretationof{\mathrdftype}}{\pindvariable}
+%        \otimes \onehotmapof{\indexinterpretationof{C}}{\oindvariable}
+%        +
+%        \sum_{\datindexin} \sum_{\atomenumeratorin \, : \, \datamap_{\atomenumerator}(\datindex)=1} \sum_{\indvariableof{\indenumerator}\in\indvariableof{}}
+%        \onehotmapof{\indexinterpretationof{s_{\datindex,\indenumerator}}}{\sindvariable}
+%        \otimes \onehotmapof{\indexinterpretationof{\mathrdftype}}{\pindvariable}
+%        \otimes \onehotmapof{\indexinterpretationof{C_\atomenumerator}}{\oindvariable} \, .
+%\end{align*}
+%    We further define an importance formula by the $\sparql$ query
+%\begin{centeredscript}
+%        \impformula = SELECT \{ ?x_0 \cdots ?x_{\indorder-1} \} WHERE \{ ?x_0 \quad \rdftype\quad C \, .\}
+%\end{centeredscript}
+%    and for each $\atomenumeratorin$ an extraction formula by the query
+%\begin{centeredscript}
+%        $\extformulaof{\atomenumerator}$ = SELECT \{ ?x \} WHERE \{ ?x \quad \rdftype \quad $C_\atomenumerator$ \, .\} \, .
+%\end{centeredscript}
+%    Then the triple $(\kg,\impformula,\shortextformulas)$ reproduces $\empdistribution$.
+
+
+
+\sect{Discussion}
+
+
+% Probabilistic Relational Models
+Statistical Models are called Probabilistic Relational Models. % (RUSSELL - Chapter Probabilistic Programming).
+Extensions are models that also handle structural uncertainty, i.e. distributions of worlds with varying $\worlddomain$.
+
+% Comparison with network science
+In the emerging area of network science \cite{barabasi_network_2016, giovanni_russo_vito_latora_complex_2017}, statistical models for random graphs are investigated.
+Statistical Models of \firstOrderLogic{} go beyond the typical single edge type perspective of network science.
+
+
+%
+\begin{remark}[Alternative Representation of empirical distributions]
+    So far, we have motivated the representation of empirical distributions based on basis CP decompositions based on data maps.
+    In this section, based on the extraction queries, we have observed that empirical distributions might have more efficient representation formats.
+    In many applications such as the computation of log-likelihoods we can use any representation of the empirical distribution by tensor networks.
+    It is thus not necessary to compute the data cores as above, unless one requires a list of the extracted samples.
+\end{remark}

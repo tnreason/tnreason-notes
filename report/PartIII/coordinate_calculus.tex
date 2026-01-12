@@ -1,0 +1,759 @@
+\chapter{\chatextcoordinateCalculus} \label{cha:coordinateCalculus}
+
+In the previous chapters, information to states has been stored in coordinates of a tensor.
+To distinguish from other schemes of calculus such as the basis calculus (see \charef{cha:basisCalculus}), we call this scheme of storing and retrieving information the coordinate calculus.
+%We in this chapter investigate in more depth, which operations can be performed based on such tensors and proof the applied properties.
+
+\sect{One-hot Encodings as Basis}
+
+Let us first show, that the one-hot encodings, which we have used to motivate tensor representations, build an orthonormal basis of the respective tensor spaces.
+
+\begin{lemma}%[Basis of tensor spaces]
+    \label{lem:tensorBasisDecomposition}
+    The image of the one-hot encoding map is an orthonormal basis of the tensor space $\facspace$, that is for any $\shortcatindices,\tildeshortcatindices\in\facstates$ we have
+    \begin{align*}
+        \contraction{\onehotmapofat{\shortcatindices}{\shortcatvariables},\onehotmapofat{\tildeshortcatindices}{\shortcatvariables}}
+        = \deltaof{\shortcatindices,\tildeshortcatindices}
+        \coloneqq
+        \begin{cases}
+            1 & \ifspace \shortcatindices=\tildeshortcatindices \\
+            0 & \text{else}
+        \end{cases} \, .
+    \end{align*}
+    Any element $\hypercore\in\facspace$ has a decomposition
+    \begin{align*}
+        \hypercoreat{\shortcatvariables}
+        = \sum_{\shortcatindicesin} \hypercoreat{\indexedshortcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
+    \end{align*}
+    We notice that the coordinates are the weights to the basis elements in the one-hot decomposition.
+\end{lemma}
+\begin{proof}
+    The first claim follows from an elementary decomposition of one-hot encodings and the orthogonality of basis vectors as
+    \begin{align*}
+        \contraction{\onehotmapofat{\shortcatindices}{\shortcatvariables},\onehotmapofat{\tildeshortcatindices}{\shortcatvariables}}
+        = \prod_{\catenumeratorin} \contraction{\onehotmapofat{\catindexof{\atomenumerator}}{\catvariableof{\atomenumerator}},\onehotmapofat{\tildecatindexof{\atomenumerator}}{\catvariableof{\atomenumerator}}}
+        = \prod_{\catenumeratorin} \delta_{\catindexof{\atomenumerator},\tildecatindexof{\atomenumerator}}
+        = \deltaof{\shortcatindices,\tildeshortcatindices} \, .
+    \end{align*}
+    To show the second claim, it is enough to notice that for any $\tildeshortcatindices\in\facstates$ we have
+    \begin{align*}
+        \sum_{\shortcatindicesin} \hypercoreat{\indexedshortcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables=\tildeshortcatindices}
+        &= \sum_{\shortcatindicesin} \hypercoreat{\indexedshortcatvariables} \cdot \deltaof{\shortcatindices,\tildeshortcatindices} \\
+        &=   \hypercoreat{\shortcatvariables=\tildeshortcatindices} \, . \qedhere
+    \end{align*}
+\end{proof}
+
+Any tensor can be understood as a coordinate encoding of a real-valued function, as we define next.
+
+\begin{definition}\label{def:coordinateEncoding}
+    Given any real-valued function
+    \begin{align*}
+        \exfunction \defcols \facstates \rightarrow \rr
+    \end{align*}
+    we define the coordinate encoding by
+    \begin{align*}
+        \cencodingofat{\exfunction}{\shortcatvariables}
+        = \sum_{\shortcatindicesin} \exfunctionat{\shortcatindices} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
+    \end{align*}
+\end{definition}
+
+In \parref{par:one} and \parref{par:two} we did not distinguish between a real-valued function $\exfunction$ and its coordinate encoding $\hypercoreof{\exfunction}$, in order to abbreviate notation.
+Based on coordinate encodings, we now show, that function evaluation can be performed by contractions.
+
+\begin{theorem}[Function evaluation in Coordinate Calculus]
+    \label{the:coordinateCalculus}
+    Given any real-valued function
+    \begin{align*}
+        \exfunction \defcols \facstates \rightarrow \rr
+    \end{align*}
+    and any input state $\shortcatindicesin$, we have
+    \begin{align*}
+        \exfunctionat{\shortcatindices}
+        = \contraction{\cencodingofat{\exfunction}{\shortcatvariables},\onehotmapofat{\shortcatindices}{\shortcatvariables}} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We use the decomposition in \lemref{lem:tensorBasisDecomposition} and have by linearity of contractions for any index tuple $\shortcatindices\in\facstates$
+    \begin{align*}
+        \contraction{\cencodingofat{\exfunction}{\shortcatvariables},\onehotmapofat{\shortcatindices}{\shortcatvariables}}
+        & = \sum_{\tildeshortcatindices\in\facstates}
+        \cencodingofat{\exfunction}{\shortcatvariables=\tildeshortcatindices}
+        \cdot \contraction{\onehotmapofat{\tildeshortcatindices}{\shortcatvariables},\onehotmapofat{\shortcatindices}{\shortcatvariables}} \\
+        & = \sum_{\tildeshortcatindices\in\facstates}
+        \exfunctionat{\tildeshortcatindices}
+        \cdot \delta_{\tildeshortcatindices,\shortcatindices} \\
+        & = \exfunctionat{\shortcatindices}
+    \end{align*}
+    where we used that one-hot encodings are orthonormal.
+\end{proof}
+
+% Coordinate Calculus
+Coordinate calculus is the representation of real-valued functions as tensors, from which its evaluations can be retrieved by the scheme of \theref{the:coordinateCalculus}.
+This is in contrast to the basis calculus scheme to be discussed (see \theref{the:basisCalculus}), where the contraction-based evaluations of functions outputs one-hot encodings.
+
+% Retrieval of Coordinates from tensor networks
+Tensors of large orders often admit a decomposition by tensor networks.
+We in the next theorem show, how such a decomposition can be exploited for efficient contractions and in particular coordinate retrieval.
+
+\begin{theorem}
+    \label{the:slicedContractionToCores}
+    Given a tensor network $\tnetof{\graph}$ on a hypergraph $\graph=(\nodes,\edges)$, disjoint subsets $\nodesa,\nodesb\subset\nodes$ and $\catindexofin{\nodesb}$, we have
+    \begin{align*}
+        \contractionof{\tnetof{\graph}}{\catvariableof{\nodesa},\indexedcatvariableof{\nodesb}}
+        = \contractionof{
+            \{\contractionof{\hypercoreof{\edge}}{\catvariableof{\edge/\nodesb},\indexedcatvariableof{\edge\cap\nodesb}} \wcols \edge\in\edges \}
+        }{\catvariableof{\nodesa}} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    By definition of contractions we have for any $\catindexof{\nodesa}$
+    \begin{align*}
+        \contractionof{\tnetof{\graph}}{\indexedcatvariableof{\nodesa},\indexedcatvariableof{\nodesb}}
+        &= \sum_{\catindexof{\nodes/(\nodesa\cup\nodesb)}\in\nodestatesof{\nodes/(\nodesa\cup\nodesb)}} \prod_{\edge\in\edges} \hypercoreofat{\edge}{\indexedcatvariableof{\edge/\nodesb},\indexedcatvariableof{\edge\cap\nodesb}} \\
+        &= \contraction{
+            \{\contraction{\hypercoreof{\edge}}{\catvariableof{\edge/(\nodesa\cup\nodesb)},\indexedcatvariableof{\edge\cap\nodesa},\indexedcatvariableof{\edge\cap\nodesb}} \wcols \edge\in\edges \}
+        } \\
+        &= \contractionof{
+            \{\contraction{\hypercoreof{\edge}}{\catvariableof{\edge/\nodesb},\indexedcatvariableof{\edge\cap\nodesb}} \wcols \edge\in\edges \}
+        }{\indexedcatvariableof{\nodesa}}
+    \end{align*}
+    and the claim follows.
+\end{proof}
+
+% Special case of retrieving single coordinates
+If we retrieve a single coordinate of a tensor, we have the situation $\nodesa=\varnothing$, $\nodesb=\nodes$.
+In that case, \theref{the:slicedContractionToCores} shows, that the coordinate is the product of the coordinates of the cores. % Thus no contraction required!
+
+\sect{Coordinatewise Transforms}\label{sec:coordinatewiseTransforms}
+
+Let us now discuss a scheme to perform transformations of tensors.
+We call them coordinatewise, when the target tensor has the same variables as the input tensors, and each coordinate of the target tensor depends only on the respective coordinates of the input tensors. %Examples for non-coordinatewise transforms are e.g. backward and forward maps
+
+\begin{definition}
+    \label{def:coordinatewiseTransform}
+    Let $\chainingfunction: \parspace \rightarrow \rr$ be a function.
+    Then the coordinatewise transform of tensors $\hypercoreofat{\selindex}{\shortcatvariables}$, where $\selindexin$, under $\exfunction$ is the tensor
+    \begin{align*}
+        \coordinatetrafowrtofat{\chainingfunction}{\hypercoreof{0},\ldots,\hypercoreof{\seldim-1}}{\shortcatvariables}
+    \end{align*}
+    with coordinates
+    \begin{align*}
+        \coordinatetrafowrtofat{\chainingfunction}{\hypercoreof{0},\ldots,\hypercoreof{\seldim-1}}{\indexedshortcatvariables}
+        = \chainingfunctionof{\hypercoreofat{0}{\indexedshortcatvariables},\ldots,\hypercoreofat{\seldim-1}{\indexedshortcatvariables}} \, .
+    \end{align*}
+\end{definition}
+
+% \seldim=1
+Coordinatewise transforms in case of $\seldim=1$ have been indicated by ellipses in the diagrammatic depiction of contractions.
+We will provide a generic tensor network representation in \charef{cha:basisCalculus}, see \theref{the:tensorFunctionComposition}.
+
+
+In the following lemma, we state that coordinatewise transforms can be restricted to slices of tensors, when
+Although this is an obvious fact, this property can tremendously reduce the computational demand of contractions with coordinatewise transforms of tensors.
+
+\begin{lemma}\label{lem:coordinatewisetrafoSliceReduction}
+    For any function $\chainingfunction: \rr \rightarrow \rr$, any tensor $\hypercoreat{\shortcatvariables}$ and index $\catindexof{\variableset}$, where $\variableset\subset[\catorder]$, we have
+    \begin{align*}
+        \coordinatetrafowrtofat{\chainingfunction}{\hypercoreat{\shortcatvariables}}{\catvariableof{[\catorder]/\variableset},\indexedcatvariableof{\variableset}}
+        = \coordinatetrafowrtofat{\chainingfunction}{\catvariableof{[\catorder]/\variableset},\indexedcatvariableof{\variableset}}{\catvariableof{[\catorder]/\variableset}} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    For any state $\catindexof{[\catorder]/\variableset}$ we have that
+    \begin{align*}
+        \coordinatetrafowrtofat{\chainingfunction}{\hypercoreat{\shortcatvariables}}{\indexedcatvariableof{[\catorder]/\variableset},\indexedcatvariableof{\variableset}}
+        &= \chainingfunctionof{\hypercoreat{\indexedshortcatvariables}} \\
+        &= \coordinatetrafowrtofat{\chainingfunction}{\catvariableof{[\catorder]/\variableset},\indexedcatvariableof{\variableset}}{\indexedcatvariableof{[\catorder]/\variableset}} \, . \qedhere
+    \end{align*}
+\end{proof}
+
+
+
+% Examples
+\begin{example}[Hadamard products as coordinatewise transforms]
+    Hadamard products of tensors (see \exaref{exa:hadamard}) are a special way of coordinate calculus, where the transform is the product and thus
+    \begin{align*}
+        \coordinatetrafowrtofat{\cdot\,}{\hypercoreof{0},\ldots,\hypercoreof{\seldim-1}}{\shortcatvariables}
+        = \contractionof{\{\hypercoreofat{\selindex}{\shortcatvariables} \wcols \selindexin \}}{\shortcatvariables} \, .
+    \end{align*}
+    These hadamard products are applied in the effective computation of conjunctions, as we will discuss in more detail in \secref{sec:hybridCalculus}.
+\end{example}
+
+\begin{example}[Exponentiation of energies]
+    In \defref{def:expFamily} we introduced exponential families, based on the exponentiation of energies.
+    For a statistic $\sstat$, a base measure $\basemeasure$ and a canonical parameter $\canparam$ we defined
+    \begin{align*}
+        \stanexpdistof{\canparam} = \frac{
+            \contractionof{\expof{\contractionof{\sencsstat,\canparam}{\shortcatvariables},\basemeasureat{\shortcatvariables}}}{\shortcatvariables}
+        }{
+            \contraction{\expof{\contractionof{\sencsstat,\canparam}{\shortcatvariables},\basemeasureat{\shortcatvariables}}}
+        } \, .
+    \end{align*}
+    Both the nominator and the denominator involve a coordinatewise transform of the energy tensor $\expenergy$ by the exponentiation.
+    \theref{the:expFamilyTensorRep} provided a transform-free contraction expression by basis encodings, which is the central tool of basis calculus (see \charef{cha:basisCalculus}).
+
+    Let us note, that \lemref{lem:coordinatewisetrafoSliceReduction} enables the energy-based answering of conditional queries, as has been shown in \theref{the:energyContractionQueries}.
+\end{example}
+
+
+
+
+\sect{Directed Tensors}
+
+Directionality as defined in \defref{def:directedTensor} is a constraint on the structure of a tensor, namely that the contraction leaving only incoming variables open trivializes the tensor.
+We have motivated such constraints by conditional distributions, see \defref{def:condIndependence}, and referred to Markov Networks (see \defref{def:markovNetwork}) satisfying these by Bayesian Networks (see \defref{def:bayesianNetwork}).
+To support our findings therein, we now discuss in more detail the connection between directed hypergraphs and directed tensors.
+
+\begin{definition}[Directed Hypergraph]
+    A directed hyperedge is a hyperedge, which node set is split into disjoint sets of incoming and outgoing nodes.
+    We say a hypercore $\hypercoreof{\edge}$ decorating a directed hyperedge respects the direction, when it is a conditional probability tensor with respect to the direction of the hyperedge.
+    The hypergraph is acyclic, when there is no nonempty cycle of node tuples $(\node_1,\node_2)$, such that $\node_1$ is an incoming node and $\node_2$ an outgoing node of the same hyperedge.
+\end{definition}
+
+% Multiple Directions possible
+There can be multiple ways to direct a tensor, with an extreme example being Diracs Delta Tensors to be introduced in the next example.
+More general examples are basis encodings of invertible functions.
+
+\begin{example}[Dirac Delta Tensors]\label{exa:diracDeltaTensor}
+    Given a set of variables $\shortcatvariables=\catvariables$ with identical dimension $\catdim$, Diracs Delta Tensor is the element
+    \begin{align*}
+        \dirdeltawith \in \bigotimes_{\catenumeratorin} \rr^{\catdim}
+    \end{align*}
+    with coordinates
+    \begin{align}
+        \dirdeltaofat{[\catorder],\catdim}{\indexedshortcatvariables} =
+        \begin{cases}
+            1 \quad & \ifspace \catindexof{0} = \ldots = \catindexof{\catorder-1} \\
+            0 & \text{else}
+        \end{cases} \, .
+    \end{align}
+    The contractions with respect to subsets $\secnodes\subset[\catorder]$ are
+    \begin{align}
+        \contractionof{\dirdeltaof{[\catorder],\catdim}}{\catvariableof{\secnodes}} =
+        \begin{cases}
+            \catdim & \ifspace \secnodes = \varnothing \\
+            \onesat{\catvariableof{\secnodes}} & \ifspace \cardof{\secnodes} = 1\\
+            \dirdeltaofat{\secnodes,\catdim}{\catvariableof{\secnodes}} & \text{else}
+        \end{cases} \, .
+    \end{align}
+    Thus are directed for any orientation of the respective edge with exactly one incoming variable.
+\end{example}
+
+We can use Diracs Delta Tensors to represent any contraction of a tensor network on a hypergraph by a tensor network on a graph, as we show next.
+
+\begin{lemma}
+    \label{lem:deltification}
+    Let $\graph=(\nodes,\edges)$ be a hypergraph and $\extnet$ a tensor network on $\graph$.
+    We build a graph $\secgraph=(\secnodes,\secedges\cup\Delta^{\graph})$ and a tensor network $\tnetof{\secgraph}$ by % ! See Bethe Cluster Graph definition !
+    \begin{itemize}
+        \item Recolored Edges $\secedges = \{\tilde{\edge} \wcols \edge\in \edges\}$ where $\tilde{\edge} = \{\node^{\edge} \wcols \node\in\edge\}$, which decoration tensor $\hypercoreof{\tilde{\edge}}$ has same coordinates as $\hypercoreof{\edge}$
+        \item Nodes $\secnodes = \bigcup_{\edge\in\edges}\tilde{\edge}$ %$\secnodes = \bigcup_{\edge\in\edges}\{\node^{\edge} \wcols \node\in\edge \}$
+        \item Delta Edges $\Delta^{\graph} =  \big\{ \{\node\} \cup \{\node^{\edge} \wcols \edge\ni\node \} \wcols \node\in\nodes \big\} $ each of which decorated by a delta tensor $\delta^{\{\node^{\edge} \wcols \edge\ni\node \}}$
+    \end{itemize}
+    Then we have
+    \begin{align*}
+        \contractionof{\extnet}{\catvariableof{\nodes}} =  \contractionof{\tnetof{\secgraph}}{\catvariableof{\nodes}}  \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    For any $\catindexof{\nodes}$ we have
+    \begin{align*}
+        \contractionof{\tnetof{\secgraph}}{\indexedcatvariableof{\nodes}}
+        & = \contraction{\{\hypercoreof{\tilde{\edge}}[\catvariableof{\{\node^{\edge} : \node\in\edge\}}] : \edge \in \edges \}\cup
+        \{\delta^{\{\node\} \cup \{\node^{\edge} \wcols \edge\ni\node \}}[\catvariableof{\{\node^{\edge} : \edge\ni\node \}}, \indexedcatvariableof{\node} ]  : \node\in\nodes \}
+        } \\
+        & =  \contraction{\{\hypercoreof{\tilde{\edge}}[\catvariableof{\{\node^{\edge} : \node\in\edge\}} = \catindexof{\{\node : \node\in\edge\}} ] : \edge \in \edges \}
+        } \\
+        & = \contractionof{\extnet}{\indexedcatvariableof{\nodes}} \, ,
+    \end{align*}
+    which establishes the claim.
+\end{proof}
+
+\subsect{Normalization}
+
+Normalized tensors (see \defref{def:normalization}) are directed and directed tensors invariant under normalization wrt their incoming and outgoing variable, as we show next.
+
+\begin{theorem}
+    \label{the:normalizationDirected}
+    For any tensor network $\extnet$ on variables $\nodes$ that can be normalized with respect to $\innodes$ and $\outnodes$, the normalization is directed with $\innodes$ incoming and $\outnodes$ outgoing.
+\end{theorem}
+\begin{proof}
+    We have for any incoming state ${\atomlegindexof{\innodes}\in\bigtimes_{\node\in\innodes}\catdimof{\node}}$ that
+    \begin{align*}
+        \contraction{\normalizationofwrt{\extnet}{\innodes}{\outnodes}, \onehotmapof{\atomlegindexof{\innodes}}}
+        & =  \frac{
+            \contraction{\extnet\cup\{\onehotmapof{\atomlegindexof{\innodes}}\}}
+        }{
+            \contraction{\extnet\cup\{\onehotmapof{\atomlegindexof{\innodes}}\}}
+        } \, .
+    \end{align*}
+    By \defref{def:directedTensor}, $\normalizationofwrt{\extnet}{\outnodes}{\innodes}$ is thus directed.
+\end{proof}
+
+The normalization operation coincides in cases of non-negative tensors with the conditioning of a Markov Network representing a probability distribution.
+
+\subsect{Normalization Equations}
+
+Normalization equations capture certain properties of normalizations of tensors.
+We first show that any normalizable tensor is the contraction of its normalization and an accompanying contraction, which generalizes the Bayes \theref{the:bayes} towards more generic normalizable tensors.
+
+\begin{theorem}[normalization as a Contraction Equation]
+    \label{the:normalizationContractionEQ}
+    For any on $\innodes$ normalizable tensor $\hypercoreat{\catvariableof{\nodes}}$, where $\innodes\dot{\cup}\outnodes=\nodes$, we have
+    \begin{align*}
+        \contractionof{\hypercore}{\catvariableof{\nodes}}
+        = \contractionof{\normalizationofwrt{\hypercore}{\catvariableof{\outnodes}}{\catvariableof{\innodes}},\contractionof{\hypercore}{\catvariableof{\innodes}}}{\catvariableof{\nodes}} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Let us choose indices $\catindexof{\innodes}$ and $\catindexof{\outnodes}$.
+    We have that
+    \begin{align*}
+        %\contractionof{
+        \normalizationofwrt{\hypercore}{\indexedcatvariableof{\innodes}}{\indexedcatvariableof{\outnodes}}
+        %}{\indexedcatvariableof{\innodes},\indexedcatvariableof{\outnodes}}
+        = \frac{
+            \contractionof{\hypercore}{\indexedcatvariableof{\innodes},\indexedcatvariableof{\outnodes}}
+        }{
+            \contractionof{\hypercore}{\indexedcatvariableof{\innodes}}
+        }
+    \end{align*}
+    and therefor
+    \begin{align*}
+        \contractionof{\hypercore}{\indexedcatvariableof{\innodes},\indexedcatvariableof{\outnodes}} =
+        \normalizationofwrt{\hypercore}{\indexedcatvariableof{\innodes}}{\indexedcatvariableof{\outnodes}}
+        \cdot
+        \contractionof{\hypercore}{\indexedcatvariableof{\innodes}}
+    \end{align*}
+    Since the equation holds for arbitrary indices, the claim is established.
+\end{proof}
+
+Based on this property, we now show a generic decomposition scheme of tensors, which generalizes the chain rule of \theref{the:chainRule}.
+
+\begin{theorem}[Generic Chain Rule]
+    \label{the:genericChainRule}
+    For any Tensor $\hypercoreat{\catvariableof{\nodes}}$ and any total order $\prec$ on the nodes $\nodes$ we have % ! CAN DIRECTLY USE [d] when having the order !
+    \begin{align*}
+        \hypercoreat{\catvariableof{\nodes}} =
+        \contractionof{
+            \{\normalizationofwrt{\hypercore}{\catvariableof{\node}}{\catvariableof{\prenodes}}  \, : \nodein \}
+        }{\catvariableof{\nodes}} \, ,
+    \end{align*}
+    provided that the normalizations exist.
+\end{theorem}
+\begin{proof}
+    We apply \theref{the:normalizationContractionEQ} on the tensor
+    \begin{align*}
+        \normalizationofwrt{\hypercore}{
+            \catvariableof{\node},\catvariableof{\afternodes}
+        }{
+            \indexedcatvariableof{\prenodes}
+        } \, ,
+    \end{align*}
+    where $\nodein$ and $\catindexof{\nodes}$ are chosen arbitrarly.
+    For any $\nodein$ we get
+    \begin{align*}
+        \normalizationofwrt{\hypercore}{
+            \catvariableof{\node},\catvariableof{\afternodes}
+        }{
+            \catvariableof{\prenodes}
+        }
+        = \contractionof{
+            \normalizationofwrt{\hypercore}{
+                \catvariableof{\afternodes}
+            }{
+                \catvariableof{\node},\catvariableof{\prenodes}
+            },
+            \normalizationofwrt{\hypercore}{
+                \catvariableof{\node}
+            }{
+                \catvariableof{\prenodes}
+            }
+        }{
+            \catvariableof{\nodes}
+        } \, .
+    \end{align*}
+    Applying this equation iteratively and making use of the commutation of contractions we get for any $\nodein$
+    \begin{align*}
+        \normalizationofwrt{\hypercore}{
+            \catvariableof{\node},\catvariableof{\afternodes}
+        }{
+            \catvariableof{\prenodes}
+        }
+        = \contractionof{
+            \normalizationofwrt{\hypercore}{
+                \catvariableof{\secnode}
+            }{
+                \catvariableof{\{\thirdnode : \thirdnode \prec \secnode, \thirdnode\neq\secnode\}}
+            }
+            \, : \node \prec \secnode
+        }{
+            \catvariableof{\nodes}
+        } \, .
+    \end{align*}
+    With the maximal node $\node$, that is the $\node$, such that no $\secnode\in\nodes$ with $\node\prec\secnode$ and $\node\neq\secnode$ exists, this is the claim.
+\end{proof}
+
+
+\subsect{Contraction of Directed Tensors}
+
+Let us now investigate, which contractions inherit the directionality of the tensors.
+
+%Next we state that specific contraction of conditional probability tensors are still conditional probability tensors.
+
+%\red{Can be extended to single outgoing legs, by using delta tensors at hyperedges.}
+
+%\begin{theorem}
+%	Given a directed acyclic hypergraph, which hyperdedges are decorated by tensor cores respecting the direction.
+%	Then the contractions, where all closed nodes appear exactly once as an incoming node and exactly once as an outgoing node, and where all open nodes appear in single hyperedges, are conditional probability tensors
+%\end{theorem}
+%\begin{proof}
+%	It is enough to show this property on the contraction of two hypercores.
+%	Since the hypergraph is acyclic, the coinciding nodes are all outgoing on the one and incoming to the other hyperedge.
+%	Let the hyperedge with the incoming nodes $\edge_1$ and the one with the outgoing nodes $\edge_2$
+%	We need to show that when further contracting the contraction with trivial tensors on the outgoing and basis tensors on the incoming legs we get $1$.
+%	For any $\catindex$ and $\seccatindex$ this holds since
+
+%	Here we used in the first equality, that $\hypercoreof{\edge_1}$ is a conditional probability tensor and in the second the same property for $\hypercoreof{\edge_2}$.
+%\end{proof}
+
+% Hadamard does not preserve probabilities
+%We need to ass as assumption in \theref{the:conditionalContractionPreservation}, that each node is to at most one hyperedge and to at most one hyperedge outgoing.
+%This is due to the failure of Hadamard products of probability tensors to be probability tensors themself.
+
+
+\begin{theorem}
+    \label{the:conditionalContractionPreservation}
+    Let $\graph=(\nodes,\edges)$ be a directed acyclic hypergraph, such that each node $\node\in\edge$ appears at most in one hyperedge as an outgoing variable and denote $\innodes$ as those nodes, which do not appear as outgoing variables.
+    For any tensor network $\extnet$ respecting the direction of $\graph$ we have that
+    \[ \contractionof{\extnet}{\catvariableof{\innodes}} = \onesat{\catvariableof{\innodes}} \, , \]
+    that is $\contractionof{\extnet}{\catvariableof{\nodes}}$ is a directed tensor with $\innodes$ incoming and $\nodes/\innodes$ outgoing.
+\end{theorem}
+\begin{proof}
+    We show the theorem only for the case of hypergraphs, where variables are appearing at most in two hyperedges.
+    If a hypergraph fails to satisfy this assumption, we apply \lemref{lem:deltification} and add delta tensors copying the variables, which are appearing in multiple tensors, and arrive at a tensor network with nodes appearing in at most two hyperedges.
+
+% Approach: Contracting with ones
+    We show the theorem over induction on the number $n$ of cores.
+
+    \paragraph{$n=1$:} The claim holds trivially, when $\extnet$ consists of a single core.
+
+    \paragraph{$n-1\rightarrow n$:} Let us assume, that the claim holds for graphs with $n-1$ hyperedges and let $\tnetof{\graph}$ be a tensor network with $n$ hyperedges.
+    Since the hypergraph is acyclic, we find an edge $\edge\in\edges$ such that all outgoing nodes of $\edge$ are not appearing as an incoming node in any edge.
+    We then apply \theref{the:splittingContractions} and get
+    \begin{align*}
+        \contractionof{\extnet}{\catvariableof{\innodes}}
+        &= \contractionof{
+            \tnetof{(\nodes,\edges/\{\edge\})} \cup \{\hypercoreofat{\edge}{\catvariableof{\incomingnodes},\catvariableof{\outgoingnodes}}\}
+        }{\catvariableof{\innodes}} \\
+        & = \contractionof{
+            \tnetof{(\nodes,\edges/\{\edge\})} \cup \{\contractionof{\hypercoreof{\edge}}{\catvariableof{\incomingnodes}} \}
+        }{\catvariableof{\innodes}} \\
+        & = \contractionof{
+            \tnetof{(\nodes,\edges/\{\edge\})} \cup \{\onesat{\catvariableof{\incomingnodes}} \}
+        }{\catvariableof{\innodes}} \\
+        & \contractionof{
+            \tnetof{(\nodes,\edges/\{\edge\})} \}
+        }{\catvariableof{\innodes}} \, .
+    \end{align*}
+    We then notice that the hypergraph $(\nodes,\edges/\{\edge\})$ has $n-1$ hyperedges and each node appears at most once as an incoming and at most once as an outgoing node.
+    Thus, we apply the assumption of the induction and get
+    \begin{align*}
+        \contractionof{\extnet}{\catvariableof{\innodes}} = \contractionof{
+            \tnetof{(\nodes,\edges/\{\edge\})} \}
+        }{\catvariableof{\innodes}} = \onesat{\catvariableof{\innodes}} \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+
+\sect{Proof of Hammersley-Clifford Theorem}\label{sec:proofHCTheorem}
+
+Let us now proof the Hammersley-Clifford theorem formulated in \charef{cha:probRepresentation} as \theref{the:condIndMN}.
+Different to the original statement (see \cite{clifford_markov_1971}), we here proof the analogous statement for hypergraphs, where we have to demand the property of clique-capturing defined in \defref{def:ccHypergraph}.
+We start with showing the following Lemmata to be exploited in the proof.
+
+\begin{lemma}
+    \label{the:contractionFactorization}
+    Let $\hypercoreat{\catvariableof{\nodes}}$ be a positive tensor and $\seccatindexof{\nodes}$ an arbitrary index.
+    Then we have
+    \begin{align*}
+        \hypercoreat{\catvariableof{\nodes}}
+        = \contractionof{
+            \big(\contractionof{\hypercore}{\catvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}\big)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \wcols \thirdnodes \subset \secnodes \subset \nodes
+        }{\catvariableof{\nodes}} \, ,
+    \end{align*}
+    where the exponentiation is performed coordinatewise and positivity of $\hypercore$ ensures the well-definedness.
+\end{lemma}
+\begin{proof}
+    It suffices to show, that for an arbitrary index $\catindexof{\nodes}$ be an arbitrary index we have
+    \begin{align*}
+        \hypercoreat{\indexedcatvariableof{\nodes}}
+        = \prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
+        \big(\contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}\big)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \, .
+    \end{align*}
+    We do this by applying a logarithm on the right hand side and grouping the terms by $\thirdnodes$ as
+    \begin{align*}
+        %\lnof{\hypercoreat{\indexedcatvariableof{\nodes}}}
+        & \lnof{\prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
+            \contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}\big)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}}} \\
+        & = \sum_{\thirdnodes\subset\nodes} \lnof{\contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}}
+        \left( \sum_{\secnodes\subset\nodes \wcols \thirdnodes\subset \secnodes} (-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}} \right) \\
+        & =  \sum_{\thirdnodes\subset\nodes} \lnof{\contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}}
+        \left( \sum_{i \in [\cardof{\nodes}-\cardof{\thirdnodes}]}  (-1)^{i}  \binom{\cardof{\nodes}-\cardof{\thirdnodes}}{i}  \right)
+    \end{align*}
+    Now, by the generic binomial theorem we have that for $n\in\nn, n \neq 0$
+    \[ 0 = (1-1)^n = \sum_{i \in [n]}  (-1)^{i}  \binom{n}{i}   \, . \]
+    Therefore, the summands for $\thirdnodes\neq\nodes$ vanish and we have
+    \begin{align*}
+        & \lnof{ \prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
+            \big(\contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}\big)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} } \\
+        & = \lnof{\hypercoreat{\indexedcatvariableof{\nodes}}}
+        \left( \sum_{i \in [0]}  (-1)^{i}  \binom{0}{i}  \right) \\
+        & = \lnof{\hypercoreat{\indexedcatvariableof{\nodes}}} \, .
+    \end{align*}
+    Applying the exponential function on both sides establishes the claim.
+\end{proof}
+
+\begin{lemma}
+    \label{lem:independentContractionFactorization}
+    Let $\hypercore$ be a positive tensor, $\secnodes\subset\nodes$ and arbitrary subset and $\catindexof{\secnodes}$ an arbitrary index.
+    When there are $\nodesa,\nodesb \in\secnodes$, such that
+    \begin{align*}
+        \normalizationofwrt{\hypercore}{\catvariableof{\nodesa,\nodesb}}{\catvariableof{\nodes/\{\nodesa,\nodesb\}}}
+        = \contractionof{
+            \normalizationofwrt{\hypercore}{\catvariableof{\nodesa}}{\catvariableof{\nodes/\{\nodesa,\nodesb\}}},
+            \normalizationofwrt{\hypercore}{\catvariableof{\nodesb}}{\catvariableof{\nodes/\{\nodesa,\nodesb\}}}
+        }{\catvariableof{\secnodes}}
+    \end{align*}
+    then
+    \begin{align*}
+        \prod_{\thirdnodes\subset\secnodes}
+        \left(\contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}\right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} = 1 \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    We abbreviate
+    \[ Z_{\thirdnodes} = \contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}} \, .
+    \]
+    By reorganizing the sum over $\thirdnodes\subset\secnodes$ into  $\thirdnodes\subset\secnodes/\nodesa\cup\nodesb$ we have
+    \begin{align}
+        \label{eq:indContFacProof}
+        \prod_{\thirdnodes\subset\secnodes}
+        \left(
+        Z_{\thirdnodes}
+        \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} =
+        \prod_{\thirdnodes\subset\secnodes/\{\nodesa,\nodesb\}}
+        \left(
+        \frac{
+            Z_{\thirdnodes} \cdot Z_{\thirdnodes\cup\{\nodesa,\nodesb\}}
+        }{
+            Z_{\thirdnodes\cup\{\nodesa\}} \cdot Z_{\thirdnodes\cup\{\nodesb\}}
+        }
+        \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \, .
+    \end{align}
+    From the independence assumption it follows that for any index $\catindex$
+    \begin{align*}
+        & \normalizationofwrt{\hypercore}{
+            \indexedcatvariableof{\nodesa}
+        }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodesa,\nodesb\}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},  \indexedcatvariableof{\nodesb} }
+        \\
+        & \quad =
+        \normalizationofwrt{\hypercore}{
+            \indexedcatvariableof{\nodesa}
+        }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodesa,\nodesb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}} \\
+        & \quad  =
+        \normalizationofwrt{\hypercore}{
+            \indexedcatvariableof{\nodesa}
+        }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodesa,\nodesb\}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},  \catvariableof{\nodesb} = \seccatindexof{\nodesb}}
+    \end{align*}
+    Applying this in each squares bracket term of \eqref{eq:indContFacProof} we get
+    \begin{align*}
+        \frac{
+            Z_{\thirdnodes}
+        }{
+            Z_{\thirdnodes\cup\{\nodesa\}}
+        }
+        & =
+        \frac{
+            \normalizationofwrt{\hypercore}{
+                \indexedcatvariableof{\nodesa}
+            }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodesa,\nodesb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \indexedcatvariableof{\nodesb} }
+        }{
+            \normalizationofwrt{\hypercore}{
+                \catvariableof{\nodesa} =\seccatindexof{\nodesa}
+            }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodesa,\nodesb\}} , \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \indexedcatvariableof{\nodesb}}
+        } \\
+        & =
+        \frac{
+            \normalizationofwrt{\hypercore}{
+                \indexedcatvariableof{\nodesa}
+            }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodesa,\nodesb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \catvariableof{\nodesb} = \seccatindexof{\nodesb}}
+        }{
+            \normalizationofwrt{\hypercore}{
+                \catvariableof{\nodesa} =\seccatindexof{\nodesa}
+            }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodesa,\nodesb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},\catvariableof{\nodesb} = \seccatindexof{\nodesb}}
+        } \\
+        & =
+        \frac{
+            Z_{\thirdnodes\cup\{\nodesb\}}
+        }{
+            Z_{\thirdnodes\cup\{\nodesa,\nodesb\}}
+        } \, .
+    \end{align*}
+    Thus, each factor in \eqref{eq:indContFacProof} is trivial, which establishes the claim.
+\end{proof}
+
+We are finally ready to prove the Hammersley-Clifford \theref{the:condIndMN} based on the Lemmata above.
+
+%\begin{theorem}[\theref{the:condIndMN}]
+%	Let $\probat{\catvariableof{\nodes}}$ be a probability distribution and $\graph$ a clique-capturing hypergraph, such that for $\nodesa$, $\nodesb$, $\nodesc$ we have that $\catvariableof{\nodesa}$ is independent of $\catvariableof{\nodesb}$ conditioned on $\catvariableof{\nodesc}$, when $\nodesc$ separates $\nodesa$ and $\nodesb$ in the hypergraph.
+%	Then there is a Markov Network on $\graph$, which distribution is equal to $\probat{\catvariableof{\nodes}}$.
+%\end{theorem}
+\begin{proof}[Proof of \theref{the:condIndMN}]
+    By \lemref{the:contractionFactorization} we have for any index $\catindexof{\nodes}$
+    \begin{align*}
+        \probat{\indexedcatvariableof{\nodes}} =
+        \prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
+        \left(
+        \probat{\indexedcatvariableof{\thirdnodes},\catvariableof{\nodes/\thirdnodes}=\seccatindexof{\nodes/\thirdnodes}}
+        %	\contractionof{\extnet\cup\{\onehotmapof{\catindexof{\nodes/\thirdnodes}}\}}{\catvariableof{\thirdnodes}}
+        \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}}
+    \end{align*}
+    For any subset $\secnodes\subset\nodes$, which is not contained in a hyperedge, we find $\nodesa,\nodesb \in\secnodes$ such that $\catvariableof{\nodesa}$ is independendent on $\catvariableof{\nodesb}$ conditioned on $\catvariableof{\secnodes/\{\nodesa,\nodesb\}}$.
+    If no such nodes $\nodesa,\nodesb \in\secnodes$ exists, $\secnodes$ would be contained in a hyperedge, since the hypergraph is assumed to be clique-capturing.
+    By \lemref{lem:independentContractionFactorization} we then have
+    \begin{align*}
+        \prod_{\thirdnodes\subset\secnodes}
+        \left(
+        \probat{\indexedcatvariableof{\thirdnodes},\catvariableof{\nodes/\thirdnodes}=\seccatindexof{\nodes/\thirdnodes}}
+        \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} = 1 \, .
+    \end{align*}
+    We label by a function
+    \begin{align*}
+        \alpha: \{\secnodes : \exists\edge\in\edges: \secnodes \subset \edge \} \rightarrow \edges
+    \end{align*}
+    the remaining node subsets by a hyperedge containing the subset.
+    We build the tensor
+    \begin{align*}
+        \hypercoreofat{\edge}{\catvariableof{\edge}} = \prod_{\secnodes \wcols \alpha(\secnodes) = \edge} \prod_{\thirdnodes\subset\secnodes}
+        \left(
+        \probat{\indexedcatvariableof{\thirdnodes},\catvariableof{\nodes/\thirdnodes}=\seccatindexof{\nodes/\thirdnodes}}
+        \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \, .
+    \end{align*}
+    and get, that
+    \begin{align*}
+        \probat{\catvariableof{\nodes}} & = \contractionof{\extnetasset}{\catvariableof{\nodes}} \\
+        & = \normalizationof{\extnetasset}{\catvariableof{\node}} \, .
+    \end{align*}
+    We have thus constructed a Markov Network with trivial partition function, which contraction coincides with the probability distribution.
+\end{proof}
+
+\sect{Differentiation of Contraction}
+
+The structured mean field approaches discussed in \charef{cha:probReasoning} used differentiations of the parametrized tensor networks.
+Let us now develop in more detail, how the contraction of tensor networks with variable cores is differentiated.
+We capture in additional variables $\seccatvariable$ selecting the coordinates of a tensor, which are varied in a differentiation.
+
+\begin{lemma}
+    \label{lem:difMNprob}
+    For any tensor network $\extnet$ with positive $\hypercoreof{\edge}$ we have
+    \begin{align*}
+        \difwrt{\hypercoreofat{\edge}{\seccatvariableof{\edge}}} \extnetdist
+        & = \contractionof{
+            \identityat{\seccatvariableof{\edge},\edgevariables},
+            \frac{\contractionof{\extnet}{\edgevariables}}{\hypercoreofat{\edge}{\edgevariables}},
+            \normalizationofwrt{\extnet}{\catvariableof{\nodes/\edge}}{\edgevariables} }{\seccatvariableof{\edge},\nodevariables} \\
+        & \quad -  \extnetdist \otimes \contractionof{\frac{\contractionof{\extnet}{\seccatvariableof{\edge}}}{\hypercoreofat{\edge}{\seccatvariableof{\edge}}}
+        }{\seccatvariableof{\edge}} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    By multilinearity of tensor network contractions we have
+    \begin{align*}
+        \difwrt{\hypercoreofat{\edge}{\seccatvariableof{\edge}}} \contractionof{\extnet}{\nodevariables}
+        & = \contractionof{\{\identityat{\seccatvariableof{\edge},\edgevariables}\}\cup\{\hypercoreofat{\secedge}{\catvariableof{\secedge}} \wcols \secedge\neq\edge \}}{\seccatvariableof{\edge},\nodevariables}
+    \end{align*}
+    and thus
+    \begin{align*}
+        \difwrt{\hypercoreofat{\edge}{\seccatvariableof{\edge}}} \contraction{\extnet}
+        & = \contractionof{\{\identityat{\seccatvariableof{\edge},\edgevariables}\}\cup\{\hypercoreofat{\secedge}{\catvariableof{\secedge}} \wcols \secedge\neq\edge \}}{\seccatvariableof{\edge}} \, .
+    \end{align*}
+
+    Using both we get
+    \begin{align}
+        \difwrt{\hypercoreofat{\edge}{\seccatvariableof{\edge}}} \extnetdist
+        & = \difwrt{\hypercoreofat{\edge}{\seccatvariableof{\edge}}}  \frac{\contractionof{\extnet}{\nodevariables}}{\contraction{\extnet}} \nonumber \\
+        & = \frac{ \difwrt{\hypercoreofat{\edge}{\seccatvariableof{\edge}}} \contractionof{\extnet}{\nodevariables}}{\contraction{\extnet}}
+        - \frac{ \contractionof{\extnet}{\nodevariables} \difwrt{\hypercoreofat{\edge}{\seccatvariableof{\edge}}} \contraction{\extnet} }{(\contraction{\extnet})^2} \nonumber \\
+        & = \frac{ \contractionof{\{\identityat{\seccatvariableof{\edge},\edgevariables}\}\cup\{\hypercoreofat{\secedge}{\catvariableof{\secedge}} \wcols \secedge\neq\edge \}}{\seccatvariableof{\edge},\nodevariables}}{\contraction{\extnet}} \nonumber \\
+        & \quad\quad - \extnetdist \cdot  \frac{\contractionof{\{\identityat{\seccatvariableof{\edge},\edgevariables}\}\cup\{\hypercoreofat{\secedge}{\catvariableof{\secedge}} \wcols \secedge\neq\edge \}}{\seccatvariableof{\edge}}}{\contraction{\extnet}} \label{eq:differentiatingMNpreresult}
+        % = \contractionof{\{\identityat{\seccatvariableof{\edge},\edgevariables}\}\cup\{\hypercoreofat{\secedge}{\catvariableof{\secedge}} \wcols \secedge\neq\edge \}}{\seccatvariableof{\edge},\nodevariables}
+    \end{align}
+
+    For the first term we get with a normalization equation (see \theref{the:normalizationContractionEQ}) that
+    \begin{align*}
+        \frac{ \contractionof{\{\identityat{\seccatvariableof{\edge},\edgevariables}\}\cup\{\hypercoreofat{\secedge}{\catvariableof{\secedge}} \wcols \secedge\neq\edge \}}{\seccatvariableof{\edge},\nodevariables}}{\contraction{\extnet}}
+        &= \frac{\contractionof{\{\identityat{\seccatvariableof{\edge},\edgevariables}\}\cup\{\hypercoreofat{\secedge}{\catvariableof{\secedge}} \wcols \secedge\in\edges \}}{\seccatvariableof{\edge},\nodevariables}}{\hypercoreofat{\edge}{\edgevariables}  \cdot \contraction{\extnet}} \\
+        &= \frac{
+            \contractionof{\identityat{\seccatvariableof{\edge},\edgevariables},\extnetdist}{\seccatvariableof{\edge},\nodevariables}
+        }{\hypercoreofat{\edge}{\edgevariables}}  \\
+        &= \frac{\contractionof{\identityat{\seccatvariableof{\edge},\edgevariables},
+            \normalizationof{\extnet}{\edgevariables},
+            \normalizationofwrt{\extnet}{\catvariableof{\nodes/\edge}}{\edgevariables}
+        }{\seccatvariableof{\edge},\nodevariables}
+        }{\hypercoreofat{\edge}{\edgevariables}}  \, .
+    \end{align*}
+
+    Analogously, we have
+    \begin{align*}
+        \frac{ \contractionof{\{\identityat{\seccatvariableof{\edge},\edgevariables}\}\cup\{\hypercoreofat{\secedge}{\catvariableof{\secedge}} \wcols \secedge\neq\edge \}}{\seccatvariableof{\edge}}}{\contraction{\extnet}}
+        &= \frac{\contractionof{\identityat{\seccatvariableof{\edge},\edgevariables},
+            \normalizationof{\extnet}{\edgevariables}%,
+        %\normalizationofwrt{\extnet}{\catvariableof{\nodes/\edge}}{\edgevariables}
+        }{\seccatvariableof{\edge}}
+        }{\hypercoreofat{\edge}{\edgevariables}}  \, .
+    \end{align*}
+
+    With \eqref{eq:differentiatingMNpreresult}, we arrive at the claim
+    \begin{align*}
+        \difwrt{\hypercoreofat{\edge}{\seccatvariableof{\edge}}} \extnetdist
+        & = \contractionof{
+            \identityat{\seccatvariableof{\edge},\edgevariables},
+            \frac{\contractionof{\extnet}{\edgevariables}}{\hypercoreofat{\edge}{\edgevariables}},
+            \normalizationofwrt{\extnet}{\catvariableof{\nodes/\edge}}{\edgevariables} }{\seccatvariableof{\edge},\nodevariables} \\
+        & \quad -  \extnetdist \otimes \contractionof{\frac{\contractionof{\extnet}{\seccatvariableof{\edge}}}{\hypercoreofat{\edge}{\seccatvariableof{\edge}}}
+        }{\seccatvariableof{\edge}} \, . \qedhere
+    \end{align*}
+\end{proof}
+
+
+% Could put it into contraction equations?
+\begin{lemma}
+    \label{lem:difMNExpectation}
+    %See Proposition 11.9 in Koller Book.
+    For any function $\exfunction(\hypercoreof{\edge})[\nodevariables]$ we have
+    \begin{align*}
+        \difwrt{\hypercoreofat{\edge}{\seccatvariableof{\edge}}} &
+        \contraction{\extnetdist,\exfunction(\hypercoreof{\edge})[\nodevariables]} \\
+        = &
+        \frac{\normalizationof{\extnet}{\indexedcatvariableof{\edge}}}{\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}}
+        \Big( \contraction{\normalizationofwrt{\extnet}{\catvariableof{\nodes/\edge}}{\indexedcatvariableof{\edge}}, \exfunction(\hypercoreof{\edge})[\nodevariables,\seccatvariableof{\edge}]} \\
+        & \quad \quad \quad \quad \quad - \contraction{\extnetdist, \exfunction(\hypercoreof{\edge})[\nodevariables]}
+        \Big) \\
+        & + \contraction{ \extnetdist
+        \difofwrt{\exfunction(\hypercoreof{\edge})[\nodevariables]}{\hypercoreofat{\edge}{\seccatvariableof{\edge}}}
+        }
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    By product rule of differentiation we have
+    \begin{align*}
+        \difwrt{\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}} \contraction{\extnetdist,\exfunction(\hypercoreof{\edge})[\nodevariables]}
+        & =  \contraction{\difwrt{\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}}\extnetdist,\exfunction(\hypercoreof{\edge})[\nodevariables]} \\
+        & \quad +  \contraction{\extnetdist,\difwrt{\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}}\exfunction(\hypercoreof{\edge})[\nodevariables]}  \, .
+    \end{align*}
+    The claim now follows with the application of \lemref{lem:difMNprob} on the first term.
+\end{proof}
+
+%\sect{Discussion}
+%Representations of linear maps is the typical application of tensors, reason for referring to tensor networks as multilinear algebra.
