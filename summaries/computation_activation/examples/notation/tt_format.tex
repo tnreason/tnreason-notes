@@ -1,14 +1,14 @@
 \begin{example}[The $\ttformat$ format]\label{exa:ttFormat}
-    The Tensor-Train ($\ttformat$) (see \cite{oseledets_tensor-train_2011}) format corresponds in our notation with a hypergraph (see \figref{fig:TTHypergraph})
+    The Tensor-Train ($\ttformat$) (see \cite{oseledets_tensor-train_2011}) format corresponds in our notation to a hypergraph (see \figref{fig:TTHypergraph}) defined by
     \begin{itemize}
-        \item Nodes by $\catvariableof{[\catorder]}$ and hidden variables $\decvariableof{[\catorder-1]}$, each decorated by a dimension $\catdimof{[\catorder]}$ and $\decdimof{[\catorder-1]}$
-        \item Edges by
+        \item Nodes $\catvariableof{[\catorder]}$ and hidden variables $\decvariableof{[\catorder-1]}$, each decorated by a dimension $\catdimof{[\catorder]}$ and $\decdimof{[\catorder-1]}$
+        \item Edges
         \begin{align*}
             \big\{\edgeof{0}=\{\catvariableof{0},\decvariableof{0}\}\big\} \cup
             \big\{\edgeof{\catenumerator}=\{\decvariableof{\catenumerator-1},\catvariableof{\catenumerator},\decvariableof{\catenumerator}\} \wcols \catenumerator\in\{1,\ldots,\catorder-2\}\big\} \cup
             \big\{\edgeof{\catorder-1}=\{\decvariableof{\catorder-2},\catvariableof{\catorder-1}\}\big\}
         \end{align*}
-        each decorated by a tensor of order 3 (respectively 2 for $\catenumerator\in\{0,\seldim-1\}$).
+        each decorated by a tensor of order 3 (respectively 2 for $\catenumerator\in\{0,\catorder-1\}$).
     \end{itemize}
     \begin{figure}
         \begin{center}
@@ -80,7 +80,7 @@
         \end{center}
         \caption{Hypergraph to a $\ttformat$ format.
         a) Node-centric design.
-        b) Corresponding tensor-network on the edges of the hypergraph.}\label{fig:TTHypergraph}
+        b) Corresponding tensor-network on the edges of the hypergraph. \janina{Shouldn't the edges in a) connect two of the I and only one X? And I only goes to d-2 in both?}}\label{fig:TTHypergraph}
     \end{figure}
 
 \end{example}

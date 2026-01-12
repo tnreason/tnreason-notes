@@ -1,12 +1,12 @@
 \begin{example}[The $\cpformat$ format]\label{exa:cpFormat}
-    The Candecomp-Parafac ($\cpformat$ (\cite{hitchcock_expression_1927}) tensor format corresponds in our notation with a hypergraph (see \figref{fig:CPHypergraph})
+    The Candecomp-Parafac ($\cpformat$ (\cite{hitchcock_expression_1927}) tensor format corresponds in our notation to a hypergraph (see \figref{fig:CPHypergraph}) defined by
     \begin{itemize}
-        \item Nodes by $\catvariableof{[\catorder]}$ and a single hidden variable $\decvariable$, decorated by dimensions $\catdimof{[\catorder]}$ and $\decdim$.
-        \item Edges by
-        \begin{align*}
-            \big\{\edgeof{\catenumerator}=\{\catvariableof{\catenumerator},\decvariable\} \wcols \catenumeratorin \big\}
-        \end{align*}
-        each decorated by a matrix $\hypercoreofat{\edgeof{\catenumerator}}{\catvariableof{\catenumerator},\decvariable}$.
+        \item Nodes $\catvariableof{[\catorder]}$ and a single hidden variable $\decvariable$, decorated by dimensions $\catdimof{[\catorder]}$ and $\decdim$, respectively \janina{What is n? Equal to the rank?}
+        \item Edges
+        % \begin{align*}
+            $\big\{\edgeof{\catenumerator}=\{\catvariableof{\catenumerator},\decvariable\} \wcols \catenumeratorin \big\}$
+        % \end{align*}
+        each decorated by a matrix $\hypercoreofat{\edgeof{\catenumerator}}{\catvariableof{\catenumerator},\decvariable}\janina{\in\mathbb{R}^{m\times n}}$.
     \end{itemize}
 
     \begin{figure}

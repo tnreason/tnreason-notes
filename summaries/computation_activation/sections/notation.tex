@@ -50,7 +50,7 @@ We occasionally also allow for variables $\catvariable$ taking values in infinit
 %\end{example}
 
 \begin{example}[Delta Tensor]\label{exa:diracDelta}
-    Given a set of variables $\shortcatvariables=(\catvariables)$, where $\catorder\geq 1$, with identical dimension $\catdim$, the delta tensor is the element
+    Given a tuple of variables $\shortcatvariables=(\catvariables)$ with identical dimension $\catdim$, where $\catorder\geq 1$, the delta tensor is the element
     \begin{align*}
         \dirdeltawith \in \bigotimes_{\catenumeratorin} \rr^{\catdim}
     \end{align*}
@@ -163,7 +163,7 @@ To ease notation, we will often omit the set notation by brackets $\{\cdot\}$. %
               \frac{1}{\prod_{\node\in\outnodes}\catdimof{\node}}\onesat{\catvariableof{\outnodes}} & \text{else}
         \end{cases} \, .
     \end{align*}
-    We say that $\hypercorewithnodes$ is normalized with incoming nodes $\incomingnodes\subset\nodes$, if
+    We say that $\hypercorewithnodes$ is normalized with incoming nodes $\innodes\subset\nodes$, if
     \begin{align*}
         \hypercorewithnodes
         = \normalizationofwrt{\hypercorewithnodes}{\catvariableof{\nodes/\innodes}}{\catvariableof{\innodes}} \, .
