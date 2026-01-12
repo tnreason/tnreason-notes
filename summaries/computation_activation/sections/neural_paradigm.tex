@@ -199,7 +199,7 @@ We now present an efficient inference algorithm based on tensor network contract
                               \outgoingnodes_{0} \cap \incomingnodes_{1} \neq \varnothing
             \right\}
         \end{align*}
-        \State Initialize a message queue $\scheduler=\{(\secsedge,\sedge) \wcols \secsedge \quad\text{has empty incoming nodes} \}]$
+        \State Initialize a message queue $\scheduler=\{(\secsedge,\sedge) \wcols \secsedge \text{ has empty incoming nodes} \}$ 
         \While{$\scheduler$ not empty}
             \State Pop a $(\sedge,\redge)$ pair from $\scheduler$
             \State Update the message
