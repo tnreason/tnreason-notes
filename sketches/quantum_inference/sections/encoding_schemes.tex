@@ -254,6 +254,25 @@ we get the basis encoding state
 \end{align*}
 
 The initial state can be prepared by applying Hadamard gates on all distributed variable qubits and preparing the head variable qubit in the ground state.
+The overlap of two basis encoding states (which share the same head variable) is proportional to the contraction of the corresponding formulas.
+
+\begin{lemma}
+    Let $\formula,\secformula$ be two Boolean formulas on the states of $\shortcatvariables$.
+    Then we have
+    \begin{align*}
+        \contraction{\basqstateofat{\formula}{\shortcatvariables,\headvariable},\basqstateofat{\secexformula}{\shortcatvariables,\headvariable}}
+        = \frac{1}{2^{\catorder}} \contraction{\formulawith,\secformulawith}
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    We have
+    \begin{align*}
+        \contraction{\basqstateofat{\formula}{\shortcatvariables,\headvariable},\basqstateofat{\secexformula}{\shortcatvariables,\headvariable}}
+        &= \frac{1}{2^{\catorder}}
+        \sum_{\shortcatindices\in\shortatomstates} \contraction{\onehotmapofat{\formulaat{\indexedshortcatvariables}}{\headvariable},\onehotmapofat{\secformulaat{\indexedshortcatvariables}}{\headvariable}} \\
+        &= \frac{1}{2^{\catorder}} \contraction{\formulawith,\secformulawith} \, .
+    \end{align*}
+\end{proof}
 
 \subsubsection{Sign encoding}
 
@@ -275,6 +294,27 @@ The initial state can be prepared by applying Hadamard gates on all distributed 
     \frac{1}{\sqrt{2}} \left( \tbasisat{\headvariableof{\outsymbol}} - \fbasisat{\headvariableof{\outsymbol}} \right)
     = \hgateat{\headvariableof{\outsymbol},\headvariableof{\insymbol}} \fbasisat{\headvariableof{\insymbol}} \, ,
 \end{align*}
+
+\begin{lemma}
+    Let $\formula,\secformula$ be two Boolean formulas on the states of $\shortcatvariables$.
+    Then we have
+    \begin{align*}
+        \contraction{\signqstateofat{\formula}{\shortcatvariables,\headvariable},\signqstateofat{\secexformula}{\shortcatvariables,\headvariable}}
+        = \frac{1}{2^{\catorder}} \left(\contraction{\formulawith,\secformulawith}-\contraction{\formulawith,\lnot\secformulawith}\right)
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    We have
+    \begin{align*}
+        \contraction{\signqstateofat{\formula}{\shortcatvariables,\headvariable},\signqstateofat{\secexformula}{\shortcatvariables,\headvariable}}
+        &= \frac{1}{2^{\catorder}}
+        \sum_{\shortcatindices\in\shortatomstates} (-1)^{\formulaat{\indexedshortcatvariables}+\secformulaat{\indexedshortcatvariables}}  \\
+        &= \frac{1}{2^{\catorder}}
+        \sum_{\shortcatindices\in\shortatomstates \wcols \formulaat{\indexedshortcatvariables}=\secformulaat{\indexedshortcatvariables}} 1
+        + \sum_{\shortcatindices\in\shortatomstates \wcols \formulaat{\indexedshortcatvariables}\neq\secformulaat{\indexedshortcatvariables}} (-1) \\
+        &= \frac{1}{2^{\catorder}} \left(\contraction{\formulawith,\secformulawith}-\contraction{\formulawith,\lnot\secformulawith}\right) \, .
+    \end{align*}
+\end{proof}
 
 Limitations:
 \begin{itemize}
