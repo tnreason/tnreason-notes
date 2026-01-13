@@ -88,7 +88,7 @@ Let us now define a more generic decomposition of discrete functions.
         \exfunctionof{\node} \wcols \bigtimes_{\catenumeratorin} \arbsetof{\node^{\insymbol}_\catenumerator} \rightarrow \arbsetof{\node}
         \quad,\quad
         \exfunctionof{\node}(\catindexof{[\catorder]})
-        = \restrictionofto{\secexfunctionof{\edge^\node}
+        = \restrictionofto{\secexfunctionof{\edge_\node}
         \left(
             \bigtimes_{\node\in\incomingnodes}\exfunctionof{\node}(\catindexof{[\catorder]})
         \right)}{\node} \, ,
@@ -122,15 +122,15 @@ Let us now show how decomposition hypergraphs enable the sparse representation o
     \begin{align}
         \label{eq:indHypNeurThm}
         \contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}} \wcols \edge=(\incomingnodes,\outgoingnodes)\in\edges\right\}
-        }{\catvariableof{\nodes/\node^{\insymbol}_{[\atomorder]}},\indexedshortcatvariables}
-        = \bigotimes_{\node\in\nodes/\node^{\insymbol}_{[\atomorder]}} \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \, .
+        }{\catvariableof{\nodes\setexcept{\node^{\insymbol}_{[\atomorder]}}},\indexedshortcatvariables}
+        = \bigotimes_{\node\in\nodes\setexcept{\node^{\insymbol}_{[\atomorder]}}} \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \, .
     \end{align}
 
-    $\cardof{\edges}=1$: If there is a single edge $\edge(\incomingnodes,\outgoingnodes)$ in $\edges$, we have $\shortcatvariables=\catvariableof{\incomingnodes}$ and $\nodes/\node^{\insymbol}_{[\atomorder]}=\outgoingnodes$.
+    $\cardof{\edges}=1$: If there is a single edge $\edge=(\incomingnodes,\outgoingnodes)$ in $\edges$, we have $\shortcatvariables=\catvariableof{\incomingnodes}$ and $\nodes\setexcept{\node^{\insymbol}_{[\atomorder]}}=\outgoingnodes$.
     In this case \eqref{eq:indHypNeurThm} holds since
     \begin{align*}
         \bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\outgoingnodes},\indexedcatvariableof{\incomingnodes}}
-        = \bigotimes_{\node\in\nodes/\node^{\insymbol}_{[\atomorder]}} \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \, .
+        = \bigotimes_{\node\in\nodes\setexcept{\node^{\insymbol}_{[\atomorder]}}} \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \, .
     \end{align*}
 
     $(\cardof{\edges}=n)\Rightarrow(\cardof{\edges}=n+1)$:
@@ -138,31 +138,31 @@ Let us now show how decomposition hypergraphs enable the sparse representation o
     We find an edge $\secedge=(\incomingnodes,\outgoingnodes)$, such that all nodes in $\incomingnodes$ are only appearing as outgoing nodes in other edges.
     \begin{align*}
         &\contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\edge}} \wcols \edge\in\edges\right\}
-        }{\catvariableof{\nodes/\node^{\insymbol}_{[\atomorder]}},\indexedshortcatvariables} \\
+        }{\catvariableof{\nodes\setexcept{\node^{\insymbol}_{[\atomorder]}}},\indexedshortcatvariables} \\
         &\quad=
         \contractionof{
             \bencodingofat{\secedge}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}},
-            \contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\edge}} \wcols \edge\in\edges/\{\secedge\}\right\}
-            }{\catvariableof{\nodes/\{\node^{\insymbol}_{[\atomorder]}\cup\outgoingnodes\}},\indexedshortcatvariables}
-        }{\catvariableof{\nodes/\node^{\insymbol}_{[\atomorder]}},\indexedshortcatvariables} \\
+            \contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\edge}} \wcols \edge\in\edges\setexcept{\{\secedge\}}\right\}
+            }{\catvariableof{\nodes\setexcept{\{\node^{\insymbol}_{[\atomorder]}\cup\outgoingnodes\}}},\indexedshortcatvariables}
+        }{\catvariableof{\nodes\setexcept{\node^{\insymbol}_{[\atomorder]}}},\indexedshortcatvariables} \\
         &\quad=
         \contractionof{
             \bencodingofat{\secedge}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}},
-            \bigotimes_{\node\in\nodes/\{\node^{\insymbol}_{[\atomorder]}\cup\outgoingnodes\}}
+            \bigotimes_{\node\in\nodes\setexcept{\{\node^{\insymbol}_{[\atomorder]}\cup\outgoingnodes\}}}
             \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}}
-        }{\catvariableof{\nodes/\node^{\insymbol}_{[\atomorder]}},\indexedshortcatvariables} \\
+        }{\catvariableof{\nodes\setexcept{\node^{\insymbol}_{[\atomorder]}}},\indexedshortcatvariables} \\
         &\quad=
-        \bigotimes_{\node\in\nodes/\node^{\insymbol}_{[\atomorder]}}
+        \bigotimes_{\node\in\nodes\setexcept{\node^{\insymbol}_{[\atomorder]}}}
         \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \, .
     \end{align*}
-    Here we used, in the second equation, the induction hypothesis on the subgraph $(\nodes,\edges/\{\secedge\})$ with $\cardof{\edges/\{\secedge\}}=n$ and, in the third equation, a generic contraction property of basis encodings.
+    Here we used, in the second equation, the induction hypothesis on the subgraph $(\nodes,\edges\setexcept{\{\secedge\}})$ with $\cardof{\edges\setexcept{\{\secedge\}}}=n$ and, in the third equation, a generic contraction property of basis encodings.
 
     Thus, \eqref{eq:indHypNeurThm} holds always and we thus have for any $\shortcatindicesin$
     \begin{align*}
         \contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}} \wcols \edge=(\incomingnodes,\outgoingnodes)\in\edges\right\}
         }{\headvariables,\indexedshortcatvariables}
         &= \contractionof{
-            \bigotimes_{\node\in\nodes/\node^{\insymbol}_{[\atomorder]}} \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}}
+            \bigotimes_{\node\in\nodes\setexcept{\node^{\insymbol}_{[\atomorder]}}} \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}}
         }{\headvariables,\shortcatvariables} \\
         & = \bigotimes_{\node\in\node^{\outsymbol}_{[\seldim]}}
         \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \\
