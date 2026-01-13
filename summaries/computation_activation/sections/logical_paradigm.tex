@@ -304,7 +304,7 @@ We further directly reduce the computation of messages to their support and call
     \caption{Constraint Propagation}\label{alg:constraintPropagation}
     \begin{algorithmic}
         \Require Tensor network $\extnet$ on a hypergraph $\graph$
-        \Ensure Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$ containing entailment statements
+        \Ensure Messages $\{\messagewith\wcols(\sedge,\redge)\in\dirovedges\}$ containing entailment statements
         \iosepline
         \State Initialize a queue $\scheduler = \dirovedges$ of message directions
         \State Initialize messages $\messagewith = \onesat{\catvariableof{\sedge\cap\redge}}$ for $(\sedge,\redge)\in\dirovedges$
@@ -322,7 +322,7 @@ We further directly reduce the computation of messages to their support and call
                 \State Add $\scheduler = \scheduler \cup \{(\redge,\secsedge) \wcols (\redge,\secsedge)\in\dirovedges\}$ % Clear?
             \EndIf
         \EndWhile
-        \State \Return Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
+        \State \Return Messages $\{\messagewith\wcols(\sedge,\redge)\in\dirovedges\}$
     \end{algorithmic}
 \end{algorithm}
 

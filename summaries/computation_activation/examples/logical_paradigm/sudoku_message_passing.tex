@@ -255,8 +255,8 @@
         \end{tikzpicture}
     \end{center}
     \caption{
-        The tensor network decomposition of $3$ out of $4\cdot2^2=64$ rules in the $2^2\times2^2$ Sudoku knowledge base (see \exaref{exa:sudokuDecomposition}),  namely to the number $3$ appearing once in the $(0,0)$-square (above), the number $3$ appearing once in the $(0,0)$-row (below left) and a unique number appearing at the $(0,1,0,1)$-position (below right).
-        The evidence of the number $3$ assigned at the position $(0,0,1,0)$ is sketched on by a basis vector $\textcolor{\concolor}{\tbasis}$ on the left side, and the number $2$ assigned at position $(0,1,0,1)$ analogously on the right side.
+        The tensor network decomposition of $3$ out of $4\cdot2^2=64$ rules in the $2^2\times2^2$ Sudoku knowledge base (see \exaref{exa:sudokuDecomposition}),  namely to the number $3$ appearing once in the $(0,0)$-square (top), the number $3$ appearing once in the $(0,0)$-row (bottom left) and a unique number appearing at the $(0,1,0,1)$-position (bottom right).
+        The evidence of the number $3$ already being assigned at the position $(0,0,1,0)$ is sketched by a basis vector $\textcolor{\concolor}{\tbasis}$ on the left side, and the number $2$ assigned at position $(0,1,0,1)$ analogously on the right side.
         During Constraint Propagation \algoref{alg:constraintPropagation} on the hypergraph of Sudoku rules and evidence (see \exaref{exa:sudokuMessagePassing}), this evidence is in three epochs of messages propagated to the constraints by partial entailment steps and imply that $\textcolor{\probcolor}{\catvariableof{0,1,0,0,2}}$ is true, i.e. that at the position $(0,1,0,0)$ the number $3$ needs to be assigned.
         We depict the messages between the cores by dashed lines labeled by $\messagesymbol^{(0,[3])},\messagesymbol^{(1,[5])}$ and $\messagesymbol^{(2,[4])}$ and provide further interpretation in \exaref{exa:sudokuMessagePassing}.
     }\label{fig:contractionPropagationSudoku}

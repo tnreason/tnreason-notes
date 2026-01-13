@@ -59,7 +59,7 @@ Let us demonstrate the utility of \HybridLogicNetworks{} with an example from ac
 
 \input{../examples/hybrid_activation/hln_accounting_rep}
 
-\subsection{Parameter Estimation in \HybridLogicNetworks{}}
+\subsection{Parameter Estimation in \HybridLogicNetworks{}}\label{sec:paramEst}
 
 %% Likelihood maximization
 Let us now briefly discuss how \HybridLogicNetworks{} can be trained on data based on likelihood maximization.
@@ -70,8 +70,15 @@ Given a dataset $\dataset$ consisting of $\datanum$ independent and identically 
 \end{align*}
 We notice that this is $\infty$ if and only if there is a data point $\datindexin$ with
 \begin{align*}
-    \hlnformulaat{\shortcatvariables=\shortcatindices^{\datindex}}=0 \, .
-\end{align*}
+    \hlnformulaat{\shortcatvariables=\shortcatindices^{\datindex}}=0 \, ,
+\end{align*}    
+\janina{where the tuple $(A,y_A)$ denotes the hard logic part of the network, $t=(f_1,\dots,f_L)$, and
+\begin{align*}
+    \hlnformulawith =
+    \left(\bigwedge_{\selindex\in\hardlegset\wcols\headindexof{\selindex}=1} \enumformulaat{\shortcatvariables}\right)
+    \land
+    \left(\bigwedge_{\selindex\in\hardlegset\wcols\headindexof{\selindex}=0} \lnot\enumformulaat{\shortcatvariables}\right).
+\end{align*} (Moved from theorem in next subsection to here.)}
 If this is not the case, we can rewrite the loss using the empirical mean vector $\datameanwith\in\parspace$, which is defined for $\selindexin$ as
 \begin{align*}
     \datameanat{\indexedselvariable}
@@ -87,7 +94,7 @@ Since $\hardparam$ influences only the second term, the best hard parameters can
     \hardlegset = \{\selindex \wcols \datameanat{\indexedselvariable}\in\ozset\} \andspace
     \headindexof{\selindex} = \datameanat{\indexedselvariable} \quad \text{for} \quad \selindex\in\variableset \, .
 \end{align*}
-We further optimize the coordinates $\selindex\in[\seldim]/\hardlegset$ of $\canparamwithin$ alternately by the coordinate descent steps
+We further optimize the coordinates $\selindex\in[\seldim]\setexcept{\hardlegset}$ of $\canparamwithin$ alternately by the coordinate descent steps
 \begin{align*}
     \difofwrt{\lossof{\hybridparam}}{\canparamat{\indexedselvariable}} = 0
     \Leftrightarrow
@@ -122,7 +129,7 @@ This is the computational bottleneck of the algorithm and can be approached by v
         and a tuple $\headindexof{\hardlegset}$ with $\headindexof{\selindex}=\meanparamat{\indexedselvariable}$ for $\selindex\in\hardlegset$.
         \State Set $\canparamwith=\zerosat{\selvariable}$
         \While{Convergence criterion is not met}
-            \ForAll{$\selindex\in[\seldim]/\hardlegset$}
+            \ForAll{$\selindex\in[\seldim]\setexcept{\hardlegset}$}
                 \State Compute
                 \begin{align*}
                     \hypercoreat{\headvariableof{\selindex}}
@@ -165,14 +172,7 @@ Entailment can be generalized to probabilistic models by deciding whether a prop
     if and only if
 %    Given a query formula $\secexformula$, we have that $\probofat{\hlnparameters}{\shortcatvariables}\models~\secexformula$ if and only if
     \begin{align*}
-        \hlnformula \models \secexformula \, ,
-    \end{align*}
-    where %the tuple $(A,y_A)$ denote the hard logic part of the network and
-    \begin{align*}
-        \hlnformulawith =
-        \left(\bigwedge_{\selindex\in\hardlegset\wcols\headindexof{\selindex}=1} \enumformulaat{\shortcatvariables}\right)
-        \land
-        \left(\bigwedge_{\selindex\in\hardlegset\wcols\headindexof{\selindex}=0} \lnot\enumformulaat{\shortcatvariables}\right).
+        \hlnformula \models \secexformula \, .
     \end{align*}
 \end{theorem}
 \begin{proof}

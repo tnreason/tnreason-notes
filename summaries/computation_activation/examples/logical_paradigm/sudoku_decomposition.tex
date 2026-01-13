@@ -122,7 +122,7 @@
         \end{align*}
         We denote the decomposition variables to the position, row, column and square constraints by $\decvariableof{r0,r1,c0,c1,:},\decvariableof{r0,r1,:,:,i},\decvariableof{:,:,c0,c1,i}$ and $\decvariableof{r0,:,c0,:,i}$.
     \end{itemize}
-    Each edge containing a decomposition variable is decorated by a matrix $\hypercoreofat{\catenumerator}{\catvariable,\decvariable}$ corresponding to an core in the $\cpformat$ decomposition of a constraint.
+    Each edge containing a decomposition variable is decorated by a matrix $\hypercoreofat{\catenumerator}{\catvariable,\decvariable}$ corresponding to a core in the $\cpformat$ decomposition of a constraint.
     Here $\catenumerator$ is determined by the tuple $(r0,r1,c0,c1,i)$ and the type of the constraint (for example, for the variable $\catvariableof{(0,1,1,2,1)}$ and the row constraint $\decvariableof{(0,1,:,:,1)}$ we have $\catenumerator=1\cdot n + 2$.
-    We further assign to each edge containing a single variable $\{\catvariableof{(r0,r1,c0,c1,i)}\}$ a either the vector $\tbasisat{\catvariableof{(r0,r1,c0,c1,i)}}$ if $(r0,r1,c0,c1,i)\in \sudokustartevidence$ or the trivial vector $\onesat{\catvariableof{(r0,r1,c0,c1,i)}}$.
+    We further assign to each edge containing a single variable $\{\catvariableof{(r0,r1,c0,c1,i)}\}$ either the vector $\tbasisat{\catvariableof{(r0,r1,c0,c1,i)}}$ if $(r0,r1,c0,c1,i)\in \sudokustartevidence$ or the trivial vector $\onesat{\catvariableof{(r0,r1,c0,c1,i)}}$.
 \end{example}
