@@ -27,7 +27,7 @@ As defined next, distributions $\probtensor$ over a discrete state space can be 
         = 1 \, .
     \end{align*}
     Let $\thirdcatvariable$ be another variable taking values in a possibly infinite set $\mathrm{val}(\thirdcatvariable)$.
-    Then a tensor $\condprobat{\shortcatvariables}{\thirdcatvariable}$ is a family of joint probability distributions if, for any $\thirdcatindex\in\mathrm{val}(\thirdcatvariable)$, the slice $\condprobat{\shortcatvariables}{\thirdcatvariable=\thirdcatindex}$ is a joint probability distribution.
+    Then, a tensor $\condprobat{\shortcatvariables}{\thirdcatvariable}$ is a family of joint probability distributions if, for any $\thirdcatindex\in\mathrm{val}(\thirdcatvariable)$, the slice $\condprobat{\shortcatvariables}{\thirdcatvariable=\thirdcatindex}$ is a joint probability distribution.
 \end{definition}
 
 \input{../examples/probabilistic_paradigm/coin_toss_family}
@@ -39,7 +39,7 @@ A basic inference operation on probability distributions is the computation of m
     For any distribution $\probat{\catvariableof{0},\catvariableof{1}}$ the marginal distribution is given by the contraction (see \defref{def:contraction})
     \begin{align*}
         \probat{\catvariableof{0}}
-        \coloneqq \contractionof{\probat{\catvariableof{0},\catvariableof{1}}}{\catvariableof{0}}
+        \coloneqq \contractionof{\probat{\catvariableof{0},\catvariableof{1}}}{\catvariableof{0}},
     \end{align*}
     which is depicted by the diagram
     \begin{center}
@@ -81,12 +81,12 @@ For $\catindexof{1}\in[\catdimof{1}]$ with $\contraction{\probat{\catvariableof{
 %% Need for decomposition mechanisms: Motivation for independence considerations
 The number of coordinates in a tensor representation of probability distributions is the product
 \begin{align*}
-    \prod_{\catenumeratorin}\catdimof{\catenumerator} \, ,
+    \prod_{\catenumeratorin}\catdimof{\catenumerator} \, .
 \end{align*}
-and therefore scales exponentially in the number of coordinates.
+It therefore scales exponentially in the number of coordinates.
 To find efficient representation schemes of probability distributions by tensor networks, we need to exploit additional properties of the distribution.
 %% Independence
-Independence leads to severe sparsifications of conditional probabilities and is therefore the key assumption to gain sparse decompositions of probability distributions.
+Independence leads to severe sparsifications of conditional probabilities and is hence the key assumption to gain sparse decompositions of probability distributions.
 
 %Markov Networks on hypergraphs $\graph$ are exactly those \CompActNets{}, which are computable with respect to the identity and the graph $\graph$.
 %We here show how the sets of Markov Networks can be characterized by conditional independence assumptions.
@@ -96,32 +96,32 @@ Independence leads to severe sparsifications of conditional probabilities and is
 
 \begin{definition}[Independence]
     \label{def:independence} %% Was {the:independenceProductCriterion} in the report!
-    We say that $\catvariableof{0}$ is independent of $\catvariableof{1}$ with respect to a distribution $\probat{\catvariableof{0},\catvariableof{1}}$, if the distribution is the tensor product of the marginal distributions, that is
+    We say that $\catvariableof{0}$ is independent of $\catvariableof{1}$ with respect to a distribution $\probat{\catvariableof{0},\catvariableof{1}}$ if the distribution is the tensor product of the marginal distributions, that is
     \begin{align*}
         \probat{\catvariableof{0},\catvariableof{1}}
         = \probat{\catvariableof{0}} \otimes \probat{\catvariableof{1}} \, .
     \end{align*}
-    In this case we denote $\independent{\catvariableof{0}}{\catvariableof{1}}$.
+    In this case we write $\independent{\catvariableof{0}}{\catvariableof{1}}$.
 \end{definition}
 
 Thus, independence appears directly as a tensor–product decomposition of probability distribution.
-Using tensor network diagrams we depict this property by
+Using tensor network diagrams, we depict this property by
 \begin{center}
     \input{../tikz_pics/probability_representation/independent_decomposition}
 \end{center}
-Let us notice that the assumption of independence reduces the degrees of freedom from $\exranddim\cdot\secexranddim-1$ to $(\exranddim-1)+(\secexranddim-1)$.
+Note that the assumption of independence reduces the degrees of freedom from $\exranddim\cdot\secexranddim-1$ to $(\exranddim-1)+(\secexranddim-1)$.
 The decomposition into marginal distributions furthermore exploits this reduced freedom and provides an efficient storage.
 Having a joint distribution of multiple variables whose disjoint subsets are independent, we can iteratively apply the decomposition scheme.
 As a result, we can reduce the scaling of the degrees of freedom from exponential to linear by the assumption of independence.
 
 % Weakening of independence to conditional independence
-Independence is, as we observed, a strong assumption, which is often too restrictive.
-Conditional independence instead is a less demanding assumption, which still implies efficient tensor network decomposition schemes.
+As we observed, independence is a strong assumption, which is often too restrictive.
+Less demanding is conditional independence, which still implies efficient tensor network decomposition schemes.
 We introduce conditional independence as independence of variables with respect to conditional distributions.
 
 \begin{definition}[Conditional Independence]
     \label{def:condIndependence} %% Was {the:condIndependenceProductCriterion} in the report!
-    Given a joint distribution of variables $\catvariableof{0}$, $\catvariableof{1}$ and $\catvariableof{2}$, such that $\margprobat{\catvariableof{2}}$ is positive.
+    Assume a joint distribution of variables $\catvariableof{0}$, $\catvariableof{1}$ and $\catvariableof{2}$ such that $\margprobat{\catvariableof{2}}$ is positive.
     We say that $\catvariableof{0}$ is independent of $\catvariableof{1}$ conditioned on $\catvariableof{2}$ if %for any states $\exrandindin,\secexrandindin$ and $\thirdexrandindin$
     \begin{align*}
         \condprobof{\catvariableof{0},\catvariableof{1}}{\catvariableof{2}}
@@ -129,22 +129,22 @@ We introduce conditional independence as independence of variables with respect 
             \condprobof{\catvariableof{0}}{\catvariableof{2}},\condprobof{\catvariableof{1}}{\catvariableof{2}}
         }{\catvariableof{0},\catvariableof{1},\catvariableof{2}} \, .
     \end{align*}
-    In this case we denote $\condindependent{\catvariableof{0}}{\catvariableof{1}}{\catvariableof{2}}$.
+    In this case we write $\condindependent{\catvariableof{0}}{\catvariableof{1}}{\catvariableof{2}}$.
 \end{definition}
 
 Conditional independence stated in \defref{def:condIndependence} has a close connection with independence stated in \defref{def:independence}.
-To be more precise, $\catvariableof{0}$ is independent of $\catvariableof{1}$ conditioned on $\catvariableof{2}$, if and only if $\catvariableof{0}$ is independent of $\catvariableof{1}$ with respect to any slice $\condprobof{\catvariableof{0},\catvariableof{1}}{\indexedcatvariableof{2}}$ of the conditional distribution $\condprobof{\catvariableof{0},\catvariableof{1}}{\catvariableof{2}}$.
+To be more precise, $\catvariableof{0}$ is independent of $\catvariableof{1}$ conditioned on $\catvariableof{2}$ if and only if $\catvariableof{0}$ is independent of $\catvariableof{1}$ with respect to any slice $\condprobof{\catvariableof{0},\catvariableof{1}}{\indexedcatvariableof{2}}$ of the conditional distribution $\condprobof{\catvariableof{0},\catvariableof{1}}{\catvariableof{2}}$.
 
-We can further exploit conditional independence to find tensor network decompositions of probabilities, as we show in the next corollary.
+We can further exploit conditional independence to find tensor network decompositions of probabilities as we show in the next corollary.
 \begin{corollary}% NEEDED?
     \label{cor:secCriterionCondIndepencence}
     Let $\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}$ be a joint distribution.
-    If and only if $\catvariableof{0}$ is independent of $\catvariableof{1}$ conditioned on $\catvariableof{2}$ the distribution satisfies
+    If and only if $\catvariableof{0}$ is independent of $\catvariableof{1}$ conditioned on $\catvariableof{2}$, the distribution satisfies
     \begin{align*}
         \probat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}
         = \contractionof{\condprobof{\catvariableof{0}}{\catvariableof{2}},\condprobof{\catvariableof{1}}{\catvariableof{2}},\margprobat{\catvariableof{2}}}{\catvariableof{0},\catvariableof{1},\catvariableof{2}} \, .
     \end{align*}
-    In a diagrammatic notation this is depicted by
+    In a diagrammatic notation, this is depicted by
     \begin{center}
         \input{../tikz_pics/probability_representation/cond_independence_decomposition}
     \end{center}
@@ -171,7 +171,7 @@ This conditional–independence pattern is the basic local building block that i
 \end{definition}
 
 %% Graphical Models as Tensor Networks: Alternative approach via graph duality
-We define graphical models based on hypergraphs, to establish a direct connection with tensor network decorating the hypergraph.
+We define graphical models based on hypergraphs to establish a direct connection with tensor network decorating the hypergraph.
 In a more canonical way, Markov Networks are instead defined by graphs, where instead of the edges the cliques are decorated by factor tensors (see for example \cite{koller_probabilistic_2009}).
 The probabilistic graphical models are along that alternative dual to tensor networks \cite{robeva_duality_2019,glasser_expressive_2019}.
 
@@ -180,23 +180,23 @@ We can interpret the factors $\hypercorewith$ as activation cores placed on the 
 The global activation tensor (and hence the joint distribution) is obtained by contracting this activation network and normalizing by its partition function.
 
 %
-While we so far have defined Markov Networks as decomposed probability distributions, we now want to derive assumptions on a distribution assuring that such decompositions exist.
+While so far we have defined Markov Networks as decomposed probability distributions, we now want to derive assumptions on a distribution, assuring that such decompositions exist.
 The sets of conditional independencies encoded by a hypergraph are captured by its separation properties, as we define next.
 
 \begin{definition}[Separation of Hypergraph]
     A path in a hypergraph is a sequence of nodes $\node_{\catenumerator}$ for $\catenumeratorin$, such that for any $\catenumerator\in[\atomorder-1]$ we find a hyperedge $\edgein$ such that $(\node_{\catenumerator}, \node_{\catenumerator+1})\subset \edge$.
-    Given disjoint subsets $\nodesa$, $\nodesb$, $\nodesc$ of nodes in a hypergraph $\graph$ we say that $\nodesc$ separates $\nodesa$ and $\nodesb$ with respect to $\graph$, when any path starting at a node in $\nodesa$ and ending in a node in $\nodesb$ contains a node in $\nodesc$.
+    Given disjoint subsets $\nodesa$, $\nodesb$, $\nodesc$ of nodes in a hypergraph $\graph$, we say that $\nodesc$ separates $\nodesa$ and $\nodesb$ with respect to $\graph$ when any path starting at a node in $\nodesa$ and ending in a node in $\nodesb$ contains a node in $\nodesc$.
 \end{definition}
 
-To characterize Markov Networks in terms of conditional independencies we need to further define the property of clique-capturing.
-This property of clique-capturing established a correspondence of hyperedges with maximal cliques in the more canonical graph-based definition of Markov Networks \cite{koller_probabilistic_2009}.
+To characterize Markov Networks in terms of conditional independencies, we need to further define the property of clique-capturing.
+This property establishes a correspondence of hyperedges with maximal cliques in the more canonical graph-based definition of Markov Networks \cite{koller_probabilistic_2009}.
 
 \begin{definition}[Clique-Capturing Hypergraph]
     \label{def:ccHypergraph}
     We call a hypergraph $\graph$ \emph{clique-capturing}, when each subset $\secnodes\subset\nodes$ is contained in a hyperedge, if for any $\nodea,\nodeb\in\secnodes$ there is a hyperedge $\edgein$ with $\nodea,\nodeb\in\edge$.
 \end{definition}
 
-Let us now show a characterization of Markov Networks in terms of conditional independencies.
+We now recall a characterization of Markov Networks in terms of conditional independencies.
 
 % Characterization
 \begin{theorem}[Hammersley-Clifford Factorization Theorem]
@@ -206,7 +206,7 @@ Let us now show a characterization of Markov Networks in terms of conditional in
     \begin{itemize}
         \item[i] The distribution $\probwithnodes$ is representable by a Markov Network on $\graph$, i.e. for each edge $\edgein$ there is a tensor $\hypercoreofat{\edge}{\catvariableof{\edge}}$ such that
         \begin{align*}
-            \probwithnodes = \normalizationof{\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edgein\}}{\nodevariables}
+            \probwithnodes = \normalizationof{\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edgein\}}{\nodevariables} \, .
         \end{align*}
         \item[ii] For any subsets $\nodesa,\nodesb,\nodesc\subset\nodes$ such that $\nodesc$ separates $\nodesa$ from $\nodesb$, we have
         \begin{align*}
@@ -216,13 +216,13 @@ Let us now show a characterization of Markov Networks in terms of conditional in
     %Given a clique-capturing hypergraph $\graph$, the set of positive Markov Networks on the hypergraph coincides with the set of positive probability distributions, such that for each disjoint subsets of variables $\nodesa$, $\nodesb$, $\nodesc$ we have $\catvariableof{\nodesa}$ is independent of $\catvariableof{\nodesb}$ conditioned on $\catvariableof{\nodesc}$, when $\nodesc$ separates $\nodesa$ and $\nodesb$ in the hypergraph. % called d-separation
 \end{theorem}
 \begin{proof}
-    Shown in Appendix~\secref{sec:proofFactorizationTheorems}.
+    This is shown in Appendix~\secref{sec:proofFactorizationTheorems}.
 \end{proof}
 
 By \theref{the:factorizationHammersleyClifford} the conditional independence structure of $\probwithnodes$ determines a global tensor network decomposition of $\probwithnodes$.
 We refer to this correspondence between independence structure and tensor network factorization as the \emph{\independenceMechanism{}}.
-Note, that the assumption of a positive distribution is required (i.e. for all $\shortcatindices$ we have $\probat{\indexedshortcatvariables}>0$).
-The assumption of positivity was however not required in our characterization of independencies and conditional independencies by the existence of corresponding tensor decompositions (see \defref{def:independence} and \defref{def:condIndependence}).
+Note that the assumption of a positive distribution is required (i.e. for all $\shortcatindices$ we have $\probat{\indexedshortcatvariables}>0$).
+The assumption of positivity is however not required in our characterization of independencies and conditional independencies by the existence of corresponding tensor decompositions (see \defref{def:independence} and \defref{def:condIndependence}).
 
 \input{../examples/probabilistic_paradigm/coin_toss_hc.tex}
 
@@ -276,8 +276,8 @@ More generally, such decompositions are provided by the Fisher-Neyman Factorizat
 \end{proof}
 
 %%
-Notice, that the definition of sufficient statistic does not make use of the marginal distribution $\probat{\thirdcatvariable}$.
-We therefore can define sufficient statistics also for families of distributions $\condprobat{\catvariable}{\thirdcatvariable}$, with respect to arbitrary non-degenerate marginal distributions $\probat{\thirdcatvariable}$.
+Note that the definition of sufficient statistic does not make use of the marginal distribution $\probat{\thirdcatvariable}$.
+We therefore can define sufficient statistics also for families of distributions $\condprobat{\catvariable}{\thirdcatvariable}$ with respect to arbitrary non-degenerate marginal distributions $\probat{\thirdcatvariable}$.
 We then use \theref{the:factorizationFisherNeyman} to embed such families in \CompActNets{}.
 
 \begin{corollary}

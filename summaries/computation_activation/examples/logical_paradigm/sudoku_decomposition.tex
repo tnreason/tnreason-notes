@@ -86,7 +86,7 @@
                     \node[anchor=center] (A) at (4,0) {\corelabelsize $\sechypercoreof{1}$};
                     \draw (4,-1)--(4,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{0,0,0,0,1}$};
 
-                    \node[anchor=center] (text) at (6.5,1) {\colorlabelsize $\secdecvariableof{0,0,0,0,:}^{\sudokunum^2\shortminus2}$};
+                    \node[anchor=center] (text) at (6.5,1) {\colorlabelsize $\secdecvariableof{0,0,0,0,:}^{1}$};
                     \draw (5,0) -- (7,0); % node [midway,above] {\colorlabelsize $\secdecvariableof{0,0,0,0,:}^1$};
 
                     \node[anchor=center] (text) at (8,0) {$\hdots$};
@@ -103,7 +103,7 @@
 
             \end{tikzpicture}
         \end{center}
-        \caption{Decomposition of the position constraint $\woneoplus$ at position $(r0,r1,c0,c1)=(0,0,0,0)$ into a) a $\cpformat$ decomposition with hidden variable $\decvariableof{0,0,0,0,:}$.}
+        \caption{Decomposition of the position constraint $\woneoplus$ at position $(r0,r1,c0,c1)=(0,0,0,0)$ into a) a $\cpformat$ decomposition with hidden variable $\decvariableof{0,0,0,0,:}$ and b) a $\ttformat$ decomposition with $d-1$ hidden variables $\decvariableof{0,0,0,0,:}^k, k\in[d-1]$.}
         \label{fig:sudokuDecomposition}
     \end{figure}
 

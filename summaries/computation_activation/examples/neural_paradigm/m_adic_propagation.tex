@@ -1,14 +1,14 @@
 \begin{example}[Continuation of \exaref{exa:madicRepresentation}]%[Computation of the sum of $\catdim$-adic integers]
     \label{exa:madicPropagation}
-    Let us now show how \algoref{alg:directedBeliefPropagation} can be exploited to compute by an efficient message passing algorithm the digits of the $\catdim$-adic sum.
+    Let us now show how \algoref{alg:directedBeliefPropagation} can be exploited to compute by an efficient message passing algorithm for the digits of the $\catdim$-adic sum.
     Given two numbers in $\catdim$-adic representation by the tuples $\shortcatindices$ and $\tildecatindexof{[\catorder]}$, we add the hyperedges with empty incoming nodes and single outgoing node
     \begin{align*}
         \bigcup_{\catenumeratorin}\left\{(\varnothing,\{\catvariableof{\catenumerator}\}),(\varnothing,\{\tildecatvariableof{\catenumerator}\})\right\}
     \end{align*}
-    to the hypergraph of \exaref{exa:madicRepresentation} and decorate them by the digit one-hot encodings $\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}$ and $\onehotmapofat{\tildecatindexof{\catenumerator}}{\tildecatvariableof{\catenumerator}}$ (see \figref{fig:propagationMary}.
+    to the hypergraph of \exaref{exa:madicRepresentation} and decorate them by the digit one-hot encodings $\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}$ and $\onehotmapofat{\tildecatindexof{\catenumerator}}{\tildecatvariableof{\catenumerator}}$ (see \figref{fig:propagationMary}).
     We then apply the Directed Belief Propagation \algoref{alg:directedBeliefPropagation}.
-    The initial messages queue consists then in the messages from the digit encoding.
-    As sketched in \figref{fig:propagationMary} to each digit there are three messages (with the exception of the last being two), which can be scheduled in consecutive epochs $\messagesymbol^{(\catenumerator,[3])}$.
+    The initial messages queue then consists of the messages from the digit encoding.
+    As sketched in \figref{fig:propagationMary}, to each digit there are three messages (with the exception of the first being two), which can be scheduled in consecutive epochs $\messagesymbol^{(\catenumerator,[3])}$.
     %, namely
 %    \begin{align*}
 %        \scheduler =&
