@@ -1,12 +1,12 @@
 \section{Foundations}\label{sec:notation}
 
-In this section, we introduce our hypergraph-based tensor network formalism and define the architecture of \CompActNets{} based on this formalism.
+In this section, we introduce the central hypergraph-based tensor network formalism and define the architecture of \CompActNets{} based on this formalism.
 
 \subsection{Tensors}
 \label{sec:tensors}
 
 Tensors are multiway arrays and a generalization of vectors and matrices to higher orders.
-We will first provide a formal definition as real maps from index sets enumerating the coordinates of vectors, matrices, and higher-order tensors.
+We first provide a formal definition as real maps from index sets enumerating the coordinates of vectors, matrices, and higher-order tensors.
 
 \begin{definition}[Tensor]
     \label{def:tensor}
@@ -29,13 +29,13 @@ We will first provide a formal definition as real maps from index sets enumerati
 \end{definition}
 
 We introduced tensors here in a non-canonical way based on categorical variables assigned to their axes.
-While this may look like syntactic sugar at this point, it will allow us to define contractions without further specification of axes, based on comparisons of shared variables.
+While this may look like syntactic sugar at this point, it allows us to define contractions without further specification of axes, based on comparisons of shared variables.
 %\subsection{Continuous Variables} % Needed for families of distributions
 We occasionally also allow for variables $\catvariable$ taking values in infinite sets such as $\rr$, in which case we denote the set of values to a variable by $\valof{\catvariable}$.
 %Contractions are then performed by generic integrations with respect to e.g. the Lebesgue measure -> But not needed!
 
 %This notation of tensors opposed to its notation through ordered indices as common in tensor calculus, facilitates writing down contractions along individual legs and other operations.
-%Occasionally, when the categorical variables of a tensor are clear from the context, we will omit the notation of the variables. %further abbreviate $\hypercoreat{\catvariables}$ by $\hypercore$.
+%Occasionally, when the categorical variables of a tensor are clear from the context, we omit the notation of the variables. %further abbreviate $\hypercoreat{\catvariables}$ by $\hypercore$.
 %\begin{example}[Trivial Tensor]
 %    \label{exa:trivialTensor}
 %    \alex{Maybe directly do the Dirac tensor (special case of $d=1$ is the trivial tensor) - explains the black dots.}
@@ -62,15 +62,15 @@ We occasionally also allow for variables $\catvariable$ taking values in infinit
             0 & \text{else}
         \end{cases} \, .
     \end{align}
-    We will depict this tensor by black dots, which will sometimes appear as auxiliary elements in tensor network diagrams (see e.g. \figref{fig:contraction}).
+    We depict this tensor by black dots, which sometimes appears as auxiliary elements in tensor network diagrams (see e.g. \figref{fig:contraction}).
     For $\catorder=1$, the delta tensor is the trivial vector, whose coordinates are constantly $1$, which we denote by $\onesat{\catvariable}$.
 \end{example}
 
 \subsection{Tensor Networks and Contractions}
 
 % Diagrammatic representation in factor graphs
-We will use a standard visualization of tensors (dating back to \cite{penrose_spinors_1987}) by blocks with lines depicting the axes of the tensor.
-In addition, we assign to each axis of the tensor the corresponding variable $\catvariableof{\atomenumerator}$:
+We use a standard visualization of tensors (dating back to \cite{penrose_spinors_1987}) by blocks with lines depicting the axes of the tensor.
+Additionally, we assign to each axis of the tensor the corresponding variable $\catvariableof{\atomenumerator}$:
 \begin{center}
     \input{../tikz_pics/notation_basic_concepts/hypercore}
 \end{center}
@@ -82,10 +82,10 @@ Drawing on the association of variables with nodes and of tensors with hyperedge
     and hyperedges $\edge\in\edges$ decorated by core tensors
     \[ \hypercoreofat{\edge}{\catvariableof{\edge}} \in \bigotimes_{\node\in\edge}\rr^{\catdimof{\node}} \, , \]
     where we denote by $\catvariableof{\edge}$ the set of categorical variables $\catvariableof{\node}$ with $\node\in\edge$.
-    Then we call the set
+    Then, we call the set
     \[ \tnetofat{\graph}{\catvariableof{\nodes}} = \{\hypercoreofat{\edge}{\catvariableof{\edge}}  \wcols \edge\in\edges\} \]
     the tensor network of the decorated hypergraph $\graph$.
-    The set of tensor networks on $\graph$, such that all tensors have non-negative coordinates, is denoted by $\tnsetof{\graph}$.
+    The set of tensor networks on $\graph$ such that all tensors have non-negative coordinates is denoted by $\tnsetof{\graph}$.
 \end{definition}
 
 As examples we now present the $\cpformat$ and the $\ttformat$ formats in our hypergraph notation.
@@ -117,7 +117,7 @@ Let us now exploit our graphical approach to tensor networks in the definition o
 % Open variables
 %We here defined contractions formally by only specifying the open variables, where the connectivity of the tensors is clear from the shared variables.
 When an open variable $\catvariable$ does not appear in any tensor in a contraction, we define the contraction as a tensor product with the trivial tensor $\onesat{\catvariable}$.
-To ease notation, we will often omit the set notation by brackets $\{\cdot\}$. % and specify the tensors to be contracted with the delimiter "," (see e.g. \exaref{exa:tensorProduct}).
+To ease notation, we often omit the set notation by brackets $\{\cdot\}$. % and specify the tensors to be contracted with the delimiter "," (see e.g. \exaref{exa:tensorProduct}).
 
 \begin{figure}
     \begin{center}
@@ -136,7 +136,7 @@ To ease notation, we will often omit the set notation by brackets $\{\cdot\}$. %
     \begin{align*}
         \hypercoreat{\shortcatvariables} \in \facspace  \andspace \sechypercoreat{\secshortcatvariables} \in \secfacspace
     \end{align*}
-    with different categorical variables assigned to its axes.
+    with different categorical variables assigned to their axes.
     Then their tensor product is the map
     \begin{align*}
         \contractionof{\hypercoreat{\shortcatvariables},\sechypercoreat{\secshortcatvariables}}{\shortcatvariables,\secshortcatvariables}
@@ -151,6 +151,8 @@ To ease notation, we will often omit the set notation by brackets $\{\cdot\}$. %
 \end{example}
 
 \subsection{Normalizations}
+
+\martin{ADD INTRO SENTENCE}
 
 %% Directionality by Normalization
 \begin{definition}
@@ -215,7 +217,7 @@ We now use one-hot encodings to encode functions between state sets.
         \statesetfunction\defcols\facstates \rightarrow  \headstates
     \end{align*}
     between their state sets.
-    Then the basis encoding of $\statesetfunction$ is a tensor
+    Then, the basis encoding of $\statesetfunction$ is a tensor
     \begin{align*}
         \bencodingofat{\statesetfunction}{\headvariables,\shortcatvariables}
         \in \left(\secfacspace\right) \otimes \left(\facspace\right)
@@ -233,23 +235,23 @@ Basis encodings are normalized tensors and are thus depicted as decorations of d
 \end{center}
 
 % Image enumeration
-We further generalize basis encodings to arbitrary functions between finite sets, by the use of image enumeration maps.
-Given an arbitrary set $\arbset$ we say a map
+We further generalize basis encodings to arbitrary functions between finite sets by the use of image enumeration maps.
+Given an arbitrary set $\arbset$, we say a map
 \begin{align*}
     \indexinterpretation \defcols
     \bigtimes_{\catenumeratorin}[\catdimof{\catenumerator}] \rightarrow \arbset
 \end{align*}
-is an enumeration map of $\arbset$ by $\catorder$ variables $\catvariableof{\catenumerator}$ taking values in $\catdimof{\catenumerator}$.
-Given a function $\exfunction:\inset\rightarrow\outset$ between arbitrary sets, and enumerating maps $\indexinterpretationof{\insymbol}$ and $\indexinterpretationof{\outsymbol}$ for both sets we define the basis encoding of $\exfunction$ as
+is an enumeration map of $\arbset$ by $\catorder$ variables $\catvariableof{\catenumerator}$, taking values in $\catdimof{\catenumerator}$.
+Given a function $\exfunction:\inset\rightarrow\outset$ between arbitrary sets and enumerating maps $\indexinterpretationof{\insymbol}$ and $\indexinterpretationof{\outsymbol}$ for both sets, we define the basis encoding of $\exfunction$ as
 \begin{align*}
     \bencodingofat{\exfunction}{\headvariables,\shortcatvariables}
     = \sum_{\arbelement\in\inset} \onehotmapofat{\invindexinterpretationofat{\outsymbol}{\exfunction(\arbelement)}}{\headvariables}
     \otimes \onehotmapofat{\invindexinterpretationofat{\insymbol}{\arbelement}}{\shortcatvariables} \, ,
 \end{align*}
 where $\catvariable,\headvariable$ are variables taking values in $[\cardof{\inset}]$ and $[\cardof{\outset}]$.
-We present in \exaref{exa:madicRepresentation} index enumeration maps for summations in $\catdim$-adic integer representations.
+In \exaref{exa:madicRepresentation} we present index enumeration maps for summations in $\catdim$-adic integer representations.
 %
-Based on these concepts we define the most general tensor-network architecture to be applied in the rest of this work.
+Based on these concepts, we define the most general tensor-network architecture to be applied in the rest of this work.
 
 \begin{definition}[\ComputationActivationNetwork{} (\CompActNets{})]
     \label{def:compActNets}
@@ -265,7 +267,7 @@ Based on these concepts we define the most general tensor-network architecture t
 \end{definition}
 
 %% Elementary and Max hypergraphs
-The elementary activated networks are representable by an elementary activation tensor, with respect to the graph
+The elementary activated networks are representable by an elementary activation tensor with respect to the graph
 \begin{align*}
     \elgraph = \big(\nodes, \{\{\node\}\wcols\nodein\}\big)
 \end{align*}
@@ -274,5 +276,5 @@ Any \CompActNet{} is representable with respect to the maximal hypergraph
 \begin{align*}
     \maxgraph  = \big(\nodes,\{\nodes\}\big) \, .
 \end{align*}
-We therefore have for any graph $\realizabledistsof{\sstat,\graph}\subset\realizabledistsof{\sstat,\maxgraph}$.
+We therefore have for any graph that $\realizabledistsof{\sstat,\graph}\subset\realizabledistsof{\sstat,\maxgraph}$.
 

@@ -1,8 +1,8 @@
 \begin{example}[The $\ttformat$ format]\label{exa:ttFormat}
-    The Tensor-Train ($\ttformat$) (see \cite{oseledets_tensor-train_2011}) format corresponds in our notation to a hypergraph (see \figref{fig:TTHypergraph}) defined by
+    The Tensor-Train ($\ttformat$) format (see \cite{oseledets_tensor-train_2011}) corresponds in our notation to a hypergraph (see \figref{fig:TTHypergraph}) defined by
     \begin{itemize}
-        \item Nodes $\catvariableof{[\catorder]}$ and hidden variables $\decvariableof{[\catorder-1]}$, each decorated by a dimension $\catdimof{[\catorder]}$ and $\decdimof{[\catorder-1]}$
-        \item Edges
+        \item nodes $\catvariableof{[\catorder]}$ and hidden variables $\decvariableof{[\catorder-1]}$, each decorated by a dimension $\catdimof{[\catorder]}$ and $\decdimof{[\catorder-1]}$,
+        \item edges
         \begin{align*}
             \big\{\edgeof{0}=\{\catvariableof{0},\decvariableof{0}\}\big\} \cup
             \big\{\edgeof{\catenumerator}=\{\decvariableof{\catenumerator-1},\catvariableof{\catenumerator},\decvariableof{\catenumerator}\} \wcols \catenumerator\in\{1,\ldots,\catorder-2\}\big\} \cup

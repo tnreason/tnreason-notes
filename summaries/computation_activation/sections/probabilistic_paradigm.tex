@@ -1,9 +1,9 @@
 %\section{Decomposition of Probability Distributions}
 \section{The Probabilistic Paradigm}\label{sec:probPar}
 
-Here we investigate tensor network decomposition mechanisms of probability distributions.
-After introducing probability distributions as tensors we derive tensor network decompositions based on conditional independencies (applying the Hammersley-Clifford theorem \cite{clifford_markov_1971}) to motivate graphical models.
-Further we present the \ComputationMechanism{}, in which the Fisher-Neyman Factorization Theorem is used to decompose distributions in the presence of sufficient statistics.
+In the following we investigate tensor network decomposition mechanisms of probability distributions.
+After introducing probability distributions as tensors, we derive tensor network decompositions based on conditional independencies (applying the Hammersley-Clifford theorem \cite{clifford_markov_1971}) to motivate graphical models.
+Furthermore, we present the \ComputationMechanism{}, in which the Fisher-Neyman Factorization Theorem is used to decompose distributions in the presence of sufficient statistics.
 
 \subsection{Basic concepts}
 
@@ -181,7 +181,7 @@ The global activation tensor (and hence the joint distribution) is obtained by c
 
 %
 While we so far have defined Markov Networks as decomposed probability distributions, we now want to derive assumptions on a distribution assuring that such decompositions exist.
-As we will see, the sets of conditional independencies encoded by a hypergraph are captured by its separation properties, as we define next.
+The sets of conditional independencies encoded by a hypergraph are captured by its separation properties, as we define next.
 
 \begin{definition}[Separation of Hypergraph]
     A path in a hypergraph is a sequence of nodes $\node_{\catenumerator}$ for $\catenumeratorin$, such that for any $\catenumerator\in[\atomorder-1]$ we find a hyperedge $\edgein$ such that $(\node_{\catenumerator}, \node_{\catenumerator+1})\subset \edge$.
