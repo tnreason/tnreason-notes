@@ -29,6 +29,6 @@
         \draw (6,-3.5) -- (6,-5) node[midway, right] {\colorlabelsize $\thirdcatvariable$};
     \end{scope}
 
-    \node[anchor=center] (text) at (24,-5);
+    % \node[anchor=center] (text) at (24,-5);
 
 \end{tikzpicture}
