@@ -1,12 +1,12 @@
 \begin{example}[The $\cpformat$ format]\label{exa:cpFormat}
     The Candecomp-Parafac ($\cpformat$ (\cite{hitchcock_expression_1927}) tensor format corresponds in our notation to a hypergraph (see \figref{fig:CPHypergraph}) defined by
     \begin{itemize}
-        \item nodes $\catvariableof{[\catorder]}$ and a single hidden variable $\decvariable$, decorated by dimensions $\catdimof{[\catorder]}$ and $\decdim$, respectively \janina{What is n? Equal to the rank?}
+        \item nodes $\catvariableof{[\catorder]}$ and a single hidden variable $\decvariable$, decorated by dimensions $\catdimof{[\catorder]}$ and the CP-rank $\decdim$, respectively
         \item edges
         % \begin{align*}
             $\big\{\edgeof{\catenumerator}=\{\catvariableof{\catenumerator},\decvariable\} \wcols \catenumeratorin \big\}$
         % \end{align*}
-        each decorated by a matrix $\hypercoreofat{\edgeof{\catenumerator}}{\catvariableof{\catenumerator},\decvariable}\janina{\in\mathbb{R}^{m\times n}}$.
+        each decorated by a matrix $\hypercoreofat{\edgeof{\catenumerator}}{\catvariableof{\catenumerator},\decvariable}\in\mathbb{R}^{m_k\times n}$.
     \end{itemize}
 
     \begin{figure}

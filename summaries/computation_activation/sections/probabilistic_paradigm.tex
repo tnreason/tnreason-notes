@@ -405,8 +405,8 @@ For our purposes we call a hypergraph $\graph$ a tree, when the graph with nodes
 
 For an implementation of \algoref{alg:treeBeliefPropagation} in the \python{} package \tnreason{}, see \secref{sec:propAlgsImplementation}.
 
-\janina{The following theorem states, that the contraction of a whole tensor network can be replaced by local contractions with derived messages.
-As contracting the whole network can be infeasible, this shows that the message passing algorithm can be advantageous.}
+The following theorem states, that the contraction of a whole tensor network can be replaced by local contractions with derived messages.
+As contracting the whole network can be infeasible, this shows that the message passing algorithm can be advantageous.
 
 \begin{theorem}
     \label{the:treeBeliefPropagationExactness}
@@ -420,7 +420,7 @@ As contracting the whole network can be infeasible, this shows that the message 
 \end{theorem}
 
 We show \theref{the:treeBeliefPropagationExactness} based on the following lemma.
-We denote for each pair $(\sedge,\redge)$ the subset $\preedgeset\subset\edges$ as the subset of edges $\edgein$, for which each path to $\redge$ passes through $\sedge$. \janina{The tree hypergraph property makes this definition equivalent to an existing path through $\sedge$, which is used in the proof of the following lemma.}
+We denote for each pair $(\sedge,\redge)$ the subset $\preedgeset\subset\edges$ as the subset of edges $\edgein$, for which each path to $\redge$ passes through $\sedge$. The tree hypergraph property makes this definition equivalent to an existing path through $\sedge$, which is used in the proof of the following lemma.
 Note, that by construction $\sedge\in\preedgeset$.
 
 \begin{lemma}

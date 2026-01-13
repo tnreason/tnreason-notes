@@ -17,7 +17,7 @@ We first provide a formal definition as real maps from index sets enumerating th
     \end{align*}
     for index tuples
     \begin{align*}
-        \catindexof{0},\ldots,\catindexof{\catorder-1} \in \facstates \, .
+        (\catindexof{0},\ldots,\catindexof{\catorder-1}) \in \facstates \, .
     \end{align*}
     Tensors $\hypercoreat{\catvariables}$, also denoted by $\hypercoreat{\shortcatvariables}$, are elements of the tensor space
     \begin{align*}
@@ -25,7 +25,7 @@ We first provide a formal definition as real maps from index sets enumerating th
     \end{align*}
     which is a linear space, enriched with the operations of coordinate-wise summation and scalar multiplication.
     We call a tensor $\hypercoreat{\shortcatvariables}$ boolean, when all coordinates are in $\{0,1\}$, and positive, when all coordinates are greater than $0$.
-    To ease the notation, we abbreviate sets as $[\catorder]=\{0,\ldots,\catorder-1\}$, tuples of state indices by $\catindexof{[\catorder]}=\catindexof{0},\ldots,\catindexof{\catorder-1}$ and tuples of variables by $\catvariableof{[\catorder]}=\catvariableof{0},\ldots,\catvariableof{\catorder-1}$.
+    To ease the notation, we abbreviate sets as $[\catorder]=\{0,\ldots,\catorder-1\}$, tuples of state indices by $\catindexof{[\catorder]}=(\catindexof{0},\ldots,\catindexof{\catorder-1})$ and tuples of variables by $\catvariableof{[\catorder]}=(\catvariableof{0},\ldots,\catvariableof{\catorder-1})$.
 \end{definition}
 
 We introduced tensors here in a non-canonical way based on categorical variables assigned to their axes.
@@ -143,7 +143,7 @@ To ease notation, we often omit the set notation by brackets $\{\cdot\}$. % and 
         \in \left(\facspace\right) \otimes \left(\secfacspace \right)
         %:  \left(\facstates\right) \times \left(\secfacstates\right) \rightarrow \rr
     \end{align*}
-    defined coordinatewise for tuples of $\catindices\in\facstates$ and $\seccatindices\in\secfacstates$ as
+    defined coordinatewise for tuples of $(\catindices)\in\facstates$ and $(\seccatindices)\in\secfacstates$ as
     \begin{align*}
         & \contractionof{\hypercoreat{\shortcatvariables},\sechypercoreat{\secshortcatvariables}}{\indexedcatvariables,\indexedseccatvariables} \\
         &\quad\quad \coloneqq  \hypercoreat{\indexedcatvariables}\cdot \sechypercoreat{\indexedseccatvariables} \, .
@@ -225,7 +225,7 @@ We now use one-hot encodings to encode functions between state sets.
     defined by
     \begin{align*}
         & \bencodingofat{\statesetfunction}{\headvariables,\shortcatvariables}
-        \quad = \sum_{\catindices\in\facstates}
+        \quad = \sum_{(\catindices)\in\facstates}
         \onehotmapofat{\statesetfunctionev{\shortcatindices}}{\headvariables} \otimes  \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
     \end{align*}
 \end{definition}
