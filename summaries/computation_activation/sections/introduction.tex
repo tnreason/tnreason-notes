@@ -6,6 +6,11 @@
     \item \janina{In Def. \ref{def:expFamily} $\Gamma=\mathbb{R}^p$?}
     \item \janina{In Alg. \ref{alg:treeBeliefPropagation}, I possibly undid some of the changes in the Ensure and return during a merge.}
     \item \janina{In Thm. \ref{the:treeBeliefPropagationExactness} correction?}
+    \item \martin{general remark about captions: proper sentences not "a) this. b) that."}
+    \item \martin{tensor references in introduction: i would like to add that tensors have also been used for statistical inverse problems (ours and Dolgov/Scheichl) and (PDE constrained) control problems (ours and ?). also cite our tensor machine learning work "bridging..." (eigel-schneider-trunscke).}
+    \item \martin{reformulate sentence in Definition 7: "we define the by $\sstat$ computable and by $\graph$ activated family of distributions by"}
+    \item \martin{ensure all sections and subsections have at least one sentence intro.}
+    \item \martin{the use of capital letters for certain terms is inconsistent.}
 \end{itemize}
 
 % Neural Paradigm
@@ -74,17 +79,17 @@ By decomposing high-order tensors into networks of low-rank components, these st
 
 \begin{figure}
     \input{../tikz_pics/paradigms_sketch.tex}
-    \caption{Sketch of the Concepts in the Neural, Probabilistic and Logical Paradigms, which we define based on tensor-network decompositions and contractions.}\label{fig:paradigmsSketch}
+    \caption{Sketch of the concepts in the Neural, Probabilistic and Logical Paradigms, which we define based on tensor-network decompositions and contractions.}\label{fig:paradigmsSketch}
 \end{figure}
 
 The paper is organized as follows.
-In Section~\ref{sec:notation} we introduce the basic concepts and notation for categorical variables, tensors, and tensor networks, which will be applied in the following sections.
+In Section~\ref{sec:notation} we introduce the basic concepts and notation for categorical variables, tensors, and tensor networks, which are applied in the following sections.
 Sections~\ref{sec:probPar}, \ref{sec:neurPar}, and \ref{sec:logPar} anchor the tensor network formalism in the basic paradigms of artificial intelligence (see \figref{fig:paradigmsSketch}). %: the probabilistic, neural, and logical paradigm, respectively.
 The \emph{probabilistic paradigm} is discussed in Section~\ref{sec:probPar}, where we in particular show that concepts of independence, graphical models, and sufficient statistics correspond to specific tensor network decompositions.
-Section~\ref{sec:neurPar} is dedicated to the \emph{neural paradigm}, where we show that generic function decompositions have their analogous tensor networks.
+Section~\ref{sec:neurPar} is dedicated to the \emph{neural paradigm}, where we show that generic function decompositions have an analogous tensor networks.
 Section~\ref{sec:logPar} turns to the \emph{logical paradigm}, where we study tensor equivalents of propositional formulas, knowledge bases, and entailment.
-In Section~\ref{sec:hln} we then present \emph{\HybridLogicNetworks{}} as an application of the unified tensor network formalism, combining logical and probabilistic models.
-We briefly discuss the implementation of these concepts in the \python{} package \tnreason{} in Section~\ref{sec:implementation}, before concluding the paper in Section~\ref{sec:conclusion}.
+In Section~\ref{sec:hln} we present \emph{\HybridLogicNetworks{}} as an application of the unified tensor network formalism, combining logical and probabilistic models.
+We briefly discuss the implementation of these concepts in our open source \python{} package \tnreason{} in Section~\ref{sec:implementation}, before concluding the paper in Section~\ref{sec:conclusion}.
 
 %Section~\ref{sec:notation} introduces the basic notation for categorical variables, tensors, and tensor networks, establishing the formal framework on which all subsequent reasoning structures are defined.
 %Section~\ref{sec:probPar} develops the probabilistic representation of reasoning through soft activation, showing how exponential-family distributions can be expressed as tensor networks based on independence assumptions and sufficient statistics.
