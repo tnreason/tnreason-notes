@@ -328,7 +328,7 @@ For a discussion of further universal properties of exponential families, such t
         \expdistwith =
         \normalizationof{\{\basemeasurewith\} \cup \{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}\cup\{\softactlegwith \wcols \selindexin\}}{\shortcatvariables} \, .
     \end{align*}
-    We then call the tensor $\probfamilyofat{\sstat,\basemeasure}{\shortcatvariables}{\Theta}$ with $\valof{\Theta}=\parspace$ and slices for $\canparamin$ by
+    We then call the tensor $\probfamilyofat{\sstat,\basemeasure}{\shortcatvariables}{\Theta}$ with $\valof{\Theta}=\parspace$ and slices for $\canparam\in\parspace$ by
     \begin{align*}
         \probfamilyofat{\sstat,\basemeasure}{\shortcatvariables}{\Theta=\canparam}
         = \expdistwith
@@ -337,7 +337,7 @@ For a discussion of further universal properties of exponential families, such t
 \end{definition}
 
 %% Connection to typical form
-To see that \defref{def:expFamily} is consistent with the typical definition of exponential families (see \cite{brown_fundamentals_1987}), let us notice that for each $\canparamin$ the normalization amounts to the division by
+To see that \defref{def:expFamily} is consistent with the typical definition of exponential families (see \cite{brown_fundamentals_1987}), let us notice that for each $\canparam\in\parspace$ the normalization amounts to the division by
 \begin{align*}
     \partitionfunctionof{\canparam}
     = \contraction{\{\basemeasurewith\} \cup \{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}\cup\{\softactlegwith \wcols \selindexin\}} \, ,
@@ -385,7 +385,7 @@ For our purposes we call a hypergraph $\graph$ a tree, when the graph with nodes
     \caption{Tree Belief Propagation}\label{alg:treeBeliefPropagation}
     \begin{algorithmic}
         \Require Tensor network $\extnet$ on a hypergraph $\graph$
-        \Ensure Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
+        \Ensure Messages $\{\messagewith\wcols(\sedge,\redge)\in\dirovedges\}$
         \iosepline
         \State Initialize $\scheduler=\{(\secsedge,\sedge) \wcols \secsedge \text{ a leaf in } (\edges,\dirovedges)\}]$
         \While{$\scheduler$ not empty}
@@ -399,7 +399,7 @@ For our purposes we call a hypergraph $\graph$ a tree, when the graph with nodes
             \end{align*}
             \State Update $\scheduler$ by all messages $(\redge,\thirdsedge)$ which have not yet been sent, if all messages $(\secsedge,\redge)$ with $\secsedge\neq\thirdsedge$ have been sent.
         \EndWhile
-        \State \Return Messages $\{\messagewith\wcols(\secsedge,\sedge)\in\dirovedges\}$
+        \State \Return Messages $\{\messagewith\wcols(\sedge,\redge)\in\dirovedges\}$
     \end{algorithmic}
 \end{algorithm}
 
@@ -415,7 +415,7 @@ As contracting the whole network can be infeasible, this shows that the message 
     \begin{align*}
         \contractionof{\extnet}{\catvariableof{\sedge}}
         =\contractionof{\{\hypercoreofat{\sedge}{\catvariableof{\sedge}}\}\cup
-            \{\mesfromtowith{\secsedge}{\sedge} \wcols (\secsedge,\sedge)\in\dirovedges\}}{\catvariableof{\edge}\janina{X_{e_0}?}} \, .
+            \{\mesfromtowith{\secsedge}{\sedge} \wcols (\secsedge,\sedge)\in\dirovedges\}}{\catvariableof{\sedge}} \, .
     \end{align*}
 \end{theorem}
 
