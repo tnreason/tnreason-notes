@@ -90,8 +90,15 @@ Then we have
 
 \subsection{Amplitude Amplification}
 
+Literature:
+\begin{itemize}
+    \item \cite{grover_fast_1996} Grover algorithm (search in unstructured database)
+    \item \cite{ozols_quantum_2013} introduced quantum rejection sampling (using amplitude amplification)
+    \item \cite{low_quantum_2014} used quantum rejection sampling for Bayesian network sampling (which is NP-hard when conditioned on evidence, see e.g. \cite{koller_probabilistic_2009})
+\end{itemize}
+
 Note, that the variable qubits are uniformly distributed when only the computation circuit is applied.
-When sampling the probability distribution, we need the aniclla qubits to be in state $1$ in order for the sample to be valid.
+When sampling the probability distribution, we need the ancilla qubits to be in state $1$ in order for the sample to be valid.
 Any other states will have to be rejected.
 
 Classically, this can be simulated in the same way:
