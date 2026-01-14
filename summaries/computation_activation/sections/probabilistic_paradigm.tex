@@ -1,5 +1,5 @@
 %\section{Decomposition of Probability Distributions}
-\section{The Probabilistic Paradigm}\label{sec:probPar}
+\section{The probabilistic paradigm}\label{sec:probPar}
 
 In the following we investigate tensor network decomposition mechanisms of probability distributions.
 After introducing probability distributions as tensors, we derive tensor network decompositions based on conditional independencies (applying the Hammersley-Clifford theorem \cite{clifford_markov_1971}) to motivate graphical models.
@@ -9,7 +9,7 @@ Furthermore, we present the \ComputationMechanism{}, in which the Fisher-Neyman 
 
 As defined next, distributions $\probtensor$ over a discrete state space can be represented by tensors, where each entry corresponds to the probability of a corresponding state.
 
-\begin{definition}[Joint Probability Distribution]
+\begin{definition}[Joint probability distribution]
     \label{def:probabilityDistribution} % From the axioms of Kolmogorov!
     Let there be for each $\catenumeratorin$ a categorical variable $\catvariableof{\catenumerator}$ taking values in $[\catdimof{\catenumerator}]$.
     A joint probability distribution of these categorical variables is a function
@@ -76,7 +76,7 @@ For $\catindexof{1}\in[\catdimof{1}]$ with $\contraction{\probat{\catvariableof{
 % \alex{Its important to note, that the chain rule for itself does not provide a more efficient representation of the distribution (since it is a generic decomposition). 
 % To achieve efficient tensor network decomposition, one needs to combine that with conditional independence assumptions (as in the Markov Chain case), such that conditioned variables in the conditional probability distributions can be dropped.}
 
-\subsection{The Independence Mechanism: Factorization into Graphical Models}
+\subsection{The independence mechanism: Factorization into graphical models}
 
 %% Need for decomposition mechanisms: Motivation for independence considerations
 The number of coordinates in a tensor representation of probability distributions is the product
@@ -119,7 +119,7 @@ As we observed, independence is a strong assumption, which is often too restrict
 Less demanding is conditional independence, which still implies efficient tensor network decomposition schemes.
 We introduce conditional independence as independence of variables with respect to conditional distributions.
 
-\begin{definition}[Conditional Independence]
+\begin{definition}[Conditional independence]
     \label{def:condIndependence} %% Was {the:condIndependenceProductCriterion} in the report!
     Assume a joint distribution of variables $\catvariableof{0}$, $\catvariableof{1}$ and $\catvariableof{2}$ such that $\margprobat{\catvariableof{2}}$ is positive.
     We say that $\catvariableof{0}$ is independent of $\catvariableof{1}$ conditioned on $\catvariableof{2}$ if %for any states $\exrandindin,\secexrandindin$ and $\thirdexrandindin$
@@ -150,9 +150,9 @@ We can further exploit conditional independence to find tensor network decomposi
     \end{center}
 \end{corollary}
 
-This conditional–independence pattern is the basic local building block that is generalized in Markov networks, which we define in the following.
+This conditional independence pattern is the basic local building block that is generalized in Markov networks, which we define in the following.
 
-\begin{definition}[Markov Network]
+\begin{definition}[Markov network]
     \label{def:markovNetwork}
     Let $\tnetof{\graph}$ be a tensor network of non-negative tensors decorating a hypergraph $\graph$.
     Then the Markov Network $\probof{\graph}$ to $\tnetof{\graph}$ is the probability distribution of $\catvariableof{\node}$ defined by the tensor
@@ -183,7 +183,7 @@ The global activation tensor (and hence the joint distribution) is obtained by c
 While so far we have defined Markov Networks as decomposed probability distributions, we now want to derive assumptions on a distribution, assuring that such decompositions exist.
 The sets of conditional independencies encoded by a hypergraph are captured by its separation properties, as we define next.
 
-\begin{definition}[Separation of Hypergraph]
+\begin{definition}[Separation of hypergraph]
     A path in a hypergraph is a sequence of nodes $\node_{\catenumerator}$ for $\catenumeratorin$, such that for any $\catenumerator\in[\atomorder-1]$ we find a hyperedge $\edgein$ such that $(\node_{\catenumerator}, \node_{\catenumerator+1})\subset \edge$.
     Given disjoint subsets $\nodesa$, $\nodesb$, $\nodesc$ of nodes in a hypergraph $\graph$, we say that $\nodesc$ separates $\nodesa$ and $\nodesb$ with respect to $\graph$ when any path starting at a node in $\nodesa$ and ending in a node in $\nodesb$ contains a node in $\nodesc$.
 \end{definition}
@@ -191,15 +191,16 @@ The sets of conditional independencies encoded by a hypergraph are captured by i
 To characterize Markov Networks in terms of conditional independencies, we need to further define the property of clique-capturing.
 This property establishes a correspondence of hyperedges with maximal cliques in the more canonical graph-based definition of Markov Networks \cite{koller_probabilistic_2009}.
 
-\begin{definition}[Clique-Capturing Hypergraph]
+\begin{definition}[Clique-capturing hypergraph]
     \label{def:ccHypergraph}
-    We call a hypergraph $\graph$ \emph{clique-capturing}, if the following holds:  Each subset $\secnodes\subset\nodes$, which fulfills that for any $\nodea,\nodeb\in\secnodes$ there is a hyperedge $\edgein$ with $\nodea,\nodeb\in\edge$, is contained in a hyperedge.
+    We call a hypergraph $\graph$ \emph{clique-capturing}, if the following holds:
+    Each subset $\secnodes\subset\nodes$, which fulfills that for any $\nodea,\nodeb\in\secnodes$ there is a hyperedge $\edgein$ with $\nodea,\nodeb\in\edge$, is contained in a hyperedge.
 \end{definition}
 
 We now recall a characterization of Markov Networks in terms of conditional independencies.
 
 % Characterization
-\begin{theorem}[Hammersley-Clifford Factorization Theorem]
+\begin{theorem}[Hammersley-Clifford factorization theorem]
     \label{the:factorizationHammersleyClifford}
     Let there be a positive probability distribution $\probwithnodes$ and a clique-capturing hypergraph $\graph=(\nodes,\edges)$.
     Then the following are equivalent:
@@ -228,7 +229,7 @@ The assumption of positivity is however not required in our characterization of 
 
 \input{../examples/probabilistic_paradigm/student_hc}
 
-\subsection{The Computation Mechanism: Factorization based on Sufficient Statistics}
+\subsection{The computation mechanism: Factorization based on sufficient statistics}
 
 We now present the \computationMechanism{} of finding tensor network decompositions of probability distributions.
 
@@ -298,7 +299,7 @@ We now show in two examples how families of distributions can be represented in 
 
 \input{../examples/probabilistic_paradigm/graphical_models_as_cans}
 
-\subsection{Exponential Families}
+\subsection{Exponential families}
 
 %We now restrict the activation cores to specific elementary tensors, which correspond with further assumptions on the dependence of $\probtensor$ and $\sstat$ made by exponential families.
 We now show that exponential families are specific instances of \CompActNets{}, whose activation tensors have elementary decompositions.
@@ -307,7 +308,7 @@ The importance of exponential families in statistics stems from their universal 
 A classical theorem by Pitman, Koopman and Darmois (see \cite{pitman_sufficient_1936}) states, that whenever a family exhibits constant support and a finite sufficient statistic for arbitrary large data sets, then it is in an exponential family.
 For a discussion of further universal properties of exponential families such as the existence of priors and entropy maximizers, see \cite{murphy_probabilistic_2022}.
 
-\begin{definition}[Exponential Family]\label{def:expFamily}
+\begin{definition}[Exponential family]\label{def:expFamily}
     %\alex{was \theref{the:expFamilyTensorRep}}
     Given a base measure $\basemeasure$ and a statistic
     \begin{align*}
@@ -371,7 +372,7 @@ Note that by construction each member of an exponential family is an element in 
 %% NEEDED?
 %\input{../examples/probabilistic_paradigm/two_boolean_cascade}
 
-\subsection{Efficient Contractions by Message Passing}
+\subsection{Efficient contractions by message passing}
 
 Contractions of tensor networks are generally hard to solve.
 Here, we investigate message passing algorithms, which decompose global contractions into a sequence of local contractions, whose results are passed as messages through the tensor network.

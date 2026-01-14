@@ -49,7 +49,7 @@ We occasionally also allow for variables $\catvariable$ taking values in infinit
 %    \end{align*}
 %\end{example}
 
-\begin{example}[Delta Tensor]\label{exa:diracDelta}
+\begin{example}[Delta tensor]\label{exa:diracDelta}
     Given a tuple of variables $\shortcatvariables=(\catvariables)$ with identical dimension $\catdim$, where $\catorder\geq 1$, the delta tensor is the element
     \begin{align*}
         \dirdeltawith \in \bigotimes_{\catenumeratorin} \rr^{\catdim}
@@ -66,7 +66,7 @@ We occasionally also allow for variables $\catvariable$ taking values in infinit
     For $\catorder=1$, the delta tensor is the trivial vector, whose coordinates are constantly $1$, which we denote by $\onesat{\catvariable}$.
 \end{example}
 
-\subsection{Tensor Networks and Contractions}
+\subsection{Tensor networks and contractions}
 
 % Diagrammatic representation in factor graphs
 We use a standard visualization of tensors (dating back to \cite{penrose_spinors_1987}) by blocks with lines depicting the axes of the tensor.
@@ -76,7 +76,7 @@ Additionally, we assign to each axis of the tensor the corresponding variable $\
 \end{center}
 Drawing on the association of variables with nodes and of tensors with hyperedges built from the assigned variables, we continue with the definition of tensor networks.
 
-\begin{definition}[Tensor Network]
+\begin{definition}[Tensor network]
     \label{def:tensorNetwork}
     Let $\graph=(\nodes,\edges)$ be a hypergraph, let $\catvariableof{\node}$ for $\node\in\nodes$ be categorical variables with dimensions $\catdimof{\node} \in \nn$, and let
     \[ \hypercoreofat{\edge}{\catvariableof{\edge}} \in \bigotimes_{\node\in\edge}\rr^{\catdimof{\node}} \, , \]
@@ -97,7 +97,7 @@ As examples we now present the $\cpformat$ and the $\ttformat$ formats in our hy
 
 \input{../examples/notation/tt_format.tex}
 
-\subsection{Generic Contractions}
+\subsection{Generic contractions}
 
 Let us now exploit our graphical approach to tensor networks in the definition of contractions. % of tensor networks as operations to get single tensors from tensor networks. % by summing slices of tensors in a network over common variables.
 
@@ -132,7 +132,7 @@ To ease notation, we often omit the set notation by brackets $\{\cdot\}$. % and 
     }\label{fig:contraction}
 \end{figure}
 
-\begin{example}[Tensor Product]\label{exa:tensorProduct}
+\begin{example}[Tensor product]\label{exa:tensorProduct}
     The simplest contraction is the tensor product, which maps a pair of two tensors with distinct variables onto a third tensor and has an interpretation by coordinate-wise products.
     Such a contraction corresponds with a tensor network of two tensors with disjoint variables.
     Let there be two tensors
@@ -254,7 +254,7 @@ Given a function $\exfunction:\inset\rightarrow\outset$ between arbitrary sets a
 where $\catvariable,\headvariable$ are variables taking values in $[\cardof{\inset}]$ and $[\cardof{\outset}]$.
 In \exaref{exa:madicRepresentation} we present index enumeration maps for summations in $\catdim$-adic integer representations.
 %
-Based on these concepts, we define the most general tensor-network architecture to be applied in the rest of this work.
+Based on these concepts, we define the most general tensor network architecture to be applied in the rest of this work.
 
 \begin{definition}[\ComputationActivationNetwork{} (\CompActNets{})]
     \label{def:compActNets}
