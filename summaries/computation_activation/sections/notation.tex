@@ -78,9 +78,12 @@ Drawing on the association of variables with nodes and of tensors with hyperedge
 
 \begin{definition}[Tensor Network]
     \label{def:tensorNetwork}
-    Let $\graph=(\nodes,\edges)$ be a hypergraph with nodes decorated by categorical variables $\catvariableof{\node}$ with dimensions $\catdimof{\node} \in \nn$
-    and hyperedges $\edge\in\edges$ decorated by core tensors
+    Let $\graph=(\nodes,\edges)$ be a hypergraph, let $\catvariableof{\node}$ for $\node\in\nodes$ be categorical variables with dimensions $\catdimof{\node} \in \nn$, and let
     \[ \hypercoreofat{\edge}{\catvariableof{\edge}} \in \bigotimes_{\node\in\edge}\rr^{\catdimof{\node}} \, , \]
+    be  core tensors for $\edge\in\edges$,
+    % Let $\graph=(\nodes,\edges)$ be a hypergraph with nodes decorated by categorical variables $\catvariableof{\node}$ with dimensions $\catdimof{\node} \in \nn$
+    % and hyperedges $\edge\in\edges$ decorated by core tensors
+    % \[ \hypercoreofat{\edge}{\catvariableof{\edge}} \in \bigotimes_{\node\in\edge}\rr^{\catdimof{\node}} \, , \]
     where we denote by $\catvariableof{\edge}$ the set of categorical variables $\catvariableof{\node}$ with $\node\in\edge$.
     Then, we call the set
     \[ \tnetofat{\graph}{\catvariableof{\nodes}} = \{\hypercoreofat{\edge}{\catvariableof{\edge}}  \wcols \edge\in\edges\} \]
