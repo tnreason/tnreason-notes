@@ -5,7 +5,7 @@ We call \CompActNets{} \HybridLogicNetworks{} in the special case of Boolean sta
 
 \subsection{Parametrization}
 
-%We now investigate hybrid logical and probabilistic models, which we want to call \HybridLogicNetworks{} (HLNs).
+We first introduce \HybridLogicNetworks{}, which can be regarded as a unification of logical and probabilistic models.
 
 \begin{definition}[\HybridLogicNetwork{} (HLN)]
     \label{def:hybridLogicNetwork}
@@ -108,7 +108,7 @@ We further optimize the coordinates $\selindex\in[\seldim]\setexcept{\hardlegset
 where
 \begin{align*}
     \hypercoreat{\headvariableof{\selindex}}
-    = \contractionof{\{\bencodingof{\enumformula} \wcols \selindexin\}
+    = \contractionof{\{\bencodingof{\formulaof{\secselindex}} \wcols \secselindex\in[\seldim]\}
         \cup\{\softactsymbolof{\secselindex,\canparam} \wcols \secselindex\in[\seldim]\ncond\secselindex\neq\selindex\}
         \cup\{\basemeasure\}}{\headvariableof{\selindex}} \, .
 \end{align*}
@@ -134,7 +134,7 @@ This is the computational bottleneck of the algorithm and can be approached by v
                 \State Compute
                 \begin{align*}
                     \hypercoreat{\headvariableof{\selindex}}
-                    = \contractionof{\{\bencodingof{\enumformula} \wcols \selindexin\}
+                    = \contractionof{\{\bencodingof{\formulaof{\secselindex}} \wcols \secselindex\in[\seldim]\}
                         \cup\{\softactsymbolof{\secselindex,\canparam} \wcols \secselindex\in[\seldim]\ncond\secselindex\neq\selindex\}
                         \cup\{\basemeasure\}}{\headvariableof{\selindex}}
                 \end{align*}
