@@ -5,6 +5,8 @@ This unified treatment identifies tensor-network contractions as a fundamental i
 The framework enables the definition and training of hybrid logical and probabilistic models, which we call \HybridLogicNetworks{}.
 We further demonstrate the concepts in the accompanying python library \tnreason{}.
 
+
+
 %We introduce \ComputationActivationNetworks{} (\CompActNets{}), a novel architecture for tensor networks, which is adapted to represent propositional formulas and exponential distributions.
 
 %This work introduces the novel \ComputationActivationNetworks{} (\CompActNets{}), a tensor-network architecture that can represent probabilistic modeling and logical reasoning within a single mathematical framework.
@@ -13,3 +15,17 @@ We further demonstrate the concepts in the accompanying python library \tnreason
 %This separation yields sparse and interpretable representations that subsume graphical models, exponential-family factorizations, and logical inference as special cases.
 %Probabilistic and logical queries reduce to tensor contractions, providing a common operational substrate for both reasoning paradigms.
 %Altogether, \CompActNets{} offer an expressive and intrinsically explainable foundation for neuro-symbolic AI, enabling exact reasoning alongside efficient implementation for learning tasks.
+
+
+OR
+
+The unification of neural and symbolic approaches to artificial intelligence remains a central open challenge. In this work, we introduce a tensor-network architecture that provides a unified mathematical framework for both paradigms. 
+Furthermore, the proposed formalism can be applied to represent logical formulas and probability distributions as structured tensor decompositions. A common treatment of sparsity is enabled through compositionality.
+
+At the core of the framework is a basis-encoding scheme representing functions as tensors, which is applied to sufficient statistics and propositional formulas.
+The framework enables the definition and training of hybrid logical and probabilistic models, which we call \HybridLogicNetworks{}, combining hard logical constraints with soft probabilistic activations in a single, interpretable model. The framework subsumes graphical models, exponential families, and symbolic knowledge bases.
+
+% Inference in probabilistic models, 
+Function evaluation and entailment decisions in propositional logic are expressed as tensor contractions. They can be tackled by message-passing algorithms based on local contractions for large networks.
+
+The theoretical concepts are accompanied by the Python library \tnreason{}, which enables the implementation and practical use of the proposed architectures.

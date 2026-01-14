@@ -405,8 +405,8 @@ For our purposes we call a hypergraph $\graph$ a tree when the graph with nodes 
 
 For an implementation of \algoref{alg:treeBeliefPropagation} in the \python{} package \tnreason{}, see \secref{sec:propAlgsImplementation}.
 
-The following theorem states that the contraction of a whole tensor network can be replaced by local contractions with derived messages.
-Since contracting the whole network can be infeasible, this shows that the message passing algorithm can be advantageous.
+The following theorem states that the contraction of a whole tensor network can be replaced by local contractions with messages.
+Since contracting the whole network can be infeasible, this shows that calculating the messages with the \algoref{alg:treeBeliefPropagation} can be advantageous.
 
 \begin{theorem}
     \label{the:treeBeliefPropagationExactness}
@@ -433,7 +433,7 @@ Note that by construction $\sedge\in\preedgeset$.
 \end{lemma}
 \begin{proof}
     We show this property by induction over the size of the edge sets $\preedgeset$ for pairs $(\sedge,\redge)\in\dirovedges$, such that $\cardof{\preedgeset}\leq n$.
-    Notie that since always $\sedge\in\preedgeset$ we have that $n\geq1$.
+    Note that since always $\sedge\in\preedgeset$ we have that $n\geq1$.
 
     $n=1$: In this case we have $\preedgeset=\{\sedge\}$ and $\sedge$ is a leaf of the tree-hypergraph $\graph$.
     The claimed message property holds thus by definition.
