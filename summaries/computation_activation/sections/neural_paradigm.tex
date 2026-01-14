@@ -233,7 +233,7 @@ We then show that the messages are the one-hot encodings to the evaluations of t
     The first message is sent from an input edge $\{[\catenumerator]\}$ to an edge $\edge$ of the decomposition graph and is by assumption the one-hot encoding of an input state $\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}$.
 
     We now assume that all previous messages satisfy the claimed equation at an arbitrary stage of the algorithm.
-    The message computed in the while loop is then a contraction of one-hot encodings with basis encodings and
+    The message computed in the \whileSymbol{} loop is then a contraction of one-hot encodings with basis encodings and
     \begin{align*}
         \mesfromtowith{\sedge}{\redge}
         &=\contractionof{\{\bencodingofat{\secexfunctionof{\sedge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}}\} \cup

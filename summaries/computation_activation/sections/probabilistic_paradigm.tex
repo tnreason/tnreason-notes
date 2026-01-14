@@ -3,7 +3,7 @@
 
 In the following we investigate tensor network decomposition mechanisms of probability distributions.
 After introducing probability distributions as tensors, we derive tensor network decompositions based on conditional independencies (applying the Hammersley-Clifford theorem \cite{clifford_markov_1971}) to motivate graphical models.
-Furthermore, we present the \ComputationMechanism{}, in which the Fisher-Neyman Factorization Theorem is used to decompose distributions in the presence of sufficient statistics.
+Furthermore, we present the \computationMechanism{}, in which the Fisher-Neyman Factorization Theorem is used to decompose distributions in the presence of sufficient statistics.
 
 \subsection{Basic concepts}
 
@@ -173,7 +173,8 @@ This conditional independence pattern is the basic local building block that is 
 %% Graphical Models as Tensor Networks: Alternative approach via graph duality
 We define graphical models based on hypergraphs to establish a direct connection with tensor networks decorating the hypergraph.
 In a more canonical way, Markov Networks are instead defined by graphs, where instead of the edges the cliques are decorated by factor tensors (see for example \cite{koller_probabilistic_2009}).
-The probabilistic graphical models are along that alternative dual to tensor networks \cite{robeva_duality_2019,glasser_expressive_2019}.
+Following this alternative description, the graphs of the tensor networks are dual to the graphs of the graphical models \cite{robeva_duality_2019,glasser_expressive_2019}.
+%The probabilistic graphical models are along that alternative dual to tensor networks
 
 %% CompActNets as Markov Networks - Check for redundancy!
 We can interpret the factors $\hypercorewith$ as activation cores placed on the hyperedges $\edge$ of the graph.
