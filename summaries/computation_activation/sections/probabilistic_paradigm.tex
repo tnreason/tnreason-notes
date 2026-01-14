@@ -281,18 +281,18 @@ We therefore can define sufficient statistics also for families of distributions
 We then use \theref{the:factorizationFisherNeyman} to embed such families in \CompActNets{}.
 
 \begin{corollary}
-    Let $\condprobof{\shortcatvariables}{\thirdcatvariable}$ be an arbitrary family of distributions of $\shortcatvariables$, and $\sstat$ a sufficient statistic for $\thirdcatvariable$.
-    Then there is a tensor $\basemeasurewith$ and an activation tensors $\acttensorat{\headvariables,\thirdcatvariable}$ such that for any $\thirdcatindex\in\mathrm{val}(\thirdcatvariable)$
+    Let $\condprobof{\shortcatvariables}{\thirdcatvariable}$ be an arbitrary family of distributions of $\shortcatvariables$ and $\sstat$ a sufficient statistic for $\thirdcatvariable$.
+    Then, there is a tensor $\basemeasurewith$ and an activation tensors $\acttensorat{\headvariables,\thirdcatvariable}$ such that for any $\thirdcatindex\in\mathrm{val}(\thirdcatvariable)$ we have
     \begin{align*}
         \condprobat{\shortcatvariables}{\thirdcatvariable=\thirdcatindex} \in\cansof{\sstat,\maxgraph, \acttensor} \, . %\basemeasure} \, .
     \end{align*}
 \end{corollary}
 
 %% Fisher-Neyman as motivation for CompActNets
-The Factorization Theorem of Fisher-Neyman provides the fundamental motivation for the \CompActNets{} Architecture.
-Any decomposition of $\bencodingofat{\sstat}{\headvariables,\shortcatvariables}$ is called a \emph{computation network}, and common to all members of a family with sufficient statistic $\sstat$.
+The Factorization Theorem of Fisher-Neyman provides the fundamental motivation for the \CompActNets{} architecture.
+Any decomposition of $\bencodingofat{\sstat}{\headvariables,\shortcatvariables}$ is called a \emph{computation network} and common to all members of a family with sufficient statistic $\sstat$.
 The activation tensor $\acttensorat{\headvariables,\indexedthirdcatvariable}$, whose decomposition is called the \emph{activation network}, is specific to each member of the family.
-Let us now show in two examples, how families of distributions can be represented in \CompActNets{} by sufficient statistics.
+We now show in two examples how families of distributions can be represented in \CompActNets{} by sufficient statistics.
 
 \input{../examples/probabilistic_paradigm/coin_toss_fn}
 
@@ -301,11 +301,11 @@ Let us now show in two examples, how families of distributions can be represente
 \subsection{Exponential Families}
 
 %We now restrict the activation cores to specific elementary tensors, which correspond with further assumptions on the dependence of $\probtensor$ and $\sstat$ made by exponential families.
-Let us now show, that exponential families are specific instances of \CompActNets{}, whose activation tensors have elementary decompositions.
+We now show that exponential families are specific instances of \CompActNets{}, whose activation tensors have elementary decompositions.
 % Universal properties
 The importance of exponential families in statistics stems from their universal properties.
-A classical theorem by Pitman, Koopman and Darmois (see \cite{pitman_sufficient_1936}) states, that whenever a family with constant support and a finite sufficient statistic for arbitrary large data sets is in an exponential family.
-For a discussion of further universal properties of exponential families, such that the existence of priors and entropy maximizers, see \cite{murphy_probabilistic_2022}.
+A classical theorem by Pitman, Koopman and Darmois (see \cite{pitman_sufficient_1936}) states, that whenever a family exhibits constant support and a finite sufficient statistic for arbitrary large data sets, then it is in an exponential family.
+For a discussion of further universal properties of exponential families such as the existence of priors and entropy maximizers, see \cite{murphy_probabilistic_2022}.
 
 \begin{definition}[Exponential Family]\label{def:expFamily}
     %\alex{was \theref{the:expFamilyTensorRep}}
@@ -318,7 +318,7 @@ For a discussion of further universal properties of exponential families, such t
         \indexinterpretationof{\selindex} \defcols
         [\cardof{\imageof{\sstatcoordinateof{\selindex}}}] \rightarrow \imageof{\sstatcoordinateof{\selindex}} \, .
     \end{align*}
-    For any canonical parameter vector $\canparamwithin$ we build the activation cores $\softactlegwith$ for each coordinate $\headindexof{\selindex}\in[\cardof{\imageof{\sstatcoordinateof{\selindex}}}]$ by
+    For any canonical parameter vector $\canparamwithin$, we build the activation cores $\softactlegwith$ for each coordinate $\headindexof{\selindex}\in[\cardof{\imageof{\sstatcoordinateof{\selindex}}}]$ by
     \begin{align*}
         \softactlegat{\indexedheadvariableof{\selindex}}
         = \expof{\canparamat{\indexedselvariable} \cdot \indexinterpretationofat{\selindex}{\headindexof{\selindex}}} \,
@@ -328,7 +328,7 @@ For a discussion of further universal properties of exponential families, such t
         \expdistwith =
         \normalizationof{\{\basemeasurewith\} \cup \{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}\cup\{\softactlegwith \wcols \selindexin\}}{\shortcatvariables} \, .
     \end{align*}
-    We then call the tensor $\probfamilyofat{\sstat,\basemeasure}{\shortcatvariables}{\Theta}$ with $\valof{\Theta}=\parspace$ and slices for $\canparam\in\parspace$ by
+    We then call the tensor $\probfamilyofat{\sstat,\basemeasure}{\shortcatvariables}{\Theta}$ with $\valof{\Theta}=\parspace$ and slices for $\canparam\in\parspace$ given by
     \begin{align*}
         \probfamilyofat{\sstat,\basemeasure}{\shortcatvariables}{\Theta=\canparam}
         = \expdistwith
@@ -337,13 +337,13 @@ For a discussion of further universal properties of exponential families, such t
 \end{definition}
 
 %% Connection to typical form
-To see that \defref{def:expFamily} is consistent with the typical definition of exponential families (see \cite{brown_fundamentals_1987}), let us notice that for each $\canparam\in\parspace$ the normalization amounts to the division by
+To see that \defref{def:expFamily} is consistent with the typical definition of exponential families (see \cite{brown_fundamentals_1987}), note that for each $\canparam\in\parspace$ the normalization amounts to the division by
 \begin{align*}
     \partitionfunctionof{\canparam}
     = \contraction{\{\basemeasurewith\} \cup \{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}\cup\{\softactlegwith \wcols \selindexin\}} \, ,
 \end{align*}
 a quantity which is referred to as the partition function.
-Then we have for each coordinate $\shortcatindicesin$
+Then, we have for each coordinate $\shortcatindicesin$ that
 \begin{align*}
     &\expdistat{\indexedshortcatvariables}\\
     &= \frac{1}{\partitionfunctionof{\canparam}}

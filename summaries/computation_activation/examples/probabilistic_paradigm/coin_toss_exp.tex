@@ -1,8 +1,8 @@
 \begin{example}[Exponential Family of Coin Tosses]
     \label{exa:coinTossExp}
-    Let us recall the family of distributions of boolean $\shortcatvariables$ from \exaref{exa:coinTossFN}, which has the order statistic $\sstatof{+}$ as a sufficient statistic.
-    We now in addition assume, that the variables $\shortcatvariables$ are i.i.d. with respect to any member of the family (see \exaref{exa:coinTossFN}).
-    For the variables to be i.i.d. we need $\basemeasurewith=\oneswith$ and can thus choose a representation such that for $\thirdcatindex\in\valof{\thirdcatvariable}$
+    Recall the family of distributions of boolean $\shortcatvariables$ from \exaref{exa:coinTossFN}, which has the order statistic $\sstatof{+}$ as a sufficient statistic.
+    We now in addition assume that the variables $\shortcatvariables$ are i.i.d. with respect to any member of the family (see \exaref{exa:coinTossFN}).
+    For the variables to be i.i.d., we need $\basemeasurewith=\oneswith$ and can thus choose a representation such that for $\thirdcatindex\in\valof{\thirdcatvariable}$
     \begin{align*}
         \condprobat{\shortcatvariables}{\indexedthirdcatvariable}
         = \contractionof{\bencodingofat{\sstatof{+}}{\headvariableof{+},\shortcatvariables},\acttensorat{\headvariableof{+},\indexedthirdcatvariable}}{\shortcatvariables}
@@ -18,20 +18,20 @@
     \begin{align*}
         \canparam \coloneqq \lnof{\frac{\thirdcatindex}{1-\thirdcatindex}} \, .
     \end{align*}
-    To see that this is true, we notice that the coordinate $\headindexof{+}\in[\catorder+1]$ of the activation tensor of $\expdistof{(\sstatof{+},\canparam,\trivbm)}$ is
+    To see that this is true, we observe that the coordinate $\headindexof{+}\in[\catorder+1]$ of the activation tensor of $\expdistof{(\sstatof{+},\canparam,\trivbm)}$ is
     \begin{align*}
         \softacttensorat{\indexedheadvariableof{+}}
         = \expof{\headindexof{+}\cdot\canparam}
         = \frac{\thirdcatindex^{\headindexof{+}}}{(1-\thirdcatindex)^{\headindexof{+}}} \, .
     \end{align*}
-    Now with $\partitionfunctionof{\canparam}=\frac{1}{(1-\thirdcatindex)^{\catorder}}$ we have for any $\shortcatindices$ with $\sum_{\catenumeratorin}\catindexof{\catenumerator}=\headindexof{+}$ that
+    Now, with $\partitionfunctionof{\canparam}=\frac{1}{(1-\thirdcatindex)^{\catorder}}$ we have for any $\shortcatindices$ with $\sum_{\catenumeratorin}\catindexof{\catenumerator}=\headindexof{+}$ that
     \begin{align*}
         \frac{1}{\partitionfunctionof{\canparam}} \cdot \contraction{\bencodingofat{\sstatof{+}}{\headvariableof{+},\indexedshortcatvariables},\softacttensorat{\headvariableof{+}}}
         = (1-\thirdcatindex)^{\catorder} \cdot \frac{\thirdcatindex^{\headindexof{+}}}{(1-\thirdcatindex)^{\headindexof{+}}}
         =  \thirdcatindex^{\headindexof{+}} \cdot (1-\thirdcatindex)^{\catorder-\headindexof{+}}  \, .
     \end{align*}
-    Comparing with the activation tensor $\acttensorat{\headvariableof{+}}$ above, we notice that $\partitionfunctionof{\canparam}$ is the partition function of the exponential family and $\expdistofat{(\sstatof{+},\canparam,\trivbm)}{\shortcatvariables}$ coincides with the member $\condprobat{\shortcatvariables}{\indexedthirdcatvariable}$.
-    We further notice that since the statistic $\sstatof{+}$ decomposes as a sum of terms depending on single variables only, we have a decomposition of the corresponding \CompActNet{} by
+    Comparing with the activation tensor $\acttensorat{\headvariableof{+}}$ above, we note that $\partitionfunctionof{\canparam}$ is the partition function of the exponential family and $\expdistofat{(\sstatof{+},\canparam,\trivbm)}{\shortcatvariables}$ coincides with the member $\condprobat{\shortcatvariables}{\indexedthirdcatvariable}$.
+    We further observe that since the statistic $\sstatof{+}$ decomposes as a sum of terms depending on single variables only, we have a decomposition of the corresponding \CompActNet{} by
     \begin{center}
         \begin{tikzpicture}[scale=0.35,thick]
             \begin{scope}[shift={(-5,0)}]
@@ -74,8 +74,8 @@
             \end{bmatrix}$};
             \draw (15,-1)--(15,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
 
-            \node[anchor=center] (A) at (18,-3) {$\cdot$};
+            % \node[anchor=center] (A) at (18,-3);
         \end{tikzpicture}
     \end{center}
-    This reproduces the fact, that distributions of independent variables are representable by elementary tensors (see \exaref{exa:coinTossHC}).
+    This reproduces the fact that distributions of independent variables are representable by elementary tensors (see \exaref{exa:coinTossHC}).
 \end{example}
