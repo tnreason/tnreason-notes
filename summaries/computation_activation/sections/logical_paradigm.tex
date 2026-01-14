@@ -5,6 +5,7 @@ A tensor-based representation of propositional logic is developed by encoding bo
 
 \subsection{Propositional Semantics by Boolean Tensors}
 
+\martin{INTRO}
 
 \begin{definition}
     \label{def:formulas}
@@ -25,7 +26,7 @@ A tensor-based representation of propositional logic is developed by encoding bo
 \paragraph{Model counts by contraction}
 Each coordinate of the propositional formula is either a $1$ or $0$, indicating whether the indexed state is a model of the formula or not.
 In this way, the contraction $\contraction{\formula}$ counts the number of models of the propositional formula $\formula$.
-One can therefore decide the satisfiability of a formula by checking if $\contraction{\formula}>0$.
+One can therefore decide the satisfiability of a formula by testing for $\contraction{\formula}>0$.
 
 \paragraph{CP decomposition}
 Since the tensor $\formulaat{\shortcatvariables}$ is equal to one at index $x_{[d]}$ if and only if $x_{[d]}$ is a model of $\formula$, a propositional formula can be written as the sum over the one-hot encodings of its models.

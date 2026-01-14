@@ -1,6 +1,6 @@
 \begin{example}[Continuation of \exaref{exa:studentHC}]
     \label{exa:studentBP}
-    Let us now exemplify the Belief Propagation \algoref{alg:treeBeliefPropagation} on the Markov Network in the student example (see \exaref{exa:studentHC}).
+    We exemplify the Belief Propagation \algoref{alg:treeBeliefPropagation} on the Markov Network in the student example (see \exaref{exa:studentHC}).
     The directions of the messages result from the hyperedge overlaps (see \figref{fig:studentMessagePassingDirections} a) and the resulting directions $\dirovedges$ are sketched in \figref{fig:studentMessagePassingDirections} b).
     The messages to $\{(\edgeof{2},\edgeof{0}),(\edgeof{0},\edgeof{2})\}$ are vectors of $\catvariableof{G}$ and the messages $\{(\edgeof{0},\edgeof{1}),(\edgeof{1},\edgeof{0})\}$ are vectors of $\catvariableof{I}$.
 
@@ -10,19 +10,19 @@
         \item Each message is placed exactly once on $\scheduler$, when at a hyperedge all but the reverse message have been received.
         In our example, after execution of $(\edgeof{2},\edgeof{0})$ the message $(\edgeof{0},\edgeof{1})$ is placed on $\scheduler$ and after execution of $(\edgeof{1},\edgeof{0})$ the message $(\edgeof{0},\edgeof{2})$.
     \end{itemize}
-    In this implementation \algoref{alg:treeBeliefPropagation} terminates after $\cardof{\dirovedges}=4$ iterations of the $\mathrm{While}$ loop.
+    In this implementation, \algoref{alg:treeBeliefPropagation} terminates after $\cardof{\dirovedges}=4$ iterations of the $\mathrm{While}$ loop.
     The exact marginals of the edge variables are then
     \begin{align*}
         \probat{\catvariableof{L},\catvariableof{G}}
         &= \normalizationof{
             \hypercoreofat{\edgeof{2}}{\catvariableof{L},\catvariableof{G}},
             \mesfromto{\edgeof{0}}{\edgeof{2}}\left[\catvariableof{G}\right]
-        }{\catvariableof{L},\catvariableof{G}} \\
+        }{\catvariableof{L},\catvariableof{G}}, \\
         \probat{\catvariableof{G},\catvariableof{D},\catvariableof{I}}
         &= \normalizationof{\hypercoreofat{\edgeof{0}}{\catvariableof{G},\catvariableof{D},\catvariableof{I}},
             \mesfromto{\edgeof{2}}{\edgeof{0}}\left[\catvariableof{G}\right],
             \mesfromto{\edgeof{1}}{\edgeof{0}}\left[\catvariableof{I}\right]
-        }{\catvariableof{G},\catvariableof{D},\catvariableof{I}} \\
+        }{\catvariableof{G},\catvariableof{D},\catvariableof{I}}, \\
         \probat{\catvariableof{I},\catvariableof{S}}
         &= \normalizationof{
             \hypercoreofat{\edgeof{1}}{\catvariableof{I},\catvariableof{S}},

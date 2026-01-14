@@ -1,6 +1,6 @@
 \begin{example}[Continuation of \exaref{exa:madicRepresentation}]%[Computation of the sum of $\catdim$-adic integers]
     \label{exa:madicPropagation}
-    Let us now show how \algoref{alg:directedBeliefPropagation} can be exploited to compute by an efficient message passing algorithm for the digits of the $\catdim$-adic sum.
+    We now show how \algoref{alg:directedBeliefPropagation} can be exploited to compute an efficient message passing algorithm for the digits of the $\catdim$-adic sum.
     Given two numbers in $\catdim$-adic representation by the tuples $\shortcatindices$ and $\tildecatindexof{[\catorder]}$, we add the hyperedges with empty incoming nodes and single outgoing node
     \begin{align*}
         \bigcup_{\catenumeratorin}\left\{(\varnothing,\{\catvariableof{\catenumerator}\}),(\varnothing,\{\tildecatvariableof{\catenumerator}\})\right\}
@@ -34,7 +34,7 @@
             \messagesymbol^{(\catenumerator,1)}[\tildecatvariableof{\catenumerator}]
         }{\thirdcatvariableof{\catenumerator}}
         =
-        \onehotmapofat{\thirdcatindexof{\catenumerator}}{\thirdcatvariableof{\catenumerator}}
+        \onehotmapofat{\thirdcatindexof{\catenumerator}}{\thirdcatvariableof{\catenumerator}}\,,
     \end{align*}
     where $\thirdcatindexof{\catenumerator}$ is the value of the $\catenumerator$-th carry bit.
     The $\catenumerator$-th digit of the sum $\headindexof{\catenumerator}$ can further be read of by the contraction
@@ -49,9 +49,9 @@
         \onehotmapofat{\headindexof{\catenumerator}}{\headvariableof{\catenumerator}} \, .
     \end{align*}
     % Tree belief also working
-    We notice, that the hypergraph representing this instance is a tree and by \theref{the:treeBeliefPropagationExactness} also the message passing scheme of \algoref{alg:treeBeliefPropagation} is guaranteed to produce the exact contractions.
+    Note that the hypergraph representing this instance is a tree and by \theref{the:treeBeliefPropagationExactness} also the message passing scheme of \algoref{alg:treeBeliefPropagation} is guaranteed to produce the exact contractions.
     We can exploit this fact for example in the efficient computation of averages of the summation digits, when we have an elementary distribution of input digits.
-    We strengthen that the directed belief propagation \algoref{alg:treeBeliefPropagation} is exact even if the hypergraph fails to be a tree, provided that we have directed and boolean tensors..
+    We emphasize that the directed belief propagation \algoref{alg:treeBeliefPropagation} is exact even if the hypergraph fails to be a tree, provided that we have directed and boolean tensors..
 
     \begin{figure}[t]
         \begin{center}

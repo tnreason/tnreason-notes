@@ -16,7 +16,7 @@ As a main principle of tensor decompositions, we now show that basis encodings o
         \formula(\shortcatindices)
         = \chainingfunction\left(\formulaofat{0}{\shortcatindices}, \dots, \formulaofat{\seldim-1}{\shortcatindices}\right) \, .
     \end{align*}
-    Then we have (see \figref{fig:functionDecomposition})
+    Then, we have (see \figref{fig:functionDecomposition})
     \begin{align*}
         \bencodingofat{\formula}{\headvariableof{\formula},\shortcatvariables}
         = \contractionof{
@@ -43,7 +43,7 @@ As a main principle of tensor decompositions, we now show that basis encodings o
         &\quad\quad= \onehotmapofat{\formula(\shortcatindices)}{\headvariableof{\formula}}\\
         &\quad\quad= \bencodingofat{\formula}{\headvariableof{\formula},\indexedshortcatvariables} \, .
     \end{align*}
-    Thus the tensors on both sides of the equation coincide in all slides to $\shortcatvariables$ and are thus equal.
+    Thus, the tensors on both sides of the equation coincide in all slides to $\shortcatvariables$ and are thus equal.
 \end{proof}
 
 \begin{figure}[t]
@@ -55,11 +55,11 @@ As a main principle of tensor decompositions, we now show that basis encodings o
 \end{figure}
 
 
-Let us now define a more generic decomposition of discrete functions.
+\noindent We now define a more generic decomposition of discrete functions.
 
 \begin{definition}
     \label{def:decompositionHypergraph}
-    A \emph{decomposition hypergraph} is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ such that
+    A \emph{decomposition hypergraph} is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ such that the following holds.
     \begin{itemize}
         \item Each node $\nodein$ is decorated by a set $\arbsetof{\node}$ of finite cardinality $\catdimof{\node}$, a variable $\catvariableof{\node}$, and an index interpretation function
         \begin{align*}
@@ -106,11 +106,11 @@ Let us now define a more generic decomposition of discrete functions.
 
 % Neural Paradigm
 The neural paradigm in AI can be modeled by the existence of decomposition hypergraphs for functions on large sets.
-Let us now show how decomposition hypergraphs enable the sparse representation of composition functions by tensor networks.
+We now show how decomposition hypergraphs enable the sparse representation of composition functions by tensor networks.
 
 \begin{theorem}
     \label{the:functionDecompositionRep}
-    For any decomposition hypergraph $\graph$ with composition formula $\exfunctionof{\graph}$ we have
+    For any decomposition hypergraph $\graph$ with composition formula $\exfunctionof{\graph}$, we have
     \begin{align*}
         \bencodingofat{\exfunctionof{\graph}}{\headvariables,\shortcatvariables}
         = \contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}} \wcols \edge=(\incomingnodes,\outgoingnodes)\in\edges\right\}
@@ -135,7 +135,7 @@ Let us now show how decomposition hypergraphs enable the sparse representation o
 
     $(\cardof{\edges}=n)\Rightarrow(\cardof{\edges}=n+1)$:
     Let us now assume that \eqref{eq:indHypNeurThm} holds for all graphs with $\cardof{\edges}\leq n$ and let $\graph$ be a graph with $\cardof{\edges}=n+1$.
-    We find an edge $\secedge=(\incomingnodes,\outgoingnodes)$, such that all nodes in $\incomingnodes$ are only appearing as outgoing nodes in other edges.
+    We find an edge $\secedge=(\incomingnodes,\outgoingnodes)$ such that all nodes in $\incomingnodes$ are only appearing as outgoing nodes in other edges.
     \begin{align*}
         &\contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\edge}} \wcols \edge\in\edges\right\}
         }{\catvariableof{\nodes\setexcept{\node^{\insymbol}_{[\atomorder]}}},\indexedshortcatvariables} \\
@@ -155,9 +155,9 @@ Let us now show how decomposition hypergraphs enable the sparse representation o
         \bigotimes_{\node\in\nodes\setexcept{\node^{\insymbol}_{[\atomorder]}}}
         \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \, .
     \end{align*}
-    Here we used, in the second equation, the induction hypothesis on the subgraph $(\nodes,\edges\setexcept{\{\secedge\}})$ with $\cardof{\edges\setexcept{\{\secedge\}}}=n$ and, in the third equation, a generic contraction property of basis encodings.
+    Here, in the second equation we used the induction hypothesis on the subgraph $(\nodes,\edges\setexcept{\{\secedge\}})$ with $\cardof{\edges\setexcept{\{\secedge\}}}=n$ and a generic contraction property of basis encodings in the third equation.
 
-    Thus, \eqref{eq:indHypNeurThm} holds always and we thus have for any $\shortcatindicesin$
+    Thus, \eqref{eq:indHypNeurThm} holds always and we have for any $\shortcatindicesin$ that
     \begin{align*}
         \contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}} \wcols \edge=(\incomingnodes,\outgoingnodes)\in\edges\right\}
         }{\headvariables,\indexedshortcatvariables}
@@ -180,7 +180,7 @@ When neurons have tunable parameters, we can discretize those by sets $\arbsetof
 
 \subsection{Function Evaluation by Message Passing}
 
-We now present an efficient inference algorithm based on tensor network contractions.
+We are now concerned with an efficient inference algorithm based on tensor network contractions. To evaluate a function given as a tensor network decomposition of its basis encoding, the whole network has to be contracted. As this can be infeasible for large networks, a message passing algorithm based on local contractions can be applied, compare \algoref{alg:treeBeliefPropagation} for a message passing algorithm for tensor networks on a on tree hypergraph.
 
 \begin{algorithm}[hbt!]
     \caption{Directed Belief Propagation}\label{alg:directedBeliefPropagation}
@@ -216,7 +216,7 @@ We now present an efficient inference algorithm based on tensor network contract
 \end{algorithm}
 
 % Application
-Let us now apply the Directed Belief Propagation Algorithm on a decomposition hypergraph, where we add hyperedges to each leaf node and assign one-hot encodings of input states.
+We apply the Directed Belief Propagation, Algorithm \algoref{alg:directedBeliefPropagation}, on a decomposition hypergraph, where we add hyperedges to each leaf node and assign one-hot encodings of input states.
 We then show that the messages are the one-hot encodings to the evaluations of the node functions.
 
 \begin{theorem}
@@ -232,7 +232,7 @@ We then show that the messages are the one-hot encodings to the evaluations of t
     We show the theorem inductively over the messages computed in \algoref{alg:directedBeliefPropagation}.
     The first message is sent from an input edge $\{[\catenumerator]\}$ to an edge $\edge$ of the decomposition graph and is by assumption the one-hot encoding of an input state $\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}$.
 
-    Let us now assume that, at an arbitrary stage of the algorithm, all previous messages satisfy the claimed equation.
+    We now assume that all previous messages satisfy the claimed equation at an arbitrary stage of the algorithm.
     The message computed in the while loop is then a contraction of one-hot encodings with basis encodings and
     \begin{align*}
         \mesfromtowith{\sedge}{\redge}
@@ -244,13 +244,13 @@ We then show that the messages are the one-hot encodings to the evaluations of t
         }{\catvariableof{\sedge\cap\redge}} \\
         &= \bigotimes_{\node\in\sedge\cap\redge} \onehotmapofat{\exfunctionof{\node}(\shortcatindices)}{\catvariableof{\node}} \, .
     \end{align*}
-    Thus the new message is also the tensor product of the one-hot encodings of the evaluated node functions.
+    Thus, the new message is also the tensor product of the one-hot encodings of the evaluated node functions.
     By induction, the property is therefore true for all messages.
 \end{proof}
 
 % Arbitrary DAG Hypergraph
 We notice that we can interpret any directed acyclic hypergraph for which each node appears exactly once as an outgoing node and which is decorated by boolean and directed tensors $\extnet$.
-Edges with empty incoming sets are carrying one-hot encodings of input states, and all further edges carry functions.
+Edges with empty incoming sets are carrying one-hot encodings of input states and all further edges carry functions.
 
 \input{../examples/neural_paradigm/m_adic_propagation}
 

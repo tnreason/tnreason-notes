@@ -1,10 +1,10 @@
 \begin{example}[Sum of integers in $\catdim$-adic representation]
     \label{exa:madicRepresentation}
-    Let us develop a tensor network representation of integer summations on the set $[\catdim^{\catorder}]=\{0,\ldots,\catdim^{\catorder}-1\}$, where $\catdim,\catorder\in\nn$,
+    We develop a tensor network representation of integer summations on the set $[\catdim^{\catorder}]=\{0,\ldots,\catdim^{\catorder}-1\}$, where $\catdim,\catorder\in\nn$,
     \begin{align*}
         + \defcols [\catdim^\catorder] \times [\catdim^\catorder] \rightarrow [\catdim^{\catorder+1}]
         \quad,\quad
-        +(i,\tilde{i}) = i+\tilde{i} \,
+        +(i,\tilde{i}) = i+\tilde{i} \,,
     \end{align*}
     which have a $\catdim$-adic representation of length $\catorder$.
     We define an index interpretation map
@@ -25,7 +25,7 @@
         \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables}
         \otimes \onehotmapofat{\tildecatindexof{[\catorder]}}{\tildecatvariableof{[\catorder]}} \, .
     \end{align*}
-    We notice that the tensor space of $\bencodingof{+}$ is of dimension $\catdim^{3\cdot\catorder+1}$ increasing exponentially in $\catorder$.
+    Note that the tensor space of $\bencodingof{+}$ is of dimension $\catdim^{3\cdot\catorder+1}$ increasing exponentially in $\catorder$.
     Feasible representation of this tensor for large $\catorder$ therefore requires tensor network decompositions, which we now provide based on a decomposition hypergraph.
     The targeted function to be decomposed is the representation of the integer sum by
     \begin{align*}
@@ -34,7 +34,7 @@
         \marysumsymbol(\shortcatindices,\tildecatindexof{[\catorder]}) =
         \invindexinterpretationat{\indexinterpretationat{\shortcatindices}+\indexinterpretationat{\tildecatindexof{[\catorder]}}} \, .
     \end{align*}
-    We build a decomposition hypergraph $\graph=(\nodes,\edges)$ (see \defref{def:decompositionHypergraph}) consistent in $4\cdot \catorder$ nodes (see \figref{fig:decompositionMarySum}a) .
+    We build a decomposition hypergraph $\graph=(\nodes,\edges)$ (see \defref{def:decompositionHypergraph}) consisting of $4\cdot \catorder$ nodes (see \figref{fig:decompositionMarySum}a) .
     The nodes carry the $(3\cdot\catorder +1)$ variables $\shortcatvariables,\seccatvariableof{[\catorder]},\headvariableof{[\catorder+1]}$ of dimension $\catdim$ constructed above and $\catorder-1$ auxiliary variables $\thirdcatvariableof{[\catorder-1]}$ of dimension $2$ representing carry bits.
     The directed hyperedges of $\graph$ are
     \begin{align*}
