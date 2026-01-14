@@ -152,7 +152,7 @@ To ease notation, we often omit the set notation by brackets $\{\cdot\}$. % and 
 
 \subsection{Normalizations}
 
-\martin{ADD INTRO SENTENCE}
+Based on generic contractions, we now introduce normalizations.
 
 %% Directionality by Normalization
 \begin{definition}
@@ -255,7 +255,8 @@ Based on these concepts, we define the most general tensor-network architecture 
 
 \begin{definition}[\ComputationActivationNetwork{} (\CompActNets{})]
     \label{def:compActNets}
-    Given a function $\sstat : \facstates \rightarrow \parspace$, and a hypergraph $\graph=(\nodes,\edges)$ with nodes $[\seldim]\subset\nodes$ containing the image coordinates of $\sstat$, we define the by $\sstat$ computable and by $\graph$ activated family of distributions by
+    Let there be a function $\sstat : \facstates \rightarrow \parspace$ and a hypergraph $\graph=(\nodes,\edges)$ with nodes $[\seldim]\subset\nodes$ containing the image coordinates of $\sstat$.
+    We define the by $\sstat$ computable and by $\graph$ activated family of distributions by
     \begin{align*}
         \realizabledistsof{\sstat,\graph}
         = \left\{ \normalizationof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\contractionof{\acttensor}{\headvariables} %\} \cup \{\hypercoreofat{\edge}{\sstatcatof{\edge}} \wcols \edgein \}

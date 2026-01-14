@@ -5,7 +5,7 @@ We call \CompActNets{} \HybridLogicNetworks{} in the special case of Boolean sta
 
 \subsection{Parametrization}
 
-%We now investigate hybrid logical and probabilistic models, which we want to call \HybridLogicNetworks{} (HLNs).
+We first introduce \HybridLogicNetworks{}, which can be regarded as a unification of logical and probabilistic models.
 
 \begin{definition}[\HybridLogicNetwork{} (HLN)]
     \label{def:hybridLogicNetwork}
@@ -68,18 +68,18 @@ Given a dataset $\dataset$ consisting of $\datanum$ independent and identically 
     \lossof{\hybridparam} \coloneqq -\frac{1}{\datanum} \sum_{\datindexin} \lnof{\probofat{\hlnparameters}{\shortcatvariables=\shortcatindices^{\datindex}}}
     \, .
 \end{align*}
-We notice that this is $\infty$ if and only if there is a data point $\datindexin$ with
+We notice that $\lossof{\hybridparam}=\infty$ if and only if there is a data point $\datindexin$ with
 \begin{align*}
     \hlnformulaat{\shortcatvariables=\shortcatindices^{\datindex}}=0 \, ,
 \end{align*}    
-\janina{where the tuple $(A,y_A)$ denotes the hard logic part of the network, $t=(f_1,\dots,f_L)$, and
+where the tuple $(\variableset,\headindexof{\variableset})$ denotes the hard logic part of the network, $t=(f_1,\dots,f_L)$, and
 \begin{align*}
     \hlnformulawith =
     \left(\bigwedge_{\selindex\in\hardlegset\wcols\headindexof{\selindex}=1} \enumformulaat{\shortcatvariables}\right)
     \land
     \left(\bigwedge_{\selindex\in\hardlegset\wcols\headindexof{\selindex}=0} \lnot\enumformulaat{\shortcatvariables}\right).
-\end{align*} (Moved from theorem in next subsection to here.)}
-If this is not the case, we can rewrite the loss using the empirical mean vector $\datameanwith\in\parspace$, which is defined for $\selindexin$ as
+\end{align*} %(Moved from theorem in next subsection to here.)}
+If $\lossof{\hybridparam}<\infty$, we can rewrite the loss using the empirical mean vector $\datameanwith\in\parspace$, which is defined for $\selindexin$ as
 \begin{align*}
     \datameanat{\indexedselvariable}
     = \frac{1}{\datanum} \sum_{\datindexin} \formulaofat{\selindex}{\shortcatvariables=\shortcatindices^{\datindex}} \, ,
@@ -107,7 +107,7 @@ We further optimize the coordinates $\selindex\in[\seldim]\setexcept{\hardlegset
 where
 \begin{align*}
     \hypercoreat{\headvariableof{\selindex}}
-    = \contractionof{\{\bencodingof{\enumformula} \wcols \selindexin\}
+    = \contractionof{\{\bencodingof{\formulaof{\secselindex}} \wcols \secselindex\in[\seldim]\}
         \cup\{\softactsymbolof{\secselindex,\canparam} \wcols \secselindex\in[\seldim]\ncond\secselindex\neq\selindex\}
         \cup\{\basemeasure\}}{\headvariableof{\selindex}} \, .
 \end{align*}
@@ -133,7 +133,7 @@ This is the computational bottleneck of the algorithm and can be approached by v
                 \State Compute
                 \begin{align*}
                     \hypercoreat{\headvariableof{\selindex}}
-                    = \contractionof{\{\bencodingof{\enumformula} \wcols \selindexin\}
+                    = \contractionof{\{\bencodingof{\formulaof{\secselindex}} \wcols \secselindex\in[\seldim]\}
                         \cup\{\softactsymbolof{\secselindex,\canparam} \wcols \secselindex\in[\seldim]\ncond\secselindex\neq\selindex\}
                         \cup\{\basemeasure\}}{\headvariableof{\selindex}}
                 \end{align*}
