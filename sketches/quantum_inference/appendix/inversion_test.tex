@@ -1,6 +1,8 @@
 \section{Inversion Test}
 
-For two formulas $\exformula,\secexformula$ we have
+\red{The inversion test is checking whether $\basqstateof{\exformula\oplus\secexformula}$ is (parallel to) uniform, using a Walsh-Hadamard transform.}
+
+For two formulas $\exformula,\secexformula$ we have (see \lemref{lem:basQstateOverlap})
 \begin{align*}
     \contraction{\basqstateof{\exformula},\basqstateof{\secexformula}}
     = \frac{1}{2^{\atomorder}} \cdot \cardof{\left\{\shortcatindices\in\atomstates \wcols \exformulaat{\indexedshortcatvariables}=\secexformula\left[\indexedshortcatvariables\right]\right\}}

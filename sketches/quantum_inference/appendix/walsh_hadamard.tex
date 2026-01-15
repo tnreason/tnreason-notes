@@ -1,0 +1,59 @@
+\section{Walsh-Hadamard transform}
+
+The application of Hadamard gates on the distributed variables afterwards results in a Walsh-Hadamard transform of the prepared state.
+
+\subsection{Transformation tensor}
+
+The transform is performed by applying Hadamard gates on each variable.
+This is equivalent with contraction of the tensor
+\begin{align*}
+    \hgate^{\catorder}\left[\catvariableof{[\catorder],\insymbol},\catvariableof{[\catorder],\outsymbol}\right] =
+    \bigotimes_{\catenumeratorin} \hgateat{\catvariableof{\catenumerator,\insymbol},\catvariableof{\catenumerator,\outsymbol}} \, ,
+\end{align*}
+which coordinates are
+\begin{align*}
+    \hgate^{\catorder}\left[\indexedcatvariableof{[\catorder],\insymbol},\indexedcatvariableof{[\catorder],\outsymbol}\right] =
+    \sqrt{\frac{1}{2^{\catorder}}} \left(-1\right)^{\sum_{\catenumeratorin}\catindexof{\catenumerator,\insymbol} \cdot \catindexof{\catenumerator,\outsymbol}} \, .
+\end{align*}
+
+We have
+\begin{align*}
+    \contractionof{\onehotmapofat{0}{\catvariableof{\insymbol}},
+        \hgateat{\catvariableof{\insymbol},\catvariableof{\outsymbol}}}{\catvariableof{\outsymbol}}
+    &= \sqrt{\frac{1}{2}} \onesat{\catvariableof{\outsymbol}} \\
+    \contractionof{\onehotmapofat{1}{\catvariableof{\insymbol}},
+        \hgateat{\catvariableof{\insymbol},\catvariableof{\outsymbol}}}{\catvariableof{\outsymbol}}
+    &= \sqrt{\frac{1}{2}}
+    \begin{bmatrix}
+        1 \\
+        -1
+    \end{bmatrix}\left[\catvariableof{\outsymbol}\right]
+\end{align*}
+and conversely
+\begin{align*}
+    \contractionof{\sqrt{\frac{1}{2}} \onesat{\catvariableof{\insymbol}},
+        \hgateat{\catvariableof{\insymbol},\catvariableof{\outsymbol}}}{\catvariableof{\outsymbol}}
+    &= \onehotmapofat{0}{\catvariableof{\outsymbol}} \\
+    \contractionof{\sqrt{\frac{1}{2}}
+        \begin{bmatrix}
+            1 \\
+            -1
+        \end{bmatrix}\left[\catvariableof{\insymbol}\right],
+        \hgateat{\catvariableof{\insymbol},\catvariableof{\outsymbol}}}{\catvariableof{\outsymbol}}
+    &= \onehotmapofat{1}{\catvariableof{\outsymbol}} \, .
+\end{align*}
+If and only if the function is constant, then the transformed state is the ground state.
+
+\subsection{Deutsch-Josza Algorithm}
+
+We so far worked mainly with basis encoding states, which are prepared by a Hadamard transform and the \computationCircuit{} on statistic qubits in the ground state $\fbasisat{\headvariable}$.
+This ensured that the deterministic function relation is a hard constraint in the measurement distribution.
+If we apply a \computationCircuit{} on a different initial state of the statistic qubits, this constraint is in general not satisfied any more.
+
+In the Deutsch-Josza algorithm \cite{deutsch_rapid_1992}, the Walsh-Hadamard transform of a sign encoding of a boolean function is measured to determine whether the function is constant.
+If $\exformula$ is constant, then the Walsh-Hadamard transform of the sign encoding results in the tensor product of the ground state $\onehotmapofat{0\ldots0}{\shortcatvariables}$ with a head qubit state.
+
+%% Application: Check equivalence of two formulas
+Concatenating the \computationCircuit{} to formulas $\formula$ and $\secformula$ prepares the \computationCircuit{} of the formula $\formula\oplus\secformula$.
+Both are equal or negations of each other, if and only if the distributed qubits are disentangled from the head qubit.
+Doing the Deutsch-Josza test on $\formula\oplus\secformula$ thus decides whether two formulas are equal or negations of each other.

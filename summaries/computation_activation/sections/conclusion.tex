@@ -1,4 +1,4 @@
-\section{Conclusion \& Outlook}\label{sec:conclusion}
+\section{Conclusion \& outlook}\label{sec:conclusion}
 
 % Conclusion: Representation
 This work developed a tensor network formalism to capture in a unifying way the main concepts of AI, which build the core of the probabilistic, neural and logical approaches.
@@ -10,16 +10,16 @@ Moreover, we demonstrate the representation and training of hybrid models combin
 %The exact representation also encourages the carrying over of analysis of the mathematical concepts to the \CompActNets{}.
 
 % Conclusion: Reasoning by Contraction
-We have shown that model inference such as calculating marginal distributions and deciding entailment correspond with tensor network contractions.
-To efficiently perform these inferences, we presented message-passing schemes, which are shown to be exact in specific cases.
+We have shown that model inference such as the calculating marginal distributions and deciding entailment correspond with tensor network contractions.
+To efficiently perform these inferences, we presented message passing schemes, which have been shown to be exact in specific cases.
 In general, however, the efficient computation of contractions is not possible, since they are related to the $\mathrm{NP}$-hardness of probabilistic inferences in graphical models (see \cite{koller_probabilistic_2009}) and of logical reasoning (see \cite{russell_artificial_2021}).
 In cases where exact inference is not feasible, the derivation of error bounds for approximate inference schemes on \CompActNets{} is an interesting direction for future research.
 %We can understand them as approximation of (potentially intractable) contractions and will dedicate future work to study them in the tensor network formalism.
 
 % Outlook: Variational inference schemes
-%We in this work presented message-passing schemes as belief propagation in probability theory and syntactical inference algorithms in logics.
-Further approximation schemes to overcome this bottleneck are summarized under the umbrella of variational inference (see \cite{wainwright_graphical_2008}) such as generic expectation-propagation methods or mean field methods.
-While these schemes are developed either for graphical models or more general exponential families, it is fair to assume that similar methods can be derived for more general \CompActNets{}, such as \HybridLogicNetworks{}.
+%We in this work presented message passing schemes as belief propagation in probability theory and syntactical inference algorithms in logics.
+Further approximation schemes to overcome this bottleneck are summarized under the umbrella of variational inference (see \cite{wainwright_graphical_2008}), such as generic expectation-propagation methods or mean field methods.
+While these schemes are developed either for graphical models or more general exponential families, we plan to derive similar methods for more general \CompActNets{}, such as \HybridLogicNetworks{}.
 % Outlook: Monte-Carlo inference schemes
 Further frequently applied schemes are particle-based inference schemes such as Gibbs sampling.
 

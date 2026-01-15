@@ -10,7 +10,7 @@
         \item Each message is placed exactly once on $\scheduler$, when at a hyperedge all but the reverse message have been received.
         In our example, after execution of $(\edgeof{2},\edgeof{0})$ the message $(\edgeof{0},\edgeof{1})$ is placed on $\scheduler$ and after execution of $(\edgeof{1},\edgeof{0})$ the message $(\edgeof{0},\edgeof{2})$.
     \end{itemize}
-    In this implementation, \algoref{alg:treeBeliefPropagation} terminates after $\cardof{\dirovedges}=4$ iterations of the $\mathrm{While}$ loop.
+    In this implementation, \algoref{alg:treeBeliefPropagation} terminates after $\cardof{\dirovedges}=4$ iterations of the \whileSymbol{} loop.
     The exact marginals of the edge variables are then
     \begin{align*}
         \probat{\catvariableof{L},\catvariableof{G}}

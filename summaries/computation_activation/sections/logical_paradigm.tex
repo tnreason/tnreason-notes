@@ -1,9 +1,9 @@
 %\section{Decompositions based on Propositional Syntax}
-\section{The Logical Paradigm}\label{sec:logPar}
+\section{The logical paradigm}\label{sec:logPar}
 
 A tensor-based representation of propositional logic is developed by encoding boolean variables into vectors, defining formulas as boolean tensors, and showing how logical connectives and normal forms can be expressed as tensor contractions.
 
-\subsection{Propositional Semantics by Boolean Tensors}
+\subsection{Propositional semantics by boolean tensors}
 
 Starting with the introduction of propositional formulas as boolean tensors their decomposition is discussed with respect to a basis encoding. The basis encoding representation enables dealing with the negation operation of propositional formulas still in tensor format. Furthermore, the propositional formula then fits into the concept of \CompActNets{}.
 
@@ -82,12 +82,12 @@ Both $\formula$ and $\lnot\formula$ are thus \ComputationActivationNetworks{} to
 %This representation of propositional formulas with respect to basis encoding thus leads to \ComputationActivationNetworks{}, which were also used to describe probability distributions in the last section.
 %In this way the soft and hard logic can be combined in one framework.
 
-\subsection{Syntactical Decomposition of Propositional Formulas}
+\subsection{Syntactical decomposition of propositional formulas}
 
 Propositional formulas of concern often have a syntactic specification as composed functions.
 We can therefore apply the neural paradigm to find efficient representations of them.
 
-\begin{definition}[Syntactic Decompositions]
+\begin{definition}[Syntactic decompositions]
     \label{def:syntacticalDecomposition}
     A syntactic decomposition of a propositional formula $\exformula$ is a decomposition hypergraph (see \defref{def:decompositionHypergraph}) such that all nodes are decorated with the dimension $\catdimof{\node}=2$ and the composition function $\exformula$.
 \end{definition}
@@ -162,7 +162,7 @@ We thus have a tensor network representation of any propositional formula based 
 %Thus we have a tensor network representation of any propositional formula based on its syntactical decomposition, where the hypergraph of the syntactical decomposition equals the hypergraph of the representing tensor network.
 %
 
-\subsection{Entailment Decision by Contractions}
+\subsection{Entailment decision by contractions}
 
 We have already seen that the contraction of a propositional formula counts its models.
 This allows to define entailment between two propositional formulas as defined in the following.
@@ -187,7 +187,7 @@ This is equivalent to \defref{def:logicalEntailment} due to the equivalence of $
 
 \input{../examples/logical_paradigm/sudoku_entailment}
 
-\subsection{Efficient Representation of Knowledge Bases}
+\subsection{Efficient representation of kowledge bases}
 
 We now investigate the representation of propositional knowledge bases $\kb=\{\formulaof{\selindex}\wcols\selindexin\}$, which are sets of propositional formulas $\formulaof{\selindex}$.
 The conjunction of these formulas is the knowledge base formula
@@ -238,14 +238,14 @@ We use this to decompose knowledge bases into their individual formulas as follo
 
 \input{../examples/logical_paradigm/sudoku_decomposition}
 
-\subsection{Entailment Decision by Message-Passing}
+\subsection{Entailment decision by message passing}
 
 % Infeasible contractions
 Since contracting the whole tensor network is often infeasible, local contractions can be considered to decide entailment in some cases.
 Here, a local contraction describes the calculation of contractions along few closely connected tensors in the network.
 Before presenting the resulting Constraint Propagation algorithm, we first show two important properties of local entailment motivating the procedure.
 
-\begin{theorem}[Monotonicity of Propositional Logics]
+\begin{theorem}[Monotonicity of propositional logics]
     \label{the:monotonicityPL}
     If $\seckb\subset\kb$ and $\seckb\models\formula$ then also $\kb\models\formula$.
 \end{theorem}
@@ -267,7 +267,7 @@ To decide entailment, we can therefore investigate entailment on smaller parts o
 This is sound by the above theorem but not complete since it can happen that no smaller part of the knowledge base entails the formula while the whole knowledge base does.
 We can furthermore add entailed formulas to the knowledge base without changing it as is shown next.
 
-\begin{theorem}[Invariance of adding Entailed Formulas]
+\begin{theorem}[Invariance of adding entailed formulas]
     \label{the:addingEntailed}
     If and only if $\kb\models\formula$ we have that
     \begin{align*}
@@ -335,8 +335,8 @@ We further directly reduce the computation of messages to their support and call
     \end{align*}
 \end{theorem}
 \begin{proof}
-    We show this theorem by induction over the $\mathrm{While}$ loop of \algoref{alg:constraintPropagation}.
-    At the first iteration, we have for all messages that $\messagewith=\onesat{\catvariableof{\sedge\cap\redge}}$ and thus
+    We show this theorem by induction over the \whileSymbol{} loop of \algoref{alg:constraintPropagation}.
+    At the first iteration, we have for all messages $\messagewith=\onesat{\catvariableof{\sedge\cap\redge}}$ and thus
     \begin{align}
         \label{eq:nzMessageAddingEquivalence}
         \extnet = \contractionof{\{\extnet\}\cup\{\messagewith\wcols(\sedge,\redge)\in\dirovedges\}}{\nodevariables} \, .

@@ -40,8 +40,8 @@
             1.098612
         \end{bmatrix} \, .
     \end{align*}
-    To derive this, we note that \algoref{alg:AMM_HLN} treats formula $\formulaof{0}$ as a hard constraint and assigns $\hardlegset = \{0\}$ and $\headindexof{\hardlegset} = 1$.
-    In the $\mathrm{While}$ loop we then have for the formula $\formulaof{1}$ that
+    To derive this, we notice that \algoref{alg:AMM_HLN} treats formula $\formulaof{0}$ as a hard constraint and assigns $\hardlegset = \{0\}$ and $\headindexof{\hardlegset} = 1$.
+    In the \whileSymbol{} loop we then have for the formula $\formulaof{1}$
     \begin{align*}
         \hypercoreat{\headvariableof{1}}
         = \contractionof{\tbasisat{\headvariableof{0}},\bencodingofat{\formulaof{0}}{\headvariableof{0},\catvariableof{F},\catvariableof{A1},\catvariableof{A2}},
@@ -52,6 +52,6 @@
         \end{bmatrix}
     \end{align*}
     since $\formulaof{0}$ has $4$ models, of which $3$ are also models of $\formulaof{1}$ and $1$ is instead a model of $\lnot\formulaof{1}$.
-    Observe that the tensor $\hypercoreat{\headvariableof{1}}$ does not change in any further iteration of the $\mathrm{While}$ loop and the parameter $\canparamat{\selvariable=1}$ therefore stays constant until the termination of the algorithm.
+    Notice, that the tensor $\hypercoreat{\headvariableof{1}}$ will not change in any further iteration of the \whileSymbol{} and the parameter $\canparamat{\selvariable=1}$ will therefore stay constant until the termination of the algorithm.
 %    We compare these with the satisfaction rates of $\formulaof{1}$
 \end{example}
