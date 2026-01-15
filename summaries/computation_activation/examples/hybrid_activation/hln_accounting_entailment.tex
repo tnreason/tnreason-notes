@@ -1,5 +1,5 @@
 \begin{example}[Continuation of \exaref{exa:hlnAccountingAMM}]
-    Let us consider again the \HybridLogicNetwork{} $\probof{(\catvariableof{A1}\oplus\catvariableof{A2},\catvariableof{F}\Rightarrow\catvariableof{A1}),\big(\{0\},(1),(0,\lnof{3})\big)}$ from \exaref{exa:hlnAccountingAMM} and assume we want to decide the probabilistic entailment of the formula
+    Consider again the \HybridLogicNetwork{} $\probof{(\catvariableof{A1}\oplus\catvariableof{A2},\catvariableof{F}\Rightarrow\catvariableof{A1}),\big(\{0\},(1),(0,\lnof{3})\big)}$ from \exaref{exa:hlnAccountingAMM} and assume we want to decide the probabilistic entailment of the formula
     \begin{align*}
         \secexformulaat{\catvariableof{A1},\catvariableof{A2},\catvariableof{F}}
         = \lnot\catvariableof{A1} \lor \lnot\catvariableof{A2} \lor \lnot\catvariableof{F} \, ,
@@ -10,7 +10,7 @@
         \contraction{\probofat{(\catvariableof{A1}\oplus\catvariableof{A2},\catvariableof{F}\Rightarrow\catvariableof{A1}),\big(\{0\},(1),(0,\lnof{3})\big)}{\catvariableof{A1},\catvariableof{A2},\catvariableof{F}},\secexformulaat{\catvariableof{A1},\catvariableof{A2},\catvariableof{F}}} =1
     \end{align*}
     if and only if $\catvariableof{A1}\oplus \catvariableof{A2} \models \lnot\catvariableof{A1} \lor \lnot\catvariableof{A2} \lor \lnot\catvariableof{F}$.
-    By \defref{def:logicalEntailment} this entailment holds, since by the De-Morgan rule
+    By \defref{def:logicalEntailment}, this entailment holds since by the De-Morgan rule
     \begin{align*}
         \contraction{\catvariableof{A1}\oplus \catvariableof{A2},\lnot \left(\lnot\catvariableof{A1} \lor \lnot\catvariableof{A2} \lor \lnot\catvariableof{F}\right)}
         &= \contraction{\catvariableof{A1}\oplus \catvariableof{A2},\catvariableof{A1},\catvariableof{A2},\catvariableof{F}} \\

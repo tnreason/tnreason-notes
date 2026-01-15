@@ -43,7 +43,7 @@ To this end, we enumerate the models $\shortcatindices^{\decindex}$ of $\formula
 \input{../examples/logical_paradigm/prop_formula_basCP.tex}
 
 \paragraph{Basis encoding}
-Representing Booleans by elements in $\{0,1\}$ leads to the problem that negation is an affine transformation and cannot be represented by multilinear tensors. %~\cite[Section 4.1.1]{goessmann_tensor-network_2025}.
+Representing booleans by elements in $\{0,1\}$ leads to the problem that negation is an affine transformation and cannot be represented by multilinear tensors. %~\cite[Section 4.1.1]{goessmann_tensor-network_2025}.
 Therefore, instead of using this \emph{coordinate calculus} an approach based on \emph{basis calculus} is employed, which is explained in this section.
 To be able to express different kinds of connectives and, finally, any propositional formula by multilinear tensors, booleans are encoded by one-hot encodings as defined in \defref{def:onehotenc}.
 Propositional formulas $\formula$ can be expressed in terms of a tensor describing the mapping and its negation by
@@ -92,7 +92,7 @@ We can therefore apply the neural paradigm to find efficient representations of 
     A syntactic decomposition of a propositional formula $\exformula$ is a decomposition hypergraph (see \defref{def:decompositionHypergraph}) such that all nodes are decorated with the dimension $\catdimof{\node}=2$ and the composition function $\exformula$.
 \end{definition}
 
-Thus we have a tensor network representation of any propositional formula based on its syntactic decomposition, where the hypergraph of the syntactic decomposition equals the hypergraph of the representing tensor network.
+We thus have a tensor network representation of any propositional formula based on its syntactic decomposition, where the hypergraph of the syntactic decomposition equals the hypergraph of the representing tensor network.
 
 \input{../examples/logical_paradigm/prop_formula_syntax}
 
@@ -165,13 +165,13 @@ Thus we have a tensor network representation of any propositional formula based 
 \subsection{Entailment Decision by Contractions}
 
 We have already seen that the contraction of a propositional formula counts its models.
-This allows to define entailment between two propositional formulas as follows.
+This allows to define entailment between two propositional formulas as defined in the following.
 To generalize the treatment, we no longer demand that the variables of a formula are of dimension $2$.
 We further use $\lnot\formulawith=\oneswith-\formulawith$.
 
 \begin{definition}[Entailment of propositional formulas]
     \label{def:logicalEntailment}
-    Given two propositional formulas $\kb$ and $\formula$ we say that $\kb$ entails $\formula$, denoted by $\kb\models\formula$, if any model of $\kb$ is also a model of $\formula$, that is
+    Given two propositional formulas $\kb$ and $\formula$, we say that $\kb$ entails $\formula$, denoted by $\kb\models\formula$, if any model of $\kb$ is also a model of $\formula$, that is
     \begin{align*}
         \contraction{\kbwith,\lnot\formulawith}=0 \, .
     \end{align*}
@@ -180,7 +180,7 @@ We further use $\lnot\formulawith=\oneswith-\formulawith$.
 
 % Relation to classical definition of entailment
 Classically (see e.g. \cite{russell_artificial_2021}) entailment in propositional logics is defined as the unsatisfiability of $\kb\land\lnot\exformula$.
-This is equivalent to \defref{def:logicalEntailment}, since $\contraction{\kbwith,\lnot\formulawith}=0$ is equivalent to $\contraction{(\kb \land (\lnot\exformula))[\shortcatvariables]}=0$, which is the unsatisfiability of $\kb\land\lnot\exformula$.
+This is equivalent to \defref{def:logicalEntailment} due to the equivalence of $\contraction{\kbwith,\lnot\formulawith}=0$ and $\contraction{(\kb \land (\lnot\exformula))[\shortcatvariables]}=0$, which is the unsatisfiability of $\kb\land\lnot\exformula$.
 
 %Entailment is the central operation of "logical inference", i.e. deduce true statements from known statements.
 %In the tensor network representation, these entailments can be decided by contracting the whole representing tensor with the statement, that needs to be checked.
@@ -195,11 +195,11 @@ The conjunction of these formulas is the knowledge base formula
     \kbwith
     = \bigwedge_{\selindexin} \formulaofat{\selindex}{\shortcatvariables} \, .
 \end{align*}
-To show efficient representations, we will use the following identities.
+To show efficient representations, we use the following identities.
 
 \begin{lemma}[Computation Network Symmetries]
     \label{lem:comNetSymmetries}
-    We have for the $\catorder$-ary $\land$-connective (where $\catorder\in\nn$) and the unary $\lnot$-connective that
+    For the $\catorder$-ary $\land$-connective (where $\catorder\in\nn$) and the unary $\lnot$-connective it holds that
     \begin{align*}
         \contractionof{\tbasisat{\headvariable},\bencodingofat{\land}{\headvariable,\shortcatvariables}}{\shortcatvariables}
         = \bigotimes_{\catenumeratorin} \tbasisat{\catvariableof{\catenumerator}}
@@ -242,7 +242,7 @@ We use this to decompose knowledge bases into their individual formulas as follo
 
 % Infeasible contractions
 Since contracting the whole tensor network is often infeasible, local contractions can be considered to decide entailment in some cases.
-Here a local contraction describes the calculation of contractions along few closely connected tensors in the network.
+Here, a local contraction describes the calculation of contractions along few closely connected tensors in the network.
 Before presenting the resulting Constraint Propagation algorithm, we first show two important properties of local entailment motivating the procedure.
 
 \begin{theorem}[Monotonicity of Propositional Logics]
@@ -264,12 +264,12 @@ Before presenting the resulting Constraint Propagation algorithm, we first show 
     \end{align*}
 \end{proof}
 To decide entailment, we can therefore investigate entailment on smaller parts of the knowledge base.
-This is sound by the above theorem, but not complete, since it can happen that no smaller part of the knowledge base entails the formula, but the whole knowledge base does.
-We can furthermore add entailed formulas to the knowledge base without changing it, as we show next.
+This is sound by the above theorem but not complete since it can happen that no smaller part of the knowledge base entails the formula while the whole knowledge base does.
+We can furthermore add entailed formulas to the knowledge base without changing it as is shown next.
 
 \begin{theorem}[Invariance of adding Entailed Formulas]
     \label{the:addingEntailed}
-    If and only if $\kb\models\formula$ we have
+    If and only if $\kb\models\formula$ we have that
     \begin{align*}
         \kbwith
         = \contractionof{\kbwith,\formulawith}{\shortcatvariables} \, .
@@ -280,10 +280,10 @@ We can furthermore add entailed formulas to the knowledge base without changing 
     \begin{align*}
         \kbwith
         &= \contractionof{\kbwith,(\formulawith+\lnot\formulawith)}{\shortcatvariables} \\
-        &= \contractionof{\kbwith,\formulawith}{\shortcatvariables}  + \contractionof{\kbwith,\lnot\formulawith}{\shortcatvariables}  \\
+        &= \contractionof{\kbwith,\formulawith}{\shortcatvariables}  + \contractionof{\kbwith,\lnot\formulawith}{\shortcatvariables} \,. \\
         %&= \contractionof{\kbwith,\formulawith}{\shortcatvariables} \, .
     \end{align*}
-    Since $\contractionof{\kbwith,\lnot\formulawith}{\shortcatvariables}$ is boolean, we thus have that
+    Since $\contractionof{\kbwith,\lnot\formulawith}{\shortcatvariables}$ is boolean, we have that
     \begin{align*}
         \kbwith=\contractionof{\kbwith,\formulawith}{\shortcatvariables}
     \end{align*}
@@ -297,9 +297,9 @@ The mechanism of \theref{the:addingEntailed} provides us with a means to store e
 One way to exploit this accessibility of local entailment information are message passing schemes similar to \algoref{alg:treeBeliefPropagation} propagating the information.
 This approach decides local entailment by iteratively adding entailed formulas to the knowledge base and checking further entailment on neighboring tensors of the knowledge base.
 Since for entailment decisions the support of the contractions is sufficient, we can apply non-zero indicators before sending contraction messages.
-We then schedule new messages in the direction $(\sedge,\redge)$, once the support of a message received at $\sedge$ has been changed.
-Note that such a scheduling system is guaranteed to converge, since there can only be a finite number of message changes.
-We further directly reduce the computation of messages to their support and call the resulting \algoref{alg:constraintPropagation} Constraint Propagation.
+We then schedule new messages in the direction $(\sedge,\redge)$ once the support of a message received at $\sedge$ has been changed.
+Note that such a scheduling system is guaranteed to converge since there can only be a finite number of message changes.
+We further directly reduce the computation of messages to their support and call the resulting Constraint Propagation (\algoref{alg:constraintPropagation}).
 
 \begin{algorithm}[hbt!]
     \caption{Constraint Propagation}\label{alg:constraintPropagation}
@@ -329,14 +329,14 @@ We further directly reduce the computation of messages to their support and call
 
 \begin{theorem}
     \label{the:constraintPropagationSoundness}
-    All messages during constraint propagation are sound, that is for all $(\sedge,\redge)\in\dirovedges$ it holds that
+    All messages during constraint propagation are sound, meaning that for all $(\sedge,\redge)\in\dirovedges$ it holds that
     \begin{align*}
         \nonzeroof{\contractionof{\extnet}{\catvariableof{\sedge\cap\redge}}} \prec \messagewith \, .
     \end{align*}
 \end{theorem}
 \begin{proof}
     We show this theorem by induction over the $\mathrm{While}$ loop of \algoref{alg:constraintPropagation}.
-    At the first iteration, we have for all messages $\messagewith=\onesat{\catvariableof{\sedge\cap\redge}}$ and thus
+    At the first iteration, we have for all messages that $\messagewith=\onesat{\catvariableof{\sedge\cap\redge}}$ and thus
     \begin{align}
         \label{eq:nzMessageAddingEquivalence}
         \extnet = \contractionof{\{\extnet\}\cup\{\messagewith\wcols(\sedge,\redge)\in\dirovedges\}}{\nodevariables} \, .
@@ -350,8 +350,8 @@ We further directly reduce the computation of messages to their support and call
         &= \messagewith \, .
     \end{align*}
 
-    Let us now assume that at an arbitrary state of the algorithm the inequality holds for all previously sent messages.
-    By \theref{the:addingEntailed} we can contract the messages with the tensor network without changing it, and \eqref{eq:nzMessageAddingEquivalence} thus still holds.
+    We now assume that at an arbitrary state of the algorithm the inequality holds for all previously sent messages.
+    By \theref{the:addingEntailed} we can contract the messages with the tensor network without changing it and \eqref{eq:nzMessageAddingEquivalence} thus still holds.
     We then conclude with \theref{the:monotonicityPL} that the claimed property also holds for the new message.
 \end{proof}
 
