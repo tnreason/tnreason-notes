@@ -1,19 +1,19 @@
 \section{Proof of the Factorization Theorems}\label{sec:proofFactorizationTheorems}
 
-Let us now provide proofs for the factorization theorems stated in \secref{sec:probPar}.
+We now provide proofs for the factorization theorems stated in \secref{sec:probPar}.
 These proofs are classically known (see e.g. \cite{koller_probabilistic_2009} for Hammersley-Clifford and \cite{casella_statistical_2001} for Fisher-Neyman).
-We here provide them in our tensor networks notation and for hypergraphs for completeness. % Since typically HC is shown on graphs.
+Here, they are provided in our tensor networks notation and for hypergraphs for completeness. % Since typically HC is shown on graphs.
 
 \subsection{Hammersley-Clifford}
 
 %Let us now proof the Hammersley-Clifford theorem formulated in \charef{cha:probRepresentation} as \theref{the:condIndMN}.
-Different to the original statement (see \cite{clifford_markov_1971}), we here proof the analogous statement for hypergraphs, where we have to demand the property of clique-capturing defined in \defref{def:ccHypergraph}.
+Different to the original statement (see \cite{clifford_markov_1971}), we proof the analogous statement for hypergraphs, where we have to demand the property of clique-capturing defined in \defref{def:ccHypergraph}.
 We start with showing the following Lemmata to be exploited in the proof.
 
 \begin{lemma}
     \label{the:contractionFactorization}
     Let $\hypercoreat{\catvariableof{\nodes}}$ be a positive tensor and $\seccatindexof{\nodes}$ an arbitrary index.
-    Then we have for any index $\seccatindexof{\nodes}$
+    Then we have for any index $\seccatindexof{\nodes}$ that
     \begin{align*}
         \hypercoreat{\catvariableof{\nodes}}
         = \contractionof{
@@ -23,13 +23,13 @@ We start with showing the following Lemmata to be exploited in the proof.
     where the exponentiation is performed coordinatewise and positivity of $\hypercore$ ensures the well-definedness.
 \end{lemma}
 \begin{proof}
-    It suffices to show, that for an arbitrary index $\catindexof{\nodes}$ we have
+    It suffices to show that for an arbitrary index $\catindexof{\nodes}$ we have
     \begin{align*}
         \hypercoreat{\indexedcatvariableof{\nodes}}
         = \prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
         \big(\contractionof{\hypercore}{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}\big)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \, .
     \end{align*}
-    We do this by applying a logarithm on the right hand side and grouping the terms by $\thirdnodes$ as
+    We do this by applying a logarithm on the right-hand side and grouping the terms by $\thirdnodes$ as
     \begin{align*}
         %\lnof{\hypercoreat{\indexedcatvariableof{\nodes}}}
         & \lnof{\prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
@@ -55,7 +55,7 @@ We start with showing the following Lemmata to be exploited in the proof.
 \begin{lemma}
     \label{lem:independentContractionFactorization}
     Let $\hypercore$ be a positive tensor, $\secnodes\subset\nodes$ and arbitrary subset and $\catindexof{\secnodes}$ an arbitrary index.
-    When there are $\nodea,\nodeb \in\secnodes$, such that
+    When there are $\nodea,\nodeb \in\secnodes$ such that
     \begin{align*}
         \normalizationofwrt{\hypercore}{\catvariableof{\nodea},\catvariableof{\nodeb}}{\catvariableof{\nodes\setexcept{\{\nodea,\nodeb\}}}}
         = \contractionof{
@@ -75,7 +75,7 @@ We start with showing the following Lemmata to be exploited in the proof.
         Z_{\thirdnodes}
         = \contractionof{\hypercore}{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}} \, .
     \end{align*}
-    By reorganizing the sum over $\thirdnodes\subset\secnodes$ into  $\thirdnodes\subset\secnodes\setexcept{\{\nodea\cup\nodeb\}}$ we have
+    By reorganizing the sum over $\thirdnodes\subset\secnodes$ into  $\thirdnodes\subset\secnodes\setexcept{\{\nodea\cup\nodeb\}}$, we have that
     \begin{align}
         \label{eq:indContFacProof}
         \prod_{\thirdnodes\subset\secnodes}
@@ -91,7 +91,7 @@ We start with showing the following Lemmata to be exploited in the proof.
             }
         \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \, .
     \end{align}
-    From the independence assumption it follows that for any index $\catindex$
+    From the independence assumption, it follows that for any index $\catindex$
     \begin{align*}
         & \normalizationofwrt{\hypercore}{
             \indexedcatvariableof{\nodea}
@@ -106,7 +106,7 @@ We start with showing the following Lemmata to be exploited in the proof.
             \indexedcatvariableof{\nodea}
         }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}\cup\{\nodea,\nodeb\}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},  \catvariableof{\nodeb} = \seccatindexof{\nodeb}}
     \end{align*}
-    Applying this in each squares bracket term of \eqref{eq:indContFacProof} we get
+    Applying this in each squares bracket term of \eqref{eq:indContFacProof}, we get that
     \begin{align*}
         \frac{
             Z_{\thirdnodes}
@@ -151,7 +151,7 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
 %\end{theorem}
 \begin{proof}[Proof of \theref{the:factorizationHammersleyClifford}]
     $ii)\Rightarrow i)$
-    By \lemref{the:contractionFactorization} we have for any indeces $\catindexof{\nodes}$ and $\seccatindexof{\nodes}$
+    By \lemref{the:contractionFactorization} we have for any indices $\catindexof{\nodes}$ and $\seccatindexof{\nodes}$
     \begin{align*}
         \probat{\indexedcatvariableof{\nodes}} =
         \prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
@@ -160,7 +160,7 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
         %	\contractionof{\extnet\cup\{\onehotmapof{\catindexof{\nodes\setexcept{\thirdnodes}}}\}}{\catvariableof{\thirdnodes}}
         \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \, .
     \end{align*}
-    Using the clique-capturing assumption of \theref{the:factorizationHammersleyClifford} we find for any subset $\secnodes\subset\nodes$, which is not contained in a hyperedge, $\nodea,\nodeb \in\secnodes$ such that $\catvariableof{\nodea}$ is independent of $\catvariableof{\nodeb}$ conditioned on $\catvariableof{\secnodes\setexcept{\{\nodea,\nodeb\}}}$.
+    Using the clique-capturing assumption of \theref{the:factorizationHammersleyClifford}, we find for any subset $\secnodes\subset\nodes$, which is not contained in a hyperedge, $\nodea,\nodeb \in\secnodes$ such that $\catvariableof{\nodea}$ is independent of $\catvariableof{\nodeb}$ conditioned on $\catvariableof{\secnodes\setexcept{\{\nodea,\nodeb\}}}$.
     If no such nodes $\nodea,\nodeb \in\secnodes$ exists, $\secnodes$ would be contained in a hyperedge, since the hypergraph is assumed to be clique-capturing.
     By \lemref{lem:independentContractionFactorization} we then have
     \begin{align*}
