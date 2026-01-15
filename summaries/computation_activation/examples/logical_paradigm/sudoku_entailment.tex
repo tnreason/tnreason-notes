@@ -11,7 +11,7 @@
         \left( \bigwedge_{r0,c0\in[\sudokunum], i\in[\sudokunum^2]} \left( \woneoplus_{r1,c1\in[\sudokunum]} \catvariableof{r0,r1,c0,c1,i} \right) \right) \, ,
     \end{align*}
     where $\woneoplus$ is the $\sudokunum^2$-ary exclusive or connective (that is $1$ if and only if exactly one of the arguments is $1$).
-    The four outer brackets in $\kb$ mark the constraints, that at each position exactly one number is assigned, further that in each row each number is assigned once, and similar for the columns and the squares of the board.
+    The four outer brackets in $\kb$ mark the constraints that at each position exactly one number is assigned, further that in each row each number is assigned once, and similar for the columns and the squares of the board.
     When solving a specific Sudoku instance, one typically knows from an initial board assignment $\sudokustartevidence$ a collection of atomic variables, which hold, and needs to find further atomic variables, which are entailed.
     This means, we need to decide for each $(r_0,r_1,c_0,c_1,i)\notin \sudokustartevidence$ whether the Sudoku rules and the initial board imply that the atomic variable $\catvariableof{r0,r1,c0,c1,i}$ (i.e. assignment to the board) is true
     \begin{align*}
@@ -24,7 +24,7 @@
     \end{align}
 %    In other words, for each assignment to the board, that fulfills the Sudoku rules and the initial board, do we write the number $n$ in row $(r0,r1)$ and column $(c0,c1)$?
     If and only if the Sudoku has a unique solution given the initial board assignment $\sudokustartevidence$, exactly one of these entailment statements holds for each $(r_0,r_1,c_0,c_1,i)\notin \sudokustartevidence$.
-    Deciding which is equivalent to solving of the Sudoku.
+    Deciding which is equivalent to solving the Sudoku.
 %    We model Sudoku as a hypergraph of
 %    \begin{itemize}
 %        \item Nodes labeled by $\sudokunum^6$ tuples $(r0,r1,c0,c1,i)$:
@@ -41,7 +41,7 @@
 %        Each hypercore is carried by a tensor representing the logical formula $\woneoplus$ on $\sudokunum^2$ boolean variables.
 %    \end{itemize}
 
-    For a more detailed example, let $n=2$ and
+    For a more concrete example, let $n=2$ and
     \begin{align*}
         \sudokustartevidence = \{&(0,0,0,0,0),(0,0,1,0,2),(0,0,1,1,1), %first row
         (0,1,0,1,1), \\ %second row
@@ -62,5 +62,5 @@
             \draw[thick]([xshift=-9.5pt,yshift=0.6pt]M-2-1.south) -- ([xshift=9.5pt,yshift=0.6pt]M-2-4.south);
         \end{sudoku4x4}
     \end{center}
-    We will later demonstrate in \exaref{exa:sudokuEntailment} a solution algorithm to solve this instance, after we have derived sparse tensor network representations in \exaref{exa:sudokuDecomposition}.
+    After deriving a sparse tensor network representations in \exaref{exa:sudokuDecomposition}, we demonstrate a solution algorithm to solve this instance in \exaref{exa:sudokuEntailment}.
 \end{example}

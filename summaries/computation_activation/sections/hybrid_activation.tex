@@ -1,7 +1,7 @@
 \section{\HybridLogicNetworks{}}\label{sec:hln}
 
-Let us now exploit the common formulation of logical formulas and probabilistic models in \CompActNets{} to define hybrid models that combine both aspects.
-We call \CompActNets{} \HybridLogicNetworks{} in the special case of Boolean statistics $\sstat$ and elementary activations.
+We now exploit the common formulation of logical formulas and probabilistic models in \CompActNets{} to define hybrid models that combine both aspects.
+We call \CompActNets{} \HybridLogicNetworks{} in the special case of boolean statistics and elementary activations.
 
 \subsection{Parametrization}
 
@@ -27,12 +27,12 @@ We first introduce \HybridLogicNetworks{}, which can be regarded as a unificatio
 \end{definition}
 
 %% Parametrization explanation
-We notice that the parametrization by $\hybridparamset$ is one-to-one for any non-vanishing elementary activation tensor up to a scalar factor.
+Note that the parametrization by $\hybridparamset$ is one-to-one for any non-vanishing elementary activation tensor up to a scalar factor.
 Given an arbitrary elementary activation tensor $\bigotimes_{\selindexin}\acttensorlegwith$, we can always find a corresponding tuple in $\hybridparamset$ by choosing\footnote{Here $\nonzeroof{\cdot}$ is the indicator of non-zero entries acting coordinatewise and $\onesat{\headvariableof{\selindex}}$ is the vector $[1,1]^T$.}
 \begin{align*}
-    \hardlegset = \{\selindex \wcols \nonzeroof{\acttensorlegwith}\neq\onesat{\headvariableof{\selindex}}\} \, ,
+    \hardlegset = \{\selindex \wcols \nonzeroof{\acttensorlegwith}\neq\onesat{\headvariableof{\selindex}}\} \, .
 \end{align*}
-further for all $\selindex\in\hardlegset$
+Furthermore, for all $\selindex\in\hardlegset$
 \begin{align*}
     \headindexof{\selindex}
     = \begin{cases}
@@ -49,21 +49,21 @@ and a parameter vector $\canparamwithin$ defined for all $\selindexin$ as
         & \ifspace \selindex\notin\hardlegset \, .
     \end{cases}
 \end{align*}
-Then we have by construction that there is $\lambda>0$ with
+Then, by construction there is $\lambda>0$ with
 \begin{align*}
     \bigotimes_{\selindexin}\acttensorlegwith
     = \lambda \cdot \paracttensorwith \, .
 \end{align*}
 
-Let us demonstrate the utility of \HybridLogicNetworks{} with an example from accounting.
+We demonstrate the utility of \HybridLogicNetworks{} with an example from accounting.
 
 \input{../examples/hybrid_activation/hln_accounting_rep}
 
 \subsection{Parameter estimation in \HybridLogicNetworks{}}\label{sec:paramEst}
 
 %% Likelihood maximization
-Let us now briefly discuss how \HybridLogicNetworks{} can be trained on data based on likelihood maximization.
-Given a dataset $\dataset$ consisting of $\datanum$ independent and identically distributed samples from an unknown distribution, we want to find a \HybridLogicNetwork{} $\hlnwith$ with a statistic $t=(f_1,\dots,f_L)$ that maximizes the data likelihood
+We now briefly discuss how \HybridLogicNetworks{} can be trained on data based on likelihood maximization.
+Given a dataset $\dataset$ consisting of $\datanum$ independent and identically distributed samples from an unknown distribution, the task is to find a \HybridLogicNetwork{} $\hlnwith$ with a statistic $t=(f_1,\dots,f_L)$ that maximizes the data likelihood
 \begin{align*}
     \lossof{\hybridparam} \coloneqq -\frac{1}{\datanum} \sum_{\datindexin} \lnof{\probofat{\hlnparameters}{\shortcatvariables=\shortcatindices^{\datindex}}}
     \, .
@@ -80,7 +80,7 @@ Given a dataset $\dataset$ consisting of $\datanum$ independent and identically 
 %     \left(\bigwedge_{\selindex\in\hardlegset\wcols\headindexof{\selindex}=0} \lnot\enumformulaat{\shortcatvariables}\right).
 % \end{align*} (Moved from theorem in next subsection to here.)}
 % If this is not the case, w
-We can rewrite the loss using the empirical mean vector $\datameanwith\in\parspace$, which is defined for $\selindexin$ as
+The loss can be rewritten using the empirical mean vector $\datameanwith\in\parspace$, which is defined for $\selindexin$ as
 \begin{align*}
     \datameanat{\indexedselvariable}
     = \frac{1}{\datanum} \sum_{\datindexin} \formulaofat{\selindex}{\shortcatvariables=\shortcatindices^{\datindex}} \, ,
@@ -103,7 +103,7 @@ We further optimize the coordinates $\selindex\in[\seldim]\setexcept{\hardlegset
     = \lnof{
         \frac{\meanparamat{\indexedselvariable}}{(1-\meanparamat{\indexedselvariable})}
         \cdot \frac{\hypercoreat{\headvariableof{\selindex}=0}}{\hypercoreat{\headvariableof{\selindex}=1}}
-    } \, .
+    } \, ,
 \end{align*}
 where
 \begin{align*}
@@ -112,9 +112,9 @@ where
         \cup\{\softactsymbolof{\secselindex,\canparam} \wcols \secselindex\in[\seldim]\ncond\secselindex\neq\selindex\}
         \cup\{\basemeasure\}}{\headvariableof{\selindex}} \, .
 \end{align*}
-Based on an interpretation of the coordinate descent steps as matching steps for the mean parameters or moments to $\formulaof{\selindex}$, we call this method alternating moment matching for \HybridLogicNetworks{} and provide pseudocode for it it in \algoref{alg:AMM_HLN}.
+Based on an interpretation of the coordinate descent steps as matching steps for the mean parameters or moments to $\formulaof{\selindex}$, we call this method \textit{alternating moment matching} for \HybridLogicNetworks{} and provide pseudocode for it in \algoref{alg:AMM_HLN}.
 %% Forward inference in inner loop
-We notice that, during the coordinate descent steps, computing the marginal probability of the variable $\headvariableof{\selindex}$ with respect to the current network parameters is required.
+Note that during the coordinate descent steps, computing the marginal probability of the variable $\headvariableof{\selindex}$ with respect to the current network parameters is required.
 This is the computational bottleneck of the algorithm and can be approached by various approximate inference methods, e.g., variational inference (see for example the CAMEL method \cite{ganapathi_constrained_2008}).
 
 \begin{algorithm}[hbt!]
@@ -158,7 +158,7 @@ For more details we refer to~\cite[Chapter~9]{goessmann_tensor-network_2025}.
 
 \subsection{Entailment by \HybridLogicNetworks{}} % Now
 
-Let us now demonstrate a further use of our unified treatment of probabilistic and logical models by investigating a generalized concept of entailment.
+We now demonstrate a further use of the unified treatment of probabilistic and logical models by investigating a generalized concept of entailment.
 Entailment can be generalized to probabilistic models by deciding whether a propositional formula is always satisfied given a probabilistic model.
 %Also entailment can be checked for \HybridLogicNetwork{}.
 %Assuming a positive probability of all models of the integrated \HardLogicNetwork{}, the entailment can be checked only considering the \HardLogicNetwork{}.
@@ -190,9 +190,9 @@ Entailment can be generalized to probabilistic models by deciding whether a prop
     \end{align*}
     if and only if
     \begin{align*}
-        \contraction{\left(\onesat{\shortcatvariables}-\nonzeroof{\probofat{\hlnparameters}{\shortcatvariables}}\right),\secexformulaat{\shortcatvariables}} = 0
-    \end{align*}\, .
-    We notice that $\hlnformulawith$ is the indicator tensor for the support of $\probofat{\hlnparameters}{\shortcatvariables}$.
+        \contraction{\left(\onesat{\shortcatvariables}-\nonzeroof{\probofat{\hlnparameters}{\shortcatvariables}}\right),\secexformulaat{\shortcatvariables}} = 0\,.
+    \end{align*}
+    Note that $\hlnformulawith$ is the indicator tensor for the support of $\probofat{\hlnparameters}{\shortcatvariables}$.
     It therefore holds that
     \begin{align*}
         &\contraction{\left(\onesat{\shortcatvariables}-\nonzeroof{\probofat{\hlnparameters}{\shortcatvariables}}\right),\secexformulaat{\shortcatvariables}} \\

@@ -1,5 +1,5 @@
 \begin{example}[Continuation of \exaref{exa:hlnAccountingRep}]\label{exa:hlnAccountingAMM}
-    Let us recall the statistic of \exaref{exa:hlnAccountingRep} and consider a dataset of $\datanum=20$ states summarized in the frequency table:
+    Recall the statistic of \exaref{exa:hlnAccountingRep} and consider a dataset of $\datanum=20$ states summarized in the frequency table:
     \begin{center}
         \begin{tabular}{|c|ccc|}
             \hline
@@ -16,12 +16,12 @@
             \hline
         \end{tabular}
     \end{center}
-    We then have for the satisfaction rates of $\formulaof{0}=\catvariableof{A1}\oplus\catvariableof{A2}$ and $\formulaof{1}=\catvariableof{F}\Rightarrow\catvariableof{A1}$
+    We then have for the satisfaction rates of $\formulaof{0}=\catvariableof{A1}\oplus\catvariableof{A2}$ and $\formulaof{1}=\catvariableof{F}\Rightarrow\catvariableof{A1}$ that
     \begin{align*}
         \datameanat{\selvariable=0} = \frac{20}{20} = 1 \andspace
         \datameanat{\selvariable=1} = \frac{7+1+10}{20} = 0.9 \, .
     \end{align*}
-    Then \algoref{alg:AMM_HLN} yields with a reasonable convergence criterion choice (such as finite iterations or convergence of $\canparamat{\selvariable}$)
+    \algoref{alg:AMM_HLN} yields a reasonable convergence criterion choice (such as finite iterations or convergence of $\canparamat{\selvariable}$)
     \begin{align*}
         \hardlegset = \{0\} \quad, \quad \headindexof{\hardlegset} = 1 \andspace
         \canparamat{\selvariable} =

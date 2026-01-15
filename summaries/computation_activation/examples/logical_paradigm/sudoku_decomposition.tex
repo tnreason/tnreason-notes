@@ -1,12 +1,12 @@
 \begin{example}[Sparse representation of Sudoku rule knowledge base]
     \label{exa:sudokuDecomposition}%{\alex{Attempt to match the above Sudoku example with our notation of boolean variables and the entailment formalism}}
-    We now exploit \theref{the:kbDecomposition} to find efficient tensor network representation of the Sudoku knowledge base from \exaref{exa:sudokuEntailment}.
-    We directly get, that the knowledge base $\sudokukbof{\sudokunum}$ of Sudoku rules is a tensor network of the $4\cdot \sudokunum^4$ constraint formulas using the $\sudokunum^2$-ary connective $\woneoplus$, and the evidence $\sudokustartevidence$ can be encoded by vectors $\tbasisat{\catvariableof{(r_0,r_1,c_0,c_1,i)}}$.
+    We exploit \theref{the:kbDecomposition} to find an efficient tensor network representation of the Sudoku knowledge base from \exaref{exa:sudokuEntailment}.
+    We directly get that the knowledge base $\sudokukbof{\sudokunum}$ of Sudoku rules is a tensor network of the $4\cdot \sudokunum^4$ constraint formulas using the $\sudokunum^2$-ary connective $\woneoplus$, and the evidence $\sudokustartevidence$ can be encoded by vectors $\tbasisat{\catvariableof{(r_0,r_1,c_0,c_1,i)}}$.
     To get a representation by matrices instead of tensors of order $\sudokunum^2$, we introduce a hidden variable $\decvariable$ taking values in $[\sudokunum^2]$ for each of the constraints, one can further increase the sparsity of the representation.
-    With the usage of matrices
+    Using the matrices
     \begin{align*}
         \hypercoreofat{\catenumerator}{\catvariableof{\catenumerator},\decvariable}
-        = \fbasisat{\catvariableof{\catenumerator}} \otimes \onesat{\decvariable} + (\tbasisat{\catvariableof{\catenumerator}}-\fbasisat{\catvariableof{\catenumerator}}) \otimes \onehotmapofat{\catenumerator}{\decvariable}
+        = \fbasisat{\catvariableof{\catenumerator}} \otimes \onesat{\decvariable} + (\tbasisat{\catvariableof{\catenumerator}}-\fbasisat{\catvariableof{\catenumerator}}) \otimes \onehotmapofat{\catenumerator}{\decvariable},
     \end{align*}
     we have the decomposition
     \begin{align*}
@@ -16,13 +16,13 @@
     which is a $\cpformat$ decomposition (see \exaref{exa:cpFormat}) depicted in \figref{fig:sudokuDecomposition} a).
 
     %% Alternative TT decomposition
-    Alternatively there is a $\ttformat$ decomposition (see \exaref{exa:ttFormat}) of the constraint $\woneoplus$, which we depict in \figref{fig:sudokuDecomposition} b).
-    We introduce for $\catenumerator\in[\catorder-1]$ hidden variables $\decvariable^{\catenumerator}$ of dimension $2$, which are interpreted as the indicator, whether one of the variables $\catvariableof{[\catenumerator]}$ is true.
+    Alternatively, there is a $\ttformat$ decomposition (see \exaref{exa:ttFormat}) of the constraint $\woneoplus$, which we depict in \figref{fig:sudokuDecomposition} b).
+    We introduce for $\catenumerator\in[\catorder-1]$ hidden variables $\decvariable^{\catenumerator}$ of dimension $2$, which are interpreted as the indicator whether one of the variables $\catvariableof{[\catenumerator]}$ is true.
     Following this interpretation we introduce $\ttformat$ cores
     \begin{align*}
         \sechypercoreofat{0}{\catvariableof{0},\secdecvariable^{0}}
         &= \tbasisat{\catvariableof{0}}\otimes\tbasisat{\secdecvariable^{0}}
-        + \fbasisat{\catvariableof{0}}\otimes\fbasisat{\secdecvariable^{0}} \\
+        + \fbasisat{\catvariableof{0}}\otimes\fbasisat{\secdecvariable^{0}}\,, \\
         \sechypercoreofat{\catorder-1}{\secdecvariable^{\catorder-2},\catvariableof{\catorder-1}}
         &= \fbasisat{\secdecvariable^{\catorder-2}} \otimes \tbasisat{\catvariableof{\catorder-1}}
         + \tbasisat{\secdecvariable^{\catorder-2}} \otimes \fbasisat{\catvariableof{\catorder-1}}
@@ -33,8 +33,8 @@
         = \identityat{\secdecvariable^{\catenumerator-1},\secdecvariable^{\catenumerator}}  \otimes \fbasisat{\catvariableof{\catenumerator}}
         + \fbasisat{\secdecvariable^{\catenumerator-1}} \otimes \tbasisat{\catvariableof{\catenumerator}} \otimes \tbasisat{\secdecvariable^{\catenumerator-1}} \, .
     \end{align*}
-    We notice, that the $\ttformat$ decomposition of the constraint $\woneoplus$ introduces $\catorder-1$ many hidden variables of dimension $2$, whereas the $\cpformat$ decomposition introduces a single hidden variable of dimension $\catorder$.
-    In the following we will further apply the $\cpformat$ decomposition. % Reason: fewer variables to handle in message passing
+    Note that the $\ttformat$ decomposition of the constraint $\woneoplus$ introduces $\catorder-1$ many hidden variables of dimension $2$ whereas the $\cpformat$ decomposition introduces a single hidden variable of dimension $\catorder$.
+    In the following, we further apply the $\cpformat$ decomposition. % Reason: fewer variables to handle in message passing
 
     \begin{figure}[t]
 
@@ -108,7 +108,7 @@
     \end{figure}
 
     Given evidence $\sudokustartevidence$ we denote the Sudoku Knowledge Base $\sudokukbof{\sudokunum,\sudokustartevidence}$.
-    We model the Sudoku Knowledge Base $\sudokukbof{\sudokunum,\sudokustartevidence}$ as a tensor network on a hypergraph $\graphof{\mathrm{Sudoku},n}$ consistent in
+    It is modelled as a tensor network on a hypergraph $\graphof{\mathrm{Sudoku},n}$ consisting of
     \begin{itemize}
         \item $\sudokunum^6+4\cdot \sudokunum^4$ nodes by $\sudokunum^6$ categorical variables $\catvariableof{(r0,r1,c0,c1,i)}$ and by $4\cdot \sudokunum^4$ decomposition variables to the constraints
         \item $5\cdot \sudokunum^6$ edges
@@ -123,6 +123,6 @@
         We denote the decomposition variables to the position, row, column and square constraints by $\decvariableof{r0,r1,c0,c1,:},\decvariableof{r0,r1,:,:,i},\decvariableof{:,:,c0,c1,i}$ and $\decvariableof{r0,:,c0,:,i}$.
     \end{itemize}
     Each edge containing a decomposition variable is decorated by a matrix $\hypercoreofat{\catenumerator}{\catvariable,\decvariable}$ corresponding to a core in the $\cpformat$ decomposition of a constraint.
-    Here $\catenumerator$ is determined by the tuple $(r0,r1,c0,c1,i)$ and the type of the constraint (for example, for the variable $\catvariableof{(0,1,1,2,1)}$ and the row constraint $\decvariableof{(0,1,:,:,1)}$ we have $\catenumerator=1\cdot n + 2$.
+    Here, $\catenumerator$ is determined by the tuple $(r0,r1,c0,c1,i)$ and the type of the constraint (for example, for the variable $\catvariableof{(0,1,1,2,1)}$ and the row constraint $\decvariableof{(0,1,:,:,1)}$ we have $\catenumerator=1\cdot n + 2$.
     We further assign to each edge containing a single variable $\{\catvariableof{(r0,r1,c0,c1,i)}\}$ either the vector $\tbasisat{\catvariableof{(r0,r1,c0,c1,i)}}$ if $(r0,r1,c0,c1,i)\in \sudokustartevidence$ or the trivial vector $\onesat{\catvariableof{(r0,r1,c0,c1,i)}}$.
 \end{example}

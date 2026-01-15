@@ -37,7 +37,7 @@
         \end{sudoku4x4}
     \end{center}
 
-    To illustrate the first reasoning step of assigning $\textcolor{\probcolor}{\catvariableof{0,1,0,0,2}}$ we make the following entailment steps applying \theref{the:monotonicityPL}.
+    To illustrate the first reasoning step of assigning $\textcolor{\probcolor}{\catvariableof{0,1,0,0,2}}$, we make the following entailment steps applying \theref{the:monotonicityPL}.
     We also depict in \figref{fig:contractionPropagationSudoku} the corresponding messages in the Constraint Propagation Algorithm on the hypergraph $\graph^{\mathrm{Sudoku},n}$.
     \begin{itemize}
         \item From $\textcolor{\concolor}{\catvariableof{0,1,0,1,1}}$ (i.e. the $2$ in the cell $(0,1,0,1)$) and the Sudoku rule that at the cell $(0,1,0,1)$ exactly one number is assigned, we get
@@ -58,7 +58,7 @@
         \begin{align*}
             \left( \woneoplus_{c0,c1\in[\sudokunum]} \catvariableof{0,0,c0,c1,2} \right) \land \textcolor{\concolor}{\catvariableof{0,0,1,0,2}} \models \lnot\catvariableof{0,0,0,0,2}\land \lnot\catvariableof{0,0,0,1,2} \, ,
         \end{align*}
-        That is, that the number $3$ is neither in the cell $(0,0,0,0)$ nor in $(0,0,0,1)$.
+        meaning that the number $3$ is neither in the cell $(0,0,0,0)$ nor in $(0,0,0,1)$.
         This entailment step is performed by five consecutive messages (see $\messagesymbol^{(1,[5])}$ in \figref{fig:contractionPropagationSudoku}) along the directions
         %This entailment step is performed by three consecutive messages along the directions $(\catvariableof{0,0,1,0,2},\decvariableof{0,0,:,:,2})$, $(\decvariableof{0,0,:,:,2},\catvariableof{0,0,0,0,2})$ and $(\decvariableof{0,0,:,:,2},\catvariableof{0,0,0,1,2})$.
         \begin{align*}
@@ -71,16 +71,17 @@
                 &(\{\catvariableof{0,0,0,1,2},\decvariableof{0,0,:,:,2}\},\{\catvariableof{0,0,0,1,2},\decvariableof{0,:,0,:,2}\})
                 \big] \, .
         \end{align*}
-        The messages communicate that based on the decomposition cores of the constraint to the number $i=3$ in the first row $(r_0,r_1)=(0,0)$, that the number $3$ cannot be assigned at $(0,0,0,0)$ and $(0,0,0,1)$.
+        The messages communicate that based on the decomposition cores of the constraint to the number $i=3$ in the first row $(r_0,r_1)=(0,0)$, the number $3$ cannot be assigned at $(0,0,0,0)$ and $(0,0,0,1)$.
     \end{itemize}
-    We add these formulas to our knowledge base (justified by \theref{the:addingEntailed}) and use the rule, that $3$ appears exactly once in the first square
+    We add these formulas to our knowledge base (justified by \theref{the:addingEntailed}) and use the rule that $3$ appears exactly once in the first square
     \begin{align*}
         &\left( \woneoplus_{r1,c1\in[\sudokunum]} \catvariableof{0,r1,0,c1,2} \right)
         \land (\lnot\catvariableof{0,1,0,1,2})
         \land (\lnot\catvariableof{0,0,0,0,2}\land \lnot\catvariableof{0,0,0,1,2})
         \models \textcolor{\probcolor}{\catvariableof{0,1,0,0,2}} \, .
     \end{align*}
-    That is, we conclude that the number $3$ must be in the cell $(0,1,0,0)$, which information is also included in the updated knowledge base for further reasoning steps.
+    We hence conclude that the number $3$ must be in the cell $(0,1,0,0)$.
+    This information is also included in the updated knowledge base for further reasoning steps.
     This last entailment step is performed by four consecutive messages (see $\messagesymbol^{(2,[4])}$ in \figref{fig:contractionPropagationSudoku}) along the directions
     \begin{align*}
     (\sedge,\redge)
@@ -90,15 +91,15 @@
             &(\{\catvariableof{0,0,1,0,2},\decvariableof{0,:,0,:,2}\},\{\catvariableof{0,1,0,0,2},\decvariableof{0,:,0,:,2}\}),
             (\{\catvariableof{0,1,0,0,2},\decvariableof{0,:,0,:,2}\},\{\catvariableof{0,1,0,0,2}\})\big]
     \end{align*}
-    The first three messages communicate, that the $3$ is not possible the positions $(0,1,0,1),(0,0,0,1)$ and $(0,0,1,0)$ and the fourth message concludes that the $3$ then has to be at position $(0,1,0,0)$.
+    The first three messages communicate that the $3$ is not possible in positions $(0,1,0,1),(0,0,0,1)$ and $(0,0,1,0)$ and the fourth message concludes that the $3$ then has to be at position $(0,1,0,0)$.
 
     %% Further reasoning steps
-    We now iteratively apply similar reasoning steps and store the entailed variables in \textcolor{\probcolor}{$E^{\mathrm{entailed}}$}, until we arrive at the right side of the above sketch.
+    We now iteratively apply similar reasoning steps and store the entailed variables in \textcolor{\probcolor}{$E^{\mathrm{entailed}}$} until we arrive at the right side of the above sketch.
     \begin{align*}
         \sudokukbof{2} \land \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in \sudokustartevidence} \catvariableof{r0,r1,c0,c1,i} \right)
         \models \textcolor{\probcolor}{\left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in E^{\mathrm{entailed}}} \catvariableof{r0,r1,c0,c1,i} \right)} \, .
     \end{align*}
-    Since all Sudoku rules are satisfied in the final assignment and to each cell $(r_0,r_1,c_0,c_1)$ we found exactly one $i\in[\sudokunum^2]$ such that $(r_0,r_1,c_0,c_1,i)\in \sudokustartevidence\cup\textcolor{\probcolor}{E^{\mathrm{entailed}}}$, there is a unique solution of the puzzle and we conclude
+    Since all Sudoku rules are satisfied in the final assignment and to each cell $(r_0,r_1,c_0,c_1)$ we found exactly one $i\in[\sudokunum^2]$ such that $(r_0,r_1,c_0,c_1,i)\in \sudokustartevidence\cup\textcolor{\probcolor}{E^{\mathrm{entailed}}}$, there is a unique solution of the puzzle and we conclude that
     \begin{align*}
         &\sudokukbof{2} \land \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in \sudokustartevidence} \catvariableof{r0,r1,c0,c1,i} \right) \\
         &\quad= \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in \sudokustartevidence} \catvariableof{r0,r1,c0,c1,i} \right)

@@ -1,8 +1,8 @@
 \begin{example}[\HybridLogicNetwork{} for a toy accounting model]
     \label{exa:hlnAccountingRep}
 
-    Let us consider a system of three variables $A1$ Account 1 is booked, $A2$ Account 2 is booked, $F$ a feature on an invoice.
-    We respect two rules
+    We consider a system of three variables $A1$ Account 1 is booked, $A2$ Account 2 is booked, $F$ a feature on an invoice.
+    Assume the following two rules have to be respected:
     \begin{itemize}
         \item \textcolor{\concolor}{Exactly one account must be booked.}
         \item \textcolor{\probcolor}{If feature $\mathrm{F}$ is present on the invoice, the account $\mathrm{A1}$ is typically booked.}
@@ -12,11 +12,11 @@
         \hlnstat = (\catvariableof{A1} \oplus \catvariableof{A2}, \catvariableof{F}\Rightarrow \catvariableof{A1})\, .
     \end{align*}
     While the first formula is a hard feature, the second is soft since prone to exceptions.
-    We parameterize the first output of the statistic with the hard parameters by setting the set of indices to be initialized with hard logic $A = \{0\}$ and the corresponding initialization $y_0 = 1$ meaning, that the first output of the statistic has to be true for the input to have positive probability.
+    We parameterize the first output of the statistic with the hard parameters by setting the set of indices to be initialized with hard logic $A = \{0\}$ and the corresponding initialization $y_0 = 1$, meaning that the first output of the statistic has to be true for the input to have positive probability.
 % \begin{align*}
 %     \hardlegset = \{0\} \quad, \quad \headindexof{\hardlegset} = 1.
 % \end{align*}
-    Then "hard logic activation tensor", should be indifferent to the second part of the statistic, and only impose rules on the first part, leading to
+    The ``hard logic activation tensor'' should be indifferent to the second part of the statistic and only impose rules on the first part, leading to
     \begin{align*}
         \textcolor{\concolor}{\kappa^{(A,y_A)}[Y_0,Y_1]} =
         \onehotmapofat{\headindexof{0}}{\headvariableof{0}} \otimes
@@ -28,7 +28,7 @@
                                   1\\1
         \end{bmatrix}.
     \end{align*}
-    Since the first feature is hard, the "soft logic activation tensor" should be invariant under the first coordinate of the canonical parameter and we set $\canparamat{\selvariable=0}=0$. We choose the soft parameters as $\theta[L] = [0,\theta[L=1]]^\intercal$ to achieve
+    Since the first feature is hard, the ``soft logic activation tensor'' should be invariant under the first coordinate of the canonical parameter and we set $\canparamat{\selvariable=0}=0$. The soft parameters are chosen as $\theta[L] = [0,\theta[L=1]]^\intercal$ to achieve
     \begin{align*}
         \textcolor{\probcolor}{\alpha^\theta[Y_0,Y_1]} &= \alpha^{0,0}\left[Y_0\right]\otimes \alpha^{1,\theta[L=1]}\left[Y_1\right] = \begin{bmatrix}
                                                                                                                                            1\\1
@@ -42,7 +42,7 @@
         %     \canparamat{\selvariable=1}
         % \end{bmatrix} \, .
     \end{align*}
-    The activation tensor of the hybrid network then has the from
+    The activation tensor of the hybrid network then has the form
     \begin{align*}
         \paracttensor[{\headvariableof{0},\headvariableof{1}}]
         = \begin{bmatrix}
@@ -53,8 +53,8 @@
             1 \\ \expof{\canparamat{\selvariable=1}}
         \end{bmatrix}.
     \end{align*}
-
-    We get a tensor network representation of the \HybridLogicNetwork{} representing the toy accounting example, before normalization to a distribution
+    %
+    We get the following tensor network representation of the \HybridLogicNetwork{} representing the toy accounting example before normalization to a distribution
     \begin{center}
         \begin{tikzpicture}[scale=0.35, thick, yscale=-1, xscale=-1] % , baseline = -3.5pt
 
