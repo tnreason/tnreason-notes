@@ -1,11 +1,11 @@
 \section{Introduction}
 
 \begin{itemize}
-    \item \martin{general remark about captions: proper sentences not "a) this. b) that."}
+    \item \martin{general remark about captions: proper sentences not a) this. b) that.}
     \item \martin{tensor references in introduction: i would like to add that tensors have also been used for statistical inverse problems (ours and Dolgov/Scheichl) and (PDE constrained) control problems (ours and ?). also cite our tensor machine learning work "bridging..." (eigel-schneider-trunscke).}
-    \item \martin{reformulate sentence in Definition 7: "we define the by $\sstat$ computable and by $\graph$ activated family of distributions by"} \alex{Done.}
-    \item \martin{ensure all sections and subsections have at least one sentence intro.} Done.
-    \item \martin{the use of capital letters for certain terms is inconsistent.}
+    \item \martin{reformulate sentence in Definition 7: we define the by $\sstat$ computable and by $\graph$ activated family of distributions by} \alex{Done.}
+    \item \martin{ensure all sections and subsections have at least one sentence intro.}
+    \item \martin{the use of capital letters for certain terms is inconsistent.} \alex{Should be fine now, i went through sections, theorems, examples. Are there further inconsistencies?}
 \end{itemize}
 
 % Neural Paradigm
@@ -34,7 +34,7 @@ We show that fundamental sparsity principles of neural and symbolic AI, such as 
 % Reasoning
 Moreover, we identify tensor network contraction as the fundamental operation underlying inference tasks, such as computing marginal distributions and deciding entailment.
 %% Message Passing Schemes
-While these contractions are in general computationally hard, efficient schemes to perform inference are known as message-passing schemes.
+While these contractions are in general computationally hard, efficient schemes to perform inference are known as message passing schemes.
 These algorithms have appeared in different communities under names such as belief propagation \cite{pearl_probabilistic_1988,mezard_information_2009} and constraint propagation \cite{mackworth_consistency_1977}.
 We review these schemes based on our tensor network formalism.
 
@@ -65,7 +65,7 @@ Early connectionist approaches~\cite{towell_knowledge-based_1994,avila_garcez_co
 Further, fruitful relations with statistical relational learning have been identified~\cite{marra_statistical_2024}.
 
 %% Tensor Networks in AI
-\emph{Tensor Networks} have recently gained interest as a unifying language for AI, framed by Logical Tensor Networks \cite{badreddine_logic_2022} and Tensor Logic \cite{domingos_tensor_2025}.
+\emph{Tensor networks} have recently gained interest as a unifying language for AI, framed by Logical Tensor Networks \cite{badreddine_logic_2022} and Tensor Logic \cite{domingos_tensor_2025}.
 Furthermore, the MeLoCoToN approach \cite{ali_explicit_2025} applies tensor network architectures similar to \CompActNets{} in combinatorical optimization problems.
 Specifically, tensor networks have emerged as a highly efficient mathematical framework for handling data in high-dimensional spaces, effectively circumventing the "curse of dimensionality" that typically plagues grid-based methods ~\cite{hackbusch_tensor_2012}.
 By decomposing high-order tensors into networks of low-rank components, these structures reduce the storage and computational complexity from exponential to polynomial with respect to the dimension ~\cite{oseledets_tensor-train_2011, hackbusch_new_2009, hitchcock_expression_1927}.
@@ -74,7 +74,7 @@ By decomposing high-order tensors into networks of low-rank components, these st
 
 \begin{figure}
     \input{../tikz_pics/paradigms_sketch.tex}
-    \caption{Sketch of the concepts in the neural, probabilistic and logical paradigms, which we define based on tensor-network decompositions and contractions.}\label{fig:paradigmsSketch}
+    \caption{Sketch of the concepts in the neural, probabilistic and logical paradigms, which we define based on tensor network decompositions and contractions.}\label{fig:paradigmsSketch}
 \end{figure}
 
 The paper is organized as follows.

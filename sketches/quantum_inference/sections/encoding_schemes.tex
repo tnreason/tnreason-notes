@@ -256,7 +256,7 @@ we get the basis encoding state
 The initial state can be prepared by applying Hadamard gates on all distributed variable qubits and preparing the head variable qubit in the ground state.
 The overlap of two basis encoding states (which share the same head variable) is proportional to the contraction of the corresponding formulas.
 
-\begin{lemma}
+\begin{lemma}\label{lem:basQstateOverlap}
     Let $\formula,\secformula$ be two Boolean formulas on the states of $\shortcatvariables$.
     Then we have
     \begin{align*}
@@ -295,7 +295,7 @@ The initial state can be prepared by applying Hadamard gates on all distributed 
     = \hgateat{\headvariableof{\outsymbol},\headvariableof{\insymbol}} \fbasisat{\headvariableof{\insymbol}} \, ,
 \end{align*}
 
-\begin{lemma}
+\begin{lemma}\label{lem:signQstateOverlap}
     Let $\formula,\secformula$ be two Boolean formulas on the states of $\shortcatvariables$.
     Then we have
     \begin{align*}

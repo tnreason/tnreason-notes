@@ -1,11 +1,11 @@
-\section{The Neural Paradigm}\label{sec:neurPar}
+\section{The neural paradigm}\label{sec:neurPar}
 
 The neural paradigm of artificial intelligence exploits the decomposition of functions into neurons, which are aligned in a directed acyclic graph.
 We show in this section how functions decomposable into neurons can be represented by tensor networks.
 To this end, we formalize discrete neural models in decomposition graphs and formally prove the corresponding decomposition of their basis encodings.
 In particular, examples will be presented in the next section via propositional formulas with sparse syntactic descriptions.
 
-\subsection{Function Decomposition}
+\subsection{Function decomposition}
 
 As a main principle of tensor decompositions, we now show that basis encodings of composition functions are contractions of the basis encodings of their components.
 
@@ -178,7 +178,7 @@ When neurons have tunable parameters, we can discretize those by sets $\arbsetof
 
 \input{../examples/neural_paradigm/m_adic_representation}
 
-\subsection{Function Evaluation by Message Passing}
+\subsection{Function evaluation by message passing}
 
 We are now concerned with an efficient inference algorithm based on tensor network contractions. To evaluate a function given as a tensor network decomposition of its basis encoding, the whole network has to be contracted. As this can be infeasible for large networks, a message passing algorithm based on local contractions can be applied, compare \algoref{alg:treeBeliefPropagation} for a message passing algorithm for tensor networks on a on tree hypergraph.
 
@@ -233,7 +233,7 @@ We then show that the messages are the one-hot encodings to the evaluations of t
     The first message is sent from an input edge $\{[\catenumerator]\}$ to an edge $\edge$ of the decomposition graph and is by assumption the one-hot encoding of an input state $\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}$.
 
     We now assume that all previous messages satisfy the claimed equation at an arbitrary stage of the algorithm.
-    The message computed in the while loop is then a contraction of one-hot encodings with basis encodings and
+    The message computed in the \whileSymbol{} loop is then a contraction of one-hot encodings with basis encodings and
     \begin{align*}
         \mesfromtowith{\sedge}{\redge}
         &=\contractionof{\{\bencodingofat{\secexfunctionof{\sedge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}}\} \cup
