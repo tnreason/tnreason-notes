@@ -205,7 +205,7 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
 
 \subsection{Fisher-Neyman}
 
-Since sufficient statistics are sometimes introduced based on the data processing inequality (see e.g. \cite{cover_elements_2006}), we also show that also that definition is equivalent to the factorization of the family.
+Since sufficient statistics are sometimes introduced based on the data processing inequality (see e.g. \cite{cover_elements_2006}), we also show that also that definition is equivalent to the factorization of the family. Here, $\mutinfof{X}{Y}$ denotes the mutual information of two random variables $X,Y$.
 
 \begin{theorem}[Fisher-Neyman factorization theorem]
     \label{the:generalFactorizationFisherNeyman}
@@ -233,17 +233,17 @@ Since sufficient statistics are sometimes introduced based on the data processin
 \end{theorem}
 \begin{proof}
     $i) \Leftrightarrow ii)$:
-    We have always
+    We always have
     \begin{align*} %% SOMETHING WRONG ?
         \mutinfof{\thirdcatvariable}{\catvariable}
         = \mutinfof{\thirdcatvariable}{(\catvariable,\headvariableof{\sstat})}
         = \mutinfof{\thirdcatvariable}{\headvariableof{\sstat}} + \condmutinfof{\thirdcatvariable}{\catvariable}{\headvariableof{\sstat}}  %I(Z;X|\headvariableof{\sstat})
     \end{align*}
-    and thus if and only if $i)$ holds
+    and thus $i)$ is equivalent to
     \begin{align*}
         \condmutinfof{\thirdcatvariable}{\catvariable}{\headvariableof{\sstat}} = 0 \, .
     \end{align*}
-    Using the KL-divergence characterization of the mutual information, this is equal to % Details needed?
+    Using the KL-divergence characterization of the mutual information, this is equivalent to % Details needed?
     \begin{align*}
         \condprobat{\thirdcatvariable,\catvariable}{\headvariableof{\sstat}}
         = \contractionof{\condprobat{\thirdcatvariable}{\headvariableof{\sstat}},\condprobat{\catvariable}{\headvariableof{\sstat}} }{\thirdcatvariable,\catvariable,\headvariableof{\sstat}} \, .
@@ -259,7 +259,7 @@ Since sufficient statistics are sometimes introduced based on the data processin
         &= \condprobat{\indexedthirdcatvariable}{\headvariableof{\sstat}=\sstatat{\catindex}}
     \end{align*}
     Here we used that $\headvariableof{\sstat}$ has a deterministic dependence on $\catvariable$.
-    There is thus a tensor $\acttensor$ such that for all $\thirdcatindex\in\valof{\thirdcatvariable}$ and $\catindex\in\valof{\catvariable}$
+    Therefore, there is a tensor $\acttensor$ such that for all $\thirdcatindex\in\valof{\thirdcatvariable}$ and $\catindex\in\valof{\catvariable}$
     \begin{align*}
         \acttensorat{\headvariableof{\sstat}=\sstatat{\catindex},\indexedthirdcatvariable} = \condprobat{\indexedthirdcatvariable}{\indexedcatvariable} \, .
     \end{align*}
@@ -293,7 +293,7 @@ Since sufficient statistics are sometimes introduced based on the data processin
         &= \normalizationof{\acttensorat{\headvariableof{\sstat},\thirdcatvariable},\onehotmapofat{\sstatat{\catindex}}{\headvariableof{\sstat}}}{\indexedthirdcatvariable} \\
         &= \condprobat{\indexedthirdcatvariable}{\headvariableof{\sstat}=\sstatat{\catindex}} \, .
     \end{align*}
-    We further have at almost all $\headindexof{\sstat}\in\valof{\headvariableof{\sstat}}$, $\thirdcatindex\in\valof{\thirdcatvariable}$ and $\catindex\in\valof{\catvariable}$ that $\headindexof{\sstat}=\sstatat{\catindex}$ and
+    We further have for almost all $\headindexof{\sstat}\in\valof{\headvariableof{\sstat}}$, $\thirdcatindex\in\valof{\thirdcatvariable}$ and $\catindex\in\valof{\catvariable}$ that $\headindexof{\sstat}=\sstatat{\catindex}$ and
     \begin{align*}
         \condprobat{\indexedthirdcatvariable}{\indexedcatvariable,\indexedheadvariableof{\sstat}}
         = \condprobat{\indexedthirdcatvariable}{\indexedcatvariable}

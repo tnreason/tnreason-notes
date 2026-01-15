@@ -10,12 +10,12 @@ The implementations of the algorithms and concepts are available at \href{https:
 
 \subsection{Algorithm~\ref{alg:treeBeliefPropagation}, \ref{alg:directedBeliefPropagation} and \ref{alg:constraintPropagation} (Tree, Directed Belief and Constraint Propagation)}\label{sec:propAlgsImplementation}
 
-The three message passing algorithms are implemented as functions as one class \mintinline{python}{ContractionPropagation}, since they share common structure.
+The three message passing algorithms are implemented as functions in one class \mintinline{python}{ContractionPropagation}, since they share common structure.
 \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/algorithms/propagation.py}
 
 \subsubsection{Example~\ref{exa:madicRepresentation} and \ref{exa:madicPropagation} (Integer Summation in $\catdim$-adic Representation)}
 
-Following the decomposition of summations in $\catdim$-adic into local summations, the function \mintinline{python}{get_sum_tn} produces a corresponding tensor network of basis encodings.
+Following the decomposition of $\catdim$-adic summations into local summations, the function \mintinline{python}{get_sum_tn} produces a corresponding tensor network of basis encodings.
 We test by coordinate retrieval operations, whether the summation is performed correctly.
 \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/examples/m_adic_sum.py}
 
