@@ -6,7 +6,7 @@ In this section, we introduce the central hypergraph-based tensor network formal
 \label{sec:tensors}
 
 Tensors are multiway arrays and a generalization of vectors and matrices to higher orders.
-We first provide a formal definition as real maps from index sets enumerating the coordinates of vectors, matrices, and higher-order tensors.
+We first provide a formal definition as real maps from index sets enumerating the coordinates of vectors, matrices, and higher-order tensors. To ease the notation, we abbreviate sets as $[\catorder]=\{0,\ldots,\catorder-1\}$, tuples of state indices by $\catindexof{[\catorder]}=(\catindexof{0},\ldots,\catindexof{\catorder-1})$ and tuples of variables by $\catvariableof{[\catorder]}=(\catvariableof{0},\ldots,\catvariableof{\catorder-1})$.
 
 \begin{definition}[Tensor]
     \label{def:tensor}
@@ -25,7 +25,6 @@ We first provide a formal definition as real maps from index sets enumerating th
     \end{align*}
     which is a linear space, enriched with the operations of coordinate-wise summation and scalar multiplication.
     We call a tensor $\hypercoreat{\shortcatvariables}$ boolean, when all coordinates are in $\{0,1\}$, and positive, when all coordinates are greater than $0$.
-    To ease the notation, we abbreviate sets as $[\catorder]=\{0,\ldots,\catorder-1\}$, tuples of state indices by $\catindexof{[\catorder]}=(\catindexof{0},\ldots,\catindexof{\catorder-1})$ and tuples of variables by $\catvariableof{[\catorder]}=(\catvariableof{0},\ldots,\catvariableof{\catorder-1})$.
 \end{definition}
 
 We introduced tensors here in a non-canonical way based on categorical variables assigned to their axes.
