@@ -13,7 +13,7 @@ We start with showing the following Lemmata to be exploited in the proof.
 \begin{lemma}
     \label{the:contractionFactorization}
     Let $\hypercoreat{\catvariableof{\nodes}}$ be a positive tensor and $\seccatindexof{\nodes}$ an arbitrary index.
-    Then we have
+    Then we have for any index $\seccatindexof{\nodes}$
     \begin{align*}
         \hypercoreat{\catvariableof{\nodes}}
         = \contractionof{
@@ -151,7 +151,7 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
 %\end{theorem}
 \begin{proof}[Proof of \theref{the:factorizationHammersleyClifford}]
     $ii)\Rightarrow i)$
-    By \lemref{the:contractionFactorization} we have for any index $\catindexof{\nodes}$
+    By \lemref{the:contractionFactorization} we have for any indeces $\catindexof{\nodes}$ and $\seccatindexof{\nodes}$
     \begin{align*}
         \probat{\indexedcatvariableof{\nodes}} =
         \prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
@@ -160,7 +160,7 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
         %	\contractionof{\extnet\cup\{\onehotmapof{\catindexof{\nodes\setexcept{\thirdnodes}}}\}}{\catvariableof{\thirdnodes}}
         \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \, .
     \end{align*}
-    Using the assumption of \theref{the:factorizationHammersleyClifford} we find for any subset $\secnodes\subset\nodes$, which is not contained in a hyperedge, $\nodea,\nodeb \in\secnodes$ such that $\catvariableof{\nodea}$ is independendent on $\catvariableof{\nodeb}$ conditioned on $\catvariableof{\secnodes\setexcept{\{\nodea,\nodeb\}}}$.
+    Using the clique-capturing assumption of \theref{the:factorizationHammersleyClifford} we find for any subset $\secnodes\subset\nodes$, which is not contained in a hyperedge, $\nodea,\nodeb \in\secnodes$ such that $\catvariableof{\nodea}$ is independent of $\catvariableof{\nodeb}$ conditioned on $\catvariableof{\secnodes\setexcept{\{\nodea,\nodeb\}}}$.
     If no such nodes $\nodea,\nodeb \in\secnodes$ exists, $\secnodes$ would be contained in a hyperedge, since the hypergraph is assumed to be clique-capturing.
     By \lemref{lem:independentContractionFactorization} we then have
     \begin{align*}
@@ -169,12 +169,12 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
             \probat{\indexedcatvariableof{\thirdnodes},\catvariableof{\nodes\setexcept{\thirdnodes}}=\seccatindexof{\nodes\setexcept{\thirdnodes}}}
         \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} = 1 \, .
     \end{align*}
-    We label by a function
+    Using the function
     \begin{align*}
-        \alpha: \{\secnodes : \exists\edge\in\edges: \secnodes \subset \edge \} \rightarrow \edges
+        \alpha: \{\secnodes : \exists\edge\in\edges: \secnodes \subset \edge \} \rightarrow \edges,
     \end{align*}
-    the remaining node subsets by a hyperedge containing the subset.
-    We build the tensor
+    we label the remaining node subsets by a hyperedge containing the subset.
+    For each $\edge\in\edges$, we build the tensor
     \begin{align*}
         \hypercoreofat{\edge}{\catvariableof{\edge}} = \prod_{\secnodes \wcols \alpha(\secnodes) = \edge} \prod_{\thirdnodes\subset\secnodes}
         \left(
@@ -186,13 +186,13 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
         \probat{\catvariableof{\nodes}} & = \contractionof{\extnetasset}{\catvariableof{\nodes}} \\
         & = \normalizationof{\extnetasset}{\catvariableof{\node}} \, .
     \end{align*}
-    We have thus constructed a Markov Network with trivial partition function, which contraction coincides with the probability distribution.
+    We have thus constructed a Markov Network with trivial partition function, whose contraction coincides with the probability distribution.
 
     $i)\Rightarrow ii)$:
     Let us now show the converse statement and assume that there is a Markov Network representing the distribution $\probwithnodes$, and let us choose subsets $\nodesa,\nodesb,\nodesc\subset\nodes$ such that $\nodesc$ separates $\nodesa$ from $\nodesb$.
     Let us denote by $\nodes_0$ the nodes with paths to $\nodesa$, which do not contain a node in $\nodesc$, and by $\nodes_1$ the nodes with paths to $\nodesb$, which do not contain a node in $\nodesc$.
     Further, we denote by $\edges_0$ the hyperedges which contain a node in $\nodes_0$ and by $\edges_1$ the hyperedges which contain a node in $\nodes_1$.
-    By assumption of separability, both sets $\edges_0$ and $\edges_1$ are disjoint and no node in $\nodesa$ is in a hyperedge in $\edges_1$, respectively no node in $\nodesb$ is in a hyperedge in $\edges_0$, .
+    By assumption of separability, both sets $\edges_0$ and $\edges_1$ are disjoint and no node in $\nodesa$ is in a hyperedge in $\edges_1$, respectively no node in $\nodesb$ is in a hyperedge in $\edges_0$.
     We then have
     \begin{align*}
         \normalizationofwrt{\extnetasset}{\catvariableof{\nodesa},\catvariableof{\nodesb}}{\indexedcatvariableof{\nodesc}}
