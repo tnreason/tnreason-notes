@@ -23,7 +23,7 @@ We start with showing the following Lemmata to be exploited in the proof.
     where the exponentiation is performed coordinatewise and positivity of $\hypercore$ ensures the well-definedness.
 \end{lemma}
 \begin{proof}
-    It suffices to show, that for an arbitrary index $\catindexof{\nodes}$ be an arbitrary index we have
+    It suffices to show, that for an arbitrary index $\catindexof{\nodes}$ we have
     \begin{align*}
         \hypercoreat{\indexedcatvariableof{\nodes}}
         = \prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
@@ -63,7 +63,7 @@ We start with showing the following Lemmata to be exploited in the proof.
             \normalizationofwrt{\hypercore}{\catvariableof{\nodeb}}{\catvariableof{\nodes\setexcept{\{\nodea,\nodeb\}}}}
         }{\catvariableof{\secnodes}}
     \end{align*}
-    then
+    then for any index $\seccatindexof{\secnodes}$
     \begin{align*}
         \prod_{\thirdnodes\subset\secnodes}
         \left(\contractionof{\hypercore}{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}}\right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} = 1 \, .
@@ -75,7 +75,7 @@ We start with showing the following Lemmata to be exploited in the proof.
         Z_{\thirdnodes}
         = \contractionof{\hypercore}{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}} \, .
     \end{align*}
-    By reorganizing the sum over $\thirdnodes\subset\secnodes$ into  $\thirdnodes\subset\secnodes\setexcept{\nodea}\cup\nodeb$ we have
+    By reorganizing the sum over $\thirdnodes\subset\secnodes$ into  $\thirdnodes\subset\secnodes\setexcept{\{\nodea\cup\nodeb\}}$ we have
     \begin{align}
         \label{eq:indContFacProof}
         \prod_{\thirdnodes\subset\secnodes}
