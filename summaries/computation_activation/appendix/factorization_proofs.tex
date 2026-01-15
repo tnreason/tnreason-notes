@@ -17,7 +17,7 @@ We start with showing the following Lemmata to be exploited in the proof.
     \begin{align*}
         \hypercoreat{\catvariableof{\nodes}}
         = \contractionof{
-            \big(\contractionof{\hypercore}{\catvariableof{\nodes/\thirdnodes},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}}\big)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \wcols \thirdnodes \subset \secnodes \subset \nodes
+            \big(\contractionof{\hypercore}{\catvariableof{\nodes\setexcept{\thirdnodes}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}}\big)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \wcols \thirdnodes \subset \secnodes \subset \nodes
         }{\catvariableof{\nodes}} \, ,
     \end{align*}
     where the exponentiation is performed coordinatewise and positivity of $\hypercore$ ensures the well-definedness.
@@ -27,16 +27,16 @@ We start with showing the following Lemmata to be exploited in the proof.
     \begin{align*}
         \hypercoreat{\indexedcatvariableof{\nodes}}
         = \prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
-        \big(\contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}\big)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \, .
+        \big(\contractionof{\hypercore}{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}\big)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \, .
     \end{align*}
     We do this by applying a logarithm on the right hand side and grouping the terms by $\thirdnodes$ as
     \begin{align*}
         %\lnof{\hypercoreat{\indexedcatvariableof{\nodes}}}
         & \lnof{\prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
-            \contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}\big)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}}} \\
-        & = \sum_{\thirdnodes\subset\nodes} \lnof{\contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}}
+            \contractionof{\hypercore}{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}\big)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}}} \\
+        & = \sum_{\thirdnodes\subset\nodes} \lnof{\contractionof{\hypercore}{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}}
         \left( \sum_{\secnodes\subset\nodes \wcols \thirdnodes\subset \secnodes} (-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}} \right) \\
-        & =  \sum_{\thirdnodes\subset\nodes} \lnof{\contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}}
+        & =  \sum_{\thirdnodes\subset\nodes} \lnof{\contractionof{\hypercore}{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}}
         \left( \sum_{i \in [\cardof{\nodes}-\cardof{\thirdnodes}]}  (-1)^{i}  \binom{\cardof{\nodes}-\cardof{\thirdnodes}}{i}  \right)
     \end{align*}
     Now, by the generic binomial theorem we have that for $n\in\nn, n \neq 0$
@@ -44,7 +44,7 @@ We start with showing the following Lemmata to be exploited in the proof.
     Therefore, the summands for $\thirdnodes\neq\nodes$ vanish and we have
     \begin{align*}
         & \lnof{ \prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
-            \big(\contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}\big)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} } \\
+            \big(\contractionof{\hypercore}{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}\big)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} } \\
         & = \lnof{\hypercoreat{\indexedcatvariableof{\nodes}}}
         \left( \sum_{i \in [0]}  (-1)^{i}  \binom{0}{i}  \right) \\
         & = \lnof{\hypercoreat{\indexedcatvariableof{\nodes}}} \, .
@@ -57,32 +57,32 @@ We start with showing the following Lemmata to be exploited in the proof.
     Let $\hypercore$ be a positive tensor, $\secnodes\subset\nodes$ and arbitrary subset and $\catindexof{\secnodes}$ an arbitrary index.
     When there are $\nodea,\nodeb \in\secnodes$, such that
     \begin{align*}
-        \normalizationofwrt{\hypercore}{\catvariableof{\nodea},\catvariableof{\nodeb}}{\catvariableof{\nodes/\{\nodea,\nodeb\}}}
+        \normalizationofwrt{\hypercore}{\catvariableof{\nodea},\catvariableof{\nodeb}}{\catvariableof{\nodes\setexcept{\{\nodea,\nodeb\}}}}
         = \contractionof{
-            \normalizationofwrt{\hypercore}{\catvariableof{\nodea}}{\catvariableof{\nodes/\{\nodea,\nodeb\}}},
-            \normalizationofwrt{\hypercore}{\catvariableof{\nodeb}}{\catvariableof{\nodes/\{\nodea,\nodeb\}}}
+            \normalizationofwrt{\hypercore}{\catvariableof{\nodea}}{\catvariableof{\nodes\setexcept{\{\nodea,\nodeb\}}}},
+            \normalizationofwrt{\hypercore}{\catvariableof{\nodeb}}{\catvariableof{\nodes\setexcept{\{\nodea,\nodeb\}}}}
         }{\catvariableof{\secnodes}}
     \end{align*}
     then
     \begin{align*}
         \prod_{\thirdnodes\subset\secnodes}
-        \left(\contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}}\right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} = 1 \, .
+        \left(\contractionof{\hypercore}{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}}\right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} = 1 \, .
     \end{align*}
 \end{lemma}
 \begin{proof}
     We abbreviate
     \begin{align*}
         Z_{\thirdnodes}
-        = \contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}} \, .
+        = \contractionof{\hypercore}{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}} \, .
     \end{align*}
-    By reorganizing the sum over $\thirdnodes\subset\secnodes$ into  $\thirdnodes\subset\secnodes/\nodea\cup\nodeb$ we have
+    By reorganizing the sum over $\thirdnodes\subset\secnodes$ into  $\thirdnodes\subset\secnodes\setexcept{\nodea}\cup\nodeb$ we have
     \begin{align}
         \label{eq:indContFacProof}
         \prod_{\thirdnodes\subset\secnodes}
         \left(
             Z_{\thirdnodes}
         \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} =
-        \prod_{\thirdnodes\subset\secnodes/\{\nodea,\nodeb\}}
+        \prod_{\thirdnodes\subset\secnodes\setexcept{\{\nodea,\nodeb\}}}
         \left(
             \frac{
                 Z_{\thirdnodes} \cdot Z_{\thirdnodes\cup\{\nodea,\nodeb\}}
@@ -95,16 +95,16 @@ We start with showing the following Lemmata to be exploited in the proof.
     \begin{align*}
         & \normalizationofwrt{\hypercore}{
             \indexedcatvariableof{\nodea}
-        }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodea,\nodeb\}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},  \indexedcatvariableof{\nodeb} }
+        }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}\cup\{\nodea,\nodeb\}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},  \indexedcatvariableof{\nodeb} }
         \\
         & \quad =
         \normalizationofwrt{\hypercore}{
             \indexedcatvariableof{\nodea}
-        }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodea,\nodeb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}} \\
+        }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes\cup\{\nodea,\nodeb\}}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}} \\
         & \quad  =
         \normalizationofwrt{\hypercore}{
             \indexedcatvariableof{\nodea}
-        }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodea,\nodeb\}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},  \catvariableof{\nodeb} = \seccatindexof{\nodeb}}
+        }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}\cup\{\nodea,\nodeb\}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},  \catvariableof{\nodeb} = \seccatindexof{\nodeb}}
     \end{align*}
     Applying this in each squares bracket term of \eqref{eq:indContFacProof} we get
     \begin{align*}
@@ -117,21 +117,21 @@ We start with showing the following Lemmata to be exploited in the proof.
         \frac{
             \normalizationofwrt{\hypercore}{
                 \indexedcatvariableof{\nodea}
-            }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodea,\nodeb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \indexedcatvariableof{\nodeb} }
+            }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}\cup\{\nodea,\nodeb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \indexedcatvariableof{\nodeb} }
         }{
             \normalizationofwrt{\hypercore}{
                 \catvariableof{\nodea} =\seccatindexof{\nodea}
-            }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodea,\nodeb\}} , \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \indexedcatvariableof{\nodeb}}
+            }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}\cup\{\nodea,\nodeb\}} , \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \indexedcatvariableof{\nodeb}}
         } \\
         & =
         \frac{
             \normalizationofwrt{\hypercore}{
                 \indexedcatvariableof{\nodea}
-            }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodea,\nodeb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \catvariableof{\nodeb} = \seccatindexof{\nodeb}}
+            }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}\cup\{\nodea,\nodeb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \catvariableof{\nodeb} = \seccatindexof{\nodeb}}
         }{
             \normalizationofwrt{\hypercore}{
                 \catvariableof{\nodea} =\seccatindexof{\nodea}
-            }{\indexedcatvariableof{\nodes/\thirdnodes\cup\{\nodea,\nodeb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},\catvariableof{\nodeb} = \seccatindexof{\nodeb}}
+            }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}\cup\{\nodea,\nodeb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},\catvariableof{\nodeb} = \seccatindexof{\nodeb}}
         } \\
         & =
         \frac{
@@ -156,17 +156,17 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
         \probat{\indexedcatvariableof{\nodes}} =
         \prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
         \left(
-            \probat{\indexedcatvariableof{\thirdnodes},\catvariableof{\nodes/\thirdnodes}=\seccatindexof{\nodes/\thirdnodes}}
-        %	\contractionof{\extnet\cup\{\onehotmapof{\catindexof{\nodes/\thirdnodes}}\}}{\catvariableof{\thirdnodes}}
+            \probat{\indexedcatvariableof{\thirdnodes},\catvariableof{\nodes\setexcept{\thirdnodes}}=\seccatindexof{\nodes\setexcept{\thirdnodes}}}
+        %	\contractionof{\extnet\cup\{\onehotmapof{\catindexof{\nodes\setexcept{\thirdnodes}}}\}}{\catvariableof{\thirdnodes}}
         \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \, .
     \end{align*}
-    Using the assumption of \theref{the:factorizationHammersleyClifford} we find for any subset $\secnodes\subset\nodes$, which is not contained in a hyperedge, $\nodea,\nodeb \in\secnodes$ such that $\catvariableof{\nodea}$ is independendent on $\catvariableof{\nodeb}$ conditioned on $\catvariableof{\secnodes/\{\nodea,\nodeb\}}$.
+    Using the assumption of \theref{the:factorizationHammersleyClifford} we find for any subset $\secnodes\subset\nodes$, which is not contained in a hyperedge, $\nodea,\nodeb \in\secnodes$ such that $\catvariableof{\nodea}$ is independendent on $\catvariableof{\nodeb}$ conditioned on $\catvariableof{\secnodes\setexcept{\{\nodea,\nodeb\}}}$.
     If no such nodes $\nodea,\nodeb \in\secnodes$ exists, $\secnodes$ would be contained in a hyperedge, since the hypergraph is assumed to be clique-capturing.
     By \lemref{lem:independentContractionFactorization} we then have
     \begin{align*}
         \prod_{\thirdnodes\subset\secnodes}
         \left(
-            \probat{\indexedcatvariableof{\thirdnodes},\catvariableof{\nodes/\thirdnodes}=\seccatindexof{\nodes/\thirdnodes}}
+            \probat{\indexedcatvariableof{\thirdnodes},\catvariableof{\nodes\setexcept{\thirdnodes}}=\seccatindexof{\nodes\setexcept{\thirdnodes}}}
         \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} = 1 \, .
     \end{align*}
     We label by a function
@@ -178,7 +178,7 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
     \begin{align*}
         \hypercoreofat{\edge}{\catvariableof{\edge}} = \prod_{\secnodes \wcols \alpha(\secnodes) = \edge} \prod_{\thirdnodes\subset\secnodes}
         \left(
-            \probat{\indexedcatvariableof{\thirdnodes},\catvariableof{\nodes/\thirdnodes}=\seccatindexof{\nodes/\thirdnodes}}
+            \probat{\indexedcatvariableof{\thirdnodes},\catvariableof{\nodes\setexcept{\thirdnodes}}=\seccatindexof{\nodes\setexcept{\thirdnodes}}}
         \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \, .
     \end{align*}
     and get, that
