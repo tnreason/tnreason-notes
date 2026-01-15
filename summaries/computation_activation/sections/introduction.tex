@@ -43,7 +43,7 @@ To capture both logical and probabilistic models, and exploit their neural decom
 The architecture consists of two complementary subarchitectures that serve the purpose of computation and activation, respectively.
 The \emph{computation network} prepares auxiliary hidden variables with deterministic dependence on the main variables.
 We interpret the network as a distributed computation scheme of functions describing this dependence, whose decomposition is related to sparsity concepts of the corresponding functions. %is reflected in the computation.
-These auxiliary variables represent in different contexts logical formulas or more generic statistics.
+These auxiliary variables represent logical formulas or more generic statistics in different contexts.
 The \emph{activation network} then assigns numerical values to the states of those auxiliary variables, and in this way activates the variables to represent factors of a model.
 Logical models emerge when the activation network is a boolean tensor, probabilistic exponential families when they are elementary positive-valued tensors, and hybrid models in the most general cases.
 
