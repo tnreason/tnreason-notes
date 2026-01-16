@@ -1,8 +1,8 @@
 \section{Proof of the Factorization Theorems}\label{sec:proofFactorizationTheorems}
 
-Let us now provide proofs for the factorization theorems stated in \secref{sec:probPar}.
+We now provide proofs for the factorization theorems stated in \secref{sec:probPar}.
 These proofs are classically known (see e.g. \cite{koller_probabilistic_2009} for Hammersley-Clifford and \cite{casella_statistical_2001} for Fisher-Neyman).
-We here provide them in our tensor networks notation and for hypergraphs for completeness. % Since typically HC is shown on graphs.
+They are here provided in our tensor networks notation and for hypergraphs for completeness. % Since typically HC is shown on graphs.
 
 \subsection{Hammersley-Clifford}
 
@@ -55,13 +55,13 @@ We start with showing the following Lemmata to be exploited in the proof.
 \begin{lemma}
     \label{lem:independentContractionFactorization}
     Let $\hypercore$ be a positive tensor and $\secnodes\subset\nodes$ an arbitrary subset.
-    When there are $\nodea,\nodeb \in\secnodes$, such that
+    When there are $\nodea,\nodeb \in\secnodes$ such that
     \begin{align*}
         \normalizationofwrt{\hypercore}{\catvariableof{\nodea},\catvariableof{\nodeb}}{\catvariableof{\nodes\setexcept{\{\nodea,\nodeb\}}}}
         = \contractionof{
             \normalizationofwrt{\hypercore}{\catvariableof{\nodea}}{\catvariableof{\nodes\setexcept{\{\nodea,\nodeb\}}}},
             \normalizationofwrt{\hypercore}{\catvariableof{\nodeb}}{\catvariableof{\nodes\setexcept{\{\nodea,\nodeb\}}}}
-        }{\catvariableof{\secnodes}}
+        }{\catvariableof{\secnodes}}\,,
     \end{align*}
     then for any indices $\seccatindexof{\secnodes}$ and $\catindexof{\secnodes}$
     \begin{align*}
@@ -95,16 +95,16 @@ We start with showing the following Lemmata to be exploited in the proof.
     \begin{align*}
         & \normalizationofwrt{\hypercore}{
             \indexedcatvariableof{\nodea}
-        }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}\cup\{\nodea,\nodeb\}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},  \indexedcatvariableof{\nodeb} }
+        }{\indexedcatvariableof{\nodes\setexcept{\{\thirdnodes\cup\{\nodea,\nodeb\}\}}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},  \indexedcatvariableof{\nodeb} }
         \\
         & \quad =
         \normalizationofwrt{\hypercore}{
             \indexedcatvariableof{\nodea}
-        }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes\cup\{\nodea,\nodeb\}}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}} \\
+        }{\indexedcatvariableof{\nodes\setexcept{\{\thirdnodes\cup\{\nodea,\nodeb\}\}}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}} \\
         & \quad  =
         \normalizationofwrt{\hypercore}{
             \indexedcatvariableof{\nodea}
-        }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}\cup\{\nodea,\nodeb\}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},  \catvariableof{\nodeb} = \seccatindexof{\nodeb}}
+        }{\indexedcatvariableof{\nodes\setexcept{\{\thirdnodes\cup\{\nodea,\nodeb\}\}}},\catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},  \catvariableof{\nodeb} = \seccatindexof{\nodeb}}\,.
     \end{align*}
     Applying this in each squares bracket term of \eqref{eq:indContFacProof} we get
     \begin{align*}
@@ -117,21 +117,21 @@ We start with showing the following Lemmata to be exploited in the proof.
         \frac{
             \normalizationofwrt{\hypercore}{
                 \indexedcatvariableof{\nodea}
-            }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}\cup\{\nodea,\nodeb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \indexedcatvariableof{\nodeb} }
+            }{\indexedcatvariableof{\nodes\setexcept{\{\thirdnodes\cup\{\nodea,\nodeb\}\}}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \indexedcatvariableof{\nodeb} }
         }{
             \normalizationofwrt{\hypercore}{
                 \catvariableof{\nodea} =\seccatindexof{\nodea}
-            }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}\cup\{\nodea,\nodeb\}} , \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \indexedcatvariableof{\nodeb}}
+            }{\indexedcatvariableof{\nodes\setexcept{\{\thirdnodes\cup\{\nodea,\nodeb\}\}}} , \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \indexedcatvariableof{\nodeb}}
         } \\
         & =
         \frac{
             \normalizationofwrt{\hypercore}{
                 \indexedcatvariableof{\nodea}
-            }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}\cup\{\nodea,\nodeb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \catvariableof{\nodeb} = \seccatindexof{\nodeb}}
+            }{\indexedcatvariableof{\nodes\setexcept{\{\thirdnodes\cup\{\nodea,\nodeb\}\}}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes}, \catvariableof{\nodeb} = \seccatindexof{\nodeb}}
         }{
             \normalizationofwrt{\hypercore}{
                 \catvariableof{\nodea} =\seccatindexof{\nodea}
-            }{\indexedcatvariableof{\nodes\setexcept{\thirdnodes}\cup\{\nodea,\nodeb\}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},\catvariableof{\nodeb} = \seccatindexof{\nodeb}}
+            }{\indexedcatvariableof{\nodes\setexcept{\{\thirdnodes\cup\{\nodea,\nodeb\}\}}}, \catvariableof{\thirdnodes}=\seccatindexof{\thirdnodes},\catvariableof{\nodeb} = \seccatindexof{\nodeb}}
         } \\
         & =
         \frac{
@@ -151,7 +151,7 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
 %\end{theorem}
 \begin{proof}[Proof of \theref{the:factorizationHammersleyClifford}]
     $ii)\Rightarrow i)$
-    By \lemref{the:contractionFactorization} we have for any indeces $\catindexof{\nodes}$ and $\seccatindexof{\nodes}$
+    By \lemref{the:contractionFactorization} we have for any indices $\catindexof{\nodes}$ and $\seccatindexof{\nodes}$
     \begin{align*}
         \probat{\indexedcatvariableof{\nodes}} =
         \prod_{\secnodes\subset\nodes} \prod_{\thirdnodes\subset\secnodes}
@@ -160,8 +160,8 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
         %	\contractionof{\extnet\cup\{\onehotmapof{\catindexof{\nodes\setexcept{\thirdnodes}}}\}}{\catvariableof{\thirdnodes}}
         \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \, .
     \end{align*}
-    Using the clique-capturing assumption of \theref{the:factorizationHammersleyClifford} we find for any subset $\secnodes\subset\nodes$, which is not contained in a hyperedge, $\nodea,\nodeb \in\secnodes$ such that $\catvariableof{\nodea}$ is independent of $\catvariableof{\nodeb}$ conditioned on $\catvariableof{\secnodes\setexcept{\{\nodea,\nodeb\}}}$.
-    If no such nodes $\nodea,\nodeb \in\secnodes$ exists, $\secnodes$ would be contained in a hyperedge, since the hypergraph is assumed to be clique-capturing.
+    Using the clique-capturing assumption of \theref{the:factorizationHammersleyClifford}, we find for any subset $\secnodes\subset\nodes$, which is not contained in a hyperedge $\nodea,\nodeb \in\secnodes$ such that $\catvariableof{\nodea}$ is independent of $\catvariableof{\nodeb}$ conditioned on $\catvariableof{\secnodes\setexcept{\{\nodea,\nodeb\}}}$.
+    If no such nodes $\nodea,\nodeb \in\secnodes$ exists, $\secnodes$ would be contained in a hyperedge since the hypergraph is assumed to be clique-capturing.
     By \lemref{lem:independentContractionFactorization} we then have
     \begin{align*}
         \prod_{\thirdnodes\subset\secnodes}
@@ -171,7 +171,7 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
     \end{align*}
     Using the function
     \begin{align*}
-        \alpha: \{\secnodes : \exists\edge\in\edges: \secnodes \subset \edge \} \rightarrow \edges,
+        \alpha: \{\secnodes : \exists\edge\in\edges: \secnodes \subset \edge \} \rightarrow \edges\,,
     \end{align*}
     we label the remaining node subsets by a hyperedge containing the subset.
     For each $\edge\in\edges$, we build the tensor
@@ -181,18 +181,18 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
             \probat{\indexedcatvariableof{\thirdnodes},\catvariableof{\nodes\setexcept{\thirdnodes}}=\seccatindexof{\nodes\setexcept{\thirdnodes}}}
         \right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} \, .
     \end{align*}
-    and get, that
+    and get that
     \begin{align*}
         \probat{\catvariableof{\nodes}} & = \contractionof{\extnetasset}{\catvariableof{\nodes}} \\
-        & = \normalizationof{\extnetasset}{\catvariableof{\node}} \, .
+        & = \normalizationof{\extnetasset}{\catvariableof{\nodes}} \, .
     \end{align*}
     We have thus constructed a Markov Network with trivial partition function, whose contraction coincides with the probability distribution.
 
     $i)\Rightarrow ii)$:
-    Let us now show the converse statement and assume that there is a Markov Network representing the distribution $\probwithnodes$, and let us choose subsets $\nodesa,\nodesb,\nodesc\subset\nodes$ such that $\nodesc$ separates $\nodesa$ from $\nodesb$.
-    Let us denote by $\nodes_0$ the nodes with paths to $\nodesa$, which do not contain a node in $\nodesc$, and by $\nodes_1$ the nodes with paths to $\nodesb$, which do not contain a node in $\nodesc$.
-    Further, we denote by $\edges_0$ the hyperedges which contain a node in $\nodes_0$ and by $\edges_1$ the hyperedges which contain a node in $\nodes_1$.
-    By assumption of separability, both sets $\edges_0$ and $\edges_1$ are disjoint and no node in $\nodesa$ is in a hyperedge in $\edges_1$, respectively no node in $\nodesb$ is in a hyperedge in $\edges_0$.
+    To show the converse statement, assume that there is a Markov Network representing the distribution $\probwithnodes$ and choose subsets $\nodesa,\nodesb,\nodesc\subset\nodes$ such that $\nodesc$ separates $\nodesa$ from $\nodesb$.
+    Denote by $\nodes_0$ the nodes with paths to $\nodesa$, which do not contain a node in $\nodesc$ and by $\nodes_1$ the nodes with paths to $\nodesb$, which do not contain a node in $\nodesc$.
+    Furthermore, we denote by $\edges_0$ the hyperedges which contain a node in $\nodes_0$ and by $\edges_1$ the hyperedges which contain a node in $\nodes_1$.
+    By assumption of separability, both sets $\edges_0$ and $\edges_1$ are disjoint and no node in $\nodesa$ is in a hyperedge in $\edges_1$ and respectively no node in $\nodesb$ is in a hyperedge in $\edges_0$.
     We then have
     \begin{align*}
         \normalizationofwrt{\extnetasset}{\catvariableof{\nodesa},\catvariableof{\nodesb}}{\indexedcatvariableof{\nodesc}}
