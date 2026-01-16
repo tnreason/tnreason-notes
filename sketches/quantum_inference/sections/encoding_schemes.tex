@@ -30,7 +30,7 @@ For any $p\in[0,1]$ we then have
 \begin{definition}[\ActivationCircuit{}]
     Given a function
     \begin{align*}
-        \exfunction : \bigtimes_{\selindexin} [2] \rightarrow [0,1]
+        \exformula : \bigtimes_{\selindexin} [2] \rightarrow [0,1]
     \end{align*}
     its \activationCircuit{} is the controlled unitary
     $\qcaencodingofat{\hypercore}{\avariableof{\insymbol},\avariableof{\outsymbol},\headvariableof{[\seldim]}}$ defined as
@@ -38,7 +38,7 @@ For any $p\in[0,1]$ we then have
         \qcaencodingofat{\hypercore}{\avariableof{\insymbol},\avariableof{\outsymbol},\headvariableof{[\seldim]}}
         = \sum_{\headindexof{[\seldim]}} \onehotmapofat{\headindexof{[\seldim]}}{\headvariableof{[\seldim]}}
         %\otimes \onehotmapofat{\headindexof{[\seldim]}}{\headvariableof{\insymbol,[\seldim]}}
-        \otimes \yrotationofat{h(\exfunctionat{\headindexof{[\seldim]}})}{\avariableof{\insymbol},\avariableof{\outsymbol}} \, .
+        \otimes \yrotationofat{h(\exformulaat{\headindexof{[\seldim]}})}{\avariableof{\insymbol},\avariableof{\outsymbol}} \, .
     \end{align*}
 \end{definition}
 
@@ -53,7 +53,7 @@ Note that for rejection sampling, only the quotients of the values are important
 
 Tensors $\hypercoreat{\headvariables}$ with non-negative coordinates can be encoded after dividing them by their maximum, that is the \activationCircuit{} of the function
 \begin{align*}
-    \exfunctionat{\headindexof{[\seldim]}} = \frac{\hypercoreat{\headvariables=\headindexof{[\seldim]}}}{\max_{\secheadindexof{[\seldim]}} \hypercoreat{\headvariables=\secheadindexof{[\seldim]}}}
+    \exformulaat{\headindexof{[\seldim]}} = \frac{\hypercoreat{\headvariables=\headindexof{[\seldim]}}}{\max_{\secheadindexof{[\seldim]}} \hypercoreat{\headvariables=\secheadindexof{[\seldim]}}}
 \end{align*}
 When the maximum of the tensor is not known, it can be replaced by an upper bound (reducing the acceptance rate of the rejection sampling).
 
@@ -98,39 +98,61 @@ In this way, Bayesian Networks can be prepared as quantum circuits, where each c
 We here suggest a quantum pendant to basis encodings (see Chapter Basis Calculus), which has the decomposition by contraction property.
 
 \begin{definition}[\ComputationCircuit{}]
-    Given a boolean function $\exfunction:\atomstates\rightarrow[2]$ the \computationCircuit{} is the unitary tensor
+    Given a boolean function $\exformula:\atomstates\rightarrow[2]$ the \computationCircuit{} is the unitary tensor
     \begin{align*}
-        \qcbencodingofat{\exfunction}{\headvariableof{\insymbol,\exfunction},\headvariableof{\outsymbol,\exfunction},\shortcatvariables}
+        \qcbencodingofat{\exformula}{\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula},\shortcatvariables}
         &\quad=
-        \sum_{\shortcatindicesin\wcols\exfunctionat{\shortcatindices}=1}
-        \paulixat{\headvariableof{\insymbol,\exfunction},\headvariableof{\outsymbol,\exfunction}} \otimes
+        \sum_{\shortcatindicesin\wcols\exformulaat{\shortcatindices}=1}
+        \paulixat{\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula}} \otimes
         \onehotmapofat{\shortcatindices}{\shortcatvariables} \\ % \otimes \onehotmapofat{\shortcatindices}{\catvariableof{\outsymbol,[\atomorder]}} \\
         & \quad \quad \quad +
-        \sum_{\shortcatindicesin\wcols\exfunctionat{\shortcatindices}=0}
-        \identityat{\headvariableof{\insymbol,\exfunction},\headvariableof{\outsymbol,\exfunction}} \otimes
+        \sum_{\shortcatindicesin\wcols\exformulaat{\shortcatindices}=0}
+        \identityat{\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula}} \otimes
         \onehotmapofat{\shortcatindices}{\shortcatvariables} \, . % \otimes \onehotmapofat{\shortcatindices}{\catvariableof{\outsymbol,[\atomorder]}}
     \end{align*}
 \end{definition}
 
-Notice, that $U^{\lnot} = \mathrm{CNOT}$, which is obvious from $\onesat{\headvariableof{\insymbol},\headvariableof{\outsymbol}} - \identityat{\headvariableof{\insymbol},\headvariableof{\outsymbol}}$ being the Pauli-X gate (not to be confused with $X$ denoting distributed variables here).
+Notice, that $\qcbencodingof{\lnot} = \mathrm{CNOT}$, which is obvious from $\onesat{\headvariableof{\insymbol},\headvariableof{\outsymbol}} - \identityat{\headvariableof{\insymbol},\headvariableof{\outsymbol}}$ being the Pauli-X gate (not to be confused with $X$ denoting distributed variables here).
 The \computationCircuit{} is therefore a generalized controlled $\mathrm{NOT}$ gate, where the control is by a boolean function.
 
-Functions with multiple output variables, i.e. $\exfunction:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, can be encoded image coordinate wise as a concatenation of the respective circuits.
+% Multiple output variables
+Functions with multiple output variables, i.e. $\exformula:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, can be encoded image coordinate wise as a concatenation of the respective circuits.
+
+\subsubsection{Relation with basis encodings}
+
+\begin{lemma}
+    \label{lem:bencComCircuit}
+    For any boolean function we have (see \figref{fig:bencComCircuit})
+    \begin{align*}
+        \qcbencodingofat{\exformula}{\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula},\shortcatvariables}
+        = \contractionof{
+            \bencodingofat{\exformula}{\headvariableof{\exformula},\shortcatvariables},
+            \bencodingofat{\oplus}{\headvariableof{\outsymbol,\exformula},\headvariableof{\insymbol,\exformula},\headvariableof{\exformula}}
+        }{\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula},\shortcatvariables} \, .
+    \end{align*}
+\end{lemma}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{./tikz_pics/bencoding_computation_circuit}
+    \end{center}
+    \caption{Equivalence of computation circuit and basis encodings.}\label{fig:bencComCircuit}
+\end{figure}
 
 \subsubsection{Composition by Contraction - Exploiting \DecompositionSparsity{}}
 
 The decomposition by contraction property of basis encodings is now a composition of circuits property, as stated in the next lemma.
 
 \begin{lemma}
-    We have for functions $\exfunction:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, $\secexfunction:\bigtimes_{\selindexin}[2]\rightarrow\bigtimes_{s\in[r]}[2]$ (see \figref{fig:qcbencodingDecomposition})
+    We have for functions $\exformula:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, $\secexfunction:\bigtimes_{\selindexin}[2]\rightarrow\bigtimes_{s\in[r]}[2]$ (see \figref{fig:qcbencodingDecomposition})
     \begin{align*}
-        \qcbencodingofat{\secexfunction\circ\exfunction}{\headvariableof{\insymbol,\secexfunction\circ\exfunction},\headvariableof{\outsymbol,\secexfunction\circ\exfunction},\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]}}
+        \qcbencodingofat{\secexfunction\circ\exformula}{\headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula},\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]}}
         = \breakablecontractionof{
-            &\onehotmapofat{0}{\headvariableof{\insymbol,\exfunction}},\\
-            &\qcbencodingofat{\exfunction}{\headvariableof{\insymbol,\exfunction},\headvariableof{\outsymbol,\exfunction},\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]}},\\
-            &\qcbencodingofat{\secexfunction}{\headvariableof{\insymbol,\secexfunction\circ\exfunction},\headvariableof{\outsymbol,\secexfunction\circ\exfunction},\headvariableof{\outsymbol,\exfunction},\headvariableof{\outsymbol,\exfunction}}
+            &\onehotmapofat{0}{\headvariableof{\insymbol,\exformula}},\\
+            &\qcbencodingofat{\exformula}{\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula},\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]}},\\
+            &\qcbencodingofat{\secexfunction}{\headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\exformula},\headvariableof{\outsymbol,\exformula}}
         }{
-            \headvariableof{\insymbol,\secexfunction\circ\exfunction},\headvariableof{\outsymbol,\secexfunction\circ\exfunction},\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]}
+            \headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula},\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]}
         } \, .
     \end{align*}
 \end{lemma}
@@ -150,15 +172,15 @@ This works, when the target qubit of one connective is used as a value qubit of 
 
 
 %    \begin{lemma}
-%        We have for functions $\exfunction:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, $\secexfunction:\bigtimes_{\selindexin}[2]\rightarrow\bigtimes_{s\in[r]}[2]$
+%        We have for functions $\exformula:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, $\secexfunction:\bigtimes_{\selindexin}[2]\rightarrow\bigtimes_{s\in[r]}[2]$
 %        \begin{align*}
-%            \qcbencodingofat{\secexfunction\circ\exfunction}{\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]},\headvariableof{\insymbol,\secexfunction\circ\exfunction},\headvariableof{\outsymbol,\secexfunction\circ\exfunction}}
+%            \qcbencodingofat{\secexfunction\circ\exformula}{\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]},\headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula}}
 %            = \breakablecontractionof{
-%                &\onehotmapofat{0}{\headvariableof{\insymbol,\exfunction}},\\
-%                &\qcbencodingofat{\exfunction}{\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]},\headvariableof{\insymbol,\exfunction},\headvariableof{\outsymbol,\exfunction}},\\
-%                &\qcbencodingofat{\secexfunction}{\headvariableof{\outsymbol,\exfunction},\headvariableof{\outsymbol,\mathrm{aux}},\headvariableof{\insymbol,\secexfunction\circ\exfunction},\headvariableof{\outsymbol,\secexfunction\circ\exfunction}}
+%                &\onehotmapofat{0}{\headvariableof{\insymbol,\exformula}},\\
+%                &\qcbencodingofat{\exformula}{\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]},\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula}},\\
+%                &\qcbencodingofat{\secexfunction}{\headvariableof{\outsymbol,\exformula},\headvariableof{\outsymbol,\mathrm{aux}},\headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula}}
 %            }{
-%                \catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]},\headvariableof{\insymbol,\secexfunction\circ\exfunction},\headvariableof{\outsymbol,\secexfunction\circ\exfunction}
+%                \catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]},\headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula}
 %            } \, .
 %        \end{align*}
 %    \end{lemma}
@@ -242,26 +264,48 @@ Using the \computationCircuit{} we can prepare two function encoding schemes, de
 
 \subsubsection{Basis encoding}
 
-When applying the \computationCircuit{} on the initial state
-\begin{align*}
-    \sqrt{\frac{1}{2^\atomorder}}\onesat{\shortcatvariables} \otimes \fbasisat{\headvariable} % insymbol?
-\end{align*}
-we get the basis encoding state
-\begin{align*}
-    \basqstateofat{\exformula}{\shortcatvariables,\headvariable}
-    = \sqrt{\frac{1}{2^\atomorder}} \sum_{\shortcatindices\in\atomstates} \onehotmapofat{\shortcatindices}{\shortcatvariables}
-    \otimes \onehotmapofat{\exformula(\shortcatindices)}{\headvariable} \, .
-\end{align*}
+\begin{definition}
+    The basis encoding of a boolean function $\exformula$ is the state
+    \begin{align*}
+        \basqstateofat{\exformula}{\shortcatvariables,\headvariable}
+        = \sqrt{\frac{1}{2^\atomorder}} \sum_{\shortcatindices\in\atomstates} \onehotmapofat{\shortcatindices}{\shortcatvariables}
+        \otimes \onehotmapofat{\exformula(\shortcatindices)}{\headvariable} \, .
+    \end{align*}
+\end{definition}
+
+\begin{lemma}
+    When applying the \computationCircuit{} on the initial state
+    \begin{align*}
+        \sqrt{\frac{1}{2^\atomorder}}\onesat{\shortcatvariables} \otimes \fbasisat{\headvariable} % insymbol?
+    \end{align*}
+    we get the basis encoding state (see \figref{fig:basSignQstateConstruction}a).
+\end{lemma}
+
+\begin{corollary}
+    Using \lemref{lem:bencComCircuit} we have
+    \begin{align*}
+        \basqstateofat{\exformula}{\shortcatvariables,\headvariable}
+        = \sqrt{\frac{1}{2^{\catorder}}} \bencodingofat{\exformula}{\shortcatvariables,\headvariable}
+    \end{align*}
+\end{corollary}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{./tikz_pics/bas_sign_qstate_construction}
+    \end{center}
+    \caption{Construction of the basis encoding state (a) and the sign encoding state (b) using the \computationCircuit{} of a function.}\label{fig:basSignQstateConstruction}
+\end{figure}
 
 The initial state can be prepared by applying Hadamard gates on all distributed variable qubits and preparing the head variable qubit in the ground state.
 The overlap of two basis encoding states (which share the same head variable) is proportional to the contraction of the corresponding formulas.
 
-\begin{lemma}\label{lem:basQstateOverlap}
+\begin{lemma}
+    \label{lem:basQstateOverlap}
     Let $\formula,\secformula$ be two Boolean formulas on the states of $\shortcatvariables$.
     Then we have
     \begin{align*}
         \contraction{\basqstateofat{\formula}{\shortcatvariables,\headvariable},\basqstateofat{\secexformula}{\shortcatvariables,\headvariable}}
-        = \frac{1}{2^{\catorder}} \contraction{\formulawith,\secformulawith}
+        = \frac{1}{2^{\catorder}} \contraction{\formulawith,\secformulawith} \, .
     \end{align*}
 \end{lemma}
 \begin{proof}
@@ -276,17 +320,24 @@ The overlap of two basis encoding states (which share the same head variable) is
 
 \subsubsection{Sign encoding}
 
-When applying the \computationCircuit{} on the initial state
-\begin{align*}
-    \sqrt{\frac{1}{2^\atomorder}}\onesat{\shortcatvariables}
-    \otimes \sqrt{\frac{1}{2}} \left(\fbasisat{\headvariable} - \tbasisat{\headvariable}\right)
-\end{align*}
-we get the sign encoding state
-\begin{align*}
-    \signqstateofat{\exformula}{\shortcatvariables,\headvariable}
-    = \left(\sqrt{\frac{1}{2^\atomorder}} \sum_{\shortcatindices\in\atomstates} \left(-1\right)^{\exformula(\shortcatindices)} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables}\right)
-    \otimes \sqrt{\frac{1}{2}} \left(\fbasisat{\headvariable} - \tbasisat{\headvariable}\right) \, .
-\end{align*}
+\begin{definition}
+    The sign encoding of a boolean function $\exformula$ is the state
+    \begin{align*}
+        \signqstateofat{\exformula}{\shortcatvariables,\headvariable}
+        = \left(\sqrt{\frac{1}{2^\atomorder}} \sum_{\shortcatindices\in\atomstates} \left(-1\right)^{\exformula(\shortcatindices)} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables}\right)
+        \otimes \sqrt{\frac{1}{2}} \left(\fbasisat{\headvariable} - \tbasisat{\headvariable}\right) \, .
+    \end{align*}
+\end{definition}
+
+\begin{lemma}
+    When applying the \computationCircuit{} on the initial state
+    \begin{align*}
+        \sqrt{\frac{1}{2^\atomorder}}\onesat{\shortcatvariables}
+        \otimes \sqrt{\frac{1}{2}} \left(\fbasisat{\headvariable} - \tbasisat{\headvariable}\right)
+    \end{align*}
+    we get the basis encoding state (see \figref{fig:basSignQstateConstruction}b).
+    Note that the initial state is a Hadamard gate acting on the state $\tbasisat{\headvariable}$.
+\end{lemma}
 
 % Preparation of the initial state
 The initial state can be prepared by applying Hadamard gates on all distributed variable qubits and preparing the head variable qubit by applying a Hadamard gate on the first basis state, i.e.
@@ -295,12 +346,13 @@ The initial state can be prepared by applying Hadamard gates on all distributed 
     = \hgateat{\headvariableof{\outsymbol},\headvariableof{\insymbol}} \fbasisat{\headvariableof{\insymbol}} \, ,
 \end{align*}
 
-\begin{lemma}\label{lem:signQstateOverlap}
+\begin{lemma}
+    \label{lem:signQstateOverlap}
     Let $\formula,\secformula$ be two Boolean formulas on the states of $\shortcatvariables$.
     Then we have
     \begin{align*}
         \contraction{\signqstateofat{\formula}{\shortcatvariables,\headvariable},\signqstateofat{\secexformula}{\shortcatvariables,\headvariable}}
-        = \frac{1}{2^{\catorder}} \left(\contraction{\formulawith,\secformulawith}-\contraction{\formulawith,\lnot\secformulawith}\right)
+        = \frac{1}{2^{\catorder}} \left(\contraction{\formulawith,\secformulawith}-\contraction{\formulawith,\lnot\secformulawith}\right) \, .
     \end{align*}
 \end{lemma}
 \begin{proof}
