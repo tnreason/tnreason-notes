@@ -18,7 +18,7 @@ Starting with the introduction of propositional formulas as boolean tensors thei
         \formulaat{\indexedshortcatvariables}=1 \, ,
     \end{align*}
     where we associate $\mathrm{True}\leftrightarrow 1$ and $\mathrm{False}\leftrightarrow 0$.
-    If there is a model to a propositional formula, we say the formula is \emph{satisfiable}.
+    If there is a model of a propositional formula, we say the formula is \emph{satisfiable}.
 \end{definition}
 
 \input{../examples/logical_paradigm/prop_formula_coordinatewise.tex}
@@ -82,7 +82,7 @@ Both $\formula$ and $\lnot\formula$ are thus \ComputationActivationNetworks{} to
 %This representation of propositional formulas with respect to basis encoding thus leads to \ComputationActivationNetworks{}, which were also used to describe probability distributions in the last section.
 %In this way the soft and hard logic can be combined in one framework.
 
-\subsection{Syntactical decomposition of propositional formulas}
+\subsection{Syntactic decomposition of propositional formulas}
 
 Propositional formulas of concern often have a syntactic specification as composed functions.
 We can therefore apply the neural paradigm to find efficient representations of them.
@@ -187,7 +187,7 @@ This is equivalent to \defref{def:logicalEntailment} due to the equivalence of $
 
 \input{../examples/logical_paradigm/sudoku_entailment}
 
-\subsection{Efficient representation of kowledge bases}
+\subsection{Efficient representation of knowledge bases}
 
 We now investigate the representation of propositional knowledge bases $\kb=\{\formulaof{\selindex}\wcols\selindexin\}$, which are sets of propositional formulas $\formulaof{\selindex}$.
 The conjunction of these formulas is the knowledge base formula

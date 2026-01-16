@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt,twoside,english]{article}
+\documentclass[a4paper,11pt,twoside,english]{article}
 \usepackage{wiaspreprint}
 \input{info}
 \input{titlepage}
@@ -47,6 +47,16 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{conjecture}[theorem]{Conjecture}
 %%%%%%%%%%%%%%%%%%%%%%
+\usepackage{natbib}
+\makeatletter
+\renewcommand\NAT@nmfmt[1]{#1\allowbreak}
+\makeatother
+\setlength{\emergencystretch}{2em}
+
+
+
+
+
 
 \begin{document}
     \maketitle
