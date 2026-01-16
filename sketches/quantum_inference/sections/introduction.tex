@@ -8,9 +8,10 @@ We follow two main ideas:
     \item \textbf{Sampling of \ComputationActivationNetworks{}:} Prepare quantum states, which measurement statistics can be utilized to prepare samples from \ComputationActivationNetworks{}.
     \item \textbf{Quantum Circuits as Contraction providers:} Quantum circuits are contractions of multiple tensors and therefore tensor networks, and measurement probabilities are given by contractions.
     Here we investigate how we can exploit these as contraction provider for \tnreason{}.
+    We are inspired by Deutsch-Josza algorithm, which we generalize here.
 \end{itemize}
 
-Main approach: Quantum Inference scheme on Bayesian networks \cite{low_quantum_2014}
+Main approach for sampling: Quantum Inference scheme on Bayesian networks \cite{low_quantum_2014}
 \begin{itemize}
     \item Extend to more general tensor networks than Bayesian networks: \ComputationActivationNetworks{}
 \end{itemize}
@@ -23,7 +24,7 @@ Further literature:
 
 Potential Advantage: \emph{Quantum Parallelism} (see \cite[Section 3.2.5]{schuld_machine_2021}).
 \begin{itemize}
-    \item Evaluation of multiple function values by single circuit evaluation.
+    \item Evaluation of multiple function values by single circuit evaluation, we will relate it with the contraction of $\bencodingof{\exformula}$ here.
     \item Contraction perspective: Loop-tolerant efficient contractions.
     \item However: Need a generic encoding scheme to exploit this advantage, which is not known yet.
     \item We here only provide a scheme based on post-selection, which provides a quantum advantage only through amplitude amplification.

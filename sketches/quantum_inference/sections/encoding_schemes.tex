@@ -12,6 +12,7 @@ Both are defined using controlled single qubit gates (see Sections 4.2-3 in [Nie
 
 \subsection{\ActivationCircuit{}}
 
+\red{Introduce rotation encodings based on activation circuit action, hint at a sampling scheme of probability distributions.}
 
 %% Angle preparing
 We define the angle preparing function on $p\in[0,1]$ by
@@ -156,6 +157,14 @@ The decomposition by contraction property of basis encodings is now a compositio
         } \, .
     \end{align*}
 \end{lemma}
+\begin{proof}
+    Can be seen by the basis encoding representation, when starting the hidden qubit with $\fbasis$, since
+    \begin{align*}
+        \contractionof{\bencodingofat{\oplus}{Y,X_0,X_1},\fbasisat{X_0}}{Y,X_1}
+        = \identityat{Y,X_1} \, .
+    \end{align*}
+    The marginalization of the hidden target qubit $X_1$ for measurements does not change the distribution, since we have a deterministic dependence on the measured data register (need preparation by $\fbasis$ for that).
+\end{proof}
 
 When having a syntactical decomposition of a propositional formula, we can iteratively apply the \computationCircuit{} decomposition theorem and prepare each connective by a circuit.
 We can decompose any propositional formula into logical connectives and prepare to each a modulus 2 circuit implementation.
@@ -233,6 +242,9 @@ This shows in particular, that any propositional formula can be represented by a
     \end{align*}
     where $\decindex\in[\cardof{\sliceset}]$ enumerates the tuples in $\sliceset$.
 \end{lemma}
+\begin{proof}
+    Can be seen by the basis encoding representation, and the accociativtiy of the sum mod2 ($\oplus$).
+\end{proof}
 
 Each \computationCircuit{} to each boolean monomial can be prepared by a multiple-controlled $\paulixsymbol$ gate and further pairs of $\paulixsymbol$ gates preparing the control state, see \figref{fig:qcbencodingPolynomial}. %where the control qubits are the affected variables and the target qubit is the value qubit.
 When we sum monomials wrt modulus 2 calculus, then the preparation is a sequence of such circuits.
@@ -244,7 +256,7 @@ This encoding strategy exploits a modified (by mod2 calculus) \polynomialSparsit
         \input{./tikz_pics/polynomial_sparsity.tex}
     \end{center}
     \caption{
-        Exploitaition of \PolynomialSparsity{} in \computationCircuit{}s.
+        Exploitation of \PolynomialSparsity{} in \computationCircuit{}s.
         Here, we use the typical denotation of a muliple-controlled CNOT gate, which control symbols do not indicate Dirac tensors.
     }\label{fig:qcbencodingPolynomial}
 \end{figure}

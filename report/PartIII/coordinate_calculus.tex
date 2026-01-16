@@ -516,7 +516,7 @@ We start with showing the following Lemmata to be exploited in the proof.
 
 \begin{lemma}
     \label{lem:independentContractionFactorization}
-    Let $\hypercore$ be a positive tensor, $\secnodes\subset\nodes$ and arbitrary subset and $\catindexof{\secnodes}$ an arbitrary index.
+    Let $\hypercore$ be a positive tensor and $\secnodes\subset\nodes$ an arbitrary subset.
     When there are $\nodesa,\nodesb \in\secnodes$, such that
     \begin{align*}
         \normalizationofwrt{\hypercore}{\catvariableof{\nodesa,\nodesb}}{\catvariableof{\nodes/\{\nodesa,\nodesb\}}}
@@ -525,7 +525,7 @@ We start with showing the following Lemmata to be exploited in the proof.
             \normalizationofwrt{\hypercore}{\catvariableof{\nodesb}}{\catvariableof{\nodes/\{\nodesa,\nodesb\}}}
         }{\catvariableof{\secnodes}}
     \end{align*}
-    then
+    then we have for any indices $\catindexof{\secnodes}$ and $\seccatindexof{\secnodes}$
     \begin{align*}
         \prod_{\thirdnodes\subset\secnodes}
         \left(\contractionof{\hypercore}{\indexedcatvariableof{\nodes/\thirdnodes}, \catvariableof{\thirdnodes} = \seccatindexof{\thirdnodes}}\right)^{(-1)^{\cardof{\secnodes}-\cardof{\thirdnodes}}} = 1 \, .

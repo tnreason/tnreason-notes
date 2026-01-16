@@ -44,16 +44,3 @@ and conversely
 \end{align*}
 If and only if the function is constant, then the transformed state is the ground state.
 
-\subsection{Deutsch-Josza Algorithm}
-
-We so far worked mainly with basis encoding states, which are prepared by a Hadamard transform and the \computationCircuit{} on statistic qubits in the ground state $\fbasisat{\headvariable}$.
-This ensured that the deterministic function relation is a hard constraint in the measurement distribution.
-If we apply a \computationCircuit{} on a different initial state of the statistic qubits, this constraint is in general not satisfied any more.
-
-In the Deutsch-Josza algorithm \cite{deutsch_rapid_1992}, the Walsh-Hadamard transform of a sign encoding of a boolean function is measured to determine whether the function is constant.
-If $\exformula$ is constant, then the Walsh-Hadamard transform of the sign encoding results in the tensor product of the ground state $\onehotmapofat{0\ldots0}{\shortcatvariables}$ with a head qubit state.
-
-%% Application: Check equivalence of two formulas
-Concatenating the \computationCircuit{} to formulas $\formula$ and $\secformula$ prepares the \computationCircuit{} of the formula $\formula\oplus\secformula$.
-Both are equal or negations of each other, if and only if the distributed qubits are disentangled from the head qubit.
-Doing the Deutsch-Josza test on $\formula\oplus\secformula$ thus decides whether two formulas are equal or negations of each other.
