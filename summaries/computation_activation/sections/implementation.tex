@@ -55,7 +55,8 @@ For example a tensor network is created from the propositional syntax of the abo
 \begin{minted}{python}
 fDecomp = application.create_cores_to_expressionsDict({"f0": ["and",["or","X_0","X_1"],["not","X_2"]]})
 \end{minted}
-Here we apply a nested-list description of syntactic hypergraphs (see \defref{def:formulaDecomposition}) with a specification of the logical connectives in the first position of the list (by \mintinline{python}{"and","or","not"} we refer to the connectives $\land,\lor,\lnot$).
+Here we apply a nested-list description of syntactic hypergraphs % (see \defref{def:formulaDecomposition}) 
+with a specification of the logical connectives in the first position of the list (by \mintinline{python}{"and","or","not"} we refer to the connectives $\land,\lor,\lnot$).
 Equivalently, we can exploit the $\land$ symmetry and create it by multiple formulas:
 \begin{minted}{python}
 fDecomp = application.create_cores_to_expressionsDict({"f0": ["or","X_0","X_1"], "f1": ["not","X_2"]})
