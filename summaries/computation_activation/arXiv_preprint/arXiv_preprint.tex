@@ -1,0 +1,50 @@
+\documentclass[a4paper,11pt,twoside,english]{article}
+\usepackage{arxiv}
+\input{arxiv_preamble}
+
+\input{../../../macros/organization_macros.tex}
+\input{../../../macros/general_macros.tex}
+\input{../../../macros/tc_macros.tex}
+\input{../../../macros/tikz_macros.tex}
+
+\newcommand{\abs}[1]{\ensuremath{\left\vert#1\right\vert}}
+\newcommand{\alex}[1]{\textcolor{blue}{#1}}
+\newcommand{\maxf}[1]{\textcolor{orange}{#1}}
+\newcommand{\janina}[1]{\textcolor{teal}{#1}}
+\newcommand{\martin}[1]{\textcolor{cyan}{#1}}
+
+
+\begin{document}
+
+    \title{A tensor network formalism for Neuro-Symbolic AI}
+    \author{Alex Goessmann, Janina Schütte, Maximilian Fröhlich, Martin Eigel\\
+    \ \\
+    Weierstrass Institute of Applied Analysis and Stochastic \\
+    Anton-Wilhelm-Amo-Straße 39\\
+    Berlin, 10117, Germany}
+    
+    \maketitle
+
+    \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
+        \input{../sections/abstract}
+    \end{abstract}
+
+    \input{../sections/introduction}
+    \input{../sections/notation}
+    \input{../sections/probabilistic_paradigm}
+    \input{../sections/neural_paradigm}
+    \input{../sections/logical_paradigm}
+    \input{../sections/hybrid_activation}
+    \input{../sections/implementation}
+    \input{../sections/conclusion}
+
+    \vskip 0.2in
+    \bibliographystyle{plainnat}
+    \bibliography{../../../references.bib}
+
+    \appendix
+
+    \input{../appendix/factorization_proofs}
+    \input{../appendix/algorithms_implementation}
+
+\end{document}

@@ -29,3 +29,5 @@ application_sketches/parity_check_codes/*
 *.toc
 *.nav
 *.snm
+
+book/*

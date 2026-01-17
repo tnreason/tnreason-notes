@@ -1,199 +1,22 @@
-\chapter{Glossary}
-
-% Match the encoding.suf terminology
-\sect{Tensors}
-
-Small greek letters are reserved for the notation of tensors:
-\begin{center}
-    \begin{tabular}{|p{\threecolumnwidth}|p{\threecolumnwidth}|p{\threecolumnwidth}|}
-        \hline
-        \rule{0pt}{\rowheight} \textbf{Notation}    & \textbf{Name}                                                & \textbf{Reference}                                                  \\
-        \hline
-        % alpha
-        \rule{0pt}{\rowheight} $\softacttensorwith$ & Soft Activation Tensor                                       & \theref{the:expFamilyTensorRep}                                     \\
-        \rule{0pt}{\rowheight} $\softactlegwith$    & Leg of Soft Activation Tensor                                & \theref{the:expFamilyTensorRep}                                     \\
-        % beta
-        \rule{0pt}{\rowheight} $\bencodingwith$     & Basis Encoding of a function $\exfunction$                   & \defref{def:functionRelationEncoding} \\
-        % gamma
-        % delta
-        \rule{0pt}{\rowheight}  $\dirdeltawith$     & Diracs delta                                                 & \exaref{exa:diracDeltaTensor}                                       \\
-        % epsilon
-        \rule{0pt}{\rowheight} $\onehotmapwith$     & One-hot Encoding                                             & \defref{def:oneHotEncoding}                                         \\
-        % zeta
-        % eta
-        \rule{0pt}{\rowheight} $\sstatnoisewith$    & Noise tensor                                                 & \defref{def:noiseTensor}                                            \\
-        % theta
-        \rule{0pt}{\rowheight} $\canparamwith$      & Canonical Parameter                                          & \defref{def:expFamily}                                              \\
-        % iota
-        % kappa
-        \rule{0pt}{\rowheight} $\kcorewith$         & Knowledge core                                               & \defref{def:knowledgeCoreSoundComplete}                             \\
-        % lambda
-        \rule{0pt}{\rowheight} $\scalarcorewith$    & Scalar core in $\cpformat$ decompositions                    & \defref{def:cpFormats}                                              \\
-        % mu
-        \rule{0pt}{\rowheight} $\meanparamwith$     & Mean Parameter                                               & \defref{def:meanPolytope}                                           \\
-        % nu
-        \rule{0pt}{\rowheight} $\basemeasurewith$   & Boolean base measure                                         & \secref{sec:baseMeasure}                                            \\
-        % xi
-        % omicron
-        % pi
-        % rho
-        \rule{0pt}{\rowheight} $\legcorewith$       & Leg core in $\cpformat$ decompositions                       & \defref{def:cpFormats}                                              \\
-        % sigma ! also: neuron
-        \rule{0pt}{\rowheight} $\sencodingwith$     & Selection Encoding of a vector-valued function $\exfunction$ & \defref{def:selectionEncoding}                                      \\
-        % tau
-        \rule{0pt}{\rowheight} $\extnetwith$        & Tensor network of tensors $\hypercorewith$                   & \defref{def:tensorNetwork}                                          \\
-        \rule{0pt}{\rowheight} $\paracttensorwith$  & Activation tensor of a \HybridLogicNetwork{}                 & \defref{def:hybridLogicNetwork}                                      \\
-        % ypsilon
-        % phi -> \sstat
-        \rule{0pt}{\rowheight} $\energytensorwith$  & Energy tensor                                                & \defref{def:expFamily}                                              \\
-        % chi
-        \rule{0pt}{\rowheight} $\cencodingwith$     & Coordinate Encoding of a function $\exfunction$              & \defref{def:coordinateEncoding}, often abbreviated by $\exfunction$ \\
-        % psi
-        % omega -> width
-        \hline
-    \end{tabular}
-\end{center}
-
-Sets of tensors are represented by large greek letters:
-\begin{center}
-    \begin{tabular}{|p{\threecolumnwidth}|p{\threecolumnwidth}|p{\threecolumnwidth}|}
-        \hline
-        \rule{0pt}{\rowheight} \textbf{Notation}             & \textbf{Name}                                             & \textbf{Reference}                       \\
-        \hline
-        % Gamma
-        \rule{0pt}{\rowheight} $\expfamilywith$              & Exponential family                                        & \defref{def:expFamily}                   \\
-        % Lambda
-        \rule{0pt}{\rowheight} $\realizabledistswith$        & Sets of by $\sstat$ and $\graph$ computable distributions  & \defref{def:realizableStatDistributions} \\
-        \rule{0pt}{\rowheight} $\bmrealprobof{\basemeasure}$ & Distributions realizable with base measure $\basemeasure$ & \defref{def:representationBaseMeasure}     \\
-        % Mu
-        \rule{0pt}{\rowheight} $\genmeanset$                 & Polytope of mean parameters                               & \defref{def:meanPolytope}                \\
-        %$\formulasetof{\larchitecture}$ & Expressivity of formula selecting neural networks & \defref{def:fsNeuralNetwork}
-        \hline
-    \end{tabular}
-\end{center}
-
-In the implementation in \tnreason{},we distinguish between computation and activation cores.
-The coarse roles are the computation of a function using basis calculus and the activation of the prepared variable to shape a probability distribution.
-
-\begin{center}
-    \begin{tabular}{|p{\threecolumnwidth}|p{\threecolumnwidth}|p{\threecolumnwidth}|}
-        \hline
-        \rule{0pt}{\rowheight} \textbf{Name}    & \textbf{Notation}                      & \textbf{String Suffix} \\
-        \hline
-        \rule{0pt}{\rowheight} Computation Core & $\bencodingof{\cdot}$                  & \comCoreSuf            \\
-        \rule{0pt}{\rowheight} Activation Core  & $\softactsymbolof{\cdot}$, $\hardactsymbolof{\cdot}$ & \actCoreSuf            \\
-        \hline
-    \end{tabular}
-\end{center}
-
-
-\sect{Variables}
-
-Variables are denoted by large latin letters, their indices by the corresponding small letters.
-We distinguish between the coarse types of variables:
-\begin{center}
-    \begin{tabular}{|p{\threecolumnwidth}|p{\threecolumnwidth}|p{\threecolumnwidth}|}
-        \hline
-        \rule{0pt}{\rowheight} \textbf{Name}        & \textbf{Notation}        & \textbf{String Suffix} \\
-        \hline
-        \rule{0pt}{\rowheight} Distributed Variable & $\catvariableof{\cdot}$  & \disVarSuf             \\
-        \rule{0pt}{\rowheight} Computed Variable    & $\headvariableof{\cdot}$ & \comVarSuf             \\
-        \rule{0pt}{\rowheight} Selection Variable   & $\selvariableof{\cdot}$  & \selVarSuf             \\
-        \rule{0pt}{\rowheight} Term Variable        & $\indvariableof{\cdot}$  & \terVarSuf             \\
-        \hline
-    \end{tabular}
-\end{center}
-
-
-\sect{Maps}
-
-We have in this work encountered different maps, which have been encoded as tensors.
-Note, that in order to ease the notation, when not specified otherwise the coordinate encoding $\cencodingof{\cdot}$ has been used.
-
-\begin{center}
-    \begin{tabular}{|p{\fivecolumnwidth}|p{\threecolumnwidth}|p{\fivecolumnwidth}|p{\fivecolumnwidth}|p{\fivecolumnwidth}|}
-        \hline
-        \rule{0pt}{\rowheight} \textbf{Notation} & \textbf{Name}                                       & \textbf{Domain}                                             & \textbf{Range}                                              & \textbf{Reference}                   \\
-        \hline
-        % f
-        \rule{0pt}{\rowheight} $\exformula$      & Propositional formula                               & $\atomstates$                                               & $\ozset$                                                    & \defref{def:formulas}                \\
-        \rule{0pt}{\rowheight} $\hlnstat$        & Boolean statistic                                   & $\atomstates$                                               & $\bigtimes_{\exformulain}[2]$                                                    & \defref{def:mln}                \\
-        % h
-        \rule{0pt}{\rowheight} $\cselectionmap$  & $\atomorder$-ary connective selecting map & $\atomstates$                                               & $\bigtimes_{\selindex\in[\seldimof{\cselectionsymbol}]}[2]$ & \defref{def:connectiveSelector} \\
-        \rule{0pt}{\rowheight} $\vselectionmap$  & Variable selecting map                              & $\bigtimes_{\selindex\in[\seldimof{\vselectionsymbol}]}[2]$ & $\bigtimes_{\selindex\in[\seldimof{\vselectionsymbol}]}[2]$ & \defref{def:variableSelector} \\ % ! They are the identity reduced to
-        \rule{0pt}{\rowheight} $\sselectionmap$  & State selection map                                 & $[\catdim]$                                                 & $\bigtimes_{\catenumeratorin}[2]$ & \defref{def:stateSelector} \\
-        % k
-        \rule{0pt}{\rowheight} $\kb$             & Knowledge Base (conjunction of formulas)            & $\atomstates$                                               & $\ozset$                                                    &                                      \\
-        % P
-        \rule{0pt}{\rowheight} $\probwith$       & Probability distribution                            & $\facstates$                                                & $[0,1]$                                                     & \defref{def:probabilityDistribution} \\
-        % q
-        \rule{0pt}{\rowheight} $\exfunction$     & Function between states of factored representations                   & $\facstates$                                                & $\secfacstates$                                             &                                      \\
-        % H
-        \hline
-    \end{tabular}
-\end{center}
-
-\sect{Contraction equations}
-
-We here provide a summary for the application of contractions and normalization in probabilistic and logical reasoning. %, which will be introduced in \parref{par:one}.
-
-\begin{center}
-    \begin{tabular}{|p{\threecolumnwidth}|p{7cm}|p{2cm}|}
-        \hline
-        \rule{0pt}{\rowheight} \textbf{Concept}            & \textbf{Contraction Equation}                                                                      & \textbf{Reference}                  \\
-        \hline
-        \rule{0pt}{\rowheight} Marginal probability        & $\probat{\exrandom} = \contractionof{\probtensor}{\exrandom}$  & \defref{def:marginalProbability}    \\
-        \rule{0pt}{\rowheight} Conditional probability     & $\condprobof{\exrandom}{\secexrandom} = \normalizationofwrt{\probtensor}{\exrandom}{\secexrandom}$  & \defref{def:conditionalProbability}        \\
-        \rule{0pt}{\rowheight} Markov Network Distribution & $\probtensor^{\extnet} = \normalizationof{\extnet}{\nodes}$ & \defref{def:markovNetwork} \\
-        \rule{0pt}{\rowheight} Partition Function          & $\partitionfunctionof{\extnet} = \contraction{\extnet}$ & \defref{def:markovNetwork} \\
-        \rule{0pt}{\rowheight} Independence of $\exrandom$ and $\secexrandom$ &
-        $\contractionof{\probtensor}{\exrandom,\secexrandom}
-        =  \contractionof{\probtensor}{\exrandom}
-        \otimes  \contractionof{\probtensor}{\secexrandom}$
-        & \defref{def:independence}, \theref{the:independenceProductCriterion} \\
-        \rule{0pt}{\rowheight} Independence of $\exrandom$ and $\secexrandom$ conditioned on $\thirdexrandom$ &
-        $\normalizationofwrt{\probtensor}{\exrandom,\secexrandom}{\thirdexrandom}
-        = \normalizationofwrt{\probtensor}{\exrandom}{\thirdexrandom}
-        \otimes \normalizationofwrt{\probtensor}{\secexrandom}{\thirdexrandom}$
-        & \defref{def:condIndependence}, \theref{the:condIndependenceProductCriterion} \\
-        \hline
-    \end{tabular}
-\end{center}
-
-
-%In \charef{cha:probRepresentation} we introduce:
-%\begin{itemize}
-%	\item Marginal probabilities (\defref{def:marginalProbability}, \theref{the:marginalContraction})
-%		\[ \probat{\exrandom} = \contractionof{\probtensor}{\exrandom} \]
-%	\item Conditional probabilities (\defref{def:conditionalProbability}, \theref{the:conditionalContraction})
-%		\[ \condprobof{\exrandom}{\secexrandom} = \normalizationofwrt{\probtensor}{\exrandom}{\secexrandom} \]
-%	\item The probability distribution of a Markov Network is (\defref{def:markovNetwork})
-%		\begin{align*}
-%			\probtensor^{\extnet} = \normalizationof{\extnet}{\nodes}
-%		\end{align*}
-%		The partition function of a Markov Networks
-%		\begin{align*}
-%			\partitionfunctionof{\extnet} = \contraction{\extnet}
-%		\end{align*}
-%		Bayesian Networks (\defref{def:bayesianNetwork}), when hypergraph directed and acyclic, such that the decorating tensors are accordingly directed.
-%\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%acronym.tex%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% sample list of acronyms
 %
-%Further the following properties are defined by contraction equations:
-%\begin{itemize}
-%	\item $\exrandom$ and $\secexrandom$ are independent when (\defref{def:independence}, \theref{the:independenceProductCriterion})
-%		\[  \contractionof{\probtensor}{\exrandom,\secexrandom}
-%		=  \contractionof{\probtensor}{\exrandom}
-%			\otimes  \contractionof{\probtensor}{\secexrandom} \]
-%	\item $\exrandom$ and $\secexrandom$ are called independent conditioned on $\thirdexrandom$ when (\defref{def:condIndependence}, \theref{the:condIndependenceProductCriterion})
-%		\[ \normalizationofwrt{\probtensor}{\exrandom,\secexrandom}{\thirdexrandom}
-%		= \normalizationofwrt{\probtensor}{\exrandom}{\thirdexrandom}
-%		\otimes \normalizationofwrt{\probtensor}{\secexrandom}{\thirdexrandom} \]
-%\end{itemize}
+% Use this file as a template for your own input.
 %
-%% Populate!
-%In \charef{cha:logicalRepresentation} we introduce:
-%\begin{itemize}
-%	\item Propositional formulas by boolean tensors (\defref{def:formulas})
-%		\[ \formulaat{\shortcatvariables} : \atomstates \rightarrow [2] \subset \rr \, . \]
-%	\item Syntactical representation of formulas corresponding with tensor networks of boolean tensors (\theref{the:formulaDecomposition})
-%\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%% Springer Nature %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\Extrachap{Glossary}
+
+
+Use the template \emph{glossary.tex} together with the Springer Nature document class SVMono (monograph-type books) or SVMult (edited books) to style your glossary\index{glossary} in the Springer Nature layout.
+
+
+\runinhead{glossary term} Write here the description of the glossary term. Write here the description of the glossary term. Write here the description of the glossary term.
+
+\runinhead{glossary term} Write here the description of the glossary term. Write here the description of the glossary term. Write here the description of the glossary term.
+
+\runinhead{glossary term} Write here the description of the glossary term. Write here the description of the glossary term. Write here the description of the glossary term.
+
+\runinhead{glossary term} Write here the description of the glossary term. Write here the description of the glossary term. Write here the description of the glossary term.
+
+\runinhead{glossary term} Write here the description of the glossary term. Write here the description of the glossary term. Write here the description of the glossary term.
