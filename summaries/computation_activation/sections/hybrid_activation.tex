@@ -192,6 +192,26 @@ Entailment can be generalized to probabilistic models by deciding whether a prop
     \begin{align*}
         \contraction{\left(\onesat{\shortcatvariables}-\nonzeroof{\probofat{\hlnparameters}{\shortcatvariables}}\right),\secexformulaat{\shortcatvariables}} = 0
     \end{align*}\, .
+
+
+
+    \noindent\textbf{Counterexample.}
+Let $d=2$ and let $P$ be a \HybridLogicNetwork{} with hard constraints $A=\{1,2\}$ and $y_A=(1,0)$, so that $\mathrm{supp}(P)=\{(1,0)\}$ and thus (after normalization) $P=\delta_{(1,0)}$.
+Let $h(X)=X_1\lor X_2$.
+Then
+\[
+\langle P,h\rangle_{[\varnothing]}=h(1,0)=1.
+\]
+However, with $\mathbb{I}=\ones[X_{[2]}]$ and $\mathbb{I}_{\neq 0}(P)=\nonzero(P)$,
+\[
+\big\langle (\mathbb{I}-\mathbb{I}_{\neq 0}(P)),\,h\big\rangle_{[\varnothing]}
+=\sum_{x\neq(1,0)} h(x)=h(0,1)+h(1,1)=2\neq 0.
+\]
+Hence, in general,
+\[
+\langle P,h\rangle_{[\varnothing]}=1 \not\Leftrightarrow
+\big\langle (\mathbb{I}-\mathbb{I}_{\neq 0}(P)),\,h\big\rangle_{[\varnothing]}=0.
+\]
     We notice that $\hlnformulawith$ is the indicator tensor for the support of $\probofat{\hlnparameters}{\shortcatvariables}$.
     It therefore holds that
     \begin{align*}
