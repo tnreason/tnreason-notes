@@ -63,7 +63,7 @@ Let us demonstrate the utility of \HybridLogicNetworks{} with an example from ac
 
 %% Likelihood maximization
 Let us now briefly discuss how \HybridLogicNetworks{} can be trained on data based on likelihood maximization.
-Given a dataset $\dataset$ consisting of $\datanum$ independent and identically distributed samples from an unknown distribution, we want to find a \HybridLogicNetwork{} $\hlnwith$ with a statistic $t=(f_1,\dots,f_L)$ that maximizes the data likelihood
+Given a dataset $\dataset$ consisting of $\datanum$ independent and identically distributed samples from an unknown distribution, we want to find a \HybridLogicNetwork{} $\hlnwith$ with a statistic $\sstat=(\formulaof{0},\dots,\formulaof{\seldim-1})$ that minimizes the negative log likelihood
 \begin{align*}
     \lossof{\hybridparam} \coloneqq -\frac{1}{\datanum} \sum_{\datindexin} \lnof{\probofat{\hlnparameters}{\shortcatvariables=\shortcatindices^{\datindex}}}
     \, .

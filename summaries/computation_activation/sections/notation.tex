@@ -216,7 +216,7 @@ We now use one-hot encodings to encode functions between state sets.
     \label{def:functionRepresentation}
     Let there be two sets of variables $\shortcatvariables$ and $\headvariables$, and let there be a map
     \begin{align*}
-        \statesetfunction\defcols\facstates \rightarrow  \headstates
+        \statesetfunction\defcols\facstates \rightarrow  \bigtimes_{\selindexin}[\headdimof{\selindex}]
     \end{align*}
     between their state sets.
     Then, the basis encoding of $\statesetfunction$ is a tensor
