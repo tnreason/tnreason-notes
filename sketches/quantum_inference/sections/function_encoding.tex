@@ -1,18 +1,21 @@
-\section{Circuit Encoding Schemes}
+\section{Function Encoding Schemes}\label{sec:functionEncoding}
 
 We investigate here quantum pendants to the function encoding schemes used in \tnreason{}{}.
+All the schemes are graph-controlled circuits.
 
 \begin{itemize}
     \item Pendant for Coordinate Encoding in \tnreason{}: Amplitude Encoding, storing the function value in the amplitude of an ancilla qubit.
-    This is realized by an \textbf{\ActivationCircuit{}}.
+    This is realized by an \textbf{\ActivationCircuit{}} acting on an ancilla qubit in the ground state.
     \item Pendant for Basis Encoding in \tnreason{}: \textbf{\ComputationCircuit{}}, with composition by contraction property.
+    Applied on the ground state, the \computationCircuit{} generates the basis encoding quantum state, which is parallel to the basis encoding.
 \end{itemize}
 
 Both are defined using controlled single qubit gates (see Sections 4.2-3 in [Nielsen, Chuang]) with ancilla qubits being the target qubits. % where the incoming qubit variable is $\avariableof{\insymbol}$ and the outgoing $\avariableof{\outsymbol}$.
 
 \subsection{\ActivationCircuit{}}
 
-\red{Introduce rotation encodings based on activation circuit action, hint at a sampling scheme of probability distributions.}
+\ActivationCircuits{} are uniformly controlled unitaries (see \cite{mottonen_transformation_2005}), where the rotation axis is chosen as the $y$-axes of the Bloch sphere, and the angles are computed by the function $h(\cdot)$.
+%\red{Introduce rotation encodings based on activation circuit action, hint at a sampling scheme of probability distributions.}
 
 %% Angle preparing
 We define the angle preparing function on $p\in[0,1]$ by
@@ -33,13 +36,13 @@ For any $p\in[0,1]$ we then have
     \begin{align*}
         \exformula : \bigtimes_{\selindexin} [2] \rightarrow [0,1]
     \end{align*}
-    its \activationCircuit{} is the controlled unitary
-    $\qcaencodingofat{\hypercore}{\avariableof{\insymbol},\avariableof{\outsymbol},\headvariableof{[\seldim]}}$ defined as
-    \begin{align*}
-        \qcaencodingofat{\hypercore}{\avariableof{\insymbol},\avariableof{\outsymbol},\headvariableof{[\seldim]}}
-        = \sum_{\headindexof{[\seldim]}} \onehotmapofat{\headindexof{[\seldim]}}{\headvariableof{[\seldim]}}
-        %\otimes \onehotmapofat{\headindexof{[\seldim]}}{\headvariableof{\insymbol,[\seldim]}}
-        \otimes \yrotationofat{h(\exformulaat{\headindexof{[\seldim]}})}{\avariableof{\insymbol},\avariableof{\outsymbol}} \, .
+    its \activationCircuit{} is the uniformly controlled unitary
+    $\qcaencodingofat{\hypercore}{\avariableof{\insymbol},\avariableof{\outsymbol},\headvariables}$ defined as
+    \begin{align*} %% Could ease the definition by coordinates
+        \qcaencodingofat{\hypercore}{\avariableof{\insymbol},\avariableof{\outsymbol},\headvariables}
+        = \sum_{\shortheadindices} \onehotmapofat{\shortheadindices}{\headvariables}
+        %\otimes \onehotmapofat{\shortheadindices}{\headvariableof{\insymbol,[\seldim]}}
+        \otimes \yrotationofat{h(\exformulaat{\shortheadindices})}{\avariableof{\insymbol},\avariableof{\outsymbol}} \, .
     \end{align*}
 \end{definition}
 
@@ -49,25 +52,34 @@ This amounts to understanding the Dirac delta tensors in \activationCircuits{} a
 Along that picture the quantum circuit is a tensor network on hyperedges instead of edges.
 
 
+%% As a graph-controlled circuit
+Each activation circuit is a graph-controlled circuit, where the corresponding hypergraph consists in $\nodes=\headvariables\cup\{\avariable\}$ and a single edge $\edges=(\headvariables,\{\avariable\})$.
+
 When we have a probability tensor, its \activationCircuit{} be prepared, since all values are in $[0,1]$.
 Note that for rejection sampling, only the quotients of the values are important, we can therefore scale the value by a scalar such that the mode is $1$.
 
+%% Rescaling tensors with larger coordinates
 Tensors $\hypercoreat{\headvariables}$ with non-negative coordinates can be encoded after dividing them by their maximum, that is the \activationCircuit{} of the function
 \begin{align*}
-    \exformulaat{\headindexof{[\seldim]}} = \frac{\hypercoreat{\headvariables=\headindexof{[\seldim]}}}{\max_{\secheadindexof{[\seldim]}} \hypercoreat{\headvariables=\secheadindexof{[\seldim]}}}
+    \exformulaat{\shortheadindices} = \frac{\hypercoreat{\headvariables=\shortheadindices}}{\max_{\secheadindexof{[\seldim]}} \hypercoreat{\headvariables=\secheadindexof{[\seldim]}}}
 \end{align*}
 When the maximum of the tensor is not known, it can be replaced by an upper bound (reducing the acceptance rate of the rejection sampling).
 
-\subsubsection{Encoding of directed tensors}
+%% Generic Tensors with complex amplitudes: Require besides rescaling more general unitaries.
+
+\subsubsection{Encoding of conditional distributions}
 
 Following the schemes in \cite{low_quantum_2014}, we can prepare the acyclic networks of directed and non-negative tensors by a sequence of controlled rotations.
-Directed and non-negative tensors correspond with conditional probability distributions and acyclic networks are Bayesian Networks.
+Directed and non-negative tensors correspond with conditional probability distributions and their acyclic networks are Bayesian Networks.
 We prepare them by \activationCircuit{}s of functions (see \figref{fig:cpdEncoding})
 \begin{align*}
     \catindexof{\parentsof{\catenumerator}} \rightarrow \condprobat{\catvariableof{\catenumerator}=1}{\indexedcatvariableof{\parentsof{\catenumerator}}} \, .
 \end{align*}
 
-In this way, Bayesian Networks can be prepared as quantum circuits, where each conditional probability distribution is prepared by an \activationCircuit{}.
+\subsubsection{Encoding of Bayesian Networks}
+
+We revisit the correspondence of Bayesian Networks with graph-controlled circuits, by showing that any Bayesian Network can be prepared by \activationCircuits{} of the conditional probability distributions.
+Bayesian Networks can be prepared as quantum circuits, where each conditional probability distribution is prepared by an \activationCircuit{}.
 
 \begin{theorem}[Low et al.]
     Any Bayesian Network of variables $\shortcatvariables$, where the enumeration by $[\atomorder]$ respects the partial order by child-parent relations, can be prepared as a quantum circuit by concatenating the \activationCircuit{}s
@@ -93,6 +105,11 @@ In this way, Bayesian Networks can be prepared as quantum circuits, where each c
         b) Circuit Encoding as a controlled rotation, which is the \ActivationCircuit{} of the tensor $\condprobat{\catvariableof{\catenumerator}=1}{\catvariableof{\parentsof{\catenumerator}}}$.
     }\label{fig:cpdEncoding}
 \end{figure}
+
+%\subsubsection{Encoding of independent distributions}
+%
+%An extremal case of Bayesian networks is those where all variables are mutually independent.
+
 
 \subsection{\ComputationCircuits{}}
 
@@ -270,7 +287,7 @@ Given a syntactical decomposition of a boolean statistics, we prepare the basis 
     \item \textbf{Coarse Structure:} Arrange the logical connective representing circuits according to the syntactical hypergraph, where parent head variables appear as distributed variables at their children.
 \end{itemize}
 
-\subsection{Preparation of Function encoding states}
+\subsection{Preparation of function encoding states}
 
 Using the \computationCircuit{} we can prepare two function encoding schemes, depending on the start state.
 

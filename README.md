@@ -5,10 +5,10 @@ This repository stores research notes on a unifying numerical approach to logica
 ## tnreason:  Accompanying Implementation
 
 For prototyping purposes, the implementation of the ideas has been published as the `tnreason` python package, which is maintained at
-the [tnreason repository](https://github.com/EnexaProject/enexa-tensor-reasoning).
+the [tnreason repository](https://github.com/tnreason/tnreason-py).
 
 <p align="left">
-  <a href="images/architecture.png">
-    <img src="OtherContent/png_pics/tnreason_icon.png" alt="Library Icon" width="240" />
+  <a href=https://github.com/tnreason/tnreason-py>
+    <img src="report/OtherContent/png_pics/tnreason_icon.png" alt="Library Icon" width="240" />
   </a>
 </p>

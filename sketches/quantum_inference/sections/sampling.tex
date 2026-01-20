@@ -2,6 +2,8 @@
 
 We investigate, how the above circuit encoding schemes can be applied in the preparation of states, which computational basis measurements are samples from specific distributions.
 
+In particular, we build graph-controlled circuits being compositions of \computationCircuits{} and \activationCircuits{}, for which specific conditional distributions coincide with \ComputationActivationNetworks{}.
+
 \subsection{Generic Q-samples}
 
 In general, we define Q-samples to be quantum states, which measured in the computational basis reproduce a given probability distribution.
@@ -131,6 +133,8 @@ We can produce Q-samples for ancilla augmented \ComputationActivationNetworks{} 
         We measure the distributed qubits $\shortcatvariables$ and the ancilla qubits $\avariableof{[\seldim]}$ and reject all samples, where an ancilla qubit is measured as $0$.
     }\label{fig:caCircuit}
 \end{figure}
+
+\input{examples/sampling/toy_accounting_circuit}
 
 \subsection{Acceptance Probability by $\infty$ Renyi Divergence}
 

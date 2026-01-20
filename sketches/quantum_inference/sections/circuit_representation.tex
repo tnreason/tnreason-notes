@@ -46,8 +46,6 @@ is a unitary matrix acting on the leg space of the target variable.
 
 \subsection{Measurements and Contractions}
 
-
-
 \subsubsection{Direct measurement}
 
 The computational basis measurement of the qubits $\catvariableof{\variableset}$ of a Quantum State $\qstatewith$ is equal to drawing samples from a distribution
@@ -85,7 +83,7 @@ Note, that this measurement distribution is not sensitive to the phases of the a
 
 When only a subset of variables is measured, the distribution is the contraction of the absolute square transform (these operations do not commute)
 \begin{align*}
-    \probat{\catvariableof{\secnodes}} 
+    \probat{\catvariableof{\secnodes}}
     = \contractionof{\absof{\qstatewith}^2}{\catvariableof{\secnodes}} \, .
 \end{align*}
 
@@ -118,26 +116,43 @@ This property is exploited in the Deutsch-Jozsa algorithm, which utilizes signs 
     \label{fig:phaseContractionMeasurement}
 \end{figure}
 
-
 \subsection{Graph-Controlled circuits}
 
 Let us now introduce the most generic circuit construction schemes used in this work.
+To this end, we exploit the definition of uniformly controlled unitaries (see \cite{mottonen_transformation_2005}), and study their alignment along directed acyclic hypergraphs.
 
 \begin{definition}[Graph-Controlled Circuit]
     Let $\graph=(\nodes,\edges)$ be a directed acyclic hypergraph, where each hyperedge has exactly one outgoing node and all nodes appear exactly once as outgoing nodes of an hyperedge.
-    Then a by $\graph$ controlled circuit is a decoration of the edges $\edge=(\innodes,\{\node\})\in\edges$ by controlled unitaries
+    Then a by $\graph$ controlled circuit is a decoration of the edges $\edge=(\incomingnodes,\{\node\})\in\edges$ by uniformly controlled unitaries
     \begin{align*}
-        \contunitaryofat{\edge}{\catvariableof{\node,\insymbol},\catvariableof{\node,\outsymbol},\catvariableof{\innodes,\outsymbol}} \, .
+        \contunitaryofat{\edge}{\catvariableof{\node,\insymbol},\catvariableof{\node,\outsymbol},\catvariableof{\incomingnodes,\outsymbol}} \, .
     \end{align*}
 \end{definition}
 
-\begin{theorem}\label{the:graphControlledPreparesBN}
-    Let $\graph$ be a directed acyclic graph.
+%%
+\begin{example}[Generic State Representation]\label{exa:genericControlCircuit}
+    In \cite{mottonen_transformation_2005} a preparation scheme for arbitrary states with real and positive amplitudes by graph-controlled circuits is presented.
+    Therein, the hypergraph $\graph=(\nodes,\edges)$ is constructed as follows:
+    \begin{itemize}
+        \item Nodes $\nodes={[\catorder]}$
+        \item Edges $\edges=\left\{([\catenumerator],\{\catenumerator\})\wcols\catenumeratorin\right\}$
+    \end{itemize}
+\end{example}
+
+This is closely connected to the chain decomposition of probability distributions, and their construction
+In \cite{low_quantum_2014} Bayesian Networks are prepared by graph-controlled circuits.
+When in the graph $\graph$ each node appears at most once as outgoing node, it is also the hypergraph to a family of Bayesian Networks.
+The measurement distributions of a state prepared by a $\graph$-controlled Circuit acting on disentangled initial states are exactly the Bayesian Networks with respect to $\graph$.
+
+\begin{theorem}
+    \label{the:graphControlledPreparesBN}
+    Let $\graph$ be a directed acyclic hypergraph, such that node appears at most once as an outgoing node.
     The measurement distributions of the by $\graph$ controlled circuits acting on disentangled initial states are equal to the Bayesian Networks on $\graph$.
 \end{theorem}
 
 \begin{lemma}
-    Any Bayesian network on a directed acyclic graph $\graph$ can be prepared by a $\graph$-controlled circuit with activation circuits of the conditional probability tensors.
+    Let $\graph$ be a directed acyclic hypergraph, such that node appears at most once as an outgoing node.
+    Then any Bayesian network on $\graph$ can be prepared by a $\graph$-controlled circuit with activation circuits of the conditional probability tensors.
 \end{lemma}
 \begin{proof}
     Let $\probwith$ be a Bayesian network on the graph $\graph$.
@@ -148,20 +163,22 @@ Let us now introduce the most generic circuit construction schemes used in this 
         =\sqrt{\condprobof{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}} \, .
     \end{align*}
     Here we specified only the action of the controlled unitary on the basis vector $\onehotmapofat{0}{\catvariableof{\catenumerator}}$, the action on $\onehotmapofat{1}{\catvariableof{\catenumerator}}$ can be chosen by an arbitrary orthogonal unit vector. % Maybe link here the activation circuit scheme, which is already used?
+    For more explicit construction, see the \activationCircuits{} in \secref{sec:functionEncoding}.
     Any such defined $\graph$-controlled circuit acting on the initial state $\bigotimes_{\catenumeratorin}\onehotmapofat{0}{\catvariableof{\catenumerator}}$ prepares a quantum state $\qstatewith$ with measurement distribution
     \begin{align*}
         \absof{\qstate}^2\left[\shortcatvariables\right] \, .
     \end{align*}
     Given arbitrary $\shortcatindicesin$ we have
-        \begin{align*}
+    \begin{align*}
         \absof{\qstate}^2\left[\indexedshortcatvariables\right]
-            = \prod_{\catenumeratorin} \condprobof{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}
-            = \probat{\indexedshortcatvariables} \, .
+        = \prod_{\catenumeratorin} \condprobof{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}
+        = \probat{\indexedshortcatvariables} \, .
     \end{align*}
     Here we used in the last equation, that $\probwith$ is a Bayesian network.
     Since the equivalence holds for any coordinate, this establishes the equivalence of the measurement distribution of $\qstatewith$ and $\probwith$.
 \end{proof}
 
+The contrary is true, also when nodes appear multiple times as outgoing nodes.
 
 \begin{lemma}
     Let $(\graph,\contunitary)$ be a $\graph$-controlled circuit acting on a disentangled initial state and $\probat{\nodevariables}$ the corresponding measurement distribution.
@@ -177,7 +194,7 @@ Let us now introduce the most generic circuit construction schemes used in this 
     \begin{align*}
         \probat{\catvariableof{\seccatenumerator},\indexedcatvariableof{[\catenumerator]}}
         &= \contractionof{\left(\bigcup_{\catenumeratorin}\{\contunitaryof{\catenumerator},\contunitaryof{\catenumerator,\dagger},\qstateof{\catenumerator},\qstateof{\catenumerator,*}\right)\}
-        \cup \left(\bigcup_{\catenumerator\in[\seccatenumerator]} \onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator,\outsymbol}}\right)
+            \cup \left(\bigcup_{\catenumerator\in[\seccatenumerator]} \onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator,\outsymbol}}\right)
         }{
             \catvariableof{\seccatenumerator}
         } \\
@@ -201,11 +218,19 @@ Let us now introduce the most generic circuit construction schemes used in this 
     The theorem follows directly from the two lemmas, using that Bayesian Networks are characterized by the conditional independence of each variable to its non-descendants given its parents.
 \end{proof}
 
+\begin{example}[Chain decomposition]
+    The hypergraph in \exaref{exa:genericControlCircuit} corresponds with a family of Bayesian Networks subsuming any probability distribution.
+    This can be verified based on the chain decomposition of a generic distribution.
+\end{example}
 
+%% Phase representation
 Another question is, whether each quantum state, which measurement distribution is a Bayesian Network can be prepared by a $\graph$-controlled circuit.
-This is not the case, since the phase tensor of a by $\graph$-controlled circuit has a decomposition
+This is not always the case, since the phase tensor does not influence the measurement distribution.
+Any phase tensor, of a by $\graph$-controlled circuit prepared state has however a decomposition
 \begin{align*}
     \phasecoreat{\shortcatvariables}
     = \sum_{\catenumeratorin} \phasecoreofat{\catenumerator}{\catvariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}} \otimes \onesat{\catvariableof{[\catorder]/\{\{\catenumerator\}\cup\parentsof{\catenumerator}\}}} \, ,
 \end{align*}
 where the phase cores $\phasecoreof{\catenumerator}$ can be read of the controlled unitaries.
+When there are phase cores which do not have such a decomposition, the corresponding states are not representable.
+\cite{mottonen_transformation_2005} shows, that when the graph is chosen as in \exaref{exa:genericControlCircuit}, then also the phases can be represented.
