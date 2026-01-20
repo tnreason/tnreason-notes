@@ -62,32 +62,31 @@
     \maketitle
 
     \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
-    \input{../sections/abstract}
-\end{abstract}
+        \input{../sections/abstract}
+    \end{abstract}
 
-\input{../sections/introduction}
-\input{../sections/notation}
-\input{../sections/probabilistic_paradigm}
-\input{../sections/neural_paradigm}
-\input{../sections/logical_paradigm}
-\input{../sections/hybrid_activation}
-%\input{../sections/tnreason}
-\input{../sections/implementation}
-\input{../sections/conclusion}
+    \input{../sections/introduction}
+    \input{../sections/notation}
+    \input{../sections/probabilistic_paradigm}
+    \input{../sections/neural_paradigm}
+    \input{../sections/logical_paradigm}
+    \input{../sections/hybrid_activation}
+    \input{../sections/implementation}
+    \input{../sections/conclusion}
 
 
 % Manual newpage inserted to improve layout of sample file - not
 % needed in general before appendices/bibliography.
-%\newpage
 
-\vskip 0.2in
-%\bibliography{../references/references_alex,../references/references_janina}
+    \vskip 0.2in
 
-\appendix
-
-\input{../appendix/factorization_proofs}
-\input{../appendix/algorithms_implementation}
-    
-    \bibliographystyle{plainnat} 
+    \bibliographystyle{plainnat}
     \bibliography{../../../references.bib}
+
+    \appendix
+
+    \input{../appendix/factorization_proofs}
+    \input{../appendix/algorithms_implementation}
+
+
 \end{document}
