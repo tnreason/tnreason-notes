@@ -13,7 +13,6 @@ Ian Affleck, Tom Kennedy, Elliott~H. Lieb, and Hal Tasaki.
   August 1987.
 \newblock \doi{10.1103/PhysRevLett.59.799}.
 \newblock URL \url{https://link.aps.org/doi/10.1103/PhysRevLett.59.799}.
-\newblock Publisher: American Physical Society.
 
 \bibitem[Ali(2025)]{ali_explicit_2025}
 Alejandro~Mata Ali.
@@ -64,7 +63,6 @@ A.~V. Berezutskii, I.~A. Luchnikov, and A.~K. Fedorov.
   January 2025.
 \newblock \doi{10.1103/PhysRevResearch.7.013063}.
 \newblock URL \url{https://link.aps.org/doi/10.1103/PhysRevResearch.7.013063}.
-\newblock Publisher: American Physical Society.
 
 \bibitem[Brown(1987)]{brown_fundamentals_1987}
 Lawrence~D. Brown.
@@ -169,7 +167,6 @@ Nikita Gourianov, Peyman Givi, Dieter Jaksch, and Stephen~B. Pope.
   2025.
 \newblock \doi{10.1126/sciadv.ads5990}.
 \newblock URL \url{https://www.science.org/doi/10.1126/sciadv.ads5990}.
-\newblock Publisher: American Association for the Advancement of Science.
 
 \bibitem[Hackbusch and Kühn(2009)]{hackbusch_new_2009}
 W.~Hackbusch and S.~Kühn.
@@ -300,7 +297,6 @@ I.~V. Oseledets.
 \newblock ISSN 1064-8275.
 \newblock \doi{10.1137/090752286}.
 \newblock URL \url{https://epubs.siam.org/doi/10.1137/090752286}.
-\newblock Publisher: Society for Industrial and Applied Mathematics.
 
 \bibitem[Pearl(1988)]{pearl_probabilistic_1988}
 Judea Pearl.
@@ -427,6 +423,5 @@ Steven~R. White.
   October 1993.
 \newblock \doi{10.1103/PhysRevB.48.10345}.
 \newblock URL \url{https://link.aps.org/doi/10.1103/PhysRevB.48.10345}.
-\newblock Publisher: American Physical Society.
 
 \end{thebibliography}
