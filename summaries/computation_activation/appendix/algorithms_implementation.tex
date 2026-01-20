@@ -11,32 +11,38 @@ The implementations of the algorithms and concepts are available at \href{https:
 \subsection{Algorithm~\ref{alg:treeBeliefPropagation}, \ref{alg:directedBeliefPropagation} and \ref{alg:constraintPropagation} (Tree, Directed Belief and Constraint Propagation)}\label{sec:propAlgsImplementation}
 
 The three message passing algorithms are implemented as functions in one class \mintinline{python}{ContractionPropagation}, since they share common structure.
-\inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/algorithms/propagation.py}
+% \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/algorithms/propagation.py}
+\inputminted{python}{summaries/computation_activation/wias_preprint/algs/propagation.py}
 
 \subsubsection{Example~\ref{exa:madicRepresentation} and \ref{exa:madicPropagation} (Integer Summation in $\catdim$-adic Representation)}
 
 Following the decomposition of $\catdim$-adic summations into local summations, the function \mintinline{python}{get_sum_tn} produces a corresponding tensor network of basis encodings.
 We test by coordinate retrieval operations, whether the summation is performed correctly.
-\inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/examples/m_adic_sum.py}
+% \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/examples/m_adic_sum.py}
+\inputminted{python}{summaries/computation_activation/wias_preprint/algs/m_adic_sum.py}
 
 \subsubsection{Example~\ref{exa:studentHC} and \ref{exa:studentBP} (Student Markov Network)}
 
 We here implement the Markov Network on the hypergraph of \exaref{exa:studentHC}, with tensors having independent random coordinates drawn from the uniform distribution on $[0,1]$.
 We test in a final \mintinline{python}{assert} statement, whether the messages resulting from \algoref{alg:treeBeliefPropagation} in a tree implementation contract to the marginal distribution, which we directly compute for comparison.
-\inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/examples/student.py}
+% \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/examples/student.py}
+\inputminted{python}{summaries/computation_activation/wias_preprint/algs/student.py}
 
 \subsubsection{Example~\ref{exa:sudokuEntailment}, \ref{exa:sudokuDecomposition} and \ref{exa:sudokuMessagePassing} (Sudoku Game)}
 
 We implement the $\sudokunum^2\times\sudokunum^2$ Sudoku with the start assignment given in \exaref{exa:sudokuEntailment} and apply the Constraint Propagation \algoref{alg:constraintPropagation} to deduce the full assignment.
 We then test whether the correct board assignment (given in \exaref{exa:sudokuMessagePassing}) has been found.
-\inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/examples/sudoku.py}
+% \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/examples/sudoku.py}
+\inputminted{python}{summaries/computation_activation/wias_preprint/algs/sudoku.py}
 
 \subsection{Algorithm~\ref{alg:AMM_HLN} (Alternating Moment Matching)}
 
 We implement the Alternating Moment Matching algorithm, which estimates the parameters of \HybridLogicNetworks{}, as a class \mintinline{python}{MomentMatcher}.
-\inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/algorithms/moment_matching.py}
+% \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/algorithms/moment_matching.py}
+\inputminted{python}{summaries/computation_activation/wias_preprint/algs/moment_matching.py}
 Let us now show the usage of the algorithm on the toy accounting model presented in Example~\ref{exa:hlnAccountingRep}.
 To this end we train the parameters based on a the dataset described in Example~\ref{exa:hlnAccountingAMM}, and assert that the learned parameters are close to the true parameters.
 Note that a single iterations suffices for convergence in this simple example.
-\inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/examples/accounting.py}
+% \inputminted{python}{../../../../tnreason-py/demonstrations/comp_act_nets/examples/accounting.py}
+\inputminted{python}{summaries/computation_activation/wias_preprint/algs/accounting.py}
 
