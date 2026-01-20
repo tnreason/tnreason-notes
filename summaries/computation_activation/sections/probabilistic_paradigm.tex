@@ -155,7 +155,7 @@ This conditional independence pattern is the basic local building block that is 
 \begin{definition}[Markov network]
     \label{def:markovNetwork}
     Let $\tnetof{\graph}$ be a tensor network of non-negative tensors decorating a hypergraph $\graph$.
-    Then the Markov Network $\probof{\graph}$ to $\tnetof{\graph}$ is the probability distribution of $\catvariableof{\node}$ defined by the tensor
+    Then the Markov Network $\probof{\graph}$ to $\tnetof{\graph}$ is the probability distribution of $\nodevariables$ defined by the tensor
     \begin{align*}
         \probofat{\graph}{\nodevariables} = \frac{
             \contractionof{\{\hypercoreof{\edge} \wcols \edgein\}}{\nodevariables}
@@ -447,7 +447,7 @@ Note that by construction $\sedge\in\preedgeset$.
         \preedgeset
         = \{\sedge\} \cup \left(\bigcup_{\secsedge \in\dirovedges} \preedgesetwrt{\secsedge}{\sedge}\right) \, .
     \end{align*}
-    The message $\mesfromto{\sedge}{\redge}$ is sent once all messages $\mesfromto{\secsedge}{\sedge}$ to $(\secsedge,\sedge)\in\dirovedges\{(\redge,\sedge)\}$ arrived.
+    The message $\mesfromto{\sedge}{\redge}$ is sent once all messages $\mesfromto{\secsedge}{\sedge}$ to $(\secsedge,\sedge)\in\preedgeset$ arrived.
     By definition we have that
     \begin{align*}
         \mesfromtowith{\sedge}{\redge}
