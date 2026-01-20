@@ -44,7 +44,11 @@ where for each state $\catindexof{c}$ to the control variables we have that
 \end{align*}
 is a unitary matrix acting on the leg space of the target variable.
 
-\subsection{Measurement and Phases}
+\subsection{Measurements and Contractions}
+
+
+
+\subsubsection{Direct measurement}
 
 The computational basis measurement of the qubits $\catvariableof{\variableset}$ of a Quantum State $\qstatewith$ is equal to drawing samples from a distribution
 \begin{align*}
@@ -59,7 +63,7 @@ When $\qstate$ is prepared by a quantum circuit acting on a initial state, the c
 We abbreviate these contractions by extending the contraction diagrams with measurement symbols (see \figref{fig:measurementSketch}).
 \begin{figure}
     \begin{center}
-        \input{tikz_pics/measurement_sketch.tikz}
+        \input{tikz_pics/directed_measurement_sketch.tikz}
     \end{center}
     \caption{Computational Basis Measurement of a quantum state $\qstate$.
     The measurement symbols on the left side indicate the measured qubits and the first equation is understood as a definition.
@@ -70,17 +74,19 @@ We abbreviate these contractions by extending the contraction diagrams with meas
 %% Phase-Absolut decomposition
 Each complex-valued tensor $\qstatewith$ has a decomposition into a phase tensor $\phasecorewith$ and an absolute tensor $\absof{\qstate}[\shortcatvariables]$ defined by
 \begin{align*}
-    \qstatewith = \contractionof{\expof{i\cdot\phasecorewith}, \absof{\qstate}[\shortcatvariables]}{\shortcatvariables}\, .
+    \qstatewith = \contractionof{\expof{i\cdot\phasecorewith}, \absof{\qstatewith}}{\shortcatvariables}\, .
 \end{align*}
 
 The measurement distribution is depends only on $\absof{\phi}$, that is
 \begin{align*}
-    \probwith = \absof{\qstate}^2[\shortcatvariables] \, .
+    \probwith = \absof{\qstatewith}^2 \, .
 \end{align*}
+Note, that this measurement distribution is not sensitive to the phases of the amplitudes.
 
-Note, that when only a subset of variables is measured, the distribution is the contraction of the absolute square transform (these operations do not commute)
+When only a subset of variables is measured, the distribution is the contraction of the absolute square transform (these operations do not commute)
 \begin{align*}
-    \probat{\catvariableof{\variableset}} = \contractionof{\absof{\qstate}^2[\shortcatvariables]}{\catvariableof{\variableset}} \, .
+    \probat{\catvariableof{\secnodes}} 
+    = \contractionof{\absof{\qstatewith}^2}{\catvariableof{\secnodes}} \, .
 \end{align*}
 
 %% Phasecore vanishing as gauging
@@ -91,10 +97,31 @@ When we are interested in the preparation of quantum states with a specific comp
     = \absof{\qstate}[\shortcatvariables]  \, .
 \end{align*}
 
+\subsubsection{Phase sensitive measurement}
+
+When applying a Walsh-Hadamard transform on the qubits $\nodes\backslash\secnodes$ to be closed (see \figref{fig:phaseContractionMeasurement}), the probability of measuring the closed qubits in the ground state is %we perform the contraction
+\begin{align*}
+    \probat{\catvariableof{\nodes\backslash\secnodes}=0_{\nodes\backslash\secnodes},\catvariableof{\secnodes}}
+    = \frac{1}{2^{\cardof{\secnodes}}} \cdot \absof{\contractionof{\qstatewith}{\catvariableof{\secnodes}}}^2 \, .
+\end{align*}
+We thus sample from the contracted quantum state.
+Note that in this way, the relative phases of the amplitudes are contracted before the absolutes are taken.
+In this way, the measurement distribution is sensitive to the relative phases.
+This property is exploited in the Deutsch-Jozsa algorithm, which utilizes signs of the amplitudes.
+
+\begin{figure}
+    \begin{center}
+        \input{tikz_pics/phase_contraction_measurement.tikz}
+    \end{center}
+    \caption{Computational Basis Measurement of a quantum state $\qstate$, after the Walsh-Hadamard Transform on the closed qubits.
+    By the ellipse we indicate a coordinatewise transform to the square of the absolute, after the contraction.}
+    \label{fig:phaseContractionMeasurement}
+\end{figure}
+
 
 \subsection{Graph-Controlled circuits}
 
-
+Let us now introduce the most generic circuit construction schemes used in this work.
 
 \begin{definition}[Graph-Controlled Circuit]
     Let $\graph=(\nodes,\edges)$ be a directed acyclic hypergraph, where each hyperedge has exactly one outgoing node and all nodes appear exactly once as outgoing nodes of an hyperedge.
