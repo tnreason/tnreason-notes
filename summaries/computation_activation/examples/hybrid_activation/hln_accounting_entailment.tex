@@ -1,5 +1,9 @@
 \begin{example}[Continuation of \exaref{exa:hlnAccountingAMM}]
-    Consider again the \HybridLogicNetwork{} $\probof{(\catvariableof{A1}\oplus\catvariableof{A2},\catvariableof{F}\Rightarrow\catvariableof{A1}),\big(\{0\},(1),(0,\lnof{3})\big)}$ from \exaref{exa:hlnAccountingAMM} and assume we want to decide the probabilistic entailment of the formula
+    Consider again the \HybridLogicNetwork{}
+    \begin{align*}
+        \probofat{(\catvariableof{A1}\oplus\catvariableof{A2},\catvariableof{F}\Rightarrow\catvariableof{A1}),\big(\{0\},(1),(0,\lnof{3})\big)}{\catvariableof{A1},\catvariableof{A2},\catvariableof{F}}
+    \end{align*}
+    from \exaref{exa:hlnAccountingAMM} and assume we want to decide the probabilistic entailment of the formula
     \begin{align*}
         \secexformulaat{\catvariableof{A1},\catvariableof{A2},\catvariableof{F}}
         = \lnot\catvariableof{A1} \lor \lnot\catvariableof{A2} \lor \lnot\catvariableof{F} \, ,

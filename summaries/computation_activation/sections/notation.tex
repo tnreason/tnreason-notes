@@ -14,6 +14,7 @@ To ease the notation, we abbreviate sets as $[\catorder]=\{0,\ldots,\catorder-1\
     For $\atomenumeratorin$, let $\catdimof{\atomenumerator}\in\nn$ and let $\catvariableof{\atomenumerator}$ be categorical variables taking values in $[\catdimof{\catenumerator}]$.
     A tensor $\hypercoreat{\catvariables}$ of order $\catorder$ and leg dimensions $\catdimof{0},\dots,\catdimof{\atomorder-1}$ is defined through its coordinates
     \begin{align*}
+        \hypercoreat{\indexedshortcatvariables} =
         \hypercoreat{\indexedcatvariableof{0},\ldots,\indexedcatvariableof{\catorder-1}} \in \rr
     \end{align*}
     for index tuples
@@ -55,13 +56,13 @@ We occasionally also allow for variables $\catvariable$ taking values in infinit
         \dirdeltawith \in \bigotimes_{\catenumeratorin} \rr^{\catdim}
     \end{align*}
     with coordinates
-    \begin{align}
+    \begin{align*}
         \dirdeltaofat{[\catorder],\catdim}{\indexedshortcatvariables} =
         \begin{cases}
             1 \quad & \ifspace \catindexof{0} = \ldots = \catindexof{\catorder-1} \\
             0 & \text{else}
         \end{cases} \, .
-    \end{align}
+    \end{align*}
     We depict this tensor by black dots, which sometimes appears as auxiliary elements in tensor network diagrams (see e.g. \figref{fig:contraction}).
     For $\catorder=1$, the delta tensor is the trivial vector, whose coordinates are constantly $1$, which we denote by $\onesat{\catvariable}$.
 \end{example}
@@ -106,15 +107,15 @@ Let us now exploit our graphical approach to tensor networks in the definition o
     \label{def:contraction}
     Let $\tnetof{\graph}$ be a tensor network on a decorated hypergraph $\graph=(\nodes,\edges)$.
     For any subset $\secnodes\subset\nodes$ we define the contraction of $\tnetof{\graph}$ with open variables $\catvariableof{\secnodes}$ to be the tensor (for an example see \figref{fig:contraction})
-    \begin{align}
+    \begin{align*}
         \contractionof{\tnetof{\graph}}{\secnodevariables} \in \bigotimes_{\node\in\secnodes} \rr^{\catdimof{\node}}
-    \end{align}
+    \end{align*}
     with coordinates at indices $\catindexof{\secnodes}\in\bigtimes_{\node\in\secnodes}[\catdimof{\node}]$ by
-    \begin{align}
+    \begin{align*}
         \contractionof{\tnetof{\graph}}{\indexedcatvariableof{\secnodes}} =
         \sum_{\catindexof{\setwithout{\nodes}{\secnodes}} \in\,\nodestatesof{\setwithout{\nodes}{\secnodes}}}
         \left( \prod_{\edge\in\edges}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \right) \, .
-    \end{align}
+    \end{align*}
 \end{definition}
 
 % Open variables
@@ -169,13 +170,13 @@ Towards presenting the function encoding schemes, we define one-hot encodings ma
 \begin{definition}[One-hot encoding]
     \label{def:onehotenc}
     To any variable $\catvariable$ taking values in $[\catdim]$, the one-hot encoding of any state $\catindex\in[\catdim]$ is the vector with coordinates
-    \begin{align}
+    \begin{align*}
         \onehotmapofat{\catindex}{\catvariable=\tilde{\catindex}}
         \coloneqq \begin{cases}
                       1 & \ifspace \catindex=\tilde{\catindex} \\
                       0 & \text{else} \, .
         \end{cases}
-    \end{align}
+    \end{align*}
     To any tuple $\shortcatvariables$ of variables taking values in $\facstates$, the one-hot encoding of a state tuple $\shortcatindices$ is the tensor product
     \begin{align*}
         \onehotmapofat{\shortcatindices}{\shortcatvariables}

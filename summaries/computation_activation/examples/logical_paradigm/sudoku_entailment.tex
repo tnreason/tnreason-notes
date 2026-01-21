@@ -18,10 +18,10 @@
         \sudokukbof{\sudokunum} \land \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in \sudokustartevidence} \catvariableof{r0,r1,c0,c1,i} \right) \models \catvariableof{r0,r1,c0,c1,i}
     \end{align*}
     or false
-    \begin{align}
-        \label{eq:sudokukb}
+    \begin{align*}
+%        \label{eq:sudokukb}
         \kb \land \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in \sudokustartevidence} \catvariableof{r0,r1,c0,c1,i} \right) \models \lnot\catvariableof{r0,r1,c0,c1,i} \, .
-    \end{align}
+    \end{align*}
 %    In other words, for each assignment to the board, that fulfills the Sudoku rules and the initial board, do we write the number $n$ in row $(r0,r1)$ and column $(c0,c1)$?
     If and only if the Sudoku has a unique solution given the initial board assignment $\sudokustartevidence$, exactly one of these entailment statements holds for each $(r_0,r_1,c_0,c_1,i)\notin \sudokustartevidence$.
     Deciding which is equivalent to solving the Sudoku.

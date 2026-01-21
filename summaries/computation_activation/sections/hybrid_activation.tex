@@ -160,9 +160,6 @@ For more details we refer to~\cite[Chapter~9]{goessmann_tensor-network_2025}.
 
 Let us now demonstrate a further use of our unified treatment of probabilistic and logical models by investigating a generalized concept of entailment.
 Entailment can be generalized to probabilistic models by deciding whether a propositional formula is always satisfied given a probabilistic model.
-%Also entailment can be checked for \HybridLogicNetwork{}.
-%Assuming a positive probability of all models of the integrated \HardLogicNetwork{}, the entailment can be checked only considering the \HardLogicNetwork{}.
-%Here a query is a formula to retrieve information from a given network.
 
 \begin{theorem}\label{the:hybridEntailment}
     Let $\probofat{\hlnparameters}{\shortcatvariables}$ be a \HybridLogicNetwork{} and $\secexformulaat{\shortcatvariables}$ a propositional formula.
@@ -171,7 +168,6 @@ Entailment can be generalized to probabilistic models by deciding whether a prop
         \contraction{\probofat{\hlnparameters}{\shortcatvariables},\secexformulaat{\shortcatvariables}} = 1 \, ,
     \end{align*}
     if and only if
-%    Given a query formula $\secexformula$, we have that $\probofat{\hlnparameters}{\shortcatvariables}\models~\secexformula$ if and only if
     \begin{align*}
         \hlnformula \models \secexformula \, ,
     \end{align*}
@@ -210,69 +206,6 @@ Entailment can be generalized to probabilistic models by deciding whether a prop
         \contraction{\hlnformulawith ,\lnot\secexformulaat{\shortcatvariables}} = 0 \, ,
     \end{align*}
     which is by \defref{def:logicalEntailment} $\hlnformula \models \secexformula$.
-    %if and only if
-    %\begin{align*}
-    %    \contraction{\left(\onesat{\shortcatvariables}-\nonzeroof{\probofat{\hlnparameters}{\shortcatvariables}}\right),\secexformulaat{\shortcatvariables}} = 0 \, .
-    %\end{align*}
-%    \noindent\textbf{Counterexample.}
-%Let $d=2$ and let $P$ be a \HybridLogicNetwork{} with hard constraints $A=\{1,2\}$ and $y_A=(1,0)$, so that $\mathrm{supp}(P)=\{(1,0)\}$ and thus (after normalization) $P=\delta_{(1,0)}$.
-%Let $h(X)=X_1\lor X_2$.
-%Then
-%\[
-%\langle P,h\rangle_{[\varnothing]}=h(1,0)=1.
-%\]
-%However, with $\mathbb{I}=\ones[X_{[2]}]$ and $\mathbb{I}_{\neq 0}(P)=\nonzeroof{(P)}$,
-%\[
-%\big\langle (\mathbb{I}-\mathbb{I}_{\neq 0}(P)),\,h\big\rangle_{[\varnothing]}
-%=\sum_{x\neq(1,0)} h(x)=h(0,1)+h(1,1)=2\neq 0.
-%\]
-%Hence, in general,
-%\[
-%\langle P,h\rangle_{[\varnothing]}=1 \not\Leftrightarrow
-%\big\langle (\mathbb{I}-\mathbb{I}_{\neq 0}(P)),\,h\big\rangle_{[\varnothing]}=0.
-%\]
-%    We notice that $\hlnformulawith$ is the indicator tensor for the support of $\probofat{\hlnparameters}{\shortcatvariables}$.
-%    It therefore holds that
-%    \begin{align*}
-%        &\contraction{\left(\onesat{\shortcatvariables}-\nonzeroof{\probofat{\hlnparameters}{\shortcatvariables}}\right),\secexformulaat{\shortcatvariables}} \\
-%        &\quad\quad = \contraction{\secexformulaat{\shortcatvariables}} - \contraction{\hlnformulawith,\secexformulaat{\shortcatvariables}} \\
-%        &\quad\quad = \contraction{\secexformulaat{\shortcatvariables}} - \contraction{\hlnformulawith,\left(\onesat{\shortcatvariables}-\lnot\secexformulaat{\shortcatvariables}\right)} \\
-%        &\quad\quad = \contraction{\hlnformulawith,\secexformulaat{\shortcatvariables}} \, .
-%    \end{align*}
-%    By \defref{def:logicalEntailment} this vanishes if and only if $\hlnformula \models \secexformula$.
 \end{proof}
 
 \input{../examples/hybrid_activation/hln_accounting_entailment}
-
-%
-%\begin{example}{Entailment for Accounting Logic}
-%    \alex{Bad example: Minterms are only entailed by themselves.}
-%    To check entailment of the query formula defined by the minterm
-%    \begin{align*}
-%        g[X_{A_1}=0,X_{A_2}=1,X_F=1] = 1
-%    \end{align*}
-%    and is set to zero otherwise, entailment can be checked by contracting
-%    \begin{align*}
-%        \hlnformula[\catvariableof{A_1},\catvariableof{A_2},\catvariableof{F}] = \catvariableof{A1} \oplus \catvariableof{A2} \otimes \mathbb{I}
-%    \end{align*}
-%    with $g$ arriving at
-%    \begin{align*}
-%        &\langle  \hlnformula[\catvariableof{A_1},\catvariableof{A_2},\catvariableof{F}], \lnot g[X_{A_1},X_{A_2},X_F]  \rangle \\
-%        &= \sum_{x_{A_1},x_{A_2},x_{F} \in \{0,1\}} \hspace{-2ex}\hlnformula[X_{A_1}=x_{A_1},X_{A_2}=x_{A_2},X_F=x_f]  (1-g[X_{A_1}=x_{A_1},X_{A_2}=x_{A_2},X_F=x_f])\\
-%        &= \sum_{\substack{x_{A_1},x_{A_2},x_{F} \in \{0,1\}\\ (x_{A_1},x_{A_2},x_{F})\neq (0,1,1)}} \hspace{-2ex}\hlnformula[X_{A_1}=x_{A_1},X_{A_2}=x_{A_2},X_F=x_f] \\
-%        &\geq \hlnformula[X_{A_1}=1,X_{A_2}=0,X_F=0] > 0.
-%    \end{align*}
-%    Therefore, $\mathbb{P}^{\mathcal{F},(A,y_A,\theta)}[\catvariableof{[d]}]$ does not entail $g$.
-%    In this case, this is due to the fact, that $g$ only assumes one model, despite the formula having multiple models.
-%
-%    Doing the same calculations for
-%    \begin{align*}
-%        \secexformulaat{\catvariableof{A1},\catvariableof{A2},\catvariableof{F}}
-%        = \lnot\catvariableof{A1} \lor \lnot\catvariableof{A2} \lor \lnot\catvariableof{F}
-%    \end{align*}
-%    \begin{align*}
-%        \tilde g[X_{A_1}=1,X_{A_2}=1,X_F=1] = 0
-%    \end{align*}
-%    and equal to $1$ everywhere else leads to the constraction being equal to zero.
-%    Therefore, $\mathbb{P}^{\mathcal{F},(A,y_A,\theta)}[\catvariableof{[d]}]$ does entail $\tilde g$.
-%\end{example}

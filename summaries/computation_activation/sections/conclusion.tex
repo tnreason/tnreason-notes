@@ -4,20 +4,14 @@
 This work developed a tensor network formalism to capture in a unifying way the main concepts of AI, which build the core of the probabilistic, neural and logical approaches.
 We introduced \ComputationActivationNetworks{} (\CompActNets{}) as a generic architecture to represent classes of propositional knowledge bases, graphical models and more generic exponential families.
 Moreover, we demonstrate the representation and training of hybrid models combining logical and probabilistic aspects, illustrating that \CompActNets{} represent a powerful, versatile and mathematically grounded framework for Neuro-Symbolic AI.
-%This work has treated the representation of several models in tensor networks.
-%Especially, probability distributions over discrete sets and propositional formulas can be represented in the introduced structure.
-%Multiple properties, such as independence of variables for the distributions and connections of subsets for the propositional formulas, can be directly encoded into the architecture leading to sparse, memory-efficient representations.
-%The exact representation also encourages the carrying over of analysis of the mathematical concepts to the \CompActNets{}.
 
 % Conclusion: Reasoning by Contraction
 We have shown that model inference such as the calculating marginal distributions and deciding entailment correspond with tensor network contractions.
 To efficiently perform these inferences, we presented message passing schemes, which have been shown to be exact in specific cases.
 In general, however, the efficient computation of contractions is not possible, since they are related to the $\mathrm{NP}$-hardness of probabilistic inferences in graphical models (see \cite{koller_probabilistic_2009}) and of logical reasoning (see \cite{russell_artificial_2021}).
 In cases where exact inference is not feasible, the derivation of error bounds for approximate inference schemes on \CompActNets{} is an interesting direction for future research.
-%We can understand them as approximation of (potentially intractable) contractions and will dedicate future work to study them in the tensor network formalism.
 
 % Outlook: Variational inference schemes
-%We in this work presented message passing schemes as belief propagation in probability theory and syntactical inference algorithms in logics.
 Further approximation schemes to overcome this bottleneck are summarized under the umbrella of variational inference (see \cite{wainwright_graphical_2008}), such as generic expectation-propagation methods or mean field methods.
 While these schemes are developed either for graphical models or more general exponential families, we plan to derive similar methods for more general \CompActNets{}, such as \HybridLogicNetworks{}.
 % Outlook: Monte-Carlo inference schemes
@@ -29,85 +23,7 @@ The \CompActNets{} framework enables both, symbolic logical as well as probabili
 \CompActNets{} based on architectures combining symbolically verbalizable and more generic neural parts are thus a promising direction for Neuro-Symbolic AI.
 
 % Outlook: LLMs
-%Beyond the theoretical integration of differentiable architectures into the transformer architecture of Large Language Models \cite{vaswani_attention_2017},
 The \CompActNets{} framework offers an immediate practical application as a verifiable reasoning engine for AI agents in high-stakes domains such as regulatory compliance, clinical decision support, accounting, process planning and security.
-By leveraging the framework's inherent flexibility, Large Language Models \cite{vaswani_attention_2017} can be adapted to function as semantic translators that dynamically construct problem-specific tensor networks in the form of \CompActNets{} from natural language descriptions, effectively treating the reasoning engine as an external tool.
+By leveraging the framework's inherent flexibility, Large Language Models (see \cite{vaswani_attention_2017}) can be adapted to function as semantic translators that dynamically construct problem-specific tensor networks in the form of \CompActNets{} from natural language descriptions, effectively treating the reasoning engine as an external tool.
 This approach mitigates the hallucination risks of probabilistic models by delegating complex logical execution to the exact linear algebra of the tensor network, ensuring that the inference process is both rigorous and reproducible.
 Consequently, this synergy enables the deployment of reliable AI systems where the intuitive power of the Large Language Model is grounded by the explainable, instance-adaptive topology of the \CompActNets{}.
-
-
-
-% %\vspace{3cm}
-
-% Looking forward, the explicit separation of algorithmic structure (computation) from variable state (activation) inherent to \CompActNets{} offers a rigorous interface for the neuro-symbolic augmentation of Large Language Models (LLMs). While Transformer-based architectures have demonstrated remarkable semantic capabilities \cite{vaswani2023attentionneed}, they fundamentally lack intrinsic guarantees for logical consistency in multi-step reasoning \cite{wei2023chainofthoughtpromptingelicitsreasoning}. We envision three specific pathways to bridge this gap, formalizing the interaction between the continuous embedding space $\mathcal{E} \cong \mathbb{R}^d$ and the discrete logical basis: (1) \textit{Geometric Regularization:} We may impose logical consistency by shaping the geometry of the embedding manifold. Given a set of logical axioms $\Phi$, we can define a regularization functional $\mathcal{R}_{\Phi}: \mathcal{E} \to \mathbb{R}_{\geq 0}$ of the form
-%     \begin{equation}
-%         \mathcal{R}_{\Phi}(h) = \sum_{\varphi \in \Phi} \left\| \text{contr}(\mathcal{C}_{\varphi}, \Psi(h)) - \mathbf{t}_{\text{true}} \right\|^2,
-%     \end{equation}
-%     where $\mathcal{C}_{\varphi}$ is the computation tensor representing axiom $\varphi$, $\Psi$ maps embeddings to activation tensors, and $\text{contr}(\cdot)$ denotes the tensor contraction yielding a truth valuation.
-
-%     Here is a concise explanation tailored for mathematicians and computer scientists, removing the physics jargon while keeping the rigorous geometric intuition.
-
-
-
-% Standard LLM embeddings rely on symmetric measures like cosine similarity (where distance($A, B$) = distance($B, A$)). However, logical reasoning is inherently asymmetric (e.g., *Cat $\implies$ Animal* is true, but *Animal $\implies$ Cat* is not). To fix this, we propose **Geometric Regularization**.
-
-% We treat the LLM’s learned embeddings as the **"Activation"** vectors and our fixed logical operators as the **"Computation"** tensors. During training, we impose a structural constraint: when the model's embeddings for a premise $A$ and conclusion $B$ are contracted with our fixed "Implication Tensor" $\mathcal{C}_{\to}$, the result must align with the basis vector representing "True."
-
-% Mathematically, we enforce this by adding a penalty term to the standard loss function:
-% $$\mathcal{L}_{logic} = \sum_{(A,B) \in \mathcal{K}} \| \left( \mathcal{C}_{\to} \times_{1,2} (\mathbf{v}_A \otimes \mathbf{v}_B) \right) - \mathbf{t}_{true} \|^2$$
-% This forces the continuous geometry of the neural network to deform until it respects the algebraic rules of our symbolic tensor calculus.
-
-
-% (2) \textit{Structural Bottlenecks:} To enforce inductive biases, standard feed-forward layers can be replaced by mappings constrained to the algebraic variety of fixed tensor rank, $\mathcal{M}_{\mathbf{r}} \subset \bigotimes_{i} V_i$. By projecting hidden states $h_t$ onto an MPS or PEPS manifold, $h_{t+1} = \mathcal{P}_{\mathcal{M}_{\mathbf{r}}}(h_t)$, we filter the information flow through a topology that naturally supports hierarchical reasoning structures.
-
-
-
-% Structural Bottlenecks (The "Inductive Bias" Approach), the Core Problem this idea would tackle: Unconstrained Correlations
-% In standard Transformers, the Feed-Forward (MLP) layers are dense matrices. Mathematically, these are **full-rank linear maps** that allow every input feature to interact with every other feature arbitrarily. While expressive, this lack of structure means the model can easily overfit to spurious correlations (noise) rather than learning the sparse, hierarchical rules typical of logical reasoning.
-
-% Instead of allowing the model to use *any* linear map, we force the information to pass through a specific algebraic structure that mirrors the geometry of reasoning (e.g., a tree or a chain).
-
-% The Mechanism (Low-Rank Projection)**
-% We replace the dense weight matrices $W$ in the Transformer with **Tensor Networks** (specifically MPOs, HT or unstructured CompAct network).
-% Mathematically, this restricts the optimization from the full vector space $\mathbb{R}^{d \times d}$ to a specific **algebraic variety** $\mathcal{M}_{\mathbf{r}}$—the set of tensors with fixed, low tensor-rank $\mathbf{r}$.
-
-% If we use a tree-shaped tensor network (like HT or MERA), we force the neural network to process information hierarchically (combining small concepts into larger concepts), which aligns with the structure of syntactic parsing or proof trees.
-% * **Sequential Logic:** If we use a chain-shaped network (like MPS), we enforce local state transitions, similar to a finite automaton.
-
-% By constraining the layer to this low-rank manifold, we create a "Structural Bottleneck." The model is mathematically incapable of representing "messy," unstructured interactions. It is forced to compress the data into a clean, logical format (the "Computation" structure) before passing it to the next layer. This acts as a powerful **inductive bias** for systematic reasoning.
-
-    % (3) \textit{Differentiable Symbolic Heads:} Finally, the framework enables a generalized attention mechanism where the query vectors $q$ parameterize a superposition of computation tensors rather than simple values. This yields an inference head of the form
-    % \begin{equation}
-    %     y = \left( \sum_{k} \text{softmax}(q^T k)_k \cdot \mathcal{C}^{(k)} \right) \times_{1 \dots N} (v_1 \otimes \dots \otimes v_N),
-    % \end{equation}
-    % effectively allowing the model to dynamically select and apply exact logical operators $\mathcal{C}^{(k)}$ (e.g., AND, XOR, IMPLIES) to the semantic content $v_i$ within a differentiable forward pass.
-    % Alternatively, this interface can be realized as a discrete 'Tool Use' mechanism, where the LLM generates symbolic tokens triggering specific tensor contractions within the framework. The external engine executes this contraction exactly and injects the resulting tensor back into the model's context window, effectively treating the tensor network as a verifiable co-processor.
-
-
-
-
-
-% Differentiable Symbolic Heads tackles this Core Problem: Averaging vs. Computing**
-% Standard Attention mechanisms work by computing a weighted average of value vectors: $\mathbf{y} = \sum \alpha_i \mathbf{v}_i$.
-% While this is excellent for aggregating semantic context (e.g., mixing the concepts of "bank" and "river"), it is structurally incapable of executing exact logical functions. You cannot simply "average" the results of an AND gate and an OR gate to strictly deduce a fact. Standard Transformers must approximate these discrete functions using deep stacks of MLPs, which is inefficient and prone to "hallucinating" logic.
-
-%Differentiable Symbolic Heads (The "Inference Engine" Approach)**
-% We propose a generalized Attention Head that, instead of attending to *data*, attends to *operators*.
-
-% **1. The Library (The Computation Basis)**
-% We treat the `melocoton` library as a fixed dictionary of **Computation Tensors** $\{\mathcal{C}^{(1)}, \dots, \mathcal{C}^{(K)}\}$. Each tensor represents a strict logical axiom (AND, XOR, Modus Ponens) encoded as a multilinear map.
-% The Mechanism (Soft Selection)**
-% In a standard Transformer, the "Query" vector determines which input data is relevant. In our Symbolic Head, the Query vector $q$ determines **which logical operation is required**.
-% The model computes a probability distribution (via softmax) over the library of operators. It then constructs a **superposition of logic gates**:
-% $$\mathcal{C}_{effective} = \sum_{k=1}^K \underbrace{\text{softmax}(q^T k)_k}_{\text{scalar weight}} \cdot \underbrace{\mathcal{C}^{(k)}}_{\text{tensor}}$$
-
-% The Execution (Differentiable Contraction)**
-% This effective tensor $\mathcal{C}_{effective}$ is then contracted with the input features (the Activations).
-% $$y = \mathcal{C}_{effective} \times (\mathbf{x}_{in1} \otimes \mathbf{x}_{in2})$$
-
-% This mechanism acts as a **differentiable switch**.
-% * Early in training, the model learns a "fuzzy" mixture of logic gates.
-% * As training converges, the softmax sharpens, and the model effectively selects *one* specific, exact tensor contraction to apply to the data.
-% * Crucially, because tensor contraction is just a series of sums and products, the entire process remains fully differentiable. The model effectively learns to "program itself" by selecting the correct tensor routines to solve the problem.
-
-

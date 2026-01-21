@@ -209,7 +209,14 @@ Since sufficient statistics are sometimes introduced based on the data processin
 
 \begin{theorem}[Fisher-Neyman factorization theorem]
     \label{the:generalFactorizationFisherNeyman}
-    Let $\probtensor$ be a joint distribution of variables $\thirdcatvariable,\catvariable$ with values $\valof{\thirdcatvariable}, \,\valof{\catvariable}$ and let $\sstatat{\catindex}$ be a statistic.
+    Let $\probat{\catvariable,\thirdcatvariable}$ be a joint distribution of variables $\catvariable,\,\thirdcatvariable$ with values $\valof{\catvariable},\,\valof{\thirdcatvariable}$ and let $\sstat$ be a statistic, which maps $\valof{\catvariable}$ to $\valof{\headvariableof{\sstat}}$ .
+    We introduce a variable $\headvariableof{\sstat}$ and define a joint distribution by
+    \begin{align*}
+        \probat{\catvariable,\headvariableof{\sstat},\thirdcatvariable}
+        = \contractionof{
+            \probat{\catvariable,\thirdcatvariable},\bencodingofat{\sstat}{\headvariableof{\sstat},\catvariable}
+        }{\catvariable,\headvariableof{\sstat},\thirdcatvariable} \, .
+    \end{align*}
     The following are equivalent:
     \begin{itemize}
         \item[i)] The Data Processing Inequality holds straight, that is
@@ -223,8 +230,7 @@ Since sufficient statistics are sometimes introduced based on the data processin
             \condindependent{\thirdcatvariable}{\catvariable}{\headvariableof{\sstat}}
         \end{align*}
         \item[iii)]
-        There are tensors $\acttensorat{\headvariableof{\sstat},\thirdcatvariable}$ and $\basemeasureat{\catvariable}$ such that
-        %\item There are functions $g : \imageof{T} \times \valof{\thirdcatvariable} \rightarrow \rr$ and $h: \valof{\catvariable}\rightarrow\rr$ such that for any $(x,z)\in\valof{\thirdcatvariable}\times \valof{\catvariable}$
+        There are tensors $\acttensorat{\headvariableof{\sstat},\thirdcatvariable}$ and $\basemeasureat{\catvariable}$ such that for any $\catindex\in\valof{\catvariable}$ and $\thirdcatindex\in\valof{\thirdcatvariable}$
         \begin{align*}
             \probat{\indexedthirdcatvariable,\indexedcatvariable}
             = \acttensorat{\headvariableof{\sstat}=\sstatat{\catindex},\indexedthirdcatvariable} \cdot \basemeasureat{\indexedcatvariable} \, .
@@ -252,7 +258,7 @@ Since sufficient statistics are sometimes introduced based on the data processin
 
     $ii) \Rightarrow iii)$:
     Let us assume $ii)$.
-    For almost all $\thirdcatindex\in\valof{\thirdcatvariable}$ and $\catindex\in\valof{\catvariable}$ we then have
+    For all $\thirdcatindex\in\valof{\thirdcatvariable}$ and $\catindex\in\valof{\catvariable}$ we then have
     \begin{align*}
         \condprobat{\indexedthirdcatvariable}{\indexedcatvariable}
         &= \condprobat{\indexedthirdcatvariable}{\indexedcatvariable,\headvariableof{\sstat}=\sstatat{\catindex}} \\
