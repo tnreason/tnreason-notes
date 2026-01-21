@@ -1,4 +1,4 @@
-\begin{thebibliography}{49}
+\begin{thebibliography}{59}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -95,6 +95,44 @@ Thomas~M. Cover and Joy~A. Thomas.
   2006.
 \newblock ISBN 978-0-471-24195-9.
 
+\bibitem[Cui and Dolgov(2022)]{cui_deep_2022}
+Tiangang Cui and Sergey Dolgov.
+\newblock Deep {Composition} of {Tensor}-{Trains} {Using} {Squared} {Inverse}
+  {Rosenblatt} {Transports}.
+\newblock \emph{Foundations of Computational Mathematics}, 22\penalty0
+  (6):\penalty0 1863--1922, December 2022.
+\newblock ISSN 1615-3383.
+\newblock \doi{10.1007/s10208-021-09537-5}.
+\newblock URL \url{https://doi.org/10.1007/s10208-021-09537-5}.
+
+\bibitem[Dolgov and Scheichl(2019)]{dolgov_hybrid_2019}
+Sergey Dolgov and Robert Scheichl.
+\newblock A {Hybrid} {Alternating} {Least} {Squares}--{TT}-{Cross} {Algorithm}
+  for {Parametric} {PDEs}.
+\newblock \emph{SIAM/ASA Journal on Uncertainty Quantification}, March 2019.
+\newblock \doi{10.1137/17M1138881}.
+\newblock URL \url{https://epubs.siam.org/doi/10.1137/17M1138881}.
+
+\bibitem[Dolgov et~al.(2015)Dolgov, Khoromskij, Litvinenko, and
+  Matthies]{dolgov_polynomial_2015}
+Sergey Dolgov, Boris~N. Khoromskij, Alexander Litvinenko, and Hermann~G.
+  Matthies.
+\newblock Polynomial {Chaos} {Expansion} of {Random} {Coefficients} and the
+  {Solution} of {Stochastic} {Partial} {Differential} {Equations} in the
+  {Tensor} {Train} {Format}.
+\newblock \emph{SIAM/ASA Journal on Uncertainty Quantification}, November 2015.
+\newblock \doi{10.1137/140972536}.
+\newblock URL \url{https://epubs.siam.org/doi/10.1137/140972536}.
+
+\bibitem[Dolgov et~al.(2023)Dolgov, Kalise, and
+  Saluzzi]{dolgov_data-driven_2023}
+Sergey Dolgov, Dante Kalise, and Luca Saluzzi.
+\newblock Data-{Driven} {Tensor} {Train} {Gradient} {Cross} {Approximation} for
+  {Hamilton}–{Jacobi}–{Bellman} {Equations}.
+\newblock \emph{SIAM Journal on Scientific Computing}, September 2023.
+\newblock \doi{10.1137/22M1498401}.
+\newblock URL \url{https://epubs.siam.org/doi/10.1137/22M1498401}.
+
 \bibitem[Domingos(2025)]{domingos_tensor_2025}
 Pedro Domingos.
 \newblock Tensor {Logic}: {The} {Language} of {AI}, October 2025.
@@ -110,6 +148,39 @@ Martin Eigel, Max Pfeffer, and Reinhold Schneider.
 \newblock ISSN 0945-3245.
 \newblock \doi{10.1007/s00211-016-0850-x}.
 \newblock URL \url{https://doi.org/10.1007/s00211-016-0850-x}.
+
+\bibitem[Eigel et~al.(2019)Eigel, Schneider, Trunschke, and
+  Wolf]{eigel_variational_2019}
+Martin Eigel, Reinhold Schneider, Philipp Trunschke, and Sebastian Wolf.
+\newblock Variational {Monte} {Carlo}—bridging concepts of machine learning
+  and high-dimensional partial differential equations.
+\newblock \emph{Advances in Computational Mathematics}, 45\penalty0
+  (5):\penalty0 2503--2532, December 2019.
+\newblock ISSN 1572-9044.
+\newblock \doi{10.1007/s10444-019-09723-8}.
+\newblock URL \url{https://doi.org/10.1007/s10444-019-09723-8}.
+
+\bibitem[Eigel et~al.(2020)Eigel, Marschall, Pfeffer, and
+  Schneider]{eigel_adaptive_2020}
+Martin Eigel, Manuel Marschall, Max Pfeffer, and Reinhold Schneider.
+\newblock Adaptive stochastic {Galerkin} {FEM} for lognormal coefficients in
+  hierarchical tensor representations.
+\newblock \emph{Numerische Mathematik}, 145\penalty0 (3):\penalty0 655--692,
+  July 2020.
+\newblock ISSN 0945-3245.
+\newblock \doi{10.1007/s00211-020-01123-1}.
+\newblock URL \url{https://doi.org/10.1007/s00211-020-01123-1}.
+
+\bibitem[Eigel et~al.(2023)Eigel, Schneider, and Sommer]{eigel_dynamical_2023}
+Martin Eigel, Reinhold Schneider, and David Sommer.
+\newblock Dynamical low-rank approximations of solutions to the
+  {Hamilton}–{Jacobi}–{Bellman} equation.
+\newblock \emph{Numerical Linear Algebra with Applications}, 30\penalty0
+  (3):\penalty0 e2463, 2023.
+\newblock ISSN 1099-1506.
+\newblock \doi{10.1002/nla.2463}.
+\newblock URL \url{https://onlinelibrary.wiley.com/doi/abs/10.1002/nla.2463}.
+\newblock \_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1002/nla.2463.
 
 \bibitem[Ganapathi et~al.(2008)Ganapathi, Vickrey, Duchi, and
   Koller]{ganapathi_constrained_2008}
@@ -167,6 +238,16 @@ Nikita Gourianov, Peyman Givi, Dieter Jaksch, and Stephen~B. Pope.
   2025.
 \newblock \doi{10.1126/sciadv.ads5990}.
 \newblock URL \url{https://www.science.org/doi/10.1126/sciadv.ads5990}.
+
+\bibitem[Gruhlke et~al.(2026)Gruhlke, Sommer, Kirstein, Eigel, and
+  Schillings]{gruhlke_reverse_2026}
+Robert Gruhlke, David Sommer, Max Kirstein, Martin Eigel, and Claudia
+  Schillings.
+\newblock Reverse {Diffusion} {Sampling} with {Tensor} {Train} {Approximations}
+  of {Hamilton}–{Jacobi}–{Bellman} {Equations}.
+\newblock \emph{SIAM Journal on Scientific Computing}, January 2026.
+\newblock \doi{10.1137/24M1637210}.
+\newblock URL \url{https://epubs.siam.org/doi/10.1137/24M1637210}.
 
 \bibitem[Hackbusch and Kühn(2009)]{hackbusch_new_2009}
 W.~Hackbusch and S.~Kühn.
@@ -228,6 +309,16 @@ Zachary~C. Lipton.
 \newblock ISSN 0001-0782.
 \newblock \doi{10.1145/3233231}.
 \newblock URL \url{https://dl.acm.org/doi/10.1145/3233231}.
+
+\bibitem[Lubich et~al.(2013)Lubich, Rohwedder, Schneider, and
+  Vandereycken]{lubich_dynamical_2013}
+Christian Lubich, Thorsten Rohwedder, Reinhold Schneider, and Bart
+  Vandereycken.
+\newblock Dynamical {Approximation} by {Hierarchical} {Tucker} and
+  {Tensor}-{Train} {Tensors}.
+\newblock \emph{SIAM Journal on Matrix Analysis and Applications}, May 2013.
+\newblock \doi{10.1137/120885723}.
+\newblock URL \url{https://epubs.siam.org/doi/10.1137/120885723}.
 
 \bibitem[Mackworth(1977)]{mackworth_consistency_1977}
 Alan~K. Mackworth.
@@ -398,6 +489,18 @@ Geoffrey~G. Towell and Jude~W. Shavlik.
 \newblock \doi{10.1016/0004-3702(94)90105-8}.
 \newblock URL
   \url{https://www.sciencedirect.com/science/article/pii/0004370294901058}.
+
+\bibitem[Trunschke et~al.(2025)Trunschke, Eigel, and
+  Nouy]{trunschke_weighted_2025}
+Philipp Trunschke, Martin Eigel, and Anthony Nouy.
+\newblock Weighted sparsity and sparse tensor networks for least squares
+  approximation.
+\newblock \emph{The SMAI Journal of computational mathematics}, 11:\penalty0
+  289--333, 2025.
+\newblock ISSN 2426-8399.
+\newblock \doi{10.5802/smai-jcm.126}.
+\newblock URL
+  \url{https://smai-jcm.centre-mersenne.org/articles/10.5802/smai-jcm.126/}.
 
 \bibitem[Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez,
   Kaiser, and Polosukhin]{vaswani_attention_2017}

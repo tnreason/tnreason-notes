@@ -1,0 +1,20 @@
+\begin{example}[Tensor product]
+    \label{exa:tensorProduct}
+    The simplest contraction is the tensor product, which maps a pair of two tensors with distinct variables onto a third tensor and has an interpretation by coordinate-wise products.
+    Such a contraction corresponds with a tensor network of two tensors with disjoint variables.
+    Let there be two tensors
+    \begin{align*}
+        \hypercoreat{\shortcatvariables} \in \facspace  \andspace \sechypercoreat{\headvariables} \in \bigotimes_{\selindexin}\rr^{\headdimof{\selindex}}
+    \end{align*}
+    with disjoint tuples of categorical variables assigned to their axes.
+    Then their tensor product is the tensor
+    \begin{align*}
+        \contractionof{\hypercoreat{\shortcatvariables},\sechypercoreat{\secshortcatvariables}}{\shortcatvariables,\headvariables}
+        \in \left(\facspace\right) \otimes \left(\bigotimes_{\selindexin}\rr^{\headdimof{\selindex}}\right)
+    \end{align*}
+    with coordinates to tuples of $\shortcatindices\in\facstates$ and $\shortheadindices\in\bigtimes_{\selindexin}[\headdimof{\selindex}]$ as
+    \begin{align*}
+        & \contractionof{\hypercoreat{\shortcatvariables},\sechypercoreat{\secshortcatvariables}}{\indexedshortcatvariables,\headvariables=\shortheadindices} \\
+        &\quad\quad \coloneqq  \hypercoreat{\indexedshortcatvariables}\cdot \sechypercoreat{\headvariables=\shortheadindices} \, .
+    \end{align*}
+\end{example}

@@ -21,9 +21,9 @@ We test by coordinate retrieval operations, whether the summation is performed c
 \inputminted{python}{../implementation/m_adic_sum.py}
 % \inputminted{python}{summaries/computation_activation/wias_preprint/implementation/m_adic_sum.py}
 
-\subsubsection{Example~\ref{exa:studentHC} and \ref{exa:studentBP} (Student Markov Network)}
+\subsubsection{Example~\ref{exa:studentHC} and \ref{exa:studentBP} (Student Markov network)}
 
-We here implement the Markov Network on the hypergraph of \exaref{exa:studentHC}, with tensors having independent random coordinates drawn from the uniform distribution on $[0,1]$.
+We here implement the Markov network on the hypergraph of \exaref{exa:studentHC}, with tensors having independent random coordinates drawn from the uniform distribution on $[0,1]$.
 We test in a final \mintinline{python}{assert} statement, whether the messages resulting from \algoref{alg:treeBeliefPropagation} in a tree implementation contract to the marginal distribution, which we directly compute for comparison.
 \inputminted{python}{../implementation/student.py}
 % \inputminted{python}{summaries/computation_activation/wias_preprint/implementation/student.py}

@@ -1,35 +1,39 @@
 %\section{Decompositions based on Propositional Syntax}
 \section{The logical paradigm}\label{sec:logPar}
 
-A tensor-based representation of propositional logic is developed by encoding boolean variables into vectors, defining formulas as boolean tensors, and showing how logical connectives and normal forms can be expressed as tensor contractions.
+A tensor-based representation of propositional logic is developed by defining formulas as boolean valued tensors, and showing how logical connectives and normal forms can be expressed as tensor contractions.
 
 \subsection{Propositional semantics by boolean tensors}
 
-Starting with the introduction of propositional formulas as boolean tensors their decomposition is discussed with respect to a basis encoding. The basis encoding representation enables dealing with the negation operation of propositional formulas still in tensor format. Furthermore, the propositional formula then fits into the concept of \CompActNets{}.
+Starting with the introduction of propositional formulas as boolean tensors their decomposition is discussed with respect to a basis encoding.
+%The basis encoding representation enables dealing with the negation operation of propositional formulas still in tensor format.
+%Furthermore, the propositional formula then fits into the concept of \CompActNets{}.
 
 \begin{definition}
     \label{def:formulas}
-    A \emph{propositional formula} $\formulaat{\shortcatvariables}$ depending on $\atomorder$ boolean variables $\catvariableof{\atomenumerator}$ is a boolean-valued tensor
+    A \emph{propositional formula} $\formulaat{\shortcatvariables}$ depending on $\atomorder$ boolean variables $\catvariableof{\atomenumerator}$ is a tensor
     \begin{align*}
-        \formulaat{\shortcatvariables} \defcols \atomstates \rightarrow \ozset \subset \rr \, .
+        \formulaat{\shortcatvariables} \in \bigotimes_{\atomenumeratorin} \rr^2
     \end{align*}
+    with coordinates in $\ozset$.
     We call a state $\shortcatindices \in \atomstates$ a \emph{model} of a propositional formula $\formula$, if
     \begin{align*}
         \formulaat{\indexedshortcatvariables}=1 \, ,
     \end{align*}
-    where we associate $\mathrm{True}\leftrightarrow 1$ and $\mathrm{False}\leftrightarrow 0$.
+    where we understand $1$ as a representation of $\mathrm{True}$ and $0$ of $\mathrm{False}$.
     If there is a model of a propositional formula, we say the formula is \emph{satisfiable}.
 \end{definition}
 
 \input{../examples/logical_paradigm/prop_formula_coordinatewise.tex}
 
 \paragraph{Model counts by contraction}
-Each coordinate of the propositional formula is either a $1$ or $0$, indicating whether the indexed state is a model of the formula or not.
+Each coordinate of a propositional formula is either $1$ or $0$, indicating whether the indexed state is a model of the formula or not.
 In this way, the contraction $\contraction{\formula}$ counts the number of models of the propositional formula $\formula$.
 One can therefore decide the satisfiability of a formula by testing for $\contraction{\formula}>0$.
 
 \paragraph{CP decomposition}
-Since the tensor $\formulaat{\shortcatvariables}$ is equal to one at index $x_{[d]}$ if and only if $x_{[d]}$ is a model of $\formula$, a propositional formula can be written as the sum over the one-hot encodings of its models.
+We can decompose a formula into the sum of the one-hot encodings of its models:
+%Since the tensor $\formulaat{\shortcatvariables}$ is equal to one at index $x_{[d]}$ if and only if $x_{[d]}$ is a model of $\formula$, a propositional formula can be written as the sum over the one-hot encodings of its models.
 \begin{center}
     \input{../tikz_pics/logic_representation/formula_direct.tex}
 \end{center}
@@ -43,25 +47,23 @@ To this end, we enumerate the models $\shortcatindices^{\decindex}$ of $\formula
 \input{../examples/logical_paradigm/prop_formula_basCP.tex}
 
 \paragraph{Basis encoding}
-Representing booleans by elements in $\{0,1\}$ leads to the problem that negation is an affine transformation and cannot be represented by multilinear tensors. %~\cite[Section 4.1.1]{goessmann_tensor-network_2025}.
-Therefore, instead of using this \emph{coordinate calculus} an approach based on \emph{basis calculus} is employed, which is explained in this section.
-To be able to express different kinds of connectives and, finally, any propositional formula by multilinear tensors, booleans are encoded by one-hot encodings as defined in \defref{def:onehotenc}.
-Propositional formulas $\formula$ can be expressed in terms of a tensor describing the mapping and its negation by
-\begin{align}
-    \label{eq:basisencboolean}
+Representing booleans by elements in $\{0,1\}$ leads to the problem that the negation is an affine transformation and cannot be represented by multilinear tensors. %~\cite[Section 4.1.1]{goessmann_tensor-network_2025}.
+%Therefore, instead of using this \emph{coordinate calculus} scheme an approach based on \emph{basis calculus} is employed, which is explained in this section.
+To be able to express different kinds of connectives by contractions, booleans are encoded by one-hot encodings as defined in \defref{def:onehotenc}.
+Propositional formulas $\formula$ can then be expressed by their basis encodings
+\begin{align*}
     \bencodingofat{\formula}{\indexedheadvariableof{\formula},\indexedshortcatvariables}
     = \begin{cases}
           1 & \ifspace \formulaat{\indexedshortcatvariables} = \headindexof{\formula}\\
           0 & \text{else}
-    \end{cases}.
-\end{align}
-This basis encoding $\bencodingofat{\formula}{\headvariableof{\formula},\shortcatvariables} \in \{0,1\}^{2\times 2^d}$ then has the form
-\begin{align}
-    \label{eq:basisencnegsum}
+    \end{cases} \, .
+\end{align*}
+This basis encoding $\bencodingofat{\formula}{\headvariableof{\formula},\shortcatvariables} \in \{0,1\}^{2\times 2^d}$ encodes the formula itself and its negation in its slices, since
+\begin{align*}
     \bencodingofat{\formula}{\headvariableof{\formula},\shortcatvariables}
     = \tbasisat{\headvariableof{\formula}} \otimes \formulaat{\shortcatvariables}
     + \fbasisat{\headvariableof{\formula}} \otimes \lnot\formulaat{\shortcatvariables} \, .
-\end{align}
+\end{align*}
 In our graphical notation this property is visualized by
 \begin{center}
     \input{../tikz_pics/logic_representation/formula_bencoding.tex}
@@ -79,8 +81,6 @@ The propositional formula and its negation can be represented by this tensor via
     = \contractionof{\fbasisat{\headvariableof{\formula}},\bencodingofat{\formula}{\headvariableof{\formula},\shortcatvariables}}{\shortcatvariables} \, .
 \end{align*}
 Both $\formula$ and $\lnot\formula$ are thus \ComputationActivationNetworks{} to the statistic $\{\formula\}$ and the hard activation tensor $\tbasisat{\headvariableof{\formula}}$, respectively $\fbasisat{\headvariableof{\formula}}$.
-%This representation of propositional formulas with respect to basis encoding thus leads to \ComputationActivationNetworks{}, which were also used to describe probability distributions in the last section.
-%In this way the soft and hard logic can be combined in one framework.
 
 \subsection{Syntactic decomposition of propositional formulas}
 
@@ -95,72 +95,6 @@ We can therefore apply the neural paradigm to find efficient representations of 
 We thus have a tensor network representation of any propositional formula based on its syntactic decomposition, where the hypergraph of the syntactic decomposition equals the hypergraph of the representing tensor network.
 
 \input{../examples/logical_paradigm/prop_formula_syntax}
-
-%\begin{lemma}
-%    \label{lem:formulaDecomp}
-%    Let $\formulaat{\shortcatvariables}$ be a composition of a $\seldim$-ary connective formula $\exconnective$ and propositional formulas $\formulaofat{\selindex}{\shortcatvariables}$, where $\selindexin$, that is for $\shortcatindices\in\atomstates$ we have
-%    \begin{align*}
-%        \formulaat{\indexedshortcatvariables}
-%        = \exconnective\left(\formulaofat{0}{\indexedshortcatvariables}, \dots, \formulaofat{\seldim-1}{\indexedshortcatvariables}\right) \, .
-%    \end{align*}
-%    Then we have
-%    \begin{align*}
-%        \bencodingofat{\formula}{\headvariableof{\formula},\shortcatvariables}
-%        = \contractionof{
-%            \{\bencodingofat{\exconnective}{\headvariableof{\formula},\headvariableof{[\seldim]}}\}
-%            \cup \{\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}
-%        }{\headvariableof{\formula},\shortcatvariables} \, .
-%    \end{align*}
-%\end{lemma}
-%\begin{proof}
-%    This can be shown on each index $\shortcatindices$.
-%\end{proof}
-
-%\begin{definition}
-%    \label{def:formulaDecomposition}
-%    A syntactical hypergraph is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ such that
-%    \begin{itemize}
-%        \item each hyperedge $\edge=(\incomingnodes,\outgoingnodes)$ has exactly one outgoing node, that is $\cardof{\outgoingnodes}=1$
-%        \item each node $\nodein$ carries a boolean variable $\headvariableof{\node}$ and appears at most once as the outgoing node of a hyperedge % well-definedness
-%        \item each hyperedge $(\incomingnodes,\{\node\})$ with $\incomingnodes\neq\varnothing$ is decorated by a propositional formula
-%        \begin{align*}
-%            \connectiveofat{\node}{\headvariableof{\incomingnodes}} \defcols \bigtimes_{\node\in\incomingnodes} [2] \rightarrow [2]
-%        \end{align*}
-%        \item the nodes not appearing as an outgoing node are labeled by $[\atomorder]$
-%    \end{itemize}
-%    We say that the syntactical hypergraph is single-rooted, if exactly one node $\secnode$ does not appear as an incoming node of a hyperedge.
-%    In this case this unique node is called the root node. % head node
-%    We assign atomic formulas to the nodes $[\atomorder]$ and recursively assign to each further node $\node$ a node formula % connective $\connectiveofat{\node}{\headvariableof{\incomingnodes}}$.
-%    \begin{align*}
-%        \formulaofat{\node}{\indexedshortcatvariables}
-%        = \connectiveofat{\node}{[\formulaofat{\thirdnode}{\indexedshortcatvariables}\wcols\thirdnode\in\incomingnodes]} \quad \forall\shortcatindicesin\, ,
-%    \end{align*}
-%    where $\incomingnodes$ are the incoming nodes in the unique hyperedge with outgoing nodes $\{\node\}$.
-%    We call the formula $\exformulaat{\shortcatvariables}\coloneqq\formulaofat{\secnode}{\shortcatvariables}$ to the root note $\secnode$ the syntactical composition of $\graph$ and $\graph$ is a syntactical decomposition of $\exformula$.
-%\end{definition}
-%
-%%We now show, that the propositional formula allows for a decomposition into connective formulas, its basis encoding decomposes into the basis encodings of the connective formulas.
-%
-%\begin{theorem}
-%    \label{the:formulaDecompositionRep}
-%    For any syntactical hypergraph $\graph$ with composition $\exformula$ we have
-%    \begin{align*}
-%        \exformulaat{\shortcatvariables}
-%        = \breakablecontractionof{
-%            &\left\{
-%                 \bencodingofat{\connectiveof{\node}}{\headvariableof{\node},\headvariableof{\incomingnodes}} \wcols (\incomingnodes,\{\node\})\in\edges
-%            \right\} \cup \\
-%            & \{\identityat{\headvariableof{\atomenumerator},\catvariableof{\atomenumerator}} \wcols \atomenumeratorin\}
-%            \cup \{\tbasisat{\headvariableof{\secnode}}\}
-%        }{\shortcatvariables} \, .
-%    \end{align*}
-%\end{theorem}
-%\begin{proof}
-%    One can show this theorem by induction over the node formulas of the syntactical hypergraph, from the leafs to the root and iteratively applying \lemref{lem:formulaDecomp}.
-%\end{proof}
-%
-%Thus we have a tensor network representation of any propositional formula based on its syntactical decomposition, where the hypergraph of the syntactical decomposition equals the hypergraph of the representing tensor network.
-%
 
 \subsection{Entailment decision by contractions}
 

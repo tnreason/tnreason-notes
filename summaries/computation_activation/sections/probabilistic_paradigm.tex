@@ -2,8 +2,8 @@
 \section{The probabilistic paradigm}\label{sec:probPar}
 
 In the following we investigate tensor network decomposition mechanisms of probability distributions.
-After introducing probability distributions as tensors, we derive tensor network decompositions based on conditional independencies (applying the Hammersley-Clifford theorem \cite{clifford_markov_1971}) to motivate graphical models.
-Furthermore, we present the \computationMechanism{}, in which the Fisher-Neyman Factorization Theorem is used to decompose distributions in the presence of sufficient statistics.
+After introducing probability distributions as tensors and independencies as decomposition schemes, we derive tensor network decompositions based on conditional independencies (applying a classical theorem of Hammersley-Clifford, see \cite{clifford_markov_1971}) to motivate graphical models.
+Furthermore, we present the Fisher-Neyman Factorization Theorem as providing decompositions in the presence of sufficient statistics.
 
 \subsection{Basic concepts}
 
@@ -12,22 +12,22 @@ As defined next, distributions $\probtensor$ over a discrete state space can be 
 \begin{definition}[Joint probability distribution]
     \label{def:probabilityDistribution} % From the axioms of Kolmogorov!
     Let there be for each $\catenumeratorin$ a categorical variable $\catvariableof{\catenumerator}$ taking values in $[\catdimof{\catenumerator}]$.
-    A joint probability distribution of these categorical variables is a function
+    A joint probability distribution of these categorical variables is a tensor
     \begin{align*}
-        \probwith
-        \defcols \facstates \rightarrow \rr
+        \probwith \in \facspace
+%        \defcols \facstates \rightarrow \rr
     \end{align*}
-    which is non-negative, that is for any $\shortcatindicesin$ it holds
+    which coordinates are non-negative, that is for any $\shortcatindicesin$ it holds
     \begin{align*}
         \probat{\indexedshortcatvariables} \geq 0 \, ,
     \end{align*}
-    and which is normalized, that is
+    and which is normalized with no incoming variables, that is
     \begin{align*}
         \contraction{\probat{\shortcatvariables}}
         = 1 \, .
     \end{align*}
-    Let $\thirdcatvariable$ be another variable taking values in a possibly infinite set $\mathrm{val}(\thirdcatvariable)$.
-    Then, a tensor $\condprobat{\shortcatvariables}{\thirdcatvariable}$ is a family of joint probability distributions if, for any $\thirdcatindex\in\mathrm{val}(\thirdcatvariable)$, the slice $\condprobat{\shortcatvariables}{\thirdcatvariable=\thirdcatindex}$ is a joint probability distribution.
+    Let $\thirdcatvariable$ be another variable taking values in a possibly infinite set $\valof{\thirdcatvariable}$.
+    Then, a tensor $\condprobat{\shortcatvariables}{\thirdcatvariable}$ is a family of joint probability distributions if, for any $\thirdcatindex\in\valof{\thirdcatvariable}$, the slice $\condprobat{\shortcatvariables}{\thirdcatvariable=\thirdcatindex}$ is a joint probability distribution.
 \end{definition}
 
 \input{../examples/probabilistic_paradigm/coin_toss_family}
@@ -36,7 +36,7 @@ A basic inference operation on probability distributions is the computation of m
 
 \begin{definition}
     \label{def:marginalConditionalDistribution}
-    For any distribution $\probat{\catvariableof{0},\catvariableof{1}}$ the marginal distribution is given by the contraction (see \defref{def:contraction})
+    For any distribution $\probat{\catvariableof{0},\catvariableof{1}}$ the marginal distribution is the contraction (see \defref{def:contraction})
     \begin{align*}
         \probat{\catvariableof{0}}
         \coloneqq \contractionof{\probat{\catvariableof{0},\catvariableof{1}}}{\catvariableof{0}},
@@ -47,7 +47,8 @@ A basic inference operation on probability distributions is the computation of m
     \end{center}
     The conditional distribution of $\catvariableof{0}$ on $\catvariableof{1}$ is the normalization (see \defref{def:normalization})
     \begin{align*}
-        \condprobat{\catvariableof{0}}{\catvariableof{1}} \coloneqq \normalizationofwrt{\probat{\catvariableof{0},\catvariableof{1}}}{\catvariableof{0}}{\catvariableof{1}} \, .
+        \condprobat{\catvariableof{0}}{\catvariableof{1}}
+        \coloneqq \normalizationofwrt{\probat{\catvariableof{0},\catvariableof{1}}}{\catvariableof{0}}{\catvariableof{1}} \, .
     \end{align*}
 \end{definition}
 
@@ -56,27 +57,7 @@ For $\catindexof{1}\in[\catdimof{1}]$ with $\contraction{\probat{\catvariableof{
     \input{../tikz_pics/probability_representation/conditional_probability.tex}
 \end{center}
 
-% \textcolor{gray}{One of them is by employing the chain rule.
-% \begin{theorem}[Chain Rule]
-%     \label{the:chainRule}
-%     For any probability distribution $\probwith$ we have
-%     \begin{align*}
-%         \probat{\shortcatvariables}
-%         = \contractionof{\{\margprobat{\catvariableof{0}}\} \cup
-%         \left\{\condprobof{\catvariableof{\catenumerator}}{\catvariableof{0},\ldots,\catvariableof{\catenumerator-1}} \wcols \catenumeratorin \ncond \catenumerator\geq 1\right\}
-%         }{\shortcatvariables} \, ,
-%     \end{align*}
-%     provided that all conditional probability distributions exist.
-% \end{theorem}
-% \textcolor{darkgray}{ graphical notation of chain rule/Markov chain?}
-% In case of Markov chains, where each random variable only depends on the previous random variable, this leads to a efficient representation.
-% In general, the chain rule does not lead to a complexity reduction as the distribution $\condprobof{\catvariableof{\catenumerator}}{\catvariableof{0},\ldots,\catvariableof{\catenumerator-1}}$ has the same dimensions as the original probability distribution $\probat{\shortcatvariables}$.
-% Therefore, other decompositions can be considered.
-% }
-% \alex{Its important to note, that the chain rule for itself does not provide a more efficient representation of the distribution (since it is a generic decomposition). 
-% To achieve efficient tensor network decomposition, one needs to combine that with conditional independence assumptions (as in the Markov Chain case), such that conditioned variables in the conditional probability distributions can be dropped.}
-
-\subsection{The independence mechanism: Factorization into graphical models}
+\subsection{Factorization into graphical models}
 
 %% Need for decomposition mechanisms: Motivation for independence considerations
 The number of coordinates in a tensor representation of probability distributions is the product
@@ -87,12 +68,6 @@ It therefore scales exponentially in the number of coordinates.
 To find efficient representation schemes of probability distributions by tensor networks, we need to exploit additional properties of the distribution.
 %% Independence
 Independence leads to severe sparsifications of conditional probabilities and is hence the key assumption to gain sparse decompositions of probability distributions.
-
-%Markov Networks on hypergraphs $\graph$ are exactly those \CompActNets{}, which are computable with respect to the identity and the graph $\graph$.
-%We here show how the sets of Markov Networks can be characterized by conditional independence assumptions.
-%\alex{We can present graphical models and independences as decomposition schemes of activation tensors.
-%Usually in graphical models there are no computation cores, hence the "features" of the statistic are the same as the variables.
-%In that case the activation tensor is the same as the joint distribution tensor, that is a contraction of tensors colored by subsets of the variables (building the edges of the graphical models).
 
 \begin{definition}[Independence]
     \label{def:independence} %% Was {the:independenceProductCriterion} in the report!
@@ -109,7 +84,7 @@ Using tensor network diagrams, we depict this property by
 \begin{center}
     \input{../tikz_pics/probability_representation/independent_decomposition}
 \end{center}
-Note that the assumption of independence reduces the degrees of freedom from $\exranddim\cdot\secexranddim-1$ to $(\exranddim-1)+(\secexranddim-1)$.
+Note that the assumption of independence reduces the degrees of freedom from $(\exranddim\cdot\secexranddim)-1$ to $(\exranddim-1)+(\secexranddim-1)$.
 The decomposition into marginal distributions furthermore exploits this reduced freedom and provides an efficient storage.
 Having a joint distribution of multiple variables whose disjoint subsets are independent, we can iteratively apply the decomposition scheme.
 As a result, we can reduce the scaling of the degrees of freedom from exponential to linear by the assumption of independence.
@@ -121,8 +96,8 @@ We introduce conditional independence as independence of variables with respect 
 
 \begin{definition}[Conditional independence]
     \label{def:condIndependence} %% Was {the:condIndependenceProductCriterion} in the report!
-    Assume a joint distribution of variables $\catvariableof{0}$, $\catvariableof{1}$ and $\catvariableof{2}$ such that $\margprobat{\catvariableof{2}}$ is positive.
-    We say that $\catvariableof{0}$ is independent of $\catvariableof{1}$ conditioned on $\catvariableof{2}$ if %for any states $\exrandindin,\secexrandindin$ and $\thirdexrandindin$
+    Assume a joint distribution of variables $\catvariableof{0}$, $\catvariableof{1}$ and $\catvariableof{2}$.
+    We say that $\catvariableof{0}$ is independent of $\catvariableof{1}$ conditioned on $\catvariableof{2}$ if
     \begin{align*}
         \condprobof{\catvariableof{0},\catvariableof{1}}{\catvariableof{2}}
         = \contractionof{
@@ -155,7 +130,7 @@ This conditional independence pattern is the basic local building block that is 
 \begin{definition}[Markov network]
     \label{def:markovNetwork}
     Let $\tnetof{\graph}$ be a tensor network of non-negative tensors decorating a hypergraph $\graph$.
-    Then the Markov Network $\probof{\graph}$ to $\tnetof{\graph}$ is the probability distribution of $\nodevariables$ defined by the tensor
+    Then the Markov network $\probof{\graph}$ to $\tnetof{\graph}$ is the probability distribution of $\nodevariables$ defined by the tensor
     \begin{align*}
         \probofat{\graph}{\nodevariables} = \frac{
             \contractionof{\{\hypercoreof{\edge} \wcols \edgein\}}{\nodevariables}
@@ -172,16 +147,16 @@ This conditional independence pattern is the basic local building block that is 
 
 %% Graphical Models as Tensor Networks: Alternative approach via graph duality
 We define graphical models based on hypergraphs to establish a direct connection with tensor networks decorating the hypergraph.
-In a more canonical way, Markov Networks are instead defined by graphs, where instead of the edges the cliques are decorated by factor tensors (see for example \cite{koller_probabilistic_2009}).
+In a more canonical way, Markov networks are instead defined by graphs, where instead of the edges the cliques are decorated by factor tensors (see for example \cite{koller_probabilistic_2009}).
 Following this alternative description, the graphs of the tensor networks are dual to the graphs of the graphical models \cite{robeva_duality_2019,glasser_expressive_2019}.
 %The probabilistic graphical models are along that alternative dual to tensor networks
 
-%% CompActNets as Markov Networks - Check for redundancy!
+%% CompActNets as Markov networks - Check for redundancy!
 We can interpret the factors $\hypercorewith$ as activation cores placed on the hyperedges $\edge$ of the graph.
 The global activation tensor (and hence the joint distribution) is obtained by contracting this activation network and normalizing by its partition function.
 
 %
-While so far we have defined Markov Networks as decomposed probability distributions, we now want to derive assumptions on a distribution, assuring that such decompositions exist.
+While so far we have defined Markov networks as decomposed probability distributions, we now want to derive assumptions on a distribution, assuring that such decompositions exist.
 The sets of conditional independencies encoded by a hypergraph are captured by its separation properties, as we define next.
 
 \begin{definition}[Separation of hypergraph]
@@ -189,8 +164,8 @@ The sets of conditional independencies encoded by a hypergraph are captured by i
     Given disjoint subsets $\nodesa$, $\nodesb$, $\nodesc$ of nodes in a hypergraph $\graph$, we say that $\nodesc$ separates $\nodesa$ and $\nodesb$ with respect to $\graph$ when any path starting at a node in $\nodesa$ and ending in a node in $\nodesb$ contains a node in $\nodesc$.
 \end{definition}
 
-To characterize Markov Networks in terms of conditional independencies, we need to further define the property of clique-capturing.
-This property establishes a correspondence of hyperedges with maximal cliques in the more canonical graph-based definition of Markov Networks \cite{koller_probabilistic_2009}.
+To characterize Markov networks in terms of conditional independencies, we need to further define the property of clique-capturing.
+This property establishes a correspondence of hyperedges with maximal cliques in the more canonical graph-based definition of Markov networks \cite{koller_probabilistic_2009}.
 
 \begin{definition}[Clique-capturing hypergraph]
     \label{def:ccHypergraph}
@@ -198,7 +173,7 @@ This property establishes a correspondence of hyperedges with maximal cliques in
     Each subset $\secnodes\subset\nodes$, which fulfills that for any $\nodea,\nodeb\in\secnodes$ with $\nodea \neq \nodeb$, there is a hyperedge $\edgein$ with $\nodea,\nodeb\in\edge$, is contained in a hyperedge.
 \end{definition}
 
-We now recall a characterization of Markov Networks in terms of conditional independencies.
+We are now ready to state the Hammersley-Clifford theorem characterizing the sets of Markov networks on a hypergraph by conditional independence.
 
 % Characterization
 \begin{theorem}[Hammersley-Clifford factorization theorem]
@@ -206,7 +181,7 @@ We now recall a characterization of Markov Networks in terms of conditional inde
     Let there be a positive probability distribution $\probwithnodes$ and a clique-capturing hypergraph $\graph=(\nodes,\edges)$.
     Then the following are equivalent:
     \begin{itemize}
-        \item[i] The distribution $\probwithnodes$ is representable by a Markov Network on $\graph$, that is for each edge $\edgein$ there is a tensor $\hypercoreofat{\edge}{\catvariableof{\edge}}$ such that
+        \item[i] The distribution $\probwithnodes$ is representable by a Markov network on $\graph$, that is for each edge $\edgein$ there is a tensor $\hypercoreofat{\edge}{\catvariableof{\edge}}$ such that
         \begin{align*}
             \probwithnodes = \normalizationof{\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edgein\}}{\nodevariables} \, .
         \end{align*}
@@ -215,14 +190,14 @@ We now recall a characterization of Markov Networks in terms of conditional inde
             \condindependent{\catvariableof{\nodesa}}{\catvariableof{\nodesb}}{\catvariableof{\nodesc}} \, .
         \end{align*}
     \end{itemize}
-    %Given a clique-capturing hypergraph $\graph$, the set of positive Markov Networks on the hypergraph coincides with the set of positive probability distributions, such that for each disjoint subsets of variables $\nodesa$, $\nodesb$, $\nodesc$ we have $\catvariableof{\nodesa}$ is independent of $\catvariableof{\nodesb}$ conditioned on $\catvariableof{\nodesc}$, when $\nodesc$ separates $\nodesa$ and $\nodesb$ in the hypergraph. % called d-separation
+    %Given a clique-capturing hypergraph $\graph$, the set of positive Markov networks on the hypergraph coincides with the set of positive probability distributions, such that for each disjoint subsets of variables $\nodesa$, $\nodesb$, $\nodesc$ we have $\catvariableof{\nodesa}$ is independent of $\catvariableof{\nodesb}$ conditioned on $\catvariableof{\nodesc}$, when $\nodesc$ separates $\nodesa$ and $\nodesb$ in the hypergraph. % called d-separation
 \end{theorem}
 \begin{proof}
     This is shown in Appendix~\secref{sec:proofFactorizationTheorems}.
 \end{proof}
 
 By \theref{the:factorizationHammersleyClifford} the conditional independence structure of $\probwithnodes$ determines a global tensor network decomposition of $\probwithnodes$.
-We refer to this correspondence between independence structure and tensor network factorization as the \emph{\independenceMechanism{}}.
+%We refer to this correspondence between independence structure and tensor network factorization as the \emph{\independenceMechanism{}}.
 Note that the assumption of a positive distribution is required (i.e. for all $\shortcatindices$ we have $\probat{\indexedshortcatvariables}>0$).
 The assumption of positivity is however not required in our characterization of independencies and conditional independencies by the existence of corresponding tensor decompositions (see \defref{def:independence} and \defref{def:condIndependence}).
 
@@ -230,9 +205,9 @@ The assumption of positivity is however not required in our characterization of 
 
 \input{../examples/probabilistic_paradigm/student_hc}
 
-\subsection{The computation mechanism: Factorization based on sufficient statistics}
+\subsection{Factorization based on sufficient statistics}
 
-We now present the \computationMechanism{} of finding tensor network decompositions of probability distributions.
+Let us now introduce sufficient statistics towards studying further tensor network decompositions of probability distributions.
 
 \begin{definition}
     \label{def:sufStatistic}
@@ -245,13 +220,6 @@ We now present the \computationMechanism{} of finding tensor network decompositi
     We say that $\sstat$ is a sufficient statistic for $\thirdcatvariable$ if $\catvariable$ is independent of $\thirdcatvariable$ conditioned on $\headvariableof{\sstat}$.
 \end{definition}
 
-%% Not needed
-%Note that the independence in \defref{def:sufStatistic} is true if and only if
-%\begin{align*}
-%    \condprobat{\catvariable}{\thirdcatvariable,\headvariableof{\sstat}}
-%    =   \condprobat{\catvariable}{\headvariableof{\sstat}} \otimes \onesat{\thirdcatvariable} \, .
-%\end{align*}
-
 \input{../examples/probabilistic_paradigm/sufstat_probability}
 
 \exaref{exa:sufStatProb} hints at a connection between sufficient statistics and decompositions into \CompActNets{}.
@@ -259,9 +227,9 @@ More generally, such decompositions are provided by the Fisher-Neyman Factorizat
 
 \begin{theorem}[Fisher-Neyman Factorization Theorem] % See appendix of CompAct Nets paper!
     \label{the:factorizationFisherNeyman}
-    Let $\probtensor$ be a joint distribution of variables $\catvariable,\thirdcatvariable$ with values $\mathrm{val}(\catvariable), \,\mathrm{val}(\thirdcatvariable)$.
-    Let there further be a finite set $\mathrm{val}(\headvariableof{\sstat})$.
-    Then $\sstat\defcols \mathrm{val}(\catvariable) \rightarrow \mathrm{val}(\headvariableof{\sstat})$ is a sufficient statistic for $\thirdcatvariable$ if and only if there are tensors $\basemeasureat{\catvariable}$ and $\acttensorat{\headvariableof{\sstat},\thirdcatvariable}$ such that
+    Let $\probtensor$ be a joint distribution of variables $\catvariable,\thirdcatvariable$ with values $\valof{\catvariable},\,\valof{\thirdcatvariable}$.
+    Let there further be a finite set $\valof{\headvariableof{\sstat}}$.
+    Then $\sstat\defcols \valof{\catvariable} \rightarrow \valof{\headvariableof{\sstat}}$ is a sufficient statistic for $\thirdcatvariable$ if and only if there are tensors $\basemeasureat{\catvariable}$ and $\acttensorat{\headvariableof{\sstat},\thirdcatvariable}$ such that
     \begin{align*}
         \probat{\catvariable,\thirdcatvariable}
         = \contractionof{
@@ -274,7 +242,7 @@ More generally, such decompositions are provided by the Fisher-Neyman Factorizat
     \end{center}
 \end{theorem}
 \begin{proof}
-    Shown in more generality in the appendix, see \theref{the:generalFactorizationFisherNeyman}.
+    Shown in the appendix, see \theref{the:generalFactorizationFisherNeyman}.
 \end{proof}
 
 %%
@@ -284,7 +252,7 @@ We then use \theref{the:factorizationFisherNeyman} to embed such families in \Co
 
 \begin{corollary}
     Let $\condprobof{\shortcatvariables}{\thirdcatvariable}$ be an arbitrary family of distributions of $\shortcatvariables$ and $\sstat$ a sufficient statistic for $\thirdcatvariable$.
-    Then, there is a tensor $\basemeasurewith$ and an activation tensor $\acttensorat{\headvariables,\thirdcatvariable}$ such that for any $\thirdcatindex\in\mathrm{val}(\thirdcatvariable)$ we have
+    Then, there is a tensor $\basemeasurewith$ and an activation tensor $\acttensorat{\headvariables,\thirdcatvariable}$ such that for any $\thirdcatindex\in\valof{\thirdcatvariable}$ we have
     \begin{align*}
         \condprobat{\shortcatvariables}{\thirdcatvariable=\thirdcatindex} \in\cansof{\sstat,\maxgraph, \acttensor} \, . %\basemeasure} \, .
     \end{align*}
@@ -377,11 +345,11 @@ Note that by construction each member of an exponential family is an element in 
 
 Contractions of tensor networks are generally hard to solve.
 Here, we investigate message passing algorithms, which decompose global contractions into a sequence of local contractions, whose results are passed as messages through the tensor network.
-The resulting algorithm is called Belief Propagation (see \algoref{alg:treeBeliefPropagation}).
+The resulting algorithm is called the Tree Belief Propagation (see \algoref{alg:treeBeliefPropagation}).
 While various scheduling strategies for the message passing exist, we focus on the case of tree hypergraphs, for which exactness and efficiency can be shown.
 % Technical preparations for the algorithm
 We denote $\dirovedges$ to be all tuples $(\sedge,\redge)$ of hyperedges $\sedge,\redge\in\edges$ such that $\sedge\neq\redge$ and $\sedge\cap\redge\neq\varnothing$.
-For our purposes we call a hypergraph $\graph$ a tree when the graph with nodes by the hyperedges $\dirovedges$ and edges by $\dirovedges$ is a tree (for an example see \figref{fig:studentMessagePassingDirections}).
+For our purposes we call a hypergraph $\graph$ a tree when the graph with nodes by the hyperedges $\edges$ and edges by $\dirovedges$ is a tree (for an example see \figref{fig:studentMessagePassingDirections}).
 
 \begin{algorithm}[hbt!]
     \caption{Tree Belief Propagation}\label{alg:treeBeliefPropagation}
@@ -389,7 +357,7 @@ For our purposes we call a hypergraph $\graph$ a tree when the graph with nodes 
         \Require Tensor network $\extnet$ on a hypergraph $\graph$
         \Ensure Messages $\{\messagewith\wcols(\sedge,\redge)\in\dirovedges\}$
         \iosepline
-        \State Initialize $\scheduler=\{(\secsedge,\sedge) \wcols \secsedge \text{ a leaf in } (\edges,\dirovedges)\}]$
+        \State Initialize a message scheduler $\scheduler=\{(\sedge,\redge) \in \dirovedges \wcols \sedge \text{ a leaf in the tree } (\edges,\dirovedges)\}]$
         \While{$\scheduler$ not empty}
             \State Pop a $(\sedge,\redge)$ pair from $\scheduler$
             \State Compute the message
@@ -422,7 +390,7 @@ Since contracting the whole network can be infeasible, this shows that calculati
 \end{theorem}
 
 We show \theref{the:treeBeliefPropagationExactness} based on the following lemma.
-We denote for each pair $(\sedge,\redge)$ the subset $\preedgeset\subset\edges$ as the subset of edges $\edgein$, for which each path to $\redge$ passes through $\sedge$. The tree hypergraph property makes this definition equivalent to an existing path through $\sedge$, which is used in the proof of the following lemma.
+We denote for each pair $(\sedge,\redge)$ the subset $\preedgeset\subset\edges$ as the subset of edges $\edgein$, for which each path in $(\edges,\dirovedges)$ to $\redge$ passes through $\sedge$. The tree hypergraph property makes this definition equivalent to an existing path through $\sedge$, which is used in the proof of the following lemma.
 Note that by construction $\sedge\in\preedgeset$.
 
 \begin{lemma}
@@ -488,7 +456,7 @@ Note that by construction $\sedge\in\preedgeset$.
     where we used \lemref{lem:messageAsContraction} in the second equation.
 \end{proof}
 
-% Example by Student Markov Network
-We illustrate the usage of \algoref{alg:treeBeliefPropagation} on the Markov Network of \exaref{exa:studentHC}.
+% Example by Student Markov network
+We illustrate the usage of \algoref{alg:treeBeliefPropagation} on the Markov network of \exaref{exa:studentHC}.
 
 \input{../examples/probabilistic_paradigm/student_bp}

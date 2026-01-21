@@ -8,7 +8,7 @@
             \big\{\edgeof{\catenumerator}=\{\decvariableof{\catenumerator-1},\catvariableof{\catenumerator},\decvariableof{\catenumerator}\} \wcols \catenumerator\in\{1,\ldots,\catorder-2\}\big\} \cup
             \big\{\edgeof{\catorder-1}=\{\decvariableof{\catorder-2},\catvariableof{\catorder-1}\}\big\}
         \end{align*}
-        each decorated by a tensor of order 3 (respectively 2 for $\catenumerator\in\{0,\seldim-1\}$).
+        each decorated by a tensor of order 3 (respectively 2 for $\catenumerator\in\{0,\catorder-1\}$).
     \end{itemize}
     \begin{figure}
         \begin{center}
@@ -31,12 +31,7 @@
                     \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (6,4) {};
                     \node[anchor=center] (A) at (6,4) {\corelabelsize $\decvariableof{1}$};
 
-                    %\coordinate[label=above:$e_0$] (A) at (0.5,1.6);
-                    %\node[anchor=south] (A) at (0.5,1.6) {\colorlabelsize $e_0$};
                     \draw (0.5,1) -- (1.5,3) node[midway,left] {\colorlabelsize $e_0$};
-%                    \draw (2,2)  to[bend right=30] (0.5,1);
-%                    \draw (2,2)  to[bend left=30] (3.5,1);
-%                    \draw (2,2) -- (2,2.9);
 
                     \node[anchor=south] (A) at (4,2) {\colorlabelsize $e_1$};
                     \draw (4,2)  to[bend right=-30] (2.5,3);
@@ -55,13 +50,7 @@
                         \draw (10,2)  to[bend left=-30] (11.5,3);
                         \draw (10,2) -- (10,1.1);
 
-                        %\node[anchor=south] (A) at (0.5,1.6) {\colorlabelsize $e_0$};
                         \draw (13.5,1) -- (12.5,3) node[midway,right] {\colorlabelsize $e_{\catorder-1}$};
-
-                        %\coordinate[label=above:$e_{\catorder-1}$] (A) at (11,1.6);
-                        %\draw (12,2)  to[bend right=30] (10.5,1);
-                        %\draw (12,2)  to[bend left=30] (13.5,1);
-                        %\draw (12,2) -- (12,2.9);
 
                         \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (12,4) {};
                         \node[anchor=center] (text) at (12,4) {\corelabelsize $\decvariableof{\catorder\shortminus2}$};
@@ -85,7 +74,6 @@
 
                 \draw (5,0) -- (6.5,0) node[midway,above] {\colorlabelsize $\decvariableof{1}$};
 
-%    \coordinate[label=below:$\hdots $] (A) at (9,0.35);
                 \node[anchor=center] (text) at (8,0) {$\hdots$};
 
                 \draw (9.5,0) -- (11,0) node[midway,above] {\colorlabelsize $\decvariableof{\catorder\shortminus2}$};;
@@ -96,7 +84,7 @@
 
             \end{tikzpicture}
         \end{center}
-        \caption{Hypergraph to a $\ttformat$ format.
+        \caption{Hypergraph to a $\ttformat$ format (see \exaref{exa:ttFormat}).
         a) Node-centric design.
         b) Corresponding tensor network on the edges of the hypergraph.}\label{fig:TTHypergraph}
     \end{figure}

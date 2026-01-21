@@ -2,8 +2,8 @@
 
 The neural paradigm of artificial intelligence exploits the decomposition of functions into neurons, which are aligned in a directed acyclic graph.
 We show in this section how functions decomposable into neurons can be represented by tensor networks.
-To this end, we formalize discrete neural models in decomposition graphs and formally prove the corresponding decomposition of their basis encodings.
-In particular, examples will be presented in the next section via propositional formulas with sparse syntactic descriptions.
+To this end, we formalize discrete neural models by decomposition graphs and formally prove the corresponding decomposition of their basis encodings.
+%In particular, examples will be presented in the next section via propositional formulas with sparse syntactic descriptions.
 
 \subsection{Function decomposition}
 
@@ -79,7 +79,8 @@ As a main principle of tensor decompositions, we now show that basis encodings o
     \end{itemize}
     We assign for each $\catenumeratorin$ restriction functions
     \begin{align*}
-        \restrictionofto{\cdot}{\node^{\insymbol}_\catenumerator}
+%        \restrictionofto{\cdot}{\node^{\insymbol}_\catenumerator}
+        \exfunctionof{\node^{\insymbol}_\catenumerator}
         \defcols \bigtimes_{\seccatenumerator\in[\catorder]} \arbsetof{\node^{\insymbol}_{\seccatenumerator}} \rightarrow \arbsetof{\node^{\insymbol}_\catenumerator}
         \quad,\quad  \restrictionofto{\catindexof{[\catorder]}}{\catenumerator} = \catindexof{\catenumerator}
     \end{align*}
@@ -100,8 +101,7 @@ As a main principle of tensor decompositions, we now show that basis encodings o
         \quad,\quad
         \exfunctionof{\graph} = \bigtimes_{\selindexin} \exfunctionof{\node^{\outsymbol}_\selindex}
     \end{align*}
-    the composition formula to the decomposition hypergraph $\graph$.
-    %We call the formula $\exformulaat{\shortcatvariables}\coloneqq\formulaofat{\secnode}{\shortcatvariables}$ to the root note $\secnode$ the syntactical composition of $\graph$ and $\graph$ is a syntactical decomposition of $\exformula$.
+    the composition function to the decomposition hypergraph $\graph$.
 \end{definition}
 
 % Neural Paradigm

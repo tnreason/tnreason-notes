@@ -147,7 +147,7 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
 
 %\begin{theorem}[\theref{the:condIndMN}]
 %	Let $\probat{\catvariableof{\nodes}}$ be a probability distribution and $\graph$ a clique-capturing hypergraph, such that for $\nodea$, $\nodeb$, $\nodesc$ we have that $\catvariableof{\nodea}$ is independent of $\catvariableof{\nodeb}$ conditioned on $\catvariableof{\nodesc}$, when $\nodesc$ separates $\nodea$ and $\nodeb$ in the hypergraph.
-%	Then there is a Markov Network on $\graph$, which distribution is equal to $\probat{\catvariableof{\nodes}}$.
+%	Then there is a Markov network on $\graph$, which distribution is equal to $\probat{\catvariableof{\nodes}}$.
 %\end{theorem}
 \begin{proof}[Proof of \theref{the:factorizationHammersleyClifford}]
     $ii)\Rightarrow i)$
@@ -186,10 +186,10 @@ We are finally ready to prove the Hammersley-Clifford \theref{the:factorizationH
         \probat{\catvariableof{\nodes}} & = \contractionof{\extnetasset}{\catvariableof{\nodes}} \\
         & = \normalizationof{\extnetasset}{\catvariableof{\nodes}} \, .
     \end{align*}
-    We have thus constructed a Markov Network with trivial partition function, whose contraction coincides with the probability distribution.
+    We have thus constructed a Markov network with trivial partition function, whose contraction coincides with the probability distribution.
 
     $i)\Rightarrow ii)$:
-    To show the converse statement, assume that there is a Markov Network representing the distribution $\probwithnodes$ and choose subsets $\nodesa,\nodesb,\nodesc\subset\nodes$ such that $\nodesc$ separates $\nodesa$ from $\nodesb$.
+    To show the converse statement, assume that there is a Markov network representing the distribution $\probwithnodes$ and choose subsets $\nodesa,\nodesb,\nodesc\subset\nodes$ such that $\nodesc$ separates $\nodesa$ from $\nodesb$.
     Denote by $\nodes_0$ the nodes with paths to $\nodesa$, which do not contain a node in $\nodesc$ and by $\nodes_1$ the nodes with paths to $\nodesb$, which do not contain a node in $\nodesc$.
     Furthermore, we denote by $\edges_0$ the hyperedges which contain a node in $\nodes_0$ and by $\edges_1$ the hyperedges which contain a node in $\nodes_1$.
     By assumption of separability, both sets $\edges_0$ and $\edges_1$ are disjoint and no node in $\nodesa$ is in a hyperedge in $\edges_1$ and respectively no node in $\nodesb$ is in a hyperedge in $\edges_0$.
