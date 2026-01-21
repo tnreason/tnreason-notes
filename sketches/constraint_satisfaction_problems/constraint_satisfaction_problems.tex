@@ -1,64 +1,17 @@
 \documentclass[aps,onecolumn,nofootinbib,pra]{article}
 
 \usepackage{../../spec_files/arxiv}
-\usepackage{amsmath,amsfonts,amssymb,amsthm,bbm,graphicx,enumerate,times}
-\usepackage{mathtools}
-\usepackage[usenames,dvipsnames]{color}
-\usepackage{hyperref}
-\hypersetup{
-    breaklinks,
-    colorlinks,
-    linkcolor=gray,
-    citecolor=gray,
-    urlcolor=gray,
-    pdftitle={The Tensor Network Approach to Efficient and Explainable AI},
-    pdfauthor={Alex Goessmann}
-}
-
-\usepackage{tikz}
-\usepackage{graphicx}
-\usepackage{float}
-\usepackage{comment}
-\usepackage{csquotes}
-
-\usepackage{listings}
-\usepackage{verbatim}
-\usepackage{etoolbox}
-\usepackage{braket}
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
-\usepackage[T1]{fontenc}
-\usepackage{titlesec}
-\usepackage{fancyhdr}
-\usepackage{bbm}
-\usepackage{bm}
-\usepackage{algpseudocode}
-\usepackage{algorithm}
-\usepackage{lipsum}
-
-\newtheorem{remark}{Remark}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{corollary}{Corollary}
-\newtheorem{definition}{Definition}
-\newtheorem{example}{Example}
+\input{../../spec_files/standard_preamble.tex}
 
 \input{../../macros/organization_macros.tex}
 \input{../../macros/general_macros.tex}
 \input{../../macros/tc_macros.tex}
 \input{../../macros/tikz_macros.tex}
 
-\pretolerance=500
-\tolerance=100
-\emergencystretch=10pt
-
-% Bibliography
-\DeclareUnicodeCharacter{FB01}{fi}
-\usepackage[round]{natbib}
-\usepackage{wasysym}
+\usepackage{minted}
 
 
-\newcommand{\red}[1]{\textcolor{red}{#1}}
+%\newcommand{\red}[1]{\textcolor{red}{#1}}
 
 \begin{document}
     \title{\tnreason{} for Constraint Satisfaction Problems}
@@ -137,43 +90,115 @@
 
     \subsection{Sudoku}
 
-    \begin{example}[Sudoku as propositional knowledge base]
-        We index the rows and the columns by tuples $(r0,r1)$ and $(co,c1)$, where $r0,r1,c0,c1\in[3]$. The first index indicates the block and the second counts the row or column inside that block.
-        For each $r0,r1,c0,c1\in[3]$ and $n\in[9]$ we then define an atomic variable $\catvariableof{r0,r1,c0,c1,n}\in\{0,1\}$ indicating whether in the row $(r0,r1)$ and column $(co,c1)$ the number $n$ is written.
-        The Sudoku rules then amount to the formula
-        \begin{align*}
-            \kb = &\left( \bigwedge_{r0,r1,c0,c1\in[3]} \left( \bigoplus_{n\in[9]} \catvariableof{r0,r1,c0,c1,n} \right) \right) \land
-            \left( \bigwedge_{r0,r1\in[3], n\in[9]} \left( \bigoplus_{c0,c1\in[3]} \catvariableof{r0,r1,c0,c1,n} \right) \right) \land \\
-            &\left( \bigwedge_{c0,c1\in[3], n\in[9]} \left( \bigoplus_{c0,c1\in[3]} \catvariableof{r0,r1,c0,c1,n} \right) \right) \land
-            \left( \bigwedge_{r0,c0\in[3], n\in[9]} \left( \bigoplus_{r1,c1\in[3]} \catvariableof{r0,r1,c0,c1,n} \right) \right) \, ,
-        \end{align*}
-        where $\bigoplus$ is the $9$-ary exclusive or connective (that is $1$ if and only if exactly one of the arguments is $1$).
-        The four outer brackets in $\kb$ mark the constraints, that at each position exactly one number is assigned, further that in each row each number is assigned once, and similar for the columns and the squares of the board.
-        When solving a specific Sudoku instance, one typically knows from an initial board assignment $E$ a collection of atomic variables, which hold, and needs to find further atomic variables, which are entailed.
-        This means, we need to decide for each $(r_0,r_1,c_0,c_1,n)\notin E$ whether the Sudoku rules and the initial board imply that the atomic variable $\catvariableof{r0,r1,c0,c1,n}$ (i.e. assignment to the board) is true
-        \begin{align*}
-            \left(\kb \land \bigwedge_{(r_0,r_1,c_0,c_1,n)\in E} \catvariableof{r0,r1,c0,c1,n} \right) \models \catvariableof{r0,r1,c0,c1,n}
-        \end{align*}
-        or false
-        \begin{align*}
-            \left(\kb \land \bigwedge_{(r_0,r_1,c_0,c_1,n)\in E} \catvariableof{r0,r1,c0,c1,n} \right) \models \lnot\catvariableof{r0,r1,c0,c1,n} \, .
-        \end{align*}
-        In other words, for each assignment to the board, that fulfills the Sudoku rules and the initial board, do we write the number $n$ in row $(r0,r1)$ and column $(c0,c1)$?
-        If and only if the Sudoku has a unique solution given the initial board assignment $E$, exactly one of these entailment statements holds for each $(r_0,r_1,c_0,c_1,n)\notin E$.
-        Deciding which is equivalent to solving of the Sudoku.
-    \end{example}
+    See the computation activation drafts in the summary.
+%
+%    \begin{example}[Sudoku as propositional knowledge base]
+%        We index the rows and the columns by tuples $(r0,r1)$ and $(co,c1)$, where $r0,r1,c0,c1\in[3]$. The first index indicates the block and the second counts the row or column inside that block.
+%        For each $r0,r1,c0,c1\in[3]$ and $n\in[9]$ we then define an atomic variable $\catvariableof{r0,r1,c0,c1,n}\in\{0,1\}$ indicating whether in the row $(r0,r1)$ and column $(co,c1)$ the number $n$ is written.
+%        The Sudoku rules then amount to the formula
+%        \begin{align*}
+%            \kb = &\left( \bigwedge_{r0,r1,c0,c1\in[3]} \left( \bigoplus_{n\in[9]} \catvariableof{r0,r1,c0,c1,n} \right) \right) \land
+%            \left( \bigwedge_{r0,r1\in[3], n\in[9]} \left( \bigoplus_{c0,c1\in[3]} \catvariableof{r0,r1,c0,c1,n} \right) \right) \land \\
+%            &\left( \bigwedge_{c0,c1\in[3], n\in[9]} \left( \bigoplus_{c0,c1\in[3]} \catvariableof{r0,r1,c0,c1,n} \right) \right) \land
+%            \left( \bigwedge_{r0,c0\in[3], n\in[9]} \left( \bigoplus_{r1,c1\in[3]} \catvariableof{r0,r1,c0,c1,n} \right) \right) \, ,
+%        \end{align*}
+%        where $\bigoplus$ is the $9$-ary exclusive or connective (that is $1$ if and only if exactly one of the arguments is $1$).
+%        The four outer brackets in $\kb$ mark the constraints, that at each position exactly one number is assigned, further that in each row each number is assigned once, and similar for the columns and the squares of the board.
+%        When solving a specific Sudoku instance, one typically knows from an initial board assignment $E$ a collection of atomic variables, which hold, and needs to find further atomic variables, which are entailed.
+%        This means, we need to decide for each $(r_0,r_1,c_0,c_1,n)\notin E$ whether the Sudoku rules and the initial board imply that the atomic variable $\catvariableof{r0,r1,c0,c1,n}$ (i.e. assignment to the board) is true
+%        \begin{align*}
+%            \left(\kb \land \bigwedge_{(r_0,r_1,c_0,c_1,n)\in E} \catvariableof{r0,r1,c0,c1,n} \right) \models \catvariableof{r0,r1,c0,c1,n}
+%        \end{align*}
+%        or false
+%        \begin{align*}
+%            \left(\kb \land \bigwedge_{(r_0,r_1,c_0,c_1,n)\in E} \catvariableof{r0,r1,c0,c1,n} \right) \models \lnot\catvariableof{r0,r1,c0,c1,n} \, .
+%        \end{align*}
+%        In other words, for each assignment to the board, that fulfills the Sudoku rules and the initial board, do we write the number $n$ in row $(r0,r1)$ and column $(c0,c1)$?
+%        If and only if the Sudoku has a unique solution given the initial board assignment $E$, exactly one of these entailment statements holds for each $(r_0,r_1,c_0,c_1,n)\notin E$.
+%        Deciding which is equivalent to solving of the Sudoku.
+%    \end{example}
+%
+%    As described in the main report, Sudoku rules place categorical constraints on sets of atomic variable.
+%    Each formula $\bigoplus_{\cdots}\cdots$ can be decomposed into a basis CP format, where the rank is given by the number of variables, and the decomposition variable can be interpreted as a categorical variable.
 
-    As described in the main report, Sudoku rules place categorical constraints on sets of atomic variable.
-    Each formula $\bigoplus_{\cdots}\cdots$ can be decomposed into a basis CP format, where the rank is given by the number of variables, and the decomposition variable can be interpreted as a categorical variable.
+    \subsubsection{Sakana Fish Puzzle}
+
+    \begin{figure}[t]
+        \centering
+        \includegraphics[width=8cm]{sakana_fish}
+        \caption{Sakana Fish Puzzle}\label{fig:sakanaFish}
+    \end{figure}
+
+    In addition to the standard Sudoku rules,let us consider the constraints depicted in \figref{fig:sakanaFish}.
+
+    \paragraph{Odd-even indicating hidden variables}
+    The central hidden variable to be added is whether there is an even or odd digit at each position, denoted by $\headvariableof{r0,r1,c0,c1}$.
+    We define the even checker as the function mapping even numbers to $1$ and odd to $0$, i.e.
+    \begin{align*}
+        E \defcols [\sudokunum^2] \rightarrow [2] \, .
+    \end{align*}
+    Now the even constraint is implemented
+    \begin{align*}
+        \bencodingofat{E}{\headvariableof{r0,r1,c0,c1},\decvariableof{r0,r1,c0,c1,:}}
+        =& \tbasisat{\headvariableof{r0,r1,c0,c1}} \otimes \left(\sum_{i\in[\sudokunum^2] \wcols i \text{ is even}} \onehotmapofat{i}{\decvariableof{r0,r1,c0,c1,:}}\right) \\
+        &+ \fbasisat{\headvariableof{r0,r1,c0,c1}} \otimes \left(\sum_{i\in[\sudokunum^2] \wcols i \text{ is odd}} \onehotmapofat{i}{\decvariableof{r0,r1,c0,c1,:}}\right) \, .
+    \end{align*}
+
+    \paragraph{Implementing red line constraints}
+    Now along all pairs $(r0,r1,c0,c1),(\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1})$ the red lines we add constraint cores
+    \begin{align*}
+        \oplus\left[\headvariableof{r0,r1,c0,c1},\headvariableof{\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1}}\right]
+    \end{align*}
+    implementing the constraint, that odd-even digits are alternating.
+
+    \paragraph{Implementing white dot constraints}
+    These constraints can be implemented by cores to positions $(r0,r1,c0,c1),(\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1})$ connected via a white dot.
+    The cores have coordinates
+    \begin{align*}
+        C^{\mathrm{white}}_{(r0,r1,c0,c1),(\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1})}\left[\indexeddecvariableof{r0,r1,c0,c1},\indexeddecvariableof{\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1}}\right]
+        =\begin{cases}
+             1 & \ifspace \absof{\decindexof{r0,r1,c0,c1}-\decindexof{\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1}}} = 1 \\
+             0 & \text{else}
+        \end{cases} \, .
+    \end{align*}
+    Note that they entail the constraints of red lines:
+    \begin{align*}
+        \oplus\left[\headvariableof{r0,r1,c0,c1},\headvariableof{\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1}}\right]
+    \end{align*}
+
+    \paragraph{Implementing black dot constraints}
+    Analogously, the black dots can be implemented by
+    \begin{align*}
+        C^{\mathrm{black}}_{(r0,r1,c0,c1),(\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1})}\left[\indexeddecvariableof{r0,r1,c0,c1},\indexeddecvariableof{\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1}}\right]
+        =\begin{cases}
+             1 & \ifspace \decindexof{r0,r1,c0,c1}=2*\decindexof{\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1}} \\
+             1 & \ifspace \decindexof{r0,r1,c0,c1}=0.5*\decindexof{\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1}} \\
+             0 & \text{else}
+        \end{cases} \, .
+    \end{align*}
+    Note that they entail the constraints (since at least one of the neighbors needs is even)
+    \begin{align*}
+        \lor\left[\headvariableof{r0,r1,c0,c1},\headvariableof{\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1}}\right] \, .
+    \end{align*}
+%
+
+    \paragraph{Solution approach}
+    Can we start the reasoning process by focusing only on the $\headvariableof{\cdot}$ variables?
+    E.g. guess one, propagate on the rest and see if there is a contradiction.
+%    \begin{align*}
+%        \left(\headvariableof{r0,r1,c0,c1} \impbincon \headvariableof{\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1}}\right)
+%        \lor
+%        \left(\headvariableof{\tilde{r0},\tilde{r1},\tilde{c0},\tilde{c1}} \impbincon \headvariableof{r0,r1,c0,c1} \right)
+%    \end{align*}
 
 
-    \section{Toy Example}
+    \section{Toy Example for MCTS}
 
     As a toy example, let there be a knowledge base of atoms $A1$ and $A2$ representing two accounts to be used in an accounting proposal, and $E$ represents incoming invoices.
     The constraints are that exactly one of $A1$ or $A2$ is booked, that is $X_{A1}\oplus X_{A2}$.
 
 
-    \begin{figure}
+    \begin{figure}[t]
         \centering
         \begin{tikzpicture}[scale=0.35, thick]
 
