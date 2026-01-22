@@ -1,7 +1,14 @@
 \section{Introduction}
 
-By its central axioms, quantum mechanics of multiple qubits is formulated by tensors capturing states and discrete time evolutions.
-Motivated by the structural similarity, we investigate how quantum circuits can be utilized for the tensor-network based approach towards efficient and explainable AI in the \tnreason{} framework.
+We study inference of a broad model class of \neuroSymbolicAI{} by Quantum Computation because:
+\begin{itemize}
+    \item \neuroSymbolicAI{} can be approached in the tensor network formalism \tnreason{}, unifying logical, neural and probabilistic paradigms of artificial intelligence.
+    Quantum Circuits are also, by the axioms of quantum mechanics, tensor networks.
+    We study the representation of \ComputationActivationNetworks{}, the most generic model class in \tnreason{}, by Quantum Circuits.
+    \item Generic tensor network contraction is $\mathrm{NP}$-hard, reflecting the hardness of logical and probabilistic inference.
+    Quantum Computers can prepare states, which measurement distribution are specific network contractions, which can be hard to contract classically.
+    We study schemes to retrieve information about these states, for example by sampling schemes, and use the retrieved information in inference.
+\end{itemize}
 
 We follow two main ideas:
 \begin{itemize}
@@ -11,16 +18,10 @@ We follow two main ideas:
     We are inspired by Deutsch-Josza algorithm, which we generalize here.
 \end{itemize}
 
-Main approach for sampling: Quantum Inference scheme on Bayesian networks \cite{low_quantum_2014}
-\begin{itemize}
-    \item Extend to more general tensor networks than Bayesian networks: \ComputationActivationNetworks{}
-\end{itemize}
+\subsection{Quantum Circuits}
 
-Further literature:
-\begin{itemize}
-    \item \cite{schuld_machine_2021}: Sect 7.3.2 Reviewing the paper \cite{low_quantum_2014} as an application of fault-tolerant quantum computing
-    \item \cite{wittek_quantum_2017}: Review of Markov Logic Network sampling (which are a special case of \ComputationActivationNetworks{})
-\end{itemize}
+By its central axioms, quantum mechanics of multiple qubits is formulated by tensors capturing states and discrete time evolutions.
+Motivated by the structural similarity, we investigate how quantum circuits can be utilized for the tensor-network based approach towards efficient and explainable AI in the \tnreason{} framework.
 
 Potential Advantage: \emph{Quantum Parallelism} (see \cite[Section 3.2.5]{schuld_machine_2021}).
 \begin{itemize}
@@ -29,12 +30,10 @@ Potential Advantage: \emph{Quantum Parallelism} (see \cite[Section 3.2.5]{schuld
     \item However: Need a generic encoding scheme to exploit this advantage, which is not known yet.
     \item We here only provide a scheme based on post-selection, which provides a quantum advantage only through amplitude amplification.
     Without amplitude amplification and post-selection of samples, the encoded distribution is always uniform.
+    \item Further challenge: Application in NISQ devises \cite{preskill_quantum_2018}, instead of fault-tolerant quantum computers.
 \end{itemize}
 Comparison with classical side, which we can call \emph{Tensor Parallelism}:
 Message-passing schemes for efficient contractions, but exact in limited cases.
-
-
-\subsection{Related Works}
 
 Circuit preparing schemes based on approximation:
 \begin{itemize}
@@ -55,8 +54,25 @@ Since \qcreason{} can prepare quantum circuits to arbitrary tensor networks, it 
     \item \cite{sander_large-scale_2025,sander_quantum_2025}
 \end{itemize}
 
+\subsection{Related works}
+
+Several applications of Quantum Inference on symbolic AI have been studied.
+The novelty of our approach is a concise framework extending these approaches and connecting with generic neural decompositions of functions (see \computationCircuits{}).
+
+Main approach for sampling: Quantum Inference scheme on Bayesian networks \cite{low_quantum_2014}
+\begin{itemize}
+    \item Extend to more general tensor networks than Bayesian networks: \ComputationActivationNetworks{}
+\end{itemize}
+
+Further literature:
+\begin{itemize}
+    \item \cite{schuld_machine_2021}: Sect 7.3.2 Reviewing the paper \cite{low_quantum_2014} as an application of fault-tolerant quantum computing
+    \item \cite{wittek_quantum_2017}: Review of Markov Logic Network sampling (which are a special case of \ComputationActivationNetworks{})
+\end{itemize}
+
 Quantum algorithms for linear algebra:
 \begin{itemize}
     \item Contraction by SWAP and Hadamard test (see Appendix)
+    \item Deutsch-Jozsa Algorithm
     \item HHL algorithm to solve linear equations \cite{harrow_quantum_2009}
 \end{itemize}

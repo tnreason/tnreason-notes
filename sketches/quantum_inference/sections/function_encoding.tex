@@ -110,7 +110,6 @@ Bayesian Networks can be prepared as quantum circuits, where each conditional pr
 %
 %An extremal case of Bayesian networks is those where all variables are mutually independent.
 
-
 \subsection{\ComputationCircuits{}}
 
 We here suggest a quantum pendant to basis encodings (see Chapter Basis Calculus), which has the decomposition by contraction property.
@@ -152,9 +151,11 @@ Functions with multiple output variables, i.e. $\exformula:\atomstates\rightarro
 
 \begin{figure}[t]
     \begin{center}
-        \input{./tikz_pics/bencoding_computation_circuit}
+        \input{tikz_pics/function_encoding/bencoding_computation_circuit}
     \end{center}
-    \caption{Equivalence of computation circuit and basis encodings.}\label{fig:bencComCircuit}
+    \caption{Relation of computation circuit and basis encodings.
+    The \computationCircuit{} of a function is the contraction of its \basisEncoding{} with the \basisEncoding{} of the mod2 sum $\oplus$.}
+    \label{fig:bencComCircuit}
 \end{figure}
 
 \subsubsection{Composition by Contraction - Exploiting \DecompositionSparsity{}}
@@ -184,12 +185,12 @@ The decomposition by contraction property of basis encodings is now a compositio
 \end{proof}
 
 When having a syntactical decomposition of a propositional formula, we can iteratively apply the \computationCircuit{} decomposition theorem and prepare each connective by a circuit.
-We can decompose any propositional formula into logical connectives and prepare to each a modulus 2 circuit implementation.
+We can decompose any propositional formula into logical connectives and prepare to each a \computationCircuit{} (exploiting further sparsity mechanisms).
 This works, when the target qubit of one connective is used as a value qubit of another.
 
 \begin{figure}
     \begin{center}
-        \input{./tikz_pics/decomposition_sparsity.tex}
+        \input{tikz_pics/function_encoding/decomposition_sparsity}
     \end{center}
     \caption{
         Exploitaition of \DecompositionSparsity{} in \computationCircuit{}s.
@@ -210,15 +211,30 @@ This works, when the target qubit of one connective is used as a value qubit of 
 %            } \, .
 %        \end{align*}
 %    \end{lemma}
-
-Note, that the variables $\headvariableof{\outsymbol,\mathrm{aux}}$ are auxiliar and not left open in the contraction.
-This amounts to not measuring them in a computational basis measurement.
+%Note, that the variables $\headvariableof{\outsymbol,\mathrm{aux}}$ are auxiliar and not left open in the contraction.
+%This amounts to not measuring them in a computational basis measurement.
 
 \subsubsection{Construction for mod2-basis+ CP decompositions - Exploiting \PolynomialSparsity{}}
 
+\begin{lemma}\label{lem:comCircuitCommutative}
+    The composition of two \computationCircuits{} to functions $\exfunction$ and $\secexfunction$ (see \figref{fig:mod2ComputationCircuit}), where the \computationCircuits{} share the head qubit, is the \computationCircuit{} of their sum mod2.
+    In particular, the \computationCircuits{} commute.
+\end{lemma}
+\begin{proof}
+    This follows from the representation of \computationCircuits{} by basis encodings of the corresponding function and the mod2 sum $\oplus$.
+\end{proof}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz_pics/function_encoding/mod2_sum_computation_circuit}
+    \end{center}
+    \caption{Equivalence of the composition of \computationCircuits{} with the \computationCircuit{} of their mod2 sum (\lemref{lem:comCircuitCommutative}).}
+    \label{fig:mod2ComputationCircuit}
+\end{figure}
+
 Concatenating two \computationCircuit{}s, which have the same head qubit, is the \computationCircuit{} of their mod2 sum.
 
-A basis+ elementary function can be encoded by a single controlled NOT operation with auxiliary X qubits.
+A basis+ elementary function can be encoded by a single controlled NOT operation with auxiliary $\catvariable$ qubits.
 
 This motivates the mod2-basis+ CP decomposition of tensors, which is exactly the decomposition of boolean polynomials into monomials.
 Each monomial is called a terms (products of x or (1-x) factors), and minterms in case that all variables appear.
@@ -270,7 +286,7 @@ This encoding strategy exploits a modified (by mod2 calculus) \polynomialSparsit
 
 \begin{figure}
     \begin{center}
-        \input{./tikz_pics/polynomial_sparsity.tex}
+        \input{tikz_pics/function_encoding/slice_computation_circuit}
     \end{center}
     \caption{
         Exploitation of \PolynomialSparsity{} in \computationCircuit{}s.
@@ -320,7 +336,7 @@ Using the \computationCircuit{} we can prepare two function encoding schemes, de
 
 \begin{figure}[t]
     \begin{center}
-        \input{./tikz_pics/bas_sign_qstate_construction}
+        \input{tikz_pics/function_encoding/bas_sign_qstate_construction}
     \end{center}
     \caption{Construction of the basis encoding state (a) and the sign encoding state (b) using the \computationCircuit{} of a function.}\label{fig:basSignQstateConstruction}
 \end{figure}
