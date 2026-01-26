@@ -1,0 +1,21 @@
+\begin{example}[Randomized controlled trial]
+    The randomized controlled trial is a joint distribution of variables
+    \begin{itemize}
+        \item Confounding variable $\catvariableof{C}$ summarizing other factors affecting the outcome.
+        \item Treatment assignment $\catvariableof{T}$ with values in $\{0,1\}$.
+        Here, $1$ indicates assignment to the treatment group and $0$ to the control group.
+        The experiment is conducted such that the treatment variable is independent of the confounding variable $\catvariableof{C}$.
+        \item Outcome $\catvariableof{O}$ .
+    \end{itemize}
+    We want to estimate the causal effect of the treatment on the outcome, namely calculate the intervention query
+    \begin{align*}
+        \condprobat{\catvariableof{O}}{\dovariableof{T}=1} \, .
+    \end{align*}
+    By design of the randomized control, the confounding variable has no causal effect on $\catvariableof{T}$.
+    Thus, we have
+    \begin{align*}
+        \condprobat{\catvariableof{O}}{\dovariableof{T}=1}
+        = \condprobat{\catvariableof{O}}{\catvariableof{T}=1}
+    \end{align*}
+    that is, the intervention query is equal to the conditional probability.
+\end{example}

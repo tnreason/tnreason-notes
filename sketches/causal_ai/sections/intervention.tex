@@ -1,0 +1,88 @@
+\section{Rung 2: Intervention}
+
+So far, there are several hypergraphs to model a probability distributions by a Bayesian Network.
+We now want to understand the directed hyperedges as causal relationships between the variables, beyond encoding of conditional independencies.
+To this end, we model the effects of interventions, which will distinguish between multiple Bayesian Networks modeling the same joint distribution.
+
+Interventions on Bayesian Networks are modeled by the do-calculus \cite{pearl_causality_2009}, which we capture here based on do-variables.
+
+\subsection{Do calculus}
+
+We introduce the do-variables $\dovariableof{\catenumerator}$ taking values in $[\catdimof{\catenumerator}+1]$ for each variable $\catvariableof{\catenumerator}$ of dimension $\catdimof{\catenumerator}$, which model the effects of interventions.
+The states are interpreted as
+\begin{itemize}
+    \item $\doindexof{\catenumerator}\in[\catdimof{\catenumerator}]$: An intervention setting $\catvariableof{\catenumerator}$ to the value $\doindexof{\catenumerator}$
+    \item $\doindexof{\catenumerator}=\catdimof{\catenumerator}$: No intervention on $\catvariableof{\catenumerator}$
+\end{itemize}
+
+\begin{definition}
+    The causally augmented conditional probability core is defined as
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\catvariableof{\atomenumerator}}{\dovariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}}
+        =& \condprobof{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \otimes \onehotmapofat{\catdimof{\catenumerator}}{\dovariableof{\catenumerator}} \\
+        &+ \sum_{\doindexof{\catenumerator}\in[\catdimof{\catenumerator}]} \onehotmapofat{\doindexof{\catenumerator}}{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\doindexof{\catenumerator}}{\dovariableof{\catenumerator}} \otimes \onesat{\catvariableof{\parentsof{\catenumerator}}}\, .
+    \end{align*}
+    The causally augmented Bayesian Network is the tensor network
+    \begin{align*}
+        \contractionof{
+            \{\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator}}{\dovariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}} \wcols \catenumeratorin\}
+        }{\shortcatvariables,\dovariableof{[\catorder]}} \, .
+    \end{align*}
+\end{definition}
+
+The Bayesian Networks investigated so far are retrieved by contractions with $\onehotmapofat{\catdimof{\catenumerator}}{\dovariableof{\catenumerator}}$.
+This corresponds with the situation, where no interventions are performed on any variable.
+
+\begin{lemma}
+    For any Bayesian Network $\probwith$ on a directed acyclic hypergraph $\graph=([\catorder],\edges)$ we have
+    \begin{align*}
+        \probwith =
+        \contractionof{
+            \{\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator}}{\dovariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}} \wcols \catenumeratorin\}
+            \cup \{\onehotmapofat{\catdimof{\catenumerator}}{\dovariableof{\catenumerator}} \wcols \catenumeratorin \}
+        }{\shortcatvariables} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    By construction we have
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\catvariableof{\atomenumerator}}{\dovariableof{\catenumerator}=\catdimof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}}
+        =& \condprobof{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}  \, .
+    \end{align*}
+    Performing this on each causally augmented conditional distribution retrieves thus the original Bayesian Network.
+\end{proof}
+
+\subsection{Intervention Queries}
+
+In a Bayesian Network, when intervening on a variable $\catvariableof{\node}$, the corresponding conditional probability gets trivialized.
+The probability tensor is then captured by
+\begin{align*}
+    \condprobat{\catvariableof{\secnodes}}{\doof{\indexedcatvariableof{\thirdnodes}}}
+    %  \condprobat{\catvariableof{\secnodes}}{\doof{X}}
+    = \contractionof{
+        \{\condprobof{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \,:\, \node\notin\thirdnodes \}
+        \cup \{\frac{1}{\catdimof{\node}} \onesat{\catvariableof{\node},\catvariableof{\parentsof{\node}}} \,:\, \node\in\thirdnodes\}
+        \cup \{\onehotmapofat{\catindexof{\node}}{\catvariableof{\node}} \,:\, \node\in\thirdnodes\}
+    }{\catvariableof{\secnodes}} \, .
+\end{align*}
+
+Since $\frac{1}{\catdimof{\node}} \onesat{\catvariableof{\node},\catvariableof{\parentsof{\node}}}$ is directed with $\catvariableof{\parentsof{\node}}$ incoming and $\catvariableof{\node}$ outgoing, the partition function of the network stays $1$ and the normalization is captured by the contraction.
+
+%    \subsection{Intervention Variables}
+%
+%    We modify conditional probability cores in Bayesian Networks to capture interventions, by introducing intervention variable
+%
+%    \begin{align*}
+%        \hypercoreat{\catvariableof{\node},\catvariableof{\parentsof{\node}},\dovariableof{\node}}
+%        = \condprobat{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \otimes \onehotmapofat{0}{\dovariableof{\node}}
+%        + \onesat{\catvariableof{\node},\catvariableof{\parentsof{\node}}} \otimes \tbasisat{\dovariableof{\node}}
+%    \end{align*}
+
+\subsection{Simplifications}
+
+The back-door and front-door criterion provide conditions for intervention queries being equal to conditional queries.
+We can proof them in the tensor network formalism based on network separations, which contribution to contractions are scalar multiplications, which therefore are dropped in normalizations.
+
+An example for a simplification is given by the randomized controlled trial.
+
+\input{examples/randomized_controlled_trial}

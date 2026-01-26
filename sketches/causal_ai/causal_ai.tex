@@ -1,107 +1,55 @@
 \documentclass[aps,onecolumn,nofootinbib,pra]{article}
 
 \usepackage{../../spec_files/arxiv}
-\usepackage{amsmath,amsfonts,amssymb,amsthm,bbm,graphicx,enumerate,times}
-\usepackage{mathtools}
-\usepackage[usenames,dvipsnames]{color}
-\usepackage{hyperref}
-\hypersetup{
-    breaklinks,
-    colorlinks,
-    linkcolor=gray,
-    citecolor=gray,
-    urlcolor=gray,
-    pdftitle={The Tensor Network Approach to Efficient and Explainable AI},
-    pdfauthor={Alex Goessmann}
-}
-
-\usepackage{tikz}
-\usepackage{graphicx}
-\usepackage{float}
-\usepackage{comment}
-\usepackage{csquotes}
-
-\usepackage{listings}
-\usepackage{verbatim}
-\usepackage{etoolbox}
-\usepackage{braket}
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
-\usepackage[T1]{fontenc}
-\usepackage{titlesec}
-\usepackage{fancyhdr}
-\usepackage{bbm}
-\usepackage{bm}
-\usepackage{algpseudocode}
-\usepackage{algorithm}
-\usepackage{lipsum}
-
-\newtheorem{remark}{Remark}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{corollary}{Corollary}
-\newtheorem{definition}{Definition}
-\newtheorem{example}{Example}
+\input{../../spec_files/standard_preamble.tex}
 
 \input{../../macros/organization_macros.tex}
 \input{../../macros/general_macros.tex}
 \input{../../macros/tc_macros.tex}
 \input{../../macros/tikz_macros.tex}
 
-\pretolerance=500
-\tolerance=100
-\emergencystretch=10pt
-
-% Bibliography
-\DeclareUnicodeCharacter{FB01}{fi}
-\usepackage[round]{natbib}
-\usepackage{wasysym}
+%% Specific for Causal
 
 \newcommand{\doof}[1]{\mathrm{do}\left(#1\right)}
 \newcommand{\dovariable}{D}
 \newcommand{\dovariableof}[1]{\dovariable_{#1}}
 
+\newcommand{\doindex}{d}
+\newcommand{\doindexof}[1]{\doindex_{#1}}
 
-\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\indexeddovariableof}[1]{\dovariableof{#1}=\doindexof{#1}}
+
+\newcommand{\causalsymbol}{c}
 
 \begin{document}
-    \title{Causal AI in \tnreason{}}
+    \title{Climbing the latter of causation with \tnreason{}}
 
     \maketitle
     \date{\today}
 
-%    Following the formalism of Chapter~21 in [Koller]
+    \begin{abstract}
+        We here describe how to represent Causal AI models in the \tnreason{} formalism.
+    \end{abstract}
 
-    \section{Intervention Queries}
+    We find tensor network models for the different rungs of the \emph{latter of causation} \cite{pearl_book_2018}
+    \begin{itemize}
+        \item \textbf{Rung 1: Association} -- captured by Bayesian Networks
+        \item \textbf{Rung 2: Intervention} -- captured by do-calculus, for which we introduce intervention variables
+        \item \textbf{Rung 3: Counterfactuals} -- captured by functional causal models (see \cite[Chapter~21]{koller_probabilistic_2009}) involving response variables
+    \end{itemize}
 
-    In a Bayesian Network, when intervening on a variable $\catvariableof{\node}$, the corresponding conditional probability gets trivialized.
-    The probability tensor is then captured by
-    \begin{align*}
-        \condprobat{\catvariableof{\secnodes}}{\doof{\indexedcatvariableof{\thirdnodes}}}
-      %  \condprobat{\catvariableof{\secnodes}}{\doof{X}}
-        = \contractionof{
-            \{\condprobof{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \,:\, \node\notin\thirdnodes \}
-            \cup \{\frac{1}{\catdimof{\node}} \onesat{\catvariableof{\node},\catvariableof{\parentsof{\node}}} \,:\, \node\in\thirdnodes\}
-            \cup \{\onehotmapofat{\catindexof{\node}}{\catvariableof{\node}} \,:\, \node\in\thirdnodes\}
-        }{\catvariableof{\secnodes}} \, .
-    \end{align*}
+    Following the formalism of Chapter~21 in \cite{koller_probabilistic_2009}:
+    \begin{itemize}
+        \item Mutilation of the Bayesian network is captured by contractions with one-hot encodings to do-variables $\dovariableof{\catenumerator}$.
+        \item Intervention queries are formalized by contractions with one-hot encodings to all do-variables
+        \item Response variables are formalized by selection variables
+        \item Counterfactual queries are modeled as intervention queries on counterfactual twin networks (see \cite[Chapter~21]{koller_probabilistic_2009})
+    \end{itemize}
 
-    Since $\frac{1}{\catdimof{\node}} \onesat{\catvariableof{\node},\catvariableof{\parentsof{\node}}}$ is directed with $\catvariableof{\parentsof{\node}}$ incoming and $\catvariableof{\node}$ outgoing, the partition function of the network stays $1$ and the normalization is captured by the contraction.
 
-    \subsection{Intervention Variables}
-
-    We modify conditional probability cores in Bayesian Networks to capture interventions, by introducing intervention variable
-
-    \begin{align*}
-        \hypercoreat{\catvariableof{\node},\catvariableof{\parentsof{\node}},\dovariableof{\node}}
-        = \condprobat{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \otimes \onehotmapofat{0}{\dovariableof{\node}}
-        + \onesat{\catvariableof{\node},\catvariableof{\parentsof{\node}}} \otimes \tbasisat{\dovariableof{\node}}
-    \end{align*}
-
-    \subsection{Simplifications}
-
-    The back-door and front-door criterion provide conditions for intervention queries being equal to conditional queries.
-    We can proof them in the tensor network formalism based on network separations, which contribution to contractions are scalar multiplications, which therefore are dropped in normalizations.
+    \input{sections/association}
+    \input{sections/intervention}
+    \input{sections/counterfactuals}
 
 
     \section{Learning}
@@ -110,5 +58,8 @@
     The cores to be trivialized by intervention can depend on the state of the selection variables.
     For example, a selection variable might select whether the cores direction is from $\catvariableof{0}$ to $\catvariableof{1}$ or in the other direction.
     In both cases only one of the to intervention variables $\dovariableof{0}$ and $\dovariableof{1}$ influences the core.
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
 
 \end{document}
