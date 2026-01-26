@@ -1,8 +1,10 @@
 \section{Rung 2: Intervention}
 
 So far, there are several hypergraphs to model a probability distributions by a Bayesian Network.
-We now want to understand the directed hyperedges as causal relationships between the variables, beyond encoding of conditional independencies.
+We now want to understand the directed hyperedges as causal relationships between the variables, beyond encoding of conditional independencies (see \exaref{exa:patientTreatmentOutcome}).
 To this end, we model the effects of interventions, which will distinguish between multiple Bayesian Networks modeling the same joint distribution.
+
+\input{examples/patient_treatment_outcome}
 
 Interventions on Bayesian Networks are modeled by the do-calculus \cite{pearl_causality_2009}, which we capture here based on do-variables.
 

@@ -1,0 +1,32 @@
+\begin{example}[Patient counterfactual query]
+    Let us assume, that we know whether a patient did not get assigned to the treatment group, and we know whether he did improve.
+    We want to ask, whether he would have improved, if he had been assigned to the treatment group.
+    This is not an intervention query, but a counterfactual query, since we reason about a different outcome, although we already know that the patient has not been treated.
+
+    The causally augmented Bayesian Network is not rich enough to answer such queries.
+    Let us consider a situation where $\catvariableof{T}$ is chosen uniformly from $[2]$.
+    There might be situations, where the probabilistic (and intervention) queries are the same, but the counterfactual queries differ:
+    \begin{itemize}
+        \item[(i)] The outcome is independent of the treatment.
+        \item[(ii)] With probability 0.5, the treatment always leads to improvement and missing the treatment not.
+        And also with probability 0.5, the treatment never leads to improvement, but missing the treatment does.
+    \end{itemize}
+    Intuitively, in the  situation $(i)$, the counterfactual query should return probability $1/2$ for improvement under treatment.
+    In the situation $(ii)$, the counterfactual query returns the same value with probability $1$ as observed in the real world.
+    Both cases are however indistinguishable by causal models itself, since in both cases the causally augmented conditional probabilities are
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\catvariableof{T}}{\dovariableof{T}}
+        =\frac{1}{2}\onesat{\catvariableof{T}} \otimes \onehotmapofat{2}{\dovariableof{T}}
+        + \left(\sum_{\doindexof{T}\in[2]} \onehotmapofat{\doindexof{T}}{\dovariableof{T}}
+              \otimes \onehotmapofat{\doindexof{T}}{\catvariableof{T}} \right)
+    \end{align*}
+    and
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\catvariableof{O}}{\dovariableof{O},\catvariableof{T}}
+        =\frac{1}{2}\onesat{\catvariableof{O},\catvariableof{T}} \otimes \onehotmapofat{2}{\dovariableof{O}}
+        + \left(\sum_{\doindexof{O}\in[2]} \onehotmapofat{\doindexof{O}}{\dovariableof{O}}
+              \otimes \onehotmapofat{\doindexof{O}}{\catvariableof{O}} \otimes \onesat{\catvariableof{T}} \right) \, .
+    \end{align*}
+    To answer counterfactual queries, we therefore have to also reason about the mechanisms behind the causal relationships, which we do by introducing response variables in the following.
+
+\end{example}

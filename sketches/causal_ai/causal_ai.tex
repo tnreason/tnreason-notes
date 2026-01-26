@@ -14,12 +14,13 @@
 \newcommand{\dovariable}{D}
 \newcommand{\dovariableof}[1]{\dovariable_{#1}}
 
-\newcommand{\doindex}{d}
+\newcommand{\doindex}{d} % Notation clash with \catorder!
 \newcommand{\doindexof}[1]{\doindex_{#1}}
 
 \newcommand{\indexeddovariableof}[1]{\dovariableof{#1}=\doindexof{#1}}
 
 \newcommand{\causalsymbol}{c}
+\newcommand{\responsesymbol}{f}
 
 \begin{document}
     \title{Climbing the latter of causation with \tnreason{}}
@@ -31,11 +32,12 @@
         We here describe how to represent Causal AI models in the \tnreason{} formalism.
     \end{abstract}
 
-    We find tensor network models for the different rungs of the \emph{latter of causation} \cite{pearl_book_2018}
+    We find tensor network models for the different rungs of the \emph{ladder of causation} \cite{pearl_book_2018}.
+    The notes are organized to follow the three rungs of the ladder:
     \begin{itemize}
         \item \textbf{Rung 1: Association} -- captured by Bayesian Networks
         \item \textbf{Rung 2: Intervention} -- captured by do-calculus, for which we introduce intervention variables
-        \item \textbf{Rung 3: Counterfactuals} -- captured by functional causal models (see \cite[Chapter~21]{koller_probabilistic_2009}) involving response variables
+        \item \textbf{Rung 3: Counterfactuals} -- captured by functional causal models (see Chapter~21 in \cite{koller_probabilistic_2009}) involving response variables
     \end{itemize}
 
     Following the formalism of Chapter~21 in \cite{koller_probabilistic_2009}:

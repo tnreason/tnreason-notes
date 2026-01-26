@@ -5,3 +5,51 @@ Counterfactual twin networks are two copies of the original causal model, one re
 They further share response variables, which capture the functional relationships between variables in the causal model.
 These response variables are modeled as selection variables in the \tnreason{} formalism.
 
+\input{examples/patient_counterfactual}
+
+\subsection{Response Variables}
+
+We introduce response variables $\selvariableof{\catenumerator}$, such that $\catvariableof{\catenumerator}$ has a deterministic dependence on $\selvariableof{\catenumerator}$ and the parents of a variable to the variable itself.
+The dependence is captured by a function
+\begin{align*}
+    \exfunctionof{\catenumerator} \defcols [\seldimof{\catenumerator}] \times \left(\bigtimes_{\seccatenumerator\in\parentsof{\catenumerator}}[\catdimof{\seccatenumerator}]\right) \rightarrow [\catdimof{\catenumerator}] \, .
+\end{align*}
+The response augmented conditional probability core is defined as (see \figref{fig:responseVariable}):
+\begin{align*}
+    \condprobwrtof{\responsesymbol}{\catvariableof{\atomenumerator}}{\selvariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}}
+    = \bencodingofat{\exfunctionof{\catenumerator}}{
+        \catvariableof{\catenumerator},
+        \selvariableof{\catenumerator},
+        \catvariableof{\parentsof{\catenumerator}}
+    }
+\end{align*}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz_pics/response_variable}
+    \end{center}
+    \caption{Introduction of response variables: a) as a Bayesian network, b) decoration by the basis encoding of the corresponding function.}
+    \label{fig:responseVariable}
+\end{figure}
+
+\subsection{Counterfactual Twinned Network}
+
+To answer counterfactual queries, we now construct the counterfactual twinned network (see \figref{fig:counterfactualTwinnedNetwork}).
+
+\begin{definition}
+    Let there be a response augmented Bayesian Network on a directed acyclic hypergraph $\graph=([\catorder],\edges)$ with response variables $\selvariableof{[\catorder]}$.
+    Further another hypergraph $\secgraph$ and a Bayesian Network on $\secgraph$ modelling the joint distribution of the response variables $\selvariableof{[\catorder]}$.
+    Be build counterfactual copies $\tildecatvariableof{\catenumerator}$ of each variable $\catvariableof{\catenumerator}$, which are controlled by the same response variables $\selvariableof{\catenumerator}$ as the factual variables $\catvariableof{\catenumerator}$.
+    The counterfactual twinned network is then the tensor network consists of the causal and response augmented conditional probability cores to $\shortcatvariables$, the conditional probability cores of the response variables $\selvariableof{[\catorder]}$ and the response augmented conditional probability cores to the counterfactual variables $\tildecatvariableof{[\catorder]}$.
+\end{definition}
+
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz_pics/counterfactual_twinned_network}
+    \end{center}
+    \caption{Counterfactual twinned network: a) as a Bayesian network.
+    b) Decorations by causal augmented basis encodings by a do-variable for $\catvariableof{\catenumerator}$, a conditional probability distribution for $\selvariableof{\catenumerator}$ and a basis encoding for the counterfactual variable $\tildecatvariableof{\catenumerator}$.}
+    \label{fig:counterfactualTwinnedNetwork}
+\end{figure}
+
