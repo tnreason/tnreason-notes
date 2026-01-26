@@ -1,116 +1,5 @@
-\section{Function Encoding Schemes}\label{sec:functionEncoding}
 
-We investigate here quantum pendants to the function encoding schemes used in \tnreason{}{}.
-All the schemes are graph-controlled circuits.
-
-\begin{itemize}
-    \item Pendant for Coordinate Encoding in \tnreason{}: Amplitude Encoding, storing the function value in the amplitude of an ancilla qubit.
-    This is realized by an \textbf{\ActivationCircuit{}} acting on an ancilla qubit in the ground state.
-    \item Pendant for Basis Encoding in \tnreason{}: \textbf{\ComputationCircuit{}}, with composition by contraction property.
-    Applied on the ground state, the \computationCircuit{} generates the basis encoding quantum state, which is parallel to the basis encoding.
-\end{itemize}
-
-Both are defined using controlled single qubit gates (see Sections 4.2-3 in [Nielsen, Chuang]) with ancilla qubits being the target qubits. % where the incoming qubit variable is $\avariableof{\insymbol}$ and the outgoing $\avariableof{\outsymbol}$.
-
-\subsection{\ActivationCircuit{}}
-
-\ActivationCircuits{} are uniformly controlled unitaries (see \cite{mottonen_transformation_2005}), where the rotation axis is chosen as the $y$-axes of the Bloch sphere, and the angles are computed by the function $h(\cdot)$.
-%\red{Introduce rotation encodings based on activation circuit action, hint at a sampling scheme of probability distributions.}
-
-%% Angle preparing
-We define the angle preparing function on $p\in[0,1]$ by
-\begin{align*}
-    h(p) = 2 \cdot \mathrm{cos}^{-1}\left(\sqrt{1-p}\right) \, .
-\end{align*}
-For any $p\in[0,1]$ we then have
-\begin{align*}
-    \contractionof{\onehotmapofat{0}{\avariableof{\insymbol}},\yrotationofat{h(p)}{\avariableof{\insymbol},\avariableof{\outsymbol}}}{\avariableof{\outsymbol}}
-    = \begin{bmatrix}
-          \sqrt{1-p} \\
-          \sqrt{p}
-    \end{bmatrix} \, .
-\end{align*}
-
-\begin{definition}[\ActivationCircuit{}]
-    Given a function
-    \begin{align*}
-        \exformula : \bigtimes_{\selindexin} [2] \rightarrow [0,1]
-    \end{align*}
-    its \activationCircuit{} is the uniformly controlled unitary
-    $\qcaencodingofat{\hypercore}{\avariableof{\insymbol},\avariableof{\outsymbol},\headvariables}$ defined as
-    \begin{align*} %% Could ease the definition by coordinates
-        \qcaencodingofat{\hypercore}{\avariableof{\insymbol},\avariableof{\outsymbol},\headvariables}
-        = \sum_{\shortheadindices} \onehotmapofat{\shortheadindices}{\headvariables}
-        %\otimes \onehotmapofat{\shortheadindices}{\headvariableof{\insymbol,[\seldim]}}
-        \otimes \yrotationofat{h(\exformulaat{\shortheadindices})}{\avariableof{\insymbol},\avariableof{\outsymbol}} \, .
-    \end{align*}
-\end{definition}
-
-%% Drop the in and out
-We will ease our notation by dropping the $\insymbol$ and $\outsymbol$ labels to the control variables.
-This amounts to understanding the Dirac delta tensors in \activationCircuits{} as hyperedges.
-Along that picture the quantum circuit is a tensor network on hyperedges instead of edges.
-
-
-%% As a graph-controlled circuit
-Each activation circuit is a graph-controlled circuit, where the corresponding hypergraph consists in $\nodes=\headvariables\cup\{\avariable\}$ and a single edge $\edges=(\headvariables,\{\avariable\})$.
-
-When we have a probability tensor, its \activationCircuit{} be prepared, since all values are in $[0,1]$.
-Note that for rejection sampling, only the quotients of the values are important, we can therefore scale the value by a scalar such that the mode is $1$.
-
-%% Rescaling tensors with larger coordinates
-Tensors $\hypercoreat{\headvariables}$ with non-negative coordinates can be encoded after dividing them by their maximum, that is the \activationCircuit{} of the function
-\begin{align*}
-    \exformulaat{\shortheadindices} = \frac{\hypercoreat{\headvariables=\shortheadindices}}{\max_{\secheadindexof{[\seldim]}} \hypercoreat{\headvariables=\secheadindexof{[\seldim]}}}
-\end{align*}
-When the maximum of the tensor is not known, it can be replaced by an upper bound (reducing the acceptance rate of the rejection sampling).
-
-%% Generic Tensors with complex amplitudes: Require besides rescaling more general unitaries.
-
-\subsubsection{Encoding of conditional distributions}
-
-Following the schemes in \cite{low_quantum_2014}, we can prepare the acyclic networks of directed and non-negative tensors by a sequence of controlled rotations.
-Directed and non-negative tensors correspond with conditional probability distributions and their acyclic networks are Bayesian Networks.
-We prepare them by \activationCircuit{}s of functions (see \figref{fig:cpdEncoding})
-\begin{align*}
-    \catindexof{\parentsof{\catenumerator}} \rightarrow \condprobat{\catvariableof{\catenumerator}=1}{\indexedcatvariableof{\parentsof{\catenumerator}}} \, .
-\end{align*}
-
-\subsubsection{Encoding of Bayesian Networks}
-
-We revisit the correspondence of Bayesian Networks with graph-controlled circuits, by showing that any Bayesian Network can be prepared by \activationCircuits{} of the conditional probability distributions.
-Bayesian Networks can be prepared as quantum circuits, where each conditional probability distribution is prepared by an \activationCircuit{}.
-
-\begin{theorem}[Low et al.]
-    Any Bayesian Network of variables $\shortcatvariables$, where the enumeration by $[\atomorder]$ respects the partial order by child-parent relations, can be prepared as a quantum circuit by concatenating the \activationCircuit{}s
-    \begin{align*}
-        \qcaencodingofat{
-            \condprobat{\catvariableof{\catenumerator}=1}{\catvariableof{\parentsof{\catenumerator}}}
-        }{\catvariableof{\catenumerator,\insymbol},\catvariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}},\catvariableof{\parentsof{\catenumerator}}}
-    \end{align*}
-    for $\atomenumeratorin$ and acting on the initial state $\bigotimes_{\atomenumeratorin}\onehotmapofat{0}{\catvariableof{\catenumerator,\insymbol}}$ .
-\end{theorem}
-
-
-%To this end, one iterates over the states of the incoming variables, and performs a controlled rotation on the outgoing variable, where the angle is given by the value of the tensor at the incoming state.
-%This generalizes the basis encoding scheme, which demands boolean tensors.
-
-\begin{figure}
-    \begin{center}
-        \input{./tikz_pics/directed_to_circuit.tex}
-    \end{center}
-    \caption{
-        Representation of directed and positive tensor by a controlled rotation.
-        a) Conditional probability tensor $\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}$ being a tensor in a Bayesian Network.
-        b) Circuit Encoding as a controlled rotation, which is the \ActivationCircuit{} of the tensor $\condprobat{\catvariableof{\catenumerator}=1}{\catvariableof{\parentsof{\catenumerator}}}$.
-    }\label{fig:cpdEncoding}
-\end{figure}
-
-%\subsubsection{Encoding of independent distributions}
-%
-%An extremal case of Bayesian networks is those where all variables are mutually independent.
-
-\subsection{\ComputationCircuits{}}
+\section{\ComputationCircuits{}}
 
 We here suggest a quantum pendant to basis encodings (see Chapter Basis Calculus), which has the decomposition by contraction property.
 
@@ -135,7 +24,7 @@ The \computationCircuit{} is therefore a generalized controlled $\mathrm{NOT}$ g
 % Multiple output variables
 Functions with multiple output variables, i.e. $\exformula:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, can be encoded image coordinate wise as a concatenation of the respective circuits.
 
-\subsubsection{Relation with basis encodings}
+\subsection{Relation with basis encodings}
 
 \begin{lemma}
     \label{lem:bencComCircuit}
@@ -158,7 +47,7 @@ Functions with multiple output variables, i.e. $\exformula:\atomstates\rightarro
     \label{fig:bencComCircuit}
 \end{figure}
 
-\subsubsection{Composition by Contraction - Exploiting \DecompositionSparsity{}}
+\subsection{Composition by Contraction - Exploiting \DecompositionSparsity{}}
 
 The decomposition by contraction property of basis encodings is now a composition of circuits property, as stated in the next lemma.
 
@@ -214,7 +103,7 @@ This works, when the target qubit of one connective is used as a value qubit of 
 %Note, that the variables $\headvariableof{\outsymbol,\mathrm{aux}}$ are auxiliar and not left open in the contraction.
 %This amounts to not measuring them in a computational basis measurement.
 
-\subsubsection{Construction for mod2-basis+ CP decompositions - Exploiting \PolynomialSparsity{}}
+\subsection{Construction for mod2-basis+ CP decompositions - Exploiting \PolynomialSparsity{}}
 
 \begin{lemma}\label{lem:comCircuitCommutative}
     The composition of two \computationCircuits{} to functions $\exfunction$ and $\secexfunction$ (see \figref{fig:mod2ComputationCircuit}), where the \computationCircuits{} share the head qubit, is the \computationCircuit{} of their sum mod2.
@@ -294,7 +183,7 @@ This encoding strategy exploits a modified (by mod2 calculus) \polynomialSparsit
     }\label{fig:qcbencodingPolynomial}
 \end{figure}
 
-\subsubsection{Preparation by fine and coarse structure}
+\subsection{Preparation by fine and coarse structure}
 
 Having a mod2-basis+ CP decomposition of rank $r$ to a connective, we need $r$ controlled NOT gates to prepare the basis encoding.
 Given a syntactical decomposition of a boolean statistics, we prepare the basis encoding as a circuit with:

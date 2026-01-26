@@ -18,7 +18,6 @@ Concatenating the \computationCircuit{} to formulas $\formula$ and $\secformula$
 Both are equal or negations of each other, if and only if the distributed qubits are disentangled from the head qubit.
 Doing the Deutsch-Josza test on $\formula\oplus\secformula$ thus decides whether two formulas are equal or negations of each other.
 
-\red{While the Deutsch-Josza Algorithm, }
 
 \subsection{Inversion Test}
 
@@ -55,3 +54,11 @@ Quantum Circuits such as the SWAP test and the Hadamard test (\cite[Section 3.6.
     \item When we have preparation schemes for two tensors, we can control them with a common ancilla qubit and measure their contraction by a Hadamard test (alternatively, using the SWAP test and state preparation in two registers).
     \item Can we extend these schemes to contractions of more general tensor networks?
 \end{itemize}
+
+\subsection{Discussion}
+
+While the preparation of contracted basis encodings is done efficiently, accessing the prepared state by measurements is a bottleneck.
+This is a typical \emph{quantum state tomography} problem \cite{roth_semi-device_2023}.
+Sparsity of the contracted state can be exploited to probabilistically guarantee precise estimates \cite{gross_quantum_2010}.
+However, when deciding whether $\exformula$ is satisfiable, based on the prepared contraction $\sqrt{\normalizationof{\bencodingofat{\exformula}{\headvariable,\shortcatvariables}}{\headvariable}}$, we have an exponentially small error tolerance.
+Moreover, the applied sample mean is the UMVUE (Uniformly Minimum Variance Unbiased Estimator, see \cite{casella_statistical_2001}), and can thus not be improved by other unbiased estimators.
