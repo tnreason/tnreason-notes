@@ -82,9 +82,100 @@ Since $\frac{1}{\catdimof{\node}} \onesat{\catvariableof{\node},\catvariableof{\
 
 \subsection{Simplifications}
 
-The back-door and front-door criterion provide conditions for intervention queries being equal to conditional queries.
+In general, when all variables are observable, intervention queries can be expressed by a collection of conditional queries (since any cpd of a Bayesian network is a conditional query, and we contract all except those with interventions on the head variables).
+In realistic scenarios, however, not all variables are observable (for example, the smoking gene has been only assumed, but no observations have been made).
+We are interested in situations, where intervention queries can be answered by conditional queries of observable variables.
 We can proof them in the tensor network formalism based on network separations, which contribution to contractions are scalar multiplications, which therefore are dropped in normalizations.
 
 An example for a simplification is given by the randomized controlled trial.
 
 \input{examples/randomized_controlled_trial}
+
+\subsubsection{Backdoor Criterion}
+
+More general than in the randomized controlled trial we have to deal with confounding variables.
+The Backdoor Criterion and the Frontdoor Criterion exploit mediator variables $\catvariableof{M}$, which are also observable and block certain causal paths to unobserved confounding variables $\catvariableof{U}$.
+
+\begin{lemma}[Backdoor Criterion]
+    When $\catvariableof{M}$ blocks any backdoor path from $\catvariableof{0}$ to $\catvariableof{1}$ and no node in $\catvariableof{M}$ is a descendant of $\catvariableof{0}$, then
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\dovariableof{0}=\catindexof{0}}
+        = \contractionof{
+            \condprobof{\catvariableof{1}}{\indexedcatvariableof{0},\catvariableof{M}},
+            \probat{\catvariableof{M}}
+        }{\catvariableof{1}} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    By assumption, we can contract all variables beside $\catvariableof{[2]},\catvariableof{M}$ into cpds, and have a simplified causal model (see \figref{fig:backdoorCriterion}a).
+    We have
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\catvariableof{0}}{\dovariableof{0}=\catindexof{0},\catvariableof{M}}
+        = \onehotmapofat{\catindexof{0}}{\catvariableof{0}} \otimes \onesat{\catvariableof{M}}
+    \end{align*}
+    and thus
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\dovariableof{0}=\catindexof{0}}
+        = \contractionof{
+            \condprobof{\catvariableof{1}}{\indexedcatvariableof{0},\catvariableof{M}},
+            \probat{\catvariableof{M}}
+        }{\catvariableof{1}} \, .
+    \end{align*}
+\end{proof}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz_pics/backdoor_criterion}
+    \end{center}
+    \caption{Causal graph for the Backdoor Criterion.
+    a) The mediator variable $\catvariableof{M}$ blocks any backdoor path from $\catvariableof{0}$ to $\catvariableof{1}$, potentially through a confounding variable $\catvariableof{U}$.
+    b) The effect of the intervention on $\catvariableof{0}$ reduces the Bayesian network effectively to the shown subgraph.}
+    \label{fig:backdoorCriterion}
+\end{figure}
+
+
+\begin{lemma}[Backdoor Criterion]
+    When $\catvariableof{M}$ blocks any front door path from $\catvariableof{0}$ to $\catvariableof{1}$ and there is no confounder between $\catvariableof{0}$ and $\catvariableof{M}$, as well as between $\catvariableof{M}$ and $\catvariableof{1}$, then
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\dovariableof{0}=\catindexof{0}}
+        = \contractionof{
+            \condprobof{\catvariableof{M}}{\indexedcatvariableof{0}},
+            \contractionof{\condprobof{\catvariableof{1}}{\catvariableof{M},\catvariableof{0}},\probat{\catvariableof{0}}}{\catvariableof{1},\catvariableof{M}}
+%            \condprobof{\catvariableof{1}}{\catvariableof{M},\tildecatvariableof{0}},
+%            \probat{\tildecatvariableof{0}}
+        }{\catvariableof{1}} \, .
+    \end{align*}
+    Note that the inner contraction has $\catvariableof{0}$ as a closed variable.
+\end{lemma}
+\begin{proof}
+    We show the claim for the situation in \figref{fig:frontdoorCriterion}
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\dovariableof{0}=\catindexof{0}}
+        &= \contractionof{
+            \condprobof{\catvariableof{M}}{\indexedcatvariableof{0}},
+            \condprobof{\catvariableof{1}}{\catvariableof{M},\catvariableof{U}},
+            \probat{\catvariableof{U}}
+        }{\catvariableof{1}} \\
+        &= \contractionof{
+            \condprobof{\catvariableof{M}}{\indexedcatvariableof{0}},
+            \contractionof{\condprobof{\catvariableof{1}}{\catvariableof{M},\catvariableof{U}},\probat{\catvariableof{U}}}{\catvariableof{1},\catvariableof{M}}
+        }{\catvariableof{1}} \, .
+    \end{align*}
+    We note that
+    \begin{align*}
+        \contractionof{\condprobof{\catvariableof{1}}{\catvariableof{M},\catvariableof{U}},\probat{\catvariableof{U}}}{\catvariableof{1},\indexedcatvariableof{M}}
+        &= \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\dovariableof{M}=\catindexof{M}} \\
+        &= \contractionof{\condprobof{\catvariableof{1}}{\catvariableof{M},\catvariableof{0}},\probat{\catvariableof{0}}}{\catvariableof{1},\indexedcatvariableof{M}}
+    \end{align*}
+    Here we used in the second equation that the variable $\catvariableof{0}$ blocks all backdoor paths from $\catvariableof{M}$ to $\catvariableof{1}$ (i.e. the backdoor criterion).
+    Combining both equations proves the claim.
+\end{proof}
+
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz_pics/frontdoor_criterion}
+    \end{center}
+    \caption{Causal graph for the Frontdoor Criterion.}
+    \label{fig:frontdoorCriterion}
+\end{figure}
