@@ -3,7 +3,7 @@
     \node[anchor=center] (text) at (28,1) {${b)}$};
 
     \begin{scope}
-        [shift={(31,-7)}]
+    [shift={(31,-7)}]
 
         \node[anchor=center] (text) at (-1,6.5) {\colorlabelsize $\avariableof{\insymbol}$};
         \node[anchor=center] (text) at (12,6.5) {\colorlabelsize $\avariableof{\outsymbol}$};
@@ -37,7 +37,7 @@
 
     \draw[->-] (4.5,-1) -- (4.5,1) node[midway, right]{\colorlabelsize $\avariable$};
     \draw (3,-1) rectangle (6,-4);
-    \node[anchor=center] (text) at (4.5,-2.5) {\corelabelsize $\secprobtensor$};
+    \node[anchor=center] (text) at (4.5,-2.5) {\corelabelsize $\anaugmentationof{\probtensor}$};
 
     \draw[->-] (3.5,-6) -- (3.5,-4);
     \node[anchor=center] (text) at (4.5,-4.75) {$\cdots$};
@@ -46,16 +46,16 @@
 
     \node[anchor=center] (text) at (8,-2.5) {${=}$};
 
-    \begin{scope}
-        [shift={(3,2)}]
+    \begin{scope}[shift={(3,2)}]
 
         \node[anchor=center] (text) at (8,-4.5) {$\sum_{\shortcatindices}$};
 
         \draw[->-] (15,-1) -- (15,1) node[midway, right]{\colorlabelsize $\avariable$};
         \draw (10,-4) rectangle (20,-1);
-        \node[anchor=center] (text) at (15,-2.5) {\corelabelsize $\begin{bmatrix}
-                                                       1 - \probat{\indexedshortcatvariables} \\
-                                                       \probat{\indexedshortcatvariables}
+        \node[anchor=center] (text) at (15,-2.5) {\corelabelsize
+        $\begin{bmatrix}
+             1 - \probat{\indexedshortcatvariables} \\
+             \probat{\indexedshortcatvariables}
         \end{bmatrix}$};
 
         \draw (13,-5) rectangle (17,-7);

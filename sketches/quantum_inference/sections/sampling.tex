@@ -17,11 +17,34 @@ Therefore we have:
 \end{itemize}
 Both are defined using controlled single qubit gates (see Sections 4.2-3 in \cite{nielsen_quantum_2010}) with ancilla qubits being the target qubits. % where the incoming qubit variable is $\avariableof{\insymbol}$ and the outgoing $\avariableof{\outsymbol}$.
 
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz_pics/sampling/can_elementary_augmentation}
+    \end{center}
+    \caption{Ancilla augmentation of an elementary \ComputationActivationNetwork{} a) by replacing each leg vector of the elementary activation tensor by an directed ancilla augmentation.}
+    \label{fig:canElementaryAugmentation}
+\end{figure}
 
-For elementary \ComputationActivationNetworks{}, we can prepare ancilla variables having single parents, corresponding with the ancilla augmentation of an elementary tensor.
+%% Elementary CAN Augmentation
+Elementary \ComputationActivationNetworks{} can be augmented by ancilla augmentation of each leg vector in the activation tensor network (see \figref{fig:canElementaryAugmentation}).
+We understand ancilla variables as variables in a Bayesian Network having single parents, corresponding with the ancilla augmentation of an elementary tensor.
 For an example, see \figref{fig:toyAccounting}.
 
-To a generic activation hypergraph $\graph$, we would do ancilla augmentation for the activation tensor network, where each hidden variable is prepared by an additional qubit in uniform state (i.e. a Hadamard gate acting on a ground state).
+%% Hidden variables in activation graph
+To a generic activation hypergraph $\graph$, we would do ancilla augmentation for the activation tensor network, where each hidden variable is treated as a distributed qubit.
+To treat it as a distributed qubit, each hidden activation qubit is prepared in uniform state (i.e. a Hadamard gate acting on a ground state) and will be omitted in the measurement scheme (either not measured, or its measurement ignored).
+This can be understood from a tensor network perspective, where marginalization means contracting, which is exactly how hidden activation variables are used.
+For an example in the $\ttformat$ format, see \figref{fig:canTTAugmentation}.
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz_pics/sampling/can_TT_augmentation}
+    \end{center}
+    \caption{Ancilla augmentation of an $\ttformat$ \ComputationActivationNetwork{} a) by a Bayesian Network b).
+        The hidden variables in the $\ttformat$ activation tensor are treated as distributed variables.
+        Marginalization over the hidden variables and conditioning on the activation variables in state $1$, we reproduce the \ComputationActivationNetwork{}.}
+    \label{fig:canTTAugmentation}
+\end{figure}
 
 \subsection{Amplitude Amplification}
 
@@ -60,7 +83,7 @@ We can produce Q-samples for ancilla augmented \ComputationActivationNetworks{} 
 
 \begin{figure}
     \begin{center}
-        \input{./tikz_pics/ca_circuit.tex}
+        \input{tikz_pics/sampling/ca_circuit}
     \end{center}
     \caption{
         Quantum Circuit to reproduce a \ComputationActivationNetwork{} (with elementary activation) by rejection sampling.
