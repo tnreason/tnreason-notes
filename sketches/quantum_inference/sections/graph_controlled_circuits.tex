@@ -65,15 +65,14 @@ For any $p\in[0,1]$ we then have
 \begin{definition}[\ActivationCircuit{}]
     Given a function
     \begin{align*}
-        \exformula : \bigtimes_{\selindexin} [2] \rightarrow [0,1]
+        \exformula : \facstates \rightarrow [0,1]
     \end{align*}
     its \activationCircuit{} is the uniformly controlled unitary
-    $\qcaencodingofat{\hypercore}{\avariableof{\insymbol},\avariableof{\outsymbol},\headvariables}$ defined as
+    $\qcaencodingofat{\exformula}{\avariableof{\insymbol},\avariableof{\outsymbol},\shortcatvariables}$ defined as
     \begin{align*} %% Could ease the definition by coordinates
-        \qcaencodingofat{\hypercore}{\avariableof{\insymbol},\avariableof{\outsymbol},\headvariables}
-        = \sum_{\shortheadindices} \onehotmapofat{\shortheadindices}{\headvariables}
-        %\otimes \onehotmapofat{\shortheadindices}{\headvariableof{\insymbol,[\seldim]}}
-        \otimes \yrotationofat{h(\exformulaat{\shortheadindices})}{\avariableof{\insymbol},\avariableof{\outsymbol}} \, .
+        \qcaencodingofat{\hypercore}{\avariableof{\insymbol},\avariableof{\outsymbol},\shortcatvariables}
+        = \sum_{\shortcatindicesin} \onehotmapofat{\shortcatindices}{\shortcatvariables}
+        \otimes \yrotationofat{h(\exformulaat{\shortcatindices})}{\avariableof{\insymbol},\avariableof{\outsymbol}} \, .
     \end{align*}
 \end{definition}
 
@@ -83,15 +82,16 @@ This amounts to understanding the Dirac delta tensors in \activationCircuits{} a
 Along that picture the quantum circuit is a tensor network on hyperedges instead of edges.
 
 %% As a graph-controlled circuit
-Each activation circuit is a graph-controlled circuit, where the corresponding hypergraph consists in $\nodes=\headvariables\cup\{\avariable\}$ and a single edge $\edges=(\headvariables,\{\avariable\})$.
+Each activation circuit is a graph-controlled circuit, where the corresponding hypergraph consists in $\nodes=\shortcatvariables\cup\{\avariable\}$ and a single edge $\edges=(\shortcatvariables,\{\avariable\})$.
 
 When we have a probability tensor, its \activationCircuit{} be prepared, since all values are in $[0,1]$.
 Note that for rejection sampling, only the quotients of the values are important, we can therefore scale the value by a scalar such that the mode is $1$.
 
 %% Rescaling tensors with larger coordinates
-Tensors $\hypercoreat{\headvariables}$ with non-negative coordinates can be encoded after dividing them by their maximum, that is the \activationCircuit{} of the function
+Tensors $\hypercoreat{\shortcatvariables}$ with non-negative coordinates can be encoded after dividing them by their maximum, that is the \activationCircuit{} of the function
 \begin{align*}
-    \exformulaat{\shortheadindices} = \frac{\hypercoreat{\headvariables=\shortheadindices}}{\max_{\secheadindexof{[\seldim]}} \hypercoreat{\headvariables=\secheadindexof{[\seldim]}}}
+    \exformulaat{\shortcatindices}
+    = \frac{\hypercoreat{\shortcatvariables=\shortcatindices}}{\max_{\secheadindexof{[\seldim]}} \hypercoreat{\shortcatvariables=\secheadindexof{[\seldim]}}}
 \end{align*}
 When the maximum of the tensor is not known, it can be replaced by an upper bound (reducing the acceptance rate of the rejection sampling).
 
@@ -127,27 +127,22 @@ It prepares a scheme to realize property 1 (purity) + 2 (q-sampling) of a qpdf, 
     This is an example of a Walsh-Hadamard transform (see \secref{sec:walshHadamardTransform}), which can be performed by unary Hadamard gates.
 \end{example}
 
-Q-samples can be prepared by \activationCircuit{}s acting on the uniform q-sample (see \exaref{exa:qSampleUniform}), as we show next. % (Hadamard gates acting on ground state).
+Generalizing \exaref{exa:qSampleUniform}, Q-samples to independent distributions of boolean variables can be prepared by unary rotations along the y-axis.
 
-%    \begin{lemma}
-%        The \activationCircuit{} of $\probwith$ acting on the uniform state of $\shortcatvariables$ prepares a q-sample.
-%    \end{lemma}
-%    \begin{proof}
-%        Follows directly from construction:
-%        The uniform state is the action of Hadamard gates on the ground state $\onehotmapofat{0}{\shortcatvariables}$, which prepares the state $\normalizationof{\ones}{\shortcatvariables}$.
-%        The diagonal \activationCircuit{} transforms
-%    \end{proof}
 
-Doing rejection sampling on the ancilla qubit corresponds with sampling from the normalized contraction with the activation tensor.
-
-\begin{lemma}
-    \label{lem:qSampleDistribution}
-    Given a distribution $\probat{\shortcatvariables}$, we construct a circuit preparing its q-sample and add the ancilla encoding of a tensor $\hypercoreat{\shortcatvariables}$.
-    The rejection sampling scheme, measuring the ancilla qubit and the $\shortcatvariables$ qubits, rejecting the ancilla qubit measured as $0$, prepares samples from the distribution
-    \begin{align*}
-        \normalizationof{\probat{\shortcatvariables},\hypercoreat{\shortcatvariables}}{\shortcatvariables} \, .
-    \end{align*}
-\end{lemma}
+%%% FUSE TO LATER
+%Q-samples can be prepared by \activationCircuit{}s acting on the uniform q-sample (see \exaref{exa:qSampleUniform}), as we show next.
+%
+%Doing rejection sampling on the ancilla qubit corresponds with sampling from the normalized contraction with the activation tensor.
+%
+%\begin{lemma}
+%    \label{lem:qSampleDistribution}
+%    Given a distribution $\probat{\shortcatvariables}$, we construct a circuit preparing its q-sample and add the ancilla encoding of a tensor $\hypercoreat{\shortcatvariables}$.
+%    The rejection sampling scheme, measuring the ancilla qubit and the $\shortcatvariables$ qubits, rejecting the ancilla qubit measured as $0$, prepares samples from the distribution
+%    \begin{align*}
+%        \normalizationof{\probat{\shortcatvariables},\hypercoreat{\shortcatvariables}}{\shortcatvariables} \, .
+%    \end{align*}
+%\end{lemma}
 
 \subsubsection{Encoding of conditional distributions}
 
@@ -165,15 +160,42 @@ We prepare them by \activationCircuit{}s of functions (see \figref{fig:cpdEncodi
 We revisit the correspondence of Bayesian Networks with graph-controlled circuits, by showing that any Bayesian Network can be prepared by \activationCircuits{} of the conditional probability distributions.
 Bayesian Networks can be prepared as quantum circuits, where each conditional probability distribution is prepared by an \activationCircuit{}.
 
-\begin{theorem}[Low et al.]
-    Any Bayesian Network of variables $\shortcatvariables$, where the enumeration by $[\atomorder]$ respects the partial order by child-parent relations, can be prepared as a quantum circuit by concatenating the \activationCircuit{}s
+\begin{theorem}[\cite{low_quantum_2014}]
+    Let there be a Bayesian Network $\probwith$ on a directed acyclic hypergraph $\graph=([\catorder],\edges)$ with dimensions $\catdimof{\catenumerator}=2$ and decorations of the edges $\edges=\{(\parentsof{\catenumerator},\{\catenumerator\}) \wcols \catenumeratorin\}$ by conditional probabilities
+    \begin{align*}
+        \condprobof{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \, .
+    \end{align*}
+    To each $\catenumeratorin$ we construct the function
+    \begin{align*}
+        \exfunctionof{\catenumerator} \defcols \bigtimes_{\seccatenumerator\in\parentsof{\catenumerator}} [2] \rightarrow [2]
+        \quad,\quad
+        \exfunctionofat{\catenumerator}{\catindexof{\parentsof{\catenumerator}}}
+        = \condprobof{\catvariableof{\catenumerator}=1}{\indexedcatvariableof{\parentsof{\catenumerator}}} \, .
+    \end{align*}
+    Then the concatenation of the \activationCircuits{}
     \begin{align*}
         \qcaencodingofat{
-            \condprobat{\catvariableof{\catenumerator}=1}{\catvariableof{\parentsof{\catenumerator}}}
+            \exfunctionof{\catenumerator}
         }{\catvariableof{\catenumerator,\insymbol},\catvariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}}
     \end{align*}
-    for $\atomenumeratorin$ and acting on the initial state $\bigotimes_{\atomenumeratorin}\onehotmapofat{0}{\catvariableof{\catenumerator,\insymbol}}$ .
+    respecting the order $[\catorder]$ prepares the Bayesian Network $\probwith$ when acting on the initial state $\bigotimes_{\atomenumeratorin}\onehotmapofat{0}{\catvariableof{\catenumerator,\insymbol}}$.
 \end{theorem}
+\begin{proof}
+    Let $\qstateat{\shortcatvariables}$ be the state prepared by the \activationCircuits{} to the conditional probability distributions.
+    We need to show that the measurement distribution of $\qstate$ is the Bayesian Network.
+    For any $\shortcatindices\in\atomstates$ we have
+    \begin{align*}
+        \absof{\qstateat{\indexedshortcatvariables}}^2
+        &= \prod_{\catenumeratorin}
+        \left(\qcaencodingofat{
+            \exfunctionof{\catenumerator}
+        }{\catvariableof{\catenumerator,\insymbol}=0,\indexedcatvariableof{\catenumerator},\indexedcatvariableof{\parentsof{\catenumerator}}}\right)^2 \\
+        &= \prod_{\catenumeratorin}
+        \condprobof{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}} \\
+        & = \probat{\indexedshortcatvariables} \, .
+    \end{align*}
+    \red{Alternatively, we can proof the statement by induction using the conditional probability encoding lemma.}
+\end{proof}
 
 
 %To this end, one iterates over the states of the incoming variables, and performs a controlled rotation on the outgoing variable, where the angle is given by the value of the tensor at the incoming state.
@@ -190,16 +212,12 @@ Bayesian Networks can be prepared as quantum circuits, where each conditional pr
     }\label{fig:cpdEncoding}
 \end{figure}
 
-%\subsubsection{Encoding of independent distributions}
-%
-%An extremal case of Bayesian networks is those where all variables are mutually independent.
-
 \subsection{Equivalence with Bayesian Networks}
 
-\red{Above we have shown, how Bayesian Networks can be prepared by \activationCircuits{}, which are a class of graph-controlled circuits.
+%% Missing direction of Equivalence with BN
+Above we have shown, how Bayesian Networks can be prepared by \activationCircuits{}, which are a class of graph-controlled circuits.
 We now show, that the measurement distribution of any graph-controlled circuit is a Bayesian Network.
-It then follows that the set of distributions prepared by graph-controlled circuits is exactly the set of Bayesian Networks.}
-
+It then follows that the set of distributions prepared by graph-controlled circuits is exactly the set of Bayesian Networks.
 
 
 This is closely connected to the chain decomposition of probability distributions, and their construction.
@@ -392,20 +410,38 @@ We need to draw $\sim\frac{1}{\acceptanceprob}$ samples from $\secprobat{\shortc
 
 Let there be a Markov Network, i.e. any non-vanishing tensor network of non-negative tensors, which is understood as a probability disribution after normalization (see \cite{goessmann_tensor_2026}).
 
-
-
 \begin{lemma}
     Let there be a Markov Network $\extnet=\extnetasset$ on a hypergraph $\graph$.
-    We build the concatenation of activation circuits to each tensor $\hypercoreofat{\edge}{\catvariableof{\edge}}$, where each has a distinct ancilla qubit $\avariableof{\edge}$.
-    Then the concatenation acting on the state
+    To each $\edgein$ we build a function
+    \begin{align*}
+        \exfunctionof{\edge}
+        =
+        \frac{
+            \hypercoreofat{\edge}{\catvariableof{\edge}=\seccatindexof{\edge}}
+        }{\max_{\seccatindexof{\edge}}\hypercoreofat{\edge}{\catvariableof{\edge}=\seccatindexof{\edge}}} \, .
+    \end{align*}
+    We then build a concatenation of activation circuits to each function $\exfunctionof{\edge}$, where each has a distinct ancilla qubit $\avariableof{\edge}$.
+%    We build the concatenation of activation circuits to each tensor $\hypercoreofat{\edge}{\catvariableof{\edge}}$
+    Then the constructed graph-controlled circuit acting on the state
     \begin{align*}
         \sqrt{\frac{1}{\prod_{\nodein}\catdimof{\node}}}\onesat{\nodevariables} \otimes \left(\bigotimes_{\edgein}\onehotmapofat{0}{\avariableof{\edge}}\right)
     \end{align*}
     prepares an ancilla augmented distribution of the Markov Network.
 \end{lemma}
 
-
 We use this result to prepare samples from Markov Networks by rejection sampling on the ancilla variables, in \qcreason{} (see \secref{sec:implementation}).
+
+%% Rescaling Relaxation
+When the maximum of the hypercores are not known, and only an upper bound is given, it suffice to rescale them such that the maximum is lower than 1.
+
+%% Frustration: When local maxima cannot be achieved together
+When the maximal coordiante of the Markov Network is, restricted to each edge, the maximal coordinate of the hypercore of that edge, we say that the Markov Network is not frustrated, otherwise frustrated.
+
+\begin{lemma}
+    If the Markov Network is not frustrated, then the acceptance probability $\acceptanceprob$ of the rejection sampling scheme using the ancilla augmented Markov Network is the $\infty$-Renyi divergence between the Markov Network and the uniform distribution.
+\end{lemma}
+
+%Note that our ancilla encoding scheme of Markov Networks encodes each local tensor
 
 \begin{figure}
     \begin{center}
