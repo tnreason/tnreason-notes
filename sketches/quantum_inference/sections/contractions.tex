@@ -58,7 +58,7 @@ Quantum Circuits such as the SWAP test and the Hadamard test (\cite[Section 3.6.
 \subsection{Discussion}
 
 While the preparation of contracted basis encodings is done efficiently, accessing the prepared state by measurements is a bottleneck.
-This is a typical \emph{quantum state tomography} problem \cite{roth_semi-device_2023}.
+This is a typical \emph{quantum state tomography} problem \cite{roth_semi-device-dependent_2023}.
 Sparsity of the contracted state can be exploited to probabilistically guarantee precise estimates \cite{gross_quantum_2010}.
 However, when deciding whether $\exformula$ is satisfiable, based on the prepared contraction $\sqrt{\normalizationof{\bencodingofat{\exformula}{\headvariable,\shortcatvariables}}{\headvariable}}$, we have an exponentially small error tolerance.
 Moreover, the applied sample mean is the UMVUE (Uniformly Minimum Variance Unbiased Estimator, see \cite{casella_statistical_2001}), and can thus not be improved by other unbiased estimators.

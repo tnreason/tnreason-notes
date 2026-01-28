@@ -4,91 +4,24 @@ We investigate, how the above circuit encoding schemes can be applied in the pre
 
 In particular, we build graph-controlled circuits being compositions of \computationCircuits{} and \activationCircuits{}, for which specific conditional distributions coincide with \ComputationActivationNetworks{}.
 
-\subsection{Generic Q-samples}
+\subsection{Preparing ancilla augmented distributions for \ComputationActivationNetworks{}}
 
-In general, we define Q-samples to be quantum states, which measured in the computational basis reproduce a given probability distribution.
+The computation network consists already of directed cores and therefore is already a Bayesian network.
+The activation network however needs ancilla augmentation.
+Therefore we have:
+\begin{itemize}
+    \item Pendant for Coordinate Encoding in \tnreason{}: Amplitude Encoding, storing the function value in the amplitude of an ancilla qubit.
+    This is realized by an \textbf{\ActivationCircuit{}} acting on an ancilla qubit in the ground state.
+    \item Pendant for Basis Encoding in \tnreason{}: \textbf{\ComputationCircuit{}}, with composition by contraction property.
+    Applied on the ground state, the \computationCircuit{} generates the basis encoding quantum state, which is parallel to the basis encoding.
+\end{itemize}
+Both are defined using controlled single qubit gates (see Sections 4.2-3 in \cite{nielsen_quantum_2010}) with ancilla qubits being the target qubits. % where the incoming qubit variable is $\avariableof{\insymbol}$ and the outgoing $\avariableof{\outsymbol}$.
 
-\begin{definition}[Q-sample]
-    Given a probability distribution $\probtensor:\atomstates\rightarrow\rr$ (i.e. $\contraction{\probtensor}=1$ and $\zeros \prec \probtensor$) its q-sample is
-    \begin{align*}
-        \qstateofat{\probtensor}{\shortcatvariables}
-        = \sum_{\shortcatindicesin} \sqrt{\probat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
-    \end{align*}
-\end{definition}
 
-%% Low Paper
-In \cite{low_quantum_2014} the Q-sample has been introduced.
-It prepares a scheme to realize property 1 (purity) + 2 (q-sampling) of a qpdf, but fails to realize property 3 (q-stochasticity).
-The q-sample can be prepared for Bayesian Networks, where each child qubit is prepared densely by C-NOTs conditioning on parent qubits.
+For elementary \ComputationActivationNetworks{}, we can prepare ancilla variables having single parents, corresponding with the ancilla augmentation of an elementary tensor.
+For an example, see \figref{fig:toyAccounting}.
 
-Q-samples can be prepared by \activationCircuit{}s acting on uniform quantum states (Hadamard gates acting on ground state).
-
-%    \begin{lemma}
-%        The \activationCircuit{} of $\probwith$ acting on the uniform state of $\shortcatvariables$ prepares a q-sample.
-%    \end{lemma}
-%    \begin{proof}
-%        Follows directly from construction:
-%        The uniform state is the action of Hadamard gates on the ground state $\onehotmapofat{0}{\shortcatvariables}$, which prepares the state $\normalizationof{\ones}{\shortcatvariables}$.
-%        The diagonal \activationCircuit{} transforms
-%    \end{proof}
-
-Doing rejection sampling on the ancilla qubit corresponds with sampling from the normalized contraction with the activation tensor.
-
-\begin{lemma}
-    Given a distribution $\probat{\shortcatvariables}$, we construct a circuit preparing its q-sample and add the ancilla encoding of a tensor $\hypercoreat{\shortcatvariables}$.
-    The rejection sampling scheme, measuring the ancilla qubit and the $\shortcatvariables$ qubits, rejecting the ancilla qubit measured as $0$, prepares samples from the distribution
-    \begin{align*}
-        \normalizationof{\probat{\shortcatvariables},\hypercoreat{\shortcatvariables}}{\shortcatvariables} \, .
-    \end{align*}
-\end{lemma}
-
-\subsection{Ancilla Augmentation}
-
-%% NEEDED ALREADY HERE?
-For more flexible sampling schemes of \ComputationActivationNetworks{} we need to introduce ancilla qubits.
-
-\begin{definition}[Ancilla Augmented Distribution]
-    Let $\probwith$ be a probability distribution over variables $\shortcatvariables$.
-    Another joint distribution $\secprobtensor$ of $\shortcatvariables$ and ancilla variables $\avariables$ is called an ancilla augmented distribution, if
-    \begin{align*}
-        \secprobat{\shortcatvariables|\avariables=\onesat{[\seldim]}} = \probwith \, .
-    \end{align*}
-\end{definition}
-
-Sampling from the distribution can be done by rejection sampling on the ancilla augmented distribution, measuring all variables and rejecting all samples where an ancilla variable is $0$.
-
-%% Usage through rejection sampling
-Given an augmented Q-sample of a distribution, we can prepare samples from the distribution by rejection sampling, measuring all variables $\shortcatvariables$ and $\avariables$ and rejecting all samples where an ancilla qubit is measured as $0$.
-
-%% Usage as forward inferer
-When sampling from probability distributions, we can use these samples to estimate probabilistic queries.
-Building on such particle-based inference schemes, we can perform various inference schemes for \ComputationActivationNetworks{}, such as backward inference and message passing schemes.
-
-%% Main point: Construction by activation circuits
-Given a distribution $\probat{\shortcatvariables}$ we add an ancilla variable $\avariable$ and define the augmented distribution (see \figref{fig:ancillaAugmentation})
-\begin{align*}
-    \secprobat{\avariable,\shortcatvariables} =
-    \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
-    \sum_{\shortcatindicesin} \onehotmapofat{\shortcatindices}{\shortcatvariables}
-    \otimes \Big(
-    \probat{\shortcatindices} \cdot \tbasisat{\avariable} + (1- \probat{\shortcatindices}) \cdot \fbasisat{\avariable}
-    \Big) \, .
-\end{align*}
-Then we have
-\begin{align*}
-    \secprobat{\shortcatvariables|\avariable=1} = \probat{\shortcatvariables} \, .
-\end{align*}
-
-\begin{figure}
-    \begin{center}
-        \input{./tikz_pics/ancilla_augmentation.tex}
-    \end{center}
-    \caption{
-        Ancilla augmentation of a distribution $\probwith$.
-        a) Augmented distribution $\secprobat{\avariable,\shortcatvariables}$ with the property that $\probwith = \secprobat{\shortcatvariables|\avariable=1}$.
-        b) Preparation of the augmented distribution by the \activationCircuit{} of $\probwith$.
-    }\label{fig:ancillaAugmentation}
-\end{figure}
+To a generic activation hypergraph $\graph$, we would do ancilla augmentation for the activation tensor network, where each hidden variable is prepared by an additional qubit in uniform state (i.e. a Hadamard gate acting on a ground state).
 
 \subsection{Amplitude Amplification}
 
@@ -114,7 +47,8 @@ This can provide a square root speedup in the complexity compared with classical
 
 \subsection{Sampling from \ComputationActivationNetworks{} as Quantum Circuits}
 
-\red{So far: Sample from \HybridLogicNetworks{}, would need qudits for for more general \ComputationActivationNetworks{}.}
+\red{So far: Sample from \HybridLogicNetworks{}, would need qudits for more general \ComputationActivationNetworks{}.
+Can do non-elementary \ComputationActivationNetworks{}, when activating whole activation core.}
 
 \tnreason{} provides tensor network representations of knowledge bases and exponential families following a Computation Activation architecture.
 Here are some ideas to utilize quantum circuits for sampling from \ComputationActivationNetworks{}.
@@ -184,3 +118,9 @@ We could increase the acceptance probability, when we sample from a propsal dist
 When sampling with Quantum Circuits, this could be implemented by a state preparation for the distributed variables, before the \ComputationActivationCircuit{} is applied.
 It would be interesting to train variational quantum circuits for this task.
 However, when we want to apply the same scheme as above, one needs to encode $\mathbb{Q}$ into the ancilla preparing rotations, so $\mathbb{Q}$ would need to be an elementary \ComputationActivationNetwork{} as well.
+
+\subsection{Application}
+
+%% Usage as forward inferer
+When sampling from probability distributions, we can use these samples to estimate probabilistic queries.
+Building on such particle-based inference schemes, we can perform various inference schemes for \ComputationActivationNetworks{}, such as backward inference and message passing schemes.

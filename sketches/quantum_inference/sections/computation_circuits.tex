@@ -40,7 +40,7 @@ Functions with multiple output variables, i.e. $\exformula:\atomstates\rightarro
 
 \begin{figure}[t]
     \begin{center}
-        \input{tikz_pics/function_encoding/bencoding_computation_circuit}
+        \input{tikz_pics/computation-circuits/bencoding_computation_circuit}
     \end{center}
     \caption{Relation of computation circuit and basis encodings.
     The \computationCircuit{} of a function is the contraction of its \basisEncoding{} with the \basisEncoding{} of the mod2 sum $\oplus$.}
@@ -79,7 +79,7 @@ This works, when the target qubit of one connective is used as a value qubit of 
 
 \begin{figure}
     \begin{center}
-        \input{tikz_pics/function_encoding/decomposition_sparsity}
+        \input{tikz_pics/computation-circuits/decomposition_sparsity}
     \end{center}
     \caption{
         Exploitaition of \DecompositionSparsity{} in \computationCircuit{}s.
@@ -106,8 +106,8 @@ This works, when the target qubit of one connective is used as a value qubit of 
 \subsection{Construction for mod2-basis+ CP decompositions - Exploiting \PolynomialSparsity{}}
 
 \begin{lemma}\label{lem:comCircuitCommutative}
-    The composition of two \computationCircuits{} to functions $\exfunction$ and $\secexfunction$ (see \figref{fig:mod2ComputationCircuit}), where the \computationCircuits{} share the head qubit, is the \computationCircuit{} of their sum mod2.
-    In particular, the \computationCircuits{} commute.
+    The composition of two \computationCircuits{} to functions $\exfunction$ and $\secexfunction$ (see \figref{fig:mod2ComputationCircuit}), where the \computationCircuits{} share the target qubit, is the \computationCircuit{} of their sum mod2.
+    In particular, \computationCircuits{} commute when they have the same target qubit.
 \end{lemma}
 \begin{proof}
     This follows from the representation of \computationCircuits{} by basis encodings of the corresponding function and the mod2 sum $\oplus$.
@@ -115,13 +115,15 @@ This works, when the target qubit of one connective is used as a value qubit of 
 
 \begin{figure}[t]
     \begin{center}
-        \input{tikz_pics/function_encoding/mod2_sum_computation_circuit}
+        \input{tikz_pics/computation-circuits/mod2_sum_computation_circuit}
     \end{center}
     \caption{Equivalence of the composition of \computationCircuits{} with the \computationCircuit{} of their mod2 sum (\lemref{lem:comCircuitCommutative}).}
     \label{fig:mod2ComputationCircuit}
 \end{figure}
 
 Concatenating two \computationCircuit{}s, which have the same head qubit, is the \computationCircuit{} of their mod2 sum.
+
+Note that in general controlled unitaries on the same target qubit do not commute.
 
 A basis+ elementary function can be encoded by a single controlled NOT operation with auxiliary $\catvariable$ qubits.
 
@@ -175,7 +177,7 @@ This encoding strategy exploits a modified (by mod2 calculus) \polynomialSparsit
 
 \begin{figure}
     \begin{center}
-        \input{tikz_pics/function_encoding/slice_computation_circuit}
+        \input{tikz_pics/computation-circuits/slice_computation_circuit}
     \end{center}
     \caption{
         Exploitation of \PolynomialSparsity{} in \computationCircuit{}s.
@@ -225,7 +227,7 @@ Using the \computationCircuit{} we can prepare two function encoding schemes, de
 
 \begin{figure}[t]
     \begin{center}
-        \input{tikz_pics/function_encoding/bas_sign_qstate_construction}
+        \input{tikz_pics/computation-circuits/bas_sign_qstate_construction}
     \end{center}
     \caption{Construction of the basis encoding state (a) and the sign encoding state (b) using the \computationCircuit{} of a function.}\label{fig:basSignQstateConstruction}
 \end{figure}

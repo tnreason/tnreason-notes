@@ -10,158 +10,188 @@
     \begin{align*}
         \hlnstat = (\catvariableof{A1} \oplus \catvariableof{A2}, \catvariableof{F}\Rightarrow \catvariableof{A1})\, .
     \end{align*}
-    Any elementary \ComputationActivationNetwork{}
+    Any elementary \ComputationActivationNetwork{} with the statistic $\hlnstat$ can be realized by the circuit shown in \figref{fig:toyAccounting}.
+    %In particular, the \computationCircuit{} consists of:
+    For the preparation of the first statistic qubit $\headvariableof{0}$ to $\sstatcoordinateof{0}=\catvariableof{A1} \oplus \catvariableof{A2}$ by a \computationCircuit{} we exploit that
+    \begin{align*}
+        \catvariableof{A1}\oplus\catvariableof{A2}
+        &= \onehotmapofat{1}{\catvariableof{A1}} \otimes \onehotmapofat{0}{\catvariableof{A2}}
+        + \onehotmapofat{0}{\catvariableof{A1}} \otimes \onehotmapofat{1}{\catvariableof{A2}} \\
+        &= \left(\onehotmapofat{1}{\catvariableof{A1}} \otimes \onehotmapofat{0}{\catvariableof{A2}}\right)
+        \oplus \left(\onehotmapofat{0}{\catvariableof{A1}} \otimes \onehotmapofat{1}{\catvariableof{A2}}\right)
+    \end{align*}
+    where by $\oplus$ we denote coordinatewise summation mod 2.
+    The statistic qubit $\headvariableof{0}$ is therefore prepared by two controlled NOT gates (see \figref{fig:toyAccounting}b).
+
+    For the preparation of the second statistic qubit $\headvariableof{1}$ to $\sstatcoordinateof{1}=\catvariableof{F}\Rightarrow \catvariableof{A1}$ we exploit that the implication is $\truesymbol$ except for the case where the premise $\catvariableof{F}$ is $\truesymbol$ and the head $\catvariableof{A1}$ is $\falsesymbol$.
+    In out mod 2 calculus, this amounts to
+    \begin{align*}
+        \catvariableof{F}\Rightarrow \catvariableof{A1}
+        = \onesat{\catvariableof{F},\catvariableof{A1}} \oplus \onehotmapofat{1}{\catvariableof{F}} \otimes \onehotmapofat{0}{\catvariableof{A1}}\, .
+    \end{align*}
+    It follows that the statistic qubit $\headvariableof{1}$ is prepared by a NOT gate (that is a Pauli-X gate $\paulixsymbol$) and a second controlled NOT gate (see \figref{fig:toyAccounting}b).
+
+    For both cases, the preparation of the statistic qubit can be done by two controlled NOT gates exploiting the \polynomialSparsity{} of the connectives.
+
+    Any non-elementary \ComputationActivationNetwork{} with the statistic $\hlnstat$ can be prepared by the circuit, when choosing a single ancilla qubit, which is uniformly controlled by the qubits $\headvariableof{[2]}$.
 
     \begin{figure}[t]
-        \begin{center}
+    \begin{center}
+        \begin{tikzpicture}[scale=0.35, thick] % , baseline = -3.5pt
 
-            \begin{tikzpicture}[scale=0.35, thick] % , baseline = -3.5pt
+            \node[anchor=center] at (-16,14) {$a)$};
+            \node[anchor=center] at (-4,14) {$b)$};
 
-                \node[anchor=center] at (-16,14) {$a)$};
-                \node[anchor=center] at (-4,14) {$b)$};
+            \begin{scope}[shift={(-12,2.25)}]
 
-                \begin{scope}[shift={(-12,2.25)}]
+                \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A0) at (-1.5,10) {};
+                \node[anchor=center] (A) at (-1.5,10) {\corelabelsize $\avariableof{0}$};
+                \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A1) at (1.5,10) {};
+                \node[anchor=center] (A) at (1.5,10) {\corelabelsize $\avariableof{1}$};
 
-                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A0) at (-1.5,10) {};
-                    \node[anchor=center] (A) at (-1.5,10) {\corelabelsize $\avariableof{0}$};
-                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A1) at (1.5,10) {};
-                    \node[anchor=center] (A) at (1.5,10) {\corelabelsize $\avariableof{1}$};
+                \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (H0) at (-1.5,5) {};
+                \node[anchor=center] (A) at (-1.5,5) {\corelabelsize $\headvariableof{0}$};
+                \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (H1) at (1.5,5) {};
+                \node[anchor=center] (A) at (1.5,5) {\corelabelsize $\headvariableof{1}$};
 
-                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (H0) at (-1.5,5) {};
-                    \node[anchor=center] (A) at (-1.5,5) {\corelabelsize $\headvariableof{0}$};
-                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (H1) at (1.5,5) {};
-                    \node[anchor=center] (A) at (1.5,5) {\corelabelsize $\headvariableof{1}$};
+                \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (F) at (3,0) {};
+                \node[anchor=center] (A) at (3,0) {\corelabelsize $\catvariableof{F}$};
 
-                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (F) at (3,0) {};
-                    \node[anchor=center] (A) at (3,0) {\corelabelsize $\catvariableof{F}$};
+                \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (XA1) at (0,0) {};
+                \node[anchor=center] (A) at (0,0) {\corelabelsize $\catvariableof{A1}$};
 
-                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (XA1) at (0,0) {};
-                    \node[anchor=center] (A) at (0,0) {\corelabelsize $\catvariableof{A1}$};
+                \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (XA2) at (-3,0) {};
+                \node[anchor=center] (A) at (-3,0) {\corelabelsize $\catvariableof{A2}$};
 
-                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (XA2) at (-3,0) {};
-                    \node[anchor=center] (A) at (-3,0) {\corelabelsize $\catvariableof{A2}$};
+                \draw[->-] (H0) -- (A0);
+                \draw[->-] (H1) -- (A1);
 
-                    \draw[->-] (H0) -- (A0);
-                    \draw[->-] (H1) -- (A1);
+                \coordinate (F0) at (-1.5,2.5);
+                \draw[->-] (XA2) -- (F0);
+                \draw[->-] (XA1) -- (F0);
+                \draw[->-] (F0) -- (H0);
 
-                    \coordinate (F0) at (-1.5,2.5);
-                    \draw[->-] (XA2) -- (F0);
-                    \draw[->-] (XA1) -- (F0);
-                    \draw[->-] (F0) -- (H0);
+                \coordinate (F1) at (1.5,2.5);
+                \draw[->-] (F) -- (F1);
+                \draw[->-] (XA1) -- (F1);
+                \draw[->-] (F1) -- (H1);
+            \end{scope}
 
-                    \coordinate (F1) at (1.5,2.5);
-                    \draw[->-] (F) -- (F1);
-                    \draw[->-] (XA1) -- (F1);
-                    \draw[->-] (F1) -- (H1);
-                \end{scope}
+            %% Ancilla Qubits
 
-                %% Ancilla Qubits
+            \draw (-1,15) rectangle (1,13);
+            %\node[anchor=center] (text) at (-2,14) {\colorlabelsize $\avariableof{1}$};
+            \node[anchor=center] (text) at (0,14) {$\onehotmapof{0}$};
+            \draw (1,14) -- (13.5,14);
+            \draw (13.5,15) rectangle (15.5,13);
+            \node[anchor=center] (text) at (14.5,14) {$\qcaencodingof{\hypercoreof{1}}$};
+            \draw (15.5,14) -- (18,14);
+            \drawqcmeasuresymbol{19}{14}
+            \draw (20,14) -- (21.5,14) node[above,midway] {\colorlabelsize $\avariableof{1}$};
 
-                \draw (-1,15) rectangle (1,13);
-                %\node[anchor=center] (text) at (-2,14) {\colorlabelsize $\avariableof{1}$};
-                \node[anchor=center] (text) at (0,14) {$\onehotmapof{0}$};
-                \draw (1,14) -- (13.5,14);
-                \draw (13.5,15) rectangle (15.5,13);
-                \node[anchor=center] (text) at (14.5,14) {$\qcaencodingof{\hypercoreof{1}}$};
-                \draw (15.5,14) -- (18,14);
-                \drawqcmeasuresymbol{19}{14}
-                \draw (20,14) -- (21.5,14) node[above,midway] {\colorlabelsize $\avariableof{1}$};
+            \draw (14.5,8.5) -- (14.5,13);
+            \drawvariabledot{14.5}{8.5}
 
-                \draw (14.5,8.5) -- (14.5,13);
-                \drawvariabledot{14.5}{8.5}
+            \draw (-1,10.5) rectangle (1,12.5);
+            %\node[anchor=center] (text) at (-2,11.5) {\colorlabelsize $\avariableof{0}$};
+            \node[anchor=center] (text) at (0,11.5) {$\onehotmapof{0}$};
+            \draw (1,11.5) -- (11.5,11.5);
+            \draw (11.5,10.5) rectangle (13.5,12.5);
+            \node[anchor=center] (text) at (12.5,11.5) {$\qcaencodingof{\hypercoreof{0}}$};
+            \draw (13.5,11.5) -- (18,11.5);
+            \drawqcmeasuresymbol{19}{11.5}
+            \draw (20,11.5) -- (21.5,11.5) node[above,midway] {\colorlabelsize $\avariableof{0}$};
 
-                \draw (-1,10.5) rectangle (1,12.5);
-                %\node[anchor=center] (text) at (-2,11.5) {\colorlabelsize $\avariableof{0}$};
-                \node[anchor=center] (text) at (0,11.5) {$\onehotmapof{0}$};
-                \draw (1,11.5) -- (11.5,11.5);
-                \draw (11.5,10.5) rectangle (13.5,12.5);
-                \node[anchor=center] (text) at (12.5,11.5) {$\qcaencodingof{\hypercoreof{0}}$};
-                \draw (13.5,11.5) -- (18,11.5);
-                \drawqcmeasuresymbol{19}{11.5}
-                \draw (20,11.5) -- (21.5,11.5) node[above,midway] {\colorlabelsize $\avariableof{0}$};
-                
-                \draw (12.5,6) -- (12.5,10.5);
-                \drawvariabledot{12.5}{6}
+            \draw (12.5,6) -- (12.5,10.5);
+            \drawvariabledot{12.5}{6}
 
-                %% Statistic Qubits
-                \draw[dashed] (-3,10) -- (21,10);
+            %% Statistic Qubits
+            \draw[dashed] (-3,10) -- (21,10);
 
-                \draw (-1,7.5) rectangle (1,9.5);
-                %\node[anchor=center] (text) at (-2,8.5) {\colorlabelsize $\headvariableof{1}$};
-                \node[anchor=center] (text) at (0,8.5) {$\onehotmapof{0}$};
-                \draw (1,8.5) -- (4,8.5);
-                \draw (4,7.5) rectangle (6,9.5);
-                \node[anchor=center] (text) at (5,8.5) {$\paulixsymbol$};
-                \draw (6,8.5) -- (18,8.5);
-                \drawcnotsymbol{11}{8.5}
-                \draw (11,8.5) -- (11,-2);
-                \drawqcmeasuresymbol{19}{8.5}
-                \draw (20,8.5) -- (21.5,8.5) node[above,midway] {\colorlabelsize $\headvariableof{1}$};
-                \drawvariabledot{21.5}{8.5}
+            \draw (-1,7.5) rectangle (1,9.5);
+            %\node[anchor=center] (text) at (-2,8.5) {\colorlabelsize $\headvariableof{1}$};
+            \node[anchor=center] (text) at (0,8.5) {$\onehotmapof{0}$};
+            \draw (1,8.5) -- (4,8.5);
+            \draw (4,7.5) rectangle (6,9.5);
+            \node[anchor=center] (text) at (5,8.5) {$\paulixsymbol$};
+            \draw (6,8.5) -- (18,8.5);
+            \drawcnotsymbol{11}{8.5}
+            \draw (11,8.5) -- (11,-2);
+            \drawqcmeasuresymbol{19}{8.5}
+            \draw (20,8.5) -- (21.5,8.5) node[above,midway] {\colorlabelsize $\headvariableof{1}$};
+            \drawvariabledot{21.5}{8.5}
 
-                \draw (-1,5) rectangle (1,7);
-                %\node[anchor=center] (text) at (-2,6) {\colorlabelsize $\headvariableof{0}$};
-                \node[anchor=center] (text) at (0,6) {$\onehotmapof{0}$};
-                \draw (1,6) -- (18,6);
-                \drawcnotsymbol{9}{6}
-                \draw (9,6) -- (9,-2);
-                \drawqcmeasuresymbol{19}{6}
-                \draw (20,6) -- (21.5,6) node[above,midway] {\colorlabelsize $\headvariableof{0}$};
-                \drawvariabledot{21.5}{6}
+            \draw (-1,5) rectangle (1,7);
+            %\node[anchor=center] (text) at (-2,6) {\colorlabelsize $\headvariableof{0}$};
+            \node[anchor=center] (text) at (0,6) {$\onehotmapof{0}$};
+            \draw (1,6) -- (18,6);
+            \drawcnotsymbol{9}{6}
+            \draw (9,6) -- (9,-2);
+            \drawqcmeasuresymbol{19}{6}
+            \draw (20,6) -- (21.5,6) node[above,midway] {\colorlabelsize $\headvariableof{0}$};
+            \drawvariabledot{21.5}{6}
 
-                \drawcnotsymbol{5}{6}
-                \draw (5,6) -- (5,-2);
+            \drawcnotsymbol{5}{6}
+            \draw (5,6) -- (5,-2);
 
-                %% Distributed Qubits
-                \draw[dashed] (-3,4.5) -- (21,4.5);
+            %% Distributed Qubits
+            \draw[dashed] (-3,4.5) -- (21,4.5);
 
-                \draw (-1,2) rectangle (1,4);
-                %\node[anchor=center] (text) at (-2,3) {\colorlabelsize $\catvariableof{F}$};
-                \node[anchor=center] (text) at (0,3) {$\onehotmapof{0}$};
-                \draw (1,3) -- (2,3);
-                \draw (2,2) rectangle (4,4);
-                \node[anchor=center] (text) at (3,3) {$\hgate$};
-                \draw (4,3) -- (18,3);
-                \drawqcmeasuresymbol{19}{3}
-                \draw (20,3) -- (21.5,3) node[above,midway] {\colorlabelsize $\catvariableof{F}$};
+            \draw (-1,2) rectangle (1,4);
+            %\node[anchor=center] (text) at (-2,3) {\colorlabelsize $\catvariableof{F}$};
+            \node[anchor=center] (text) at (0,3) {$\onehotmapof{0}$};
+            \draw (1,3) -- (2,3);
+            \draw (2,2) rectangle (4,4);
+            \node[anchor=center] (text) at (3,3) {$\hgate$};
+            \draw (4,3) -- (18,3);
+            \drawqcmeasuresymbol{19}{3}
+            \draw (20,3) -- (21.5,3) node[above,midway] {\colorlabelsize $\catvariableof{F}$};
 
-                \draw (-1,-0.5) rectangle (1,1.5);
-                %\node[anchor=center] (text) at (-2,0.5) {\colorlabelsize $\catvariableof{A2}$};
-                \node[anchor=center] (text) at (0,0.5) {$\onehotmapof{0}$};
-                \draw (1,0.5) -- (2,0.5);
-                \draw (2,-0.5) rectangle (4,1.5);
-                \node[anchor=center] (text) at (3,0.5) {$\hgate$};
-                \draw (4,0.5) -- (18,0.5);
-                \drawqcmeasuresymbol{19}{0.5}
-                \draw (20,0.5) -- (21.5,0.5) node[above,midway] {\colorlabelsize $\catvariableof{A2}$};
+            \draw (-1,-0.5) rectangle (1,1.5);
+            %\node[anchor=center] (text) at (-2,0.5) {\colorlabelsize $\catvariableof{A2}$};
+            \node[anchor=center] (text) at (0,0.5) {$\onehotmapof{0}$};
+            \draw (1,0.5) -- (2,0.5);
+            \draw (2,-0.5) rectangle (4,1.5);
+            \node[anchor=center] (text) at (3,0.5) {$\hgate$};
+            \draw (4,0.5) -- (6,0.5);
+            \draw (6,-0.5) rectangle (8,1.5);
+            \node[anchor=center] at (7,0.5) {$\paulixsymbol$};
 
-                \draw (-1,-3) rectangle (1,-1);
-                %\node[anchor=center] (text) at (-2,-2) {\colorlabelsize $\catvariableof{A1}$};
-                \node[anchor=center] (text) at (0,-2) {$\onehotmapof{0}$};
-                \draw (1,-2) -- (2,-2);
-                \draw (2,-3) rectangle (4,-1);
-                \node[anchor=center] at (3,-2) {$\hgate$};
-                \draw (4,-2) -- (6,-2);
-                \draw (6,-3) rectangle (8,-1);
-                \node[anchor=center] at (7,-2) {$\paulixsymbol$};
-                \draw (8,-2) -- (12,-2);
-                \draw (12,-3) rectangle (14,-1);
-                \node[anchor=center] at (13,-2) {$\paulixsymbol$};
-                \draw (14,-2) -- (18,-2);
-                \drawqcmeasuresymbol{19}{-2}
-                \draw (20,-2) -- (21.5,-2) node[above,midway] {\colorlabelsize $\catvariableof{A1}$};
+            \draw (8,0.5) -- (18,0.5);
+            \drawqcmeasuresymbol{19}{0.5}
+            \draw (20,0.5) -- (21.5,0.5) node[above,midway] {\colorlabelsize $\catvariableof{A2}$};
 
-                \drawcontroldot{5}{0.5}
-                \drawcontroldot{5}{-2}
+            \draw (-1,-3) rectangle (1,-1);
+            %\node[anchor=center] (text) at (-2,-2) {\colorlabelsize $\catvariableof{A1}$};
+            \node[anchor=center] (text) at (0,-2) {$\onehotmapof{0}$};
+            \draw (1,-2) -- (2,-2);
+            \draw (2,-3) rectangle (4,-1);
+            \node[anchor=center] at (3,-2) {$\hgate$};
+            \draw (4,-2) -- (6,-2);
+            \draw (6,-3) rectangle (8,-1);
+            \node[anchor=center] at (7,-2) {$\paulixsymbol$};
+            \draw (8,-2) -- (12,-2);
+            \draw (12,-3) rectangle (14,-1);
+            \node[anchor=center] at (13,-2) {$\paulixsymbol$};
+            \draw (14,-2) -- (18,-2);
+            \drawqcmeasuresymbol{19}{-2}
+            \draw (20,-2) -- (21.5,-2) node[above,midway] {\colorlabelsize $\catvariableof{A1}$};
 
-                \drawcontroldot{9}{0.5}
-                \drawcontroldot{9}{-2}
+            \drawcontroldot{5}{0.5}
+            \drawcontroldot{5}{-2}
 
-                \drawcontroldot{11}{3}
-                \drawcontroldot{11}{-2}
+            \drawcontroldot{9}{0.5}
+            \drawcontroldot{9}{-2}
 
-            \end{tikzpicture}
-        \end{center}
-        \caption{Circuit to sample from the \ComputationActivationNetwork{} in the toy accounting \exaref{exa:toyAccounting}.}\label{fig:toyAccounting}
-    \end{figure}
+            \drawcontroldot{11}{3}
+            \drawcontroldot{11}{-2}
+
+        \end{tikzpicture}
+    \end{center}
+    \caption{Circuit to sample from the \ComputationActivationNetwork{} in the toy accounting \exaref{exa:toyAccounting}.
+    %Note that a first Pauli-X gate $\paulixsymbol$ acting on $\catvariableof{A2}$ can be omitted, since the prepared stated is uniform.
+    }
+    \label{fig:toyAccounting}
+\end{figure}
+
 \end{example}
