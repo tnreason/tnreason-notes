@@ -302,20 +302,15 @@ where the phase cores $\phasecoreof{\catenumerator}$ can be read of the controll
 When there are phase cores which do not have such a decomposition, the corresponding states are not representable.
 \cite{mottonen_transformation_2005} shows, that when the graph is chosen as in \exaref{exa:genericControlCircuit}, then also the phases can be represented.
 
-
-%\section{Function Encoding Schemes}\label{sec:functionEncoding}
-
 \subsection{Ancilla Augmentation}
 
-\red{
-    Graph controlled circuits prepare Bayesian Networks, and do not apply to undirected graphical models such as Markov Networks and \ComputationActivationNetworks{}.
-    We therefore introduce in the following ancilla augmentation, which is a method to represent Markov Networks as conditioned Bayesian Network.
-    This enables usage of the previously used preparation schemes for Bayesian Networks.}
-
-%% NEEDED ALREADY HERE?
-%For more flexible sampling schemes of \ComputationActivationNetworks{} we need to introduce ancilla qubits.
+Graph controlled circuits prepare Bayesian Networks, and do not apply to undirected graphical models such as Markov Networks and \ComputationActivationNetworks{}.
+We therefore introduce in the following ancilla augmentation, which is a method to represent Markov Networks as conditioned Bayesian Network.
+This enables usage of the previously used preparation schemes for Bayesian Networks.
 
 \subsubsection{Post-selection by Ancilla Variables}
+
+First of all we define ancilla augmentation and then show how they can be prepared as measurement distributions using \activationCircuits{}.
 
 \begin{definition}[Ancilla Augmented Distribution]
     Let $\probwith$ be a probability distribution over variables $\shortcatvariables$.
@@ -353,7 +348,7 @@ Then we have
 
 \begin{figure}
     \begin{center}
-        \input{./tikz_pics/ancilla_augmentation.tex}
+        \input{tikz_pics/graph-controlled-circuit/ancilla_augmentation}
     \end{center}
     \caption{
         Ancilla augmentation of a distribution $\probwith$.
@@ -362,5 +357,60 @@ Then we have
     }\label{fig:ancillaAugmentation}
 \end{figure}
 
+\begin{lemma}
+    \label{lem:actCircuitAncilla}
+    The \activationCircuit{} to a probability distribution $\probwith$ applied on the initial state
+    \begin{align*}
+        \sqrt{\frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}}\onesat{\shortcatvariables} \otimes \onehotmapofat{0}{\avariable}
+    \end{align*}
+    prepares a quantum state $\qstate$, which measurement distribution is the ancilla augmented distribution of $\probwith$.
+\end{lemma}
+\begin{proof}
+
+\end{proof}
+
+
+In our tensor network circuit notation, \lemref{lem:actCircuitAncilla} states the equation
+\begin{center}
+    \input{tikz_pics/graph-controlled-circuit/activation_ancilla_preparation}
+\end{center}
+for a normalization constant $\acceptanceprob$.
+%Here the measurement distribution is normalized by the
+We interpret $\acceptanceprob$ as the acceptance probability, which is the probability
+\begin{align*}
+    \acceptanceprob = \contractionof{\secprobat{\avariable,\shortcatvariables}}{\avariable=1}\in[0,1] \, .
+\end{align*}
+%% Background: Rejection Sampling
+To provide background on this interpretation, let us consider a rejection sampling approach of the distribution $\probwith$, based on its ancilla augmentation $\secprobat{\shortcatvariables,\avariable}$.
+When drawing a sample $(\shortcatindices,\aindex)$ from $\secprobat{\shortcatvariables,\avariable}$ and rejecting it whenever $\aindex=0$, the accepted samples are distributed as $\probwith$.
+Now, the acceptance probability is critical in determining the efficiency of this approach:
+We need to draw $\sim\frac{1}{\acceptanceprob}$ samples from $\secprobat{\shortcatvariables,\avariable}$ to get an accepted sample.
+
+\subsubsection{Augmentation of Markov Networks}
+
 \input{examples/graph-controlled-circuits/elementary_tensors}
 
+Let there be a Markov Network, i.e. any non-vanishing tensor network of non-negative tensors, which is understood as a probability disribution after normalization (see \cite{goessmann_tensor_2026}).
+
+
+
+\begin{lemma}
+    Let there be a Markov Network $\extnet=\extnetasset$ on a hypergraph $\graph$.
+    We build the concatenation of activation circuits to each tensor $\hypercoreofat{\edge}{\catvariableof{\edge}}$, where each has a distinct ancilla qubit $\avariableof{\edge}$.
+    Then the concatenation acting on the state
+    \begin{align*}
+        \sqrt{\frac{1}{\prod_{\nodein}\catdimof{\node}}}\onesat{\nodevariables} \otimes \left(\bigotimes_{\edgein}\onehotmapofat{0}{\avariableof{\edge}}\right)
+    \end{align*}
+    prepares an ancilla augmented distribution of the Markov Network.
+\end{lemma}
+
+
+We use this result to prepare samples from Markov Networks by rejection sampling on the ancilla variables, in \qcreason{} (see \secref{sec:implementation}).
+
+\begin{figure}
+    \begin{center}
+        \input{tikz_pics/graph-controlled-circuit/markov_network_augmentation}
+    \end{center}
+    \caption{Ancilla augmentation of a Markov Network a) onto a Bayesian Network b).
+    To this end the arbitrary non-negative cores $\hypercoreof{\edge}$ are replaced by directed ancilla augmented cores $\sechypercoreof{\edge}$, with ancilly variables outgoing.}
+\end{figure}

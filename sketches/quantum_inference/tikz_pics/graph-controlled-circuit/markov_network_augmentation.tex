@@ -1,0 +1,73 @@
+\begin{tikzpicture}[scale=0.35,thick]
+    \node[anchor=center] (text) at (-3.5,-2) {${a)}$};
+
+    \draw (-1,-1) rectangle (5,-3);
+    \node[anchor=center] (text) at (2,-2) {\corelabelsize $\hypercoreof{\edge_0}$};
+    \draw (0,-3)--(0,-5) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+    \draw (2,-3)--(2,-5) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+    \draw (4,-3)--(4,-5) node[midway,right] {\colorlabelsize $\catvariableof{2}$};
+
+    \draw (6,-1) rectangle (10,-3);
+    \node[anchor=center] (text) at (8,-2) {\corelabelsize $\hypercoreof{\edge_1}$};
+    \draw (7,-3)--(7,-5) node[midway,right] {\colorlabelsize $\catvariableof{2}$};
+    \draw (9,-3)--(9,-5) node[midway,right] {\colorlabelsize $\catvariableof{3}$};
+
+    \draw (11,-1) rectangle (15,-3);
+    \node[anchor=center] (text) at (13,-2) {\corelabelsize $\hypercoreof{\edge_2}$};
+    \draw (12,-3)--(12,-5) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+    \draw (14,-3)--(14,-5) node[midway,right] {\colorlabelsize $\catvariableof{2}$};
+
+    % X1
+    \drawvariabledot{2}{-6}
+    \draw (2,-6) to[bend right=20] (12,-5);
+    \draw (2,-5)--(2,-7);
+
+    \draw (4,-5) to[bend right=20]  (7,-6); % node[midway,left] {\colorlabelsize $\catvariableof{2}$};
+    \draw (14,-5) to[bend right=-10]  (7,-6);
+
+
+    % X2
+    \drawvariabledot{7}{-6}
+    \draw (7,-5) -- (7,-7);
+
+
+    \begin{scope} [shift={(22,0)}]
+
+        \node[anchor=center] (text) at (-3.5,-2) {$b)$};
+
+        \draw[->-] (2,-1)--(2,1) node[midway,right] {\colorlabelsize $\avariableof{0}$};
+        \draw (-1,-1) rectangle (5,-3);
+        \node[anchor=center] (text) at (2,-2) {\corelabelsize $\sechypercoreof{\edge_0}$};
+        \draw[-<-] (0,-3)--(0,-5) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+        \draw[-<-] (2,-3)--(2,-5) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+        \draw[-<-] (4,-3)--(4,-5) node[midway,right] {\colorlabelsize $\catvariableof{2}$};
+
+        \draw[->-] (8,-1)--(8,1) node[midway,right] {\colorlabelsize $\avariableof{1}$};
+        \draw (6,-1) rectangle (10,-3);
+        \node[anchor=center] (text) at (8,-2) {\corelabelsize $\sechypercoreof{\edge_1}$};
+        \draw[-<-] (7,-3)--(7,-5) node[midway,right] {\colorlabelsize $\catvariableof{2}$};
+        \draw[-<-] (9,-3)--(9,-5) node[midway,right] {\colorlabelsize $\catvariableof{3}$};
+
+        \draw[->-] (13,-1)--(13,1) node[midway,right] {\colorlabelsize $\avariableof{2}$};
+        \draw (11,-1) rectangle (15,-3);
+        \node[anchor=center] (text) at (13,-2) {\corelabelsize $\sechypercoreof{\edge_2}$};
+        \draw[-<-] (12,-3)--(12,-5) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+        \draw[-<-] (14,-3)--(14,-5) node[midway,right] {\colorlabelsize $\catvariableof{2}$};
+
+        % X1
+        \drawvariabledot{2}{-6}
+        \draw (2,-6) to[bend right=20] (12,-5);
+        \draw (2,-5)--(2,-7);
+
+        \draw (4,-5) to[bend right=20]  (7,-6); % node[midway,left] {\colorlabelsize $\catvariableof{2}$};
+        \draw (14,-5) to[bend right=-10]  (7,-6);
+
+
+        % X2
+        \drawvariabledot{7}{-6}
+        \draw (7,-5) -- (7,-7);
+
+    \end{scope}
+
+
+\end{tikzpicture}

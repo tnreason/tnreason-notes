@@ -26,6 +26,9 @@ Functions with multiple output variables, i.e. $\exformula:\atomstates\rightarro
 
 \subsection{Relation with basis encodings}
 
+\BasisEncodings{} are schemes to encode functions into directed boolean tensors, which enable reasoning about functions by tensor network contractions (see \cite{goessmann_tensor_2026}).
+To connect with this formalism, let us now show the relation to the \computationCircuits{}.
+
 \begin{lemma}
     \label{lem:bencComCircuit}
     For any boolean function we have (see \figref{fig:bencComCircuit})
@@ -37,6 +40,10 @@ Functions with multiple output variables, i.e. $\exformula:\atomstates\rightarro
         }{\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula},\shortcatvariables} \, .
     \end{align*}
 \end{lemma}
+
+% Sparse decomposition
+In \cite{goessmann_tensor_2026} (and more detailed in \cite{goessmann_tensor-network_2025}) sparse decompositions of \basisEncodings{} have been studied.
+Based on the equivalence of \computationCircuits{} and contracted \basisEncodings{}, stated by \lemref{lem:bencComCircuit} we transfer these decomposition schemes in the following.
 
 \begin{figure}[t]
     \begin{center}
@@ -51,7 +58,7 @@ Functions with multiple output variables, i.e. $\exformula:\atomstates\rightarro
 
 The decomposition by contraction property of basis encodings is now a composition of circuits property, as stated in the next lemma.
 
-\begin{lemma}
+\begin{lemma}\label{lem:comCirDecSpar}
     We have for functions $\exformula:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, $\secexfunction:\bigtimes_{\selindexin}[2]\rightarrow\bigtimes_{s\in[r]}[2]$ (see \figref{fig:qcbencodingDecomposition})
     \begin{align*}
         \qcbencodingofat{\secexfunction\circ\exformula}{\headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula},\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]}}
@@ -76,6 +83,12 @@ The decomposition by contraction property of basis encodings is now a compositio
 When having a syntactical decomposition of a propositional formula, we can iteratively apply the \computationCircuit{} decomposition theorem and prepare each connective by a circuit.
 We can decompose any propositional formula into logical connectives and prepare to each a \computationCircuit{} (exploiting further sparsity mechanisms).
 This works, when the target qubit of one connective is used as a value qubit of another.
+
+%% Closure of
+Note that to exploit \decompositionSparsity{}, we introduce another auxiliary qubit representing the satisfaction of the sub-function $\exformula$.
+In \lemref{lem:comCirDecSpar} the equality of the concatenated \computationCircuits{} holds after contraction of this qubit, see also \figref{fig:qcbencodingDecomposition}.
+When performing a computational basis measurement on the state prepared by a concatenation, and omitting the qubit (either not measure it in the first place, or ignore its measurement), one effectively has closed the variable before measurement.
+This holds true due to the deterministic dependence of the measurement outcome on the measurement of the distributed qubits $\shortcatvariables$, but is not true for more generic concatenations of controlled unitaries.
 
 \begin{figure}
     \begin{center}
