@@ -38,6 +38,10 @@
     -<-/.style={midbackarrow}
 }
 
+\newcommand{\drawtextnode}[3]{
+    \node[anchor=center,align=center] at (#1,#2) {#3};
+}
+
 \newcommand{\shortminus}{\scalebox{0.4}[1.0]{$-$}}
 
 \newcommand{\drawvariabledot}[2]{
@@ -97,8 +101,6 @@
     \end{scope}
 }
 
-%\newcommand{\foursudokutable}{|p{3mm}|p{3mm}||p{3mm}|p{3mm}|}
-%\newcommand{\sudokucell}{\rule{0pt}{3mm}\rule{3mm}{0pt}}
 
 \newenvironment{sudoku4x4}{%
     % Code executed when you start \begin{sudoku4x4}
