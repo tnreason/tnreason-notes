@@ -331,28 +331,105 @@ This enables usage of the previously used preparation schemes for Bayesian Netwo
 First of all we define ancilla augmentation and then show how they can be prepared as measurement distributions using \activationCircuits{}.
 
 \begin{definition}[Ancilla Augmentation of a Distribution]
-    Let $\hypercorewith$ be a tensor over variables $\shortcatvariables$.
-    A tensor $\anaugmentationof{\probtensor}$ with variables $\shortcatvariables$ and ancilla variables $\avariables$ is called an ancilla augmentation of $\hypercorewith$, if
+    Let $\probwith$ be a probability distribution of variables $\shortcatvariables$.
+    Another distribution $\secprobat{\shortcatvariables,\avariables}$ of variables $\shortcatvariables$ and ancilla variables $\avariables$ is called an ancilla augmentation of $\probwith$, if there is $\acceptanceprob>0$ with
     \begin{align*}
-        \anaugmentationofat{\probtensor}{\shortcatvariables,\avariables=\onesat{[\seldim]}}
-        = \chi \cdot \hypercorewith \, , %\probwith \, .
-    \end{align*} % ! The ancilla augmentation is itself NOT a distribution
-    where $\chi>0$ is a real number.
-    To any ancilla augmentation we call
-    \begin{align*}
-        \acceptanceprob
-        = \normalizationof{\anaugmentationofat{\probtensor}{\avariable,\shortcatvariables}}{\avariable=1}\in[0,1] \, .
+        \acceptanceprob \cdot \probwith
+        = \secprobat{\shortcatvariables,\avariables=1_{[\seldim]}} \, .
     \end{align*}
-    the acceptance probability.
+    We refer to $\acceptanceprob$ as the corresponding acceptance probability.
 \end{definition}
+
+%%
+%
+%\begin{definition}[Ancilla Augmentation of a Distribution]
+%    Let $\hypercorewith$ be a tensor over variables $\shortcatvariables$.
+%    A tensor $\anaugmentationof{\probtensor}$ with variables $\shortcatvariables$ and ancilla variables $\avariables$ is called an ancilla augmentation of $\hypercorewith$, if
+%    \begin{align*}
+%        \anaugmentationofat{\probtensor}{\shortcatvariables,\avariables=\onesat{[\seldim]}}
+%        = \chi \cdot \hypercorewith \, , %\probwith \, .
+%    \end{align*} % ! The ancilla augmentation is itself NOT a distribution
+%    where $\chi>0$ is a real number.
+%    To any ancilla augmentation we call
+%    \begin{align*}
+%        \acceptanceprob
+%        = \normalizationof{\anaugmentationofat{\probtensor}{\avariable,\shortcatvariables}}{\avariable=1}\in[0,1] \, .
+%    \end{align*}
+%    the acceptance probability.
+%\end{definition}
+
+%%
+Note that $\acceptanceprob\leq1$ since
+\begin{align*}
+    \acceptanceprob
+    = \contraction{\acceptanceprob \cdot \probwith}
+    = \contraction{\secprobat{\shortcatvariables,\avariables=1_{[\seldim]}}}
+    \leq \contraction{\secprobat{\shortcatvariables,\avariables}} = 1 \, .
+\end{align*}
 
 %% Rejection Sampling, interpretation of \acceptanceprob
 Sampling from the distribution can be done by rejection sampling, also called post selection, on the ancilla augmented distribution in the following way.
-When drawing a sample $(\shortcatindices,\aindex)$ from $\anaugmentationofat{\probtensor}{\shortcatvariables,\avariable}$ and rejecting it whenever $\aindex=0$, the accepted samples are distributed as $\probwith$.
+When drawing a sample $(\shortcatindices,\aindex)$ from $\secprobat{\shortcatvariables,\avariable}$ and rejecting it whenever $\aindex=0$, the accepted samples are distributed as $\probwith$.
 We then have $\acceptanceprob$ as the probability of accepting a sampling in this rejection sampling method.
-The acceptance probability is critical in determining the efficiency of this approach, since we need to draw $\sim\frac{1}{\acceptanceprob}$ samples from $\anaugmentationofat{\probtensor}{\shortcatvariables,\avariable}$ to get an accepted sample.
+The acceptance probability is critical in determining the efficiency of this approach, since we need to draw $\sim\frac{1}{\acceptanceprob}$ samples from $\secprobat{\shortcatvariables,\avariable}$ to get an accepted sample.
 
-\subsubsection{Construction}
+%% Decomposition and importance sampling interpretation
+Since
+\begin{align}
+    \label{eq:ancillaDecomposition}
+    \secprobat{\shortcatvariables,\avariable}
+    = \contractionof{
+        \secprobat{\shortcatvariables},
+        \secprobat{\avariable|\shortcatvariables}
+    %\normalizationofwrt{\secprobtensor}{\avariable}{\shortcatvariables}
+    }{\shortcatvariables,\avariable}
+\end{align}
+the described sampling procedure is equal to drawing $\shortcatindices$ from the marginal
+\begin{align*}
+    \secprobat{\shortcatvariables}
+\end{align*}
+and accepting the sample with probability
+\begin{align*}
+    \secprobat{\avariable=1|\shortcatvariables}\, .
+%    \normalizationofwrt{\secprobtensor}{\avariable=1}{\shortcatvariables} \, .
+\end{align*}
+
+\subsubsection{Construction based on Uniform Distributions}
+
+We construct ancilla augmentations based on the decomposition \eqref{eq:ancillaDecomposition} where the marginal of $\shortcatvariables$ is the uniform distribution, that is
+\begin{align*}
+    \secprobat{\shortcatvariables}
+    = \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
+    \onesat{\shortcatvariables}
+\end{align*}
+and we construct the conditional probability of the ancilla variable such that
+\begin{align*}
+    \secprobat{\avariable=1|\shortcatvariables}
+    = \acceptanceprob \cdot \left(\prod_{\catenumeratorin}\catdimof{\catenumerator}\right) \probwith \, .
+\end{align*}
+% Quantum circuit
+For the latter we can apply the preparation schemes of conditioned distributions, which have been studied above for Bayesian Networks.
+
+%% Introduce anaugmentation
+We denote for any non-negative tensor $\hypercorewith$ we construct
+\begin{align*}
+    \anaugmentationofat{\hypercore,\acceptanceprob}{\avariable,\shortcatvariables}
+    =
+    \sum_{\shortcatindicesin} \onehotmapofat{\shortcatindices}{\shortcatvariables}
+    \otimes \Big(&
+    \acceptanceprob \cdot \big(\prod_{\catenumeratorin}\catdimof{\catenumerator}\big) \cdot \hypercoreat{\indexedshortcatvariables} \cdot \tbasisat{\avariable} \\
+    &+ \big(1- \acceptanceprob \cdot \big(\prod_{\catenumeratorin}\catdimof{\catenumerator}\big) \cdot \hypercoreat{\indexedshortcatvariables}\big) \cdot \fbasisat{\avariable}
+    \Big) \, .
+\end{align*}
+For this to be a conditional distribution we need to demand that
+\begin{align*}
+    \max_{\shortcatindicesin} \acceptanceprob \cdot \big(\prod_{\catenumeratorin}\catdimof{\catenumerator}\big) \cdot \hypercoreat{\indexedshortcatvariables} \leq 1 \, ,
+\end{align*}
+which is equivalent to
+\begin{align*}
+    \acceptanceprob \leq \left(\prod_{\catenumeratorin}\catdimof{\catenumerator}\right)^{-1}\cdot\left(\max_{\shortcatindicesin}\hypercoreat{\indexedshortcatvariables}\right)^{-1} \, .
+\end{align*}
+Note that if $\hypercorewith$ is the uniform distribution $\onesat{\shortcatvariables|\varnothing}$, then we can achieve the best acceptance rate $\acceptanceprob=1$.
 
 %% Main point: Construction by activation circuits
 Given a distribution $\probat{\shortcatvariables}$ we add an ancilla variable $\avariable$ and construct the augmented distribution (see \figref{fig:ancillaAugmentation})
@@ -375,44 +452,49 @@ Given a distribution $\probat{\shortcatvariables}$ we add an ancilla variable $\
     \begin{align*}
         \sqrt{\frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}}\onesat{\shortcatvariables} \otimes \onehotmapofat{0}{\avariable}
     \end{align*}
-    prepares a quantum state $\qstate$, which is the Q-sample of the ancilla augmentation of $\probtensor$
+    prepares a quantum state $\qstate$, which is the Q-sample of the ancilla augmentation
     \begin{align*}
-        \anaugmentationofat{\probtensor}{\avariable,\shortcatvariables}
-        =
-        \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
-        \sum_{\shortcatindicesin} \onehotmapofat{\shortcatindices}{\shortcatvariables}
-        \otimes \Big(
-        \probat{\indexedshortcatvariables} \cdot \tbasisat{\avariable} + (1- \probat{\indexedshortcatvariables}) \cdot \fbasisat{\avariable}
-        \Big) \, .
+        \normalizationof{\anaugmentationofat{\probtensor,\frac{1}{\catdim}}{\avariable,\shortcatvariables}}{\avariable,\shortcatvariables}
     \end{align*}
+    with the acceptance probability $\catdim^{-1}\coloneqq \big(\prod_{\catenumeratorin\catdimof{\catenumerator}}\big)^{-1}$.
+%    \begin{align*}
+%        \anaugmentationofat{\probtensor}{\avariable,\shortcatvariables}
+%        =
+%        \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
+%        \sum_{\shortcatindicesin} \onehotmapofat{\shortcatindices}{\shortcatvariables}
+%        \otimes \Big(
+%        \probat{\indexedshortcatvariables} \cdot \tbasisat{\avariable} + (1- \probat{\indexedshortcatvariables}) \cdot \fbasisat{\avariable}
+%        \Big) \, .
+%    \end{align*}
 \end{lemma}
 \begin{proof}
-    We first show, that $\anaugmentationof{\probtensor}$ is indeed an ancilla augmentation.
+    We first show, that $\normalizationof{\anaugmentationofat{\probtensor,\frac{1}{\catdim}}{\avariable,\shortcatvariables}}{\avariable,\shortcatvariables}$ is indeed an ancilla augmentation.
     We have
     \begin{align*}
         \acceptanceprob
-        &= \contractionof{\anaugmentationofat{\probtensor}{\avariable,\shortcatvariables}}{\avariable=1} \\
-        &= \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
-        \sum_{\shortcatindicesin} \probat{\shortcatindices} \\
-        &= \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}} \, .
+        = \contractionof{\anaugmentationofat{\probtensor}{\avariable,\shortcatvariables}}{\avariable=1}
+        = \frac{1}{\catdim}
+        \sum_{\shortcatindicesin} \probat{\indexedshortcatvariables}
+        = \frac{1}{\catdim} \, .
     \end{align*}
     and for any $\shortcatindicesin$ it holds that
     \begin{align*}
-        \anaugmentationofat{\probtensor}{\indexedshortcatvariables|\avariable=1}
+        \normalizationof{\anaugmentationofat{\probtensor,\frac{1}{\catdim}}{\avariable,\shortcatvariables}}{\avariable=1,\indexedshortcatvariables}
+        %\anaugmentationofat{\probtensor}{\avariable=1,\indexedshortcatvariables}
         = \frac{1}{\lambda} \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}} \probat{\indexedshortcatvariables}
         = \probat{\indexedshortcatvariables}\, ,
     \end{align*}
-    The tensor $\anaugmentationofat{\probtensor}{\shortcatvariables,\avariable}$ is thus an ancilla augmentation for $\probtensor$.
+    The tensor $\normalizationof{\anaugmentationofat{\probtensor,\frac{1}{\catdim}}{\avariable,\shortcatvariables}}{\avariable,\shortcatvariables}$ is thus an ancilla augmentation for $\probtensor$.
 
-    We continue to show that the quantum state $\qstate$ prepared by the \activationCircuit{} is the Q-sample of $\anaugmentationof{\probtensor}$.
+    We continue to show that the quantum state $\qstate$ prepared by the \activationCircuit{} is the Q-sample of $\normalizationof{\anaugmentationofat{\probtensor,\frac{1}{\catdim}}{\avariable,\shortcatvariables}}{\avariable,\shortcatvariables}$.
     Then we have for any $\shortcatindicesin$
     \begin{align*}
         \qstateat{\avariable,\indexedshortcatvariables}
-        = \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
+        = \sqrt{\frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}}
         \Big(\sqrt{\probat{\indexedshortcatvariables}} \cdot \tbasisat{\avariable}
         + \sqrt{(1- \probat{\indexedshortcatvariables})} \cdot \fbasisat{\avariable}\Big) \, ,
     \end{align*}
-    which is the Q-sample of $\anaugmentationof{\probtensor}$.
+    which is indeed the Q-sample.
 \end{proof}
 
 % Circuit diagram and acceptance probability
@@ -422,7 +504,7 @@ In our tensor network circuit notation, \lemref{lem:actCircuitAncilla} states th
 \end{center}
 for the acceptance probability (see proof of \lemref{lem:actCircuitAncilla})
 \begin{align*}
-    \acceptanceprob = \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}} \probat{\indexedshortcatvariables} \, .
+    \acceptanceprob = \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}} \, .
 \end{align*}
 Note that the acceptance probability is exponentially small in the number of variables.
 If $\probwith$ is not uniform, we can improve by building the \activationCircuit{} to the function
@@ -430,7 +512,129 @@ If $\probwith$ is not uniform, we can improve by building the \activationCircuit
     \frac{1}{\max_{\shortcatindicesin}\probat{\indexedshortcatvariables}} \cdot \probwith \, .
 \end{align*}
 
+\subsubsection{Best Acceptance Probability by $\infty$-Renyi Divergence}
+
+Let us now show, how the best acceptance probability in sets of ancilla augmented distributions is connected with $\infty$-Renyi divergences.
+For $0<\alpha<\infty$ and $\alpha\neq 1$ the Renyi Divergence is defined as
+\begin{align*}
+    D_{\alpha}\left[\probtensor||\mathbb{Q}\right]
+    = \frac{1}{1-\alpha} \lnof{\sum_{\shortcatindicesin}
+        \frac{\probat{\indexedshortcatvariables}^{\alpha}}{\mathbb{Q}\left[\indexedshortcatvariables\right]^{\alpha-1}}
+    } \, .
+\end{align*}
+The $\infty$ Renyi Divergence is the limit $\alpha\rightarrow\infty$
+\begin{align*}
+    D_{\infty}\left[\probtensor||\mathbb{Q}\right]
+    = \lnof{\max_{\shortcatindicesin}
+        \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+    } \, .
+\end{align*}
+
+\begin{theorem}
+    Let $\probwith$ and $\mathbb{Q}[\shortcatvariables]$ be distributions, such that for each $\shortcatindicesin$ with $\probat{\indexedshortcatvariables}>0$ we also have $\mathbb{Q}[\indexedshortcatvariables]>0$.
+    Let us consider all ancilla augmentations $\secprobat{\shortcatvariables,\avariable}$ which marginal is $\mathbb{Q}[\shortcatvariables]$, that is
+    \begin{align*}
+        \mathbb{Q}[\shortcatvariables]
+        = \contractionof{\secprobat{\shortcatvariables,\avariable}}{\shortcatvariables} \, .
+    \end{align*}
+    The best acceptance probability among these ancilla augmentations is then
+    \begin{align*}
+        \acceptanceprob
+        = \expof{-D_{\infty}\left[\probtensor||\mathbb{Q}\right]} \, ,
+    \end{align*}
+    and achieved when for any $\shortcatindicesin$
+    \begin{align*}
+        \secprobat{\avariable=1|\indexedshortcatvariables}
+        = \frac{
+            \probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]
+        } \cdot \left(\max_{\shortcatindicesin}\frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+        \right)^{-1} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Any $\secprobat{\shortcatvariables,\avariable}$ with marginal $\mathbb{Q}\left[\shortcatvariables\right]$ has a decomposition
+    \begin{align*}
+        \secprobat{\shortcatvariables,\avariable}
+        = \contractionof{\mathbb{Q}\left[\shortcatvariables\right],
+            \secprobat{\avariable|\shortcatvariables}
+        }{\shortcatvariables,\avariable}
+    \end{align*}
+    and in order to be an ancilla augmentation for $\probwith$ we find $\acceptanceprob>0$ with
+    \begin{align*}
+        \secprobat{\shortcatvariables,\avariable=1}
+        = \acceptanceprob \cdot \probwith \, .
+    \end{align*}
+    It follows that for each $\shortcatindicesin$
+    \begin{align*}
+        1 \geq \secprobat{\avariable=1|\indexedshortcatvariables}
+        = \acceptanceprob \cdot  \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]} \, .
+    \end{align*}
+    and thus
+    \begin{align}
+        \label{eq:acceptanceprobBoundRenyiProof}
+        \acceptanceprob \leq \left(\max_{\shortcatindicesin}\frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}\right)^{-1} \, .
+    \end{align}
+    For the in the claim constructed ancilla augmentation, we have the acceptance probability
+    \begin{align*}
+        \secprobat{\avariable=1}
+        &= \mathbb{E}_{\shortcatindices\sim\mathbb{Q}}
+        \left[
+            \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]} \cdot
+            \left(\max_{\shortcatindicesin} \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+            \right)^{-1}
+        \right] \\
+        &= \contraction{\mathbb{Q}\left[\shortcatvariables\right],\left(\mathbb{Q}\left[\shortcatvariables\right]\right)^{-1},\probwith}
+        %\mathbb{E}_{\shortcatindices\sim\mathbb{Q}}\left[\frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]} \right] \cdot
+        \left(\max_{\shortcatindicesin}
+            \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+        \right)^{-1} \\
+        & = \left(\max_{\shortcatindicesin}
+                \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+        \right)^{-1}  \\
+        & = \expof{-D_{\infty}\left[\probtensor||\mathbb{Q}\right]} \, .
+    \end{align*}
+    The constructed ancilla augmented distribution satisfies the bound \eqref{eq:acceptanceprobBoundRenyiProof} on the acceptance probability holds straight, and it is thus the one with largest acceptance rate.
+\end{proof}
+
+
+%\red{Connect with Ancilla Augmentation:
+%    \begin{itemize}
+%        \item Samples are drawn from $\mathbb{Q}=\normalizationof{\anaugmentationof{\probtensor}}{\shortcatvariables}$ and acceptance prob simulated by
+%        $\normalizationofwrt{\anaugmentationof{\probtensor}}{\avariable}{\shortcatvariables}$.
+%        \item $\mathbb{Q}$
+%        \item If $\shortcatvariables$ appearing only as control qubits, then $\mathbb{Q}$ is uniform.
+%        \item Improvement of the acceptance probability could be thus done, by rotating the distibuted qubits, towards the desired distribution.
+%    \end{itemize}
+%}
+%
+%In more generality we draw samples from a generic proposal distribution $\mathbb{Q}$, which support needs to include the support of the target distribution $\probtensor$.
+%We draw a sample $\shortcatindices$ from $\mathbb{Q}$ and accept it with the probability
+%\begin{align*}
+%    \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+%    \cdot \left(\max_{\shortcatindicesin}\frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+%    \right)^{-1}
+%\end{align*}
+
+%% Uniform proposal distributions
+Note, that in the section above we have constructed ancilla augmentations with uniform $\mathbb{Q}$ by activation circuits.
+For these the optimal acceptance rate is
+\begin{align*}
+    \acceptanceprob
+    = \left(\prod_{\catenumeratorin}\catdimof{\catenumerator}\right)^{-1}
+    \cdot \left(\max_{\shortcatindicesin} \probat{\indexedshortcatvariables}\right)^{-1} \, .
+\end{align*}
+Thus, $\acceptanceprob=1$ is only achievable if $\probwith$ is itself the uniform distribution.
+
+\textbf{Extension:}
+We could increase the acceptance probability, when we sample from a proposal distribution $\mathbb{Q}$ with smaller $\infty$ Renyi divergence to $\probtensor$.
+% To CA Sampling
+When sampling with Quantum Circuits, this could be implemented by a state preparation for the distributed variables, before the \ComputationActivationCircuit{} is applied.
+It would be interesting to train variational quantum circuits for this task.
+However, when we want to apply the same scheme as above, one needs to encode $\mathbb{Q}$ into the ancilla preparing rotations, so $\mathbb{Q}$ would need to be an elementary \ComputationActivationNetwork{} as well.
+
 \subsubsection{Augmentation of Markov Networks}
+
+Let us now show how multiple ancilla variables can be designed to sample from arbitrary Markov Networks.
 
 \input{examples/graph-controlled-circuits/elementary_tensors}
 
@@ -442,23 +646,34 @@ We apply a similar ancilla augmentation on any hypercore of a Markov Network, as
 To prepare, we need to scale each core by dividing by its maximum (or any upper bound on its maximum), such that any coordinate is smaller than $1$.
 We then build directed tensors
 \begin{align*}
-    \anaugmentationofat{\hypercoreof{\edge}}{\avariable,\catvariableof{\edge}}
-    =     \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
+    \anaugmentationofat{\hypercoreof{\edge},\acceptanceprobof{\edge}}{\avariable,\catvariableof{\edge}}
+    =    %\frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
     \sum_{\catindexof{\edge}} \onehotmapofat{\catindexof{\edge}}{\catvariableof{\edge}}
     \otimes \Big(&
-    \frac{
-        \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
-    }{
-        \max_{\seccatindexof{\edge}}\hypercoreofat{\edge}{\catvariableof{\edge}=\seccatindexof{\edge}}
-    } \cdot \tbasisat{\avariable} \\
-    &+ (1- \frac{
-        \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
-    }{
-        \max_{\seccatindexof{\edge}}\hypercoreofat{\edge}{\catvariableof{\edge}=\seccatindexof{\edge}}
-    }
-    ) \cdot \fbasisat{\avariable}
+    %\frac{
+    %    \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+    %}{
+    %    \max_{\seccatindexof{\edge}}\hypercoreofat{\edge}{\catvariableof{\edge}=\seccatindexof{\edge}}
+    %} \cdot
+    \acceptanceprobof{\edge} \cdot \big(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\big) \cdot \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \cdot
+    \tbasisat{\avariable} \\
+    &+ \big(1- \acceptanceprobof{\edge} \cdot \big(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\big) \cdot \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+    %\frac{
+    %    \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+    %}{
+    %    \max_{\seccatindexof{\edge}}\hypercoreofat{\edge}{\catvariableof{\edge}=\seccatindexof{\edge}}
+    %}
+    \big) \cdot
+    \fbasisat{\avariable}
     \Big) \, .
 \end{align*}
+where the optimal local acceptance rates are
+\begin{align*}
+    \acceptanceprobof{\edge}
+    = \left(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\right)^{-1}
+    \cdot \left(\max_{\catindexof{\edge}}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)^{-1} \, .
+\end{align*}
+
 It is easy to check, that when augmenting all cores of a Markov Network with distinct ancilla variables in this way, we get an ancilla augmentation of the Markov Network.
 The main advantage of this augmentation is, that all cores are directed (see \figref{fig:markovNetworkAugmentation}b, and build therefore a Bayesian Network.
 Using the \activationCircuits{} studied above, we can now determine a rejection sampling procedure for arbitrary Markov Networks.
@@ -491,12 +706,30 @@ We use this result to prepare samples from Markov Networks by rejection sampling
 When the maximum of the hypercores are not known, and only an upper bound is given, it suffice to rescale them such that the maximum is lower than 1.
 
 %% Frustration: When local maxima cannot be achieved together
-When the maximal coordiante of the Markov Network is, restricted to each edge, the maximal coordinate of the hypercore of that edge, we say that the Markov Network is not frustrated, otherwise frustrated.
+When the maximal coordinate of the Markov Network is, restricted to each edge, the maximal coordinate of the hypercore of that edge, we say that the Markov Network is not frustrated, otherwise frustrated.
 
-\begin{lemma}
+\begin{lemma} % CHECK: True?
     If the Markov Network is not frustrated, then the acceptance probability $\acceptanceprob$ of the rejection sampling scheme using the ancilla augmented Markov Network is the $\infty$-Renyi divergence between the Markov Network and the uniform distribution.
 \end{lemma}
+\begin{proof}
+    We have the acceptance rate
+    \begin{align*}
+        \acceptanceprob 
+        = \prod_{\edgein}\acceptanceprobof{\edge}
+        = \prod_{\edgein} \left(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\right)^{-1}
+    \cdot \left(\max_{\catindexof{\edge}}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)^{-1}
+    \end{align*}
+    If and only if the Markov Network is not frustrated we have
+    \begin{align*}
+        \max_{\shortcatindices} \left(\prod_{\edgein}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)
+        = \prod_{\edgein} \left(\max_{\catindexof{\edge}} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right) \, .
+    \end{align*}
+    \red{To be finished.}
+\end{proof}
 
+%% Frustration
+If the Markov Network is frustrated, we cannot achieve the best acceptance probability by the distributed ancilla preparation approach described above.
+In this case, one faces a tradeoff between the size of the circuit to prepare ancilla augmentations and the acceptance probability.
 
 \begin{figure}
     \begin{center}
@@ -506,3 +739,4 @@ When the maximal coordiante of the Markov Network is, restricted to each edge, t
     To this end the arbitrary non-negative cores $\hypercoreof{\edge}$ are replaced by directed ancilla augmented cores $\sechypercoreof{\edge}$, with ancilly variables outgoing.}
     \label{fig:markovNetworkAugmentation}
 \end{figure}
+
