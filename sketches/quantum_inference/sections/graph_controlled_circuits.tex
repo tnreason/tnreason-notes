@@ -644,9 +644,9 @@ For an example of a Markov Network see \figref{fig:markovNetworkAugmentation}a.
 %% Ancilla Augmentation
 We apply a similar ancilla augmentation on any hypercore of a Markov Network, as has been done above for probability distributions.
 To prepare, we need to scale each core by dividing by its maximum (or any upper bound on its maximum), such that any coordinate is smaller than $1$.
-We then build directed tensors
+We introduce for each core an boolean ancilla variable $\avariableof{\edge}$ (while $\catvariableof{\edge}$ is the tuple of distributed variables collected in the hyperedge $\edge$) then build directed tensors
 \begin{align*}
-    \anaugmentationofat{\hypercoreof{\edge},\acceptanceprobof{\edge}}{\avariable,\catvariableof{\edge}}
+    \anaugmentationofat{\hypercoreof{\edge},\acceptanceprobof{\edge}}{\avariableof{\edge},\catvariableof{\edge}}
     =    %\frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
     \sum_{\catindexof{\edge}} \onehotmapofat{\catindexof{\edge}}{\catvariableof{\edge}}
     \otimes \Big(&
@@ -667,14 +667,52 @@ We then build directed tensors
     \fbasisat{\avariable}
     \Big) \, .
 \end{align*}
-where the optimal local acceptance rates are
+where we choose the maximal values
 \begin{align*}
     \acceptanceprobof{\edge}
     = \left(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\right)^{-1}
-    \cdot \left(\max_{\catindexof{\edge}}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)^{-1} \, .
+    \cdot \left(\max_{\catindexof{\edge}}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)^{-1} \, ,
 \end{align*}
+such that $\anaugmentationof{\edge}$ stays non-negative and can be interpreted as a conditional probability distribution.
+Note, that $\acceptanceprobof{\edge}$ is not an acceptance rate itself, since $\hypercoreof{\edge}$ is not always a distribution.
 
-It is easy to check, that when augmenting all cores of a Markov Network with distinct ancilla variables in this way, we get an ancilla augmentation of the Markov Network.
+% Ancilla augmentation of
+\begin{lemma}\label{lem:markovNetworkAugmentation}
+    When augmenting all cores of a Markov Network with distinct ancilla variables in this way (see \figref{fig:markovNetworkAugmentation}b), we get an ancilla augmentation of the Markov Network.
+    \begin{align*}
+        \secprobat{\avariableof{\edges},\shortcatvariables}
+        = \contractionof{
+            \{\anaugmentationofat{\hypercoreof{\edge},\acceptanceprobof{\edge}}{\avariableof{\edge},\catvariableof{\edge}} \wcols \edgein \}
+            \cup\{\onesat{\shortcatvariables|\varnothing}\}}{\avariableof{\edges},\shortcatvariables} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    $\secprobat{\avariableof{\edges},\shortcatvariables}$ is a Bayesian Network (see \figref{fig:markovNetworkAugmentation}d) and thus a distribution.
+    We further have
+    \begin{align*}
+        \secprobat{\avariableof{\edges}=1_{\edges},\shortcatvariables}
+        = \contractionof{
+            \{\anaugmentationofat{\hypercoreof{\edge},\acceptanceprobof{\edge}}{\avariableof{\edge}=1,\catvariableof{\edge}} \wcols \edgein \}
+            \cup\{\onesat{\shortcatvariables|\varnothing}\}}{\avariableof{\edges},\shortcatvariables} \\
+        = \frac{\prod_{\edgein} \acceptanceprobof{\edge}\left(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\right)}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
+        \contractionof{\{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols\edgein \}}{\shortcatvariables} \, .
+    \end{align*}
+    Thus, $\secprobat{\avariableof{\edges},\shortcatvariables}$ is an ancilla augmentation of the Markov Network with acceptance probability
+    \begin{align*}
+        \frac{
+            \prod_{\edgein} \acceptanceprobof{\edge}\left(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\right)
+        }{
+            \contraction{\{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols\edgein\}} \cdot \left(\prod_{\catenumeratorin}\catdimof{\catenumerator}\right)
+        }
+        = \left(\prod_{\catenumeratorin}\catdimof{\catenumerator}\right)^{-1} \cdot
+        \frac{\prod_{\edgein} \left(\max_{\catindexof{\edge}} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)}{\contraction{\{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols\edgein\}}}
+        \, .
+    \end{align*}
+\end{proof}
+
+
+
+
 The main advantage of this augmentation is, that all cores are directed (see \figref{fig:markovNetworkAugmentation}b, and build therefore a Bayesian Network.
 Using the \activationCircuits{} studied above, we can now determine a rejection sampling procedure for arbitrary Markov Networks.
 
@@ -709,22 +747,26 @@ When the maximum of the hypercores are not known, and only an upper bound is giv
 When the maximal coordinate of the Markov Network is, restricted to each edge, the maximal coordinate of the hypercore of that edge, we say that the Markov Network is not frustrated, otherwise frustrated.
 
 \begin{lemma} % CHECK: True?
-    If the Markov Network is not frustrated, then the acceptance probability $\acceptanceprob$ of the rejection sampling scheme using the ancilla augmented Markov Network is the $\infty$-Renyi divergence between the Markov Network and the uniform distribution.
+    If the Markov Network is not frustrated, then the acceptance probability $\acceptanceprob$ of the rejection sampling scheme using the ancilla augmented Markov Network (with respect to the uniform distribution) is the $\infty$-Renyi divergence between the Markov Network and the uniform distribution.
 \end{lemma}
 \begin{proof}
-    We have the acceptance rate
-    \begin{align*}
-        \acceptanceprob 
-        = \prod_{\edgein}\acceptanceprobof{\edge}
-        = \prod_{\edgein} \left(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\right)^{-1}
-    \cdot \left(\max_{\catindexof{\edge}}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)^{-1}
-    \end{align*}
+%    We have the acceptance rate
+%    \begin{align*}
+%        \acceptanceprob
+%        = \left(\prod_{\edgein}\acceptanceprobof{\edge}\right)
+%        = \prod_{\edgein} \left(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\right)^{-1}
+%    \cdot \left(\max_{\catindexof{\edge}}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)^{-1}
+%    \end{align*}
     If and only if the Markov Network is not frustrated we have
     \begin{align*}
         \max_{\shortcatindices} \left(\prod_{\edgein}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)
         = \prod_{\edgein} \left(\max_{\catindexof{\edge}} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right) \, .
     \end{align*}
-    \red{To be finished.}
+    In this case, the ancilla augmentation has the best acceptance probability, since for the state $\shortcatindices$ maximizing all local cores we have
+    \begin{align*}
+        \secprobat{\avariables=1_{[\seldim]}|\indexedshortcatvariables} = 1 \, .
+    \end{align*}
+    \red{Alternatively: Show this with the acceptance rate in proof of \lemref{lem:markovNetworkAugmentation}, comparing with best naive augmentation.}
 \end{proof}
 
 %% Frustration
