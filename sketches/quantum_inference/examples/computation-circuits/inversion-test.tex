@@ -1,0 +1,25 @@
+\begin{example}[Inversion Test]
+    Concatenating the \computationCircuits{} to two formulas $\exformula$ and $\secexformula$ prepares the state
+    \begin{align*}
+        \basqstateofat{\exformula\oplus\secexformula}{\shortcatvariables,\headvariable}
+    \end{align*}
+    The probability of measuring the ground state after a Walsh-Hadamard transform of the distributed qubits is then
+    \begin{align*}
+        \frac{1}{2^{\catorder}} \absof{\contractionof{\basqstateofat{\exformula\oplus\secexformula}{\shortcatvariables,\headvariable}}{\headvariable}}^2
+        &= \frac{1}{2^{2\cdot\catorder}}
+        \begin{bmatrix}
+            \contraction{\exformula\oplus\secexformula}
+            \contraction{\lnot(\exformula\oplus\secexformula)}
+        \end{bmatrix} \\
+        &= \frac{1}{2^{2\cdot\catorder}}
+        \begin{bmatrix}
+            \#{\left\{\shortcatindices\in\atomstates \wcols \exformulaat{\indexedshortcatvariables}=\secexformula\left[\indexedshortcatvariables\right]\right\}} \\
+            \#{\left\{\shortcatindices\in\atomstates \wcols \exformulaat{\indexedshortcatvariables}\neq\secexformula\left[\indexedshortcatvariables\right]\right\}}
+        \end{bmatrix}
+    \end{align*}
+    The second equation holds since $\lnot(\exformula\oplus\secexformula)$ is equivalent with the biconditional $\exformula\Leftrightarrow\secexformula$.
+
+    % Inversion test
+    This is in more generality the inversion test of measuring the overlap of $\basqstateof{\exformula}$ with $\basqstateof{\secexformula}$ (see \cite{schuld_machine_2021}).
+    Here we used that the \computationCircuit{} is self-adjoint and understand the concatenation as the unitaries preparing $\basqstateof{\exformula}$ and the adjoint (together with the Walsh-Hadamard transform) of $\basqstateof{\secexformula}$.
+\end{example}

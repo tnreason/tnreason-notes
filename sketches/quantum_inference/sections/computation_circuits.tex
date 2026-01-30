@@ -57,7 +57,8 @@ Based on the equivalence of \computationCircuits{} and contracted \basisEncoding
 
 The decomposition by contraction property of basis encodings is now a composition of circuits property, as stated in the next lemma.
 
-\begin{lemma}\label{lem:comCirDecSpar}
+\begin{lemma}
+    \label{lem:comCirDecSpar}
     We have for functions $\exformula:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, $\secexfunction:\bigtimes_{\selindexin}[2]\rightarrow\bigtimes_{s\in[r]}[2]$ (see \figref{fig:qcbencodingDecomposition})
     \begin{align*}
         \qcbencodingofat{\secexfunction\circ\exformula}{\headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula},\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]}}
@@ -117,7 +118,8 @@ This holds true due to the deterministic dependence of the measurement outcome o
 
 \subsection{Construction for mod2-basis+ CP decompositions - Exploiting \PolynomialSparsity{}}
 
-\begin{lemma}\label{lem:comCircuitCommutative}
+\begin{lemma}
+    \label{lem:comCircuitCommutative}
     The composition of two \computationCircuits{} to functions $\exfunction$ and $\secexfunction$ (see \figref{fig:mod2ComputationCircuit}), where the \computationCircuits{} share the target qubit, is the \computationCircuit{} of their sum mod2.
     In particular, \computationCircuits{} commute when they have the same target qubit.
 \end{lemma}
@@ -328,5 +330,27 @@ Limitations:
     \item When doing the sign encoding procedure for multiple formulas, we get a disentangled state of the head variables with the distributed variables encoded in the sign encoding state of $\bigoplus_{\exformulain}\exformula$ (where by $\bigoplus$ we denote the mod2 sum of boolean functions).
 \end{itemize}
 
-This encoding is applied in the Deutsch-Josza algorithm \cite{deutsch_rapid_1992}.
+
 % Multiple formulas
+
+\subsection{Applications}
+
+Let us present two known algorithms as the measurement of states prepared by \computationCircuits{}.
+
+\input{examples/computation-circuits/deutsch-jozsa}
+
+\input{examples/computation-circuits/inversion-test}
+
+%\subsection{Further Overlap-measuring Circuits}
+Quantum Circuits such as the SWAP test and the Hadamard test (\cite[Section 3.6.1]{schuld_machine_2021}) can be used to measure overlaps of quantum states, which are the squared absolutes of contractions of two state tensors.
+\begin{itemize}
+    \item When we have preparation schemes for two tensors, we can control them with a common ancilla qubit and measure their contraction by a Hadamard test (alternatively, using the SWAP test and state preparation in two registers).
+    \item Can we extend these schemes to contractions of more general tensor networks?
+\end{itemize}
+
+%\subsection{Discussion}
+While the preparation of contracted basis encodings is done efficiently, accessing the prepared state by measurements is a bottleneck.
+This is a typical \emph{quantum state tomography} problem \cite{roth_semi-device-dependent_2023}.
+Sparsity of the contracted state can be exploited to probabilistically guarantee precise estimates \cite{gross_quantum_2010}.
+However, when deciding whether $\exformula$ is satisfiable, based on the prepared contraction $\sqrt{\normalizationof{\bencodingofat{\exformula}{\headvariable,\shortcatvariables}}{\headvariable}}$, we have an exponentially small error tolerance.
+Moreover, the applied sample mean is the UMVUE (Uniformly Minimum Variance Unbiased Estimator, see \cite{casella_statistical_2001}), and can thus not be improved by other unbiased estimators.
