@@ -7,18 +7,18 @@
     \end{align*}
     Thus, if and only if the probability of the ground state is $1$, we have that the formula is constant, that is $\exformula\in\{\top,\bot\}$.
     This is the Deutsch-Josza algorithm \cite{deutsch_rapid_1992}.
-
     \begin{figure}
         \begin{center}
 
             \begin{tikzpicture}[scale=0.35,thick]
 
                 \draw (0,0) rectangle (2,7.5);
-                \node[anchor=center] (text) at (1,3.75) {\corelabelsize $\basqstateof{\exformula}$};
+                \node[anchor=center] (text) at (1,3.75) {\corelabelsize $\signqstateof{\exformula}$};
 
                 \draw (2,6.5) -- (4,6.5) node[midway,above] {\colorlabelsize $\headvariable$};
                 \drawqcmeasuresymbol{5}{6.5}
-                \draw (6,6.5) -- (8,6.5) node[midway,above] {\colorlabelsize $\headvariable$};
+                \draw (6,6.5) -- (8,6.5); % node[midway,above] {\colorlabelsize $\headvariable$};
+                \drawvariabledot{8}{6.5}
 
                 \draw (2,4) -- (4,4) node[midway,above] {\colorlabelsize $\catvariableof{0}$};
                 \draw (4,3) rectangle (6,5);
@@ -41,10 +41,20 @@
 
                 \node[anchor=center] (text) at (14.5,3.75) {${=}\,\, \frac{1}{2^{2\cdot\catorder}}$};
 
-                \begin{scope}[shift={(18,3.75)}]
+                \begin{scope}[shift={(18,1.5)}]
 
-                    \draw (3,-0.5) ellipse (4.5cm and 3cm);
-                    \node[anchor=center] at (5,3.25) {$\absof{\cdot}^2$};
+                    % Squared
+                    \draw (-1,6) to[bend right=15] (-1,-2);
+                    \draw (7,6) to[bend right=-15] (7,-2);
+                    \drawtextnode{7.5}{6.5}{$2$}
+
+                    \draw (1.5,3) rectangle (4.5,6);
+                    \drawtextnode{3}{4.5}{
+                        $\begin{bmatrix}
+                             -1 \\
+                             1
+                        \end{bmatrix}$
+                    }
 
                     \draw[->-] (3,1) -- (3,3) node[midway,right] {\colorlabelsize $\headvariable$};
                     \draw (0,-1) rectangle (6,1);
@@ -58,9 +68,8 @@
 
             \end{tikzpicture}
         \end{center}
-        \caption{Measurement setup for the Deutsch-Jozsa test on the formula $\exformula$.
-        We measure the probability of the statistic qubit $\headvariable$, when the distributed qubits $\shortcatvariables$ are in the ground state after a Walsh-Hadamard transform.
-        This is equal to a scaled and squared contraction of the basis encoding to the formula $\exformula$.
+        \caption{Measurement setup for the Deutsch-Jozsa algorithm on the formula $\exformula$.
         }\label{fig:deutschJozsa}
     \end{figure}
+
 \end{example}
