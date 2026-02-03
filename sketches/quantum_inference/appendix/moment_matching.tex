@@ -1,7 +1,15 @@
 \section{Moment Matching by Amplitude Amplification}
 
+We here apply \computationCircuits{} on anti-symmetric ancilla states (as for sign encoding)
+\begin{itemize}
+    \item A single \computationCircuit{} effectively prepares a reflection across the models of the computed formula
+    \item Building the reflections based on ancilla ground states (as for basis encoding), we would need an additional Pauli-Z and two \computationCircuits{}
+    \item Further ancilla qubits used in circuit decompositions need to be uncomputed (i.e. by applying the same partial \computationCircuit{} again) for further usage
+\end{itemize}
 
 We now investigate which \ComputationActivationNetworks{} can be prepared directly with amplitude amplification.
+
+\subsection{Reflection by single \computationCircuits{}}
 
 To start let
 \begin{itemize}
@@ -73,6 +81,8 @@ This reflection can be performed by the operator on the distributed qubits
 
 When $\left(\frac{1}{2}+\repnum\right)\rotanglesymbol\leq \frac{\pi}{2}$ then all amplitudes remain positive, and $\qstateofat{\repnum}{\shortcatvariables}$ is a q-sample.
 
+
+\subsection{Moment Matching based preparation of \CompActNets{}}
 
 % As exponential family parameters
 The mean parameter of $\exformula$ with respect to the measurement distribution is
