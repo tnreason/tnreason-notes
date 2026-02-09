@@ -17,7 +17,7 @@
     \date{\today}
 
 
-    \section{Deterministic}
+    \section{Deterministic Finite Automata}
 
     Literature:
     \begin{itemize}
@@ -79,6 +79,18 @@
 
     % Complement
     Note that the acceptance tensor of the complement DFA is prepared when replacing the basis encoding $\onehotmapofat{\invindexinterpretationofat{Q}{F}}{\indvariableof{Q,\catorder}}$ by the basis encoding $\onehotmapofat{\invindexinterpretationofat{Q}{\bar{F}}}{\indvariableof{Q,\catorder}}$ of the complement of the accepting states.
+
+
+    \section{Stochastic Finite Automata}
+
+    Ideas:
+    \begin{itemize}
+        \item The transition function is replaced by a cpd, which is encoded by a more general directed tensor and copied to all cores of a $\ttformat$.
+        \item The result is a Markov Chain, i.e. a Bayesian Network on a chain graph.
+        \item The contraction above then gives the probability of acceptance for a given input word.
+        \item One can add a distribution over the input words, and contract to get a joint distribution of input words with an acceptance variable.
+    \end{itemize}
+
 
 
     \bibliographystyle{plainnat}
