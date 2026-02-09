@@ -1,0 +1,88 @@
+\documentclass[aps,onecolumn,nofootinbib,pra]{article}
+
+\usepackage{../../spec_files/arxiv}
+\input{../../spec_files/standard_preamble.tex}
+
+\input{../../macros/organization_macros.tex}
+\input{../../macros/general_macros.tex}
+\input{../../macros/tc_macros.tex}
+\input{../../macros/tikz_macros.tex}
+
+\usepackage{minted}
+
+\begin{document}
+    \title{Representation of Finite Automata with \tnreason{}}
+
+    \maketitle
+    \date{\today}
+
+
+    \section{Deterministic}
+
+    Literature:
+    \begin{itemize}
+        \item \cite{crosswhite_finite_2008} Basic Representation by TT/MPS.
+        \item \cite{bellante_compiling_2026} Usage of canonical formats (orthogonalization) to find quantum circuit representations.
+    \end{itemize}
+
+    Idea:
+    \begin{itemize}
+        \item Construct chain graphs decorated with basis encodings of state transition functions, as in \cite{crosswhite_finite_2008,bellante_compiling_2026}
+        \item Contract with basis encoding of halting states and get the boolean tensor indicating the accepted states of the automaton
+    \end{itemize}
+
+    \begin{definition}[Deterministic finite automaton (DFA), see Def~2 in \cite{bellante_compiling_2026}]
+        A tuple of
+        \begin{itemize}
+            \item set of internal states $Q$
+            \item alphabet $\Sigma$
+            \item initial state $r_0\in Q$
+            \item accepted states $F\subset Q$
+            \item transition function $\delta:Q\otimes \Sigma\rightarrow Q\cup\{\varnothing\}$
+        \end{itemize}
+        is called a deterministic finite automaton (DFA).
+    \end{definition}
+
+    We enumerate the set $Q$ by an map $\indexinterpretationof{Q}$ with enumeration variable $\indvariableof{Q}$, and the alphabet $\Sigma$ by a map $\indexinterpretationof{\Sigma}$ with an enumeration variable $\indvariableof{\Sigma}$.
+    Both indicator variables will be copied for $\catenumeratorin$ (respectively $\catenumerator\in[\catorder+1]$) and the copies denoted by $\indvariableof{\Sigma,\catenumerator}$ and $\indvariableof{Q,\catenumerator}$.
+    The acceptance tensor of order $\catorder\in\nn$ is the boolean tensor $\hypercoreat{\indvariableof{\Sigma,[\catorder]}}$ indicating whether the automaton accepts the input sequence of length at most $\catorder$.
+    Its coordinates are
+    \begin{align*}
+        \hypercoreat{\indexedindvariableof{\Sigma,[\catorder]}}
+        = \begin{cases}
+              1 & \ifspace \text{The automaton accepts the input sequence }\left(\indexinterpretationofat{\Sigma}{\indexedindvariableof{\catenumerator}}\wcols\catenumeratorin\right)\\
+              0 & \text{else}
+        \end{cases} \, .
+    \end{align*}
+
+
+    \begin{lemma}[Tensor representation]
+        Let $(Q,\Sigma,\delta,r_0,F)$ be a deterministic finite automaton.
+        Then the acceptance tensor of order $\catorder\in\nn$ is the contraction
+        \begin{align*}
+            \hypercoreat{\indvariableof{\Sigma,[\catorder]}}
+            = \contractionof{
+                \left\{ \bencodingofat{\delta}{\indvariableof{Q,\catenumerator},\indvariableof{\Sigma,\catenumerator},\indvariableof{\Sigma,\catenumerator}} \wcols \catenumeratorin
+                \right\}
+                \cup
+                \{\onehotmapofat{\invindexinterpretationofat{Q}{r_0}}{\indvariableof{Q,0}},
+                \onehotmapofat{\invindexinterpretationofat{Q}{F}}{\indvariableof{Q,\catorder}}
+                \}
+            }{\indvariableof{\Sigma,[\catorder]}} \, .
+        \end{align*}
+    \end{lemma}
+    \begin{proof}
+        By basis calculus:
+        Given the one-hot encoding of the input word and contracting with the tensor network (expect the basis encoding tensor of $F$) leaving $\indvariableof{Q,\catorder}$ open, we get the one hot encoding of the finial state of the automaton.
+        Contracting with the one-hot encoding of $F$ is then $1$, if and only if the final state is in the accepted states.
+    \end{proof}
+
+    % Complement
+    Note that the acceptance tensor of the complement DFA is prepared when replacing the basis encoding $\onehotmapofat{\invindexinterpretationofat{Q}{F}}{\indvariableof{Q,\catorder}}$ by the basis encoding $\onehotmapofat{\invindexinterpretationofat{Q}{\bar{F}}}{\indvariableof{Q,\catorder}}$ of the complement of the accepting states.
+
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
+
+
+\end{document}
