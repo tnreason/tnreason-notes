@@ -1,3 +1,8 @@
+\newcommand{\coloredmatrixof}[2]{\begin{bmatrix}
+#1
+\end{bmatrix}\left[#2\right]}
+
+
 %% CONTRACTIONS
 \newcommand{\contractionof}[2]{\left\langle #1\right\rangle_{\left[ #2 \right]}}
 
@@ -20,7 +25,7 @@
 \newcommand{\bencodingwith}{\bencodingofat{\exfunction}{\headvariableof{\exfunction},\shortcatvariables}}
 
 \newcommand{\sencodingof}[1]{\sigma^{#1}}
-\newcommand{\sencodingofat}[2]{\sencodingof{#1}\left[#2\right]}  
+\newcommand{\sencodingofat}[2]{\sencodingof{#1}\left[#2\right]}
 \newcommand{\sencodingwith}{\sencodingofat{\exfunction}{\shortcatvariables,\selvariable}}
 
 \newcommand{\bsencodingof}[1]{\bencodingof{\sencodingof{#1}}} % {\bencodingof{#1}}% % Following the convention at the end of notation chapter
@@ -223,22 +228,20 @@
 \newcommand{\eltrivcansof}[1]{\Lambda^{#1,\elformat,\trivbm}}
 
 
-
-
 %% MAIN VARIABLES
-\newcommand{\indvariable}{O} 
+\newcommand{\indvariable}{O}
 \newcommand{\inddim}{r}
 \newcommand{\indindex}{o} % was s
 \newcommand{\indenumerator}{l}
 \newcommand{\indorder}{n} % number of variables 
 
-\newcommand{\selvariable}{L} 
+\newcommand{\selvariable}{L}
 \newcommand{\seldim}{p}
 \newcommand{\selindex}{\ell}
 \newcommand{\selenumerator}{s}
 \newcommand{\selorder}{n}
 
-\newcommand{\catvariable}{X} 
+\newcommand{\catvariable}{X}
 \newcommand{\catdim}{m}
 \newcommand{\catindex}{x} % was i
 \newcommand{\catenumerator}{\atomenumerator}
@@ -280,7 +283,7 @@
 
 \newcommand{\indindexof}[1]{\indindex_{#1}}
 \newcommand{\selindexof}[1]{\selindex_{#1}}
-\newcommand{\catindexof}[1]{\catindex_{#1}} 
+\newcommand{\catindexof}[1]{\catindex_{#1}}
 \newcommand{\headindexof}[1]{\headindex_{#1}}
 
 \newcommand{\indindexin}{\indindex\in[\inddim]}
@@ -370,7 +373,7 @@
 \newcommand{\secfacspace}{\bigotimes_{\secatomenumerator\in[\seccatorder]} \rr^{\catdimof{\secatomenumerator}}}
 
 \newcommand{\indexedcatvariables}{\indexedcatvariableof{0},\ldots,\indexedcatvariableof{\atomorder-1}}
-\newcommand{\tildeindexedcatvariables}{\catvariableof{0}=\tilde{\catindex}_0,\ldots,\catvariableof{\atomorder-1}=\tilde{\catindex}_{\atomorder-1}} 
+\newcommand{\tildeindexedcatvariables}{\catvariableof{0}=\tilde{\catindex}_0,\ldots,\catvariableof{\atomorder-1}=\tilde{\catindex}_{\atomorder-1}}
 
 \newcommand{\seccatenumerator}{\tilde{\catenumerator}}
 \newcommand{\seccatenumeratorin}{\seccatenumerator\in[\catorder]}
@@ -390,7 +393,7 @@
 \newcommand{\indexedseccatvariableof}[1]{\seccatvariableof{#1}=\seccatindexof{#1}}
 \newcommand{\seccatvariables}{\seccatvariableof{0},\ldots,\seccatvariableof{\seccatorder\shortminus1}}
 \newcommand{\secshortcatvariables}{\seccatvariableof{[\seccatorder]}}
-\newcommand{\indexedseccatvariables}{\indexedseccatvariableof{0}\ldots,\indexedseccatvariableof{\seccatorder-1}} 
+\newcommand{\indexedseccatvariables}{\indexedseccatvariableof{0}\ldots,\indexedseccatvariableof{\seccatorder-1}}
 \newcommand{\indexedsecshortcatvariables}{\indexedseccatvariableof{[\seccatorder]}}
 
 \newcommand{\catvariablesinset}[1]{\catvariableof{#1}}%{\catvariableof{\node} \wcols \node \in #1}

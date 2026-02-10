@@ -25,13 +25,15 @@ The we split the initial state into vectors supported at the models of $\exformu
 where
 \begin{align*}
     \qstateofat{+}{\shortcatvariables}
-    &= \sum_{\shortcatindicesin\wcols\exformulaat{\indexedshortcatvariables}=1} \sqrt{\probat{\indexedshortcatvariables}} \onehotmapofat{\shortcatindices}{\shortcatvariables} \\
+    &= \sum_{\shortcatindicesin\wcols\exformulaat{\indexedshortcatvariables}=1} \sqrt{\probat{\indexedshortcatvariables}}
+    \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \\
     \qstateofat{-}{\shortcatvariables}
-    &= \sum_{\shortcatindicesin\wcols\exformulaat{\indexedshortcatvariables}=0} \sqrt{\probat{\indexedshortcatvariables}} \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
+    &= \sum_{\shortcatindicesin\wcols\exformulaat{\indexedshortcatvariables}=0} \sqrt{\probat{\indexedshortcatvariables}}
+    \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
 \end{align*}
 We define an angle $\rotanglesymbol$ by
 \begin{align*}
-    \sinof{\frac{\rotanglesymbol}{2}} \coloneqq \|\qstateofat{+}{\shortcatvariables}\|_2
+    \sinof{\frac{\rotanglesymbol}{2}} \coloneqq \normof{\qstateofat{+}{\shortcatvariables}}
 \end{align*}
 and have
 \begin{align*}
@@ -42,9 +44,10 @@ and have
 Further we have that
 \begin{align*}
     \meanparam^{0}
-    = \contraction{\probwith,\formulawith}
-    = \left(\|\qstateofat{+}{\shortcatvariables}\|_2\right)^2
-    = \left(\sinof{\frac{\rotanglesymbol}{2}}\right)^2 \, .
+    &= \contraction{\probofat{0}{\shortcatvariables},\formulawith} \\
+    &= \sum_{\shortcatindicesin} \absof{\qstateofat{0}{\indexedshortcatvariables}\formulaat{\indexedshortcatvariables}}^2 \\
+    &= \left(\|\qstateofat{+}{\shortcatvariables}\|_2\right)^2 \\
+    &= \left(\sinof{\frac{\rotanglesymbol}{2}}\right)^2 \, .
 \end{align*}
 
 We prepare an ancilla qubit in the anti-symmetric state and consider as initial state
@@ -81,6 +84,97 @@ This reflection can be performed by the operator on the distributed qubits
 
 When $\left(\frac{1}{2}+\repnum\right)\rotanglesymbol\leq \frac{\pi}{2}$ then all amplitudes remain positive, and $\qstateofat{\repnum}{\shortcatvariables}$ is a q-sample.
 
+\begin{theorem}
+    Let $\qstateof{0}$ be the q-sample of a maximum entropy distribution with respect to the uniform base measure and the statistic $\formulaset$, and let $\repnum\in\nn$ be a rotation number such that $\left(\frac{1}{2}+\repnum\right)\rotanglesymbol\leq\frac{\pi}{2}$.
+    Then also $\qstateof{\repnum}$ is the q-sample of a maximum entropy distribution .
+\end{theorem}
+\begin{proof}
+    Since the measurement distribution of any quantum state in the plane spanned by $\qstateof{+}$ and $\qstateof{-}$ is an elementary \ComputationActivationNetwork{}.
+    When the assumption on $\repnum$ is met, we further have positive real amplitudes and therefore a q-sample.
+%    Since each amplitude amplification can be understood as an change of mean parameters.
+    To be more precise, we characterize the change of canonical parameters in the lemma below.
+\end{proof}
+
+
+
+\begin{lemma}
+    Let $\qstateof{0}$ be the q-sample of the elementary \ComputationActivationNetwork{} with canonical parameters $\hybridparam$, and let us amplify the formula $\formulaof{\selindex}$.
+    Then $\qstateof{\repnum}$ is the q-sample of the elementary \ComputationActivationNetwork{} with canonical parameters
+    \begin{align*}
+        \hardlegset^{\repnum} =
+        \begin{cases}
+            \hardlegset \cup \{\selindex\}, \headindexof{\hardlegset}^{\selindex} = (\headindexof{\hardlegset},1) & \ifspace \sinof{(1+2\cdot\repnum)\sin^{-1}\left(\sqrt{\meanparamofat{0}{\indexedselvariable}}\right)} = 1 \\
+            \hardlegset, \headindexof{\hardlegset} & \elsetext
+        \end{cases}
+    \end{align*}
+    and
+    \begin{align*}
+        \canparamofat{\repnum}{\indexedselvariable} =
+        \begin{cases}
+            0 & \ifspace  \sinof{(1+2\cdot\repnum)\sin^{-1}\left(\sqrt{\meanparamofat{0}{\indexedselvariable}}\right)} = 1 \\
+            \canparamat{\indexedselvariable} + \frac{
+                \cos^2\left(\frac{\rotanglesymbol}{2}\right) \left(1-
+                                                                 \cos^2\left(\left(\frac{1}{2}+\repnum\right) \rotanglesymbol \right)
+                \right)
+            }{
+                \sin^2\left(\frac{\rotanglesymbol}{2}\right)
+                \cdot \cos^2\left(\left(\frac{1}{2}+\repnum\right)\rotanglesymbol\right)
+            } & \elsetext
+        \end{cases} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    Notice, that
+    \begin{align*}
+        \contractionof{\probofat{0}{\shortcatvariables},\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables}}{\headvariableof{\selindex}}
+        = \coloredmatrixof{
+              \left(\cosof{\frac{\rotanglesymbol}{2}}\right)^2 \\
+              \left(\sinof{\frac{\rotanglesymbol}{2}}\right)^2
+        }{\headvariableof{\selindex}}
+        = \coloredmatrixof{
+            1-\meanparamofat{0}{\indexedselvariable} \\
+            \meanparamofat{0}{\indexedselvariable}
+        }{\headvariableof{\selindex}}
+    \end{align*}
+    and
+    \begin{align*}
+        \contractionof{\probofat{\repnum}{\shortcatvariables},\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables}}{\headvariableof{\selindex}}
+        = 
+        \coloredmatrixof{
+              \left(\cosof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol}\right)^2 \\
+              \left(\sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol}\right)^2
+        }{\headvariableof{\selindex}}
+        \coloredmatrixof{
+            1-\meanparamofat{\repnum}{\indexedselvariable} \\
+            \meanparamofat{\repnum}{\indexedselvariable}
+        }{\headvariableof{\selindex}}
+    \end{align*}
+    If $\meanparamofat{\repnum}{\indexedselvariable}=1$ (that is $\sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol}=1$), the amplitude amplification amounts to adding $\formulaof{\selindex}$ as a hard constraint.
+    This is equal to $\hardlegset^{\repnum}=\hardlegset\cup\{\selindex\}$ and $\headindexof{\hardlegset}^{\repnum}=(\headindexof{\hardlegset},1)$.
+
+    If $\meanparamofat{\repnum}{\indexedselvariable}\neq 1$ we choose $\canparamofat{\Delta}{\indexedselvariable}\geq 0$ as in the claim and have
+    \begin{align*}
+        \frac{
+        \left(\cosof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol}\right)^2 
+        }{
+        \left(\cosof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol}\right)^2 + \canparamofat{\Delta}{\indexedselvariable} \cdot \left(\sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol}\right)^2
+        } = \left(\cosof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol}\right)^2
+    \end{align*}
+    and therefore
+    \begin{align*}
+         \contractionof{\probofat{\repnum}{\shortcatvariables},\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables}}{\headvariableof{\selindex}}
+        = \normalizationof{
+         \expof{\canparamofat{\Delta}{\indexedselvariable}\cdot\formulaofat{\selindex}{\canparam}}
+         \probofat{0}{\shortcatvariables},\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables}
+         }{\headvariableof{\selindex}} \, .
+    \end{align*}
+    Thus, the manipulation of the q-sample corresponds with an increase of the canonical parameter $\canparamofat{0}{\indexedselvariable}$ by $\canparamofat{\Delta}{\indexedselvariable}$.
+\end{proof}
+
+%
+Notice, that we can only increase the canonical parameter by amplitude amplification.
+Decreasing could be done by amplitude amplification on $\lnot\formulaof{\selindex}$ instead.
+
 
 \subsection{Moment Matching based preparation of \CompActNets{}}
 
@@ -89,23 +183,27 @@ The mean parameter of $\exformula$ with respect to the measurement distribution 
 \begin{align*}
     \meanparam^{\repnum}
     = \contraction{\probofat{\repnum}{\shortcatvariables},\formulawith}
-    = \left(\frac{
-        2\cdot \sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol} \cdot \sin^{-1}\left(\sqrt{\meanparam^{0}}\right)
-    }{\meanparam^{0}}\right)^2
+    = \sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol}^2
+    = \sinof{\left(1+2\repnum\right)\sin^{-1}\left(\sqrt{\meanparam^{0}}\right)}^2
+    %= \left(\frac{
+    %    2\cdot \sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol} \cdot \sin^{-1}\left(\sqrt{\meanparam^{0}}\right)
+    %}{\meanparam^{0}}\right)^2
 \end{align*}
-This change of mean parameters can be understood by increasing the canonical parameter to $\exformula$ by
-\begin{align*}
-    \canparam
-    = \frac{
-        \cos^2\left(\frac{\rotanglesymbol}{2}\right) \left(1-
-                                                         \cos^2\left(\left(\frac{1}{2}+\repnum\right) \rotanglesymbol \right)
-        \right)
-    }{
-        \sin^2\left(\frac{\rotanglesymbol}{2}\right)
-        \cdot \cos^2\left(\left(\frac{1}{2}+\repnum\right)\rotanglesymbol\right)
-    }
-\end{align*}
-we here allow for $\canparam=\infty$, which corresponds to the case of a hard activation to $\exformula$.
+Here we used that $\rotanglesymbol = 2\cdot\sin^{-1}\left(\sqrt{\meanparam^{0}}\right)$.
+
+%This change of mean parameters can be understood by increasing the canonical parameter to $\exformula$ by
+%\begin{align*}
+%    \canparamof{\repnum} - \canparamof{0}
+%    = \frac{
+%        \cos^2\left(\frac{\rotanglesymbol}{2}\right) \left(1-
+%                                                         \cos^2\left(\left(\frac{1}{2}+\repnum\right) \rotanglesymbol \right)
+%        \right)
+%    }{
+%        \sin^2\left(\frac{\rotanglesymbol}{2}\right)
+%        \cdot \cos^2\left(\left(\frac{1}{2}+\repnum\right)\rotanglesymbol\right)
+%    }
+%\end{align*}
+%we here allow for $\canparam=\infty$, which corresponds to the case of a hard activation to $\exformula$.
 
 We understand this rotation as a moment matching operation to the formula $\exformula$, see \algoref{alg:QCMM}.
 
@@ -135,3 +233,9 @@ We understand this rotation as a moment matching operation to the formula $\exfo
         \EndWhile
     \end{algorithmic}
 \end{algorithm}
+
+
+% Outook
+We can use \algoref{alg:QCMM} as a preparation algorithm of a q-sample before doing ancilla augmentation as in the main section.
+Note that is important to keep track of the canonical parameters in the preparation.
+When activating the statistic qubits, only the difference of the already prepared canonical parameters and the target canonical parameters has to be used (importance sampling interpretation).
