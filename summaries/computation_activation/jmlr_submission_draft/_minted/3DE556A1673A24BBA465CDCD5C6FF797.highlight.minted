@@ -1,3 +1,0 @@
-\begin{MintedVerbatim}[commandchars=\\\{\}]
-\PYG{n}{numpy}\PYG{o}{.}\PYG{n}{einsum}
-\end{MintedVerbatim}

@@ -1,3 +1,0 @@
-\begin{MintedVerbatim}[commandchars=\\\{\}]
-\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{tnreason}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{engine}\PYG{p}{,} \PYG{n}{application}
-\end{MintedVerbatim}

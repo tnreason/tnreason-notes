@@ -1,0 +1,59 @@
+\section{Quantum Amplitude Estimation for Forward Inference}
+
+Given a distribution $\probwith$ and a propositional formula $\formulaat{\shortcatvariables}$, we now investigate how to use Quantum Phase Estimation to estimate
+\begin{align*}
+    \meanparam
+    = \contraction{\probat{\shortcatvariables},\formulaat{\shortcatvariables}} \, .
+\end{align*}
+
+We assume that
+\begin{itemize}
+    \item a circuit $U$ preparing a q-sample of $\probwith$
+    \item a \computationCircuit{} for $\formulawith$
+\end{itemize}
+
+\subsection{Eigenvalues the formula-amplifying Grover operator}
+
+The Grover operator $\groverofat{\probtensor,\formula}{\shortcatvariables^{\insymbol},\shortcatvariables^{\outsymbol},\avariable^{\insymbol},\avariable^{\outsymbol}}$ amplifying $\formula$
+\begin{align*}
+    (U^{T}S_{0}U)\qcbencodingof{\exformula}
+\end{align*}
+acting on the initial state
+\begin{align*}
+    \onehotmapofat{0}{\shortcatvariables} \otimes \sqrt{\frac{1}{2}}\cdot\coloredmatrixof{1\\-1}{\avariable} \, .
+\end{align*}
+
+
+
+We describe the Grover operator by its action on the projection onto the plane
+\begin{align*}
+    \spanof{\qstateof{\probtensor,\formula},\qstateof{\probtensor,\lnot\formula}}
+\end{align*}
+as
+\begin{align*}
+    \coloredmatrixof{\cosof{\rotanglesymbol} & \sinof{\rotanglesymbol} \\
+    -\sinof{\rotanglesymbol} & \cosof{\rotanglesymbol}}{
+        \indvariableof{\insymbol},\indvariableof{\outsymbol}
+    } \, .
+\end{align*}
+Here we introduce a boolean variables $\indvariable$ to select the two axis on the plane, and copy it to $\indvariableof{\insymbol},\indvariableof{\outsymbol}$.
+The rotation angle is related to $\meanparam$ as
+\begin{align*}
+    \rotanglesymbol = 2 \cdot \sin^{-1}\left(\sqrt{\meanparam}\right)
+\end{align*}
+
+Its eigenvalues are thus
+\begin{align*}
+    \expof{\pm i\rotanglesymbol}
+\end{align*}
+to the eigenstates
+\begin{align*}
+    \frac{1}{2}
+    \coloredmatrixof{1\\\pm i}{\indvariable} \, .
+\end{align*}
+
+\subsection{Quantum Phase Estimation}
+
+We prepare auxiliary qubits $\avariables$ and perform for each $\selindexin$ $2^{\selindex}$ repetitions of $\groverof{\probtensor,\exformula}$ controlled on $\avariableof{\selindex}$.
+The inverse Fourier transform on the auxiliary qubits is supported on the (2-adic representation of the) phases on the eigenvalues, i.e. $\pm\rotanglesymbol$, and can be detected by a computational basis measure of the ancilla variables.
+
