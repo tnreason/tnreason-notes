@@ -1,0 +1,92 @@
+\documentclass[a4paper,11pt,twoside,english]{article}
+\usepackage{wiaspreprint}
+\input{info}
+\input{titlepage}
+
+%%%%%%%%%%%%%%%%%% packages
+\usepackage{amsthm}
+
+%%%%%%%%%%%%%%%%%% copied from jmlr submission file
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\usepackage{minted}
+
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\usetikzlibrary{fit}
+\input{../../../macros/organization_macros.tex}
+\input{../../../macros/general_macros.tex}
+\input{../../../macros/tc_macros.tex}
+\input{../../../macros/tikz_macros.tex}
+\newcommand{\abs}[1]{\ensuremath{\left\vert#1\right\vert}}
+\newcommand{\alex}[1]{\textcolor{blue}{#1}}
+\newcommand{\maxf}[1]{\textcolor{orange}{#1}}
+\newcommand{\janina}[1]{\textcolor{teal}{#1}}
+\newcommand{\martin}[1]{\textcolor{cyan}{#1}}
+\usepackage{svg}
+%%%%%%%%%%%%%%%%%%%%% copied from book chapter wias preprint
+\usepackage{thmtools}
+
+\declaretheorem[
+    name=Theorem,
+    numberwithin=section]{theorem}
+\declaretheorem[
+    name=Assumption,
+    sibling=theorem]{assumption}
+
+\numberwithin{equation}{section}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{natbib}
+\makeatletter
+\renewcommand\NAT@nmfmt[1]{#1\allowbreak}
+\makeatother
+\setlength{\emergencystretch}{2em}
+
+
+
+
+
+
+\begin{document}
+    \maketitle
+
+    \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
+        \input{../sections/abstract}
+    \end{abstract}
+
+    \input{../sections/introduction}
+    \input{../sections/notation}
+    \input{../sections/probabilistic_paradigm}
+    \input{../sections/neural_paradigm}
+    \input{../sections/logical_paradigm}
+    \input{../sections/hybrid_activation}
+    \input{../sections/implementation}
+    \input{../sections/conclusion}
+
+
+% Manual newpage inserted to improve layout of sample file - not
+% needed in general before appendices/bibliography.
+
+    \vskip 0.2in
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../../references.bib}%
+
+    \appendix
+
+    \input{../appendix/factorization_proofs}
+    \input{../appendix/algorithms_implementation}
+
+
+\end{document}

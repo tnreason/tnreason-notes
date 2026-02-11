@@ -1,0 +1,119 @@
+\begin{tikzpicture}[scale=0.35, thick]
+    %% Ancilla Qubits
+    \draw (-1,16) rectangle (1,18);
+    \drawtextnode{0}{17}{\corelabelsize $\fbasis$}
+    \draw (1,17) -- (13.5,17);
+    \draw (13.5,16) rectangle (16.5,18);
+    \drawtextnode{15}{17}{$\qcaencodingof{\hypercoreof{\seldim-1}}$};
+    \draw (16.5,17) -- (20,17);
+
+    \draw (15,10) -- (15,16);
+    \drawvariabledot{15}{10}
+
+    \node[rotate=45] at (13.5,15) {$\cdots$};
+    \node[rotate=45] at (13.5,8) {$\cdots$};
+
+    \drawtextnode{0}{15.25}{$\vdots$};
+    \drawtextnode{-3.5}{15}{Ancilla\\Qubits};
+
+    \draw (-1,12) rectangle (1,14);
+    \drawtextnode{0}{13}{\corelabelsize $\fbasis$};
+    \draw (1,13) -- (11,13);
+    \draw (11,12) rectangle (13,14);
+    \drawtextnode{12}{13}{$\qcaencodingof{\hypercoreof{0}}$};
+    \draw (13,13) -- (20,13);
+
+    \draw (12,6) -- (12,12);
+    \drawvariabledot{12}{6}
+
+    %% Statistic Qubits
+    \draw[dashed] (-3,11.5) -- (26.5,11.5);
+    \draw (-1,9) rectangle (1,11);
+    \drawtextnode{0}{10}{\corelabelsize $\fbasis$};
+    \draw (1,10) -- (7.5,10);
+    \draw (7.5,9) rectangle (10.5,11);
+    \drawtextnode{9}{10}{$\qcbencodingof{f_{\seldim-1}}$};
+    \draw (10.5,10) -- (20,10);
+
+    \draw (8.5,3) -- (8.5,9);
+    \drawvariabledot{8.5}{3}
+    \draw (9.5,-1) -- (9.5,9);
+    \drawvariabledot{9.5}{-1}
+
+    \node[rotate=45] at (7.5,8) {$\cdots$};
+    \node[rotate=45] at (7.5,1) {$\cdots$};
+
+    \drawtextnode{0}{8.25}{$\vdots$};
+    \drawtextnode{-3.5}{8}{Statistic\\Qubits};
+
+    \draw (-1,5) rectangle (1,7);
+    \drawtextnode{0}{6}{\corelabelsize $\fbasis$};
+    \draw (1,6) -- (5,6);
+    \draw (5,5) rectangle (7,7);
+    \drawtextnode{6}{6}{$\qcbencodingof{f_{0}}$};
+    \draw (7,6) -- (20,6);
+
+    \draw (5.5,3) -- (5.5,5);
+    \drawvariabledot{5.5}{3}
+    \draw (6.5,-1) -- (6.5,5);
+    \drawvariabledot{6.5}{-1}
+
+    %% Distributed Qubits
+    \draw[dashed] (-3,4.5) -- (26.5,4.5);
+
+    \draw (-1,2) rectangle (1,4);
+    \drawtextnode{0}{3}{\corelabelsize $\fbasis$};
+    \draw (1,3) -- (2,3);
+    \draw (2,2) rectangle (4,4);
+    \drawtextnode{3}{3}{\corelabelsize $\hgate$};
+
+    \draw (4,3) -- (20,3);
+
+    \drawtextnode{0}{1.25}{$\vdots$};
+    \drawtextnode{-3.5}{1}{Distributed\\Qubits};
+
+    \draw (-1,-2) rectangle (1,0);
+    \drawtextnode{0}{-1}{\corelabelsize $\fbasis$};
+    \draw (1,-1) -- (2,-1);
+    \draw (2,-2) rectangle (4,0);
+    \drawtextnode{3}{-1}{\corelabelsize $\hgate$};
+
+    \draw (4,-1) -- (20,-1);
+
+    %% Measurements
+    \drawqcmeasuresymbol{21}{17}
+    \draw (22,17) -- (24,17) node[midway,above]{\colorlabelsize $\avariableof{\seldim\shortminus1}$};
+    \draw (24,16) rectangle (26,18);
+    \node[anchor=center] at (25,17) {\corelabelsize $\tbasis$};
+
+    \drawtextnode{23}{15.5}{$\vdots$};
+    \drawqcmeasuresymbol{21}{13}
+    \draw (22,13) -- (24,13) node[midway,above]{\colorlabelsize $\avariableof{0}$};
+    \draw (24,12) rectangle (26,14);
+    \node[anchor=center] at (25,13) {\corelabelsize $\tbasis$};
+
+    \drawqcmeasuresymbol{21}{10}
+    \draw (22,10) -- (24,10) node[midway,above]{\colorlabelsize $\headvariableof{\seldim\shortminus1}$};
+    \drawvariabledot{24}{10}
+    \drawtextnode{23}{8.5}{$\vdots$};
+    \drawqcmeasuresymbol{21}{6}
+    \draw (22,6) -- (24,6) node[midway,above]{\colorlabelsize $\headvariableof{0}$};
+    \drawvariabledot{24}{6}
+
+    \drawqcmeasuresymbol{21}{3}
+    \draw (22,3) -- (24,3) node[midway,above]{\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
+    \drawtextnode{23}{1.5}{$\vdots$};
+    \drawqcmeasuresymbol{21}{-1}
+    \draw (22,-1) -- (24,-1) node[midway,above]{\colorlabelsize $\catvariableof{0}$};
+
+    \begin{scope}[shift={(-15,0)}]
+        \draw (-1,4) rectangle (3,-2);
+        \draw (3,3) -- (5,3) node[midway,above]{\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
+        \draw (3,-1) -- (5,-1) node[midway,above]{\colorlabelsize $\catvariableof{0}$};
+        \drawtextnode{4}{1.5}{$\vdots$}
+        \drawtextnode{1}{1}{$\probof{\hybridparam}$};
+        \drawtextnode{-2}{1}{$\acceptanceprob\cdot$}
+        \drawtextnode{6}{1}{${=}$}
+    \end{scope}
+
+\end{tikzpicture}

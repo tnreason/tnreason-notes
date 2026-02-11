@@ -1,0 +1,139 @@
+\section{Implementation in the \python{} library \tnreason{}}\label{sec:implementation}
+
+\setminted{
+    fontsize=\fontsize{10}{10.5}\selectfont,
+    %linenos,
+    breaklines
+}
+
+The concepts presented in this paper have been implemented in the open source \python{} library \tnreason{}\footnote{\tnreason{} is available in version 2.0.0 at \url{pypi.org/tnreason} and maintained at \url{github.com/tnreason/tnreason-py}.}.
+In this section, we explain the basic design and functionality of this library and draw close connections to the theoretical exposition in the previous sections. In particular, Appendix~\ref{sec:algExaImplementation} provides detailed implementations of the algorithms and examples in this work.
+
+\subsection{Architecture}
+
+The package consists of four subpackages and three layers of abstraction:
+%\begin{figure}[t]
+\begin{center}
+    \input{../tikz_pics/implementation/architecture_sketch}
+\end{center}
+%\end{figure}
+In the subpackage \tnreason{}.\spengine{} we implement tensors, tensor networks, contractions, and normalizations.
+In the subpackage \tnreason{}.\sprepresentation{} the basic tensor encoding schemes such as basis encodings are available.
+In the subpackage \tnreason{}.\spreasoning{} we implement reasoning algorithms, such as generalizations of the message passing algorithms presented in \algoref{alg:treeBeliefPropagation}, \algoref{alg:constraintPropagation}, and \algoref{alg:AMM_HLN}.
+In the subpackage \tnreason{}.\spapplication{} one can construct tensor network encodings of propositional formulas and datasets.
+
+\subsection{Basic usage}
+
+We demonstrate the basic usage of the \tnreason{} package with the implementation of Example~\ref{exa:propFormulaCoordinatewise}.
+We first install the package (e.g. by \mintinline{shell}{pip install tnreason == 2.0.0}) and import it by
+\begin{minted}{python}
+from tnreason import engine, application
+\end{minted}
+%Tensors creation is a functionality of \tnreason{}.\spengine{}:
+%\begin{minted}{python}
+%createdTensor = engine.create_from_slice_iterator(shape, colors, sliceIterator)
+%\end{minted}
+Keeping \defref{def:tensor} in mind, the tensor instances in \mintinline{python}{shape} and \mintinline{python}{colors} arguments are \mintinline{python}{list} instances specifying the \mintinline{python}{int} dimension $\catdimof{\catenumerator}$ and a \mintinline{python}{str} identifier for $\catvariableof{\catenumerator}$.
+The formula in \exaref{exa:propFormulaCoordinatewise} is a sum of the one-hot encodings of its three models (see \exaref{exa:propFormulaBasCP}) and is created by
+\begin{minted}{python}
+formula = engine.create_from_slice_iterator(shape=[2,2,2], colors=["X_0","X_1","X_2"], sliceIterator=[(1,{"X_0":0,"X_1":1,"X2":0}), (1,{"X_0":1,"X_1":0,"X2":0}), (1,{"X_0":1,"X_1":1,"X2":0})])
+\end{minted}
+The slice iterator is an iterator over tuples \mintinline{python}{(val,posDict)}, which specifies elementary tensors to be summed.
+The \mintinline{python}{posDict} are \mintinline{python}{dict} instances, where the keys are the \mintinline{python}{str} tensor colors and the values are \mintinline{python}{int}.
+Each \mintinline{python}{posDict} collects leg vectors of the corresponding elementary tensor that are not trivial. These leg vectors are the basis vectors enumerated by the corresponding \mintinline{python}{int} value.
+
+Single tensor coordinates can be retrieved by indexing with a \mintinline{python}{posDict}.
+We can, for example, check whether \mintinline{python}{{"X_0":0,"X_1":1,"X_2":0}} is a model:
+\begin{minted}{python}
+assert formula[{"X_0":0,"X_1":1,"X_2"}] == 1
+\end{minted}
+By default the tensor is created as a \mintinline{python}{engine.NumpyCore} instance, where coordinates are stored as instances of \mintinline{python}{numpy.array}.
+Further core types exploiting different sparsity principles can be chosen by the argument \mintinline{python}{coreType}, see \cite[Appendix~A]{goessmann_tensor-network_2025}.
+
+Following \defref{def:tensorNetwork}, tensor networks are implemented as tensor valued \mintinline{python}{dict} instances with \mintinline{python}{str} keys.
+For example a tensor network is created from the propositional syntax of the above formula (see \exaref{exa:propFormulaHeadSym}): % a tensor network decomposition by propositional syntax.
+\begin{minted}{python}
+fDecomp = application.create_cores_to_expressionsDict({"f0": ["and",["or","X_0","X_1"],["not","X_2"]]})
+\end{minted}
+Here we apply a nested-list description of decomposition hypergraphs (see \defref{def:decompositionHypergraph}) with a specification of the logical connectives in the first position of the list (by \mintinline{python}{"and","or","not"} we refer to the connectives $\land,\lor,\lnot$).
+Equivalently, we can exploit the $\land$ symmetry and create it by multiple formulas:
+\begin{minted}{python}
+fDecomp = application.create_cores_to_expressionsDict({"f0": ["or","X_0","X_1"], "f1": ["not","X_2"]})
+\end{minted}
+A depiction of the underlying hypergraph as a factor graph, which highlights edges as blue blocks and nodes as red blocks, can be created with \mintinline{python}{engine.draw_factor_graph(fDecomp)} (see \figref{fig:factorGraphPlt}).
+%The \mintinline{python}{str} keys to the created cores carry the suffices \mintinline{python}{"_cC"} and \mintinline{python}{"_aC"} indicating whether they are part of the computation or the activation network.
+%Further, colors get the suffices \mintinline{python}{"_dV"} and \mintinline{python}{"_cV"} indicating whether they are distributed variables or computed and therefore auxiliary.
+Single tensors can be obtained by contracting a tensor network while specifying the open variables (for an explanation of the suffixes, see \figref{fig:factorGraphPlt}), for example:
+\begin{minted}{python}
+contracted = engine.contract(fDecomp, openColors=["X_0_dV","X_1_dV","X_2_dV"])
+\end{minted}
+By default the contractions are performed using \mintinline{python}{numpy.einsum} and further execution schemes can be selected with the argument \mintinline{python}{contractionMethod}, see \cite[Appendix~A]{goessmann_tensor-network_2025}.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=15cm]{../tikz_pics/factor_graph_plt.png}
+    \end{center}
+    \caption{
+        Factor graph highlighting a tensor network decomposition of the syntactic decomposition of the propositional formula of \exaref{exa:propFormulaHeadSym}.
+        Blue blocks highlight hyperedges carrying tensors and red blocks highlight variables.
+        The tensor label suffices \mintinline{python}{"_cC"} and \mintinline{python}{"_aC"} indicate whether the tensor is part of the computation network or the activation network.
+        The variable label suffices \mintinline{python}{"_dV"} and \mintinline{python}{"_cV"} indicate whether the variable is distributed or computed and therefore auxiliary.
+        This graph has been generated with the method \mintinline{python}{tnreason.engine.draw_factor_graph} of \tnreason{}.
+    }\label{fig:factorGraphPlt}
+\end{figure}
+
+
+%
+%\begin{minted}{python}
+%expressionsDict = {"f0" :  ["and", ["or", "a", "b"], ["not", "c"]]}
+%\end{minted}
+%After importing the package by
+%\begin{minted}{python}
+%from tnreason import representation, application, engine
+%\end{minted}
+%the CAN can then be build by defining all cores.
+%Activation cores then have suffices \mintinline{python}{_aC} and computation cores are denoted with suffices \mintinline{python}{_cC} by
+%\begin{minted}{python}
+%cores = application.create_cores_to_expressionsDict(expressionsDict)
+%computationCores = {key: value for key, value in cores.items()
+%                                                         if key.endswith("_cC")}
+%\end{minted}
+%The generated \mintinline{python}{computationCores} is a dictionary with the following keys and tensors of given shapes as expected in example~\ref{exa:bencodingNegCon}.
+%\begin{minted}{python}
+%'f0_aC', [2]
+%'(and_(or_a_b)_(not_c))_cC', [2, 2, 2]
+%'(or_a_b)_cC', [2, 2, 2]
+%'(not_c)_cC', [2, 2]
+%\end{minted}
+%Based on this dictionary, the \ComputationActivationNetwork{} can be build by setting the activation network for the single output feature (the output of $f$) to a vector acting on the output of the basis encoding of $f$. Here a \mintinline{python}{SingleHybridFeature} is used, which allows for hard or soft activations. Then the value for the desired output of the feature is set to \mintinline{python}{True}.
+%\begin{minted}{python}
+%caNet = representation.ComputationActivationNetwork(
+%    computationCoreDict=computationCores,
+%    featureDict={"f0" : representation.SingleHybridFeature(
+%                                    featureColor="(and_(or_a_b)_(not_c))_cV")},
+%    canParamDict={"f0" : True}
+%    )
+%\end{minted}
+%
+%As in example~\ref{exa:bencodingNegCon}, the CAN then has the following form.\alex{Should we use the engine.draw() for that?}
+%\input{../tikz_pics/implementation/can_decomp}
+%
+%The other representation in example~\ref{exa:bencodingNegCon} can also be implemented.
+%Both architectures can be found the linked notebook\footnote{\url{https://colab.research.google.com/drive/14knFuMJHI683DAmUgJ-G10MQFueoXR6q\#scrollTo=vrOYBViZhX2S}}.
+%Note that more efficient representations of this network are possible and the one described here is mainly for pedagogic purposes.
+%Furthermore the right implementation of the formula can be checked by contractions.
+%\begin{minted}{python}
+%allCores = caNet.create_cores()
+%formula = engine.contract(coreDict = allCores,
+%                          openColors=["a_dV","b_dV", "c_dV"])
+%assert formula[{"a_dV": 1, "b_dV" : 1, "c_dV" : 0}] == 1
+%assert formula[{"a_dV": 1, "b_dV" : 1, "c_dV" : 1}] == 0
+%\end{minted}
+%The notebook also shows how the network can be normalized to represent a uniform probability distribution over all models of the formula.
+%\begin{minted}{python}
+%distribution = engine.normalize(coreDict = allCores,
+%                                outColors = ["a_dV","b_dV", "c_dV"],
+%                                inColors = [])
+%assert distribution[{"a_dV": 1, "b_dV" : 1, "c_dV" : 0}] == 1/3
+%assert distribution[{"a_dV": 1, "b_dV" : 1, "c_dV" : 1}] == 0
+%\end{minted}

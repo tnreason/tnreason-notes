@@ -1,0 +1,34 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{tnreason}\PYG{n+nn}{.}\PYG{n+nn}{engine}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{contract}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{tnreason}\PYG{n+nn}{.}\PYG{n+nn}{engine}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{create\PYGZus{}from\PYGZus{}slice\PYGZus{}iterator} \PYG{k}{as} \PYG{n}{create}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{math}
+
+
+\PYG{k}{class}\PYG{+w}{ }\PYG{n+nc}{MomentMatcher}\PYG{p}{:}
+    \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{cores}\PYG{p}{,} \PYG{n}{hCols}\PYG{p}{,} \PYG{n}{satRates}\PYG{p}{)}\PYG{p}{:}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cores} \PYG{o}{=} \PYG{n}{cores}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hCols} \PYG{o}{=} \PYG{n}{hCols}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{satRates} \PYG{o}{=} \PYG{n}{satRates}
+
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hardParams} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{n}{hCol}\PYG{p}{:} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{satRates}\PYG{p}{[}\PYG{n}{hCol}\PYG{p}{]}\PYG{p}{)} \PYG{k}{for} \PYG{n}{hCol} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hCols} \PYG{k}{if}
+                           \PYG{n}{satRates}\PYG{p}{[}\PYG{n}{hCol}\PYG{p}{]} \PYG{o+ow}{in} \PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{\PYGZcb{}}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{softParams} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{n}{hCol}\PYG{p}{:} \PYG{l+m+mi}{0} \PYG{k}{for} \PYG{n}{hCol} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hCols} \PYG{k}{if} \PYG{n}{hCol} \PYG{o+ow}{not} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hardParams}\PYG{p}{\PYGZcb{}}
+
+    \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{update\PYGZus{}canonical\PYGZus{}parameter}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{uCol}\PYG{p}{)}\PYG{p}{:}
+        \PYG{n}{con} \PYG{o}{=} \PYG{n}{contract}\PYG{p}{(}\PYG{p}{\PYGZob{}}\PYG{o}{*}\PYG{o}{*}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{cores}\PYG{p}{,}
+                        \PYG{o}{*}\PYG{o}{*}\PYG{p}{\PYGZob{}}\PYG{n}{hCol}\PYG{p}{:} \PYG{n}{create}\PYG{p}{(}\PYG{n}{shape}\PYG{o}{=}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}\PYG{p}{,} \PYG{n}{colors}\PYG{o}{=}\PYG{p}{[}\PYG{n}{hCol}\PYG{p}{]}\PYG{p}{,}
+                                        \PYG{n}{sliceIterator}\PYG{o}{=}\PYG{p}{[}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{p}{\PYGZob{}}\PYG{n}{hCol}\PYG{p}{:} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hardParams}\PYG{p}{[}\PYG{n}{hCol}\PYG{p}{]}\PYG{p}{\PYGZcb{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{)}
+                           \PYG{k}{for} \PYG{n}{hCol} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{hardParams}\PYG{p}{\PYGZcb{}}\PYG{p}{,}
+                        \PYG{o}{*}\PYG{o}{*}\PYG{p}{\PYGZob{}}\PYG{n}{hCol}\PYG{p}{:} \PYG{n}{create}\PYG{p}{(}\PYG{n}{shape}\PYG{o}{=}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}\PYG{p}{,} \PYG{n}{colors}\PYG{o}{=}\PYG{p}{[}\PYG{n}{hCol}\PYG{p}{]}\PYG{p}{,}
+                                        \PYG{n}{sliceIterator}\PYG{o}{=}\PYG{p}{[}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{p}{\PYGZob{}}\PYG{n}{hCol}\PYG{p}{:} \PYG{l+m+mi}{0}\PYG{p}{\PYGZcb{}}\PYG{p}{)}\PYG{p}{,}
+                                                       \PYG{p}{(}\PYG{n}{math}\PYG{o}{.}\PYG{n}{exp}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{softParams}\PYG{p}{[}\PYG{n}{hCol}\PYG{p}{]}\PYG{p}{)}\PYG{p}{,} \PYG{p}{\PYGZob{}}\PYG{n}{hCol}\PYG{p}{:} \PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{)}
+                           \PYG{k}{for} \PYG{n}{hCol} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{softParams} \PYG{k}{if} \PYG{n}{hCol} \PYG{o}{!=} \PYG{n}{uCol}\PYG{p}{\PYGZcb{}}
+                        \PYG{p}{\PYGZcb{}}\PYG{p}{,} \PYG{n}{openColors}\PYG{o}{=}\PYG{p}{[}\PYG{n}{uCol}\PYG{p}{]}\PYG{p}{)}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{softParams}\PYG{p}{[}\PYG{n}{uCol}\PYG{p}{]} \PYG{o}{=} \PYG{n}{math}\PYG{o}{.}\PYG{n}{log}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{satRates}\PYG{p}{[}\PYG{n}{uCol}\PYG{p}{]} \PYG{o}{*} \PYG{n}{con}\PYG{p}{[}\PYG{p}{\PYGZob{}}\PYG{n}{uCol}\PYG{p}{:} \PYG{l+m+mi}{0}\PYG{p}{\PYGZcb{}}\PYG{p}{]} \PYG{o}{/} \PYG{p}{(}
+                \PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{\PYGZhy{}} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{satRates}\PYG{p}{[}\PYG{n}{uCol}\PYG{p}{]}\PYG{p}{)} \PYG{o}{*} \PYG{n}{con}\PYG{p}{[}\PYG{p}{\PYGZob{}}\PYG{n}{uCol}\PYG{p}{:} \PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{}}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}
+
+    \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{alternate}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{iterations}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{p}{:}
+        \PYG{k}{for} \PYG{n}{\PYGZus{}} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{iterations}\PYG{p}{)}\PYG{p}{:}
+            \PYG{k}{for} \PYG{n}{hCol} \PYG{o+ow}{in} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{softParams}\PYG{p}{:}
+                \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{update\PYGZus{}canonical\PYGZus{}parameter}\PYG{p}{(}\PYG{n}{hCol}\PYG{p}{)}
+\end{MintedVerbatim}

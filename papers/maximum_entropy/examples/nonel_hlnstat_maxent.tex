@@ -1,0 +1,159 @@
+\begin{example}[Maximum entropy distribution with non-elementary activation cores]\label{exa:nonelHlnstat}
+
+    Consider two atomic variables $\catvariableof{0}$ and $\catvariableof{1}$ and a statistic $\formulaset$ consisting in the formulas
+    \begin{align*}
+        \formulaof{0} = \left( \catvariableof{0} \land \catvariableof{1} \right) \quad, \quad \formulaof{1} = \left( \catvariableof{0} \Rightarrow \catvariableof{1} \right)
+    \end{align*}
+    with the coordinatewise expressions
+    \begin{align*}
+        \formulaof{0} =
+        \begin{bmatrix}
+            0 & 0 \\
+            0 & 1
+        \end{bmatrix}
+        \quad, \quad
+        \formulaof{1} =
+        \begin{bmatrix}
+            1 & 1 \\
+            0 & 1
+        \end{bmatrix} \, .
+    \end{align*}
+    % Interpretation in accounting
+    We can think of $\catvariableof{0}$ as a feature on an invoice, and $\catvariableof{1}$ as a feature on the accounting proposal.
+
+    From this we have
+    \begin{align*}
+        &\bencodingofat{(\formulaof{0},\formulaof{1})}{\headvariableof{0}=0,\headvariableof{1}=0,\catvariableof{0},\catvariableof{1}} =
+        \begin{bmatrix}
+            0 & 0 \\
+            1 & 0
+        \end{bmatrix} \quad, \quad
+        \bencodingofat{(\formulaof{0},\formulaof{1})}{\headvariableof{0}=0,\headvariableof{1}=1,\catvariableof{0},\catvariableof{1}} =
+        \begin{bmatrix}
+            1 & 1 \\
+            0 & 0
+        \end{bmatrix} \quad, \quad \\
+        &\bencodingofat{(\formulaof{0},\formulaof{1})}{\headvariableof{0}=1,\headvariableof{1}=0,\catvariableof{0},\catvariableof{1}} =
+        \begin{bmatrix}
+            0 & 0 \\
+            0 & 0
+        \end{bmatrix} \quad \text{and} \quad
+        \bencodingofat{(\formulaof{0},\formulaof{1})}{\headvariableof{0}=1,\headvariableof{1}=1,\catvariableof{0},\catvariableof{1}} =
+        \begin{bmatrix}
+            0 & 0 \\
+            0 & 1
+        \end{bmatrix} \, .
+    \end{align*}
+
+    Since the only vanishing slice of $\bencodingof{\formulaset}$ with respect to the head variables is that to $\headindexof{0,1} = (1,0)$, the vertices of the mean polytope are the vectors to the other head indices.
+    The mean polytope is the convex hull of these vertices
+    %\begin{align*}
+    %    \formulaof{0} \models \formulaof{1}
+    %\end{align*}
+    %and therefore $\lnot\formulaof{0}\land\formulaof{1}$ is unsatisfiable.
+    %The other combinations $\lnot\formulaof{0}\land\lnot\formulaof{1}, \, \formulaof{0}\land\lnot\formulaof{1}$ and $\formulaof{0}\land\formulaof{1}$ are all satisfiable.
+    %The mean polytope is thus the convex hull
+    \begin{align*}
+        \meansetof{(\formulaof{0},\formulaof{1})} =
+        \convhullof{\begin{bmatrix}
+                        0 \\ 0
+        \end{bmatrix},
+            \begin{bmatrix}
+                0 \\ 1
+            \end{bmatrix},
+            \begin{bmatrix}
+                1 \\ 1
+            \end{bmatrix}} \, .
+    \end{align*}
+
+    This polytope has a non cube-like face (sketched blue in \figref{fig:nonelHlnstatMaxent}), which is the convex hull of the vertices $[0 \, 0]^T, \, [1 \, 1]^T$.
+    This face is parametrized by the ($\cpformat$-rank 2) hard activation core
+    \begin{align*}
+        \kcoreofat{(0,0),(1,1)}{\headvariableof{0},\headvariableof{1}} =
+        \onehotmapofat{(0,0)}{\headvariableof{0},\headvariableof{1}} + \onehotmapofat{(1,1)}{\headvariableof{0},\headvariableof{1}} =
+        \begin{bmatrix}
+            1 & 0 \\
+            0 & 1
+        \end{bmatrix}
+    \end{align*}
+    and has the face measure
+    \begin{align*}
+        \contractionof{\kcoreofat{(0,0),(1,1)}{\headvariableof{0},\headvariableof{1}}
+            ,\bencodingofat{\formulaset}{\headvariableof{0},\headvariableof{1},\catvariableof{0},\catvariableof{1}}}{\catvariableof{0},\catvariableof{1}}
+        =   \begin{bmatrix}
+                0 & 0 \\
+                1 & 1
+        \end{bmatrix} \, .
+    \end{align*}
+    Any mean parameter $\meanparam$ on the interior of that face can be parametrized by a scalar $\lambda\in(0,1)$
+    \begin{align*}
+        \meanparamofat{\lambda}{\selvariable} = \begin{bmatrix}
+                                                    \lambda & \lambda
+        \end{bmatrix}^T \, .
+    \end{align*}
+    With the canonical parameters $\canparamat{\selvariable}\in\rr^2$ of the maximum entropy distributions on this face by
+    \begin{align*}
+        \probat{\catvariableof{0},\catvariableof{1}} =
+        \frac{1}{1+\expof{\canparamat{\selvariable=0}+\canparamat{\selvariable=1}}}
+        \begin{bmatrix}
+            0 & 0                                                               \\
+            1 & \expof{\canparamat{\selvariable=0}+\canparamat{\selvariable=1}} \\
+        \end{bmatrix} \,
+    \end{align*}
+    we get the correspondence by the sigmoid
+    \begin{align*}
+        \lambda = \frac{1}{1+\expof{-(\canparamat{\selvariable=0}+\canparamat{\selvariable=1})}} \, .
+    \end{align*}
+
+    Note, that the hard activation core $\kcoreofat{(0,0),(1,1)}{\headvariableof{0},\headvariableof{1}}$ to the blue face is the only non-elementary activation core.
+    While the vertices have always elementary cores, the further non-vertex faces have elementary activation cores
+    \begin{align*}
+        &\kcoreofat{(0,0),(1,0),(1,1)}{\headvariableof{0},\headvariableof{1}}
+        = \begin{bmatrix}
+              1 & 1 \\
+              1 & 1
+        \end{bmatrix}
+        = \onesat{\headvariableof{0}} \otimes \onesat{\headvariableof{1}}
+        \quad, \quad
+        \kcoreofat{(0,0),(1,0)}{\headvariableof{0},\headvariableof{1}}
+        = \begin{bmatrix}
+              1 & 0 \\
+              1 & 0
+        \end{bmatrix}
+        = \onesat{\headvariableof{0}} \otimes \onehotmapofat{0}{\headvariableof{1}}
+        \quad, \quad \\
+        &\kcoreofat{(1,0),(1,1)}{\headvariableof{0},\headvariableof{1}}
+        = \begin{bmatrix}
+              1 & 1 \\
+              0 & 0
+        \end{bmatrix}
+        = \onehotmapofat{0}{\headvariableof{0}} \otimes \onesat{\headvariableof{1}}   \, .
+    \end{align*}
+    The maximum entropy distributions to mean parameters on the interior of all other faces than the blue face are represented by \ComputationActivationNetwork{}s with only elementary activation cores.
+
+    \begin{figure}
+        \begin{center}
+            \input{./tikz_pics/nonel_hlnstat_maxent.tikz}
+        \end{center}
+        \caption{
+            a) Mean polytope of the statistic $\formulaset=(\catvariableof{0} \land \catvariableof{1}, \catvariableof{0} \Rightarrow \catvariableof{1})$ (thick), as a subset of the cube $[0,1]^2$ (dashed).
+            The blue line is the face of the polytope, which is not cube like, that is not an intersection of the polytope with the faces of the polytope.
+            We further define for $\lambda\in(0,1)$ a mean parameter $\meanparamofat{\lambda}{\selvariable} = [\lambda \,  \lambda]^T$ which is on the interior of the blue face.
+            b) Corresponding \ComputationActivationNetwork{} being the maximum entropy distribution reproducing $\meanparamofat{\lambda}{\selvariable}$, when $\lambda$ is the sigmoid of $\canparamat{\selvariable=0}+\canparamat{\selvariable=1}$.
+        }\label{fig:nonelHlnstatMaxent}
+    \end{figure}
+
+
+        \begin{figure}
+        \begin{center}
+            \input{./tikz_pics/lattice_nonel_hlnstat.tikz}
+        \end{center}
+        \caption{
+           Face lattice $\facelatticeof{(\catvariableof{0} \land \catvariableof{1},\catvariableof{0} \Rightarrow \catvariableof{1})}$ to \exaref{exa:nonelHlnstat}.
+            The directed arrows represent inclusion of the faces, which is a partial order of the faces.
+        The face \textcolor{\concolor}{$\facesymbolof{(0,0),(1,1)}$} is the only face, which is not representable by an elementary hypergraph.
+            It is representable in a $\cpformat$ with hidden rank $2$
+        }\label{fig:latticeNonelHlnstat}
+    \end{figure}
+
+\end{example}

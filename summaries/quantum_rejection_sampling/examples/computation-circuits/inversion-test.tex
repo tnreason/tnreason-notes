@@ -1,0 +1,81 @@
+\begin{example}[Inversion Test]
+    Concatenating the \computationCircuits{} to two formulas $\exformula$ and $\secexformula$ prepares the state
+    \begin{align*}
+        \basqstateofat{\exformula\oplus\secexformula}{\shortcatvariables,\headvariable}
+    \end{align*}
+    The probability of measuring the ground state after a Walsh-Hadamard transform of the distributed qubits (see \figref{fig:inversionTest}) is then
+    \begin{align*}
+        \frac{1}{2^{\catorder}} \absof{\contractionof{\basqstateofat{\exformula\oplus\secexformula}{\shortcatvariables,\headvariable}}{\headvariable}}^2
+        &= \frac{1}{2^{2\cdot\catorder}}
+        \begin{bmatrix}
+            \contraction{\exformula\oplus\secexformula}
+            \contraction{\lnot(\exformula\oplus\secexformula)}
+        \end{bmatrix} \\
+        &= \frac{1}{2^{2\cdot\catorder}}
+        \begin{bmatrix}
+            \#{\left\{\shortcatindices\in\atomstates \wcols \exformulaat{\indexedshortcatvariables}=\secexformula\left[\indexedshortcatvariables\right]\right\}} \\
+            \#{\left\{\shortcatindices\in\atomstates \wcols \exformulaat{\indexedshortcatvariables}\neq\secexformula\left[\indexedshortcatvariables\right]\right\}}
+        \end{bmatrix} \, .
+    \end{align*}
+    The second equation holds since $\lnot(\exformula\oplus\secexformula)$ is equivalent with the biconditional $\exformula\Leftrightarrow\secexformula$.
+
+    % Inversion test
+    This is in more generality the inversion test of measuring the overlap of $\basqstateof{\exformula}$ with $\basqstateof{\secexformula}$ (see \cite{schuld_machine_2021}).
+    Here we used that the \computationCircuit{} is self-adjoint and understand the concatenation as the unitaries preparing $\basqstateof{\exformula}$ and the adjoint (together with the Walsh-Hadamard transform) of $\basqstateof{\secexformula}$.
+
+    \begin{figure}
+        \begin{center}
+
+            \begin{tikzpicture}[scale=0.35,thick]
+
+                \draw (0,0) rectangle (2,7.5);
+                \node[anchor=center] (text) at (1,3.75) {\corelabelsize $\basqstateof{\exformula\oplus\secexformula}$};
+
+                \draw (2,6.5) -- (4,6.5) node[midway,above] {\colorlabelsize $\headvariable$};
+                \drawqcmeasuresymbol{5}{6.5}
+                \draw (6,6.5) -- (8,6.5) node[midway,above] {\colorlabelsize $\headvariable$};
+
+                \draw (2,4) -- (4,4) node[midway,above] {\colorlabelsize $\catvariableof{0}$};
+                \draw (4,3) rectangle (6,5);
+                \node[anchor=center] at (5,4) {$\hgate$};
+                \draw (6,4) -- (7,4);
+                \drawqcmeasuresymbol{8}{4}
+                \draw (9,4) -- (10,4);
+                \draw (10,3) rectangle (12,5);
+                \node[anchor=center] at (11,4) {$\fbasis$};
+
+                \node[anchor=center] (text) at (3,3.25) {$\vdots$};
+                \draw (2,1) -- (4,1) node[midway,above] {\colorlabelsize $\catvariableof{\catorder\shortminus 1}$};
+                \draw (4,0) rectangle (6,2);
+                \node[anchor=center] at (5,1) {$\hgate$};
+                \draw (6,1) -- (7,1);
+                \drawqcmeasuresymbol{8}{1}
+                \draw (9,1) -- (10,1);
+                \draw (10,0) rectangle (12,2);
+                \node[anchor=center] at (11,1) {$\fbasis$};
+
+                \node[anchor=center] (text) at (14.5,3.75) {${=}\,\, \frac{1}{2^{2\cdot\catorder}}$};
+
+                \begin{scope}[shift={(18,3.75)}]
+
+                    \draw (3,-0.5) ellipse (4.5cm and 3cm);
+                    \node[anchor=center] at (5,3.25) {$\absof{\cdot}^2$};
+
+                    \draw[->-] (3,1) -- (3,3) node[midway,right] {\colorlabelsize $\headvariable$};
+                    \draw (0,-1) rectangle (6,1);
+                    \drawtextnode{3}{0}{\corelabelsize $\bencodingof{\exformula\oplus\secexformula}$}
+                    \draw[->-] (1,-2) -- (1,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+                    \drawvariabledot{1}{-2}
+                    \drawtextnode{3}{-1.5}{$\cdots$}
+                    \draw[->-] (5,-2) -- (5,-1) node[midway,right] {\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
+                    \drawvariabledot{5}{-2}
+                \end{scope}
+
+            \end{tikzpicture}
+        \end{center}
+        \caption{Measurement setup for the inversion test on the formulas $\exformula$ and $\secexformula$.
+        We measure the probability of the statistic qubit $\headvariable$, when the distributed qubits $\shortcatvariables$ are in the ground state after a Walsh-Hadamard transform.
+        This is equal to a scaled and squared contraction of the basis encoding to the formula $\exformula\oplus\secexformula$.
+        }\label{fig:inversionTest}
+    \end{figure}
+\end{example}

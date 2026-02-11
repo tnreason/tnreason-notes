@@ -1,0 +1,44 @@
+\newcommand{\sketchtextsize}{\fontsize{8pt}{8pt}\selectfont}
+
+\begin{tikzpicture}[yscale=1, xscale=0.925]
+
+    \node[anchor=center] at (0,0.1) {\bf Neural paradigm};
+    \draw[dashed] (-5,0.5) rectangle (5,-2.75);
+    \node[anchor=center] at (0,-0.5) {
+        \sketchtextsize Decomposition of functions into neurons (\defref{def:decompositionHypergraph}, \theref{the:functionDecompositionRep})};
+
+    \node[anchor=west] at (-7.5,-5.1) {\bf Probabilistic paradigm};
+    \draw[dashed] (-8,-1) rectangle (2,-5.5);
+    \node[anchor=west, align=left] at (-7.75,-3.25) {
+        \sketchtextsize Independence and related concepts \\[-3pt]
+        \sketchtextsize (\defref{def:independence}, \defref{def:condIndependence}, \defref{def:sufStatistic})};
+    \node[anchor=west, align=left] at (-7.75,-4.25) {
+        \sketchtextsize Marginal and conditional distributions \\[-3pt]
+        \sketchtextsize (\defref{def:marginalConditionalDistribution})};
+    
+    \node[anchor=east] at (7.5,-4.85) {\bf Logical paradigm};
+    \draw[dashed] (8,-1.25) rectangle (-2,-5.25);
+    \node[anchor=east, align=right] at (7.75,-3.5) {
+        \sketchtextsize Semantics by boolean tensors \\[-3pt]
+        \sketchtextsize (\defref{def:formulas})};
+    \node[anchor=east, align=right] at (7.75,-4.25) {
+        \sketchtextsize Entailment (\defref{def:logicalEntailment})};
+
+    \node[anchor=center, align=center] at (-3.5,-2) {
+        \sketchtextsize Graphical models \\[-3pt]
+        \sketchtextsize (\defref{def:markovNetwork})};
+
+    \node[anchor=center, align=center] at (3.5,-2) {
+        \sketchtextsize Syntactical \\[-3pt]
+        \sketchtextsize decompositions \\[-3pt]
+        \sketchtextsize (\defref{def:syntacticalDecomposition})};
+
+    \node[anchor=center, align=center] at (0,-2) {
+        \sketchtextsize \CompActNets{} \\[-3pt]
+        \sketchtextsize (\defref{def:compActNets})};
+
+    \node[anchor=center, align=center] at (0,-4) {
+        \sketchtextsize \HybridLogicNetworks{} \\[-3pt]
+        \sketchtextsize (\defref{def:hybridLogicNetwork})};
+
+\end{tikzpicture}

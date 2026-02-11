@@ -1,0 +1,786 @@
+\section{Graph-Controlled circuits}
+
+Let us now introduce the most generic circuit construction schemes used in this work.
+To this end, we exploit the definition of uniformly controlled unitaries (see \cite{mottonen_transformation_2005}), and study their alignment along directed acyclic hypergraphs.
+
+\subsection{Definition}
+
+We follow the definition of Bayesian networks as tensor networks on directed acyclic hypergraphs (see \cite{goessmann_tensor-network_2025}).
+
+% Hypergraphs
+We define graph-controlled circuits using hypergraphs, which nodes are associated with the qubits of the circuit.
+The hyperedges are tuples of two subsets of the qubits, namely the incoming qubits representing control and the outgoing qubit representing the target of a unitary.
+To each hyperedge we then associate a uniformly controlled unitary.
+
+\begin{definition}[Graph-Controlled Circuit]
+    Let $\graph=(\nodes,\edges)$ be a directed acyclic hypergraph, where each hyperedge has exactly one outgoing node and all nodes appear exactly once as outgoing nodes of an hyperedge.
+    Then a by $\graph$ controlled circuit is a decoration of the edges $\edge=(\incomingnodes,\{\node\})\in\edges$ by uniformly controlled unitaries
+    \begin{align*}
+        \contunitaryofat{\edge}{\catvariableof{\node,\insymbol},\catvariableof{\node,\outsymbol},\catvariableof{\incomingnodes,\outsymbol}} \, .
+    \end{align*}
+\end{definition}
+
+% Orders of the qubits respecting directionality
+Since the hypergraph $\graph$ to a graph-controlled circuit is acyclic, we find an order of the qubits, such that to each qubit appearing in the outgoing qubits of a hyperedge is ordered after the incoming qubits.
+In such way, we have a unique definition of the graph-controlled circuit as a concatenation of the controlled unitaries respecting a directionality order.
+When there are multiple orders respecting the directionality, then the concatenation respecting the orders all lead to an equivalent circuit.
+% Should we show this using TN?
+
+%%
+\begin{example}[Generic State Representation]
+    \label{exa:genericControlCircuit}
+    In \cite{mottonen_transformation_2005} a preparation scheme for arbitrary states with real and positive amplitudes by graph-controlled circuits is presented.
+    Therein, the hypergraph $\graph=(\nodes,\edges)$ is constructed as follows:
+    \begin{itemize}
+        \item Nodes $\nodes={[\catorder]}$
+        \item Edges $\edges=\left\{([\catenumerator],\{\catenumerator\})\wcols\catenumeratorin\right\}$
+    \end{itemize}
+    It is possible to realize each controlled unitary by a sequence of single qubit rotations and C-NOTs (see \cite{mottonen_transformation_2005}), where the angles are computed using gray codes.
+\end{example}
+
+\subsection{\ActivationCircuit{}}
+
+%We now investigate quantum pendants to the function encoding schemes used in \tnreason{}{}.
+A specific scheme to construct graph-controlled circuits with specific Bayesian Networks as measurement distributions are \activationCircuits{}.
+Here we restrict during the preparation procedure to real and positive amplitudes (i.e. prepare q-samples).
+
+
+\ActivationCircuits{} are uniformly controlled unitaries (see \cite{mottonen_transformation_2005}), where the rotation axis is chosen as the $y$-axes of the Bloch sphere, and the angles are computed by the function $h(\cdot)$ acting on a function value to be encoded.
+%\red{Introduce rotation encodings based on activation circuit action, hint at a sampling scheme of probability distributions.}
+
+%% Angle preparing
+We define the angle preparing function on $p\in[0,1]$ by
+\begin{align*}
+    h(p) = 2 \cdot \mathrm{cos}^{-1}\left(\sqrt{1-p}\right) \, .
+\end{align*}
+For any $p\in[0,1]$ we then have
+\begin{align*}
+    \contractionof{\onehotmapofat{0}{\avariableof{\insymbol}},\yrotationofat{h(p)}{\avariableof{\insymbol},\avariableof{\outsymbol}}}{\avariableof{\outsymbol}}
+    = \begin{bmatrix}
+          \sqrt{1-p} \\
+          \sqrt{p}
+    \end{bmatrix} \, .
+\end{align*}
+
+\begin{definition}[\ActivationCircuit{}]
+    Given a function
+    \begin{align*}
+        \exformula : \facstates \rightarrow [0,1]
+    \end{align*}
+    its \activationCircuit{} is the uniformly controlled unitary
+    $\qcaencodingofat{\exformula}{\avariableof{\insymbol},\avariableof{\outsymbol},\shortcatvariables}$ defined as
+    \begin{align*} %% Could ease the definition by coordinates
+        \qcaencodingofat{\hypercore}{\avariableof{\insymbol},\avariableof{\outsymbol},\shortcatvariables}
+        = \sum_{\shortcatindicesin} \onehotmapofat{\shortcatindices}{\shortcatvariables}
+        \otimes \yrotationofat{h(\exformulaat{\shortcatindices})}{\avariableof{\insymbol},\avariableof{\outsymbol}} \, .
+    \end{align*}
+\end{definition}
+
+%% Drop the in and out
+We will ease our notation by dropping the $\insymbol$ and $\outsymbol$ labels to the control variables.
+This amounts to understanding the Dirac delta tensors in \activationCircuits{} as hyperedges.
+Along that picture the quantum circuit is a tensor network on hyperedges instead of edges.
+
+%% As a graph-controlled circuit
+Each activation circuit is a graph-controlled circuit, where the corresponding hypergraph consists in $\nodes=\shortcatvariables\cup\{\avariable\}$ and a single edge $\edges=(\shortcatvariables,\{\avariable\})$.
+
+When we have a probability tensor, its \activationCircuit{} be prepared, since all values are in $[0,1]$.
+Note that for rejection sampling, only the quotients of the values are important, we can therefore scale the value by a scalar such that the mode is $1$.
+
+%% Rescaling tensors with larger coordinates
+Tensors $\hypercoreat{\shortcatvariables}$ with non-negative coordinates can be encoded after dividing them by their maximum, that is the \activationCircuit{} of the function
+\begin{align*}
+    \exformulaat{\shortcatindices}
+    = \frac{\hypercoreat{\shortcatvariables=\shortcatindices}}{\max_{\secheadindexof{[\seldim]}} \hypercoreat{\shortcatvariables=\secheadindexof{[\seldim]}}}
+\end{align*}
+When the maximum of the tensor is not known, it can be replaced by an upper bound (reducing the acceptance rate of the rejection sampling).
+
+%% Generic Tensors with complex amplitudes: Require besides rescaling more general unitaries.
+
+\subsubsection{Q-samples}
+
+Towards providing additional insights onto the usage of \activationCircuits{} we now present them as a scheme to prepare q-samples (see \cite{low_quantum_2014}).
+
+%\red{Merge with the above.
+%}
+
+In general, we define Q-samples to be quantum states, which measured in the computational basis reproduce a given probability distribution.
+
+\begin{definition}[Q-sample]
+    Given a probability distribution $\probtensor:\atomstates\rightarrow\rr$ (i.e. $\contraction{\probtensor}=1$ and $\zeros \prec \probtensor$) its q-sample is
+    \begin{align*}
+        \qstateofat{\probtensor}{\shortcatvariables}
+        = \sum_{\shortcatindicesin} \sqrt{\probat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
+    \end{align*}
+\end{definition}
+
+Q-samples are more restrictive than arbitrary states having a distribution as a measurement distribution, since they demand real and positive amplitudes.
+
+%% Low Paper
+In \cite{low_quantum_2014} the Q-sample has been introduced.
+It prepares a scheme to realize property 1 (purity) + 2 (q-sampling) of a qpdf, but fails to realize property 3 (q-stochasticity).
+%The q-sample can be prepared for Bayesian Networks, where each child qubit is prepared densely by C-NOTs conditioning on parent qubits.
+
+\begin{example}[Q-sample of the uniform distribution]
+    \label{exa:qSampleUniform}
+    The q-sample of the uniform distribution can be prepared by Hadamard gates acting on the ground state.
+    This is an example of a Walsh-Hadamard transform (see \secref{sec:walshHadamardTransform}), which can be performed by unary Hadamard gates.
+\end{example}
+
+Generalizing \exaref{exa:qSampleUniform}, Q-samples to independent distributions of boolean variables can be prepared by unary rotations along the y-axis.
+
+
+%%% FUSE TO LATER
+%Q-samples can be prepared by \activationCircuit{}s acting on the uniform q-sample (see \exaref{exa:qSampleUniform}), as we show next.
+%
+%Doing rejection sampling on the ancilla qubit corresponds with sampling from the normalized contraction with the activation tensor.
+%
+%\begin{lemma}
+%    \label{lem:qSampleDistribution}
+%    Given a distribution $\probat{\shortcatvariables}$, we construct a circuit preparing its q-sample and add the ancilla encoding of a tensor $\hypercoreat{\shortcatvariables}$.
+%    The rejection sampling scheme, measuring the ancilla qubit and the $\shortcatvariables$ qubits, rejecting the ancilla qubit measured as $0$, prepares samples from the distribution
+%    \begin{align*}
+%        \normalizationof{\probat{\shortcatvariables},\hypercoreat{\shortcatvariables}}{\shortcatvariables} \, .
+%    \end{align*}
+%\end{lemma}
+
+\subsubsection{Encoding of conditional distributions}
+
+%\red{\lemref{lem:qSampleDistribution} states that any distribution can be }
+
+Following the schemes in \cite{low_quantum_2014}, we can prepare the acyclic networks of directed and non-negative tensors by a sequence of controlled rotations.
+Directed and non-negative tensors correspond with conditional probability distributions and their acyclic networks are Bayesian Networks.
+We prepare them by \activationCircuit{}s of functions (see \figref{fig:cpdEncoding})
+\begin{align*}
+    \catindexof{\parentsof{\catenumerator}} \rightarrow \condprobat{\catvariableof{\catenumerator}=1}{\indexedcatvariableof{\parentsof{\catenumerator}}} \, .
+\end{align*}
+
+\subsubsection{Encoding of Bayesian Networks}
+
+We revisit the correspondence of Bayesian Networks with graph-controlled circuits, by showing that any Bayesian Network can be prepared by \activationCircuits{} of the conditional probability distributions.
+Bayesian Networks can be prepared as quantum circuits, where each conditional probability distribution is prepared by an \activationCircuit{}.
+
+\begin{theorem}[\cite{low_quantum_2014}]
+    Let there be a Bayesian Network $\probwith$ on a directed acyclic hypergraph $\graph=([\catorder],\edges)$ with dimensions $\catdimof{\catenumerator}=2$ and decorations of the edges $\edges=\{(\parentsof{\catenumerator},\{\catenumerator\}) \wcols \catenumeratorin\}$ by conditional probabilities
+    \begin{align*}
+        \condprobof{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \, .
+    \end{align*}
+    To each $\catenumeratorin$ we construct the function
+    \begin{align*}
+        \exfunctionof{\catenumerator} \defcols \bigtimes_{\seccatenumerator\in\parentsof{\catenumerator}} [2] \rightarrow [2]
+        \quad,\quad
+        \exfunctionofat{\catenumerator}{\catindexof{\parentsof{\catenumerator}}}
+        = \condprobof{\catvariableof{\catenumerator}=1}{\indexedcatvariableof{\parentsof{\catenumerator}}} \, .
+    \end{align*}
+    Then the concatenation of the \activationCircuits{}
+    \begin{align*}
+        \qcaencodingofat{
+            \exfunctionof{\catenumerator}
+        }{\catvariableof{\catenumerator,\insymbol},\catvariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}}
+    \end{align*}
+    respecting the order $[\catorder]$ prepares the Bayesian Network $\probwith$ when acting on the initial state $\bigotimes_{\atomenumeratorin}\onehotmapofat{0}{\catvariableof{\catenumerator,\insymbol}}$.
+\end{theorem}
+\begin{proof}
+    Let $\qstateat{\shortcatvariables}$ be the state prepared by the \activationCircuits{} to the conditional probability distributions.
+    We need to show that the measurement distribution of $\qstate$ is the Bayesian Network.
+    For any $\shortcatindices\in\atomstates$ we have
+    \begin{align*}
+        \absof{\qstateat{\indexedshortcatvariables}}^2
+        &= \prod_{\catenumeratorin}
+        \left(\qcaencodingofat{
+            \exfunctionof{\catenumerator}
+        }{\catvariableof{\catenumerator,\insymbol}=0,\indexedcatvariableof{\catenumerator},\indexedcatvariableof{\parentsof{\catenumerator}}}\right)^2 \\
+        &= \prod_{\catenumeratorin}
+        \condprobof{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}} \\
+        & = \probat{\indexedshortcatvariables} \, .
+    \end{align*}
+    \red{Alternatively, we can proof the statement by induction using the conditional probability encoding lemma.}
+\end{proof}
+
+
+%To this end, one iterates over the states of the incoming variables, and performs a controlled rotation on the outgoing variable, where the angle is given by the value of the tensor at the incoming state.
+%This generalizes the basis encoding scheme, which demands boolean tensors.
+
+\begin{figure}
+    \begin{center}
+        \input{./tikz_pics/directed_to_circuit.tex}
+    \end{center}
+    \caption{
+        Representation of directed and positive tensor by a controlled rotation.
+        a) Conditional probability tensor $\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}$ being a tensor in a Bayesian Network.
+        b) Circuit Encoding as a controlled rotation, which is the \ActivationCircuit{} of the tensor $\condprobat{\catvariableof{\catenumerator}=1}{\catvariableof{\parentsof{\catenumerator}}}$.
+    }\label{fig:cpdEncoding}
+\end{figure}
+
+\input{./examples/graph-controlled-circuits/grover-rudolph}
+
+\subsection{Equivalence with Bayesian Networks}
+
+%% Missing direction of Equivalence with BN
+Above we have shown, how Bayesian Networks can be prepared by \activationCircuits{}, which are a class of graph-controlled circuits.
+We now show, that the measurement distribution of any graph-controlled circuit is a Bayesian Network.
+It then follows that the set of distributions prepared by graph-controlled circuits is exactly the set of Bayesian Networks.
+
+
+This is closely connected to the chain decomposition of probability distributions, and their construction.
+In \cite{low_quantum_2014} Bayesian Networks are prepared by graph-controlled circuits.
+When in the graph $\graph$ each node appears at most once as outgoing node, it is also the hypergraph to a family of Bayesian Networks.
+The measurement distributions of a state prepared by a $\graph$-controlled Circuit acting on disentangled initial states are exactly the Bayesian Networks with respect to $\graph$.
+
+\begin{theorem}
+    \label{the:graphControlledPreparesBN}
+    Let $\graph$ be a directed acyclic hypergraph, such that node appears at most once as an outgoing node.
+    The measurement distributions of the by $\graph$ controlled circuits acting on disentangled initial states are equal to the Bayesian Networks on $\graph$.
+\end{theorem}
+
+\begin{lemma}
+    \label{lem:BNtoGCC}
+    Let $\graph$ be a directed acyclic hypergraph, such that node appears at most once as an outgoing node.
+    Then any Bayesian network on $\graph$ can be prepared by a $\graph$-controlled circuit with activation circuits of the conditional probability tensors.
+\end{lemma}
+\begin{proof}
+    Let $\probwith$ be a Bayesian network on the graph $\graph$.
+    Enumerate the nodes $\nodes$ of the $\graph$ by $[\atomorder]$, such that for each $\catenumeratorin$ we have $\parentsof{\catenumerator}\subset[\catenumerator]$.
+    Then define a $\graph$-controlled circuit, by choosing for each $\catenumeratorin$ controlled unitaries which satisfy
+    \begin{align*}
+        \contunitaryofat{\catenumerator}{\catvariableof{\catenumerator,\insymbol}=0,\catvariableof{\node,\outsymbol},\catvariableof{\parentsof{\catenumerator},\outsymbol}}
+        =\sqrt{\condprobof{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}} \, .
+    \end{align*}
+    Here we specified only the action of the controlled unitary on the basis vector $\onehotmapofat{0}{\catvariableof{\catenumerator}}$, the action on $\onehotmapofat{1}{\catvariableof{\catenumerator}}$ can be chosen by an arbitrary orthogonal unit vector. % Maybe link here the activation circuit scheme, which is already used?
+    For more explicit construction, see the \activationCircuits{}.
+    Any such defined $\graph$-controlled circuit acting on the initial state $\bigotimes_{\catenumeratorin}\onehotmapofat{0}{\catvariableof{\catenumerator}}$ prepares a quantum state $\qstatewith$ with measurement distribution
+    \begin{align*}
+        \absof{\qstate}^2\left[\shortcatvariables\right] \, .
+    \end{align*}
+    Given arbitrary $\shortcatindicesin$ we have
+    \begin{align*}
+        \absof{\qstate}^2\left[\indexedshortcatvariables\right]
+        = \prod_{\catenumeratorin} \condprobof{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}
+        = \probat{\indexedshortcatvariables} \, .
+    \end{align*}
+    Here we used in the last equation, that $\probwith$ is a Bayesian network.
+    Since the equivalence holds for any coordinate, this establishes the equivalence of the measurement distribution of $\qstatewith$ and $\probwith$.
+\end{proof}
+
+While we have already shown by \lemref{lem:BNtoGCC} that arbitrary Bayesian Networks can be prepared by graph-controlled circuits, we now show the converse, namely that any distribution prepared by graph-controlled circuits is a Bayesian Network.
+To this end, we use the characterization of Bayesian Networks by the conditional independencies they encode (see \cite{koller_probabilistic_2009}).
+To be more precise, we need to show that any node variable is conditionally independent of its non-descendants given its parents.
+
+\begin{lemma}
+    \label{lem:GCCtoBN}
+    Let $(\graph,\contunitary)$ be a $\graph$-controlled circuit acting on a disentangled initial state and $\probat{\nodevariables}$ the corresponding measurement distribution.
+    Then we have for each $\node\in\nodes$ the conditional independence
+    \begin{align*}
+        \condindependent{\catvariableof{\node}}{\catvariableof{\nondescendantsof{\node}}}{\catvariableof{\parentsof{\node}}} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    We choose to a given $\node\in\nodes$ an enumeration $[\catorder]$ of the nodes, such that for each $\catenumeratorin$ we have $\parentsof{\catenumerator}\subset[\catenumerator]$ and for the enumerator $\seccatenumerator$ of $\node$ we further have $\nondescendantsof{\seccatenumerator}\subset[\seccatenumerator]$.
+    Let $\probwith$ be the measurement distribution of the $\graph$-controlled circuit acting on a disentangled initial state $\bigotimes_{\catenumeratorin}\qstateofat{\catenumerator}{\catvariableof{\catenumerator}}$ and choose arbitrary $\catindexof{[\catenumerator]}$.
+    We then have
+    \begin{align*}
+        \probat{\catvariableof{\seccatenumerator},\indexedcatvariableof{[\catenumerator]}}
+        &= \contractionof{\left(\bigcup_{\catenumeratorin}\{\contunitaryof{\catenumerator},\contunitaryof{\catenumerator,\dagger},\qstateof{\catenumerator},\qstateof{\catenumerator,*}\right)\}
+            \cup \left(\bigcup_{\catenumerator\in[\seccatenumerator]} \onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator,\outsymbol}}\right)
+        }{
+            \catvariableof{\seccatenumerator}
+        } \\
+        &= \contractionof{\bigcup_{\catenumerator\in[\seccatenumerator]}\{\contunitaryof{\catenumerator},\contunitaryof{\catenumerator,\dagger},\qstateof{\catenumerator},\qstateof{\catenumerator,*},\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator,\outsymbol}}\}}{
+            \catvariableof{\seccatenumerator}
+        } \\
+        & = \absof{\contractionof{\contunitaryofat{\seccatenumerator}{\catvariableof{\seccatenumerator,\insymbol},\catvariableof{\seccatenumerator,\outsymbol}},\indexedcatvariableof{\parentsof{\seccatenumerator},\outsymbol}}{\catvariableof{\seccatenumerator,\outsymbol}}}^2 \\
+        & \quad \quad \cdot \prod_{\catenumerator\in[\seccatenumerator]}
+        \left(\contraction{\qstateofat{\catenumerator}{\catvariableof{\catenumerator,\insymbol}},\contunitaryofat{\catenumerator}{\catvariableof{\catenumerator,\insymbol},\catvariableof{\catenumerator,\outsymbol},\indexedcatvariableof{\parentsof{\catenumerator},\outsymbol}}}\right)^2
+        %\contraction{\qstateof{\catenumerator,*},\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}}{} \, .
+    \end{align*}
+    Here we used in the second equation the unitarity of the controlled unitaries to $\catenumerator\notin[\seccatenumerator]$.
+    Since the indices $\catindexof{[\seccatenumerator]/\parentsof{\seccatenumerator}} = \catindexof{\nondescendantsof{\seccatenumerator}}$ appear only in the constant term, we conclude
+    \begin{align*}
+        \condprobat{\catvariableof{\seccatenumerator}}{\catvariableof{[\catenumerator]}} = \condprobat{\catvariableof{\seccatenumerator}}{\catvariableof{\parentsof{\seccatenumerator}}} \otimes \onesat{\catvariableof{\nondescendantsof{\seccatenumerator}}}\, ,
+    \end{align*}
+    which establishes the conditional independence $\condindependent{\catvariableof{\node}}{\catvariableof{\nondescendantsof{\node}}}{\catvariableof{\parentsof{\node}}}$.
+\end{proof}
+
+\begin{proof}[Proof of \theref{the:graphControlledPreparesBN}]
+    The theorem follows directly from \lemref{lem:BNtoGCC} and \lemref{lem:GCCtoBN}, using that Bayesian Networks are characterized by the conditional independence of each variable to its non-descendants given its parents.
+\end{proof}
+
+\begin{example}[Chain decomposition]
+    The hypergraph in \exaref{exa:genericControlCircuit} corresponds with a family of Bayesian Networks subsuming any probability distribution.
+    This can be verified based on the chain decomposition of a generic distribution.
+\end{example}
+
+%% Phase representation
+Another question is, whether each quantum state, which measurement distribution is a Bayesian Network can be prepared by a $\graph$-controlled circuit.
+This is not always the case, since the phase tensor does not influence the measurement distribution.
+Any phase tensor, of a by $\graph$-controlled circuit prepared state has however a decomposition
+\begin{align*}
+    \phasecoreat{\shortcatvariables}
+    = \sum_{\catenumeratorin} \phasecoreofat{\catenumerator}{\catvariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}} \otimes \onesat{\catvariableof{[\catorder]/\{\{\catenumerator\}\cup\parentsof{\catenumerator}\}}} \, ,
+\end{align*}
+where the phase cores $\phasecoreof{\catenumerator}$ can be read of the controlled unitaries.
+When there are phase cores which do not have such a decomposition, the corresponding states are not representable.
+\cite{mottonen_transformation_2005} shows, that when the graph is chosen as in \exaref{exa:genericControlCircuit}, then also the phases can be represented.
+
+\subsection{Ancilla Augmentation}
+
+Graph controlled circuits prepare Bayesian Networks, and do not apply to undirected graphical models such as Markov Networks and \ComputationActivationNetworks{}.
+We therefore introduce in the following ancilla augmentation, which is a method to represent Markov Networks as conditioned Bayesian Network.
+This enables usage of the previously used preparation schemes for Bayesian Networks.
+
+\subsubsection{Post-selection by Ancilla Variables}
+
+First of all we define ancilla augmentation and then show how they can be prepared as measurement distributions using \activationCircuits{}.
+
+\begin{definition}[Ancilla Augmentation of a Distribution]
+    Let $\probwith$ be a probability distribution of variables $\shortcatvariables$.
+    Another distribution $\secprobat{\shortcatvariables,\avariables}$ of variables $\shortcatvariables$ and ancilla variables $\avariables$ is called an ancilla augmentation of $\probwith$, if there is $\acceptanceprob>0$ with
+    \begin{align*}
+        \acceptanceprob \cdot \probwith
+        = \secprobat{\shortcatvariables,\avariables=1_{[\seldim]}} \, .
+    \end{align*}
+    We refer to $\acceptanceprob$ as the corresponding acceptance probability.
+\end{definition}
+
+%%
+%
+%\begin{definition}[Ancilla Augmentation of a Distribution]
+%    Let $\hypercorewith$ be a tensor over variables $\shortcatvariables$.
+%    A tensor $\anaugmentationof{\probtensor}$ with variables $\shortcatvariables$ and ancilla variables $\avariables$ is called an ancilla augmentation of $\hypercorewith$, if
+%    \begin{align*}
+%        \anaugmentationofat{\probtensor}{\shortcatvariables,\avariables=\onesat{[\seldim]}}
+%        = \chi \cdot \hypercorewith \, , %\probwith \, .
+%    \end{align*} % ! The ancilla augmentation is itself NOT a distribution
+%    where $\chi>0$ is a real number.
+%    To any ancilla augmentation we call
+%    \begin{align*}
+%        \acceptanceprob
+%        = \normalizationof{\anaugmentationofat{\probtensor}{\avariable,\shortcatvariables}}{\avariable=1}\in[0,1] \, .
+%    \end{align*}
+%    the acceptance probability.
+%\end{definition}
+
+%%
+Note that $\acceptanceprob\leq1$ since
+\begin{align*}
+    \acceptanceprob
+    = \contraction{\acceptanceprob \cdot \probwith}
+    = \contraction{\secprobat{\shortcatvariables,\avariables=1_{[\seldim]}}}
+    \leq \contraction{\secprobat{\shortcatvariables,\avariables}} = 1 \, .
+\end{align*}
+
+%% Rejection Sampling, interpretation of \acceptanceprob
+Sampling from the distribution can be done by rejection sampling, also called post selection, on the ancilla augmented distribution in the following way.
+When drawing a sample $(\shortcatindices,\aindex)$ from $\secprobat{\shortcatvariables,\avariable}$ and rejecting it whenever $\aindex=0$, the accepted samples are distributed as $\probwith$.
+We then have $\acceptanceprob$ as the probability of accepting a sampling in this rejection sampling method.
+The acceptance probability is critical in determining the efficiency of this approach, since we need to draw $\sim\frac{1}{\acceptanceprob}$ samples from $\secprobat{\shortcatvariables,\avariable}$ to get an accepted sample.
+
+%% Decomposition and importance sampling interpretation
+Since
+\begin{align}
+    \label{eq:ancillaDecomposition}
+    \secprobat{\shortcatvariables,\avariable}
+    = \contractionof{
+        \secprobat{\shortcatvariables},
+        \secprobat{\avariable|\shortcatvariables}
+    %\normalizationofwrt{\secprobtensor}{\avariable}{\shortcatvariables}
+    }{\shortcatvariables,\avariable}
+\end{align}
+the described sampling procedure is equal to drawing $\shortcatindices$ from the marginal
+\begin{align*}
+    \secprobat{\shortcatvariables}
+\end{align*}
+and accepting the sample with probability
+\begin{align*}
+    \secprobat{\avariable=1|\shortcatvariables}\, .
+%    \normalizationofwrt{\secprobtensor}{\avariable=1}{\shortcatvariables} \, .
+\end{align*}
+
+\subsubsection{Construction based on Uniform Distributions}
+
+We construct ancilla augmentations based on the decomposition \eqref{eq:ancillaDecomposition} where the marginal of $\shortcatvariables$ is the uniform distribution, that is
+\begin{align*}
+    \secprobat{\shortcatvariables}
+    = \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
+    \onesat{\shortcatvariables}
+\end{align*}
+and we construct the conditional probability of the ancilla variable such that
+\begin{align*}
+    \secprobat{\avariable=1|\shortcatvariables}
+    = \acceptanceprob \cdot \left(\prod_{\catenumeratorin}\catdimof{\catenumerator}\right) \probwith \, .
+\end{align*}
+% Quantum circuit
+For the latter we can apply the preparation schemes of conditioned distributions, which have been studied above for Bayesian Networks.
+
+%% Introduce anaugmentation
+We denote for any non-negative tensor $\hypercorewith$ we construct
+\begin{align*}
+    \anaugmentationofat{\hypercore,\acceptanceprob}{\avariable,\shortcatvariables}
+    =
+    \sum_{\shortcatindicesin} \onehotmapofat{\shortcatindices}{\shortcatvariables}
+    \otimes \Big(&
+    \acceptanceprob \cdot \big(\prod_{\catenumeratorin}\catdimof{\catenumerator}\big) \cdot \hypercoreat{\indexedshortcatvariables} \cdot \tbasisat{\avariable} \\
+    &+ \big(1- \acceptanceprob \cdot \big(\prod_{\catenumeratorin}\catdimof{\catenumerator}\big) \cdot \hypercoreat{\indexedshortcatvariables}\big) \cdot \fbasisat{\avariable}
+    \Big) \, .
+\end{align*}
+For this to be a conditional distribution we need to demand that
+\begin{align*}
+    \max_{\shortcatindicesin} \acceptanceprob \cdot \big(\prod_{\catenumeratorin}\catdimof{\catenumerator}\big) \cdot \hypercoreat{\indexedshortcatvariables} \leq 1 \, ,
+\end{align*}
+which is equivalent to
+\begin{align*}
+    \acceptanceprob \leq \left(\prod_{\catenumeratorin}\catdimof{\catenumerator}\right)^{-1}\cdot\left(\max_{\shortcatindicesin}\hypercoreat{\indexedshortcatvariables}\right)^{-1} \, .
+\end{align*}
+Note that if $\hypercorewith$ is the uniform distribution $\onesat{\shortcatvariables|\varnothing}$, then we can achieve the best acceptance rate $\acceptanceprob=1$.
+
+%% Main point: Construction by activation circuits
+Given a distribution $\probat{\shortcatvariables}$ we add an ancilla variable $\avariable$ and construct the augmented distribution (see \figref{fig:ancillaAugmentation})
+
+\begin{figure}
+    \begin{center}
+        \input{tikz_pics/graph-controlled-circuit/ancilla_augmentation}
+    \end{center}
+    \caption{
+        Ancilla augmentation of a distribution $\probwith$.
+        a) Augmented distribution $\anaugmentationofat{\probtensor}{\avariable,\shortcatvariables}$ with the property that $\probwith = \anaugmentationofat{\probtensor}{\shortcatvariables|\avariable=1}$.
+        b) Preparation of the augmented distribution by the \activationCircuit{} of $\probwith$.
+    }\label{fig:ancillaAugmentation}
+\end{figure}
+
+
+\begin{lemma}
+    \label{lem:actCircuitAncilla}
+    The \activationCircuit{} to a probability distribution $\probwith$ applied on the initial state
+    \begin{align*}
+        \sqrt{\frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}}\onesat{\shortcatvariables} \otimes \onehotmapofat{0}{\avariable}
+    \end{align*}
+    prepares a quantum state $\qstate$, which is the Q-sample of the ancilla augmentation
+    \begin{align*}
+        \normalizationof{\anaugmentationofat{\probtensor,\frac{1}{\catdim}}{\avariable,\shortcatvariables}}{\avariable,\shortcatvariables}
+    \end{align*}
+    with the acceptance probability $\catdim^{-1}\coloneqq \big(\prod_{\catenumeratorin\catdimof{\catenumerator}}\big)^{-1}$.
+%    \begin{align*}
+%        \anaugmentationofat{\probtensor}{\avariable,\shortcatvariables}
+%        =
+%        \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
+%        \sum_{\shortcatindicesin} \onehotmapofat{\shortcatindices}{\shortcatvariables}
+%        \otimes \Big(
+%        \probat{\indexedshortcatvariables} \cdot \tbasisat{\avariable} + (1- \probat{\indexedshortcatvariables}) \cdot \fbasisat{\avariable}
+%        \Big) \, .
+%    \end{align*}
+\end{lemma}
+\begin{proof}
+    We first show, that $\normalizationof{\anaugmentationofat{\probtensor,\frac{1}{\catdim}}{\avariable,\shortcatvariables}}{\avariable,\shortcatvariables}$ is indeed an ancilla augmentation.
+    We have
+    \begin{align*}
+        \acceptanceprob
+        = \contractionof{\anaugmentationofat{\probtensor}{\avariable,\shortcatvariables}}{\avariable=1}
+        = \frac{1}{\catdim}
+        \sum_{\shortcatindicesin} \probat{\indexedshortcatvariables}
+        = \frac{1}{\catdim} \, .
+    \end{align*}
+    and for any $\shortcatindicesin$ it holds that
+    \begin{align*}
+        \normalizationof{\anaugmentationofat{\probtensor,\frac{1}{\catdim}}{\avariable,\shortcatvariables}}{\avariable=1,\indexedshortcatvariables}
+        %\anaugmentationofat{\probtensor}{\avariable=1,\indexedshortcatvariables}
+        = \frac{1}{\lambda} \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}} \probat{\indexedshortcatvariables}
+        = \probat{\indexedshortcatvariables}\, ,
+    \end{align*}
+    The tensor $\normalizationof{\anaugmentationofat{\probtensor,\frac{1}{\catdim}}{\avariable,\shortcatvariables}}{\avariable,\shortcatvariables}$ is thus an ancilla augmentation for $\probtensor$.
+
+    We continue to show that the quantum state $\qstate$ prepared by the \activationCircuit{} is the Q-sample of $\normalizationof{\anaugmentationofat{\probtensor,\frac{1}{\catdim}}{\avariable,\shortcatvariables}}{\avariable,\shortcatvariables}$.
+    Then we have for any $\shortcatindicesin$
+    \begin{align*}
+        \qstateat{\avariable,\indexedshortcatvariables}
+        = \sqrt{\frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}}
+        \Big(\sqrt{\probat{\indexedshortcatvariables}} \cdot \tbasisat{\avariable}
+        + \sqrt{(1- \probat{\indexedshortcatvariables})} \cdot \fbasisat{\avariable}\Big) \, ,
+    \end{align*}
+    which is indeed the Q-sample.
+\end{proof}
+
+% Circuit diagram and acceptance probability
+In our tensor network circuit notation, \lemref{lem:actCircuitAncilla} states the equation
+\begin{center}
+    \input{tikz_pics/graph-controlled-circuit/activation_ancilla_preparation}
+\end{center}
+for the acceptance probability (see proof of \lemref{lem:actCircuitAncilla})
+\begin{align*}
+    \acceptanceprob = \frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}} \, .
+\end{align*}
+Note that the acceptance probability is exponentially small in the number of variables.
+If $\probwith$ is not uniform, we can improve by building the \activationCircuit{} to the function
+\begin{align*}
+    \frac{1}{\max_{\shortcatindicesin}\probat{\indexedshortcatvariables}} \cdot \probwith \, .
+\end{align*}
+
+\subsubsection{Best Acceptance Probability by $\infty$-Renyi Divergence}
+
+Let us now show, how the best acceptance probability in sets of ancilla augmented distributions is connected with $\infty$-Renyi divergences.
+For $0<\alpha<\infty$ and $\alpha\neq 1$ the Renyi Divergence is defined as
+\begin{align*}
+    D_{\alpha}\left[\probtensor||\mathbb{Q}\right]
+    = \frac{1}{1-\alpha} \lnof{\sum_{\shortcatindicesin}
+        \frac{\probat{\indexedshortcatvariables}^{\alpha}}{\mathbb{Q}\left[\indexedshortcatvariables\right]^{\alpha-1}}
+    } \, .
+\end{align*}
+The $\infty$ Renyi Divergence is the limit $\alpha\rightarrow\infty$
+\begin{align*}
+    D_{\infty}\left[\probtensor||\mathbb{Q}\right]
+    = \lnof{\max_{\shortcatindicesin}
+        \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+    } \, .
+\end{align*}
+
+\begin{theorem}
+    Let $\probwith$ and $\mathbb{Q}[\shortcatvariables]$ be distributions, such that for each $\shortcatindicesin$ with $\probat{\indexedshortcatvariables}>0$ we also have $\mathbb{Q}[\indexedshortcatvariables]>0$.
+    Let us consider all ancilla augmentations $\secprobat{\shortcatvariables,\avariable}$ which marginal is $\mathbb{Q}[\shortcatvariables]$, that is
+    \begin{align*}
+        \mathbb{Q}[\shortcatvariables]
+        = \contractionof{\secprobat{\shortcatvariables,\avariable}}{\shortcatvariables} \, .
+    \end{align*}
+    The best acceptance probability among these ancilla augmentations is then
+    \begin{align*}
+        \acceptanceprob
+        = \expof{-D_{\infty}\left[\probtensor||\mathbb{Q}\right]} \, ,
+    \end{align*}
+    and achieved when for any $\shortcatindicesin$
+    \begin{align*}
+        \secprobat{\avariable=1|\indexedshortcatvariables}
+        = \frac{
+            \probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]
+        } \cdot \left(\max_{\shortcatindicesin}\frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+        \right)^{-1} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Any $\secprobat{\shortcatvariables,\avariable}$ with marginal $\mathbb{Q}\left[\shortcatvariables\right]$ has a decomposition
+    \begin{align*}
+        \secprobat{\shortcatvariables,\avariable}
+        = \contractionof{\mathbb{Q}\left[\shortcatvariables\right],
+            \secprobat{\avariable|\shortcatvariables}
+        }{\shortcatvariables,\avariable}
+    \end{align*}
+    and in order to be an ancilla augmentation for $\probwith$ we find $\acceptanceprob>0$ with
+    \begin{align*}
+        \secprobat{\shortcatvariables,\avariable=1}
+        = \acceptanceprob \cdot \probwith \, .
+    \end{align*}
+    It follows that for each $\shortcatindicesin$
+    \begin{align*}
+        1 \geq \secprobat{\avariable=1|\indexedshortcatvariables}
+        = \acceptanceprob \cdot  \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]} \, .
+    \end{align*}
+    and thus
+    \begin{align}
+        \label{eq:acceptanceprobBoundRenyiProof}
+        \acceptanceprob \leq \left(\max_{\shortcatindicesin}\frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}\right)^{-1} \, .
+    \end{align}
+    For the in the claim constructed ancilla augmentation, we have the acceptance probability
+    \begin{align*}
+        \secprobat{\avariable=1}
+        &= \mathbb{E}_{\shortcatindices\sim\mathbb{Q}}
+        \left[
+            \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]} \cdot
+            \left(\max_{\shortcatindicesin} \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+            \right)^{-1}
+        \right] \\
+        &= \contraction{\mathbb{Q}\left[\shortcatvariables\right],\left(\mathbb{Q}\left[\shortcatvariables\right]\right)^{-1},\probwith}
+        %\mathbb{E}_{\shortcatindices\sim\mathbb{Q}}\left[\frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]} \right] \cdot
+        \left(\max_{\shortcatindicesin}
+            \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+        \right)^{-1} \\
+        & = \left(\max_{\shortcatindicesin}
+                \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+        \right)^{-1}  \\
+        & = \expof{-D_{\infty}\left[\probtensor||\mathbb{Q}\right]} \, .
+    \end{align*}
+    The constructed ancilla augmented distribution satisfies the bound \eqref{eq:acceptanceprobBoundRenyiProof} on the acceptance probability holds straight, and it is thus the one with largest acceptance rate.
+\end{proof}
+
+
+%\red{Connect with Ancilla Augmentation:
+%    \begin{itemize}
+%        \item Samples are drawn from $\mathbb{Q}=\normalizationof{\anaugmentationof{\probtensor}}{\shortcatvariables}$ and acceptance prob simulated by
+%        $\normalizationofwrt{\anaugmentationof{\probtensor}}{\avariable}{\shortcatvariables}$.
+%        \item $\mathbb{Q}$
+%        \item If $\shortcatvariables$ appearing only as control qubits, then $\mathbb{Q}$ is uniform.
+%        \item Improvement of the acceptance probability could be thus done, by rotating the distibuted qubits, towards the desired distribution.
+%    \end{itemize}
+%}
+%
+%In more generality we draw samples from a generic proposal distribution $\mathbb{Q}$, which support needs to include the support of the target distribution $\probtensor$.
+%We draw a sample $\shortcatindices$ from $\mathbb{Q}$ and accept it with the probability
+%\begin{align*}
+%    \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+%    \cdot \left(\max_{\shortcatindicesin}\frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
+%    \right)^{-1}
+%\end{align*}
+
+%% Uniform proposal distributions
+Note, that in the section above we have constructed ancilla augmentations with uniform $\mathbb{Q}$ by activation circuits.
+For these the optimal acceptance rate is
+\begin{align*}
+    \acceptanceprob
+    = \left(\prod_{\catenumeratorin}\catdimof{\catenumerator}\right)^{-1}
+    \cdot \left(\max_{\shortcatindicesin} \probat{\indexedshortcatvariables}\right)^{-1} \, .
+\end{align*}
+Thus, $\acceptanceprob=1$ is only achievable if $\probwith$ is itself the uniform distribution.
+
+\textbf{Extension:}
+We could increase the acceptance probability, when we sample from a proposal distribution $\mathbb{Q}$ with smaller $\infty$ Renyi divergence to $\probtensor$.
+% To CA Sampling
+When sampling with Quantum Circuits, this could be implemented by a state preparation for the distributed variables, before the \ComputationActivationCircuit{} is applied.
+It would be interesting to train variational quantum circuits for this task.
+However, when we want to apply the same scheme as above, one needs to encode $\mathbb{Q}$ into the ancilla preparing rotations, so $\mathbb{Q}$ would need to be an elementary \ComputationActivationNetwork{} as well.
+
+\subsubsection{Augmentation of Markov Networks}
+
+Let us now show how multiple ancilla variables can be designed to sample from arbitrary Markov Networks.
+
+\input{examples/graph-controlled-circuits/elementary_tensors}
+
+Let there be a Markov Network, i.e. any non-vanishing tensor network of non-negative tensors, which is understood as a probability disribution after normalization (see \cite{goessmann_tensor_2026}).
+For an example of a Markov Network see \figref{fig:markovNetworkAugmentation}a.
+
+%% Ancilla Augmentation
+We apply a similar ancilla augmentation on any hypercore of a Markov Network, as has been done above for probability distributions.
+To prepare, we need to scale each core by dividing by its maximum (or any upper bound on its maximum), such that any coordinate is smaller than $1$.
+We introduce for each core an boolean ancilla variable $\avariableof{\edge}$ (while $\catvariableof{\edge}$ is the tuple of distributed variables collected in the hyperedge $\edge$) then build directed tensors
+\begin{align*}
+    \anaugmentationofat{\hypercoreof{\edge},\acceptanceprobof{\edge}}{\avariableof{\edge},\catvariableof{\edge}}
+    =    %\frac{1}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
+    \sum_{\catindexof{\edge}} \onehotmapofat{\catindexof{\edge}}{\catvariableof{\edge}}
+    \otimes \Big(&
+    %\frac{
+    %    \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+    %}{
+    %    \max_{\seccatindexof{\edge}}\hypercoreofat{\edge}{\catvariableof{\edge}=\seccatindexof{\edge}}
+    %} \cdot
+    \acceptanceprobof{\edge} \cdot \big(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\big) \cdot \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \cdot
+    \tbasisat{\avariable} \\
+    &+ \big(1- \acceptanceprobof{\edge} \cdot \big(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\big) \cdot \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+    %\frac{
+    %    \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+    %}{
+    %    \max_{\seccatindexof{\edge}}\hypercoreofat{\edge}{\catvariableof{\edge}=\seccatindexof{\edge}}
+    %}
+    \big) \cdot
+    \fbasisat{\avariable}
+    \Big) \, .
+\end{align*}
+where we choose the maximal values
+\begin{align*}
+    \acceptanceprobof{\edge}
+    = \left(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\right)^{-1}
+    \cdot \left(\max_{\catindexof{\edge}}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)^{-1} \, ,
+\end{align*}
+such that $\anaugmentationof{\edge}$ stays non-negative and can be interpreted as a conditional probability distribution.
+Note, that $\acceptanceprobof{\edge}$ is not an acceptance rate itself, since $\hypercoreof{\edge}$ is not always a distribution.
+
+% Ancilla augmentation of
+\begin{lemma}\label{lem:markovNetworkAugmentation}
+    When augmenting all cores of a Markov Network with distinct ancilla variables in this way (see \figref{fig:markovNetworkAugmentation}b), we get an ancilla augmentation of the Markov Network.
+    \begin{align*}
+        \secprobat{\avariableof{\edges},\shortcatvariables}
+        = \contractionof{
+            \{\anaugmentationofat{\hypercoreof{\edge},\acceptanceprobof{\edge}}{\avariableof{\edge},\catvariableof{\edge}} \wcols \edgein \}
+            \cup\{\onesat{\shortcatvariables|\varnothing}\}}{\avariableof{\edges},\shortcatvariables} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    $\secprobat{\avariableof{\edges},\shortcatvariables}$ is a Bayesian Network (see \figref{fig:markovNetworkAugmentation}d) and thus a distribution.
+    We further have
+    \begin{align*}
+        \secprobat{\avariableof{\edges}=1_{\edges},\shortcatvariables}
+        = \contractionof{
+            \{\anaugmentationofat{\hypercoreof{\edge},\acceptanceprobof{\edge}}{\avariableof{\edge}=1,\catvariableof{\edge}} \wcols \edgein \}
+            \cup\{\onesat{\shortcatvariables|\varnothing}\}}{\avariableof{\edges},\shortcatvariables} \\
+        = \frac{\prod_{\edgein} \acceptanceprobof{\edge}\left(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\right)}{\prod_{\catenumeratorin}\catdimof{\catenumerator}}
+        \contractionof{\{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols\edgein \}}{\shortcatvariables} \, .
+    \end{align*}
+    Thus, $\secprobat{\avariableof{\edges},\shortcatvariables}$ is an ancilla augmentation of the Markov Network with acceptance probability
+    \begin{align*}
+        \frac{
+            \prod_{\edgein} \acceptanceprobof{\edge}\left(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\right)
+        }{
+            \contraction{\{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols\edgein\}} \cdot \left(\prod_{\catenumeratorin}\catdimof{\catenumerator}\right)
+        }
+        = \left(\prod_{\catenumeratorin}\catdimof{\catenumerator}\right)^{-1} \cdot
+        \frac{\prod_{\edgein} \left(\max_{\catindexof{\edge}} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)}{\contraction{\{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols\edgein\}}}
+        \, .
+    \end{align*}
+\end{proof}
+
+
+
+
+The main advantage of this augmentation is, that all cores are directed (see \figref{fig:markovNetworkAugmentation}b, and build therefore a Bayesian Network.
+Using the \activationCircuits{} studied above, we can now determine a rejection sampling procedure for arbitrary Markov Networks.
+
+\begin{lemma}
+    Let there be a Markov Network $\extnet=\extnetasset$ on a hypergraph $\graph$.
+    To each $\edgein$ we build a function
+    \begin{align*}
+        \exfunctionof{\edge}
+        =
+        \frac{
+            \hypercoreofat{\edge}{\catvariableof{\edge}=\seccatindexof{\edge}}
+        }{\max_{\seccatindexof{\edge}}\hypercoreofat{\edge}{\catvariableof{\edge}=\seccatindexof{\edge}}} \, .
+    \end{align*}
+    We then build a concatenation of activation circuits to each function $\exfunctionof{\edge}$, where each has a distinct ancilla qubit $\avariableof{\edge}$.
+%    We build the concatenation of activation circuits to each tensor $\hypercoreofat{\edge}{\catvariableof{\edge}}$
+    Then the constructed graph-controlled circuit acting on the state
+    \begin{align*}
+        \sqrt{\frac{1}{\prod_{\nodein}\catdimof{\node}}}\onesat{\nodevariables} \otimes \left(\bigotimes_{\edgein}\onehotmapofat{0}{\avariableof{\edge}}\right)
+    \end{align*}
+    prepares an ancilla augmented distribution of the Markov Network.
+\end{lemma}
+\begin{proof}
+    We show, that the measurement distribution is the ancilla augmented Markov Network.
+\end{proof}
+
+We use this result to prepare samples from Markov Networks by rejection sampling on the ancilla variables, in \qcreason{} (see \secref{sec:implementation}).
+
+%% Rescaling Relaxation
+When the maximum of the hypercores are not known, and only an upper bound is given, it suffice to rescale them such that the maximum is lower than 1.
+
+%% Frustration: When local maxima cannot be achieved together
+When the maximal coordinate of the Markov Network is, restricted to each edge, the maximal coordinate of the hypercore of that edge, we say that the Markov Network is not frustrated, otherwise frustrated.
+
+\begin{lemma} % CHECK: True?
+    If the Markov Network is not frustrated, then the acceptance probability $\acceptanceprob$ of the rejection sampling scheme using the ancilla augmented Markov Network (with respect to the uniform distribution) is the $\infty$-Renyi divergence between the Markov Network and the uniform distribution.
+\end{lemma}
+\begin{proof}
+%    We have the acceptance rate
+%    \begin{align*}
+%        \acceptanceprob
+%        = \left(\prod_{\edgein}\acceptanceprobof{\edge}\right)
+%        = \prod_{\edgein} \left(\prod_{\catenumerator\in\edge}\catdimof{\catenumerator}\right)^{-1}
+%    \cdot \left(\max_{\catindexof{\edge}}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)^{-1}
+%    \end{align*}
+    If and only if the Markov Network is not frustrated we have
+    \begin{align*}
+        \max_{\shortcatindices} \left(\prod_{\edgein}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)
+        = \prod_{\edgein} \left(\max_{\catindexof{\edge}} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right) \, .
+    \end{align*}
+    In this case, the ancilla augmentation has the best acceptance probability, since for the state $\shortcatindices$ maximizing all local cores we have
+    \begin{align*}
+        \secprobat{\avariables=1_{[\seldim]}|\indexedshortcatvariables} = 1 \, .
+    \end{align*}
+    \red{Alternatively: Show this with the acceptance rate in proof of \lemref{lem:markovNetworkAugmentation}, comparing with best naive augmentation.}
+\end{proof}
+
+%% Frustration
+If the Markov Network is frustrated, we cannot achieve the best acceptance probability by the distributed ancilla preparation approach described above.
+In this case, one faces a tradeoff between the size of the circuit to prepare ancilla augmentations and the acceptance probability.
+
+\begin{figure}
+    \begin{center}
+        \input{tikz_pics/graph-controlled-circuit/markov_network_augmentation}
+    \end{center}
+    \caption{Ancilla augmentation of a Markov Network a) onto a Bayesian Network b).
+    To this end the arbitrary non-negative cores $\hypercoreof{\edge}$ are replaced by directed ancilla augmented cores $\sechypercoreof{\edge}$, with ancilly variables outgoing.}
+    \label{fig:markovNetworkAugmentation}
+\end{figure}
+

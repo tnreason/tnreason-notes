@@ -1,0 +1,25 @@
+\begin{example}[Continuation of \exaref{exa:hlnAccountingAMM}]
+    Consider again the \HybridLogicNetwork{}
+    \begin{align*}
+        \probofat{(\catvariableof{A1}\oplus\catvariableof{A2},\catvariableof{F}\Rightarrow\catvariableof{A1}),\big(\{0\},(1),(0,\lnof{3})\big)}{\catvariableof{A1},\catvariableof{A2},\catvariableof{F}}
+    \end{align*}
+    from \exaref{exa:hlnAccountingAMM} and assume we want to decide the probabilistic entailment of the formula
+    \begin{align*}
+        \secexformulaat{\catvariableof{A1},\catvariableof{A2},\catvariableof{F}}
+        = \lnot\catvariableof{A1} \lor \lnot\catvariableof{A2} \lor \lnot\catvariableof{F} \, ,
+    \end{align*}
+    which has all states but $(1,1,1)$ as a model (and is therefore refered to as a maxterm).
+    Using \theref{the:hybridEntailment} we have that
+    \begin{align*}
+        \contraction{\probofat{(\catvariableof{A1}\oplus\catvariableof{A2},\catvariableof{F}\Rightarrow\catvariableof{A1}),\big(\{0\},(1),(0,\lnof{3})\big)}{\catvariableof{A1},\catvariableof{A2},\catvariableof{F}},\secexformulaat{\catvariableof{A1},\catvariableof{A2},\catvariableof{F}}} =1
+    \end{align*}
+    if and only if $\catvariableof{A1}\oplus \catvariableof{A2} \models \lnot\catvariableof{A1} \lor \lnot\catvariableof{A2} \lor \lnot\catvariableof{F}$.
+    By \defref{def:logicalEntailment}, this entailment holds since by the De-Morgan rule
+    \begin{align*}
+        \contraction{\catvariableof{A1}\oplus \catvariableof{A2},\lnot \left(\lnot\catvariableof{A1} \lor \lnot\catvariableof{A2} \lor \lnot\catvariableof{F}\right)}
+        &= \contraction{\catvariableof{A1}\oplus \catvariableof{A2},\catvariableof{A1},\catvariableof{A2},\catvariableof{F}} \\
+        &= \contraction{\catvariableof{F}} \cdot \contraction{\catvariableof{A1}\oplus \catvariableof{A2},\catvariableof{A1},\catvariableof{A2}} \\
+        &= 0 \, .
+    \end{align*}
+    We thus conclude, that $\secexformula$ is probabilistically entailed by $\probof{(\catvariableof{A1}\oplus\catvariableof{A2},\catvariableof{F}\Rightarrow \catvariableof{A1}),\big(\{0\},(1),(0,\lnof{3})\big)}$.
+\end{example}

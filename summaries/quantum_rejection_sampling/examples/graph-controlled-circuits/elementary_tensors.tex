@@ -1,0 +1,99 @@
+\begin{example}[Elementary Tensors]
+    Let there be an elementary distribution
+    \begin{align*}
+        \probwith = \bigotimes_{\catenumeratorin} \probofat{\catenumerator}{\catvariableof{\catenumerator}} \, ,
+    \end{align*}
+    that is, all variables are pairwise independent.
+    Then the ancilla augmentation of the distribution is given by the Bayesian Network with the hypergraph shown in \figref{fig:ancillaAugmentationElementary}a).
+    Compared with the ancilla augmentation of a generic distribution this augmentation is sparser in the circuit depth (see \figref{fig:ancillaAugmentationElementary}b), but introduces multiple ancilla variables.
+    The sparsity originates since each ancilla variable is controlled by a single qubit.
+    The total amount of controlled rotations is thus $\sum_{\catenumeratorin}[\catdimof{\catenumerator}]$ instead of $\prod_{\catenumeratorin}[\catdimof{\catenumerator}]$ for the generic implementation.
+
+    \begin{figure}
+        \begin{center}
+            \begin{tikzpicture}[scale=0.35, thick]
+
+                \node[anchor=center] at (-2, 1) {$a)$};
+
+                \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X0) at (0,-5) {};
+                \node[anchor=center] (A) at (0,-5) {\corelabelsize $\catvariableof{0}$};
+                \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A0) at (0,0) {};
+                \node[anchor=center] (A) at (0,0) {\corelabelsize $\avariableof{0}$};
+                \draw[->] (X0) -- (A0);
+
+                \node[anchor=center] at (4, -2.5) {$\cdots$};
+
+                \begin{scope}[shift={(8,0)}]
+                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X0) at (0,-5) {};
+                    \node[anchor=center] (A) at (0,-5) {\corelabelsize $\catvariableof{\catorder\shortminus1}$};
+                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A0) at (0,0) {};
+                    \node[anchor=center] (A) at (0,0) {\corelabelsize $\avariableof{\catorder\shortminus1}$};
+                    \draw[->] (X0) -- (A0);
+                \end{scope}
+
+                \node[anchor=center] at (15, 1) {$b)$};
+
+                \begin{scope}[shift={(20,-10)}]
+
+                    \draw (-1,9) rectangle (1,11);
+                    \node[anchor=center] (text) at (0,10) {$\onehotmapof{0}$};
+                    \draw (1,10) -- (7,10);
+                    \draw (7,9) rectangle (9,11);
+                    \node[anchor=center] (text) at (8,10) {\corelabelsize $\qcaencodingof{\probof{\catorder\shortminus1}}$};
+                    \draw (8,9) -- (8,3);
+                    \drawvariabledot{8}{3}
+                    \node[rotate=45] at (7,1) {$\cdots$};
+                    \draw (9,10) -- (10,10);
+                    \drawqcmeasuresymbol{11}{10}
+                    \draw (12,10) -- (14,10) node[midway,above]{\colorlabelsize $\avariableof{\catorder\shortminus1}$};
+
+                    \node[anchor=center] (text) at (0,8.25) {$\vdots$};
+
+                    \draw (-1,5) rectangle (1,7);
+                    \node[anchor=center] (text) at (0,6) {$\onehotmapof{0}$};
+                    \draw (1,6) -- (4,6);
+                    \draw (4,5) rectangle (6,7);
+                    \node[anchor=center] (text) at (5,6) {\corelabelsize $\qcaencodingof{\probof{0}}$};
+                    \draw (5,5) -- (5,-1);
+                    \drawvariabledot{5}{-1}
+                    \draw (6,6) -- (10,6);
+                    \drawqcmeasuresymbol{11}{6}
+                    \draw (12,6) -- (14,6) node[midway,above]{\colorlabelsize $\avariableof{0}$};
+
+
+                    %% Distributed Qubits
+                    \draw[dashed] (-3,4.5) -- (15,4.5);
+
+                    \draw (-1,2) rectangle (1,4);
+                    \node[anchor=center] (text) at (0,3) {$\onehotmapof{0}$};
+                    \draw (1,3) -- (2,3);
+                    \draw (2,2) rectangle (4,4);
+                    \node[anchor=center] (text) at (3,3) {$\hgate$};
+
+                    \draw (4,3) -- (10,3);
+                    \drawqcmeasuresymbol{11}{3}
+                    \draw (12,3) -- (14,3) node[midway,above]{\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
+
+                    \node[anchor=center] (text) at (0,1.25) {$\vdots$};
+                    %\node[anchor=east] (text) at (-2,1) {Distributed Qubits};%{$\shortcatvariables$};
+
+                    \draw (-1,-2) rectangle (1,0);
+                    \node[anchor=center] (text) at (0,-1) {$\onehotmapof{0}$};
+                    \draw (1,-1) -- (2,-1);
+                    \draw (2,-2) rectangle (4,0);
+                    \node[anchor=center] (text) at (3,-1) {$\hgate$};
+
+                    \draw (4,-1) -- (10,-1);
+                    \drawqcmeasuresymbol{11}{-1}
+                    \draw (12,-1) -- (14,-1) node[midway,above]{\colorlabelsize $\catvariableof{0}$};
+
+                \end{scope}
+            \end{tikzpicture}
+        \end{center}
+        \caption{Ancilla augmentation of an elementary distribution (which variables are pairwise independent).
+        a) Hypergraph to the Bayesian Network representing the ancilla augmentation.
+        b) Circuit preparing the ancilla augmented distribution by \activationCircuits{} acting on the disentangled initial state.
+        }\label{fig:ancillaAugmentationElementary}
+    \end{figure}
+
+\end{example}

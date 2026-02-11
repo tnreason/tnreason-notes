@@ -1,0 +1,205 @@
+\section{Characterization for boolean statistics}
+
+\red{We here study the face CP ranks in case of boolean statistics.
+We further show that any elementary \ComputationActivationNetwork{} to boolean statistics is a maximum entropy distribution.}
+
+For boolean statistics $\hlnstat:\facstates\rightarrow\bigtimes_{\selindexin}[2]$ the mean polytope is a subset of the cube $\fullparcube$.
+In this case, any boolean vector in $\meansetof{\hlnstat,\basemeasure}$ is a vertex.
+It follows, that any distribution reproducing a mean parameter $\meanparamwith$ on the relative interior of $\meansetof{\hlnstat,\basemeasure}$ is positive with respect to $\basemeasure$.
+
+We apply the exponential distribution characterization of the maximum entropy distribution and get that the maximum entropy distribution is in $\elrealizabledistsof{\sstat}$, if and only if the face measure is in $\elrealizabledistsof{\sstat}$.
+This is exactly the case, when the face is an intersection of the mean polytope with a face of the cupe $\fullparcube$.
+
+\subsection{Characterization of elementary representable faces}
+
+We first show in the following example, that all faces of a hypercube are representable by elementary activation tensors.
+
+\input{examples/hypercube_faces}
+
+Orienting on \exaref{exa:hypercubeFaces} we define cube-likeness of faces and polytopes.
+
+\begin{definition}
+    \label{def:cubeLike}
+    We say that a face $\facesymbol$ of $\hlnmeanset$ is cube-like, if it is empty or there is $\variableset\subset[\seldim]$ and $\headindexof{\variableset}\in\bigtimes_{\selindex\in\variableset}[2]$ such that
+    \begin{align*}
+        \facesymbol = \meansetof{\hlnstat,\basemeasure} \cap \facesymbolof{(\variableset,\headindexof{\variableset})} \, .
+    \end{align*}
+    We further say that a polytope $\hlnmeanset$ is cube-like, if all faces $\facesymbol\in\facelatticeof{\hlnmeanset}$ are cube-like.
+\end{definition}
+
+We now show that a face is cube-like if and only if it is representable by an elementary tensor.
+
+\begin{theorem}
+    \label{the:faceMeasureHardLogicNetworks}
+    Let $\hlnstat$ be a boolean statistic, $\basemeasure$ a base measure and $\facesymbol$ be a face of $\hlnmeanset$.
+    Then the following are equivalent:
+    \begin{itemize}
+        \item[(i)] $\facesymbol$ is cube-like (see \defref{def:cubeLike}).
+        \item[(ii)] $\facesymbol$ is representable by an elementary tensor (see \defref{def:faceRepresentability}).
+   \end{itemize}
+\end{theorem}
+\begin{proof}
+    If the face is empty, i.e. $\facesymbol=\varnothing$, it is by definition cube-like and has $\zerosat{\headvariables}$ as an elementary activation tensor.
+    We therefore assume in the following $\facesymbol\neq\varnothing$.
+
+    (i)$\Rightarrow$(ii):
+    Let us assume that $\facesymbol$ is cube-like, that is there is $\variableset\subset[\seldim]$ and $\headindexof{\variableset}\in\bigtimes_{\selindex\in\variableset}[2]$ such that $\facesymbol = \meansetof{\hlnstat,\basemeasure} \cap \facesymbolof{(\variableset,\headindexof{\variableset})}$.
+    We use that $\facesymbol,\meansetof{\hlnstat,\basemeasure}$ and $\facesymbolof{(\variableset,\headindexof{\variableset})}$ are the convex hulls of the cube vertex sets $\imsetof{\hlnstat,\meanset}{\facesymbol}$, $\imsetof{\hlnstat,\meanset}{}$ and
+    \begin{align}\label{eq:cubeFaceVertices}
+        \imsetof{}{(\variableset,\headindexof{\variableset})} = \{\imelementwith \wcols \forall \selindex\in\variableset \imelementat{\indexedselvariable}=\headindexof{\variableset}\} \, ,
+    \end{align}
+    which implies that
+    \begin{align*}
+        \imsetof{\hlnstat,\meanset}{\facesymbol} = \imsetof{}{(\variableset,\headindexof{\variableset})} \cap \imsetof{\hlnstat,\meanset}{} \, .
+    \end{align*}
+    Thus, we can choose $\arbset=\imsetof{\hlnstat,\meanset}{\facesymbol}$ for the representation of the face $\facesymbol$ (see \defref{def:faceRepresentability}) and further have that
+    \begin{align*}
+        \sum_{\imelementwith\in\imsetof{}{(\variableset,\headindexof{\variableset})}}
+        = \bigotimes_{\selindexin} \hardactlegwith \, .
+    \end{align*}
+    We have thus found an elementary activation tensor for the face $\facesymbol$.
+
+    (ii)$\rightarrow$(i)
+    Conversely, let $\acttensorwith$ be an elementary activation tensor of the face $\facesymbol$ in $\hlnmeanset$.
+    Since $\acttensorwith$ is the sum of different one-hot encodings it is boolean and we find an elementary decomposition $\acttensorwith=\bigotimes_{\selindexin}\acttensorlegwith$ such that the leg vectors $\acttensorwith$ are boolean.
+    Since $\facesymbol\neq\varnothing$ we further have for $\selindexin$ that $\acttensorlegwith\neq\zerosat{\headvariableof{\selindex}}$, and thus $\acttensorlegwith\in \{\fbasisat{\headvariableof{\selindex}},\tbasisat{\headvariableof{\selindex}},\onesat{\headvariableof{\selindex}}\}$
+    We construct a set $\variableset\subset[\seldim]$
+    \begin{align*}
+        \variableset = \left\{\selindex \wcols {\acttensorlegwith}\neq\onesat{\headvariableof{\selindex}}\right\}
+    \end{align*}
+    and a tuple
+    \begin{align*}
+        \headindexof{\selindex}
+        = \begin{cases}
+              1 & \ifspace {\acttensorlegwith}=\onehotmapofat{1}{\headvariableof{\selindex}} \\
+              0 & \ifspace {\acttensorlegwith}=\onehotmapofat{0}{\headvariableof{\selindex}}
+        \end{cases} \, .
+    \end{align*}
+    By construction ${\acttensorlegwith} = \hardactlegwith$ (see \exaref{exa:hypercubeFaces}) follows for all $\selindexin$ and therefore $\acttensorwith=\hardacttensorwith$.
+    We therefore have for the set \eqref{eq:cubeFaceVertices}
+    \begin{align*}
+        \acttensorwith = \sum_{\imelement\in\imsetof{}{\variableset,\headindexof{\variableset}}} \onehotmapofat{\imelement}{\headvariables}
+    \end{align*}
+    and since $\acttensorwith$ is an activation tensor for $\facesymbol$, that 
+    \begin{align*}
+        \imsetof{\hlnstat,\meanset}{\facesymbol}
+        = \imsetof{}{\variableset,\headindexof{\variableset}}\cap\imsetof{\hlnstat,\meanset}{} \, .
+    \end{align*}
+    Taking convex hulls on both sides, this is equivalent to
+    \begin{align*}
+        \facesymbol = \facesymbolof{(\variableset,\headindexof{\variableset})} \cap \meansetof{\hlnstat,\basemeasure} \, .
+    \end{align*}
+    We conclude that $\facesymbol$ is cube-like.
+\end{proof}
+
+Let us now give with the standard simplices a class of convex polytopes, which are not hypercubes, but cube-like.
+
+\input{examples/simplex_faces}
+
+\subsection{Set of maximum entropy distributions}
+
+\begin{theorem}
+    Any distribution in $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ is a maximum entropy distribution with respect to $(\hlnstat,\meanparam,\basemeasure)$ where $\meanparam$ is its mean parameter.
+    Any maximum entropy distribution is realized by $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ if and only if the mean parameter is in the relative interior of a cube-like face.
+\end{theorem}
+\begin{proof}
+    First claim by decomposing any elementary tensor into exponential and hard activation core.
+    Second claim by characterization of elementary faces by cube-likeness.
+\end{proof}
+
+We can now use the same notation as applied for hypercubes to classify the faces of a cube-like polytope.
+
+\subsection{Interpretation by propositional formulas}
+
+We can understand each feature as a propositional formula and the variables $\shortcatvariables$ as atoms (possibly after a binarization).
+
+Each vertex of the cube, which is not a vertex of the polytope corresponds with the unsatisfiability of a formula
+\begin{align*}
+    \bigwedge_{\selindexin} \lnot^{1-\meanparamat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables}
+\end{align*}
+which is equal with any of the entailment statements for $\variableset\subset[\seldim]$ % Can extend to any partition!
+\begin{align*}
+    \left(\bigwedge_{\selindex\in\variableset} \lnot^{1-\meanparamat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right)
+    \models \left(\bigwedge_{\selindex\in\variableset}\lnot^{\meanparamat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right) \, .
+\end{align*}
+
+Along this interpretation we can easily construct examples of statistics, which polytopes are not cube-like.
+
+\input{examples/nonel_hlnstat_maxent.tex}
+
+\input{examples/atomic_formulas.tex}
+
+\input{examples/minterm_formulas.tex}
+
+\input{examples/tt_diagonal_face}
+
+\subsection{Construction of \HybridLogicNetworks{}}
+
+We now constructively show, that any convex polytope with boolean vertices in $\parspace$ (a so called 0-1 polytope, see \cite{ziegler_lectures_2000}) is the mean polytope of a family of \HybridLogicNetworks{}.
+
+\begin{theorem}
+    Let $\meanset$ an arbitrary polytope with boolean vertices in $\parspace$.
+    Then we construct propositional formulas on atoms $\catvariableof{[\seldim]}$ by
+    \begin{align*}
+        \formulaofat{0}{\catvariableof{0}} =
+        \begin{cases}
+            \top & \ifspace \restrictionofto{\meanset}{\rr^1\times 0_{\seldim-1}} = \{1\} \\
+            \bot & \ifspace \restrictionofto{\meanset}{\rr^1 \times 0_{\seldim-1}} = \{0\} \\
+            \catvariableof{0} & \ifspace \restrictionofto{\meanset}{\rr^1 \times 0_{\seldim-1}} = [0,1]
+        \end{cases}
+    \end{align*}
+    and iteratively for $\selindexin$ with $\selindex\geq1$ by
+    \begin{align*}
+        \formulaofat{\selindex}{\catvariableof{[\selindex+1]}} =
+        \bigwedge_{v[\selvariable] \in \restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}\cap \{0,1\}^{\seldim}}
+        \left(\left(\bigwedge_{\secselindex\in[\selindex+1]} \lnot^{1-v[\indexedselvariable]} \formulaofat{\selindex}{\catvariableof{[\selindex]}}\right) \Rightarrow
+            \begin{cases}
+                \top & \ifspace \restrictionofto{\meanset}{v\times\rr^{1} \times 0_{\seldim-\selindex-1}} = \{1\} \\
+                \bot & \ifspace \restrictionofto{\meanset}{v\times\rr^{1} \times 0_{\seldim-\selindex-1}} = \{0\} \\
+                \catvariableof{\selindex} & \ifspace \restrictionofto{\meanset}{v\times\rr^{1} \times 0_{\seldim-\selindex-1}} = \{0,1\} \\
+            \end{cases}
+        \right).
+    \end{align*}
+    Here we denote by $\restrictionofto{\meanset}{V}$ the projections of the vertices in $\meanset$ onto the subspaces $V$, and by $0_{\seldim}$ the zero vector in $\rr^{\seldim}$.
+\end{theorem}
+\begin{proof}
+    We show per induction, that for any $\selindexin$ the family of \HybridLogicNetworks{} with the statistic $\formulaof{[\selindex+1]}$ by the first $\selindex+1$ formulas has the mean polytope
+    \begin{align}
+        \label{eq:HLNindConTBS}
+        \meansetof{\formulaof{[\selindex+1]},\trivbm} = \restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}} \, .
+    \end{align}
+
+    $\selindex=0$: The polytope $\restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}=\{1\}$ (respectively $\restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}=\{0\}$) is reproduced by $\formulaof{0}$ being a tautology (respectively a contradiction).
+    In the case $\restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}=[0,1]$ the polytope is reproduced by the any formula, which is neither a tautology nor a contradiction, and the atomic formula $\catvariableof{0}$ is an example of such an contingency.
+    Since the projection of a 0-1 polytope onto the first coordinates is itself a 0-1 polytope, these are the only possible cases and we conclude that in all
+    \begin{align*}
+        \meansetof{\formulaof{[\selindex+1]},\trivbm} = \restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}} \, .
+    \end{align*}
+
+    $\selindex\rightarrow\selindex+1$: Let us assume, that \eqref{eq:HLNindConTBS} holds for a $\selindexin$.
+    Then for any $\shortcatindicesin$ there is exactly one $v[\selvariable] \in \restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}$ such that $\shortcatindices$ is a model of
+    \begin{align*}
+        \formulaof{\selindex,v}\coloneqq
+        \bigwedge_{\secselindex\in[\selindex+1]} \lnot^{1-v[\indexedselvariable]} \formulaofat{\selindex}{\catvariableof{[\selindex]}} \, .
+    \end{align*}
+    This holds, since by the mutual contradiction of these formulas at most one can have $\shortcatindices$ as a model.
+    Further, if none would have $\shortcatindices$ as a model, then the to $\shortcatindices$ corresponding vector of satisfactions $(\formulaofat{\selindex}{\indexedshortcatvariables})_{\selindex\in[\selindex]}$ is not in $\restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}$, which can not be the case.
+    Now, the implications to all $\tilde{v}$ except for $v$ are for the models $\shortcatindices$ of $\formulaof{\selindex,v}$ satisfied, and the satisfaction of $\formulaof{\selindex}$ thus only depends on the head of the implication to $v$.
+    It follows, that the vertices of $\meansetof{\formulaof{[\selindex+2]},\trivbm}$ sharing the first $\selindex$ coordinates with $v$ are determined by the head of the implication at $v$.
+    With the same arguments as in the case $\selindex=0$ we now notice, that in the three cases we construct vertex sets $v\times\{1\},\, v\times\{1\}$ or $v\times\{0,1\}$ if and only if they appear in the polytope $\restrictionofto{\meanset}{\rr^{\selindex+1}\times 0_{\seldim-\selindex-1}}$.
+    This establishes for each vertex $v$ of $\meansetof{\formulaof{[\selindex+1]},\trivbm}$ that
+    \begin{align*}
+        \restrictionofto{\left(\meansetof{\formulaof{[\selindex+2]},\trivbm}\right)}{v\times\rr\times0_{\seldim-\selindex-1}}
+        = \restrictionofto{\left(\restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}\right)}{v\times\rr\times0_{\seldim-\selindex-1}} \, .
+    \end{align*}
+    Since for any vertex in $\meanset$ we find a unique vertex in $\meansetof{\formulaof{[\selindex+1]},\trivbm}$ sharing the first $\selindex$ coordinates, we have that \eqref{eq:HLNindConTBS} holds for $\selindex+1$.
+
+    By induction the equation \eqref{eq:HLNindConTBS} holds for arbitrary $\selindexin$.
+    For $\selindex=\seldim-1$ the equation is the claim.
+\end{proof}
+
+\subsection{Further Examples of non-cubelike polytopes}
+
+\input{examples/ising_two}
+
+\input{examples/ldpc_one}

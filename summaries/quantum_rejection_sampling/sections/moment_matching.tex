@@ -1,0 +1,299 @@
+\section{Moment Matching by Amplitude Amplification}
+
+We here apply \computationCircuits{} on anti-symmetric ancilla states (as for sign encoding)
+\begin{itemize}
+    \item A single \computationCircuit{} effectively prepares a reflection across the models of the computed formula
+    \item Building the reflections based on ancilla ground states (as for basis encoding), we would need an additional Pauli-Z and two \computationCircuits{}
+    \item Further ancilla qubits used in circuit decompositions need to be uncomputed (i.e. by applying the same partial \computationCircuit{} again) for further usage
+\end{itemize}
+
+We now investigate which \ComputationActivationNetworks{} can be prepared directly with amplitude amplification.
+
+\subsection{Effective reflection by single \computationCircuits{}}
+
+\red{Note, that the \computationCircuit{} is not a reflection, but acts as one when preparing the ancilla in the real anti-symmetric state.}
+
+To start let
+\begin{itemize}
+    \item $\qstateofat{0}{\shortcatvariables}$ be a q-sample of a probability distribution $\probofat{0}{\shortcatvariables}$
+    \item $U$ be a unitary preparing the state
+    \item $\qcbencodingof{\exformula}$ be a \computationCircuit{} to a formula $\exformula$
+\end{itemize}
+
+\subsubsection{Decomposition of the q-sample}
+
+The we split the initial state into vectors supported at the models of $\exformula$ and the complement as
+\begin{align*}
+    \qstateofat{0}{\shortcatvariables}
+    =\qstateofat{\goodstatesymbol}{\shortcatvariables}+\qstateofat{\badstatesymbol}{\shortcatvariables}
+\end{align*}
+where
+\begin{align*}
+    \qstateofat{\goodstatesymbol}{\shortcatvariables}
+    &= \sum_{\shortcatindicesin\wcols\exformulaat{\indexedshortcatvariables}=1} \sqrt{\probat{\indexedshortcatvariables}}
+    \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \\
+    \qstateofat{\badstatesymbol}{\shortcatvariables}
+    &= \sum_{\shortcatindicesin\wcols\exformulaat{\indexedshortcatvariables}=0} \sqrt{\probat{\indexedshortcatvariables}}
+    \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
+\end{align*}
+
+We further define for a boolean formula
+\begin{align*}
+    \qstateofat{\probof{0},\exformula}{\shortcatvariables}
+    = \frac{\qstateofat{\goodstatesymbol}{\shortcatvariables}}{\normof{\qstateofat{\goodstatesymbol}{\shortcatvariables}}}
+\end{align*}
+and have consistently for its negation
+\begin{align*}
+    \qstateofat{\probof{0},\lnot\exformula}{\shortcatvariables}
+    = \frac{\qstateofat{\badstatesymbol}{\shortcatvariables}}{\normof{\qstateofat{\badstatesymbol}{\shortcatvariables}}}
+\end{align*}
+
+We define an angle $\rotanglesymbol$ by
+\begin{align*}
+    \sinof{\frac{\rotanglesymbol}{2}} \coloneqq \normof{\qstateofat{\goodstatesymbol}{\shortcatvariables}}
+\end{align*}
+and have
+\begin{align*}
+    \qstateofat{0}{\shortcatvariables}
+    = \sinof{\frac{\rotanglesymbol}{2}} \qstateofat{\probof{0},\exformula}{\shortcatvariables} +
+    \cosof{\frac{\rotanglesymbol}{2}} \qstateofat{\probof{0},\exformula}{\shortcatvariables} \, .
+\end{align*}
+Further we have that
+\begin{align*}
+    \meanparam^{0}
+    &= \contraction{\probofat{0}{\shortcatvariables},\formulawith} \\
+    &= \sum_{\shortcatindicesin} \absof{\qstateofat{0}{\indexedshortcatvariables}\formulaat{\indexedshortcatvariables}}^2 \\
+    &= \left(\|\qstateofat{\goodstatesymbol}{\shortcatvariables}\|_2\right)^2 \\
+    &= \left(\sinof{\frac{\rotanglesymbol}{2}}\right)^2 \, .
+\end{align*}
+
+We prepare an ancilla qubit in the anti-symmetric state and consider as initial state
+\begin{align*}
+    \qstateofat{0}{\shortcatvariables} \otimes
+    \sqrt{\frac{1}{2}}\cdot\coloredmatrixof{1\\-1}{\avariable} \,.
+\end{align*}
+
+The \computationCircuit{} $\qcbencodingof{\exformula}$ acting on this state prepares a state
+\begin{align*}
+    \left(\qstateofat{\badstatesymbol}{\shortcatvariables}-\qstateofat{\goodstatesymbol}{\shortcatvariables}\right) \otimes
+    \sqrt{\frac{1}{2}}\cdot\coloredmatrixof{1\\-1}{\avariable}  \,.
+\end{align*}
+This is the reflection on the subspace spanned by the one-hot encodings of the models of $\exformula$.
+
+\subsubsection{Decomposition into auxiliary statistic qubits}
+
+% Decomposition Sparsity requires uncomputation of the ancilla qubits
+We can exploit \decompositionSparsity{} to find a sparse representation of a \computationCircuit{} with further auxiliary statistic qubits.
+Any auxiliary statistic qubits $\headvariable$ is prepared in the initial state $\fbasisat{\headvariable}$, only the head statistic qubit is prepared in the anti-symmetric state.
+To prepare a sign encoding such that the auxiliary statistic qubits are disentangled, one has to uncompute all auxiliary statistic qubits, by applying the respective \computationCircuits{} with auxiliary target qubits again.
+
+
+To be more precise, let $\headvariables$ be auxiliary statistic qubits representing the subformulas $\hlnstat$ in a syntactic decomposition of $\exformula$, applying a decomposed \computationCircuit{} on the initial state then gives
+\begin{align*}
+    \left(\sum_{\shortcatindicesin} (-1)^{\exformula(\shortcatindices)} \qstateofat{0}{\indexedshortcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \otimes \onehotmapofat{\hlnstat(\shortcatindices)}{\headvariables}\right)
+\end{align*}
+Notice, that in this case the auxiliary qubits are entangled with the distributed qubits.
+This can be resolved by applying the adjoint of the \computationCircuit{} except for those where the control is on the ancilla qubit.
+We then have
+\begin{align*}
+    &\left(\sum_{\shortcatindicesin} (-1)^{\exformula(\shortcatindices)} \qstateofat{0}{\indexedshortcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \right) \otimes \onehotmapofat{\hlnstat(\shortcatindices)\oplus \hlnstat(\shortcatindices)}{\headvariables} \\
+    &\quad =\left(\sum_{\shortcatindicesin} (-1)^{\exformula(\shortcatindices)} \qstateofat{0}{\indexedshortcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \right) \otimes \onehotmapofat{0_{[\seldim]}}{\headvariables}
+\end{align*}
+
+Alternatively, one can include the auxiliary statistic qubits into the distributed qubits, and understand the parts of the \computationCircuit{} not affecting the ancilla qubit as part of the initial state preparing unitary $U$.
+Note that this perspective has been applied in section \secref{sec:sampling}, where we took $U$ as the \ComputationActivationCircuit{} preparing the q-sample of the ancilla augmentation.
+
+
+\subsection{Rotation along a formula}
+
+Rotating $\repnum$ times across the initial state then gives the tensor product of the antisymmetric ancilla state with
+\begin{align*}
+    \qstateofat{\repnum}{\shortcatvariables}
+    = \sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol} \qstateofat{\probof{0},\exformula}{\shortcatvariables} +
+    \cosof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol} \qstateofat{\probof{0},\lnot\exformula}{\shortcatvariables} \, .
+\end{align*}
+This reflection can be performed by the operator on the distributed qubits
+\begin{align*}
+    U^t \left(
+            \identityat{\shortcatvariables^{\insymbol},\shortcatvariables^{\outsymbol}}-2\onehotmapofat{0}{\shortcatvariables^{\insymbol}} \otimes \onehotmapofat{0}{\shortcatvariables^{\outsymbol}}
+    \right) U \, .
+\end{align*}
+
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz_pics/moment-matching/rotation_sketch.tikz}
+    \end{center}
+    \caption{Geometric visualization of the states $\qstateof{1}$ resulting from a Grover rotation on $\qstateof{0}$, in the subspace spanned by $\qstateof{\probof{0},\exformula}$ and $\qstateof{\probof{0},\lnot\exformula}$.
+    The effective reflection by the \computationCircuit{} results in the gray state $\qstateof{\badstatesymbol}-\qstateof{\goodstatesymbol}$.
+    Reflecting again on the initial state $\qstateof{0}$ results in the amplified state $\qstateof{1}$.
+    Each such Grover iteration is therefore a rotation by the angle $\rotanglesymbol$ in the.}
+\end{figure}
+
+
+\subsubsection{Maximum Entropy}
+
+% Q-sample
+When $\left(\frac{1}{2}+\repnum\right)\rotanglesymbol\leq \frac{\pi}{2}$ then all amplitudes remain positive, and $\qstateofat{\repnum}{\shortcatvariables}$ is a q-sample.
+What is more, we can show that the property of maximum entropy with respect to a statistic containing the amplified formula.
+
+\begin{theorem}
+    \label{the:rotationKeepsMaxEntropy}
+    Let $\qstateof{0}$ be the q-sample of a maximum entropy distribution with respect to the uniform base measure and the statistic $\formulaset$ containing the amplified formula, and let $\repnum\in\nn$ be a rotation number such that $\left(\frac{1}{2}+\repnum\right)\rotanglesymbol\leq\frac{\pi}{2}$.
+    Then also $\qstateof{\repnum}$ is the q-sample of a maximum entropy distribution.
+\end{theorem}
+
+We show \theref{the:rotationKeepsMaxEntropy} later based on a more technical description of the rotated state, which we show as the next lemma.
+
+\begin{lemma}
+    \label{lem:rotationCanParamIncrease}
+    Let $\qstateof{0}$ be the q-sample of the elementary \ComputationActivationNetwork{} with canonical parameters $\hybridparam$, and let us amplify the formula $\formulaof{\selindex}$.
+    Then $\qstateof{\repnum}$ is the q-sample of the elementary \ComputationActivationNetwork{} with canonical parameters
+    \begin{align*}
+        \hardlegset^{\repnum} =
+        \begin{cases}
+            \hardlegset \cup \{\selindex\}, \headindexof{\hardlegset}^{\selindex} = (\headindexof{\hardlegset},1) & \ifspace \sinof{(1+2\cdot\repnum)\sin^{-1}\left(\sqrt{\meanparamofat{0}{\indexedselvariable}}\right)} = 1 \\
+            \hardlegset, \headindexof{\hardlegset} & \elsetext
+        \end{cases}
+    \end{align*}
+    and
+    \begin{align*}
+        \canparamofat{\repnum}{\indexedselvariable} =
+        \begin{cases}
+            0 & \ifspace  \sinof{(1+2\cdot\repnum)\sin^{-1}\left(\sqrt{\meanparamofat{0}{\indexedselvariable}}\right)} = 1 \\
+            \canparamat{\indexedselvariable} + \frac{
+                \cos^2\left(\frac{\rotanglesymbol}{2}\right) \left(1-
+                                                                 \cos^2\left(\left(\frac{1}{2}+\repnum\right) \rotanglesymbol \right)
+                \right)
+            }{
+                \sin^2\left(\frac{\rotanglesymbol}{2}\right)
+                \cdot \cos^2\left(\left(\frac{1}{2}+\repnum\right)\rotanglesymbol\right)
+            } & \elsetext
+        \end{cases} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    Notice, that
+    \begin{align*}
+        \contractionof{\probofat{0}{\shortcatvariables},\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables}}{\headvariableof{\selindex}}
+        = \coloredmatrixof{
+            \left(\cosof{\frac{\rotanglesymbol}{2}}\right)^2 \\
+            \left(\sinof{\frac{\rotanglesymbol}{2}}\right)^2
+        }{\headvariableof{\selindex}}
+        = \coloredmatrixof{
+            1-\meanparamofat{0}{\indexedselvariable} \\
+            \meanparamofat{0}{\indexedselvariable}
+        }{\headvariableof{\selindex}}
+    \end{align*}
+    and
+    \begin{align*}
+        \contractionof{\probofat{\repnum}{\shortcatvariables},\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables}}{\headvariableof{\selindex}}
+        =
+        \coloredmatrixof{
+            \left(\cosof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol}\right)^2 \\
+            \left(\sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol}\right)^2
+        }{\headvariableof{\selindex}}
+        \coloredmatrixof{
+            1-\meanparamofat{\repnum}{\indexedselvariable} \\
+            \meanparamofat{\repnum}{\indexedselvariable}
+        }{\headvariableof{\selindex}}
+    \end{align*}
+    If $\meanparamofat{\repnum}{\indexedselvariable}=1$ (that is $\sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol}=1$), the amplitude amplification amounts to adding $\formulaof{\selindex}$ as a hard constraint.
+    This is equal to $\hardlegset^{\repnum}=\hardlegset\cup\{\selindex\}$ and $\headindexof{\hardlegset}^{\repnum}=(\headindexof{\hardlegset},1)$.
+
+    If $\meanparamofat{\repnum}{\indexedselvariable}\neq 1$ we choose $\canparamofat{\Delta}{\indexedselvariable}\geq 0$ as in the claim and have after some algebra
+    \begin{align*}
+        \frac{
+            \left(\cosof{\frac{\rotanglesymbol}{2}}\right)^2
+        }{
+            \left(\cosof{\frac{\rotanglesymbol}{2}}\right)^2 + \canparamofat{\Delta}{\indexedselvariable} \cdot \left(\sinof{\frac{\rotanglesymbol}{2}}\right)^2
+        } = \left(\cosof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol}\right)^2
+    \end{align*}
+    and therefore
+    \begin{align*}
+        \contractionof{\probofat{\repnum}{\shortcatvariables},\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables}}{\headvariableof{\selindex}}
+        = \normalizationof{
+            \expof{\canparamofat{\Delta}{\indexedselvariable}\cdot\formulaofat{\selindex}{\canparam}}
+            \probofat{0}{\shortcatvariables},\bencodingofat{\formulaof{\selindex}}{\headvariableof{\selindex},\shortcatvariables}
+        }{\headvariableof{\selindex}} \, .
+    \end{align*}
+    Thus, the rotation of the q-sample corresponds with an increase of the canonical parameter $\canparamofat{0}{\indexedselvariable}$ by $\canparamofat{\Delta}{\indexedselvariable}$.
+\end{proof}
+
+\begin{proof}[Proof of \theref{the:rotationKeepsMaxEntropy}]
+    By \lemref{lem:rotationCanParamIncrease} the amplitude amplified state is an elementary \ComputationActivationNetwork{} and thus a maximum entropy distribution.
+        %   Since the measurement distribution of any quantum state in the plane spanned by $\qstateof{\goodstatesymbol}$ and $\qstateof{\badstatesymbol}$ is an elementary \ComputationActivationNetwork{}.
+        %   When the assumption on $\repnum$ is met, we further have positive real amplitudes and therefore a q-sample.
+        %  Since each amplitude amplification can be understood as an change of mean parameters.
+        %  To be more precise, we characterize the change of canonical parameters in the lemma below.
+\end{proof}
+
+%
+Notice, that we can only increase the canonical parameter by amplitude amplification.
+Decreasing could be done by amplitude amplification on $\lnot\formulaof{\selindex}$ instead.
+
+\subsection{Moment Matching based preparation of \CompActNets{}}
+
+
+% As exponential family parameters
+The mean parameter of $\exformula$ with respect to the measurement distribution is
+\begin{align*}
+    \meanparam^{\repnum}
+    = \contraction{\probofat{\repnum}{\shortcatvariables},\formulawith}
+    = \sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol}^2
+    = \sinof{\left(1+2\repnum\right)\sin^{-1}\left(\sqrt{\meanparam^{0}}\right)}^2
+    %= \left(\frac{
+    %    2\cdot \sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol} \cdot \sin^{-1}\left(\sqrt{\meanparam^{0}}\right)
+    %}{\meanparam^{0}}\right)^2
+\end{align*}
+Here we used that $\rotanglesymbol = 2\cdot\sin^{-1}\left(\sqrt{\meanparam^{0}}\right)$.
+
+%This change of mean parameters can be understood by increasing the canonical parameter to $\exformula$ by
+%\begin{align*}
+%    \canparamof{\repnum} - \canparamof{0}
+%    = \frac{
+%        \cos^2\left(\frac{\rotanglesymbol}{2}\right) \left(1-
+%                                                         \cos^2\left(\left(\frac{1}{2}+\repnum\right) \rotanglesymbol \right)
+%        \right)
+%    }{
+%        \sin^2\left(\frac{\rotanglesymbol}{2}\right)
+%        \cdot \cos^2\left(\left(\frac{1}{2}+\repnum\right)\rotanglesymbol\right)
+%    }
+%\end{align*}
+%we here allow for $\canparam=\infty$, which corresponds to the case of a hard activation to $\exformula$.
+
+We understand this rotation as a moment matching operation to the formula $\exformula$, see \algoref{alg:QCMM}.
+
+\begin{algorithm}
+    \caption{Quantum Circuit Moment Matcher}\label{alg:QCMM}
+    \begin{algorithmic}
+        \Require Formulas $\formulaofat{\seldim}{\shortcatvariables}$ for $\selindexin$, vector $\datameanat{\selvariable}$ of mean parameters
+        \Ensure Circuit $U$ preparing a state (when applied on the ground state) which measurement distribution matched $\datameanat{\selvariable}$\\
+        \hrule
+        \State $U\algdefsymbol (\paulixsymbol\circ\hgate)\left[\avariableof{\insymbol},\avariableof{\outsymbol}\right] \otimes
+        \left(\bigotimes_{\catenumeratorin}\hgateat{\catvariableof{\catenumerator,\insymbol},\catvariableof{\catenumerator,\outsymbol}}\right)
+        $
+        \While{Convergence criterion not met}
+%        \For{$\selindexin$}
+            \State Estimate $\meanparamat{\selvariable}$,
+            \begin{itemize}
+                \item either by particle bases inference
+                \item or by quantum counting (measuring the eigenvalue of the Grover operator)
+            \end{itemize}
+            \State Select an $\selindexin$, which moment has to be updated (e.g. by comparison of $\meanparamat{\selvariable}$ with $\datameanat{\selvariable}$)
+            \State Choose whether to amplify $\formulaof{\selindex}$ or $\lnot\formulaof{\selindex}$ based on whether the estimated mean is smaller than the target mean
+            \State Compute optimal $\repnum$ to match $\datameanat{\selvariable}$
+            \State Extend Circuit $U$ by $\repnum$ alternations of
+            \begin{itemize}
+                \item $\qcbencodingof{\formulaof{\selindex}}$ (effectively an reflection across the subspace spanned by one-hot encoded models)
+                \item reflections across the current state (by $U(I-2e_0e_0)U$)
+            \end{itemize}
+        \EndWhile
+    \end{algorithmic}
+\end{algorithm}
+
+
+% Outook
+We can use \algoref{alg:QCMM} as a preparation algorithm of a q-sample before doing ancilla augmentation as in the main section.
+Note that is important to keep track of the canonical parameters in the preparation.
+When activating the statistic qubits, only the difference of the already prepared canonical parameters and the target canonical parameters has to be used (importance sampling interpretation).

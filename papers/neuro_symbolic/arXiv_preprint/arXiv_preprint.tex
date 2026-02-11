@@ -1,0 +1,60 @@
+\documentclass[a4paper,11pt,english]{article}
+\usepackage{arxiv}
+\input{arxiv_preamble}
+\usepackage{authblk}
+
+\input{../../../macros/organization_macros.tex}
+\input{../../../macros/general_macros.tex}
+\input{../../../macros/tc_macros.tex}
+\input{../../../macros/tikz_macros.tex}
+
+\newcommand{\abs}[1]{\ensuremath{\left\vert#1\right\vert}}
+\newcommand{\alex}[1]{\textcolor{blue}{#1}}
+\newcommand{\maxf}[1]{\textcolor{orange}{#1}}
+\newcommand{\janina}[1]{\textcolor{teal}{#1}}
+\newcommand{\martin}[1]{\textcolor{cyan}{#1}}
+
+
+\begin{document}
+
+    \title{A tensor network formalism for neuro-symbolic AI}
+    \author{Alex Goessmann\footnote{alex.goessmann@wias-berlin.de}}
+    \author{Janina Schütte}
+    \author{Maximilian Fröhlich}
+    \author{Martin Eigel}
+    \affil{Weierstrass Institute of Applied Analysis and Stochastics \\
+    Anton-Wilhelm-Amo-Straße 39\\
+    Berlin, 10117, Germany\\ 
+    \ \\
+    *alex.goessmann@wias-berlin.de}
+
+    \maketitle
+
+    \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
+        \input{../sections/abstract}
+    \end{abstract}
+
+    \input{../sections/introduction}
+    \input{../sections/notation}
+    \input{../sections/probabilistic_paradigm}
+    \input{../sections/neural_paradigm}
+    \input{../sections/logical_paradigm}
+    \input{../sections/hybrid_activation}
+    \input{../sections/implementation}
+    \input{../sections/conclusion}
+
+    \section*{Acknowledgements}
+    \input{../sections/acknowledgements}
+    %AG and ME acknowledge funding from the German Federal Ministry of Education and Research (BMBF), grant number FKZ 13N17160, "Verbundprojekt: Quantum Read-Once-Memory - Verwandlung von klassischen Daten zu Quantenzuständen - Teilvorhaben: Quanten{\allowbreak}schaltkreis-Optimierung von Quantenzuständen durch Tensor-Netzwerke (QOQ-tn)".
+    %JS and ME  acknowledge funding from the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) under Germany´s Excellence Strategy – The Berlin Mathematics Research Center MATH+ (EXC-2046/2, project ID: 390685689, Project PaA-7). MF acknowledges funding from Einstein Research Unit on Quantum Devices.
+
+    \vskip 0.2in
+    \bibliographystyle{plainnat}
+    \bibliography{../../../references.bib}
+
+    \appendix
+
+    \input{../appendix/factorization_proofs}
+    \input{../appendix/algorithms_implementation}
+
+\end{document}

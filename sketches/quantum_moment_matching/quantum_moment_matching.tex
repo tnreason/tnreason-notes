@@ -1,0 +1,31 @@
+\documentclass[aps,onecolumn,nofootinbib,pra]{article}
+
+\usepackage{../../spec_files/arxiv}
+\input{../../spec_files/standard_preamble.tex}
+
+\input{../../macros/organization_macros.tex}
+\input{../../macros/general_macros.tex}
+\input{../../macros/tc_macros.tex}
+\input{../../macros/tikz_macros.tex}
+
+\usepackage{minted}
+
+\begin{document}
+    \title{Quantum Moment Matching}
+
+    \maketitle
+    \date{\today}
+    \begin{abstract}
+        We present Quantum Moment Matching, a parameter-estimation oriented preparation algorithm of maximum-entropy distributions.
+        More specifically we show that the amplitude amplification procedure corresponds with a classical increase of the canonical parameter in a \HybridLogicNetwork{}.
+    \end{abstract}
+
+    \tableofcontents
+
+    \input{sections/moment_matching}
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
+
+
+\end{document}

@@ -1,0 +1,75 @@
+\begin{example}[Deutsch-Jozsa Test]
+    We measure the probability of the ground state of the sign encoding after a Walsh-Hadamard transform.
+    The probability of measuring the ground state after a Walsh-Hadamard transform of the distributed qubits is then
+    \begin{align*}
+        \frac{1}{2^{\catorder}} \cdot \contraction{\absof{\contractionof{\signqstateofat{\exformula}{\shortcatvariables,\headvariable}}{\headvariable}}^2}
+        = \frac{1}{2^{2\cdot\catorder}} \left(\contraction{\exformula}-\contraction{\lnot\exformula}\right)^2 \, .
+    \end{align*}
+    Thus, if and only if the probability of the ground state is $1$, we have that the formula is constant, that is $\exformula\in\{\top,\bot\}$.
+    This is the Deutsch-Josza algorithm \cite{deutsch_rapid_1992}.
+    \begin{figure}
+        \begin{center}
+
+            \begin{tikzpicture}[scale=0.35,thick]
+
+                \draw (0,0) rectangle (2,7.5);
+                \node[anchor=center] (text) at (1,3.75) {\corelabelsize $\signqstateof{\exformula}$};
+
+                \draw (2,6.5) -- (4,6.5) node[midway,above] {\colorlabelsize $\headvariable$};
+                \drawqcmeasuresymbol{5}{6.5}
+                \draw (6,6.5) -- (8,6.5); % node[midway,above] {\colorlabelsize $\headvariable$};
+                \drawvariabledot{8}{6.5}
+
+                \draw (2,4) -- (4,4) node[midway,above] {\colorlabelsize $\catvariableof{0}$};
+                \draw (4,3) rectangle (6,5);
+                \node[anchor=center] at (5,4) {$\hgate$};
+                \draw (6,4) -- (7,4);
+                \drawqcmeasuresymbol{8}{4}
+                \draw (9,4) -- (10,4);
+                \draw (10,3) rectangle (12,5);
+                \node[anchor=center] at (11,4) {$\fbasis$};
+
+                \node[anchor=center] (text) at (3,3.25) {$\vdots$};
+                \draw (2,1) -- (4,1) node[midway,above] {\colorlabelsize $\catvariableof{\catorder\shortminus 1}$};
+                \draw (4,0) rectangle (6,2);
+                \node[anchor=center] at (5,1) {$\hgate$};
+                \draw (6,1) -- (7,1);
+                \drawqcmeasuresymbol{8}{1}
+                \draw (9,1) -- (10,1);
+                \draw (10,0) rectangle (12,2);
+                \node[anchor=center] at (11,1) {$\fbasis$};
+
+                \node[anchor=center] (text) at (14.5,3.75) {${=}\,\, \frac{1}{2^{2\cdot\catorder}}$};
+
+                \begin{scope}[shift={(18,1.5)}]
+
+                    % Squared
+                    \draw (-1,6) to[bend right=15] (-1,-2);
+                    \draw (7,6) to[bend right=-15] (7,-2);
+                    \drawtextnode{7.5}{6.5}{$2$}
+
+                    \draw (1.5,3) rectangle (4.5,6);
+                    \drawtextnode{3}{4.5}{
+                        $\begin{bmatrix}
+                             -1 \\
+                             1
+                        \end{bmatrix}$
+                    }
+
+                    \draw[->-] (3,1) -- (3,3) node[midway,right] {\colorlabelsize $\headvariable$};
+                    \draw (0,-1) rectangle (6,1);
+                    \drawtextnode{3}{0}{\corelabelsize $\bencodingof{\exformula}$}
+                    \draw[->-] (1,-2) -- (1,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+                    \drawvariabledot{1}{-2}
+                    \drawtextnode{3}{-1.5}{$\cdots$}
+                    \draw[->-] (5,-2) -- (5,-1) node[midway,right] {\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
+                    \drawvariabledot{5}{-2}
+                \end{scope}
+
+            \end{tikzpicture}
+        \end{center}
+        \caption{Measurement setup for the Deutsch-Jozsa algorithm on the formula $\exformula$.
+        }\label{fig:deutschJozsa}
+    \end{figure}
+
+\end{example}
