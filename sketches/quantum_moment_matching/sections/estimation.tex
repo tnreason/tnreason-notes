@@ -1,4 +1,4 @@
-\section{Quantum Amplitude Estimation for Forward Inference}
+\section{Moment Estimation}\label{sec:amplitudeEstimation}
 
 Given a distribution $\probwith$ and a propositional formula $\formulaat{\shortcatvariables}$, we now investigate how to use Quantum Phase Estimation to estimate
 \begin{align*}
@@ -8,7 +8,7 @@ Given a distribution $\probwith$ and a propositional formula $\formulaat{\shortc
 
 We assume that
 \begin{itemize}
-    \item a circuit $U$ preparing a q-sample of $\probwith$
+    \item a circuit $\unitarysymbol$ preparing a q-sample of $\probwith$
     \item a \computationCircuit{} for $\formulawith$
 \end{itemize}
 
@@ -16,15 +16,14 @@ We assume that
 
 The Grover operator $\groverofat{\probtensor,\formula}{\shortcatvariables^{\insymbol},\shortcatvariables^{\outsymbol},\avariable^{\insymbol},\avariable^{\outsymbol}}$ amplifying $\formula$
 \begin{align*}
-    (U^{T}S_{0}U)\qcbencodingof{\exformula}
+    (\unitaryof{\textdagger}\circ\reflectionof{0}\circ \unitarysymbol) \otimes \qcbencodingof{\exformula}
 \end{align*}
 acting on the initial state
 \begin{align*}
     \onehotmapofat{0}{\shortcatvariables} \otimes \sqrt{\frac{1}{2}}\cdot\coloredmatrixof{1\\-1}{\avariable} \, .
 \end{align*}
 
-
-
+% Plane projection
 We describe the Grover operator by its action on the projection onto the plane
 \begin{align*}
     \spanof{\qstateof{\probtensor,\formula},\qstateof{\probtensor,\lnot\formula}}
