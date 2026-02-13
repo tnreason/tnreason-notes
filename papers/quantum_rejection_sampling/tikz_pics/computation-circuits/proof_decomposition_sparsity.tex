@@ -1,0 +1,261 @@
+\begin{tikzpicture}[scale=0.35, thick] % , baseline = -3.5pt
+
+    \node[anchor=center] (text) at (2,9) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\insymbol}$};
+    \node[anchor=center] (text) at (14,9) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\outsymbol}$};
+
+    \draw (3,9) -- (7,9);
+    \draw (7,8) rectangle (9,10);
+    \node[anchor=center] (text) at (8,9) {\corelabelsize $\qcbencodingof{\secexfunction}$};
+    \draw (9,9) -- (13,9);
+
+    \draw (8,6) -- (8,8);
+    \drawvariabledot{8}{6}
+
+    \draw (1,5) rectangle (3,7);
+    \drawtextnode{2}{6}{\corelabelsize $\onehotmapof{0}$};
+    \draw (3,6) -- (5,6);
+    \draw (5,5) rectangle (7,7);
+    \node[anchor=center] (text) at (6,6) {\corelabelsize $\qcbencodingof{\exfunction}$};
+    \draw (7,6) -- (9,6);
+    \draw (5.5,4) -- (5.5,5);
+    \drawvariabledot{5.5}{4}
+    \draw (6.5,1) -- (6.5,5);
+    \drawvariabledot{6.5}{1}
+
+    \draw (9,5) rectangle (11,7);
+    \node[anchor=center] (text) at (10,6) {\corelabelsize $\qcbencodingof{\exfunction}$};
+    \draw (11,6) -- (13,6);
+    \drawtextnode{14}{6}{\colorlabelsize $\cheadvariableof{\exfunction}{\outsymbol}$}
+    \draw (9.5,4) -- (9.5,5);
+    \drawvariabledot{9.5}{4}
+    \draw (10.5,1) -- (10.5,5);
+    \drawvariabledot{10.5}{1}
+
+    \draw (5.5,4) -- (5.5,5);
+    \drawvariabledot{5.5}{4}
+    \draw (6.5,1) -- (6.5,5);
+    \drawvariabledot{6.5}{1}
+
+    \draw[dashed] (0.5,7.5) -- (13.5,7.5);
+
+    \draw (3,4) -- (13,4);
+
+    %\draw (1,0.5) rectangle (3,4.5);
+    %\drawtextnode{2}{2.5}{\corelabelsize $\onehotmapof{\shortcatindices}$}
+
+    \node[anchor=center] (text) at (5,2.75) {$\vdots$};
+    \node[anchor=center] (text) at (2,2.5) {\colorlabelsize $\shortcatvariables$};
+
+    \node[anchor=center] (text) at (11,2.75) {$\vdots$};
+    \node[anchor=center] (text) at (14,2.5) {\colorlabelsize $\shortcatvariables$};
+
+    \draw (3,1) -- (13,1);
+
+    \drawtextnode{15}{5}{${=}^{(1)}$}
+
+    \begin{scope}[shift={(16,-3)}]
+
+        \begin{scope}[shift={(0,3)}]
+            \node[anchor=center] (text) at (2,12) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\insymbol}$};
+            \node[anchor=center] (text) at (14,12) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\outsymbol}$};
+            \draw (9,12) -- (13,12);
+            \draw (3,12) -- (7,12);
+
+            \draw (7,11) rectangle (9,13);
+            \drawtextnode{8}{12}{\corelabelsize $\bencodingof{\oplus}$}
+            \draw[->-] (8,10) -- (8,11);
+            \draw (7,8) rectangle (9,10);
+            \node[anchor=center] (text) at (8,9) {\corelabelsize $\bencodingof{\secexfunction}$};
+
+
+            \draw[->] (8,6) -- (8,8);
+            \drawvariabledot{8}{6}
+
+            \draw (1,5) rectangle (3,7);
+            \drawtextnode{2}{6}{\corelabelsize $\onehotmapof{0}$};
+            \draw[->-] (3,6) -- (5,6);
+
+            \draw[->-] (11,6) -- (13,6);
+            \drawtextnode{14}{6}{\colorlabelsize $\cheadvariableof{\exfunction}{\outsymbol}$}
+
+        \end{scope}
+        %% Statistic Qubits
+
+        \draw (5,8) rectangle (7,10);
+        \drawtextnode{6}{9}{\corelabelsize $\bencodingof{\oplus}$}
+        \draw[->-] (6,7) -- (6,8);
+        \draw (5,5) rectangle (7,7);
+        \node[anchor=center] (text) at (6,6) {\corelabelsize $\bencodingof{\exfunction}$};
+        \draw[->-] (5.5,4) -- (5.5,5);
+        \drawvariabledot{5.5}{4}
+        \draw[->-] (6.5,1) -- (6.5,5);
+        \drawvariabledot{6.5}{1}
+
+
+        \draw[->-] (7,9) -- (8,9);
+        \draw[->-] (8,9) -- (9,9);
+
+        \draw (9,8) rectangle (11,10);
+        \drawtextnode{10}{9}{\corelabelsize $\bencodingof{\oplus}$}
+        \draw[->-] (10,7) -- (10,8);
+        \draw (9,5) rectangle (11,7);
+        \node[anchor=center] (text) at (10,6) {\corelabelsize $\bencodingof{\exfunction}$};
+
+        \draw[->-] (9.5,4) -- (9.5,5);
+        \drawvariabledot{9.5}{4}
+        \draw[->-] (10.5,1) -- (10.5,5);
+        \drawvariabledot{10.5}{1}
+
+        \draw (5.5,4) -- (5.5,5);
+        \drawvariabledot{5.5}{4}
+        \draw (6.5,1) -- (6.5,5);
+        \drawvariabledot{6.5}{1}
+
+        %\draw[dashed] (0.5,7.5) -- (13.5,7.5);
+
+        \draw (3,4) -- (13,4);
+
+        \node[anchor=center] (text) at (5,2.75) {$\vdots$};
+        \node[anchor=center] (text) at (2,2.5) {\colorlabelsize $\shortcatvariables$};
+        %\draw (1,0.5) rectangle (3,4.5);
+        %\drawtextnode{2}{2.5}{\corelabelsize $\onehotmapof{\shortcatindices}$}
+
+        \node[anchor=center] (text) at (11,2.75) {$\vdots$};
+        \node[anchor=center] (text) at (14,2.5) {\colorlabelsize $\shortcatvariables$};
+
+        \draw (3,1) -- (13,1);
+    \end{scope}
+
+    \drawtextnode{33}{5}{${=}^{(2)}$}
+
+    \begin{scope}[shift={(32,-1.5)}]
+
+        \node[anchor=center] (text) at (2,12) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\insymbol}$};
+        \node[anchor=center] (text) at (14,12) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\outsymbol}$};
+        \draw[->-] (7,12) -- (13,12);
+        \draw[->-] (3,12) -- (5,12);
+
+        \draw (5,11) rectangle (7,13);
+        \drawtextnode{6}{12}{\corelabelsize $\bencodingof{\oplus}$}
+        \draw[->-] (6,10) -- (6,11);
+
+        \draw (5,8) rectangle (7,10);
+        \drawtextnode{6}{9}{\corelabelsize $\bencodingof{\secexfunction}$}
+        \draw[->-] (6,7) -- (6,8);
+        \draw (5,5) rectangle (7,7);
+        \node[anchor=center] (text) at (6,6) {\corelabelsize $\bencodingof{\exfunction}$};
+        \draw[->-] (5.5,4) -- (5.5,5);
+        \drawvariabledot{5.5}{4}
+        \draw[->-] (6.5,1) -- (6.5,5);
+        \drawvariabledot{6.5}{1}
+
+        \draw[->-] (11,10) -- (13,10);
+        \drawtextnode{14}{10}{\colorlabelsize $\cheadvariableof{\exfunction}{\outsymbol}$}
+        \draw (9,9) rectangle (11,11);
+        \drawtextnode{10}{10}{\corelabelsize $\bencodingof{\oplus}$}
+        \draw[->-] (10,8) -- (10,9);
+        \draw[->-] (10,8) to[bend left=90] (9,10);
+        \drawvariabledot{10}{8}
+        \draw[->-] (10,7) -- (10,8);
+        \draw (9,5) rectangle (11,7);
+        \node[anchor=center] (text) at (10,6) {\corelabelsize $\bencodingof{\exfunction}$};
+
+        \draw[->-] (9.5,4) -- (9.5,5);
+        \drawvariabledot{9.5}{4}
+        \draw[->-] (10.5,1) -- (10.5,5);
+        \drawvariabledot{10.5}{1}
+
+        \draw (5.5,4) -- (5.5,5);
+        \drawvariabledot{5.5}{4}
+        \draw (6.5,1) -- (6.5,5);
+        \drawvariabledot{6.5}{1}
+
+        %\draw[dashed] (0.5,7.5) -- (13.5,7.5);
+
+        \draw (3,4) -- (13,4);
+
+        %\draw (1,0.5) rectangle (3,4.5);
+        %\drawtextnode{2}{2.5}{\corelabelsize $\onehotmapof{\shortcatindices}$}
+        \node[anchor=center] (text) at (5,2.75) {$\vdots$};
+        \node[anchor=center] (text) at (2,2.5) {\colorlabelsize $\shortcatvariables$};
+        \node[anchor=center] (text) at (11,2.75) {$\vdots$};
+        \node[anchor=center] (text) at (14,2.5) {\colorlabelsize $\shortcatvariables$};
+
+        \draw (3,1) -- (13,1);
+    \end{scope}
+
+    \begin{scope}[shift={(7,-15)}]
+
+        \drawtextnode{0}{5}{${=}^{(3)}$}
+
+        \node[anchor=center] (text) at (2,9) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\insymbol}$};
+        \node[anchor=center] (text) at (14,9) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\outsymbol}$};
+        \draw[->-] (7,9) -- (13,9);
+        \draw[->-] (3,9) -- (5,9);
+
+        \draw (5,8) rectangle (7,10);
+        \drawtextnode{6}{9}{\corelabelsize $\bencodingof{\oplus}$}
+        \draw[->-] (6,7) -- (6,8);
+        \draw (5,5) rectangle (7,7);
+        \node[anchor=center] (text) at (6,6) {\corelabelsize $\bencodingof{\secexfunction\circ\exfunction}$};
+        \draw[->-] (5.5,4) -- (5.5,5);
+        \drawvariabledot{5.5}{4}
+        \draw[->-] (6.5,1) -- (6.5,5);
+        \drawvariabledot{6.5}{1}
+
+        \draw (11,6) -- (13,6);
+        \drawtextnode{14}{6}{\colorlabelsize $\cheadvariableof{\exfunction}{\outsymbol}$}
+
+        \draw (9,5) rectangle (11,7);
+        \node[anchor=center] (text) at (10,6) {\corelabelsize $\fbasis$};
+
+        \draw (3,4) -- (13,4);
+
+        %\draw (1,0.5) rectangle (3,4.5);
+        %\drawtextnode{2}{2.5}{\corelabelsize $\onehotmapof{\shortcatindices}$}
+        \node[anchor=center] (text) at (5,2.75) {$\vdots$};
+        \node[anchor=center] (text) at (2,2.5) {\colorlabelsize $\shortcatvariables$};
+        \node[anchor=center] (text) at (11,2.75) {$\vdots$};
+        \node[anchor=center] (text) at (14,2.5) {\colorlabelsize $\shortcatvariables$};
+
+        \draw (3,1) -- (13,1);
+    \end{scope}
+
+    \begin{scope}[shift={(27,-15)}]
+        \drawtextnode{-3}{5}{${=}^{(4)}$}
+
+        \node[anchor=center] (text) at (-1,9) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\insymbol}$};
+        \node[anchor=center] (text) at (12,9) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\outsymbol}$};
+        \drawtextnode{12}{6}{\colorlabelsize $\cheadvariableof{\exfunction}{\outsymbol}$}
+
+        \draw (5,4) -- (5,8);
+        \drawvariabledot{5}{4}
+        \draw (6,1) -- (6,8);
+        \drawvariabledot{6}{1}
+
+        \draw (1,9) -- (4,9);
+        \draw (4,8) rectangle (7,10);
+        \node[anchor=center] (text) at (5.5,9) {\corelabelsize $\qcbencodingof{\secexfunction\circ\exfunction}$};
+        \draw (7,9) -- (10,9);
+
+        \draw (1,4) -- (10,4);
+
+        \draw[dashed] (0.5,7.5) -- (10.5,7.5);
+
+        \node[anchor=center] (text) at (3,2.75) {$\vdots$};
+        \node[anchor=center] (text) at (-1,2.5) {\colorlabelsize $\shortcatvariables$};
+
+        \node[anchor=center] (text) at (8,2.75) {$\vdots$};
+        \node[anchor=center] (text) at (12,2.5) {\colorlabelsize $\shortcatvariables$};
+
+        \draw (1,1) -- (10,1);
+
+        % Working qubit
+        \draw (-1,5) rectangle (1,7);
+        \drawtextnode{0}{6}{\corelabelsize $\fbasis$};
+        \draw (1,6) -- (10,6);
+    \end{scope}
+
+
+
+\end{tikzpicture}

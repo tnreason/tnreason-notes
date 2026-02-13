@@ -28,16 +28,16 @@ Some constraints appear for a tensor network to be a quantum circuit
     Those not appearing as outgoing (respectively as incoming) are the input and the output variables of the whole circuit.
     \item \textbf{Unitarity of each gate:} That is the variables of each tensor are bipartite into sets $\variablesetof{\insymbol}$ and $\variablesetof{\outsymbol}$ of same cardinality and the basis encoding with respect to this bipartition, that is
     \begin{align*}
-        T_{\insymbol \rightarrow \outsymbol}[\catvariableof{\insymbol},\catvariableof{\outsymbol}] : \bigotimes_{\atomenumerator\in\variablesetof{\insymbol}} \mathbb{C}^2 \rightarrow \bigotimes_{\atomenumerator\in\variablesetof{\outsymbol}} \mathbb{C}^2  \, ,
+        T_{\insymbol \rightarrow \outsymbol}[\ccatvariable{\insymbol},\ccatvariable{\outsymbol}] : \bigotimes_{\atomenumerator\in\variablesetof{\insymbol}} \mathbb{C}^2 \rightarrow \bigotimes_{\atomenumerator\in\variablesetof{\outsymbol}} \mathbb{C}^2  \, ,
     \end{align*}
     is a unitary map, that is
     \begin{align*}
         \left(T_{\insymbol \rightarrow \outsymbol}\right)^H \circ \left(T_{\insymbol \rightarrow \outsymbol}\right)
         = \contractionof{
-            T_{\insymbol \rightarrow \outsymbol}[\catvariableof{\insymbol},\seccatvariable],
-            \overline{T}_{\insymbol \rightarrow \outsymbol}[\seccatvariable,\catvariableof{\outsymbol}]
-        }{\catvariableof{\outsymbol},\catvariableof{\insymbol}}
-        = \identityat{\catvariableof{\outsymbol},\catvariableof{\insymbol}}.
+            T_{\insymbol \rightarrow \outsymbol}[\ccatvariable{\insymbol},\seccatvariable],
+            \overline{T}_{\insymbol \rightarrow \outsymbol}[\seccatvariable,\ccatvariable{\outsymbol}]
+        }{\ccatvariable{\outsymbol},\ccatvariable{\insymbol}}
+        = \identityat{\ccatvariable{\outsymbol},\ccatvariable{\insymbol}}.
     \end{align*}
     \item \textbf{Acyclicity:} Incoming and outgoing variables of each tensor core provide a direction of each edge tensor.
     With respect to this directionality the graph underlying the tensor network has to be acyclic.
@@ -169,11 +169,11 @@ Measuring a pure state $\ket{\psi}$ We then get outcome $m$ with probability
 
 We define a measurement variable $\headvariable$ taking indices $\seccatindex\in[r]$ and a measurement tensor
 \begin{align*}
-    E[\headvariable,\catvariableof{\insymbol},\catvariableof{\outsymbol}]
+    E[\headvariable,\ccatvariable{\insymbol},\ccatvariable{\outsymbol}]
 \end{align*}
 with slices
 \begin{align*}
-    E[\headvariable=\seccatindex,\catvariableof{\insymbol},\catvariableof{\outsymbol}] = E_\seccatindex \, .
+    E[\headvariable=\seccatindex,\ccatvariable{\insymbol},\ccatvariable{\outsymbol}] = E_\seccatindex \, .
 \end{align*}
 
 Repeating the measurement asymptotically on a state $\ket{\psi}$ prepared by a quantum circuit $\tnetof{\graph}$ acting on the trivial start state $\ones$, we denote the measurement outcome by $\seccatindex^\datindex$.
@@ -181,7 +181,7 @@ In the limit $\datanum\rightarrow\infty$ we get almost surely
 %    we thus get the contraction
 \begin{align*}
     \frac{1}{\datanum} \sum_{\datindexin} \onehotmapofat{\seccatindex^\datindex}{\headvariable} \rightarrow
-    \contractionof{\tnetof{\graph}[\catvariableof{\insymbol}],E[\headvariable,\catvariableof{\insymbol},\catvariableof{\outsymbol}],\tnetof{\secgraph}[\catvariableof{\outsymbol}]}{\headvariable} \, .
+    \contractionof{\tnetof{\graph}[\ccatvariable{\insymbol}],E[\headvariable,\ccatvariable{\insymbol},\ccatvariable{\outsymbol}],\tnetof{\secgraph}[\ccatvariable{\outsymbol}]}{\headvariable} \, .
 \end{align*}
 
 % Case of computational basis measurements

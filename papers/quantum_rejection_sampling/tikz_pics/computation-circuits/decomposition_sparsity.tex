@@ -1,8 +1,8 @@
 \begin{tikzpicture}[scale=0.35, thick] % , baseline = -3.5pt
 
     %% Statistic Qubits
-    \node[anchor=center] (text) at (1,9) {\colorlabelsize $\headvariableof{\secexfunction\circ\exfunction,\insymbol}$};
-    \node[anchor=center] (text) at (15,9) {\colorlabelsize $\headvariableof{\secexfunction\circ\exfunction,\outsymbol}$};
+    \node[anchor=center] (text) at (2,9) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\insymbol}$};
+    \node[anchor=center] (text) at (14,9) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\outsymbol}$};
 
     \draw (3,9) -- (7,9);
     \draw (7,8) rectangle (9,10);
@@ -26,7 +26,7 @@
     \draw (9,5) rectangle (11,7);
     \node[anchor=center] (text) at (10,6) {\corelabelsize $\qcbencodingof{\exfunction}$};
     \draw (11,6) -- (13,6);
-    \drawtextnode{15}{6}{\colorlabelsize $\headvariableof{\exfunction,\outsymbol}$}
+    \drawtextnode{14}{6}{\colorlabelsize $\cheadvariableof{\exfunction}{\outsymbol}$}
     \draw (9.5,4) -- (9.5,5);
     \drawvariabledot{9.5}{4}
     \draw (10.5,1) -- (10.5,5);
@@ -46,10 +46,10 @@
     \draw (3,4) -- (13,4);
 
     \node[anchor=center] (text) at (5,2.75) {$\vdots$};
-    \node[anchor=center] (text) at (3,2.5) {\colorlabelsize $\shortcatvariables$};
+    \node[anchor=center] (text) at (2,2.5) {\colorlabelsize $\shortcatvariables$};
 
     \node[anchor=center] (text) at (11,2.75) {$\vdots$};
-    \node[anchor=center] (text) at (15,2.5) {\colorlabelsize $\shortcatvariables$};
+    \node[anchor=center] (text) at (14,2.5) {\colorlabelsize $\shortcatvariables$};
 
     \draw (3,1) -- (13,1);
 
@@ -58,9 +58,9 @@
     \begin{scope}
     [shift={(-20,0)}]
 
-        \node[anchor=center] (text) at (-1,9) {\colorlabelsize $\headvariableof{\secexfunction\circ\exfunction,\insymbol}$};
-        \node[anchor=center] (text) at (12,9) {\colorlabelsize $\headvariableof{\secexfunction\circ\exfunction,\outsymbol}$};
-        \drawtextnode{12}{6}{\colorlabelsize $\headvariableof{\exfunction,\outsymbol}$}
+        \node[anchor=center] (text) at (-1,9) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\insymbol}$};
+        \node[anchor=center] (text) at (12,9) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\outsymbol}$};
+        \drawtextnode{12}{6}{\colorlabelsize $\cheadvariableof{\exfunction}{\outsymbol}$}
 
         \draw (5,4) -- (5,8);
         \drawvariabledot{5}{4}

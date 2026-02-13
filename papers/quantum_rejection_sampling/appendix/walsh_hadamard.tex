@@ -8,7 +8,7 @@ The transform is performed by applying Hadamard gates on each variable.
 This is equivalent with contraction of the tensor
 \begin{align*}
     \hgate^{\catorder}\left[\catvariableof{[\catorder],\insymbol},\catvariableof{[\catorder],\outsymbol}\right] =
-    \bigotimes_{\catenumeratorin} \hgateat{\catvariableof{\catenumerator,\insymbol},\catvariableof{\catenumerator,\outsymbol}} \, ,
+    \bigotimes_{\catenumeratorin} \hgateat{\ccatvariableof{\catenumerator}{\insymbol},\ccatvariableof{\catenumerator}{\outsymbol}} \, ,
 \end{align*}
 which coordinates are
 \begin{align*}
@@ -18,29 +18,29 @@ which coordinates are
 
 We have
 \begin{align*}
-    \contractionof{\onehotmapofat{0}{\catvariableof{\insymbol}},
-        \hgateat{\catvariableof{\insymbol},\catvariableof{\outsymbol}}}{\catvariableof{\outsymbol}}
-    &= \sqrt{\frac{1}{2}} \onesat{\catvariableof{\outsymbol}} \\
-    \contractionof{\onehotmapofat{1}{\catvariableof{\insymbol}},
-        \hgateat{\catvariableof{\insymbol},\catvariableof{\outsymbol}}}{\catvariableof{\outsymbol}}
+    \contractionof{\onehotmapofat{0}{\ccatvariable{\insymbol}},
+        \hgateat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}}{\ccatvariable{\outsymbol}}
+    &= \sqrt{\frac{1}{2}} \onesat{\ccatvariable{\outsymbol}} \\
+    \contractionof{\onehotmapofat{1}{\ccatvariable{\insymbol}},
+        \hgateat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}}{\ccatvariable{\outsymbol}}
     &= \sqrt{\frac{1}{2}}
     \begin{bmatrix}
         1 \\
         -1
-    \end{bmatrix}\left[\catvariableof{\outsymbol}\right]
+    \end{bmatrix}\left[\ccatvariable{\outsymbol}\right]
 \end{align*}
 and conversely
 \begin{align*}
-    \contractionof{\sqrt{\frac{1}{2}} \onesat{\catvariableof{\insymbol}},
-        \hgateat{\catvariableof{\insymbol},\catvariableof{\outsymbol}}}{\catvariableof{\outsymbol}}
-    &= \onehotmapofat{0}{\catvariableof{\outsymbol}} \\
+    \contractionof{\sqrt{\frac{1}{2}} \onesat{\ccatvariable{\insymbol}},
+        \hgateat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}}{\ccatvariable{\outsymbol}}
+    &= \onehotmapofat{0}{\ccatvariable{\outsymbol}} \\
     \contractionof{\sqrt{\frac{1}{2}}
         \begin{bmatrix}
             1 \\
             -1
-        \end{bmatrix}\left[\catvariableof{\insymbol}\right],
-        \hgateat{\catvariableof{\insymbol},\catvariableof{\outsymbol}}}{\catvariableof{\outsymbol}}
-    &= \onehotmapofat{1}{\catvariableof{\outsymbol}} \, .
+        \end{bmatrix}\left[\ccatvariable{\insymbol}\right],
+        \hgateat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}}{\ccatvariable{\outsymbol}}
+    &= \onehotmapofat{1}{\ccatvariable{\outsymbol}} \, .
 \end{align*}
 If and only if the function is constant, then the transformed state is the ground state.
 

@@ -176,9 +176,9 @@ Bayesian Networks can be prepared as quantum circuits, where each conditional pr
     \begin{align*}
         \qcaencodingofat{
             \exfunctionof{\catenumerator}
-        }{\catvariableof{\catenumerator,\insymbol},\catvariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}}
+        }{\ccatvariableof{\catenumerator}{\insymbol},\catvariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}}
     \end{align*}
-    respecting the order $[\catorder]$ prepares the Bayesian Network $\probwith$ when acting on the initial state $\bigotimes_{\atomenumeratorin}\onehotmapofat{0}{\catvariableof{\catenumerator,\insymbol}}$.
+    respecting the order $[\catorder]$ prepares the Bayesian Network $\probwith$ when acting on the initial state $\bigotimes_{\atomenumeratorin}\onehotmapofat{0}{\ccatvariableof{\catenumerator}{\insymbol}}$.
 \end{theorem}
 \begin{proof}
     Let $\qstateat{\shortcatvariables}$ be the state prepared by the \activationCircuits{} to the conditional probability distributions.
@@ -189,7 +189,7 @@ Bayesian Networks can be prepared as quantum circuits, where each conditional pr
         &= \prod_{\catenumeratorin}
         \left(\qcaencodingofat{
             \exfunctionof{\catenumerator}
-        }{\catvariableof{\catenumerator,\insymbol}=0,\indexedcatvariableof{\catenumerator},\indexedcatvariableof{\parentsof{\catenumerator}}}\right)^2 \\
+        }{\ccatvariableof{\catenumerator}{\insymbol}=0,\indexedcatvariableof{\catenumerator},\indexedcatvariableof{\parentsof{\catenumerator}}}\right)^2 \\
         &= \prod_{\catenumeratorin}
         \condprobof{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}} \\
         & = \probat{\indexedshortcatvariables} \, .
@@ -243,7 +243,7 @@ The measurement distributions of a state prepared by a $\graph$-controlled Circu
     Enumerate the nodes $\nodes$ of the $\graph$ by $[\atomorder]$, such that for each $\catenumeratorin$ we have $\parentsof{\catenumerator}\subset[\catenumerator]$.
     Then define a $\graph$-controlled circuit, by choosing for each $\catenumeratorin$ controlled unitaries which satisfy
     \begin{align*}
-        \contunitaryofat{\catenumerator}{\catvariableof{\catenumerator,\insymbol}=0,\catvariableof{\node,\outsymbol},\catvariableof{\parentsof{\catenumerator},\outsymbol}}
+        \contunitaryofat{\catenumerator}{\ccatvariableof{\catenumerator}{\insymbol}=0,\catvariableof{\node,\outsymbol},\catvariableof{\parentsof{\catenumerator},\outsymbol}}
         =\sqrt{\condprobof{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}} \, .
     \end{align*}
     Here we specified only the action of the controlled unitary on the basis vector $\onehotmapofat{0}{\catvariableof{\catenumerator}}$, the action on $\onehotmapofat{1}{\catvariableof{\catenumerator}}$ can be chosen by an arbitrary orthogonal unit vector. % Maybe link here the activation circuit scheme, which is already used?
@@ -281,16 +281,16 @@ To be more precise, we need to show that any node variable is conditionally inde
     \begin{align*}
         \probat{\catvariableof{\seccatenumerator},\indexedcatvariableof{[\catenumerator]}}
         &= \contractionof{\left(\bigcup_{\catenumeratorin}\{\contunitaryof{\catenumerator},\contunitaryof{\catenumerator,\dagger},\qstateof{\catenumerator},\qstateof{\catenumerator,*}\right)\}
-            \cup \left(\bigcup_{\catenumerator\in[\seccatenumerator]} \onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator,\outsymbol}}\right)
+            \cup \left(\bigcup_{\catenumerator\in[\seccatenumerator]} \onehotmapofat{\catindexof{\catenumerator}}{\ccatvariableof{\catenumerator}{\outsymbol}}\right)
         }{
             \catvariableof{\seccatenumerator}
         } \\
-        &= \contractionof{\bigcup_{\catenumerator\in[\seccatenumerator]}\{\contunitaryof{\catenumerator},\contunitaryof{\catenumerator,\dagger},\qstateof{\catenumerator},\qstateof{\catenumerator,*},\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator,\outsymbol}}\}}{
+        &= \contractionof{\bigcup_{\catenumerator\in[\seccatenumerator]}\{\contunitaryof{\catenumerator},\contunitaryof{\catenumerator,\dagger},\qstateof{\catenumerator},\qstateof{\catenumerator,*},\onehotmapofat{\catindexof{\catenumerator}}{\ccatvariableof{\catenumerator}{\outsymbol}}\}}{
             \catvariableof{\seccatenumerator}
         } \\
         & = \absof{\contractionof{\contunitaryofat{\seccatenumerator}{\catvariableof{\seccatenumerator,\insymbol},\catvariableof{\seccatenumerator,\outsymbol}},\indexedcatvariableof{\parentsof{\seccatenumerator},\outsymbol}}{\catvariableof{\seccatenumerator,\outsymbol}}}^2 \\
         & \quad \quad \cdot \prod_{\catenumerator\in[\seccatenumerator]}
-        \left(\contraction{\qstateofat{\catenumerator}{\catvariableof{\catenumerator,\insymbol}},\contunitaryofat{\catenumerator}{\catvariableof{\catenumerator,\insymbol},\catvariableof{\catenumerator,\outsymbol},\indexedcatvariableof{\parentsof{\catenumerator},\outsymbol}}}\right)^2
+        \left(\contraction{\qstateofat{\catenumerator}{\ccatvariableof{\catenumerator}{\insymbol}},\contunitaryofat{\catenumerator}{\ccatvariableof{\catenumerator}{\insymbol},\ccatvariableof{\catenumerator}{\outsymbol},\indexedcatvariableof{\parentsof{\catenumerator},\outsymbol}}}\right)^2
         %\contraction{\qstateof{\catenumerator,*},\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}}{} \, .
     \end{align*}
     Here we used in the second equation the unitarity of the controlled unitaries to $\catenumerator\notin[\seccatenumerator]$.
