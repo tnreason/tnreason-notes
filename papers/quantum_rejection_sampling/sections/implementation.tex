@@ -1,9 +1,14 @@
 \section{Implementation}\label{sec:implementation}
 
-The introduced quantum circuit preparation schemes have been implemented in the python package \qcreason{}, which consists in three layers:
-\begin{center}
-    \input{./tikz_pics/qcreason_architecture.tex}
-\end{center}
+The introduced quantum circuit preparation schemes have been implemented in the python package \qcreason{}, which architecture is sketched in \figref{fig:qcreasonArchitecture}.
+\begin{figure}[t]
+    \begin{center}
+        \input{./tikz_pics/qcreason_architecture.tex}
+    \end{center}
+    \caption{Architecture of the \textcolor{\pythonblue}{\qcreason{}} package.
+    The \spinference{} sub-package receives inference tasks from \tnreason{} and calls \sppreparation{} and \spsimulation{} for corresponding circuit preparation and simulation.}
+    \label{fig:qcreasonArchitecture}
+\end{figure}
 
 \subsection{Quantum Circuits}
 
@@ -13,12 +18,12 @@ We specify the unitaries by strings accessible via the key \stringof{unitary}, a
 \begin{center}
     \begin{tabular}{|c|c|c|c|}
         \hline
-        \textbf{Unitary} & \textbf{String Representation} & \textbf{Parameters} & \textbf{Tensor Notation} \\
+        \textbf{Unitary}         & \textbf{String Representation} & \textbf{Parameters} & \textbf{Tensor Notation}                                                   \\
         \hline
-        Hadamard & \stringof{H} & & $\hgateat{\catvariableof{\insymbol},\catvariableof{\outsymbol}}$ \\
-        Pauli-X & \stringof{X} & & $\paulixat{\avariableof{\insymbol},\avariableof{\outsymbol}}$ \\
-        Multiple controlled $X$ & \stringof{MCX} &  & \\
-        Rotation around $Y$-axis & \stringof{MRY} & Angle $\alpha$ & $\yrotationofat{\alpha}{\avariableof{\insymbol},\avariableof{\outsymbol}}$ \\
+        Hadamard                 & \stringof{H}                   &                     & $\hgateat{\catvariableof{\insymbol},\catvariableof{\outsymbol}}$           \\
+        Pauli-X                  & \stringof{X}                   &                     & $\paulixat{\avariableof{\insymbol},\avariableof{\outsymbol}}$              \\
+        %Multiple controlled $X$  & \stringof{MCX}                 &                     &                                                                            \\
+        Rotation around $Y$-axis & \stringof{RY}                 & Angle $\alpha$      & $\yrotationofat{\alpha}{\avariableof{\insymbol},\avariableof{\outsymbol}}$ \\
         \hline
     \end{tabular}
 \end{center}
