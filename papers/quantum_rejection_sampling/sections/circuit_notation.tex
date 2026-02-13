@@ -45,22 +45,12 @@ Some constraints appear for a tensor network to be a quantum circuit
 
 The unitary tensors can be aligned layerwise, if and only if the last two assumption hold, i.e. the directed graph is acyclic and each variable appears at most once as an incoming and at most once as an outgoing variable.
 
-\subsection{State Encoding Schemes}
-
-Basis Encoding in Quantum Computation refers to the representation of classical $n$ bit strings by $n$ qubit basis states, and is called one-hot encoding in \tnreason{}.
-The Basis Encoding scheme in \tnreason{} goes beyond this scheme and also encodes subsets by sums of one-hot encodings to the members of the set.
-In this way, relations and functions are represented by boolean tensors and contraction of them is refered as \BasisCalculus{}.
-
-Amplitude Encoding in Quantum Computation refers to the storage of complex numbers in the amplitudes of quantum states.
-The pendant in \tnreason{} is the Coordinate Encoding scheme, where real numbers are stored in the coordinates of real-valued tensors.
-Compared to Amplitude Encoding, Coordinate Encoding does not have the normalization constraint of quantum states.
-The Amplitude Encoding of the square root of a probability distribution is sometimes called q-sample.
 
 \subsection{Controlled Single Qubit Gates}
 
 We define the rotation gate around the Y-axis by an angle $\alpha$ as
 \begin{align*}
-    \yrotationofat{\alpha}{\avariableof{\insymbol},\avariableof{\outsymbol}} \coloneqq
+    \yrotationofat{\alpha}{\cavariable{\insymbol},\cavariable{\outsymbol}} \coloneqq
     \begin{bmatrix}
         \cosof{\frac{\alpha}{2}} & -\sinof{\frac{\alpha}{2}} \\
         \sinof{\frac{\alpha}{2}} & \cosof{\frac{\alpha}{2}}
@@ -69,7 +59,7 @@ We define the rotation gate around the Y-axis by an angle $\alpha$ as
 
 Further we define the Pauli-X:
 \begin{align*}
-    \paulixat{\avariableof{\insymbol},\avariableof{\outsymbol}} \coloneqq
+    \paulixat{\cavariable{\insymbol},\cavariable{\outsymbol}} \coloneqq
     \begin{bmatrix}
         0 & 1 \\
         1 & 0
@@ -163,8 +153,6 @@ This property is exploited in the Deutsch-Jozsa algorithm, which utilizes signs 
 
 
 \subsubsection{POVM measurements}
-
-\section{POVM measurements as contractions}
 
 The main difficulty of using quantum circuits as contraction providers is that we can only extract information through measurements.
 Therefore measurement is the only way to execute contractions of the circuit, which come with restrictions when interested in contraction with open variables.

@@ -55,7 +55,7 @@ We define the angle preparing function on $p\in[0,1]$ by
 \end{align*}
 For any $p\in[0,1]$ we then have
 \begin{align*}
-    \contractionof{\onehotmapofat{0}{\avariableof{\insymbol}},\yrotationofat{h(p)}{\avariableof{\insymbol},\avariableof{\outsymbol}}}{\avariableof{\outsymbol}}
+    \contractionof{\onehotmapofat{0}{\cavariable{\insymbol}},\yrotationofat{h(p)}{\cavariable{\insymbol},\cavariable{\outsymbol}}}{\cavariable{\outsymbol}}
     = \begin{bmatrix}
           \sqrt{1-p} \\
           \sqrt{p}
@@ -68,11 +68,11 @@ For any $p\in[0,1]$ we then have
         \exformula : \facstates \rightarrow [0,1]
     \end{align*}
     its \activationCircuit{} is the uniformly controlled unitary
-    $\qcaencodingofat{\exformula}{\avariableof{\insymbol},\avariableof{\outsymbol},\shortcatvariables}$ defined as
+    $\qcaencodingofat{\exformula}{\cavariable{\insymbol},\cavariable{\outsymbol},\shortcatvariables}$ defined as
     \begin{align*} %% Could ease the definition by coordinates
-        \qcaencodingofat{\hypercore}{\avariableof{\insymbol},\avariableof{\outsymbol},\shortcatvariables}
+        \qcaencodingofat{\hypercore}{\cavariable{\insymbol},\cavariable{\outsymbol},\shortcatvariables}
         = \sum_{\shortcatindicesin} \onehotmapofat{\shortcatindices}{\shortcatvariables}
-        \otimes \yrotationofat{h(\exformulaat{\shortcatindices})}{\avariableof{\insymbol},\avariableof{\outsymbol}} \, .
+        \otimes \yrotationofat{h(\exformulaat{\shortcatindices})}{\cavariable{\insymbol},\cavariable{\outsymbol}} \, .
     \end{align*}
 \end{definition}
 

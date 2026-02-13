@@ -21,9 +21,9 @@ We specify the unitaries by strings accessible via the key \stringof{unitary}, a
         \textbf{Unitary}         & \textbf{String Representation} & \textbf{Parameters} & \textbf{Tensor Notation}                                                   \\
         \hline
         Hadamard                 & \stringof{H}                   &                     & $\hgateat{\catvariableof{\insymbol},\catvariableof{\outsymbol}}$           \\
-        Pauli-X                  & \stringof{X}                   &                     & $\paulixat{\avariableof{\insymbol},\avariableof{\outsymbol}}$              \\
+        Pauli-X                  & \stringof{X}                   &                     & $\paulixat{\cavariable{\insymbol},\cavariable{\outsymbol}}$              \\
         %Multiple controlled $X$  & \stringof{MCX}                 &                     &                                                                            \\
-        Rotation around $Y$-axis & \stringof{RY}                 & Angle $\alpha$      & $\yrotationofat{\alpha}{\avariableof{\insymbol},\avariableof{\outsymbol}}$ \\
+        Rotation around $Y$-axis & \stringof{RY}                 & Angle $\alpha$      & $\yrotationofat{\alpha}{\cavariable{\insymbol},\cavariable{\outsymbol}}$ \\
         \hline
     \end{tabular}
 \end{center}
@@ -37,12 +37,12 @@ It contains as keys the control qubits and their control states as values (i.e. 
 Further parameters such as angles are added in another dictionary, accessible via the key \stringof{parameters}.
 
 % Example
-For example a hadamard gate on qubit \stringof{blue} and a multiple controlled rotation around the $Y$-axis on qubit \stringof{ancilla\_c1} controlled by qubits \stringof{red} and \stringof{blue} in state $(0,1)$ with angle $0.6121442808462428$ is represented as:
+For example a hadamard gate on qubit \stringof{blue} and a multiple controlled rotation around the $Y$-axis on qubit \stringof{ancilla\_c1} controlled by qubits \stringof{red} and \stringof{blue} in state $(0,1)$ with an angle is represented as:
 \begin{minted}{python}
 [{'unitary': 'H',
-    'targetQubits': ['blue']},
+    'target': ['blue']},
 {'unitary': 'MCRY',
-    'targetQubits': ['ancilla_c1'],
+    'target': ['ancilla_c1'],
     'control': {'red': 1, 'blue': 0},
     'parameters': {'angle': np.float64(0.6121442808462428)}}]
 \end{minted}

@@ -15,7 +15,7 @@ Therefore we have:
     \item Pendant for Basis Encoding in \tnreason{}: \textbf{\ComputationCircuit{}}, with composition by contraction property.
     Applied on the ground state, the \computationCircuit{} generates the basis encoding quantum state, which is parallel to the basis encoding.
 \end{itemize}
-Both are defined using controlled single qubit gates (see Sections 4.2-3 in \cite{nielsen_quantum_2010}) with ancilla qubits being the target qubits. % where the incoming qubit variable is $\avariableof{\insymbol}$ and the outgoing $\avariableof{\outsymbol}$.
+Both are defined using controlled single qubit gates (see Sections 4.2-3 in \cite{nielsen_quantum_2010}) with ancilla qubits being the target qubits. % where the incoming qubit variable is $\cavariable{\insymbol}$ and the outgoing $\cavariable{\outsymbol}$.
 
 \begin{figure}[t]
     \begin{center}
@@ -83,17 +83,18 @@ The amplitude amplification scheme now iterates between
 \begin{itemize}
     \item Reflection along $\qstateof{t}$, by
     \begin{align*}
-        \reflectionofat{\goodstatesymbol}{\avariables^{\insymbol},\avariables^{\outsymbol}}
-        = \identityat{\avariables^{\insymbol},\avariables^{\outsymbol}}
-        - 2 \onehotmapofat{1_{[\seldim]}}{\avariables^{\insymbol}} \otimes \onehotmapofat{1_{[\seldim]}}{\avariables^{\outsymbol}}
+        \reflectionofat{\goodstatesymbol}{\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol}}
+        = \identityat{\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol}}
+        - 2 \onehotmapofat{\onetuple{[\seldim]}}{\cavariableof{[\seldim]}{\insymbol}}
+        \otimes \onehotmapofat{\onetuple{[\seldim]}}{\cavariableof{[\seldim]}{\outsymbol}}
     \end{align*}
     \item Reflection along $\qstate$, by
     \begin{align*}
-        \reflectionofat{\qstate}{\avariables^{\insymbol},\headvariables^{\insymbol},\avariables^{\insymbol},\avariables^{\outsymbol},\headvariables^{\outsymbol},\avariables^{\outsymbol}}
-        =& \identityat{\avariables^{\insymbol},\headvariables^{\insymbol},\avariables^{\insymbol},\avariables^{\outsymbol},\headvariables^{\outsymbol},\avariables^{\outsymbol}} \\
-        &- 2 \qstateofat{0}{\avariables^{\insymbol},\headvariables^{\insymbol},\shortcatvariables^{\insymbol}} \otimes
-        \qstateofat{0}{\avariables^{\outsymbol},\headvariables^{\outsymbol},\shortcatvariables^{\outsymbol}}
-        %U (\identityat{\avariables^{\insymbol},\avariables^{\outsymbol}} - 2 \onehotmapofat{1_{[\seldim]}}{\avariables^{\insymbol}} \otimes \onehotmapofat{1_{[\seldim]}}{\avariables^{\outsymbol}}) U^T
+        \reflectionofat{\qstate}{\cavariableof{[\seldim]}{\insymbol},\cheadvariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol},\cheadvariableof{[\seldim]}{\outsymbol},\cavariableof{[\seldim]}{\outsymbol}}
+        =& \identityat{\cavariableof{[\seldim]}{\insymbol},\cheadvariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol},\cheadvariableof{[\seldim]}{\outsymbol},\cavariableof{[\seldim]}{\outsymbol}} \\
+        &- 2 \qstateofat{0}{\cavariableof{[\seldim]}{\insymbol},\cheadvariableof{[\seldim]}{\insymbol},\ccatvariableof{[\catorder]}{\insymbol}} \otimes
+        \qstateofat{0}{\cavariableof{[\seldim]}{\outsymbol},\cheadvariableof{[\seldim]}{\outsymbol},\ccatvariableof{[\catorder]}{\outsymbol}}
+        %U (\identityat{\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol}} - 2 \onehotmapofat{1_{[\seldim]}}{\cavariableof{[\seldim]}{\insymbol}} \otimes \onehotmapofat{1_{[\seldim]}}{\cavariableof{[\seldim]}{\outsymbol}}) U^T
     \end{align*}
     This reflection can be done by concatenating the operator preparing the ancilla-augmentation of the \ComputationActivationNetwork{} with a initial state reflection.
 \end{itemize}

@@ -5,15 +5,15 @@ We here suggest a quantum pendant to basis encodings (see Chapter~14 in \cite{go
 \begin{definition}[\ComputationCircuit{}]
     Given a boolean function $\exformula:\atomstates\rightarrow[2]$ the \computationCircuit{} is the unitary tensor
     \begin{align*}
-        \qcbencodingofat{\exformula}{\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula},\shortcatvariables}
+        \qcbencodingofat{\exformula}{\cheadvariableof{\exformula}{\insymbol},\cheadvariableof{\exformula}{\outsymbol},\shortcatvariables}
         &\quad=
         \sum_{\shortcatindicesin\wcols\exformulaat{\shortcatindices}=1}
-        \paulixat{\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula}} \otimes
-        \onehotmapofat{\shortcatindices}{\shortcatvariables} \\ % \otimes \onehotmapofat{\shortcatindices}{\catvariableof{\outsymbol,[\atomorder]}} \\
+        \paulixat{\cheadvariableof{\exformula}{\insymbol},\cheadvariableof{\exformula}{\outsymbol}} \otimes
+        \onehotmapofat{\shortcatindices}{\shortcatvariables} \\ % \otimes \onehotmapofat{\shortcatindices}{\ccatvariableof{[\atomorder]}{\outsymbol}} \\
         & \quad \quad \quad +
         \sum_{\shortcatindicesin\wcols\exformulaat{\shortcatindices}=0}
-        \identityat{\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula}} \otimes
-        \onehotmapofat{\shortcatindices}{\shortcatvariables} \, . % \otimes \onehotmapofat{\shortcatindices}{\catvariableof{\outsymbol,[\atomorder]}}
+        \identityat{\cheadvariableof{\exformula}{\insymbol},\cheadvariableof{\exformula}{\outsymbol}} \otimes
+        \onehotmapofat{\shortcatindices}{\shortcatvariables} \, . % \otimes \onehotmapofat{\shortcatindices}{\ccatvariableof{[\atomorder]}{\outsymbol}}
     \end{align*}
 \end{definition}
 
@@ -28,15 +28,28 @@ Functions with multiple output variables, i.e. $\exformula:\atomstates\rightarro
 \BasisEncodings{} are schemes to encode functions into directed boolean tensors, which enable reasoning about functions by tensor network contractions (see \cite{goessmann_tensor_2026}).
 To connect with this formalism, let us now show the relation to the \computationCircuits{}.
 
+\begin{remark}[Basis and Amplitude Encodings in Quantum Computation \cite{schuld_machine_2021} and \tnreason{}]
+    % Compare with Quantum Computing
+    Basis Encoding in Quantum Computation refers to the representation of classical $n$ bit strings by $n$ qubit basis states, and is called one-hot encoding in \tnreason{}.
+    The Basis Encoding scheme in \tnreason{} goes beyond this scheme and also encodes subsets by sums of one-hot encodings to the members of the set.
+    In this way, relations and functions are represented by boolean tensors and contraction of them is refered as \BasisCalculus{}.
+
+    Amplitude Encoding in Quantum Computation refers to the storage of complex numbers in the amplitudes of quantum states.
+    The pendant in \tnreason{} is the Coordinate Encoding scheme, where real numbers are stored in the coordinates of real-valued tensors.
+    Compared to Amplitude Encoding, Coordinate Encoding does not have the normalization constraint of quantum states.
+    The Amplitude Encoding of the square root of a probability distribution is sometimes called q-sample.
+\end{remark}
+
+
 \begin{lemma}
     \label{lem:bencComCircuit}
     For any boolean function we have (see \figref{fig:bencComCircuit})
     \begin{align*}
-        \qcbencodingofat{\exformula}{\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula},\shortcatvariables}
+        \qcbencodingofat{\exformula}{\cheadvariableof{\exformula}{\insymbol},\cheadvariableof{\exformula}{\outsymbol},\shortcatvariables}
         = \contractionof{
             \bencodingofat{\exformula}{\headvariableof{\exformula},\shortcatvariables},
-            \bencodingofat{\oplus}{\headvariableof{\outsymbol,\exformula},\headvariableof{\insymbol,\exformula},\headvariableof{\exformula}}
-        }{\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula},\shortcatvariables} \, .
+            \bencodingofat{\oplus}{\cheadvariableof{\exformula}{\outsymbol},\cheadvariableof{\exformula}{\insymbol},\headvariableof{\exformula}}
+        }{\cheadvariableof{\exformula}{\insymbol},\cheadvariableof{\exformula}{\outsymbol},\shortcatvariables} \, .
     \end{align*}
 \end{lemma}
 
@@ -52,69 +65,6 @@ Based on the equivalence of \computationCircuits{} and contracted \basisEncoding
     The \computationCircuit{} of a function is the contraction of its \basisEncoding{} with the \basisEncoding{} of the mod2 sum $\oplus$.}
     \label{fig:bencComCircuit}
 \end{figure}
-
-\subsection{Composition by Contraction - Exploiting \DecompositionSparsity{}}
-
-The decomposition by contraction property of basis encodings is now a composition of circuits property, as stated in the next lemma.
-
-\begin{lemma}
-    \label{lem:comCirDecSpar}
-    We have for functions $\exformula:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, $\secexfunction:\bigtimes_{\selindexin}[2]\rightarrow\bigtimes_{s\in[r]}[2]$ (see \figref{fig:qcbencodingDecomposition})
-    \begin{align*}
-        \qcbencodingofat{\secexfunction\circ\exformula}{\headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula},\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]}}
-        = \breakablecontractionof{
-            &\onehotmapofat{0}{\headvariableof{\insymbol,\exformula}},\\
-            &\qcbencodingofat{\exformula}{\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula},\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]}},\\
-            &\qcbencodingofat{\secexfunction}{\headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\exformula},\headvariableof{\outsymbol,\exformula}}
-        }{
-            \headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula},\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]}
-        } \, .
-    \end{align*}
-\end{lemma}
-\begin{proof}
-    Can be seen by the basis encoding representation, when starting the hidden qubit with $\fbasis$, since
-    \begin{align*}
-        \contractionof{\bencodingofat{\oplus}{Y,X_0,X_1},\fbasisat{X_0}}{Y,X_1}
-        = \identityat{Y,X_1} \, .
-    \end{align*}
-    The marginalization of the hidden target qubit $X_1$ for measurements does not change the distribution, since we have a deterministic dependence on the measured data register (need preparation by $\fbasis$ for that).
-\end{proof}
-
-When having a syntactical decomposition of a propositional formula, we can iteratively apply the \computationCircuit{} decomposition theorem and prepare each connective by a circuit.
-We can decompose any propositional formula into logical connectives and prepare to each a \computationCircuit{} (exploiting further sparsity mechanisms).
-This works, when the target qubit of one connective is used as a value qubit of another.
-
-%% Closure of
-Note that to exploit \decompositionSparsity{}, we introduce another auxiliary qubit representing the satisfaction of the sub-function $\exformula$.
-In \lemref{lem:comCirDecSpar} the equality of the concatenated \computationCircuits{} holds after contraction of this qubit, see also \figref{fig:qcbencodingDecomposition}.
-When performing a computational basis measurement on the state prepared by a concatenation, and omitting the qubit (either not measure it in the first place, or ignore its measurement), one effectively has closed the variable before measurement.
-This holds true due to the deterministic dependence of the measurement outcome on the measurement of the distributed qubits $\shortcatvariables$, but is not true for more generic concatenations of controlled unitaries.
-
-\begin{figure}
-    \begin{center}
-        \input{tikz_pics/computation-circuits/decomposition_sparsity}
-    \end{center}
-    \caption{
-        Exploitaition of \DecompositionSparsity{} in \computationCircuit{}s.
-    }\label{fig:qcbencodingDecomposition}
-\end{figure}
-
-
-%    \begin{lemma}
-%        We have for functions $\exformula:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, $\secexfunction:\bigtimes_{\selindexin}[2]\rightarrow\bigtimes_{s\in[r]}[2]$
-%        \begin{align*}
-%            \qcbencodingofat{\secexfunction\circ\exformula}{\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]},\headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula}}
-%            = \breakablecontractionof{
-%                &\onehotmapofat{0}{\headvariableof{\insymbol,\exformula}},\\
-%                &\qcbencodingofat{\exformula}{\catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]},\headvariableof{\insymbol,\exformula},\headvariableof{\outsymbol,\exformula}},\\
-%                &\qcbencodingofat{\secexfunction}{\headvariableof{\outsymbol,\exformula},\headvariableof{\outsymbol,\mathrm{aux}},\headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula}}
-%            }{
-%                \catvariableof{\insymbol,[\atomorder]},\catvariableof{\outsymbol,[\atomorder]},\headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula}
-%            } \, .
-%        \end{align*}
-%    \end{lemma}
-%Note, that the variables $\headvariableof{\outsymbol,\mathrm{aux}}$ are auxiliar and not left open in the contraction.
-%This amounts to not measuring them in a computational basis measurement.
 
 \subsection{Construction for mod2-basis+ CP decompositions - Exploiting \PolynomialSparsity{}}
 
@@ -199,6 +149,72 @@ This encoding strategy exploits a modified (by mod2 calculus) \polynomialSparsit
     }\label{fig:qcbencodingPolynomial}
 \end{figure}
 
+
+
+\subsection{Composition by Contraction - Exploiting \DecompositionSparsity{}}
+
+The decomposition by contraction property of basis encodings is now a composition of circuits property, as stated in the next lemma.
+Instead of hidden variables as in the \tnreason{} approach, we here exploit further working qubits.
+
+\begin{lemma}
+    \label{lem:comCirDecSpar}
+    We have for functions $\exformula:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, $\secexfunction:\bigtimes_{\selindexin}[2]\rightarrow\bigtimes_{s\in[r]}[2]$ (see \figref{fig:qcbencodingDecomposition})
+    \begin{align*}
+        \qcbencodingofat{\secexfunction\circ\exformula}{
+            \cheadvariableof{\secexfunction\circ\exformula}{\insymbol},
+            \headvariableof{\outsymbol,\secexfunction\circ\exformula},
+            \catvariableof{[\atomorder]}}
+        \otimes \fbasisat{\cheadvariableof{\exformula}{\outsymbol}}
+        = \breakablecontractionof{
+            &\onehotmapofat{0}{\cheadvariableof{\exformula}{\insymbol}},\\
+            &\qcbencodingofat{\exformula}{\cheadvariableof{\exformula}{\insymbol},
+                \cheadvariableof{\exformula}{\midsymbol},
+                \catvariableof{[\atomorder]}},\\
+            &\qcbencodingofat{\secexfunction}{
+                \headvariableof{\insymbol,\secexfunction\circ\exformula},
+                \headvariableof{\outsymbol,\secexfunction\circ\exformula},
+                \cheadvariableof{\exformula}{\midsymbol}}
+            &\qcbencodingofat{\exformula}{\cheadvariableof{\exformula}{\midsymbol},
+                \cheadvariableof{\exformula}{\outsymbol},
+                \catvariableof{[\atomorder]}},\\
+        }{
+            \headvariableof{\insymbol,\secexfunction\circ\exformula},\headvariableof{\outsymbol,\secexfunction\circ\exformula},\ccatvariableof{[\atomorder]}{\insymbol},\ccatvariableof{[\atomorder]}{\outsymbol}
+        } \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    Can be seen by the basis encoding representation, when starting the hidden qubit with $\fbasis$, since
+    \begin{align*}
+        \contractionof{\bencodingofat{\oplus}{Y,X_0,X_1},\fbasisat{X_0}}{Y,X_1}
+        = \identityat{Y,X_1} \, .
+    \end{align*}
+    The marginalization of the hidden target qubit $X_1$ for measurements does not change the distribution, since we have a deterministic dependence on the measured data register (need preparation by $\fbasis$ for that).
+\end{proof}
+
+When having a syntactical decomposition of a propositional formula, we can iteratively apply the \computationCircuit{} decomposition theorem and prepare each connective by a circuit.
+We can decompose any propositional formula into logical connectives and prepare to each a \computationCircuit{} (exploiting further sparsity mechanisms).
+This works, when the target qubit of one connective is used as a value qubit of another.
+
+%% Closure of
+Note that to exploit \decompositionSparsity{}, we introduce another auxiliary working qubit representing the satisfaction of the sub-function $\exformula$.
+In \lemref{lem:comCirDecSpar} the equality of the concatenated \computationCircuits{} holds after contraction of this qubit, see also \figref{fig:qcbencodingDecomposition}.
+When performing a computational basis measurement on the state prepared by a concatenation, and omitting the qubit (either not measure it in the first place, or ignore its measurement), one effectively has closed the variable before measurement.
+This holds true due to the deterministic dependence of the measurement outcome on the measurement of the distributed qubits $\shortcatvariables$, but is not true for more generic concatenations of controlled unitaries.
+This entailment of the working qubit with the distributed qubits can be resolved by an un-computation circuit, which is the adjoint of the \computationCircuit{} for the working qubits (see \figref{fig:qcbencodingDecomposition}).
+Note that while this is necessary in some applications, it is not necessary for the quantum rejection sampling presented here.
+
+\begin{figure}
+    \begin{center}
+        \input{tikz_pics/computation-circuits/decomposition_sparsity}
+    \end{center}
+    \caption{
+        Exploitaition of \DecompositionSparsity{} in \computationCircuit{}s.
+        The working qubit $\headvariableof{\exfunction}$ is initialized in the ground state $\fbasis$ and un-computed after its usage to prepare $\headvariableof{\secexfunction\circ\exfunction}$.
+        It is then disentangled with the other qubits.
+    }\label{fig:qcbencodingDecomposition}
+\end{figure}
+
+
 \subsection{Preparation by fine and coarse structure}
 
 Having a mod2-basis+ CP decomposition of rank $r$ to a connective, we need $r$ controlled NOT gates to prepare the basis encoding.
@@ -279,7 +295,8 @@ The overlap of two basis encoding states (which share the same head variable) is
     \end{align*}
 \end{definition}
 
-\begin{lemma}
+
+\begin{lemma}[Phase kickback trick] % Generalize: Does not have to be uniform init state ! 
     When applying the \computationCircuit{} on the initial state
     \begin{align*}
         \sqrt{\frac{1}{2^\atomorder}}\onesat{\shortcatvariables}
@@ -288,6 +305,16 @@ The overlap of two basis encoding states (which share the same head variable) is
     we get the basis encoding state (see \figref{fig:basSignQstateConstruction}b).
     Note that the initial state is a Hadamard gate acting on the state $\tbasisat{\headvariable}$.
 \end{lemma}
+
+The sign encoding is also called the phase encoding.
+% Other phase encodings
+One can ask, whether we can use other ancilla states and get different phase kickbacks while keeping the ancilla disentangled.
+However, since we construct here \computationCircuit{} we are restricted to the eigenvectors of the Pauli-X gate, which is the Hadamard basis
+\begin{align*}
+     \sqrt{\frac{1}{2}} \left(\fbasisat{\headvariable} - \tbasisat{\headvariable}\right) ,  \sqrt{\frac{1}{2}} \left(\fbasisat{\headvariable} + \tbasisat{\headvariable}\right)
+\end{align*}
+with eigenvalues $(-1)$ and $0$.
+
 
 % Preparation of the initial state
 The initial state can be prepared by applying Hadamard gates on all distributed variable qubits and preparing the head variable qubit by applying a Hadamard gate on the first basis state, i.e.

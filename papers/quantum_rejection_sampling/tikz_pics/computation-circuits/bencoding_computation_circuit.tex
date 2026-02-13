@@ -1,8 +1,8 @@
 \begin{tikzpicture}[scale=0.35, thick] % , baseline = -3.5pt
 
     %% Statistic Qubits
-    \node[anchor=center] (text) at (-1,9) {\colorlabelsize $\headvariableof{\exformula,\insymbol}$};
-    \node[anchor=center] (text) at (12,9) {\colorlabelsize $\headvariableof{\exformula,\outsymbol}$};
+    \node[anchor=center] (text) at (-1,9) {\colorlabelsize $\cheadvariableof{\exformula}{\insymbol}$};
+    \node[anchor=center] (text) at (12,9) {\colorlabelsize $\cheadvariableof{\exformula}{\outsymbol}$};
 
     \draw[->-] (1,9) -- (4,9);
 
@@ -36,8 +36,8 @@
     \begin{scope}
         [shift={(-20,0)}]
 
-        \node[anchor=center] (text) at (-1,9) {\colorlabelsize $\headvariableof{\exformula,\insymbol}$};
-        \node[anchor=center] (text) at (12,9) {\colorlabelsize $\headvariableof{\exformula,\outsymbol}$};
+        \node[anchor=center] (text) at (-1,9) {\colorlabelsize $\cheadvariableof{\exformula}{\insymbol}$};
+        \node[anchor=center] (text) at (12,9) {\colorlabelsize $\cheadvariableof{\exformula}{\outsymbol}$};
 
         \draw (5,4) -- (5,8);
         \drawvariabledot{5}{4}
