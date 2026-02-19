@@ -58,8 +58,8 @@
         \begin{scope}[shift={(0,3)}]
             \node[anchor=center] (text) at (2,12) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\insymbol}$};
             \node[anchor=center] (text) at (14,12) {\colorlabelsize $\cheadvariableof{\secexfunction\circ\exfunction}{\outsymbol}$};
-            \draw (9,12) -- (13,12);
-            \draw (3,12) -- (7,12);
+            \draw[->-] (9,12) -- (13,12);
+            \draw[->-] (3,12) -- (7,12);
 
             \draw (7,11) rectangle (9,13);
             \drawtextnode{8}{12}{\corelabelsize $\bencodingof{\oplus}$}

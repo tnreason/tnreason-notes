@@ -1,0 +1,18 @@
+\begin{example}[CNOT gate]\label{exa:cnotBenc}
+    The CNOT gate is the controlled Pauli-X, that is
+    \begin{align*}
+        \mathrm{CNOT}\left[\cheadvariable{\insymbol},\cheadvariable{\outsymbol},\catvariable\right]
+        = \paulixat{\cheadvariable{\insymbol},\cheadvariable{\outsymbol}} \otimes \tbasisat{\catvariable}
+        + \identityat{\cheadvariable{\insymbol},\cheadvariable{\outsymbol}} \otimes \fbasisat{\catvariable} \, .
+    \end{align*}
+    For the identity function
+    \begin{align*}
+        \mathrm{Id}(x) = x \, .
+    \end{align*}
+    we have
+    \begin{align*}
+        \qcbencodingofat{\mathrm{Id}}{\cheadvariable{\insymbol},\cheadvariable{\outsymbol},\catvariable}
+        = \mathrm{CNOT}\left[\cheadvariable{\insymbol},\cheadvariable{\outsymbol},\catvariable\right] \, .
+    \end{align*}
+    The $\mathrm{CNOT}$ is therefore the \computationCircuit{} to the identity function.
+\end{example}

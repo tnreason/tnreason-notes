@@ -1,0 +1,19 @@
+\begin{example}[Multiple-controlled NOT]\label{exa:mcnotBenc}
+    Let us consider the $\catorder$-ary controlled $\mathrm{NOT}$ gate
+    \begin{align*}
+        \mathrm{MCNOT}^{\catorder}\left[\cheadvariable{\insymbol},\cheadvariable{\outsymbol},\shortcatvariables\right]
+        = \paulixat{\cheadvariable{\insymbol},\cheadvariable{\outsymbol}} \otimes \onehotmapofat{\onetuple{[\catorder]}}{\shortcatvariables}
+        + \identityat{\cheadvariable{\insymbol},\cheadvariable{\outsymbol}} \otimes \left(\onesat{\shortcatvariables}-\onehotmapofat{\onetuple{[\catorder]}}{\shortcatvariables}\right) \, .
+    \end{align*}
+    This is the \computationCircuit{} of the $\catorder$-ary logical conjunction
+    \begin{align*}
+        \land^{\catorder} \defcols [2]^{\catorder} \rightarrow [2]
+        \quad , \quad
+         \land^{\catorder}(\shortcatindices)
+        = \begin{cases}
+              1 & \ifspace \shortcatindices = \onetuple{[\catorder]} \\
+              0 & \text{else}
+        \end{cases} \, .
+    \end{align*}
+    Special instances are the $\mathrm{CNOT}$ for $\catorder=1$ (see \exaref{exa:cnotBenc}) and the $\mathrm{Toffoli}$ gate for $\catorder=2$.
+\end{example}

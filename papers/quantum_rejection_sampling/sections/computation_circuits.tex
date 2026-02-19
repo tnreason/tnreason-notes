@@ -17,8 +17,11 @@ We here suggest a quantum pendant to basis encodings (see Chapter~14 in \cite{go
     \end{align*}
 \end{definition}
 
-Notice, that $\qcbencodingof{\lnot} = \mathrm{CNOT}$, which is obvious from $\onesat{\headvariableof{\insymbol},\headvariableof{\outsymbol}} - \identityat{\headvariableof{\insymbol},\headvariableof{\outsymbol}}$ being the Pauli-X gate (not to be confused with $X$ denoting distributed variables here).
-The \computationCircuit{} is therefore a generalized controlled $\mathrm{NOT}$ gate, where the control is by a boolean function.
+%% WRONG
+%Notice, that $\qcbencodingof{\lnot} = \mathrm{CNOT}$, which is obvious from $\onesat{\headvariableof{\insymbol},\headvariableof{\outsymbol}} - \identityat{\headvariableof{\insymbol},\headvariableof{\outsymbol}}$ being the Pauli-X gate (not to be confused with $X$ denoting distributed variables here).
+%The \computationCircuit{} is therefore a generalized controlled $\mathrm{NOT}$ gate, where the control is by a boolean function.
+
+\input{examples/computation-circuits/cnot-benc}
 
 % Multiple output variables
 Functions with multiple output variables, i.e. $\exformula:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, can be encoded image coordinate wise as a concatenation of the respective circuits.
@@ -66,7 +69,12 @@ Based on the equivalence of \computationCircuits{} and contracted \basisEncoding
     \label{fig:bencComCircuit}
 \end{figure}
 
+% Good place?
+\input{examples/computation-circuits/mcnot-benc}
+
 \subsection{Construction for mod2-basis+ CP decompositions - Exploiting \PolynomialSparsity{}}
+
+\red{We use here the Algebraic Normal Form (ANF) of the booleans!}
 
 \begin{lemma}
     \label{lem:comCircuitCommutative}
@@ -146,7 +154,9 @@ This encoding strategy exploits a modified (by mod2 calculus) \polynomialSparsit
         \input{tikz_pics/computation-circuits/slice_computation_circuit}
     \end{center}
     \caption{
-        Exploitation of \PolynomialSparsity{} in \computationCircuit{}s.
+        Representation of an slice as a \red{state-controlled} $\mathrm{CNOT}$ gate.
+        \red{Notation by white dots is also problematic: Nielsen Chuang uses them for $0$-state.}
+%        Exploitation of \PolynomialSparsity{} in \computationCircuit{}s.
     %Here, we use the typical denotation of a muliple-controlled CNOT gate, which control symbols do not indicate Dirac tensors.
     }\label{fig:qcbencodingPolynomial}
 \end{figure}
@@ -234,6 +244,8 @@ Note that while this is necessary in some applications, it is not necessary for 
         Proof of \lemref{lem:comCirDecSpar} based on basis calculus.
     }\label{fig:proofDecomposition}
 \end{figure}
+
+\input{examples/computation-circuits/mcnot-decomposition}
 
 \subsection{Preparation by fine and coarse structure}
 
