@@ -51,6 +51,17 @@ to the eigenstates
     \coloredmatrixof{1\\\pm i}{\indvariable} \, .
 \end{align*}
 
+When measuring the phase register we get a phase
+\begin{align*}
+    2\pi \cdot \sum_{\selindexin} 2^{-(\selindex+1)} \aindexof{\selindex} % 0.\phi_0\phi_1\ldots\phi_{\seldim-1}
+\end{align*}
+which is either $\alpha$ or $-\alpha$.
+We retrieve the mean in both cases by
+\begin{align*}
+    \meanparam
+    = \sin^2\left(\pi \cdot \sum_{\selindexin} 2^{-(\selindex+1)} \aindexof{\selindex}\right) \, .
+\end{align*}
+
 \subsection{Quantum Phase Estimation}
 
 We prepare auxiliary qubits $\avariables$ and perform for each $\selindexin$ $2^{\selindex}$ repetitions of $\groverof{\probtensor,\exformula}$ controlled on $\avariableof{\selindex}$.

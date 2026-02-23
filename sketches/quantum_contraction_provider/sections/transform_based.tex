@@ -1,0 +1,71 @@
+\section{Contractions based on Transforms}
+
+\red{Walsh-Hadamard transform and further transforms can be efficiently implemented by quantum circuits.
+We here investigate how these transforms can be utilized to compute contractions of tensor networks.}
+
+
+\subsection{Walsh-Hadamard transform}
+
+The application of Hadamard gates on the distributed variables afterwards results in a Walsh-Hadamard transform of the prepared state.
+
+The transform is performed by applying Hadamard gates on each variable.
+This is equivalent with contraction of the tensor
+\begin{align*}
+    \hgate^{\catorder}\left[\catvariableof{[\catorder],\insymbol},\catvariableof{[\catorder],\outsymbol}\right] =
+    \bigotimes_{\catenumeratorin} \hgateat{\ccatvariableof{\catenumerator}{\insymbol},\ccatvariableof{\catenumerator}{\outsymbol}} \, ,
+\end{align*}
+which coordinates are
+\begin{align*}
+    \hgate^{\catorder}\left[\indexedcatvariableof{[\catorder],\insymbol},\indexedcatvariableof{[\catorder],\outsymbol}\right] =
+    \sqrt{\frac{1}{2^{\catorder}}} \left(-1\right)^{\sum_{\catenumeratorin}\catindexof{\catenumerator,\insymbol} \cdot \catindexof{\catenumerator,\outsymbol}} \, .
+\end{align*}
+
+We have
+\begin{align*}
+    \contractionof{\onehotmapofat{0}{\ccatvariable{\insymbol}},
+        \hgateat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}}{\ccatvariable{\outsymbol}}
+    &= \sqrt{\frac{1}{2}} \onesat{\ccatvariable{\outsymbol}} \\
+    \contractionof{\onehotmapofat{1}{\ccatvariable{\insymbol}},
+        \hgateat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}}{\ccatvariable{\outsymbol}}
+    &= \sqrt{\frac{1}{2}}
+    \begin{bmatrix}
+        1 \\
+        -1
+    \end{bmatrix}\left[\ccatvariable{\outsymbol}\right]
+\end{align*}
+and conversely
+\begin{align*}
+    \contractionof{\sqrt{\frac{1}{2}} \onesat{\ccatvariable{\insymbol}},
+        \hgateat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}}{\ccatvariable{\outsymbol}}
+    &= \onehotmapofat{0}{\ccatvariable{\outsymbol}} \\
+    \contractionof{\sqrt{\frac{1}{2}}
+        \begin{bmatrix}
+            1 \\
+            -1
+        \end{bmatrix}\left[\ccatvariable{\insymbol}\right],
+        \hgateat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}}{\ccatvariable{\outsymbol}}
+    &= \onehotmapofat{1}{\ccatvariable{\outsymbol}} \, .
+\end{align*}
+If and only if the function is constant, then the transformed state is the ground state.
+
+\subsection{Examples}
+
+Let us present two known algorithms as the measurement of states prepared by \computationCircuits{}.
+
+\input{./examples/transform-based/deutsch-jozsa}
+
+\input{./examples/transform-based/inversion-test}
+
+%\subsection{Further Overlap-measuring Circuits}
+Quantum Circuits such as the SWAP test and the Hadamard test (\cite[Section 3.6.1]{schuld_machine_2021}) can be used to measure overlaps of quantum states, which are the squared absolutes of contractions of two state tensors.
+\begin{itemize}
+    \item When we have preparation schemes for two tensors, we can control them with a common ancilla qubit and measure their contraction by a Hadamard test (alternatively, using the SWAP test and state preparation in two registers).
+    \item Can we extend these schemes to contractions of more general tensor networks?
+\end{itemize}
+
+%\subsection{Discussion}
+While the preparation of contracted basis encodings is done efficiently, accessing the prepared state by measurements is a bottleneck.
+This is a typical \emph{quantum state tomography} problem \cite{roth_semi-device-dependent_2023}.
+Sparsity of the contracted state can be exploited to probabilistically guarantee precise estimates \cite{gross_quantum_2010}.
+However, when deciding whether $\exformula$ is satisfiable, based on the prepared contraction $\sqrt{\normalizationof{\bencodingofat{\exformula}{\headvariable,\shortcatvariables}}{\headvariable}}$, we have an exponentially small error tolerance.
+Moreover, the applied sample mean is the UMVUE (Uniformly Minimum Variance Unbiased Estimator, see \cite{casella_statistical_2001}), and can thus not be improved by other unbiased estimators.

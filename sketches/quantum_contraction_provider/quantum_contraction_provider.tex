@@ -1,0 +1,37 @@
+\documentclass[aps,onecolumn,nofootinbib,pra]{article}
+
+\usepackage{../../spec_files/arxiv}
+\input{../../spec_files/standard_preamble.tex}
+
+\input{../../macros/organization_macros.tex}
+\input{../../macros/general_macros.tex}
+\input{../../macros/tc_macros.tex}
+\input{../../macros/tikz_macros.tex}
+
+\usepackage{minted}
+
+\begin{document}
+    \title{Quantum Contraction Provider}
+
+    \maketitle
+    \date{\today}
+    \begin{abstract}
+        We investigate schemes to compute contractions of tensor networks by quantum computing.
+    \end{abstract}
+
+    \tableofcontents
+
+    \input{sections/introduction}
+    \input{sections/circuit_notation}
+    % Preparation schemes
+    \input{sections/function_encoding}
+
+    \input{sections/transform_based}
+
+    \input{sections/proposal_distributions}
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
+
+
+\end{document}
