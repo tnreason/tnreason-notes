@@ -6,12 +6,16 @@ We study an rejection sampling inference scheme of a broad model class.
 Quantum rejection sampling then brings an square root quantum advantage.
 To be more precise, we consider \ComputationActivationNetworks{}, a generic model class in \tnreason{} fo \neuroSymbolicAI{}.
 
-
-
-
-
-
 \subsection{Related works}
+
+Quantum rejection sampling has been developed in these works:
+\begin{itemize}
+    \item \cite{grover_fast_1996} Grover algorithm (search in unstructured database)
+    \item \cite{brassard_exact_1997,brassard_quantum_2002} generalization to amplitude amplification
+    \item \cite{ozols_quantum_2013} introduced quantum rejection sampling (using amplitude amplification)
+    \item \cite{low_quantum_2014} used quantum rejection sampling for Bayesian network sampling (which is NP-hard when conditioned on evidence, see e.g. \cite{koller_probabilistic_2009})
+    \item No exponential speedups expected by Quantum Computing in AI \cite{bennett_strengths_1997}
+\end{itemize}
 
 Several applications of Quantum Inference on symbolic AI have been studied.
 The novelty of our approach is a concise framework extending these approaches and connecting with generic neural decompositions of functions (see \computationCircuits{}).

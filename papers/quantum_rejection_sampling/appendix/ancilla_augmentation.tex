@@ -1,334 +1,12 @@
-\section{Graph-Controlled circuits}
+\section{Ancilla Augmentation}
 
-Let us now introduce the most generic circuit construction schemes used in this work.
-To this end, we exploit the definition of uniformly controlled unitaries (see \cite{mottonen_transformation_2005}), and study their alignment along directed acyclic hypergraphs.
-
-\subsection{Definition}
-
-We follow the definition of Bayesian networks as tensor networks on directed acyclic hypergraphs (see \cite{goessmann_tensor-network_2025}).
-
-% Hypergraphs
-We define graph-controlled circuits using hypergraphs, which nodes are associated with the qubits of the circuit.
-The hyperedges are tuples of two subsets of the qubits, namely the incoming qubits representing control and the outgoing qubit representing the target of a unitary.
-To each hyperedge we then associate a uniformly controlled unitary.
-
-\begin{definition}[Graph-Controlled Circuit]
-    Let $\graph=(\nodes,\edges)$ be a directed acyclic hypergraph, where each hyperedge has exactly one outgoing node and all nodes appear exactly once as outgoing nodes of an hyperedge.
-    Then a by $\graph$ controlled circuit is a decoration of the edges $\edge=(\incomingnodes,\{\node\})\in\edges$ by uniformly controlled unitaries
-    \begin{align*}
-        \contunitaryofat{\edge}{\catvariableof{\node,\insymbol},\catvariableof{\node,\outsymbol},\catvariableof{\incomingnodes,\outsymbol}} \, .
-    \end{align*}
-\end{definition}
-
-% Orders of the qubits respecting directionality
-Since the hypergraph $\graph$ to a graph-controlled circuit is acyclic, we find an order of the qubits, such that to each qubit appearing in the outgoing qubits of a hyperedge is ordered after the incoming qubits.
-In such way, we have a unique definition of the graph-controlled circuit as a concatenation of the controlled unitaries respecting a directionality order.
-When there are multiple orders respecting the directionality, then the concatenation respecting the orders all lead to an equivalent circuit.
-% Should we show this using TN?
-
-%%
-\begin{example}[Generic State Representation]
-    \label{exa:genericControlCircuit}
-    In \cite{mottonen_transformation_2005} a preparation scheme for arbitrary states with real and positive amplitudes by graph-controlled circuits is presented.
-    Therein, the hypergraph $\graph=(\nodes,\edges)$ is constructed as follows:
-    \begin{itemize}
-        \item Nodes $\nodes={[\catorder]}$
-        \item Edges $\edges=\left\{([\catenumerator],\{\catenumerator\})\wcols\catenumeratorin\right\}$
-    \end{itemize}
-    It is possible to realize each controlled unitary by a sequence of single qubit rotations and C-NOTs (see \cite{mottonen_transformation_2005}), where the angles are computed using gray codes.
-\end{example}
-
-\subsection{\ActivationCircuit{}}
-
-%We now investigate quantum pendants to the function encoding schemes used in \tnreason{}{}.
-A specific scheme to construct graph-controlled circuits with specific Bayesian Networks as measurement distributions are \activationCircuits{}.
-Here we restrict during the preparation procedure to real and positive amplitudes (i.e. prepare q-samples).
-
-
-\ActivationCircuits{} are uniformly controlled unitaries (see \cite{mottonen_transformation_2005}), where the rotation axis is chosen as the $y$-axes of the Bloch sphere, and the angles are computed by the function $h(\cdot)$ acting on a function value to be encoded.
-%\red{Introduce rotation encodings based on activation circuit action, hint at a sampling scheme of probability distributions.}
-
-%% Angle preparing
-We define the angle preparing function on $p\in[0,1]$ by
-\begin{align*}
-    h(p) = 2 \cdot \mathrm{cos}^{-1}\left(\sqrt{1-p}\right) \, .
-\end{align*}
-For any $p\in[0,1]$ we then have
-\begin{align*}
-    \contractionof{\onehotmapofat{0}{\cavariable{\insymbol}},\yrotationofat{h(p)}{\cavariable{\insymbol},\cavariable{\outsymbol}}}{\cavariable{\outsymbol}}
-    = \begin{bmatrix}
-          \sqrt{1-p} \\
-          \sqrt{p}
-    \end{bmatrix} \, .
-\end{align*}
-
-\begin{definition}[\ActivationCircuit{}]
-    Given a function
-    \begin{align*}
-        \exformula : \facstates \rightarrow [0,1]
-    \end{align*}
-    its \activationCircuit{} is the uniformly controlled unitary
-    $\qcaencodingofat{\exformula}{\cavariable{\insymbol},\cavariable{\outsymbol},\shortcatvariables}$ defined as
-    \begin{align*} %% Could ease the definition by coordinates
-        \qcaencodingofat{\hypercore}{\cavariable{\insymbol},\cavariable{\outsymbol},\shortcatvariables}
-        = \sum_{\shortcatindicesin} \onehotmapofat{\shortcatindices}{\shortcatvariables}
-        \otimes \yrotationofat{h(\exformulaat{\shortcatindices})}{\cavariable{\insymbol},\cavariable{\outsymbol}} \, .
-    \end{align*}
-\end{definition}
-
-%% Drop the in and out
-We will ease our notation by dropping the $\insymbol$ and $\outsymbol$ labels to the control variables.
-This amounts to understanding the Dirac delta tensors in \activationCircuits{} as hyperedges.
-Along that picture the quantum circuit is a tensor network on hyperedges instead of edges.
-
-%% As a graph-controlled circuit
-Each activation circuit is a graph-controlled circuit, where the corresponding hypergraph consists in $\nodes=\shortcatvariables\cup\{\avariable\}$ and a single edge $\edges=(\shortcatvariables,\{\avariable\})$.
-
-When we have a probability tensor, its \activationCircuit{} be prepared, since all values are in $[0,1]$.
-Note that for rejection sampling, only the quotients of the values are important, we can therefore scale the value by a scalar such that the mode is $1$.
-
-%% Rescaling tensors with larger coordinates
-Tensors $\hypercoreat{\shortcatvariables}$ with non-negative coordinates can be encoded after dividing them by their maximum, that is the \activationCircuit{} of the function
-\begin{align*}
-    \exformulaat{\shortcatindices}
-    = \frac{\hypercoreat{\shortcatvariables=\shortcatindices}}{\max_{\secheadindexof{[\seldim]}} \hypercoreat{\shortcatvariables=\secheadindexof{[\seldim]}}}
-\end{align*}
-When the maximum of the tensor is not known, it can be replaced by an upper bound (reducing the acceptance rate of the rejection sampling).
-
-%% Generic Tensors with complex amplitudes: Require besides rescaling more general unitaries.
-
-\subsubsection{Q-samples}
-
-Towards providing additional insights onto the usage of \activationCircuits{} we now present them as a scheme to prepare q-samples (see \cite{low_quantum_2014}).
-
-%\red{Merge with the above.
-%}
-
-In general, we define Q-samples to be quantum states, which measured in the computational basis reproduce a given probability distribution.
-
-\begin{definition}[Q-sample]
-    Given a probability distribution $\probtensor:\atomstates\rightarrow\rr$ (i.e. $\contraction{\probtensor}=1$ and $\zeros \prec \probtensor$) its q-sample is
-    \begin{align*}
-        \qstateofat{\probtensor}{\shortcatvariables}
-        = \sum_{\shortcatindicesin} \sqrt{\probat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
-    \end{align*}
-\end{definition}
-
-Q-samples are more restrictive than arbitrary states having a distribution as a measurement distribution, since they demand real and positive amplitudes.
-
-%% Low Paper
-In \cite{low_quantum_2014} the Q-sample has been introduced.
-It prepares a scheme to realize property 1 (purity) + 2 (q-sampling) of a qpdf, but fails to realize property 3 (q-stochasticity).
-%The q-sample can be prepared for Bayesian Networks, where each child qubit is prepared densely by C-NOTs conditioning on parent qubits.
-
-\begin{example}[Q-sample of the uniform distribution]
-    \label{exa:qSampleUniform}
-    The q-sample of the uniform distribution can be prepared by Hadamard gates acting on the ground state.
-    This is an example of a Walsh-Hadamard transform, which can be performed by unary Hadamard gates.
-\end{example}
-
-Generalizing \exaref{exa:qSampleUniform}, Q-samples to independent distributions of boolean variables can be prepared by unary rotations along the y-axis.
-
-
-%%% FUSE TO LATER
-%Q-samples can be prepared by \activationCircuit{}s acting on the uniform q-sample (see \exaref{exa:qSampleUniform}), as we show next.
-%
-%Doing rejection sampling on the ancilla qubit corresponds with sampling from the normalized contraction with the activation tensor.
-%
-%\begin{lemma}
-%    \label{lem:qSampleDistribution}
-%    Given a distribution $\probat{\shortcatvariables}$, we construct a circuit preparing its q-sample and add the ancilla encoding of a tensor $\hypercoreat{\shortcatvariables}$.
-%    The rejection sampling scheme, measuring the ancilla qubit and the $\shortcatvariables$ qubits, rejecting the ancilla qubit measured as $0$, prepares samples from the distribution
-%    \begin{align*}
-%        \normalizationof{\probat{\shortcatvariables},\hypercoreat{\shortcatvariables}}{\shortcatvariables} \, .
-%    \end{align*}
-%\end{lemma}
-
-\subsubsection{Encoding of conditional distributions}
-
-%\red{\lemref{lem:qSampleDistribution} states that any distribution can be }
-
-Following the schemes in \cite{low_quantum_2014}, we can prepare the acyclic networks of directed and non-negative tensors by a sequence of controlled rotations.
-Directed and non-negative tensors correspond with conditional probability distributions and their acyclic networks are Bayesian Networks.
-We prepare them by \activationCircuit{}s of functions (see \figref{fig:cpdEncoding})
-\begin{align*}
-    \catindexof{\parentsof{\catenumerator}} \rightarrow \condprobat{\catvariableof{\catenumerator}=1}{\indexedcatvariableof{\parentsof{\catenumerator}}} \, .
-\end{align*}
-
-\subsubsection{Encoding of Bayesian Networks}
-
-We revisit the correspondence of Bayesian Networks with graph-controlled circuits, by showing that any Bayesian Network can be prepared by \activationCircuits{} of the conditional probability distributions.
-Bayesian Networks can be prepared as quantum circuits, where each conditional probability distribution is prepared by an \activationCircuit{}.
-
-\begin{theorem}[\cite{low_quantum_2014}]
-    Let there be a Bayesian Network $\probwith$ on a directed acyclic hypergraph $\graph=([\catorder],\edges)$ with dimensions $\catdimof{\catenumerator}=2$ and decorations of the edges $\edges=\{(\parentsof{\catenumerator},\{\catenumerator\}) \wcols \catenumeratorin\}$ by conditional probabilities
-    \begin{align*}
-        \condprobof{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \, .
-    \end{align*}
-    To each $\catenumeratorin$ we construct the function
-    \begin{align*}
-        \exfunctionof{\catenumerator} \defcols \bigtimes_{\seccatenumerator\in\parentsof{\catenumerator}} [2] \rightarrow [2]
-        \quad,\quad
-        \exfunctionofat{\catenumerator}{\catindexof{\parentsof{\catenumerator}}}
-        = \condprobof{\catvariableof{\catenumerator}=1}{\indexedcatvariableof{\parentsof{\catenumerator}}} \, .
-    \end{align*}
-    Then the concatenation of the \activationCircuits{}
-    \begin{align*}
-        \qcaencodingofat{
-            \exfunctionof{\catenumerator}
-        }{\ccatvariableof{\catenumerator}{\insymbol},\catvariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}}
-    \end{align*}
-    respecting the order $[\catorder]$ prepares the Bayesian Network $\probwith$ when acting on the initial state $\bigotimes_{\atomenumeratorin}\onehotmapofat{0}{\ccatvariableof{\catenumerator}{\insymbol}}$.
-\end{theorem}
-\begin{proof}
-    Let $\qstateat{\shortcatvariables}$ be the state prepared by the \activationCircuits{} to the conditional probability distributions.
-    We need to show that the measurement distribution of $\qstate$ is the Bayesian Network.
-    For any $\shortcatindices\in\atomstates$ we have
-    \begin{align*}
-        \absof{\qstateat{\indexedshortcatvariables}}^2
-        &= \prod_{\catenumeratorin}
-        \left(\qcaencodingofat{
-            \exfunctionof{\catenumerator}
-        }{\ccatvariableof{\catenumerator}{\insymbol}=0,\indexedcatvariableof{\catenumerator},\indexedcatvariableof{\parentsof{\catenumerator}}}\right)^2 \\
-        &= \prod_{\catenumeratorin}
-        \condprobof{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}} \\
-        & = \probat{\indexedshortcatvariables} \, .
-    \end{align*}
-    \red{Alternatively, we can proof the statement by induction using the conditional probability encoding lemma.}
-\end{proof}
-
-
-%To this end, one iterates over the states of the incoming variables, and performs a controlled rotation on the outgoing variable, where the angle is given by the value of the tensor at the incoming state.
-%This generalizes the basis encoding scheme, which demands boolean tensors.
-
-\begin{figure}
-    \begin{center}
-        \input{./tikz_pics/directed_to_circuit.tex}
-    \end{center}
-    \caption{
-        Representation of directed and positive tensor by a controlled rotation.
-        a) Conditional probability tensor $\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}$ being a tensor in a Bayesian Network.
-        b) Circuit Encoding as a controlled rotation, which is the \ActivationCircuit{} of the tensor $\condprobat{\catvariableof{\catenumerator}=1}{\catvariableof{\parentsof{\catenumerator}}}$.
-    }\label{fig:cpdEncoding}
-\end{figure}
-
-\input{./examples/graph-controlled-circuits/grover-rudolph}
-
-\subsection{Equivalence with Bayesian Networks}
-
-%% Missing direction of Equivalence with BN
-Above we have shown, how Bayesian Networks can be prepared by \activationCircuits{}, which are a class of graph-controlled circuits.
-We now show, that the measurement distribution of any graph-controlled circuit is a Bayesian Network.
-It then follows that the set of distributions prepared by graph-controlled circuits is exactly the set of Bayesian Networks.
-
-
-This is closely connected to the chain decomposition of probability distributions, and their construction.
-In \cite{low_quantum_2014} Bayesian Networks are prepared by graph-controlled circuits.
-When in the graph $\graph$ each node appears at most once as outgoing node, it is also the hypergraph to a family of Bayesian Networks.
-The measurement distributions of a state prepared by a $\graph$-controlled Circuit acting on disentangled initial states are exactly the Bayesian Networks with respect to $\graph$.
-
-\begin{theorem}
-    \label{the:graphControlledPreparesBN}
-    Let $\graph$ be a directed acyclic hypergraph, such that node appears at most once as an outgoing node.
-    The measurement distributions of the by $\graph$ controlled circuits acting on disentangled initial states are equal to the Bayesian Networks on $\graph$.
-\end{theorem}
-
-\begin{lemma}
-    \label{lem:BNtoGCC}
-    Let $\graph$ be a directed acyclic hypergraph, such that node appears at most once as an outgoing node.
-    Then any Bayesian network on $\graph$ can be prepared by a $\graph$-controlled circuit with activation circuits of the conditional probability tensors.
-\end{lemma}
-\begin{proof}
-    Let $\probwith$ be a Bayesian network on the graph $\graph$.
-    Enumerate the nodes $\nodes$ of the $\graph$ by $[\atomorder]$, such that for each $\catenumeratorin$ we have $\parentsof{\catenumerator}\subset[\catenumerator]$.
-    Then define a $\graph$-controlled circuit, by choosing for each $\catenumeratorin$ controlled unitaries which satisfy
-    \begin{align*}
-        \contunitaryofat{\catenumerator}{\ccatvariableof{\catenumerator}{\insymbol}=0,\catvariableof{\node,\outsymbol},\catvariableof{\parentsof{\catenumerator},\outsymbol}}
-        =\sqrt{\condprobof{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}} \, .
-    \end{align*}
-    Here we specified only the action of the controlled unitary on the basis vector $\onehotmapofat{0}{\catvariableof{\catenumerator}}$, the action on $\onehotmapofat{1}{\catvariableof{\catenumerator}}$ can be chosen by an arbitrary orthogonal unit vector. % Maybe link here the activation circuit scheme, which is already used?
-    For more explicit construction, see the \activationCircuits{}.
-    Any such defined $\graph$-controlled circuit acting on the initial state $\bigotimes_{\catenumeratorin}\onehotmapofat{0}{\catvariableof{\catenumerator}}$ prepares a quantum state $\qstatewith$ with measurement distribution
-    \begin{align*}
-        \absof{\qstate}^2\left[\shortcatvariables\right] \, .
-    \end{align*}
-    Given arbitrary $\shortcatindicesin$ we have
-    \begin{align*}
-        \absof{\qstate}^2\left[\indexedshortcatvariables\right]
-        = \prod_{\catenumeratorin} \condprobof{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}
-        = \probat{\indexedshortcatvariables} \, .
-    \end{align*}
-    Here we used in the last equation, that $\probwith$ is a Bayesian network.
-    Since the equivalence holds for any coordinate, this establishes the equivalence of the measurement distribution of $\qstatewith$ and $\probwith$.
-\end{proof}
-
-While we have already shown by \lemref{lem:BNtoGCC} that arbitrary Bayesian Networks can be prepared by graph-controlled circuits, we now show the converse, namely that any distribution prepared by graph-controlled circuits is a Bayesian Network.
-To this end, we use the characterization of Bayesian Networks by the conditional independencies they encode (see \cite{koller_probabilistic_2009}).
-To be more precise, we need to show that any node variable is conditionally independent of its non-descendants given its parents.
-
-\begin{lemma}
-    \label{lem:GCCtoBN}
-    Let $(\graph,\contunitary)$ be a $\graph$-controlled circuit acting on a disentangled initial state and $\probat{\nodevariables}$ the corresponding measurement distribution.
-    Then we have for each $\node\in\nodes$ the conditional independence
-    \begin{align*}
-        \condindependent{\catvariableof{\node}}{\catvariableof{\nondescendantsof{\node}}}{\catvariableof{\parentsof{\node}}} \, .
-    \end{align*}
-\end{lemma}
-\begin{proof}
-    We choose to a given $\node\in\nodes$ an enumeration $[\catorder]$ of the nodes, such that for each $\catenumeratorin$ we have $\parentsof{\catenumerator}\subset[\catenumerator]$ and for the enumerator $\seccatenumerator$ of $\node$ we further have $\nondescendantsof{\seccatenumerator}\subset[\seccatenumerator]$.
-    Let $\probwith$ be the measurement distribution of the $\graph$-controlled circuit acting on a disentangled initial state $\bigotimes_{\catenumeratorin}\qstateofat{\catenumerator}{\catvariableof{\catenumerator}}$ and choose arbitrary $\catindexof{[\catenumerator]}$.
-    We then have
-    \begin{align*}
-        \probat{\catvariableof{\seccatenumerator},\indexedcatvariableof{[\catenumerator]}}
-        &= \contractionof{\left(\bigcup_{\catenumeratorin}\{\contunitaryof{\catenumerator},\contunitaryof{\catenumerator,\dagger},\qstateof{\catenumerator},\qstateof{\catenumerator,*}\right)\}
-            \cup \left(\bigcup_{\catenumerator\in[\seccatenumerator]} \onehotmapofat{\catindexof{\catenumerator}}{\ccatvariableof{\catenumerator}{\outsymbol}}\right)
-        }{
-            \catvariableof{\seccatenumerator}
-        } \\
-        &= \contractionof{\bigcup_{\catenumerator\in[\seccatenumerator]}\{\contunitaryof{\catenumerator},\contunitaryof{\catenumerator,\dagger},\qstateof{\catenumerator},\qstateof{\catenumerator,*},\onehotmapofat{\catindexof{\catenumerator}}{\ccatvariableof{\catenumerator}{\outsymbol}}\}}{
-            \catvariableof{\seccatenumerator}
-        } \\
-        & = \absof{\contractionof{\contunitaryofat{\seccatenumerator}{\catvariableof{\seccatenumerator,\insymbol},\catvariableof{\seccatenumerator,\outsymbol}},\indexedcatvariableof{\parentsof{\seccatenumerator},\outsymbol}}{\catvariableof{\seccatenumerator,\outsymbol}}}^2 \\
-        & \quad \quad \cdot \prod_{\catenumerator\in[\seccatenumerator]}
-        \left(\contraction{\qstateofat{\catenumerator}{\ccatvariableof{\catenumerator}{\insymbol}},\contunitaryofat{\catenumerator}{\ccatvariableof{\catenumerator}{\insymbol},\ccatvariableof{\catenumerator}{\outsymbol},\indexedcatvariableof{\parentsof{\catenumerator},\outsymbol}}}\right)^2
-        %\contraction{\qstateof{\catenumerator,*},\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}}{} \, .
-    \end{align*}
-    Here we used in the second equation the unitarity of the controlled unitaries to $\catenumerator\notin[\seccatenumerator]$.
-    Since the indices $\catindexof{[\seccatenumerator]/\parentsof{\seccatenumerator}} = \catindexof{\nondescendantsof{\seccatenumerator}}$ appear only in the constant term, we conclude
-    \begin{align*}
-        \condprobat{\catvariableof{\seccatenumerator}}{\catvariableof{[\catenumerator]}} = \condprobat{\catvariableof{\seccatenumerator}}{\catvariableof{\parentsof{\seccatenumerator}}} \otimes \onesat{\catvariableof{\nondescendantsof{\seccatenumerator}}}\, ,
-    \end{align*}
-    which establishes the conditional independence $\condindependent{\catvariableof{\node}}{\catvariableof{\nondescendantsof{\node}}}{\catvariableof{\parentsof{\node}}}$.
-\end{proof}
-
-\begin{proof}[Proof of \theref{the:graphControlledPreparesBN}]
-    The theorem follows directly from \lemref{lem:BNtoGCC} and \lemref{lem:GCCtoBN}, using that Bayesian Networks are characterized by the conditional independence of each variable to its non-descendants given its parents.
-\end{proof}
-
-\begin{example}[Chain decomposition]
-    The hypergraph in \exaref{exa:genericControlCircuit} corresponds with a family of Bayesian Networks subsuming any probability distribution.
-    This can be verified based on the chain decomposition of a generic distribution.
-\end{example}
-
-%% Phase representation
-Another question is, whether each quantum state, which measurement distribution is a Bayesian Network can be prepared by a $\graph$-controlled circuit.
-This is not always the case, since the phase tensor does not influence the measurement distribution.
-Any phase tensor, of a by $\graph$-controlled circuit prepared state has however a decomposition
-\begin{align*}
-    \phasecoreat{\shortcatvariables}
-    = \sum_{\catenumeratorin} \phasecoreofat{\catenumerator}{\catvariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}} \otimes \onesat{\catvariableof{[\catorder]/\{\{\catenumerator\}\cup\parentsof{\catenumerator}\}}} \, ,
-\end{align*}
-where the phase cores $\phasecoreof{\catenumerator}$ can be read of the controlled unitaries.
-When there are phase cores which do not have such a decomposition, the corresponding states are not representable.
-\cite{mottonen_transformation_2005} shows, that when the graph is chosen as in \exaref{exa:genericControlCircuit}, then also the phases can be represented.
-
-\subsection{Ancilla Augmentation}
+\red{We provide here some further theory underlying the ancilla augmentation of \ComputationActivationNetworks{}.}
 
 Graph controlled circuits prepare Bayesian Networks, and do not apply to undirected graphical models such as Markov Networks and \ComputationActivationNetworks{}.
 We therefore introduce in the following ancilla augmentation, which is a method to represent Markov Networks as conditioned Bayesian Network.
 This enables usage of the previously used preparation schemes for Bayesian Networks.
 
-\subsubsection{Post-selection by Ancilla Variables}
+\subsection{Post-selection by Ancilla Variables}
 
 First of all we define ancilla augmentation and then show how they can be prepared as measurement distributions using \activationCircuits{}.
 
@@ -396,7 +74,7 @@ and accepting the sample with probability
 %    \normalizationofwrt{\secprobtensor}{\avariable=1}{\shortcatvariables} \, .
 \end{align*}
 
-\subsubsection{Construction based on Uniform Distributions}
+\subsection{Construction based on Uniform Distributions}
 
 We construct ancilla augmentations based on the decomposition \eqref{eq:ancillaDecomposition} where the marginal of $\shortcatvariables$ is the uniform distribution, that is
 \begin{align*}
@@ -514,7 +192,7 @@ If $\probwith$ is not uniform, we can improve by building the \activationCircuit
     \frac{1}{\max_{\shortcatindicesin}\probat{\indexedshortcatvariables}} \cdot \probwith \, .
 \end{align*}
 
-\subsubsection{Best Acceptance Probability by $\infty$-Renyi Divergence}
+\subsection{Best Acceptance Probability by $\infty$-Renyi Divergence}
 
 Let us now show, how the best acceptance probability in sets of ancilla augmented distributions is connected with $\infty$-Renyi divergences.
 For $0<\alpha<\infty$ and $\alpha\neq 1$ the Renyi Divergence is defined as
@@ -634,7 +312,7 @@ When sampling with Quantum Circuits, this could be implemented by a state prepar
 It would be interesting to train variational quantum circuits for this task.
 However, when we want to apply the same scheme as above, one needs to encode $\mathbb{Q}$ into the ancilla preparing rotations, so $\mathbb{Q}$ would need to be an elementary \ComputationActivationNetwork{} as well.
 
-\subsubsection{Augmentation of Markov Networks}
+\subsection{Augmentation of Markov Networks}
 
 Let us now show how multiple ancilla variables can be designed to sample from arbitrary Markov Networks.
 
@@ -783,4 +461,3 @@ In this case, one faces a tradeoff between the size of the circuit to prepare an
     To this end the arbitrary non-negative cores $\hypercoreof{\edge}$ are replaced by directed ancilla augmented cores $\sechypercoreof{\edge}$, with ancilly variables outgoing.}
     \label{fig:markovNetworkAugmentation}
 \end{figure}
-
