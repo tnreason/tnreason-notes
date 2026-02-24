@@ -9,17 +9,13 @@ We here suggest a quantum pendant to basis encodings (see Chapter~14 in \cite{go
         &\quad=
         \sum_{\shortcatindicesin\wcols\exformulaat{\shortcatindices}=1}
         \paulixat{\cheadvariableof{\exformula}{\insymbol},\cheadvariableof{\exformula}{\outsymbol}} \otimes
-        \onehotmapofat{\shortcatindices}{\shortcatvariables} \\ % \otimes \onehotmapofat{\shortcatindices}{\ccatvariableof{[\atomorder]}{\outsymbol}} \\
+        \onehotmapofat{\shortcatindices}{\shortcatvariables} \\
         & \quad \quad \quad +
         \sum_{\shortcatindicesin\wcols\exformulaat{\shortcatindices}=0}
         \identityat{\cheadvariableof{\exformula}{\insymbol},\cheadvariableof{\exformula}{\outsymbol}} \otimes
-        \onehotmapofat{\shortcatindices}{\shortcatvariables} \, . % \otimes \onehotmapofat{\shortcatindices}{\ccatvariableof{[\atomorder]}{\outsymbol}}
+        \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
     \end{align*}
 \end{definition}
-
-%% WRONG
-%Notice, that $\qcbencodingof{\lnot} = \mathrm{CNOT}$, which is obvious from $\onesat{\headvariableof{\insymbol},\headvariableof{\outsymbol}} - \identityat{\headvariableof{\insymbol},\headvariableof{\outsymbol}}$ being the Pauli-X gate (not to be confused with $X$ denoting distributed variables here).
-%The \computationCircuit{} is therefore a generalized controlled $\mathrm{NOT}$ gate, where the control is by a boolean function.
 
 \input{examples/computation-circuits/cnot-benc}
 
@@ -30,19 +26,6 @@ Functions with multiple output variables, i.e. $\exformula:\atomstates\rightarro
 
 \BasisEncodings{} are schemes to encode functions into directed boolean tensors, which enable reasoning about functions by tensor network contractions (see \cite{goessmann_tensor_2026}).
 To connect with this formalism, let us now show the relation to the \computationCircuits{}.
-
-\begin{remark}[Basis and Amplitude Encodings in Quantum Computation \cite{schuld_machine_2021} and \tnreason{}]
-    % Compare with Quantum Computing
-    Basis Encoding in Quantum Computation refers to the representation of classical $n$ bit strings by $n$ qubit basis states, and is called one-hot encoding in \tnreason{}.
-    The Basis Encoding scheme in \tnreason{} goes beyond this scheme and also encodes subsets by sums of one-hot encodings to the members of the set.
-    In this way, relations and functions are represented by boolean tensors and contraction of them is refered as \BasisCalculus{}.
-
-    Amplitude Encoding in Quantum Computation refers to the storage of complex numbers in the amplitudes of quantum states.
-    The pendant in \tnreason{} is the Coordinate Encoding scheme, where real numbers are stored in the coordinates of real-valued tensors.
-    Compared to Amplitude Encoding, Coordinate Encoding does not have the normalization constraint of quantum states.
-    The Amplitude Encoding of the square root of a probability distribution is sometimes called q-sample.
-\end{remark}
-
 
 \begin{lemma}
     \label{lem:bencComCircuit}
@@ -74,7 +57,7 @@ Based on the equivalence of \computationCircuits{} and contracted \basisEncoding
 
 \subsection{Construction for mod2-basis+ CP decompositions - Exploiting \PolynomialSparsity{}}
 
-\red{We use here the Algebraic Normal Form (ANF) of the booleans!}
+
 
 \begin{lemma}
     \label{lem:comCircuitCommutative}
@@ -95,12 +78,12 @@ Based on the equivalence of \computationCircuits{} and contracted \basisEncoding
 
 Concatenating two \computationCircuit{}s, which have the same head qubit, is the \computationCircuit{} of their mod2 sum.
 
-Note that in general controlled unitaries on the same target qubit do not commute.
+%Note that in general controlled unitaries on the same target qubit do not commute.
 
-A basis+ elementary function can be encoded by a single controlled NOT operation with auxiliary $\catvariable$ qubits.
+A basis+ elementary function can be encoded by a single controlled NOT operation with auxiliary Pauli-X to prepare the control state at the $\catvariable$ qubits.
 
 This motivates the mod2-basis+ CP decomposition of tensors, which is exactly the decomposition of boolean polynomials into monomials.
-Each monomial is called a terms (products of x or (1-x) factors), and minterms in case that all variables appear.
+Each monomial is called a term (products of x or (1-x) factors), and minterms in case that all variables appear.
 
 \begin{definition}
     Given a boolean tensor $\hypercore$, a mod2-basis+ CP decomposition is a collection $\sliceset$ of tuples $(\variableset,\catindexof{\variableset})$ with such that for any $\shortcatindicesin$
@@ -109,6 +92,9 @@ Each monomial is called a terms (products of x or (1-x) factors), and minterms i
         = \bigoplus_{(\variableset,\catindexof{\variableset})\in\sliceset} \contractionof{\onehotmapofat{\catindexof{\variableset}}{\catvariableof{\variableset}}}{\indexedshortcatvariables} \, .
     \end{align*}
 \end{definition}
+
+% Algebraic Normal Form
+This decomposition is closely related to the Algebraic Normal Form of a Boolean polynomial.
 
 Using that basis CP decompositions are a special case of basis+ CP decompositions, we get the following rank bound.
 
@@ -154,10 +140,8 @@ This encoding strategy exploits a modified (by mod2 calculus) \polynomialSparsit
         \input{tikz_pics/computation-circuits/slice_computation_circuit}
     \end{center}
     \caption{
-        Representation of an slice as a \red{state-controlled} $\mathrm{CNOT}$ gate.
-        \red{Notation by white dots is also problematic: Nielsen Chuang uses them for $0$-state.}
-%        Exploitation of \PolynomialSparsity{} in \computationCircuit{}s.
-    %Here, we use the typical denotation of a muliple-controlled CNOT gate, which control symbols do not indicate Dirac tensors.
+        Representation of an slice as a controlled $\mathrm{CNOT}$ gate.
+        When the control state to a variable is $0$, we introduce auxiliary Pauli-X gates.
     }\label{fig:qcbencodingPolynomial}
 \end{figure}
 
@@ -218,23 +202,23 @@ We can decompose any propositional formula into logical connectives and prepare 
 This works, when the target qubit of one connective is used as a value qubit of another.
 
 %% Closure of
-Note that to exploit \decompositionSparsity{}, we introduce another auxiliary working qubit representing the satisfaction of the sub-function $\exfunction$.
-In \lemref{lem:comCirDecSpar} the equality of the concatenated \computationCircuits{} holds after contraction of this qubit, see also \figref{fig:qcbencodingDecomposition}.
-When performing a computational basis measurement on the state prepared by a concatenation, and omitting the qubit (either not measure it in the first place, or ignore its measurement), one effectively has closed the variable before measurement.
-This holds true due to the deterministic dependence of the measurement outcome on the measurement of the distributed qubits $\shortcatvariables$, but is not true for more generic concatenations of controlled unitaries.
-This entailment of the working qubit with the distributed qubits can be resolved by an un-computation circuit, which is the adjoint of the \computationCircuit{} for the working qubits (see \figref{fig:qcbencodingDecomposition}).
+%Note that to exploit \decompositionSparsity{}, we introduce another auxiliary working qubit representing the satisfaction of the sub-function $\exfunction$.
+%In \lemref{lem:comCirDecSpar} the equality of the concatenated \computationCircuits{} holds after contraction of this qubit, see also \figref{fig:qcbencodingDecomposition}.
+%When performing a computational basis measurement on the state prepared by a concatenation, and omitting the qubit (either not measure it in the first place, or ignore its measurement), one effectively has closed the variable before measurement.
+%This holds true due to the deterministic dependence of the measurement outcome on the measurement of the distributed qubits $\shortcatvariables$, but is not true for more generic concatenations of controlled unitaries.
+This entailment of the working qubit with the distributed qubits can be resolved by an un-computation circuit, which is the adjoint of the \computationCircuit{} for the working qubits (see \figref{fig:proofDecomposition}).
 Note that while this is necessary in some applications, it is not necessary for the quantum rejection sampling presented here.
 
-\begin{figure}
-    \begin{center}
-        \input{tikz_pics/computation-circuits/decomposition_sparsity}
-    \end{center}
-    \caption{
-        Exploitation of \DecompositionSparsity{} in \computationCircuit{}s.
-        The working qubit $\headvariableof{\exfunction}$ is initialized in the ground state $\fbasis$ and un-computed after its usage to prepare $\headvariableof{\secexfunction\circ\exfunction}$.
-        It is then disentangled with the other qubits.
-    }\label{fig:qcbencodingDecomposition}
-\end{figure}
+%\begin{figure}
+%    \begin{center}
+%        \input{tikz_pics/computation-circuits/decomposition_sparsity}
+%    \end{center}
+%    \caption{
+%        Exploitation of \DecompositionSparsity{} in \computationCircuit{}s.
+%        The working qubit $\headvariableof{\exfunction}$ is initialized in the ground state $\fbasis$ and un-computed after its usage to prepare $\headvariableof{\secexfunction\circ\exfunction}$.
+%        It is then disentangled with the other qubits.
+%    }\label{fig:qcbencodingDecomposition}
+%\end{figure}
 
 \begin{figure}
     \begin{center}
@@ -247,12 +231,12 @@ Note that while this is necessary in some applications, it is not necessary for 
 
 \input{examples/computation-circuits/mcnot-decomposition}
 
-\subsection{Preparation by fine and coarse structure}
-
-Having a mod2-basis+ CP decomposition of rank $r$ to a connective, we need $r$ controlled NOT gates to prepare the basis encoding.
-Given a syntactical decomposition of a boolean statistics, we prepare the basis encoding as a circuit with:
-\begin{itemize}
-    \item \textbf{Fine Structure:} Represent each logical connective based on its mod2-basis+ CP decomposition, as a concatenation of \computationCircuit{}s with the same variables.
-    \item \textbf{Coarse Structure:} Arrange the logical connective representing circuits according to the syntactical hypergraph, where parent head variables appear as distributed variables at their children.
-\end{itemize}
-
+%\subsection{Preparation by fine and coarse structure}
+%
+%Having a mod2-basis+ CP decomposition of rank $r$ to a connective, we need $r$ controlled NOT gates to prepare the basis encoding.
+%Given a syntactical decomposition of a boolean statistics, we prepare the basis encoding as a circuit with:
+%\begin{itemize}
+%    \item \textbf{Fine Structure:} Represent each logical connective based on its mod2-basis+ CP decomposition, as a concatenation of \computationCircuit{}s with the same variables.
+%    \item \textbf{Coarse Structure:} Arrange the logical connective representing circuits according to the syntactical hypergraph, where parent head variables appear as distributed variables at their children.
+%\end{itemize}
+%

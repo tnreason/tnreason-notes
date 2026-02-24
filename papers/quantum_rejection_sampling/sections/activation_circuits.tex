@@ -1,6 +1,8 @@
 \section{\ActivationCircuits{}}
 
-%We now investigate quantum pendants to the function encoding schemes used in \tnreason{}{}.
+
+
+
 A specific scheme to construct graph-controlled circuits with specific Bayesian Networks as measurement distributions are \activationCircuits{}.
 Here we restrict during the preparation procedure to real and positive amplitudes (i.e. prepare q-samples).
 
@@ -16,10 +18,7 @@ We define the angle preparing function on $p\in[0,1]$ by
 For any $p\in[0,1]$ we then have
 \begin{align*}
     \contractionof{\onehotmapofat{0}{\cavariable{\insymbol}},\yrotationofat{h(p)}{\cavariable{\insymbol},\cavariable{\outsymbol}}}{\cavariable{\outsymbol}}
-    = \begin{bmatrix}
-          \sqrt{1-p} \\
-          \sqrt{p}
-    \end{bmatrix} \, .
+    = \coloredmatrixof{\sqrt{1-p} \\ \sqrt{p}}{\cavariable{\outsymbol}} \, .
 \end{align*}
 
 \begin{definition}[\ActivationCircuit{}]
@@ -37,13 +36,11 @@ For any $p\in[0,1]$ we then have
 \end{definition}
 
 %% Drop the in and out
-We will ease our notation by dropping the $\insymbol$ and $\outsymbol$ labels to the control variables.
-This amounts to understanding the Dirac delta tensors in \activationCircuits{} as hyperedges.
-Along that picture the quantum circuit is a tensor network on hyperedges instead of edges.
+%We will ease our notation by dropping the $\insymbol$ and $\outsymbol$ labels to the control variables.
+%This amounts to understanding the Dirac delta tensors in \activationCircuits{} as hyperedges.
+%Along that picture the quantum circuit is a tensor network on hyperedges instead of edges.
 
-%% As a graph-controlled circuit
-Each activation circuit is a graph-controlled circuit, where the corresponding hypergraph consists in $\nodes=\shortcatvariables\cup\{\avariable\}$ and a single edge $\edges=(\shortcatvariables,\{\avariable\})$.
-
+%% Probability Tensor
 When we have a probability tensor, its \activationCircuit{} be prepared, since all values are in $[0,1]$.
 Note that for rejection sampling, only the quotients of the values are important, we can therefore scale the value by a scalar such that the mode is $1$.
 
@@ -55,18 +52,11 @@ Tensors $\hypercoreat{\shortcatvariables}$ with non-negative coordinates can be 
 \end{align*}
 When the maximum of the tensor is not known, it can be replaced by an upper bound (reducing the acceptance rate of the rejection sampling).
 
-%% Generic Tensors with complex amplitudes: Require besides rescaling more general unitaries.
-
 \subsection{Q-samples}
 
-Towards providing additional insights onto the usage of \activationCircuits{} we now present them as a scheme to prepare q-samples (see \cite{low_quantum_2014}).
+In general, we define q-samples to be quantum states, which measured in the computational basis reproduce a given probability distribution.
 
-%\red{Merge with the above.
-%}
-
-In general, we define Q-samples to be quantum states, which measured in the computational basis reproduce a given probability distribution.
-
-\begin{definition}[Q-sample]
+\begin{definition}[Q-sample \cite{aharonov_adiabatic_2003,low_quantum_2014}]
     Given a probability distribution $\probtensor:\atomstates\rightarrow\rr$ (i.e. $\contraction{\probtensor}=1$ and $\zeros \prec \probtensor$) its q-sample is
     \begin{align*}
         \qstateofat{\probtensor}{\shortcatvariables}
@@ -75,11 +65,6 @@ In general, we define Q-samples to be quantum states, which measured in the comp
 \end{definition}
 
 Q-samples are more restrictive than arbitrary states having a distribution as a measurement distribution, since they demand real and positive amplitudes.
-
-%% Low Paper
-In \cite{low_quantum_2014} the Q-sample has been introduced.
-It prepares a scheme to realize property 1 (purity) + 2 (q-sampling) of a qpdf, but fails to realize property 3 (q-stochasticity).
-%The q-sample can be prepared for Bayesian Networks, where each child qubit is prepared densely by C-NOTs conditioning on parent qubits.
 
 \begin{example}[Q-sample of the uniform distribution]
     \label{exa:qSampleUniform}
@@ -117,8 +102,8 @@ Generalizing \exaref{exa:qSampleUniform}, Q-samples to independent distributions
 
 \subsection{Encoding of Bayesian Networks}
 
-We revisit the correspondence of Bayesian Networks with graph-controlled circuits, by showing that any Bayesian Network can be prepared by \activationCircuits{} of the conditional probability distributions.
-Bayesian Networks can be prepared as quantum circuits, where each conditional probability distribution is prepared by an \activationCircuit{}.
+%We revisit the correspondence of Bayesian Networks with graph-controlled circuits, by showing that any Bayesian Network can be prepared by \activationCircuits{} of the conditional probability distributions.
+Q-samples of Bayesian Networks can be prepared by quantum circuits, where each conditional probability distribution is prepared by an \activationCircuit{}.
 
 \begin{theorem}[\cite{low_quantum_2014}]
     Let there be a Bayesian Network $\probwith$ on a directed acyclic hypergraph $\graph=([\catorder],\edges)$ with dimensions $\catdimof{\catenumerator}=2$ and decorations of the edges $\edges=\{(\parentsof{\catenumerator},\{\catenumerator\}) \wcols \catenumeratorin\}$ by conditional probabilities

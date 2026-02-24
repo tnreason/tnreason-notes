@@ -1,0 +1,18 @@
+\section{Notation}
+
+We here use the tensor network notation \cite{goessmann_tensor_2026}.
+The modes of each tensors are assigned by variables, and denoted in brackets as
+\begin{align*}
+    \hypercorewith \, .
+\end{align*}
+Quantum gates are along this line unitary tensors with incoming and outgoing variables.
+The Pauli-X for example is denoted by
+\begin{align*}
+    \paulixat{\cavariable{\insymbol},\cavariable{\outsymbol}} \coloneqq
+    \coloredmatrixof{
+        0 & 1 \\
+        1 & 0}{\cavariable{\insymbol},\cavariable{\outsymbol}} \, .
+\end{align*}
+Contractions are denoted by angle brackets with the variables left open specified in further brackets.
+Circuits are contractions of the unitaries, leaving only the last output variables open.
+Computational basis measurements of circuits are coordinatewise squared absoluted of the contracted circuit.

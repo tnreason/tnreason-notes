@@ -4,6 +4,20 @@
 
 Using the \computationCircuit{} we can prepare two function encoding schemes, depending on the start state.
 
+
+\begin{remark}[Basis and Amplitude Encodings in Quantum Computation \cite{schuld_machine_2021} and \tnreason{}]
+    % Compare with Quantum Computing
+    Basis Encoding in Quantum Computation refers to the representation of classical $n$ bit strings by $n$ qubit basis states, and is called one-hot encoding in \tnreason{}.
+    The Basis Encoding scheme in \tnreason{} goes beyond this scheme and also encodes subsets by sums of one-hot encodings to the members of the set.
+    In this way, relations and functions are represented by boolean tensors and contraction of them is refered as \BasisCalculus{}.
+
+    Amplitude Encoding in Quantum Computation refers to the storage of complex numbers in the amplitudes of quantum states.
+    The pendant in \tnreason{} is the Coordinate Encoding scheme, where real numbers are stored in the coordinates of real-valued tensors.
+    Compared to Amplitude Encoding, Coordinate Encoding does not have the normalization constraint of quantum states.
+    The Amplitude Encoding of the square root of a probability distribution is sometimes called q-sample.
+\end{remark}
+
+
 \subsection{Basis encoding}
 
 \begin{definition}

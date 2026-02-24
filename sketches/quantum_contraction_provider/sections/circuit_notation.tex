@@ -45,25 +45,23 @@ Some constraints appear for a tensor network to be a quantum circuit
 
 The unitary tensors can be aligned layerwise, if and only if the last two assumption hold, i.e. the directed graph is acyclic and each variable appears at most once as an incoming and at most once as an outgoing variable.
 
-
 \subsection{Controlled Single Qubit Gates}
 
 We define the rotation gate around the Y-axis by an angle $\alpha$ as
 \begin{align*}
     \yrotationofat{\alpha}{\cavariable{\insymbol},\cavariable{\outsymbol}} \coloneqq
-    \begin{bmatrix}
+    \coloredmatrixof{
         \cosof{\frac{\alpha}{2}} & -\sinof{\frac{\alpha}{2}} \\
         \sinof{\frac{\alpha}{2}} & \cosof{\frac{\alpha}{2}}
-    \end{bmatrix}
+    }{\cavariable{\insymbol},\cavariable{\outsymbol}} \, .
 \end{align*}
 
 Further we define the Pauli-X:
 \begin{align*}
     \paulixat{\cavariable{\insymbol},\cavariable{\outsymbol}} \coloneqq
-    \begin{bmatrix}
+    \coloredmatrixof{
         0 & 1 \\
-        1 & 0
-    \end{bmatrix}
+        1 & 0}{\cavariable{\insymbol},\cavariable{\outsymbol}} \, .
 \end{align*}
 
 %% Control notation
@@ -150,7 +148,6 @@ This property is exploited in the Deutsch-Jozsa algorithm, which utilizes signs 
     By the ellipse we indicate a coordinatewise transform to the square of the absolute, after the contraction.}
     \label{fig:phaseContractionMeasurement}
 \end{figure}
-
 
 \subsubsection{POVM measurements}
 

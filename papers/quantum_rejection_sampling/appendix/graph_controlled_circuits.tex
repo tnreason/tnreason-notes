@@ -21,6 +21,10 @@ To each hyperedge we then associate a uniformly controlled unitary.
     \end{align*}
 \end{definition}
 
+\begin{example}
+    Each \activationCircuit{} is a graph-controlled circuit, where the corresponding hypergraph consists in $\nodes=\shortcatvariables\cup\{\avariable\}$ and a single edge $\edges=(\shortcatvariables,\{\avariable\})$.
+\end{example}
+
 % Orders of the qubits respecting directionality
 Since the hypergraph $\graph$ to a graph-controlled circuit is acyclic, we find an order of the qubits, such that to each qubit appearing in the outgoing qubits of a hyperedge is ordered after the incoming qubits.
 In such way, we have a unique definition of the graph-controlled circuit as a concatenation of the controlled unitaries respecting a directionality order.
