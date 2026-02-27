@@ -1,0 +1,51 @@
+\documentclass[aps,onecolumn,nofootinbib,pra]{article}
+
+\makeatletter
+\def\input@path{{/Users/goessmann/Documents/tnreason/tnreason-notes/}{/Users/goessmann/Documents/tnreason/tnreason-notes/book/partI/4-causality/}}
+\makeatother
+
+\usepackage{spec_files/arxiv}
+\input{spec_files/standard_preamble.tex}
+
+\input{macros/organization_macros.tex}
+\input{macros/general_macros.tex}
+\input{macros/tc_macros.tex}
+\input{macros/tikz_macros.tex}
+
+%% Specific for Causal
+
+\newcommand{\doof}[1]{\mathrm{do}\left(#1\right)}
+\newcommand{\dovariable}{D}
+\newcommand{\dovariableof}[1]{\dovariable_{#1}}
+
+\newcommand{\doindex}{d} % Notation clash with \catorder!
+\newcommand{\doindexof}[1]{\doindex_{#1}}
+
+\newcommand{\indexeddovariableof}[1]{\dovariableof{#1}=\doindexof{#1}}
+
+\newcommand{\causalsymbol}{c}
+\newcommand{\responsesymbol}{f}
+
+\begin{document}
+    \title{Climbing the latter of causation with \tnreason{}}
+
+    \maketitle
+    \date{\today}
+
+    \begin{abstract}
+        We here describe how to represent Causal AI models in the \tnreason{} formalism.
+    \end{abstract}
+
+
+    \input{sections/introduction}
+    \input{sections/association}
+    \input{sections/intervention}
+    \input{sections/counterfactuals}
+
+
+
+
+    \bibliographystyle{plainnat}
+    \bibliography{references.bib}
+
+\end{document}

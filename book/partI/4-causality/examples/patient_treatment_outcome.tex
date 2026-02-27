@@ -1,0 +1,18 @@
+\begin{example}[Patient treatment outcome]\label{exa:patientTreatmentOutcome}
+    We model a relationship about the treatment of a sick patient and the outcome of the treatment.
+    Whether a treatment is conducted is modelled by the binary variable $\catvariableof{T}$ and whether the patient improves after the treatment by the variable $\catvariableof{0}$.
+
+    There are in general two possibilities of representing the joint distribution of $\catvariableof{T}$ and $\catvariableof{O}$ by a Bayesian Network:
+    \begin{itemize}
+        \item Treatment directs to outcome:
+        \begin{align*}
+            \graph = \left(\{\catvariableof{T},\catvariableof{O}\},\{(\varnothing,\catvariableof{T}),(\{\catvariableof{T}\},\{\catvariableof{O}\})\}\right)
+        \end{align*}
+        \item Outcome directs to treatment:
+        \begin{align*}
+            \graph = \left(\{\catvariableof{T},\catvariableof{O}\},\{(\varnothing,\catvariableof{T}),(\{\catvariableof{O}\},\{\catvariableof{T}\})\}\right)
+        \end{align*}
+    \end{itemize}
+    In the typical intuition, we expect the treatment to have a causal effect on the outcome and not the other way round.
+    From a Bayesian Network perspective, both models are however equivalent and represent the same joint distribution.
+\end{example}

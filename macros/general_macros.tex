@@ -1171,3 +1171,17 @@
 \newcommand{\cheadvariableof}[2]{\headvariableof{#1}^{#2}}
 \newcommand{\cavariable}[1]{\avariable^{#1}}
 \newcommand{\cavariableof}[2]{\avariableof{#1}^{#2}}
+
+% Causality
+
+\newcommand{\doof}[1]{\mathrm{do}\left(#1\right)}
+\newcommand{\dovariable}{D}
+\newcommand{\dovariableof}[1]{\dovariable_{#1}}
+
+\newcommand{\doindex}{d} % Notation clash with \catorder!
+\newcommand{\doindexof}[1]{\doindex_{#1}}
+
+\newcommand{\indexeddovariableof}[1]{\dovariableof{#1}=\doindexof{#1}}
+
+\newcommand{\causalsymbol}{c}
+\newcommand{\responsesymbol}{f}

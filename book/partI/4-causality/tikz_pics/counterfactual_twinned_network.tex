@@ -1,0 +1,74 @@
+\begin{tikzpicture}[scale=0.35, thick]
+    \node[anchor=center] at (-10,7) {$a)$};
+
+    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (DK) at (-10,0) {};
+    \node[anchor=center] (A) at (-10,0) {\corelabelsize $\dovariableof{\catenumerator}$};
+
+    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (XK) at (-5,0) {};
+    \node[anchor=center] (A) at (-5,0) {\corelabelsize $\catvariableof{\catenumerator}$};
+
+    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (LK) at (0,3) {};
+    \node[anchor=center] (A) at (0,3) {\corelabelsize $\selvariableof{\catenumerator}$};
+
+    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (TXK) at (5,0) {};
+    \node[anchor=center] (A) at (5,0) {\corelabelsize $\tildecatvariableof{\catenumerator}$};
+
+    \draw[->] (DK) -- (XK);
+    \draw[->] (LK) -- (XK);
+    \draw[->] (LK) -- (TXK);
+
+    \draw[<-] (XK) -- ++(-2,4) node[circle, draw, thick, fill=\nodegrayscale, minimum size = 0.5*\nodeminsize] {};
+    %\node[anchor=center] at (-5,6.5) {\corelabelsize $\vdots$};
+    \node[anchor=center] at (-5,5) {\corelabelsize $\parentsof{\catvariableof{\catenumerator}}$};
+    \node[anchor=center] at (-5,4) {\corelabelsize $\hdots$};
+    \draw[<-] (XK) -- ++(2,4) node[circle, draw, thick, fill=\nodegrayscale, minimum size = 0.5*\nodeminsize] {};
+
+    \draw[<-] (TXK) -- ++(-2,4) node[circle, draw, thick, fill=\nodegrayscale, minimum size = 0.5*\nodeminsize] {};
+    %\node[anchor=center] at (5,6.5) {\corelabelsize $\vdots$};
+    \node[anchor=center] at (5,5) {\corelabelsize $\parentsof{\tildecatvariableof{\catenumerator}}$};
+    \node[anchor=center] at (5,4) {\corelabelsize $\hdots$};
+    \draw[<-] (TXK) -- ++(2,4) node[circle, draw, thick, fill=\nodegrayscale, minimum size = 0.5*\nodeminsize] {};
+
+    \draw[<-] (LK) -- ++(-2,4) node[circle, draw, thick, fill=\nodegrayscale, minimum size = 0.5*\nodeminsize] {};
+    %\node[anchor=center] at (0,9.5) {\corelabelsize $\vdots$};
+    \node[anchor=center] at (0,8) {\corelabelsize $\parentsof{\selvariableof{\catenumerator}}$};
+    \node[anchor=center] at (0,7) {\corelabelsize $\hdots$};
+    \draw[<-] (LK) -- ++(2,4) node[circle, draw, thick, fill=\nodegrayscale, minimum size = 0.5*\nodeminsize] {};
+
+    \node[anchor=center] at (14,7) {$b)$};
+
+    \begin{scope}[shift={(15,0)}]
+
+        \draw (0,1) rectangle (6,3);
+        \node[anchor=center] at (3,2) {\corelabelsize $\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator}}$};
+        \draw[->-] (3,1) -- (3,-1) node[midway,right] {\colorlabelsize $\catvariableof{\catenumerator}$};
+        \draw[-<-] (1,3) -- (1,5);
+        \node[anchor=center] at (3,4) {\colorlabelsize $\parentsof{\catvariableof{\catenumerator}}$};
+        \draw[-<-] (5,3) -- (5,5);
+
+        \draw[-<-] (0,2) -- (-2,2) node[midway,above] {\colorlabelsize $\dovariableof{\catenumerator}$};;
+
+        \draw[-<-] (6,2) -- (8,2);
+        \drawvariabledot{8}{2}
+        \draw[-<-] (10,2) -- (8,2);
+
+        \draw[->-] (8,6) -- (8,2) node[midway,right] {\colorlabelsize $\selvariableof{\catenumerator}$};
+        \draw (5,6) rectangle (11,8);
+        \node[anchor=center] at (8,7) {\corelabelsize $\condprobof{\selvariableof{\catenumerator}}{\parentsof{\selvariableof{\catenumerator}}}$};
+        \draw[-<-] (6,8) -- (6,10);
+        \draw[-<-] (10,8) -- (10,10);
+        \node[anchor=center] at (8,9) {\colorlabelsize $\parentsof{\selvariableof{\catenumerator}}$};
+
+        \begin{scope}[shift={(10,0)}]
+            \draw (0,1) rectangle (6,3);
+            \node[anchor=center] at (3,2) {\corelabelsize $\bencodingof{\exfunctionof{\atomenumerator}}$};
+            \draw[->-] (3,1) -- (3,-1) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catenumerator}$};
+            \draw[-<-] (1,3) -- (1,5);
+            \node[anchor=center] at (3,4) {\colorlabelsize $\parentsof{\tildecatvariableof{\catenumerator}}$};
+            \draw[-<-] (5,3) -- (5,5);
+        \end{scope}
+
+
+    \end{scope}
+
+\end{tikzpicture}

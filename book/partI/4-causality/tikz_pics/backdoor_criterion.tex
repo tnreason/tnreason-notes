@@ -1,0 +1,52 @@
+\begin{tikzpicture}[scale=0.35, thick]
+
+    \node[anchor=center] at (-7,3) {$a)$};
+
+    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (D0) at (-5,0) {};
+    \node[anchor=center] (A) at (-5,0) {\corelabelsize $\dovariableof{0}$};
+
+    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X0) at (0,0) {};
+    \node[anchor=center] (A) at (0,0) {\corelabelsize $\catvariableof{0}$};
+
+    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X1) at (5,2) {};
+    \node[anchor=center] (A) at (5,2) {\corelabelsize $\catvariableof{1}$};
+
+    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (M) at (3,-3) {};
+    \node[anchor=center] (A) at (3,-3) {\corelabelsize $\catvariableof{M}$};
+
+    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (U) at (8,-1) {};
+    \node[anchor=center] (A) at (8,-1) {\corelabelsize $\catvariableof{U}$};
+
+    \draw[->] (D0) -- (X0);
+    \draw[->] (X0) -- (X1);
+    \draw[->] (M) -- (X0);
+    \draw[->] (M) -- (U);
+    \draw[->] (U) -- (X1);
+
+    \begin{scope}[shift={(20,0)}]
+
+        \node[anchor=center] at (-2,3) {$b)$};
+
+%                \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (D0) at (-5,0) {};
+%                \node[anchor=center] (A) at (-5,0) {\corelabelsize $\dovariableof{0}$};
+
+        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X0) at (0,0) {};
+        \node[anchor=center] (A) at (0,0) {\corelabelsize $\catvariableof{0}$};
+
+        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X1) at (5,2) {};
+        \node[anchor=center] (A) at (5,2) {\corelabelsize $\catvariableof{1}$};
+
+        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (M) at (3,-3) {};
+        \node[anchor=center] (A) at (3,-3) {\corelabelsize $\catvariableof{M}$};
+
+        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (U) at (8,-1) {};
+        \node[anchor=center] (A) at (8,-1) {\corelabelsize $\catvariableof{U}$};
+
+        %\draw[->] (D0) -- (X0);
+        \draw[->] (X0) -- (X1);
+%                \draw[->] (M) -- (X0);
+        \draw[->] (M) -- (U);
+        \draw[->] (U) -- (X1);
+    \end{scope}
+
+\end{tikzpicture}
