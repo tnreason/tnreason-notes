@@ -1596,19 +1596,6 @@
 	keywords = {Computer Science - Machine Learning, Statistics - Machine Learning, Quantum Physics},
 }
 
-@misc{loconte_what_2025,
-	title = {What is the {Relationship} between {Tensor} {Factorizations} and {Circuits} (and {How} {Can} {We} {Exploit} it)?},
-	url = {http://arxiv.org/abs/2409.07953},
-	doi = {10.48550/arXiv.2409.07953},
-	abstract = {This paper establishes a rigorous connection between circuit representations and tensor factorizations, two seemingly distinct yet fundamentally related areas. By connecting these fields, we highlight a series of opportunities that can benefit both communities. Our work generalizes popular tensor factorizations within the circuit language, and unifies various circuit learning algorithms under a single, generalized hierarchical factorization framework. Specifically, we introduce a modular "Lego block" approach to build tensorized circuit architectures. This, in turn, allows us to systematically construct and explore various circuit and tensor factorization models while maintaining tractability. This connection not only clarifies similarities and differences in existing models, but also enables the development of a comprehensive pipeline for building and optimizing new circuit/tensor factorization architectures. We show the effectiveness of our framework through extensive empirical evaluations, and highlight new research opportunities for tensor factorizations in probabilistic modeling.},
-	urldate = {2025-05-09},
-	publisher = {arXiv},
-	author = {Loconte, Lorenzo and Mari, Antonio and Gala, Gennaro and Peharz, Robert and Campos, Cassio de and Quaeghebeur, Erik and Vessio, Gennaro and Vergari, Antonio},
-	month = feb,
-	year = {2025},
-	keywords = {Computer Science - Machine Learning},
-}
-
 @article{suess_mpnum_2017,
 	title = {mpnum: {A} matrix product representation library for {Python}},
 	volume = {2},
@@ -3699,4 +3686,181 @@ version: 1},
 	year = {2008},
 	pages = {012356},
 	file = {APS Snapshot:/Users/goessmann/Zotero/storage/PFVMGA5X/PhysRevA.78.html:text/html;Eingereichte Version:/Users/goessmann/Zotero/storage/FINRXJ9P/Crosswhite und Bacon - 2008 - Finite automata for caching in matrix product algorithms.pdf:application/pdf},
+}
+
+@misc{florido-llinas_regular_2024,
+	title = {Regular language quantum states},
+	url = {http://arxiv.org/abs/2407.17641},
+	doi = {10.48550/arXiv.2407.17641},
+	abstract = {We introduce regular language states, a family of quantum many-body states. They are built from a special class of formal languages, called regular, which has been thoroughly studied in the field of computer science. They can be understood as the superposition of all the words in a regular language and encompass physically relevant states such as the GHZ-, W- or Dicke-states. By leveraging the theory of regular languages, we develop a theoretical framework to describe them. First, we express them in terms of matrix product states, providing efficient criteria to recognize them. We then develop a canonical form which allows us to formulate a fundamental theorem for the equivalence of regular language states, including under local unitary operations. We also exploit the theory of tensor networks to find an efficient criterion to determine when regular languages are shift-invariant.},
+	urldate = {2026-02-09},
+	publisher = {arXiv},
+	author = {Florido-Llinàs, Marta and Alhambra, Álvaro M. and Pérez-García, David and Cirac, J. Ignacio},
+	month = jul,
+	year = {2024},
+	note = {arXiv:2407.17641 [quant-ph]},
+	keywords = {Computer Science - Formal Languages and Automata Theory, Quantum Physics},
+	file = {Full Text PDF:/Users/goessmann/Zotero/storage/LB7J3KUW/Florido-Llinàs et al. - 2024 - Regular language quantum states.pdf:application/pdf;Snapshot:/Users/goessmann/Zotero/storage/I6GDPQMF/2407.html:text/html},
+}
+
+@article{zwierz_general_2010,
+	title = {General {Optimality} of the {Heisenberg} {Limit} for {Quantum} {Metrology}},
+	volume = {105},
+	url = {https://link.aps.org/doi/10.1103/PhysRevLett.105.180402},
+	doi = {10.1103/PhysRevLett.105.180402},
+	abstract = {Quantum metrology promises improved sensitivity in parameter estimation over classical procedures. However, there is a debate over the question of how the sensitivity scales with the resources and the number of queries that are used in estimation procedures. Here, we reconcile the physical definition of the relevant resources used in parameter estimation with the information-theoretical scaling in terms of the query complexity of a quantum network. This leads to a completely general optimality proof of the Heisenberg limit for quantum metrology. We give an example of how our proof resolves paradoxes that suggest sensitivities beyond the Heisenberg limit, and we show that the Heisenberg limit is an information-theoretic interpretation of the Margolus-Levitin bound, rather than Heisenberg’s uncertainty relation.},
+	number = {18},
+	urldate = {2026-02-11},
+	journal = {Physical Review Letters},
+	publisher = {American Physical Society},
+	author = {Zwierz, Marcin and Pérez-Delgado, Carlos A. and Kok, Pieter},
+	month = oct,
+	year = {2010},
+	pages = {180402},
+	file = {Akzeptierte Version:/Users/goessmann/Zotero/storage/2UXLJ8ZJ/Zwierz et al. - 2010 - General Optimality of the Heisenberg Limit for Quantum Metrology.pdf:application/pdf;APS Snapshot:/Users/goessmann/Zotero/storage/HV7V8ABR/PhysRevLett.105.html:text/html},
+}
+
+@article{liu_towards_2024,
+	title = {Towards provably efficient quantum algorithms for large-scale machine-learning models},
+	volume = {15},
+	copyright = {2024 The Author(s)},
+	issn = {2041-1723},
+	url = {https://www.nature.com/articles/s41467-023-43957-x},
+	doi = {10.1038/s41467-023-43957-x},
+	abstract = {Large machine learning models are revolutionary technologies of artificial intelligence whose bottlenecks include huge computational expenses, power, and time used both in the pre-training and fine-tuning process. In this work, we show that fault-tolerant quantum computing could possibly provide provably efficient resolutions for generic (stochastic) gradient descent algorithms, scaling as \$\$\{\{\{\{\{\{\{{\textbackslash}mathcal\{O\}\}\}\}\}\}\}\}(\{T\}{\textasciicircum}\{2\}{\textbackslash}times \{\{\{\{\{\{\{{\textbackslash}rm\{polylog\}\}\}\}\}\}\}\}(n))\$\$, where n is the size of the models and T is the number of iterations in the training, as long as the models are both sufficiently dissipative and sparse, with small learning rates. Based on earlier efficient quantum algorithms for dissipative differential equations, we find and prove that similar algorithms work for (stochastic) gradient descent, the primary algorithm for machine learning. In practice, we benchmark instances of large machine learning models from 7 million to 103 million parameters. We find that, in the context of sparse training, a quantum enhancement is possible at the early stage of learning after model pruning, motivating a sparse parameter download and re-upload scheme. Our work shows solidly that fault-tolerant quantum algorithms could potentially contribute to most state-of-the-art, large-scale machine-learning problems.},
+	language = {en},
+	number = {1},
+	urldate = {2026-02-11},
+	journal = {Nature Communications},
+	publisher = {Nature Publishing Group},
+	author = {Liu, Junyu and Liu, Minzhao and Liu, Jin-Peng and Ye, Ziyu and Wang, Yunfei and Alexeev, Yuri and Eisert, Jens and Jiang, Liang},
+	month = jan,
+	year = {2024},
+	keywords = {Computer science, Quantum information, Qubits},
+	pages = {434},
+	file = {Full Text PDF:/Users/goessmann/Zotero/storage/FJ6VZYAX/Liu et al. - 2024 - Towards provably efficient quantum algorithms for large-scale machine-learning models.pdf:application/pdf},
+}
+
+@article{malz_preparation_2024,
+	title = {Preparation of {Matrix} {Product} {States} with {Log}-{Depth} {Quantum} {Circuits}},
+	volume = {132},
+	issn = {0031-9007, 1079-7114},
+	url = {https://link.aps.org/doi/10.1103/PhysRevLett.132.040404},
+	doi = {10.1103/PhysRevLett.132.040404},
+	abstract = {We consider the preparation of matrix product states (MPS) on quantum devices via quantum circuits of local gates. We first prove that faithfully preparing translation-invariant normal MPS of
+              
+                N
+              
+              sites requires a circuit depth
+              
+                T
+                =
+                Ω
+                (
+                log
+                N
+                )
+              
+              . We then introduce an algorithm based on the renormalization-group transformation to prepare normal MPS with an error
+              
+                ε
+              
+              in depth
+              
+                
+                  T
+                  =
+                  O
+                  [
+                  log
+                  (
+                  N
+                  /
+                  ε
+                  )
+                  ]
+                
+              
+              , which is optimal. We also show that measurement and feedback leads to an exponential speedup of the algorithm to
+              
+                
+                  T
+                  =
+                  O
+                  [
+                  log
+                  log
+                  (
+                  N
+                  /
+                  ε
+                  )
+                  ]
+                
+              
+              . Measurements also allow one to prepare arbitrary translation-invariant MPS, including long-range non-normal ones, in the same depth. Finally, the algorithm naturally extends to inhomogeneous MPS.
+            
+            
+              
+              
+                
+                  Published by the American Physical Society
+                  2024},
+	language = {en},
+	number = {4},
+	urldate = {2026-02-20},
+	journal = {Physical Review Letters},
+	author = {Malz, Daniel and Styliaris, Georgios and Wei, Zhi-Yuan and Cirac, J. Ignacio},
+	month = jan,
+	year = {2024},
+	pages = {040404},
+	file = {Full Text PDF:/Users/goessmann/Zotero/storage/QM96ZC3U/Malz et al. - 2024 - Preparation of Matrix Product States with Log-Depth Quantum Circuits.pdf:application/pdf},
+}
+
+@inproceedings{aharonov_adiabatic_2003,
+	address = {New York, NY, USA},
+	series = {{STOC} '03},
+	title = {Adiabatic quantum state generation and statistical zero knowledge},
+	isbn = {978-1-58113-674-6},
+	url = {https://dl.acm.org/doi/10.1145/780542.780546},
+	doi = {10.1145/780542.780546},
+	abstract = {The design of new quantum algorithms has proven to be an extremely difficult task. This paper considers a different approach to the problem, by studying the problem of 'quantum state generation'.We first show that any problem in Statistical Zero Knowledge (including eg. discrete log, quadratic residuosity and gap closest vector in a lattice) can be reduced to an instance of the quantum state generation problem. Having shown the generality of the state generation problem, we set the foundations for a new paradigm for quantum state generation. We define 'Adiabatic State Generation' (ASG), which is based on Hamiltonians instead of unitary gates. We develop tools for ASG including a very general method for implementing Hamiltonians (The sparse Hamiltonian lemma), and ways to guarantee non negligible spectral gaps (The jagged adiabatic path lemma). We also prove that ASG is equivalent in power to state generation in the standard quantum model. After setting the foundations for ASG, we show how to apply our techniques to generate interesting superpositions related to Markov chains.The ASG approach to quantum algorithms provides intriguing links between quantum computation and many different areas: the analysis of spectral gaps and groundstates of Hamiltonians in physics, rapidly mixing Markov chains, statistical zero knowledge, and quantum random walks. We hope that these links will bring new insights and methods into quantum algorithms.},
+	urldate = {2026-02-23},
+	booktitle = {Proceedings of the thirty-fifth annual {ACM} symposium on {Theory} of computing},
+	publisher = {Association for Computing Machinery},
+	author = {Aharonov, Dorit and Ta-Shma, Amnon},
+	month = jun,
+	year = {2003},
+	pages = {20--29},
+	file = {Full Text PDF:/Users/goessmann/Zotero/storage/CA53SCSW/Aharonov und Ta-Shma - 2003 - Adiabatic quantum state generation and statistical zero knowledge.pdf:application/pdf},
+}
+
+@inproceedings{ahmed_semantic_2022,
+	address = {Red Hook, NY, USA},
+	series = {{NIPS} '22},
+	title = {Semantic probabilistic layers for neuro-symbolic learning},
+	isbn = {978-1-7138-7108-8},
+	abstract = {We design a predictive layer for structured-output prediction (SOP) that can be plugged into any neural network guaranteeing its predictions are consistent with a set of predefined symbolic constraints. Our \&lt;b\&gt;S\&lt;/b\&gt;emantic \&lt;b\&gt;P\&lt;/b\&gt;robabilistic \&lt;b\&gt;L\&lt;/b\&gt;ayer (SPL) can model intricate correlations, and hard constraints, over a structured output space all while being amenable to end-to-end learning via maximum likelihood. SPLs combine exact probabilistic inference with logical reasoning in a clean and modular way, learning complex distributions and restricting their support to solutions of the constraint. As such, they can faithfully, and efficiently, model complex SOP tasks beyond the reach of alternative neuro-symbolic approaches. We empirically demonstrate that SPLs outperform these competitors in terms of accuracy on challenging SOP tasks including hierarchical multi-label classification, pathfinding and preference learning, while retaining perfect constraint satisfaction.},
+	urldate = {2026-02-26},
+	booktitle = {Proceedings of the 36th {International} {Conference} on {Neural} {Information} {Processing} {Systems}},
+	publisher = {Curran Associates Inc.},
+	author = {Ahmed, Kareem and Teso, Stefano and Chang, Kai-Wei and Van den Broeck, Guy and Vergari, Antonio},
+	month = nov,
+	year = {2022},
+	pages = {29944--29959},
+}
+
+@misc{broadrick_limits_2025,
+	title = {The {Limits} of {Tractable} {Marginalization}},
+	url = {http://arxiv.org/abs/2506.12020},
+	doi = {10.48550/arXiv.2506.12020},
+	abstract = {Marginalization -- summing a function over all assignments to a subset of its inputs -- is a fundamental computational problem with applications from probabilistic inference to formal verification. Despite its computational hardness in general, there exist many classes of functions (e.g., probabilistic models) for which marginalization remains tractable, and they can be commonly expressed by polynomial size arithmetic circuits computing multilinear polynomials. This raises the question, can all functions with polynomial time marginalization algorithms be succinctly expressed by such circuits? We give a negative answer, exhibiting simple functions with tractable marginalization yet no efficient representation by known models, assuming \${\textbackslash}textsf\{FP\}{\textbackslash}neq{\textbackslash}\#{\textbackslash}textsf\{P\}\$ (an assumption implied by \${\textbackslash}textsf\{P\} {\textbackslash}neq {\textbackslash}textsf\{NP\}\$). To this end, we identify a hierarchy of complexity classes corresponding to stronger forms of marginalization, all of which are efficiently computable on the known circuit models. We conclude with a completeness result, showing that whenever there is an efficient real RAM performing virtual evidence marginalization for a function, then there are small circuits for that function's multilinear representation.},
+	urldate = {2026-02-26},
+	publisher = {arXiv},
+	author = {Broadrick, Oliver and Agarwal, Sanyam and Broeck, Guy Van den and Bläser, Markus},
+	month = jul,
+	year = {2025},
+	note = {arXiv:2506.12020 [cs]},
+	keywords = {Computer Science - Artificial Intelligence, Computer Science - Computational Complexity},
+	file = {Preprint PDF:/Users/goessmann/Zotero/storage/JYZKPA6T/Broadrick et al. - 2025 - The Limits of Tractable Marginalization.pdf:application/pdf;Snapshot:/Users/goessmann/Zotero/storage/YFDNBGL7/2506.html:text/html},
 }

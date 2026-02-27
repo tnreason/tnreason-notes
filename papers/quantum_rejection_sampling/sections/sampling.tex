@@ -2,7 +2,7 @@
 
 In general quantum rejection sampling consist in two steps:
 \begin{itemize}
-    \item Find a circuit preparing the q-sample of an ancilla augmentation
+    \item Find an ancilla augmentation of a distribution, such that there is a circuit preparing the q-sample of the augmented distribution
     \item Amplify the amplitude of the ancilla qubits in state $1$ by repeated Grover operators
 \end{itemize}
 
@@ -71,8 +71,8 @@ To achieve a quantum advantage we need amplitude amplification on the ancilla qu
 
 In the subspace $\subspaceof{}$ spanned by the axes
 \begin{itemize}
-    \item $\qstateof{t}=\onehotmapofat{1_{[\seldim]}}{\avariables}\otimes \contractionof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\sqrt{\probwith}}{\headvariables,\shortcatvariables}$
-    \item $\qstateof{\perp}=\sqrt{\probof{\perp}}$
+    \item $\qstateof{\goodstatesymbol}=\onehotmapofat{1_{[\seldim]}}{\avariables}\otimes \contractionof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\sqrt{\probwith}}{\headvariables,\shortcatvariables}$
+    \item $\qstateof{\badstatesymbol}=\sqrt{\probof{\perp}}$
 \end{itemize}
 which can be thought of the polar angle coordinate of the state
 \begin{align*}
@@ -87,14 +87,14 @@ where we define an angle $\rotanglesymbol$ by
 
 The amplitude amplification scheme now iterates between
 \begin{itemize}
-    \item Reflection along $\qstateof{t}$, by
+    \item Reflection $\reflectionof{\goodstatesymbol}$ along $\qstateof{\goodstatesymbol}$, by
     \begin{align*}
         \reflectionofat{\goodstatesymbol}{\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol}}
         = \identityat{\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol}}
         - 2 \onehotmapofat{\onetuple{[\seldim]}}{\cavariableof{[\seldim]}{\insymbol}}
         \otimes \onehotmapofat{\onetuple{[\seldim]}}{\cavariableof{[\seldim]}{\outsymbol}}
     \end{align*}
-    \item Reflection along $\qstate$, by
+    \item Reflection $\reflectionof{}$ along $\qstate$, by
     \begin{align*}
         \reflectionofat{\qstate}{\cavariableof{[\seldim]}{\insymbol},\cheadvariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol},\cheadvariableof{[\seldim]}{\outsymbol},\cavariableof{[\seldim]}{\outsymbol}}
         =& \identityat{\cavariableof{[\seldim]}{\insymbol},\cheadvariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol},\cheadvariableof{[\seldim]}{\outsymbol},\cavariableof{[\seldim]}{\outsymbol}} \\
@@ -105,8 +105,7 @@ The amplitude amplification scheme now iterates between
     This reflection can be done by concatenating the operator preparing the ancilla-augmentation of the \ComputationActivationNetwork{} with a initial state reflection.
 \end{itemize}
 
-
-Now the application of $\repnum$ grover operators $S_0S_{\qstate}$ on $\qstateof{0}$ prepares a state
+Now the application of $\repnum$ grover operators $\reflectionof{}\reflectionof{\goodstatesymbol}$ on $\qstateof{0}$ prepares a state
 \begin{align*}
     \qstateofat{\repnum}{\avariables,\headvariables,\shortcatvariables}
     = \sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol} \qstateofat{\goodstatesymbol}{\avariables,\headvariables,\shortcatvariables}
@@ -139,29 +138,14 @@ Note however that we compare quantum circuit length with the number of classical
 
 \subsection{Sampling from \ComputationActivationNetworks{}}
 
-
-
 For \ComputationActivationNetworks{} we find a q-sample by concatenating \computationCircuits{} and \activationCircuits{} (see \figref{fig:caCircuit}).
-
-
-%\red{So far: Sample from \HybridLogicNetworks{}, would need qudits for more general \ComputationActivationNetworks{}.
-%Can do non-elementary \ComputationActivationNetworks{}, when activating whole activation core.}
-%\tnreason{} provides tensor network representations of knowledge bases and exponential families following a Computation Activation architecture.
-%Here are some ideas to utilize quantum circuits for sampling from \ComputationActivationNetworks{}.
-%We can produce Q-samples for ancilla augmented \ComputationActivationNetworks{}  using \computationCircuits{} and \activationCircuits{} (see \figref{fig:caCircuit}):
-%\begin{itemize}
-%    \item For each (sub-) statistic, prepare a qubit by \ComputationCircuits{}.
-%    We do not have to uncompute the statistic qubits.
-%    \item Based on the computed qubits, prepare ancilla qubits by \ActivationCircuits{} to the activation cores.
-%    This prepares the q-sample of an ancilla augmented \ComputationActivationNetwork{}.
-%\end{itemize}
 
 \begin{figure}
     \begin{center}
         \input{tikz_pics/sampling/ca_circuit}
     \end{center}
     \caption{
-        Quantum Circuit to reproduce a \ComputationActivationNetwork{} (with elementary activation) by rejection sampling.
+        Quantum Circuit to reproduce a q-sample of an augmented \ComputationActivationNetwork{}.
         We measure the distributed qubits $\shortcatvariables$ and the ancilla qubits $\avariableof{[\seldim]}$ and reject all samples, where an ancilla qubit is measured as $0$.
     }\label{fig:caCircuit}
 \end{figure}

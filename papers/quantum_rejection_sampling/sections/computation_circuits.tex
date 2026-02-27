@@ -1,5 +1,7 @@
 \section{\ComputationCircuits{}}
 
+\red{Understand \computationCircuits{} as preparation of q-samples to normalized basis encodings.}
+
 We here suggest a quantum pendant to basis encodings (see Chapter~14 in \cite{goessmann_tensor-network_2025}), which has the decomposition by contraction property.
 
 \begin{definition}[\ComputationCircuit{}]
@@ -39,6 +41,14 @@ To connect with this formalism, let us now show the relation to the \computation
     \end{align*}
 \end{lemma}
 
+% Interpretation as q-sample
+The \computationCircuit{} applied on the initial state
+\begin{align*}
+    \sqrt{\frac{1}{2^{\catorder}}} \onesat{\ccatvariables{[\atomorder]}{\outsymbol}} \otimes \fbasisat{\cheadvariable{\insymbol}}
+\end{align*}
+prepares a q-sample to the normalized basis encoding. % Called that basis encoding state!
+
+
 % Sparse decomposition
 In \cite{goessmann_tensor_2026} (and more detailed in \cite{goessmann_tensor-network_2025}) sparse decompositions of \basisEncodings{} have been studied.
 Based on the equivalence of \computationCircuits{} and contracted \basisEncodings{}, stated by \lemref{lem:bencComCircuit} we transfer these decomposition schemes in the following.
@@ -56,8 +66,6 @@ Based on the equivalence of \computationCircuits{} and contracted \basisEncoding
 \input{examples/computation-circuits/mcnot-benc}
 
 \subsection{Construction for mod2-basis+ CP decompositions - Exploiting \PolynomialSparsity{}}
-
-
 
 \begin{lemma}
     \label{lem:comCircuitCommutative}

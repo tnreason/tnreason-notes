@@ -16,3 +16,25 @@ The Pauli-X for example is denoted by
 Contractions are denoted by angle brackets with the variables left open specified in further brackets.
 Circuits are contractions of the unitaries, leaving only the last output variables open.
 Computational basis measurements of circuits are coordinatewise squared absoluted of the contracted circuit.
+
+\subsection{Q-samples}
+
+In general, we define q-samples to be quantum states, which measured in the computational basis reproduce a given probability distribution.
+
+\begin{definition}[Q-sample \cite{aharonov_adiabatic_2003,low_quantum_2014}]
+    Given a probability distribution $\probtensor:\atomstates\rightarrow\rr$ (i.e. $\contraction{\probtensor}=1$ and $\zeros \prec \probtensor$) its q-sample is
+    \begin{align*}
+        \qstateofat{\probtensor}{\shortcatvariables}
+        = \sum_{\shortcatindicesin} \sqrt{\probat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
+    \end{align*}
+\end{definition}
+
+Q-samples are more restrictive than arbitrary states having a distribution as a measurement distribution, since they demand real and positive amplitudes.
+
+\begin{example}[Q-sample of the uniform distribution]
+    \label{exa:qSampleUniform}
+    The q-sample of the uniform distribution can be prepared by Hadamard gates acting on the ground state.
+    This is an example of a Walsh-Hadamard transform, which can be performed by unary Hadamard gates.
+\end{example}
+
+Generalizing \exaref{exa:qSampleUniform}, Q-samples to independent distributions of boolean variables can be prepared by unary rotations along the y-axis.

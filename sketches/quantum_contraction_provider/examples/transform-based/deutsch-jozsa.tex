@@ -6,7 +6,18 @@
         = \frac{1}{2^{2\cdot\catorder}} \left(\contraction{\exformula}-\contraction{\lnot\exformula}\right)^2 \, .
     \end{align*}
     Thus, if and only if the probability of the ground state is $1$, we have that the formula is constant, that is $\exformula\in\{\top,\bot\}$.
+    If and only if the probability of the ground state is $0$, we have that the formula is balanced, that is $\contraction{\exformula}=\contraction{\lnot\exformula}$.
+    When its known, that the formula is either constant or balanced, we can decide which one it is by measuring the probability of the ground state.
     This is the Deutsch-Josza algorithm \cite{deutsch_rapid_1992}.
+
+    %%
+    Note that when allowing for an exponentially small error the decision can be efficiently performed by a classical algorithm.
+    When drawing $n$ samples and deciding on $\meanparam=0.5$ if and only if in the samples a $0$ and a $1$ is observed, we have an error probability of $0$ when $\meanparam\in\{0,1\}$ and of
+    \begin{align*}
+        \probof{E|\meanparam=0.5} = 2 \cdot \frac{1}{2^{n}} \, .
+    \end{align*}
+    The quantum advantage is thus bound to the demand of an error-free decision, for which a generic classical algorithm would iterate through all states and is therefore exponentially slower than the quantum alternative.
+
     \begin{figure}
         \begin{center}
 

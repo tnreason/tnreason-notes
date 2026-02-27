@@ -1,10 +1,11 @@
 \section{\ActivationCircuits{}}
 
+We now study circuits preparing q-samples of Bayesian Networks.
 
 
 
-A specific scheme to construct graph-controlled circuits with specific Bayesian Networks as measurement distributions are \activationCircuits{}.
-Here we restrict during the preparation procedure to real and positive amplitudes (i.e. prepare q-samples).
+%A specific scheme to construct graph-controlled circuits with specific Bayesian Networks as measurement distributions are \activationCircuits{}.
+%Here we restrict during the preparation procedure to real and positive amplitudes (i.e. prepare q-samples).
 
 
 \ActivationCircuits{} are uniformly controlled unitaries (see \cite{mottonen_transformation_2005}), where the rotation axis is chosen as the $y$-axes of the Bloch sphere, and the angles are computed by the function $h(\cdot)$ acting on a function value to be encoded.
@@ -52,27 +53,6 @@ Tensors $\hypercoreat{\shortcatvariables}$ with non-negative coordinates can be 
 \end{align*}
 When the maximum of the tensor is not known, it can be replaced by an upper bound (reducing the acceptance rate of the rejection sampling).
 
-\subsection{Q-samples}
-
-In general, we define q-samples to be quantum states, which measured in the computational basis reproduce a given probability distribution.
-
-\begin{definition}[Q-sample \cite{aharonov_adiabatic_2003,low_quantum_2014}]
-    Given a probability distribution $\probtensor:\atomstates\rightarrow\rr$ (i.e. $\contraction{\probtensor}=1$ and $\zeros \prec \probtensor$) its q-sample is
-    \begin{align*}
-        \qstateofat{\probtensor}{\shortcatvariables}
-        = \sum_{\shortcatindicesin} \sqrt{\probat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
-    \end{align*}
-\end{definition}
-
-Q-samples are more restrictive than arbitrary states having a distribution as a measurement distribution, since they demand real and positive amplitudes.
-
-\begin{example}[Q-sample of the uniform distribution]
-    \label{exa:qSampleUniform}
-    The q-sample of the uniform distribution can be prepared by Hadamard gates acting on the ground state.
-    This is an example of a Walsh-Hadamard transform, which can be performed by unary Hadamard gates.
-\end{example}
-
-Generalizing \exaref{exa:qSampleUniform}, Q-samples to independent distributions of boolean variables can be prepared by unary rotations along the y-axis.
 
 
 %%% FUSE TO LATER
@@ -89,18 +69,7 @@ Generalizing \exaref{exa:qSampleUniform}, Q-samples to independent distributions
 %    \end{align*}
 %\end{lemma}
 
-%\subsection{Encoding of conditional distributions}
-%
-%%\red{\lemref{lem:qSampleDistribution} states that any distribution can be }
-%
-%Following the schemes in \cite{low_quantum_2014}, we can prepare the acyclic networks of directed and non-negative tensors by a sequence of controlled rotations.
-%Directed and non-negative tensors correspond with conditional probability distributions and their acyclic networks are Bayesian Networks.
-%We prepare them by \activationCircuit{}s of functions (see \figref{fig:cpdEncoding})
-%\begin{align*}
-%    \catindexof{\parentsof{\catenumerator}} \rightarrow \condprobat{\catvariableof{\catenumerator}=1}{\indexedcatvariableof{\parentsof{\catenumerator}}} \, .
-%\end{align*}
-
-\subsection{Encoding of Bayesian Networks}
+\subsection{Q-samples of Bayesian Networks}
 
 %We revisit the correspondence of Bayesian Networks with graph-controlled circuits, by showing that any Bayesian Network can be prepared by \activationCircuits{} of the conditional probability distributions.
 Q-samples of Bayesian Networks can be prepared by quantum circuits, where each conditional probability distribution is prepared by an \activationCircuit{}.
@@ -139,12 +108,7 @@ Q-samples of Bayesian Networks can be prepared by quantum circuits, where each c
         \condprobof{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}} \\
         & = \probat{\indexedshortcatvariables} \, .
     \end{align*}
-    \red{Alternatively, we can proof the statement by induction using the conditional probability encoding lemma.}
 \end{proof}
-
-
-%To this end, one iterates over the states of the incoming variables, and performs a controlled rotation on the outgoing variable, where the angle is given by the value of the tensor at the incoming state.
-%This generalizes the basis encoding scheme, which demands boolean tensors.
 
 \begin{figure}
     \begin{center}
