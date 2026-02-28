@@ -8,3 +8,371 @@ Topics
 \begin{itemize}
     \item Exponential Families (Report I.2.3)
 \end{itemize}
+
+
+
+\sect{Exponential Families}\label{sec:exponentialFamilies}
+
+
+
+% Motivation: Elementary activation tensors OLD!
+%\theref{the:sufficientStatisticActCoreExistence} states the existence of an activation core, once a sufficient statistic has been identified.
+%However, since the dimension of the activation tensor space is increasing exponentially with the number of features, the representation of generic activation tensors is not feasible when having many features.
+%We now restrict the activation cores to specific elementary tensors, which correspond with further assumptions on the dependence of $\probtensor$ and $\sstat$ made by exponential families.
+
+\subsect{Definition}
+
+\begin{definition}[Exponential Family]
+    \label{def:expFamily}
+    Given a statistic function
+    \begin{align*}
+        \sstat \defcols \facstates \rightarrow \parspace
+    \end{align*}
+    and a boolean base measure
+    \begin{align*}
+        \basemeasure \defcols \facstates \rightarrow \ozset
+    \end{align*}
+    with $\contraction{\basemeasure}\neq0$, the set $\expfamily=\{\expdist\wcols\canparamwithin\}$ of probability distributions
+    \begin{align*}
+        \expdistat{\shortcatvariables}
+        = \normalizationof{\expof{\contractionof{\sencsstatat{\shortcatvariables,\selvariable},\canparamwith}{\shortcatvariables}},\basemeasurewith}{\shortcatvariables}
+    \end{align*}
+    is called the exponential family to $\sstat$.
+    We further define for each member with parameters $\canparam$ the associated energy tensor
+    \begin{align*}
+        \expenergy = \contractionof{\sencsstat,\canparam}{\shortcatvariables}
+    \end{align*}
+    and the cumulant function
+    \begin{align*}
+         \cumfunctionof{\canparam} = \lnof{\contraction{\basemeasure,\expof{\contractionof{\sencsstat,\canparam}{\shortcatvariables}}}} \, .
+    \end{align*}
+\end{definition}
+
+% From NESY
+\input{partII/0-elementary-can/examples/coin_toss_exp}
+
+We used the selection encoding to represent the weighted summation over the statistics, that is the tensor (see \defref{def:selectionEncoding})
+\begin{align*}
+    \sencsstatat{\shortcatvariables,\selvariable} \defcols \facstates \times [\seldim] \rightarrow \rr
+\end{align*}
+defined for $\shortcatindices\in\facstates$ and $\selindexin$ as
+\begin{align*}
+    \sencsstatat{\indexedshortcatvariables,\indexedselvariable} = \sstatcoordinateofat{\selindex}{\indexedshortcatvariables} \, .
+\end{align*}
+The selection encoding represent the weighted sum of the statistic coordinates by the canonical parameter vector $\canparamwith$ as a contraction
+\begin{align*}
+    \sum_{\selindexin}\canparamat{\indexedselvariable}\cdot \sstatcoordinateofat{\selindex}{\shortcatvariables}
+    = \contractionof{\sencsstatat{\shortcatvariables,\selvariable},\canparamwith}{\shortcatvariables} \, .
+\end{align*}
+For more details on this representation scheme, we refer to \theref{the:linCompSelEncoding} in \charef{cha:coordinateCalculus}.
+Up to normalization, we sketch the probability distribution of any member by the tensor network diagram
+\begin{center}
+     \input{partII/0-elementary-can/tikz-pics/energy_representation.tex}
+\end{center}
+We here denote by an ellipsis the coordinatewise transformation by the exponential function (see \secref{sec:coordinatewiseTransforms}).
+Since such coordinatewise transformation are nonlinear, they are a caveat for efficient contraction of the diagram.
+
+% Diverging partition functions avoided here
+Since we restrict the discussion to finite state spaces, the distribution $\expdist$ is well-defined for any $\canparamwith\in\parspace$.
+For infinite state space there are sufficient statistics and parameters, such that the partition function $\contraction{\basemeasure,\expof{\contractionof{\sencsstat,\canparam}{\shortcatvariables}}}$ diverges and the normalization $\expdist$ is not well-defined.
+In that cases, the canonical parameters need to be chosen from a subset where the partition function is finite \cite{wainwright_graphical_2008}.
+
+% Restriction to boolean base measures
+As before, we restrict to boolean base measures, which have to satisfy $\contraction{\basemeasure}\neq0$ for respective distributions to exist.
+We notice that by positivity of the exponential function, any distribution in an exponential family $\expfamily$ is positive with respect to $\basemeasure$ (see \defref{def:positivityBaseMeasure}).
+In \charef{cha:networkRepresentation} we will investigate distributions, where the base measures and the sufficient statistics share a common decomposition framework.
+
+% Cumulant representation
+\begin{lemma}
+    \label{lem:energyCumulantRepresentation}
+    For any member of an exponential family $\expfamily$ we have
+    \begin{align*}
+        \expdistat{\shortcatvariables}
+        = \contractionof{\expof{ \expenergy - \cumfunctionof{\canparam}\cdot \onesat{\shortcatvariables}},\basemeasurewith}{\shortcatvariables} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    By definition we have
+    \begin{align*}
+        \expdistat{\shortcatvariables}
+        &= \normalizationof{
+            \expof{\contractionof{\sencsstat,\canparam}{\shortcatvariables}},\basemeasurewith
+        }{\shortcatvariables} \\
+        &= \frac{\contractionof{\expof{\contractionof{\sencsstat,\canparam}{\shortcatvariables},\basemeasurewith}}{\shortcatvariables}
+        }{\contraction{\expof{\contractionof{\sencsstat,\canparam    }{\shortcatvariables}},\basemeasurewith}} \\
+        &=  \frac{
+            \contractionof{\expof{\expenergyat{\shortcatvariables}},\basemeasurewith}{\shortcatvariables}
+        }{
+            \expof{\cumfunctionof{\canparam}}
+        } \\
+        & = \contractionof{\expof{ \expenergy - \cumfunctionof{\canparam}\cdot \onesat{\shortcatvariables}},\basemeasurewith}{\shortcatvariables} \, . \qedhere
+    \end{align*}
+\end{proof}
+
+
+% Minimal statistics
+A further useful criterion is that of minimality of an exponential family, as we define next.
+
+\begin{definition}[Minimal Statistics]
+    \label{def:minimalStatistics}
+    We say that a statistic $\sstat$ is minimal with respect to a boolean base measure $\basemeasure$, if there is no pair of a non-vanishing vector $\vectorat{\selvariable}$ and a scalar $\lambda\in\rr$ with
+    \begin{align*}
+        \contractionof{\sencsstatat{\shortcatvariables,\selvariable},\vectorat{\selvariable},\basemeasurewith}{\shortcatvariables} = \lambda\cdot\basemeasurewith \, .
+    \end{align*}
+\end{definition}
+
+% Making a statistic minimal
+If a statistic is not minimal, we can omit coordinates of it without affecting the expressivity $\expfamily$.
+As long as we find a non-vanishing vector $\vectorat{\selvariable}$ and $\lambda\in\rr$ as in \defref{def:minimalStatistics}, we can choose a coordinate $\sstatcoordinateof{\selindex}$ such that $\vectorat{\indexedselvariable}\neq0$, conclude that the coordinate is linear dependent on the others and drop it as redundant.
+
+
+\subsect{Tensor Network Representation}
+
+As we have observed, the selection encoding formalism can efficiently represent the energy tensor to a member of an exponential family, but through coordinatewise transform by the exponential does not provide an efficient decomposition scheme of the probability distribution itself.
+We now overcome this problem with usage of the basis encoding formalism to represent members of exponential families by a single contraction without nonlinear transforms.
+%The central insight here is a basis encoding of the statistic , which enables representation by tensor network decomposition, when the sufficient statistic is decomposable.
+
+\begin{theorem}[Tensor Network Representation of Exponential Families]
+    \label{the:expFamilyTensorRep}
+    Given any base measure $\basemeasure$ and a sufficient statistic $\sstat$ we enumerate for each coordinate $\selindexin$ the image $\imageof{\sstatcoordinateof{\selindex}}$ by a variable $\headvariableof{\selindex}$ taking values in $[\cardof{\imageof{\sstatcoordinateof{\selindex}}}]$ (see for more details on this scheme \charef{cha:basisCalculus}), given an interpretation map
+    \begin{align*}
+        \indexinterpretationof{\selindex} \defcols
+        [\cardof{\imageof{\sstatcoordinateof{\selindex}}}] \rightarrow \imageof{\sstatcoordinateof{\selindex}} \, .
+    \end{align*}
+%    Since $\imageof{\sstatcoordinateof{\selindex}}$
+    For any canonical parameter vector $\canparamwithin$ we build the activation cores $\softactlegwith$ for each coordinate $\headindexof{\selindex}\in[\cardof{\imageof{\sstatcoordinateof{\selindex}}}]$ by
+    \begin{align*}
+        \softactleg\left[\indexedheadvariableof{\selindex}\right]
+        = \expof{\canparamat{\indexedselvariable} \cdot \indexinterpretationofat{\selindex}{\headindexof{\selindex}} } \,
+    \end{align*}
+    and have
+    \begin{align*}
+        \expdistwith =
+        \normalizationof{\{\basemeasurewith\} \cup \{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}\cup\{\softactlegwith \wcols \selindexin\}}{\shortcatvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We embed the image of $\sstat$ in the cartesian product of the coordinate images  %	which does not modify the statement of \theref{the:tensorFunctionComposition} (since extension to cases, which are never met).
+    \begin{align*}
+        \imageof{\sstat} \subset \bigtimes_{\selindexin} \imageof{\sstatcoordinateof{\selindex}} \,
+    \end{align*}
+    and design enumerate the embedded image of $\sstat$ by the variables $\headvariables$.
+    \theref{the:tensorFunctionComposition}, to be shown in \charef{cha:basisCalculus}, implies
+    \begin{align*}
+        \expof{\contractionof{\sencsstat,\canparam}{\shortcatvariables}}
+        = \contractionof{
+            \bencodingofat{\sstat}{\headvariables,\shortcatvariables},\restrictionofto{\expof{\braket{\cdot,\canparamwith}}
+            }{\bigtimes_{\selindexin}\imageof{\sstatcoordinateof{\selindex}}}}{\shortcatvariables} \, .
+    \end{align*}
+    Here we denote by $\braket{\cdot,\canparamwith}$ the dual function to $\canparamwith$, which assigns to vectors their contraction with $\canparamwith$.
+    Its restriction onto the vectors in $\bigtimes_{\selindexin}\imageof{\sstatcoordinateof{\selindex}}$ is the tensor satisfying
+    \begin{align*}
+        \restrictionoftoat{\expof{\braket{\cdot,\canparam}}}{\imageof{\sstat}}{\headvariables}
+        = \bigotimes_{\selindexin} \restrictionoftoat{\expof{\cdot \canparamat{\indexedselvariable}}}{\imageof{\sstatcoordinateof{\selindex}}}{\headvariableof{\selindex}}
+        = \bigotimes_{\selindexin} \softactlegwith \, .
+    \end{align*}
+    We further have (see \theref{the:functionImageDecompositionContraction} in \charef{cha:basisCalculus})
+    \begin{align*}
+        \bencodingofat{\sstat}{\headvariables,\shortcatvariables}
+        = \contractionof{\{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols\selindexin\}}{\headvariables,\shortcatvariables} \, .
+    \end{align*}
+    Refining the above decomposition of $\expof{\contractionof{\sencsstat,\canparam}{\shortcatvariables}}$ by these further decompositions we arrive at the claim.
+\end{proof}
+
+
+In the proof of \theref{the:expFamilyTensorRep} we have observed, that the basis encoding $\bencodingofat{\sstat}{\headvariables,\shortcatvariables}$ of the statistics decomposed into a tensor network of basis encodings $\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables}$ to the coordinate of the statistic.
+We can exploit further decomposition mechanisms, which will be discussed in full detail in \charef{cha:basisCalculus}, to find even sparser decompositions.
+This is for example the case, when the coordinates of the statistic are compositions of functions depending on small numbers of variables.
+When the coordindates of the statistic furthermore share similar parts in their compositions, these parts can be shared in the decomposition.
+We will investigate such sparsification mechanisms in more detail in \charef{cha:networkRepresentation}, where the coordinates of the statistic are propositional formulas with a natural decomposition by their syntactical description.
+
+
+% Core types - See for implementation example \exaref{exa:expFamilyCARep}.
+The tensor network representation of an exponential family by \theref{the:expFamilyTensorRep} is split into computation and activation cores (see \secref{sec:computationActivationNetworks}):
+\begin{itemize}
+    \item \textbf{Computation Cores:} The basis encodings $\bencodingof{\sstatcoordinateof{\selindex}}$ of the coordinates of a statistic form the computation cores.
+    Our intuition is that they compute the hidden variable $\headvariableof{\selindex}$, based on Basis Calculus (see \charef{cha:basisCalculus}), which encode the value of the coordinate with respect to the image interpretation map $\indexinterpretationof{\selindex}$.
+    We notice that since they are directed with $\headvariableof{\selindex}$ being the only outgoing variable, they do not influence any contraction with open variables $\shortcatvariables$, unless further tensors sharing the variable $\headvariableof{\selindex}$ are present in the contraction.
+    \item \textbf{Activation Cores:} The influence of the contraction is performed by the activation cores $\softactlegwith$, which exploit the computed statistic variables $\headvariables$ and provide in combination with the basis encoding a factor
+    \begin{align*}
+        %\expof{}
+        \contractionof{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables},\softactlegwith}{\shortcatvariables}
+    \end{align*}
+    to the tensor network representing the distribution of the observed variables $\shortcatvariables$.
+\end{itemize}
+For the implementation of an exponential family as a \ComputationActivationNetwork{}, see \exaref{exa:expFamilyCARep}. % in \charef{cha:implementation}.
+
+%Note that the activation core is contrained to be positive and
+When the canonical parameter is vanishing at a coordinate, that is $\canparamat{\indexedselvariable}=0$, then the corresponding factor is trivial, since $\softactsymbolofat{\selindex,0}{\headvariableof{\selindex}}=\onesat{\headvariableof{\selindex}}$ and as a consequence of the directionality of basis encodings we have
+\begin{align*}
+    \contractionof{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables},\softactlegwith}{\shortcatvariables}
+    = \contractionof{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables},\onesat{\headvariableof{\selindex}}}{\shortcatvariables}
+    = \onesat{\shortcatvariables} \, .
+\end{align*}
+In that case both the activation core and the corresponding computation core can be dropped from the network without changing its distribution.
+
+% Interpretation as elementary
+By \theref{the:expFamilyTensorRep} any member of an exponential family is represented by the normalized contraction of a collection of unary activation cores contracted with the computation cores $\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables}$.
+The unary activation cores form a tensor network on the elementary hypergraph
+\begin{align*}
+    \elgraph=([\seldim],\{\{\selindex\}\wcols\selindexin\}) \, ,
+\end{align*}
+which hyperedges contain single variables.
+We call this graph elementary, since it corresponds with elementary tensor network formats consistent of tensor products of vectors.
+For unary activation cores, that is for the elementary graph $\elgraph$, any member of $\realizabledistsof{\sstat,\elgraph}$ has up to a normalization factor a tensor network decomposition by the diagram
+\begin{center}
+     \input{partII/0-elementary-can/tikz-pics/unary_realizable.tex}
+\end{center}
+Comparing this representation scheme with \theref{the:expFamilyTensorRep}, we conclude as the next corollary, that any member of an exponential family with trivial base measure can be represented by an elementary activation tensors.
+
+\begin{corollary}[of \theref{the:expFamilyTensorRep}]
+    \label{cor:unaryActivationExpdistRealization}
+    For any statistic $\sstat:\facstates\rightarrow[\seldim]$ and trivial base measure $\basemeasurewith=\onesat{\shortcatvariables}$ we have
+    \begin{align*}
+        \expfamilyof{\sstat,\ones} \subset \realizabledistsof{\sstat,\elgraph} \, .
+    \end{align*}
+\end{corollary}
+
+For elements of the exponential family with general boolean base measure we have with the activation cores constructed in \theref{the:expFamilyTensorRep}
+\begin{center}
+     \input{partII/0-elementary-can/tikz-pics/expdist_unary_realizable.tex}
+\end{center}
+where the partition function represents the normalizing contraction of the tensor network.
+Let us note, that when choosing activation cores with nontrivial support, we can also prepare boolean base measures and in principle extend \corref{cor:unaryActivationExpdistRealization} to families of nontrivial base measures.
+We will investigate such schemes later in \charef{cha:networkRepresentation}, where we call them \HybridLogicNetworks{}.
+
+% Compare with selection encoding
+In comparison with the selection encoding representation of energy tensors, we have prepared a contraction without non-linear transforms, which represents the probability distributions being members of an exponential family.
+However, relation encoding come with the expense of introducing more auxiliary variables compared with selection encodings.
+To be more precise, while selection encodings bundle the coordinates of the statistic in single selection variables, relation encodings create for each state $\selindexin$ of these selection variable an own auxiliary variable $\headvariableof{\selindex}$, which enumerated the image of the coordinate and can therefore be of high dimension.
+Thus, selection encodings offer in general a more efficient storage format coming at the expense of nonlinear operations in the computation of probabilities.
+We later will encounter situations, where selection encodings are feasible while relation encodings are not, when applying the formalism of formula selecting networks (see \charef{cha:formulaSelection}) in neuro-symbolic reasoning (see \charef{cha:networkReasoning}).
+
+
+% Proper subset
+Based on \corref{cor:unaryActivationExpdistRealization} a further natural question is, whether $\expfamilyof{\sstat,\ones}$ is a proper subset of $\realizabledistsof{\sstat,\elgraph}$.
+This is the case for most statistics $\sstat$, since members of exponential families are positive with respect to their base measure, which is in the corollaries setting trivial, while in $\realizabledistsof{\sstat,\elgraph}$ we allow also for activation cores with vanishing coordinates, which in general do not produce positive distributions.
+The only statistics where $\expfamilyof{\sstat,\ones}$ is not a proper subset of $\realizabledistsof{\sstat,\graph}$ are along this argumentation constant, since then the activation cores are one-dimensional vectors and vanishing coordinates are prohibited by the need for normalizability.
+We will follow these intuitions in the discussion of logical reasoning, starting with \charef{cha:logicalReasoning}, and will use the formats $\realizabledistsof{\sstat,\graph}$ as hybrid formats storing probability distributions and logical knowledge bases.
+
+% CP format
+While we have restricted our discussion on the elementary decomposition of the activation tensor, further decomposition schemes have interesting interpretations as well.
+Given a $\cpformat$ decomposition of the activation tensor (see for more details \charef{cha:sparseRepresentation}), the corresponding distributions are weighted mixture distributions built from the elementary decompositions.
+In general, the expressivity increases monotonously with the introduction of additional auxiliary variables and hyperedges in the representation format of activation tensors.
+
+
+\subsect{Markov Networks as Exponential Families}
+
+% Markov Networks
+As we have claimed before, exponential families can be regarded as a generalization of graphical models.
+We here show this claim by a construction of an exponential family to any hypergraph, such that any positive Markov Networks on this hypergraph is in the exponential family.
+
+\begin{theorem}[Exponential Representation of Markov Networks]
+    \label{the:markovNetworkExponentialFamilies}
+    Let there be a hypergraph $\graph=(\nodes,\edges)$ with a coloring of the nodes by dimensions $\catdimof{\node}$, we define a sufficient statistics
+    \begin{align*}
+        \sstatof{\graph} \defcols \bigtimes_{\node\in\nodes} [\catdimof{\node}] \rightarrow \bigtimes_{\edgein}\left(\bigtimes_{\node\in\edge}[\catdimof{\node}]\right)
+    \end{align*}
+    by a cartesian product $\sstatof{\graph} = \bigtimes_{\edgein} \sstatcoordinateof{\edge}$ of statistics
+    \begin{align*}
+        \sstatcoordinateof{\edge} \defcols \bigtimes_{\node\in\nodes} [\catdimof{\node}] \rightarrow \bigtimes_{\node\in\edge} [\catdimof{\node}]
+    \end{align*}
+    defined by the restriction of indices to the respective edge, that is for $\catindexof{\nodes}\in\nodestatesof{\nodes}$
+    \begin{align*}
+        \sstatcoordinateof{\edge}(\catindexof{\nodes}) = \catindexof{\edge} \, .
+    \end{align*}
+    Given any Markov Network with positive tensors $\{\hypercoreof{\edge}\wcols\edgein\}$ decorating the hyperedges of $\graph$ we define
+    \begin{align*}
+        \canparamat{\selvariable} = \bigtimes_{\edgein} \canparamofat{\edge}{\catvariableof{\edge}}
+    \end{align*}
+    where
+    \begin{align*}
+        \canparamofat{\edge}{\catvariableof{\edge}} =  \lnof{\hypercoreofat{\edge}{\catvariableof{\edge}}}
+    \end{align*}
+    and $\selvariable$ enumerates a concatenation of the states of $\catvariableof{\edge}$.
+    Then, the Markov Network is the member with canonical parameter $\canparam$ of the exponential family with trivial base measure, statistic $\sstatof{\graph}$, which we denote by $\mnexpfamily$.
+\end{theorem}
+\begin{proof}
+    We have for any $\catindexof{\nodes}$
+    \begin{align*}
+        \prod_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+        &= \expof{\sum_{\edgein} \lnof{\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}}} \\
+        &= \expof{\sum_{\edgein} \canparamofat{\edge}{\indexedcatvariableof{\edge}}} \\
+        &= \expof{\sum_{\edgein} \contraction{\canparamofat{\edge}{\catvariableof{\edge}},\sstatcoordinateof{\edge}(\catindexof{\nodes})}}  \, .
+    \end{align*}
+    By contraction, we further have
+    \begin{align*}
+        \contractionof{\sstatat{\nodevariables,\selvariable},\canparamwith}{\nodevariables}
+        = \sum_{\edgein} \contractionof{\sstatcoordinateofat{\edge}{\nodevariables,\catvariableof{\edge}},\canparamofat{\edge}{\catvariableof{\edge}}}{\nodevariables}
+    \end{align*}
+    we thus get with the above
+    \begin{align}
+        \contractionof{\{\hypercoreof{\edge}\wcols\edgein\}}{\nodevariables}
+        = \expof{\contractionof{\sstatat{\nodevariables,\selvariable},\canparamwith}{\nodevariables}} \, .
+    \end{align}
+    This implies, that the contraction of the tensors in the Markov Network coincides with the exponential of the energy tensor of the constructed member of the exponential family.
+    It follows for the normalization, that
+    \begin{align}
+        \normalizationof{\{\hypercoreof{\edge}\wcols\edgein\}}{\nodevariables}
+        = \normalizationof{\expof{\contractionof{\canparam,\sstat}{\nodevariables}}}{\nodevariables} \, .
+    \end{align}
+    We thus conclude, that the Markov Network coincides with the constructed member of the exponential family.
+\end{proof}
+
+% Mean parameters
+The mean parameter of the Markov Network exponential family is the cartesian product of the marginals $\meanparamofat{\edge}{\catvariableof{\edge}}$.
+They are often referred to as beliefs in the literature, as introduced by \cite{pearl_probabilistic_1988}.
+For Markov Networks on tree hypergraphs, and their embedding into junction tree formats, the corresponding mean parameter polytope can be characterized by local consistency constraints.
+More precisely, it can be shown, that for the statistic constructed in \theref{the:markovNetworkExponentialFamilies}, in case of tree hypergraphs, the
+\begin{align*}
+    \meansetof{\sstatof{\graph}}
+    = \Big\{ \meanparamwith=\big(\meanparamofat{\edge}{\catvariableof{\edge}}\big)_{\edgein} \wcols
+    & \uniquantwrtof{\edge,\secedge\in\edges}{
+        \contractionof{\meanparamofat{\edge}{\catvariableof{\edge}}}{\catvariableof{\edge\cap\secedge}} = \contractionof{\meanparamofat{\edge}{\catvariableof{\edge}}}{\catvariableof{\edge\cap\secedge}}}, \\
+    & \uniquantwrtof{\edge}{\zerosat{\catvariableof{\edge}} \prec \meanparamofat{\edge}{\catvariableof{\edge}} \land \contraction{\meanparamofat{\edge}{\catvariableof{\edge}}}=1} \Big\} \, .
+\end{align*}
+That is, the polytope of realizable mean parameters consists of those non-negative and normalized beliefs, which are coinciding on the contraction of shared variables.
+Capturing these constraints by Lagrange parameters and performing optimization of certain objectives then results in message-passing schemes, as we will discuss in \charef{cha:messagePassing}.
+If the hypergraph is not minimally connected, this constructed polytope is only an outer bound of the true mean parameter polytope, but still serves as a motivation of loopy belief propagation schemes (see Chapter~4 in \cite{wainwright_graphical_2008}).
+
+
+
+\subsect{Representation of Generic Distributions}\label{sec:mintermExpFamily}
+
+We now present a universal exponential family, which contains all positive distributions with respect to a base measure.
+This implies that the formalism of exponential families can capture any probability distribution, when applying statistic functions of large expressivity.
+Taking for the statistic the identity function $\identityat{\shortcatvariables,\selvariableof{[\catorder]}}$ defined as
+\begin{align*}
+    \identityat{\indexedshortcatvariables,\indexedselvariableof{[\catorder]}}
+    = \begin{cases}
+          1 & \ifspace \shortcatindices = \selindexof{[\catorder]} \\
+          0 & \text{else}
+    \end{cases} \, ,
+\end{align*}
+we can represent any positive probability distribution $\probwith$ as a member of the exponential family $\expfamilyof{\identity,\ones}$.
+To see this, it is enough to choose
+\begin{align*}
+    \canparamat{\selvariableof{[\catorder]}} = \contractionof{\lnof{\probat{\shortcatvariables}},\identityat{\indexedshortcatvariables,\indexedselvariableof{[\catorder]}}}{\selvariableof{[\catorder]}} \, ,
+\end{align*}
+where the contraction with $\identity$ copies the variables $\shortcatvariables$ to $\selvariableof{[\catorder]}$.
+The energy tensor of this member of $\expfamilyof{\identity,\ones}$ is then
+\begin{align*}
+    \contractionof{\canparamat{\selvariableof{[\catorder]}},\identityat{\indexedshortcatvariables,\indexedselvariableof{[\catorder]}}}{\shortcatvariables}
+    = \lnof{\probat{\shortcatvariables}}
+\end{align*}
+and thus
+\begin{align*}
+    \expdistofat{\identity,\canparam,\ones}{\shortcatvariables} = \normalizationof{\expof{\lnof{\probat{\shortcatvariables}}}}{\shortcatvariables} = \probat{\shortcatvariables} \, .
+\end{align*}
+We further note, that the mean parameter of this constructed element of $\expfamilyof{\identity,\ones}$ is
+\begin{align*}
+    \meanparamat{\selvariableof{[\catorder]}}
+    &= \contractionof{\expdistofat{\identity,\canparam,\ones}{\shortcatvariables},\identityat{\indexedshortcatvariables,\indexedselvariableof{[\catorder]}}}{\selvariableof{[\catorder]}}\\
+    &= \contractionof{\probwith,\identityat{\indexedshortcatvariables,\indexedselvariableof{[\catorder]}}}{\selvariableof{[\catorder]}} \, ,
+\end{align*}
+and thus coincides with the distribution itself, after a relabelling of the distributed variables.
+Let us notice, that this family also correspond with the Markov Network on the maximal hypergraph $\maxgraph=(\nodes,\{\nodes\})$.
+We will further revisit this family in \charef{cha:networkRepresentation}, where we will refer to it by the minterm family in order to connect with terminology developed for logical reasoning in \charef{cha:logicalReasoning}.
+
+
+

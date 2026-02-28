@@ -13,11 +13,11 @@
 %\usepackage{mathptmx}
 %\usepackage{helvet}
 %\usepackage{courier}
-\usepackage{type1cm}         
+\usepackage{type1cm}
 
 \usepackage{makeidx}         % allows index generation
 \usepackage{graphicx}        % standard LaTeX graphics tool
-                             % when including figure files
+% when including figure files
 \usepackage{multicol}        % used for the two-column index
 \usepackage[bottom]{footmisc}% places footnotes at page bottom
 
@@ -25,56 +25,52 @@
 \usepackage[varvw]{newtxmath}       % selects Times Roman as basic font
 
 \makeindex             % used for the subject index
-                       % please use the style svind.ist with
-                       % your makeindex program
+% please use the style svind.ist with
+% your makeindex program
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{tikz}
 
-\include{../macros/general_macros.tex}
-\include{../macros/tc_macros.tex}
-\include{../macros/tikz_macros.tex}
-\include{../macros/organization_macros.tex}
-\include{../macros/implementation_macros.tex}
+\input{../macros/general_macros.tex}
+\input{../macros/tc_macros.tex}
+\input{../macros/tikz_macros.tex}
+\input{../macros/organization_macros.tex}
+\input{../macros/implementation_macros.tex}
 
-% Adjustments of macros
-\newcommand{\coloneqq}{:=}
-
-%\usepackage{algorithmic}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
+%% Adjustment for compilation
+\input{style-files/book-adjustments}
 
 \begin{document}
 
-\author{Alex Goessmann}
-\title{The Tensor Network approach to Neuro-Symbolic AI}
+    \author{Alex Goessmann}
+    \title{The Tensor Network approach to Neuro-Symbolic AI}
 %\subtitle{-- Subtitle (monograph-type) --}
-\maketitle
+    \maketitle
 
-\frontmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \frontmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\include{./OtherContent/dedication}
-%\include{./OtherContent/foreword}
-%\include{./OtherContent/preface}
-%\include{./OtherContent/acknowledgement.tex}
-%\include{./OtherContent/ethics}
+%\input{./OtherContent/dedication}
+%\input{./OtherContent/foreword}
+%\input{./OtherContent/preface}
+%\input{./OtherContent/acknowledgement.tex}
+%\input{./OtherContent/ethics}
 
-\tableofcontents
+    \tableofcontents
 
-\include{./OtherContent/acronym.tex}
+    \input{./OtherContent/acronym.tex}
 
-\include{preliminaries/preliminaries}
+    \input{preliminaries/preliminaries}
 
-\mainmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \mainmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\include{partI/partI}
-\include{partII/partII}
-\include{partIII/partIII}
+    \input{partI/partI}
+    \input{partII/partII}
+    \input{partIII/partIII}
 
-\backmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\include{OtherContent/glossary}
-\include{OtherContent/solutions}
-\printindex
+    \backmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \input{OtherContent/glossary}
+%    \input{OtherContent/solutions}
+    \printindex
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

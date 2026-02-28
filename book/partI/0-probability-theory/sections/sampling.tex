@@ -1,0 +1,138 @@
+\sect{Sampling}
+
+Let us here investigate how to draw samples from a probability distribution, based on queries on it.
+Naive methods, such as drawing a random number in $[0,1]$, adding iteratively the coordinates and stopping when the sum exceeds the random variables, are infeasible when having large tensor orders causing exponential increases of the coordinate number.
+We recall, that the number of coordinates of $\probwith$ is $\prod_{\catenumeratorin}\catdimof{\catenumerator}$, which increases exponentially in the number $\catorder$ of the variables.
+Efficient methods instead have to exploit tensor network decompositions of the decompositions.
+
+\subsect{Forward Sampling}
+
+The first insight to derive efficient sampling algorithms is to sample a single variable in each step.
+Forward sampling (see \algoref{alg:ForwardSampling}) exploits to this end the generic chain decomposition (see \theref{the:chainRule}) of a probability distribution, namely
+\begin{align*}
+    \probwith = \contractionof{\{\margprobat{\catvariableof{0}}\} \cup
+    \left\{\condprobof{\catvariableof{\catenumerator}}{\catvariableof{0},\ldots,\catvariableof{\catenumerator-1}} \wcols \catenumeratorin \ncond \catenumerator\geq 1\right\}
+    }{\shortcatvariables} \, ,
+\end{align*}
+It then samples iteratively a state $\catindexof{\catenumerator}$ for the variable $\catvariableof{\catenumerator}$ conditioned on the previously sampled states, that is from the conditonal distribution
+\begin{align*}
+    \condprobof{\catvariableof{\catenumerator}}{\indexedcatvariableof{[\catenumerator]}} \, .
+\end{align*}
+The generic chain decomposition thereby ensures that probability of getting a state $\shortcatindices$ by this procedure coincides with $\probat{\indexedshortcatvariables}$.
+
+\begin{algorithm}[hbt!]
+    \caption{Forward Sampling}\label{alg:ForwardSampling}
+    \begin{algorithmic}
+        \Require Probability distribution $\probtensor$
+        \Ensure Exact sample $\catindices$ of $\probtensor$
+    \iosepline
+        \ForAll{$\catenumeratorin$}
+            \State Draw $\catindexof{\catenumerator}\in[\catdimof{\catenumerator}]$ from the conditional distribution
+            \begin{align*}
+                \condprobof{\catvariableof{\catenumerator}}{\indexedcatvariableof{[\catenumerator]}}
+            \end{align*}
+        \EndFor
+        \State \Return $\catindices$
+    \end{algorithmic}
+\end{algorithm}
+
+% Bayesian networks
+Forward Sampling is especially efficient, when sampling from a Bayesian Network respecting the topological order of its nodes.
+More technically, when the parents $\parentsof{\catenumerator}$ of a node $\catenumerator$ are contained in the preceding variables $[\catenumerator]$, we apply the conditional independence assumption (more precisely \theref{the:conditionDropping} in combination with \theref{the:condIndBN}) to get
+\begin{align*}
+    \condprobof{\catvariableof{\catenumerator}}{\indexedcatvariableof{[\catenumerator]}}
+    = \condprobof{\catvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}} \, .
+\end{align*}
+Since this conditional probability coincides with a local tensor in the Bayesian Network, we can avoid to contract the network for preparing the conditional distribution.
+Different to more general Markov Networks, forward sampling from Bayesian Network can therefore be done efficiently by reduction to conditional queries answerable using local tensors.
+We note that it is important to sample in the topological order induced by the underlying directed hypergraph, since the computation of generic conditional distributions is also for Bayesian Networks $\mathsf{NP}$-hard (see Chapter~13 in \cite{koller_probabilistic_2009}).
+Sampling along the topological variable order requires only tractable to answer conditional queries on the Bayesian Network.
+
+%% Comment on rejection Sampling
+%When sampling from conditional probability distributions, one can sample from the conditioned distribution instead.
+%However, the conditioning changes the structure of the distribution, and conditioned Bayesian Networks are not Bayesian Networks on the same graph.
+%One ways around is rejection sampling, where one samples from the unconditioned distribution and rejects samples not satisfying the event conditioned on.
+%When the event conditioned on is of small probability, methods like rejection sampling will come with large runtimes.
+
+\subsect{Gibbs Sampling}
+
+While we have seen that forward sampling can be performed efficiently on Bayesian Networks, Gibbs sampling can be also performed efficiently for Markov Networks.
+Gibbs sampling \algoref{alg:Gibbs} overcomes the intractability problems of sampling steps during forward sampling at the expense of repetitions of the sampling step.
+%The tractability of each sampling step is traded off against the number of repetitions to produce a sample.
+When performing finite repetitions, Gibbs sampling in general samples from an approximate distribution to the one desired.
+It can be shown, that these approximate distribution tend to one desired in the asymptotic limit of infinite repetitions of the sampling step (see Chapter~12 in \cite{koller_probabilistic_2009}).
+
+\begin{algorithm}[hbt!]
+    \caption{Gibbs Sampling}\label{alg:Gibbs}
+    \begin{algorithmic}
+        \Require Probability distribution $\probtensor$
+        \Ensure Approximative sample $\catindices$ of $\probtensor$
+        \iosepline
+        \ForAll{$\catenumeratorin$}
+            \State Draw $\catindexof{\catenumerator}$ from an initialization distribution. % In implementation: Initialize with ones and draw -> Avoids zero probability state
+        \EndFor
+        \While{Stopping criterion is not met}
+            \ForAll{$\catenumeratorin$}
+                \State Draw $\catindexof{\catenumerator}$ from the conditional distribution
+                \begin{align*}
+                    \condprobof{\catvariableof{\catenumerator}}{\indexedcatvariableof{[\catorder]/\{\catenumerator\}}}
+                \end{align*}
+            \EndFor
+        \EndWhile
+        \State \Return $\catindices$
+    \end{algorithmic}
+\end{algorithm}
+
+% Efficiency on Markov Networks
+The central problem of forward sampling on Markov Networks has been the need for global contractions to answer the required conditional queries, which originates from large numbers of variables to be marginalized out.
+When avoiding the marginalization of variables, and conditioning on them instead, global contractions can be avoided.
+To be more precise, for any tensor network $\extnet$ on $\graph=([\catorder],\edges)$ and any $\catenumeratorin$ we have
+\begin{align*}
+    \contractionof{\extnet}{\catvariableof{\catenumerator},\catvariableof{[\catorder]/\{\catenumerator\}}}
+    = \contractionof{\{\hypercoreofat{\edge}{\catvariableof{\catenumerator},\indexedcatvariableof{\edge/\{\catenumerator\}}} \wcols \edge\in\edges \ncond \catenumerator\in\edge\}}{\catvariableof{\catenumerator}}
+    \cdot \prod_{\edge\in\edges, \, \catenumerator\notin\edge} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
+\end{align*}
+As a consequence, we get for the Markov Network $\probtensor=\probof{\graph}$ to $\extnet$, that
+\begin{align*}
+    \condprobof{\catvariableof{\catenumerator}}{\indexedcatvariableof{[\catorder]/\{\catenumerator\}}}
+    &= \normalizationof{\extnet}{\catvariableof{\catenumerator},\catvariableof{[\catorder]/\{\catenumerator\}}} \\
+    &= \normalizationof{\{\hypercoreofat{\edge}{\catvariableof{\catenumerator},\indexedcatvariableof{\edge/\{\catenumerator\}}} \wcols \edge\in\edges, \, \catenumerator\in\edge\}}{\catvariableof{\catenumerator}} \, .
+\end{align*}
+The conditional queries on a Markov Network asked in Gibbs Sampling can therefore be answered by contractions only of those tensors containing the variable $\catvariableof{\catenumerator}$.
+To find further locally answerable conditional queries, we need to condition only on the neighbored variables, referred to as Markov blanket, such that the other variables are conditionally independent.
+This follows from the characterization of the conditional independences in Markov Networks, which has been shown in \theref{the:condIndMN}, and can be used to design further tractable sampling schemes for Markov Networks.
+
+% Energy
+We can further answer these conditional queries efficiently, when we perform Gibbs sampling on a probability distribution in an energy representation, that is $\probwith=\normalizationof{\expof{\energytensorwith}}{\shortcatvariables}$.
+Using \theref{the:energyContractionQueries}, we have
+\begin{align*}
+    \condprobof{\catvariableof{\catenumerator}}{\indexedcatvariableof{[\catorder]/\{\catenumerator\}}}
+    = \normalizationof{\expof{\energytensorat{\catvariableof{\catenumerator},\indexedcatvariableof{[\catorder]/\{\catenumerator\}}}}
+    }{\catvariableof{\nodesa}}
+\end{align*}
+We note, that the main property of the conditional query exploited here, is that all variables but the one sampled appear as a condition and none is marginalized out.
+In the scheme of forward sampling, where most of the variables are marginalized out in many queries, we cannot apply this trick and would have to perform sums over exponentiated coordinates to the variables marginalized out.
+
+
+\subsect{Simulated Annealing}\label{sec:simulatedAnnealing}
+
+Simulated annealing is an adapted sampling scheme targeting mode queries rather than generating representative samples from a distribution.
+It employs an annealing process that gradually transforms the probability distribution by increasingly favoring high-likelihood configurations, thereby improving the chances of sampling a solution to a mode query.
+To be more precise, let there be a distribution in energy representation, that is $\probwith=\normalizationof{\expof{\energytensorwith}}{\shortcatvariables}$.
+We introduce a parameter $\invtemp\in\rr$, which we understand as the inverse temperature, and anneal the distribution through scaling its energy by this parameter.
+In the limit of $\invtemp\rightarrow\infty$, for each state $\shortcatindicesin$ the annealed distribution behaves as
+\begin{align*}
+    \normalizationof{\expof{\invtemp\cdot\energytensorwith}}{\indexedshortcatvariables} \rightarrow
+    \normalizationof{\ones_{\argmax_{\shortcatindicesin}\energytensorat{\indexedshortcatvariables}}}{\indexedshortcatvariables} \, .
+\end{align*}
+In this limit, the annealed distribution tends to the uniform distribution of the maximal coordinates, that is the uniform distribution of the set
+\begin{align*}
+    \argmax_{\shortcatindicesin}\energytensorat{\indexedshortcatvariables} = \argmax_{\shortcatindicesin}\probat{\indexedshortcatvariables} \, .
+\end{align*}
+i
+To integrate annealing into Gibbs sampling, one chooses a parameter $\invtemp$ for each repetition of a sampling step and sample from the conditioned annealed distribution $\normalizationof{\expof{\invtemp\cdot\energytensorwith}}{\shortcatvariables}$.
+Through increasing $\invtemp$ during the algorithm, the samples are drawn towards states with larger coordinates in $\probat{\shortcatvariables}$.
+However, when $\invtemp$ is large, the sampling procedure can get stuck in local maxima, whereas small $\invtemp$ are in favor of overcoming such.
+The inverse temperature is thus understood as a tradeoff parameter between the exploration of new regions of the state space and increasing the coordinate of the sample by local coordinate optimization.
+It is therefore typically chosen low in the beginning of the sampling algorithm and then sequentially increased to find maximal coordinates.
+Due to this typical increasement of the inverse temperature strategy, the algorithm is referred to as simulated annealing.

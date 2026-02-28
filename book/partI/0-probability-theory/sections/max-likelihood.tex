@@ -1,0 +1,314 @@
+\sect{Maximum Likelihood Estimation}
+
+So far we have been concerned with deductive reasoning task, that is retrieve information from a given distribution or drawing a sample.
+We now turn to inductive reasoning tasks, where a probability distribution is estimated given data.
+To present the generic framework of maximum likelihood estimation in the tensor network contraction formalism, we introduce the likelihood loss exploiting the structure of empirical distribution, and then provide interpretations in terms of entropies.
+
+\subsect{Empirical Distributions}\label{sec:empDistribution}
+
+To prepare for reasoning on data, we now derive tensor network representation for empirical distributions, which are defined based on observed states $\dataset$ of a factored system.
+
+\begin{definition}
+    \label{def:dataMap}
+    Given a dataset $\dataset$ of samples of the factored system we define the sample selector map
+    \begin{align*}
+        \datamap \defcols [\datanum] \rightarrow \facstates
+    \end{align*}
+    elementwise by
+    \begin{align*}
+        \datamapat{\datindex} = \left(\catindicesof{\datindex}\right) \, .
+    \end{align*}
+%% Empirical Distribution
+    The empirical distribution to the sample selector map $\datamap$ is the probability distribution
+    \begin{align*}
+        \empdistributionat{\shortcatvariables}
+        \coloneqq \normalizationof{\bencodingofat{\datamap}{\shortcatvariables,\datvariable}}{\shortcatvariables} \, ,
+    \end{align*}
+    where we introduced as single incoming for the basis encoding of the sample selector map the sample selecting variable $\datvariable$ taking values in $[\datanum]$.
+%    where by $\datacore$ we denote the basis encoding (see \defref{def:functionRepresentation}) of the sample selector map, and the distributed variables $\shortcatvariables$ are the head variables of the basis encoding.
+\end{definition}
+
+% Sample Selector map representation
+The basis encoding of the sample selector map has a decomposition by
+\begin{align*}
+    \datacoreat{\shortcatvariables,\datvariable}
+    = \sum_{\datindexin} \onehotmapofat{\catindicesof{\datindex}}{\shortcatvariables} \otimes \onehotmapofat{\datindex}{\datvariable} \, .
+\end{align*}
+% Interpretation of the empirical distribution
+Each coordinate $\shortcatindices$ of the empirical distribution can thus be calculated by
+\begin{align*}
+    \empdistributionat{\indexedshortcatvariables}
+    & = \frac{1}{\contraction{\datacore}} \left( \sum_{\datindexin} \onehotmapofat{\catindicesof{\datindex}}{\indexedshortcatvariables}  \right) \\
+    &= \frac{\cardof{\left\{\datindexin \wcols (\catindicesof{\datindex}) = (\catindices)\right\}}}{\datanum} \, .
+\end{align*}
+We can therefore interpret each coordinate of the empirical distribution as the relative frequency of the corresponding state in the observed data.
+%and is thus interpreted as the frequency of the corresponding world in the data.
+
+%% Basic CP Decomposition
+The basis encoding of the sample selector map is a sum of one-hot encodings of the data indices and the corresponding sample states.
+Such sums of basis tensors will be further investigated in \secref{sec:basisCP} as basis $\cpformat$ decompositions.
+We now exploit this structure to find efficient tensor network decompositions (see \figref{fig:DataDecomposition}) based on matrices encoding its variables.
+
+
+\begin{figure}[t]
+    \begin{center}
+        \input{partI/0-probability-theory/tikz-pics/data_decomposition.tex}
+    \end{center}
+    \caption{
+        Decomposition of the basis encoding of a sample selector map to a dataset $\dataset$.
+        a) Interpretation as a sample selection variable $\datvariable$ selecting states for the variables $\shortcatvariables$ according to the enumerated dataset.
+        b) Corresponding decomposition of the basis encoding $\datacore$ into a tensor network in the basis $\cpformat$ Format (see \secref{sec:basisCP}), where $\hypercoreof{\edgeof{\atomenumerator}}=\datacoreof{\atomenumerator}$.
+    }
+    \label{fig:DataDecomposition}
+\end{figure}
+
+
+\begin{theorem}
+    \label{the:empCPRep}
+    Given a data map $\datamap: [\datanum] \rightarrow \facstates$ we define for $\catenumeratorin$ its coordinate maps
+    \begin{align*}
+        \datamap_{\catenumerator} \defcols [\datanum] \rightarrow [\catdimof{\catenumerator}]
+    \end{align*}
+    by
+    \begin{align*}
+        \datamap_{\catenumerator}(\datindex) = \catindexof{\catenumerator}^\datindex \, .
+    \end{align*}
+    We then have
+    \begin{align*}
+        \bencodingofat{\datamap}{\shortcatvariables,\datvariable}
+        = \contractionof{
+            \{\bencodingofat{\datamap^{\atomenumerator}}{\catvariableof{\atomenumerator},\datvariable} \wcols \atomenumeratorin \}
+        }{\shortcatvariables,\datvariable}
+    \end{align*}
+    and
+    \begin{align*}
+        \empdistributionat{\shortcatvariables}
+        = \contractionof{\datacoreat{\shortcatvariables,\datvariable}, \frac{1}{\datanum}\onesat{\datvariable}}{\shortcatvariables}
+        = \contractionof{\datacoreofat{0}{\catvariableof{0},\datvariable},\ldots,\datacoreofat{\catorder-1}{\catvariableof{\catorder-1},\datvariable},\frac{1}{\datanum}\onesat{\datvariable}}{\shortcatvariables} \, .
+    \end{align*}
+    In a contraction diagram this decomposition is represented as
+    \begin{center}
+        \input{partI/0-probability-theory/tikz-pics/empirical_distribution.tex}
+    \end{center}
+\end{theorem}
+\begin{proof}
+    The first claim is a special case of \theref{the:functionDecompositionBasisCP}, to be shown in \charef{cha:basisCalculus}.
+    To show the second claim we notice
+    \[ \contraction{\datacore} = \sum_{\datindexin} \contraction{\bencodingofat{\datamap}{\shortcatvariables,\datvariable=\datindex}} = \datanum \,  . \]
+    With the first claim it now follows that
+    \begin{align*}
+        \empdistributionat{\shortcatvariables}
+        &= \normalizationof{\datacore}{\shortcatvariables}
+        = \frac{\contractionof{\datacore}{\shortcatvariables}}{\contraction{\datacore}} \\
+        &=  \contractionof{
+            \left\{\bencodingofat{\datamap^{\atomenumerator}}{\catvariableof{\atomenumerator},\datvariable}\wcols\atomenumeratorin \right\} \cup \left\{\frac{1}{\datanum}\onesat{\datvariable}\right\}
+        }{\shortcatvariables}  \, . \qedhere
+    \end{align*}
+\end{proof}
+
+
+The cores $\datacoreof{\atomenumerator}$ are matrices storing the value of the categorical variable $\catvariableof{\atomenumerator}$ in the sample world indexed by $\datindex$.
+
+% Interpretation
+From the proof of \theref{the:empCPRep} we notice that the scalar $\frac{1}{\datanum}$ could be assigned with any core in a representation of $\empdistribution$, and the core $\onesat{\datvariable}$ is thus redundant in the contraction representation.
+However, creating the core $\frac{1}{\datanum}\onesat{\datvariable}$ provides us with a simple interpretation of the empirical distribution.
+We can understand $\frac{1}{\datanum}\onesat{\datvariable}$ as the uniform probability distribution over the samples, which is by the map $\datamap$ forwarded to a distribution over $\facstates$.
+The one-hot encoding of each sample is itself a probability distribution, which is understood as conditioned on the respective state of the sample selection variable $\datvariable$.
+The conditional distribution $\datacore$ therefore forwards the uniform distribution of the samples to a distribution of the variables $\shortcatvariables$.
+In the perspective of a Bayesian Network (see \figref{fig:DataDecomposition}), the variable $\datvariable$ serves as single parent for each categorical variable $\catvariableof{\catenumerator}$.
+
+
+%%% Inductive vs Deductive perspective
+%Each evidence is a probability distribution
+%\begin{itemize}
+%	\item Inductive Reasoning: When we interpret evidence as a datapoint, they are typically a basis tensor specifying precisely a world.
+%	\item Deductive Reasoning: Evidence is a partial observation of the world, typically basis vectors at each variable, but leaving some unspecified ($\ones$).
+%	We then interpret the evidence as being a uniform distribution over the worlds not contradicting with the evidence.
+%\end{itemize}
+
+
+\subsect{Likelihood Loss}
+
+%Following the notation in \secref{sec:empDistribution}, datasets $\dataset$ are collections of observed samples
+%\begin{align*}
+%    \datamapat{\datindex} = (\catindicesof{\datindex}) \in \facstates
+%\end{align*}
+%of a factored system.
+The likelihood of a probability distribution $\probwith$ to produce an observed sample is
+\begin{align*}
+    \probat{\shortcatvariables = \datamapat{\datindex}} \, .
+\end{align*}
+We further introduce the likelihood of $\probwith$ with respect to a dataset as
+\begin{align*}
+    \probat{\dataset} := \prod_{\datindexin} \probat{\shortcatvariables = \datamapat{\datindex}} \, .
+\end{align*}
+The likelihood draws on the assumption, that each datapoint in the dataset has been drawn independently from the same distribution.
+When this generating distribution coincides with $\probwith$, then the probability of generating a dataset by this scheme is the likelihood.
+In inductive reasoning, the true distribution $\probwith$ is unknown and needs to be approximatively estimated based on data and a learning hypothesis.
+We will therefore compute and compare the likelihood of distributions, which in general do not coincide with the distribution generating the data.
+It is thus important to not understand the likelihood as a probability, which is only true for the generating distribution, as pointed out in Chapter~2 in \cite{mackay_information_2003}.
+
+% Logarithm
+Let us now transform the likelihood to find an representation involving the empirical distribution (see \defref{def:dataMap}), for which efficient tensor network decompositions have been derived in \theref{the:empCPRep}.
+Applying a scaled logarithm we get
+\begin{align*}
+    \frac{1}{\datanum} \cdot \lnof{\probat{\dataset}}
+    &= \frac{1}{\datanum} \cdot \lnof{\prod_{\datindexin} \probat{\shortcatvariables = \datamapat{\datindex}}} \\
+    &= \dataaverage \lnof{\probat{\shortcatvariables = \datamapat{\datindex}}} \\
+    &= \contraction{\lnof{\probwith},\empdistributionwith} \, .
+\end{align*}
+Let us notice, that this transform of the likelihood is monotoneous and therefore does not influence the position of the maximum, when optimizing the likelihood.
+Motivated by this property, we use the transformed form to define the loss-likelihood loss and maximum likelihood estimation.
+%This is especially useful, when investigating the convergence of the objective for $\datanum\rightarrow\infty$ (see \charef{cha:concentration}).
+
+\begin{definition}
+    \label{def:loss}
+    The log-likelihood loss of a distribution $\probtensor$ given a dataset
+    \begin{align*}
+        \dataset
+    \end{align*}
+    is the functional
+    \begin{align*}
+        \lossof{\probtensor}
+        = -\contractionof{\lnof{\probwith},\empdistributionwith} \, .
+    \end{align*}
+    Having a hypothesis $\probtensorset\subset\bmrealprobof{\ones}$, that is a set of probability distributions, the maximum likelihood estimation is the problem
+    \begin{align}
+        \label{prob:parameterMaxLikelihood}\tag{$\probtagtypeinst{\mprojectionsymbol}{\probtensorset,\empdistribution}$}
+        \argmin_{\probtensorin} \lossof{\probtensor} \, .
+    \end{align}
+\end{definition}
+
+
+\subsect{Entropic Interpretation}
+
+The Shannon entropy, which has been introduced in the seminal paper \cite{shannon_mathematical_1948}, is a foundational concept in various research fields beyond statistical learning, such as information theory or statistical physics.
+While a detailed discussion is out of the scope of this work, we here only provide computation schemes of the entropy based on contractions of distributions.
+
+\begin{definition}[Shannon entropy]
+    The Shannon entropy of a distribution $\probwith$ is the quantity
+    \begin{align*}
+        \sentropyof{\probtensor}
+        =  \sum_{\shortcatindicesin} \probat{\indexedshortcatvariables} \cdot \left(-\lnof{\probat{\indexedshortcatvariables}}\right)
+        = \contraction{\probtensor,-\lnof{\probtensor}} \, .
+    \end{align*}
+    We represent the Shannon entropy by the tensor network diagram
+    \begin{center}
+        \input{partI/0-probability-theory/tikz-pics/shannon_entropy.tex}
+    \end{center}
+    where we denote a coordinatewise transform by the logarithm as an ellipsis (see \secref{sec:coordinatewiseTransforms}).
+\end{definition}
+
+We here make the convention $\lnof{0}=-\infty$ and $0\cdot\lnof{0} = 0$, to have the Shannon entropy well-defined for distributions with non-trivial support.
+
+Among the distributions in the same tensor space, the uniform distribution maximizes the Shannon entropy
+\begin{align*}
+    \sentropyof{\normalizationof{\ones}{\shortcatvariables}} = \sum_{\catenumeratorin}\lnof{\catdimof{\catenumerator}}
+\end{align*}
+and the one-hot encodings to states $\shortcatindicesin$ minimize the Shannon entropy
+\begin{align*}
+    \sentropyof{\onehotmapofat{\shortcatindices}{\shortcatvariables}} = 0 \, .
+\end{align*}
+%We understand the samples of the uniform concentration as having the maximal information con
+
+The Shannon entropy measures the information content of a distribution and is therefore a central tool for regularization in statistical learning (see for an introduction Chapter~2 in \cite{mackay_information_2003}).
+We therefore exploit this information content as a regularizer to identify a distribution among those coinciding in the answer to a collection of expectation queries.
+To be more precise, let there be for $\selindexin$ query tensors $\exfunction^{\selindex}$ (see \defref{def:queries}) and $\empdistribution$ an empirical distribution.
+The problem of maximal entropy with respect to coinciding expectation queries with $\empdistribution$ is then posed as
+\begin{align*}
+    \argmax_{\probtensor\in\bmrealprobof{\ones}} \sentropyof{\probtensor} \quad \text{subject to} \quad \uniquantwrtof{\selindexin}{\contraction{\probtensor,\exfunction^{\selindex}} = \contraction{\empdistribution,\exfunction^{\selindex}}}
+\end{align*}
+where $\bmrealprobof{\ones}$ is the set of probability distributions given a factored system.
+We study instances of this maximal entropy problem later in \secref{sec:maxEntProblem}, where we show that its solution is a member of the exponential family, which statistic is build by the query tensors.
+We will further provide connections between the problems of maximal entropy and maximum likelihood estimation.
+
+While the Shannon entropy is a property of a single distribution, the cross-entropy is a straight forward generalization towards pairs of distributions.
+We first introduce this quantity and then interpret the log-likelihood loss based on the cross-entropy.
+
+\begin{definition}[Cross entropy and Kullback Leibler divergence]
+    \label{def:crossEntropy}
+    The cross-entropy between two distributions $\probwith$ and $\secprobat{\shortcatvariables}$ defined with respect to the same factored system is the quantity
+    \begin{align*}
+        \centropyof{\probtensor}{\secprobtensor}
+        = \sum_{\catindices}  \probat{\indexedshortcatvariables} \cdot \left(-\lnof{\secprobat{\indexedshortcatvariables}}\right)
+        = \contraction{\probtensor,-\lnof{\secprobtensor}} \, .
+    \end{align*}
+    The cross-entropy is captured by the tensor network diagram
+    \begin{center}
+        \input{partI/0-probability-theory/tikz-pics/cross_entropy.tex}
+    \end{center}
+    The Kullback-Leiber divergence or relative entropy between $\probwith$ and $\secprobat{\shortcatvariables}$ is the quantity
+    \begin{align*}
+        \kldivof{\probtensor}{\secprobtensor} = \centropyof{\probtensor}{\secprobtensor} - \sentropyof{\probtensor}  \, .
+    \end{align*}
+\end{definition}
+
+%% Vanishing coordinates case
+Let us notice, that we have $\centropyof{\probtensor}{\secprobtensor} = \infty$ if and only if there is a state $\shortcatindicesin$ such that $\probat{\indexedshortcatvariables}>0$ and $\secprobtensor[\indexedshortcatvariables]=0$.
+
+% KL Divergence
+The Gibbs inequality (for a proof see for example Chapter~2 in \cite{cover_elements_2006}) states that for any distributions $\probwith$ and $\secprobat{\shortcatvariables}$ we have
+\begin{align*}
+    \centropyof{\probtensor}{\secprobtensor} \geq \sentropyof{\probtensor} \, ,
+\end{align*}
+where equality holds if any only if $\probtensor=\secprobtensor$
+This ensures, that the Kullback-Leiber Divergence between any distributions is positive and vanishes if and only if both distributions coincide.
+
+We in the next lemma provide an entropic interpretation of maximum likehlihood estimation as defined in \defref{def:loss}.
+
+\begin{lemma}
+    \label{lem:centropyMLE}
+    The maximum likelihood estimation \probref{prob:parameterMaxLikelihood} is equivalent to the minimization of cross-entropy and Kullback-Leibler divergence, that is
+    \begin{align*}
+        \argmin_{\probtensorin} \lossof{\probtensor}
+        = \argmin_{\probtensorin} \centropyof{\empdistribution}{\probtensor}
+        = \argmin_{\probtensorin} \kldivof{\empdistribution}{\probtensor} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    Comparing the log-likelihood loss in \defref{def:loss} with the cross-entropy in \defref{def:crossEntropy}, we get
+    \begin{align*}
+        \lossof{\probtensor} = \centropyof{\empdistribution}{\probtensor} \,
+    \end{align*}
+    which established the equivalence of maximum likelihood estimation and cross-entropy minimization.
+    Further, since
+    \begin{align*}
+        \kldivof{\empdistribution}{\probtensor} = \centropyof{\empdistribution}{\probtensor} - \sentropyof{\empdistribution}
+    \end{align*}
+    and $\sentropyof{\empdistribution}$ is a constant offset in the objective, maximum likelihood estimation is equivalent to the minimization of the Kullback-Leibler divergence.
+\end{proof}
+
+% M-projection
+More general than Maximum Likelihood Estimation, we define the moment projection of an arbitrary distribution $\gendistribution$ onto a set $\probtensorset$ of probability distributions as the problem
+\begin{align}
+    \label{prob:mProjection}\tag{$\probtagtypeinst{\mprojectionsymbol}{\probtensorset,\gendistribution}$}
+    \argmin_{\probtensorin} \centropyof{\gendistribution}{\probtensor} \, . % Also give the KL divergence version?
+\end{align}
+With \lemref{lem:centropyMLE} we have established, that maximum likelihood estimation is the moment projection of the empirical distribution onto a set $\probtensorset$.
+
+% I-projection
+We further define the information projection an arbitrary distribution $\gendistribution$ onto a set $\probtensorset$ of probability distributions as the problem
+\begin{align}
+    \label{prob:iProjection}\tag{$\probtagtypeinst{\iprojectionsymbol}{\probtensorset,\gendistribution}$}
+    \argmin_{\probtensorin} \kldivof{\probtensor}{\gendistribution} \, .
+\end{align}
+The relative entropy is not symmetric, thus the information projection \eqref{prob:iProjection} and the moment projections do not coincide in general.
+The differences of both are discussed in Chapter~8 in \cite{koller_probabilistic_2009}.
+
+%% DROP: Have not defined exponential families yet!
+%\begin{example}[Cross entropy with respect to exponential families]
+%    \label{exa:cEntropyExp}
+%    If $\secprobtensor$ is a member of an exponential family, we have %with the representation from \lemref{lem:energyCumulantRepresentation}
+%    \begin{align*}
+%        \centropyof{\probtensor}{\expdist}
+%        = \contraction{\probtensor,\lnof{\expdist}}
+%        = \contraction{\probtensor,\sencsstat,\canparam} - \cumfunctionof{\canparam} + \contraction{\probtensor,\lnof{\basemeasure}} \, .
+%    \end{align*}
+%    The last term vanishes, given the convention $0\cdot\lnof{0}=0$, if and only if for any $\shortcatindices$ with $\basemeasureat{\indexedshortcatvariables}=0$ we have $\probat{\indexedshortcatvariables}=0$, and is infinite instead.
+%    Therefore, the cross entropy between a distribution and a member of an exponential family is finite, if and only if the distribution is representable with respect to the base measure $\basemeasure$ (see \defref{def:representationBaseMeasure}).
+%    If $\probtensor$ is representable with respect to $\basemeasure$, we can abbreviate the cross-entropy to
+%    \begin{align*}
+%        \centropyof{\probtensor}{\expdist}
+%        = \contraction{\probtensor,\expenergy} -\cumfunctionof{\canparam} \, .
+%    \end{align*}
+%\end{example}

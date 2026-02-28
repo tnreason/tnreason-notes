@@ -1,0 +1,28 @@
+\begin{example}[Graphical models as a special case of \CompActNets{}]
+%    Recall \defref{def:compactnets}.
+%    Given a statistic $\sstat:\facstates \to \parspace$ and a hypergraph $\graph=(\nodes,\edges)$ on the image coordinates $\headvariables$, any by $\sstat$ computable and by $\graph$ activated \CompActNets{} has the form
+%    \begin{align*}
+%        \probwith
+%        = \normalizationof{\acttensorwith,\bencsstatwith}{\shortcatvariables}
+%    \end{align*}
+%    where $\acttensorwith$ is an arbitrary non-negative tensor.
+    For graphical models we take the \emph{identity statistic}
+    \begin{align*}
+        \identity\big(\shortcatindices\big)
+        = \shortcatindices
+    \end{align*}
+    so that the image coordinates coincide with the variables and there are no non-trivial computation cores.
+    The associated basis encoding is just the identity tensor
+    \begin{align*}
+        \bencodingofat{\identity}{\headvariableof{[\catorder]},\shortcatvariables}
+        = \identityat{\shortcatvariables,\headvariableof{[\catorder]}} \, .
+    \end{align*}
+    Therefore, for any activation tensor $\acttensorwith$ we obtain
+    \begin{align*}
+        \probwith
+        = \normalizationof{\acttensorwith,\bencodingofat{\identity}{\headvariableof{[\catorder]},\shortcatvariables}}{\shortcatvariables}
+        = \normalizationof{\acttensorat{\shortcatvariables}}{\shortcatvariables}\, .
+    \end{align*}
+    Put differently, in the graphical–model case the activation tensor coincides with the joint distribution tensor.
+    In this setting, structural properties of the distribution such as (conditional) independences can be read off as algebraic factorization patterns of the activation (and hence joint) tensor.
+\end{example}
