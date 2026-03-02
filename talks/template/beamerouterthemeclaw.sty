@@ -1,0 +1,64 @@
+% Usage:  \useoutertheme{claw}
+% Source: https://github.com/adibaba/templates
+% Author: Adrian Wilke
+% Date:   2021-03-08
+
+\mode<presentation>
+
+% Can be renewed for smaller titles (e.g. if logos used)
+\newcommand{\frametitlewidth}{1.0\textwidth}
+
+% Frame title based on default; title centered; top space: -1ex -> -1.4ex; parbox inserted
+\defbeamertemplate*{frametitle}{claw theme}[1][center]
+{%
+\ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+\@tempdima=\textwidth%
+\advance\@tempdima by\beamer@leftmargin%
+\advance\@tempdima by\beamer@rightmargin%
+\begin{beamercolorbox}[sep=0.3cm,#1,wd=\the\@tempdima]{frametitle}%
+\usebeamerfont{frametitle}%
+\parbox{\frametitlewidth}{\centering%
+\vbox{}\vskip-1.4ex%
+\if@tempswa\else\csname beamer@fte#1\endcsname\fi%
+\strut\insertframetitle\strut\par%
+{%
+\ifx\insertframesubtitle\@empty%
+\else%
+{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\strut\insertframesubtitle\strut\par}%
+\fi%
+}%
+}%
+\vskip-1ex%
+\if@tempswa\else\vskip-.3cm\fi%
+\end{beamercolorbox}%
+}
+
+% Footer color: Secondary palette color
+\setbeamercolor*{author in head/foot}{parent=palette secondary}
+\setbeamercolor*{page number in head/foot}{parent=palette secondary}
+
+% Page numbers in footer
+\setbeamertemplate{page number in head/foot}[totalframenumber]%
+
+% Footer based on infolines; two boxes instead of three; 2ex -> 1.2ex; ht=2.25ex,dp=1ex -> ht=2.6ex,dp=1.2ex; added 'page number in head/foot'
+\defbeamertemplate*{footline}{claw theme}
+{%
+\leavevmode%
+\hbox{%
+\begin{beamercolorbox}[wd=.9\paperwidth,ht=2.6ex,dp=1.2ex,left]{author in head/foot}%
+\hspace*{1.2ex}%
+\usebeamerfont{author in head/foot}\insertshortauthor\expandafter\ifblank\expandafter{\beamer@shortinstitute}{}{~(\insertshortinstitute)}: %
+\usebeamerfont{title in head/foot}\insertshorttitle%
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.1\paperwidth,ht=2.6ex,dp=1.2ex,right]{page number in head/foot}%
+\usebeamerfont{page number in head/foot}%
+\usebeamertemplate{page number in head/foot}%
+\hspace*{1.2ex}%
+\end{beamercolorbox}}%
+}
+
+% Content margins
+\setbeamersize{text margin left=8mm,text margin right=8mm}
+
+\mode
+<all>
