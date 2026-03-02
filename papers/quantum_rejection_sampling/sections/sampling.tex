@@ -105,7 +105,7 @@ The amplitude amplification scheme now iterates between
     This reflection can be done by concatenating the operator preparing the ancilla-augmentation of the \ComputationActivationNetwork{} with a initial state reflection.
 \end{itemize}
 
-Now the application of $\repnum$ grover operators $\reflectionof{}\reflectionof{\goodstatesymbol}$ on $\qstateof{0}$ prepares a state
+Now the application of $\repnum$ grover operators $\reflectionof{}\reflectionof{\goodstatesymbol}$ on $\qstateof{0}$ prepares a state (see \figref{fig:rotationSketch})
 \begin{align*}
     \qstateofat{\repnum}{\avariables,\headvariables,\shortcatvariables}
     = \sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol} \qstateofat{\goodstatesymbol}{\avariables,\headvariables,\shortcatvariables}
@@ -127,6 +127,15 @@ we get a bound
 \end{align*}
 This shows that we have a square root improvement on classical rejection sampling, which would require $\frac{1}{\acceptanceprob}$ repetitions to produce a sample.
 Note however that we compare quantum circuit length with the number of classical repetitions in sampling.
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz_pics/sampling/rotation_sketch.tikz}
+    \end{center}
+    \caption{Sketch of the amplitude amplification scheme.}
+    \label{fig:rotationSketch}
+\end{figure}
+
 
 %Note, that the variable qubits are uniformly distributed when only the computation circuit is applied.
 %When sampling the probability distribution, we need the ancilla qubits to be in state $1$ in order for the sample to be valid.

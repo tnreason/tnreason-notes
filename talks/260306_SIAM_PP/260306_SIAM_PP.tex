@@ -83,13 +83,30 @@
 
     \begin{frame}{Tensors: A natural description of factored systems}
 
-    {\bf Factored System [Russel and Norvig, 2021]:}
-        Collection of variables, each with a finite set of states.
+    {\bf Factored System:}[Russel and Norvig, 2021]
+        Collection of variables $\shortcatvariables$, each with a finite set of states $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$.
+        The set of states is then the cartesian product
+        \begin{align*}
+            \facstates
+        \end{align*}
 
             {\bf Knowledge about the system:}
         Store an information (e.g. Boolean) to each system state, and get \emph{Tensors}
+        \begin{align*}
+            \hypercorewith \defcols \facstates \rightarrow \rr
+        \end{align*}
+        We represent them by diagrams with legs decorated by the variables:
+        \begin{center}
 
-
+            \begin{tikzpicture}[scale=0.35,thick] % , baseline = -3.5pt
+                \draw (-1,-1) rectangle (5,-3);
+                \node[anchor=center] (text) at (2,-2) {\corelabelsize $\hypercore$};
+                \draw (0,-3)--(0,-5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+                \draw (1.5,-3)--(1.5,-5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
+                \node[anchor=center] (text) at (3,-4) {$\cdots$};
+                \draw (4,-3)--(4,-5) node[midway,right] {\colorlabelsize $\catvariableof{\atomorder\shortminus1}$};
+            \end{tikzpicture}
+        \end{center}
     \end{frame}
 
 %    \begin{frame}{Overview: Tensors in Artificial Intelligence}
@@ -136,6 +153,13 @@
     \end{frame}
 
     \begin{frame}{Inference by Contractions}
+
+    {\bf Reasoning:}
+        Amounts to \emph{contractions of the representations}
+        \begin{itemize}
+            \item Probabilistic Inference: Contract graphical models for marginals
+            \item Logical Inference: Deciding entailment based on model counts %(to decide entailment)
+        \end{itemize}
 
         \begin{block}{Main Reasoning Principle}
             Model counts and marginal probabilities are contractions of tensor networks representing a model.
@@ -195,45 +219,82 @@
 
     \section{Quantum Inference for Neuro-Symbolic AI}
 
-    \begin{frame}{Motivation}
+    \begin{frame}{Motivation for Quantum Inference}
+
         Mitigate computational cost of contractions:
         \begin{center}
             \bf Get square root speedups through Quantum Inference.
         \end{center}
 
+        The similarity of Quantum Circuits and Tensor Networks allows to apply quantum algorithms for inference tasks.
+
         \begin{block}{Quantum Rejection Sampling}
             Square root advantage over classical rejection sampling schemes.
         \end{block}
 
-        \begin{block}{Quantum Phase Estimation}
-            Relate the contractions with the phases of Grover eigenvalues.
-        \end{block}
+%        \begin{block}{Quantum Phase Estimation}
+%            Relate the contractions with the phases of Grover eigenvalues.
+%        \end{block}
 
     \end{frame}
 
     \begin{frame}{Tensor Networks to Quantum Circuits}
 
-        Oracles $\qcbencodingof{\exformula}$ relate with basis encodings of functions as:
-
+        Oracles, namely by $\shortcatvariables$ controlled unitaries acting as
+        \begin{align*}
+            \contractionof{
+                \qcbencodingofat{\exformula}{\cheadvariableof{\exformula}{\insymbol},\cheadvariableof{\exformula}{\outsymbol},\shortcatvariables=\shortcatindices}
+            %,\onehotmapofat{\shortcatindices}{\shortcatvariables}
+                ,\fbasisat{\cheadvariableof{\exformula}{\insymbol}}}
+            {\cheadvariableof{\exformula}{\outsymbol}}
+            = \onehotmapofat{\exformula(\shortcatindices)}{\cheadvariableof{\exformula}{\outsymbol}}
+%            = \ket{\shortcatindices} \ket{\exformula(\shortcatindices)}
+        \end{align*}
+        relate with basis encodings of functions as:
         \begin{center}
             \input{tikz-pics/bencoding-computation-circuit}
         \end{center}
-
         Same sparsity principles can be applied to get efficient quantum circuits for the oracles, and thus for the Grover operator.
-
     \end{frame}
 
-%    \begin{frame}{Quantum Advantage through Grovers Algorithm}
-%        Amplify
-%
-%    \end{frame}
+    \begin{frame}{Amplitude Amplification}
 
+        Approach:
+        Turn Tensor Networks into (conditioned) Bayes Network, introducing ancilla variables $\avariables$
+        \begin{align*}
+            \acceptanceprob \cdot \probwith
+            = \secprobat{\shortcatvariables,\avariables=1_{[\seldim]}} \, .
+        \end{align*}
+        Amplify the sample acceptance event $\avariables=\onetuple{[\seldim]}$ to improve the classical acceptance rate $\acceptanceprob\in(0,1]$, by application of the Grover operator.
 
-    \begin{frame}{Application: Circuit for the Toy Accounting Problem}
+        \begin{center}
+            \input{tikz-pics/amplitude-amplification}
+        \end{center}
+    \end{frame}
 
+    \begin{frame}{Circuit for the Toy Accounting Problem}
+
+        For the toy accounting problem, we prepare a distribution by the circuit:
         \begin{center}
             \input{tikz-pics/toy-accounting-circuit}
         \end{center}
+
+    \end{frame}
+
+    \begin{frame}{Summary and Outlook}
+
+    {\bf Tensor Networks}
+        appear as a natural framework for AI:
+        \begin{itemize}
+            \item \emph{Decomposition as Sparsity Principles}
+            \item \emph{Contractions as Inference}
+        \end{itemize}
+
+        Quantum Circuits
+        \begin{itemize}
+            \item Follow the same tensor network formalism
+            \item Allow for square root speedups for inference tasks
+        \end{itemize}
 
     \end{frame}
 
