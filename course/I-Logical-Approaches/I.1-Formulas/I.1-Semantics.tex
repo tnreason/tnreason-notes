@@ -1,0 +1,291 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[Semantics of Propositional Logics]{
+    \coursechapterone \\
+    {\huge Semantics of Propositional Logics}
+}
+
+\begin{document}
+
+{\frame[plain]{\titlepage}}
+    \AtBeginSection[ ]
+    {
+        \begin{frame}{Outline}
+            \tableofcontents[currentsection]
+        \end{frame}
+    }
+    \begin{frame}{Outline}
+        \tableofcontents
+    \end{frame}
+
+    \addtocounter{framenumber}{-1}
+
+
+    \section{Use Case: DATEV Automation of Accounting}
+
+    \begin{frame}{DATEV Automation of Accounting}
+
+        DATEV, a software company from Nuremberg, sells \emph{automation solutions for accounting consultants}
+        \begin{itemize}
+            \item Consultant receives invoices from its customers
+            \item Accounting statements need to be generated
+        \end{itemize}
+
+        Screenshot from the product\footnote{\tiny https://www.datev.de/web/de/steuerberatung/loesungen/rechnungswesen/buchfuehrung-erstellen/automatisierungsservices-rechnungswesen/datev-automatisierungsservice-rechnungen}:
+        \begin{center}
+            \includegraphics[width=0.7\textwidth]{datev-automatisierung-rechnungen}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}{Requirements}
+
+        Performance by \emph{Neural AI}:
+        \begin{itemize}
+            \item Handle most cases without the need of human supervision
+            \item Understand scenarios based on world knowledge (e.g. "Lindt" in a position indicates choclate consumption)
+        \end{itemize}
+
+        Trust and manipulations by \emph{Symbolic AI}:
+        \begin{itemize}
+            \item Customers need to guarantee certain behaviour, such as respectation of laws
+            \item Manipulation of models based on human input
+        \end{itemize}
+
+        \begin{center}
+            \bf This is a use case for Neuro-Symbolic AI!
+        \end{center}
+
+    \end{frame}
+
+    \begin{frame}{Toy Accounting Example}
+
+        To showcast the approach we study a toy accounting example:
+        %We reason about three variables (being $\truesymbol$ or $\falsesymbol$ in eac)
+
+        For each invoice three variables are either $\truesymbol$ or $\falsesymbol$:
+        \begin{itemize}
+            \item A $\var{Feature}$ is present on the receipt (e.g. whether the receipt was received or sent by the customer).
+            \item The account $\var{Account 1}$ is used to book the receipt.
+            \item The account $\var{Account 2}$ is used to book the receipt.
+        \end{itemize}
+
+        Let there be two accounting rules to be respected:
+        \begin{itemize}
+            \item When the $\var{Feature}$ is present on the receipt, the $\var{Account 1}$ needs to be booked.
+            \item Exactly one of the accounts $\var{Account 1}$ and $\var{Account 2}$ is used to book the receipt.
+        \end{itemize}
+
+    \end{frame}
+
+    \begin{frame}{Realistic Problem Sizes}
+
+        The variables and main relations are visualized in a so-called ontology\footnote{\tiny https://github.com/EnexaProject/enexa-use-case-1-business-software-solutions}:
+        \begin{center}
+            \begin{tikzpicture}
+                \drawtextnode{0}{0}{\includegraphics[height=0.4\textwidth]{images/ontology_fine_snapshot}}
+                \drawtextnode{0}{-3}{\bf Coarse Visualization}
+                \drawtextnode{5}{0}{\includegraphics[height=0.4\textwidth]{images/ontology_coarse_snapshot}}
+                \drawtextnode{5}{-3}{\bf Detailed Visualization}
+            \end{tikzpicture}
+        \end{center}
+        \begin{center}
+            We will come back to ontologies and knowledge graphs later in the course.
+        \end{center}
+    \end{frame}
+
+
+    \section{Formalization by Propositional Logics}
+
+    \begin{frame}{States of an atomic variable}
+
+        Any atomic variable $\catvariable$ (e.g. the feature $\catvariableof{F}$ present on the invoice) can be in two states
+        \begin{align*}
+            \mathrm{False} \Leftrightarrow 0 \quad,\quad \mathrm{True} \Leftrightarrow 1
+        \end{align*}
+        We understand the states as the coordinates of a vector:
+        \begin{center}
+            \begin{tikzpicture}[scale=1]
+                \node (A) at (0,0) {
+                    $\coloredmatrixof{\cdot \\ \cdot }{\catvariable}$
+                };
+                \draw[dashed,->] (-0.5,0.2) to (-1.5,0.2) node[left]{\small $\mathrm{False}$};
+                \draw[dashed,->] (-0.5,-0.2) to (-1.5,-0.2) node[left]{\small $\mathrm{True}$};
+            \end{tikzpicture}
+        \end{center}
+
+        \textbf{Conventions:}
+        \begin{itemize}
+%            \item We assign to each state a coordinate of a vector, in which we can store whether the variable can be in the state
+            \item We assign a $0$ in the coordinate, when the corresponding state is not possible, and a $1$ if the corresponding state is possible.
+            \item In the brackets after a vector we denote the corresponding variable.
+        \end{itemize}
+
+
+    \end{frame}
+
+    \begin{frame}{Encoding knowledge about a variable}
+
+        The knowledge about an atomic variable is aligned in an two-dimensional vector:
+        \begin{itemize}
+            \item When the variable is known to be $\mathrm{True}$:
+            \begin{align*}
+                \coloredmatrixof{0\\1}{\catvariable}
+            \end{align*}
+            \item When the variable is known to be $\mathrm{False}$:
+            \begin{align*}
+                \coloredmatrixof{1\\0}{\catvariable}
+            \end{align*}
+            \item When the state of the variable is unknown:
+            \begin{align*}
+                \coloredmatrixof{1\\1}{\catvariable}
+            \end{align*}
+            \item The variable is neither $\mathrm{True}$ nor $\mathrm{False}$ (our knowledge is then inconsistent)
+            \begin{align*}
+                \coloredmatrixof{0\\0}{\catvariable}
+            \end{align*}
+        \end{itemize}
+
+    \end{frame}
+
+
+    \begin{frame}{Knowledge about two variables}
+        Let us extend the system to two variables:
+        \begin{itemize}
+            \item $\catvariableof{A1}$: Whether the $\var{Account 1}$ is booked.
+            \item $\catvariableof{A2}$: Whether the $\var{Account 2}$ is booked.
+        \end{itemize}
+        The states of the tuple $(\catvariableof{A1},\catvariableof{A2})$ are the product
+        \begin{align*}
+            \{0,1\} \times \{0,1\} = \{(0,0),(0,1),(1,0),(1,1)\}
+        \end{align*}
+        For example $(\catvariableof{A1},\catvariableof{A2})=(1,0)$ refers to the system state, in which $\var{Account 1}$ is booked ($\mathrm{True}$) and $\var{Account 2}$ is not booked ($\mathrm{False}$).
+
+        \begin{center}
+            \begin{tikzpicture}[scale=1]
+                \node (A) at (0.7,0) {
+                    $\coloredmatrixof{\cdot & \cdot \\ \cdot & \cdot}{\catvariableof{A1},\catvariableof{A2}}$
+                };
+                \draw[<-,dashed] (-0.9,-0.275) node[right] {\tiny $1$} -- (-0.9,0.275) node [midway, left] {\tiny $\catvariableof{A1}$} node[right] {\tiny $0$};
+                \draw[->,dashed] (-0.3,0.85) node[below] {\tiny $0$} -- (0.3,0.85) node [midway, above] {\tiny $\catvariableof{A2}$} node[below] {\tiny $1$};
+            \end{tikzpicture}
+        \end{center}
+
+    \end{frame}
+
+    \begin{frame}{Knowledge about two variables}
+        The rule, that exactly one of the accounts is booked is then encoded in the matrix
+        \begin{center}
+            \begin{tikzpicture}[scale=1]
+                \node (A) at (0,0) {
+                    $\coloredmatrixof{0 & 1 \\ 1 & 0}{\catvariableof{A1},\catvariableof{A2}}$
+                };
+                \draw[dashed,->] (-1.5,0.2) to (-2.5,0.2) node[left]{\small $(\mathrm{False},\mathrm{False})$};
+                \draw[dashed,->] (-1.5,-0.2) to (-2.5,-0.2) node[left]{\small $(\mathrm{True},\mathrm{False})$};
+
+                \draw[dashed,->] (-0.5,0.5) to (-0.5,1) node[above]{\small $(\mathrm{False},\mathrm{True})$};
+                \draw[dashed,->] (-0.5,-.5) to (-0.5,-1) node[below]{\small $(\mathrm{True},\mathrm{True})$};
+
+            \end{tikzpicture}
+        \end{center}
+
+    \end{frame}
+
+
+    \begin{frame}{Knowledge about the Toy Accounting System}
+        Now let us extend to the toy accounting system.
+        Given the Knowledge about two formulas we have
+        \begin{center}
+            \begin{tikzpicture}[scale=1]
+                \node (A) at (0,0) {
+                    $\begin{pmatrix}
+                         0 & 1 \\ 1 & 0
+                    \end{pmatrix}$
+                };
+                \draw[<-,dashed] (-0.9,-0.275) node[right] {\tiny $1$} -- (-0.9,0.275) node [midway, left] {\tiny $\catvariableof{A1}$} node[right] {\tiny $0$};
+                \draw[->,dashed] (-0.3,0.85) node[below] {\tiny $0$} -- (0.3,0.85) node [midway, above] {\tiny $\catvariableof{A2}$} node[below] {\tiny $1$};
+                \draw[->,dashed] (0,-0.85) node[above] {\tiny $0$} -- (1.25,-0.55) node [midway, below] {\tiny $\catvariableof{F}$} node[above] {\tiny $1$};
+
+                \node at (1.25,0.5){
+                    $\begin{pmatrix}
+                         0 & 0 \\ 1 & 0
+                    \end{pmatrix}$
+                };
+
+                \drawtextnode{3}{0}{$\left[\catvariableof{A1},\catvariableof{A2},\catvariableof{F}\right]$}
+            \end{tikzpicture}
+        \end{center}
+
+    \end{frame}
+
+
+    \section{Coarser Picture: Tensors}
+
+    \begin{frame}{Situation of $\atomorder$ variables}
+        Let us now imagine that we have $\atomorder$ variables $\catvariableof{0},\ldots,\catvariableof{\atomorder-1}$.
+
+        The coordinatewise description would be confusing for $\atomorder>3$!
+
+        The states are the set
+        \begin{align*}
+            \bigtimes_{\catenumeratorin} \{0,1\}
+        \end{align*}
+        of $2^{\catorder}$ state tuples.
+
+        We use a diagramatic depiction instead:
+
+
+    \end{frame}
+
+    \begin{frame}{Tensors of leg dimension $2$}
+        \begin{definition}[Propositional Formula]
+            A \emph{tensor} of order $\atomorder\in\nn$ is a map
+            \begin{align*}
+                \exformula : \bigtimes_{\catenumeratorin} \{0,1\} \rightarrow \{0,1\} \, .
+            \end{align*}
+%            \[ \hypercore : \facstates \rightarrow \rr \, . \]
+            \begin{itemize}
+                \item We refer to $\hypercore(\catindices)\in\rr$ by the \emph{coordinate} of $\hypercore$ with the indices $\catindices$.
+                \item By scalar multiplication and addition of maps, tensors build linear spaces called \emph{tensor spaces}
+                \[ \hypercore \in \facspace \, . \]
+            \end{itemize}
+        \end{definition}
+
+        A propositional formula is also called a \emph{tensor of leg dimension $2$}.
+
+
+    \end{frame}
+
+
+
+
+    \begin{frame}{Depiction of Tensors}
+        We will depict
+        \begin{itemize}
+            \item \emph{tensors by blocks}
+            \item affected \emph{categorical variables by open legs}
+        \end{itemize}
+        For example, given the atomic variables
+        \[ \{\catvariableof{\atomenumerator} \, : \, \atomenumeratorin \} \]
+        with respective dimensions $\catdimof{\atomenumerator}\in\mathbb{N}$ we depict a tensor
+        \[ \hypercore \in \bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} \]
+        as
+        \begin{center}
+            \input{./tikz_pics/tensor.tex}
+        \end{center}
+    \end{frame}
+
+
+    \begin{frame}{Example: Depiction of Vectors}
+        For example, a vector
+        \[ V \in \rr^{m}\]
+        with an index variable $\catvariable\in[m]$ is depicted by a block with a single open leg
+        \begin{center}
+            \input{./tikz_pics/vector.tex}
+        \end{center}
+    \end{frame}
+
+
+\end{document}
