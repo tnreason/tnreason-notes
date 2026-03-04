@@ -36,7 +36,7 @@
 
         Screenshot from the product\footnote{\tiny https://www.datev.de/web/de/steuerberatung/loesungen/rechnungswesen/buchfuehrung-erstellen/automatisierungsservices-rechnungswesen/datev-automatisierungsservice-rechnungen}:
         \begin{center}
-            \includegraphics[width=0.7\textwidth]{datev-automatisierung-rechnungen}
+            \includegraphics[width=0.7\textwidth]{images/datev-automatisierung-rechnungen}
         \end{center}
     \end{frame}
 
@@ -176,7 +176,7 @@
     \end{frame}
 
     \begin{frame}{Knowledge about two variables}
-        The rule, that exactly one of the accounts is booked is then encoded in the matrix
+        The rule, that exactly one of the accounts $\var{Account 1}$ and $\var{Account 2}$ is booked is then encoded in the matrix
         \begin{center}
             \begin{tikzpicture}[scale=1]
                 \node (A) at (0,0) {
@@ -191,12 +191,17 @@
             \end{tikzpicture}
         \end{center}
 
+        The rule that $\var{Account 1}$ is booked when $\var{Feature}$ is present by:
+        \begin{align*}
+            \coloredmatrixof{1 & 1 \\ 0 & 1}{\catvariableof{F},\catvariableof{A1}}
+        \end{align*}
+
     \end{frame}
 
 
     \begin{frame}{Knowledge about the Toy Accounting System}
         Now let us extend to the toy accounting system.
-        Given the Knowledge about two formulas we have
+        Given the Knowledge about both formulas we have
         \begin{center}
             \begin{tikzpicture}[scale=1]
                 \node (A) at (0,0) {
@@ -217,6 +222,8 @@
                 \drawtextnode{3}{0}{$\left[\catvariableof{A1},\catvariableof{A2},\catvariableof{F}\right]$}
             \end{tikzpicture}
         \end{center}
+
+        To understand the transition from the matrices to this tensor of order $3$, we need to widen our tensor formalism.
 
     \end{frame}
 
@@ -239,17 +246,17 @@
 
     \end{frame}
 
-    \begin{frame}{Tensors of leg dimension $2$}
+    \begin{frame}{Propositional Formulas}
         \begin{definition}[Propositional Formula]
-            A \emph{tensor} of order $\atomorder\in\nn$ is a map
+            A \emph{propositional formula} of order $\atomorder\in\nn$ is a map
             \begin{align*}
                 \exformula : \bigtimes_{\catenumeratorin} \{0,1\} \rightarrow \{0,1\} \, .
             \end{align*}
 %            \[ \hypercore : \facstates \rightarrow \rr \, . \]
             \begin{itemize}
-                \item We refer to $\hypercore(\catindices)\in\rr$ by the \emph{coordinate} of $\hypercore$ with the indices $\catindices$.
+                \item We refer to $\hypercoreat{\indexedshortcatvariables}\in\rr$ by the \emph{coordinate} of $\hypercore$ with the indices $\shortcatindices=\catindices$.
                 \item By scalar multiplication and addition of maps, tensors build linear spaces called \emph{tensor spaces}
-                \[ \hypercore \in \facspace \, . \]
+                \[ \hypercore \in \bigotimes_{\catenumeratorin} \rr^2 \, . \]
             \end{itemize}
         \end{definition}
 
@@ -259,33 +266,33 @@
     \end{frame}
 
 
-
-
-    \begin{frame}{Depiction of Tensors}
-        We will depict
-        \begin{itemize}
-            \item \emph{tensors by blocks}
-            \item affected \emph{categorical variables by open legs}
-        \end{itemize}
-        For example, given the atomic variables
-        \[ \{\catvariableof{\atomenumerator} \, : \, \atomenumeratorin \} \]
-        with respective dimensions $\catdimof{\atomenumerator}\in\mathbb{N}$ we depict a tensor
-        \[ \hypercore \in \bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} \]
-        as
-        \begin{center}
-            \input{./tikz_pics/tensor.tex}
-        \end{center}
-    \end{frame}
-
-
-    \begin{frame}{Example: Depiction of Vectors}
-        For example, a vector
-        \[ V \in \rr^{m}\]
-        with an index variable $\catvariable\in[m]$ is depicted by a block with a single open leg
-        \begin{center}
-            \input{./tikz_pics/vector.tex}
-        \end{center}
-    \end{frame}
+%% To Syntax
+%
+%    \begin{frame}{Depiction of Tensors}
+%        We will depict
+%        \begin{itemize}
+%            \item \emph{tensors by blocks}
+%            \item affected \emph{categorical variables by open legs}
+%        \end{itemize}
+%        For example, given the atomic variables
+%        \[ \{\catvariableof{\atomenumerator} \, : \, \atomenumeratorin \} \]
+%        with respective dimensions $\catdimof{\atomenumerator}\in\mathbb{N}$ we depict a tensor
+%        \[ \hypercore \in \bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} \]
+%        as
+%        \begin{center}
+%            \input{./tikz_pics/tensor.tex}
+%        \end{center}
+%    \end{frame}
+%
+%
+%    \begin{frame}{Example: Depiction of Vectors}
+%        For example, a vector
+%        \[ V \in \rr^{m}\]
+%        with an index variable $\catvariable\in[m]$ is depicted by a block with a single open leg
+%        \begin{center}
+%            \input{./tikz_pics/vector.tex}
+%        \end{center}
+%    \end{frame}
 
 
 \end{document}

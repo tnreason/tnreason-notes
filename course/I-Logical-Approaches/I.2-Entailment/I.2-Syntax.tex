@@ -1,0 +1,226 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[Syntax of Propositional Logics]{
+    \coursechapterone \\
+    {\huge Syntax of Propositional Logics}
+}
+
+\begin{document}
+
+{\frame[plain]{\titlepage}}
+    \AtBeginSection[ ]
+    {
+        \begin{frame}{Outline}
+            \tableofcontents[currentsection]
+        \end{frame}
+    }
+    \begin{frame}{Outline}
+        \tableofcontents
+    \end{frame}
+
+    \addtocounter{framenumber}{-1}
+
+
+        \section{Syntax}
+
+    \begin{frame}{Syntax and Semantics of Logics}
+
+        Logic is build upon
+        \textbf{Syntax}
+        \begin{itemize}
+            \item How to formulate logical formulas?
+            \item Example: The formula $\var{Feature}\Rightarrow\var{Account 1}$ represents the implication, that the $\var{Account 1}$ has to be booked when the feature $\var{Feature}$ is present on the invoice.
+            \item Propositional Logics: The variables (or atomic formulas) are combined with logical connectives $\{\lnot, \land, \lor, \Rightarrow, \Leftrightarrow\}$ to build generic formulas.
+        \end{itemize}
+        and \textbf{Semantics}
+        \begin{itemize}
+            \item What do these formulas describe?
+            \item Example: From the formula $\var{Feature}\land(\var{Feature}\Rightarrow\var{Account 1})$ the formula $\var{Account 1}$ follows.
+            \item Propositional Logics: Each formula describes possible worlds, which are called models of a formula. Comparing the models defines the \textbf{entailment relation}.
+        \end{itemize}
+        
+    \end{frame}
+
+    \begin{frame}{Entailment}
+        
+        \begin{definition}[Entailment]
+            Let $\kbat{\shortcatvariables}$ and $\formulawith$ be two propositional formulas.
+            If for all worlds $\shortcatindices$, for which $\kbat{\indexedshortcatvariables}=1$, we also have $\formulaat{\indexedshortcatvariables}=1$, then we say that $\formula$ is entailed by $\kb$ and denote
+            \begin{align*}
+                \kb \models \formula
+            \end{align*}
+
+        \end{definition}
+
+        \textbf{Aim:} How to express this as a computation?
+
+        \begin{center}
+            \bf We develop the contraction formalism of tensors for this.
+        \end{center}
+
+    \end{frame}
+
+
+
+
+    \section{Diagramatic Contractions}
+
+    \begin{frame}{Depiction of Tensors}
+        We will depict
+        \begin{itemize}
+            \item \emph{tensors by blocks}
+            \item affected \emph{categorical variables by open legs}
+        \end{itemize}
+        For example, given the atomic variables
+        \[ \{\catvariableof{\atomenumerator} \, : \, \atomenumeratorin \} \]
+        with respective dimensions $\catdimof{\atomenumerator}\in\mathbb{N}$ we depict a tensor
+        \[ \hypercore \in \bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} \]
+        as
+        \begin{center}
+            \input{./tikz-pics/tensor.tex}
+        \end{center}
+    \end{frame}
+
+
+    \begin{frame}{Example: Depiction of Vectors}
+        For example, a vector
+        \[ V \in \rr^{m}\]
+        with an index variable $\catvariable\in[m]$ is depicted by a block with a single open leg
+        \begin{center}
+            \input{./tikz-pics/vector.tex}
+        \end{center}
+    \end{frame}
+
+
+    \section{Contractions}
+
+    \begin{frame}{Matrix-Vector Multiplications}
+
+        The blockwise notation is especially useful in visualizing contractions.
+
+        The simplest contraction is the matrix-vector multiplications.
+        \medskip
+
+        {\bf Example:} Knowing that $\catvariableof{A2}=1$, what are the possible values of $\catvariableof{A1}$?
+
+        \begin{center}
+            \begin{tikzpicture}
+                \drawtextnode{0}{0}{
+                    $\coloredmatrixof{0 & 1 \\ 1 & 0}{\catvariableof{A1},\catvariableof{A2}}$
+                }
+                \drawtextnode{2.25}{0}{
+                    $\coloredmatrixof{0 \\ 1 }{\catvariableof{A2}}$
+                }
+                \drawtextnode{3.5}{0}{${=}$}
+                \drawtextnode{4.75}{0}{
+                    $\coloredmatrixof{1 \\ 0}{\catvariableof{A1}}$
+                }
+            \end{tikzpicture}
+        \end{center}
+
+        In the blockwise notation the matrix-vector multiplication is depicted by:
+        \begin{center}
+            \begin{tikzpicture}[scale=0.65]
+
+                \draw (-1,0) -- (-3,0) node[midway,above] {$\catvariableof{A1}$};
+                \draw (-1,-1) rectangle (1,1);
+                \drawtextnode{0}{0}{$\blankmatrix{0 & 1 \\ 1 & 0}$}
+                \draw (1,0) -- (3,0) node[midway,above] {$\catvariableof{A2}$};
+                \draw (3,-1) rectangle (5,1);
+                \drawtextnode{4}{0}{$\blankmatrix{0 \\ 1 }$}
+
+                \drawtextnode{6}{0}{${=}$}
+
+                \draw (7,0) -- (9,0) node[midway,above] {$\catvariableof{A1}$};
+                \draw (9,-1) rectangle (11,1);
+                \drawtextnode{10}{0}{$\blankmatrix{1 \\ 0 }$}
+
+            \end{tikzpicture}
+        \end{center}
+    \end{frame}
+
+
+
+
+    \begin{frame}{Contractions}
+
+        In general contractions are defined using Einstein summations:
+
+        \begin{align*}
+            \contraction{\hypercoreofat{e_0}{\catvariableof{e_0}},\ldots, }
+            = \sum_{\shortcatindices\in[2]^{\catorder}} 
+            \prod_{\edge\in\edges} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+        \end{align*}
+
+    \end{frame}
+
+    \begin{frame}{Model counts}
+
+        We have
+        \begin{align*}
+            &\contraction{\kbwith,\formulawith} \\
+            &\quad = \#\{\shortcatindices\in[2]^{\catorder} \wcols \kbat{\indexedshortcatvariables}=\formulaat{\indexedshortcatvariables}=1\}
+        \end{align*}
+        That is, the number of common models is counted
+
+        So if
+        \begin{align*}
+            \contraction{\kbwith,\formulawith} = \contraction{\kbwith}
+        \end{align*}
+        then $\kb\models\formula$.
+
+
+
+    \end{frame}
+
+
+    \begin{frame}{Entailment by contractions}
+
+        Trick:
+        \begin{align*}
+            \contraction{\kbwith,\formulawith} = \contraction{\kbwith}
+        \end{align*}
+        is equal to
+        \begin{align*}
+            \contraction{\kbwith}-\contraction{\kbwith,\formulawith} = 0
+        \end{align*}
+        and
+        \begin{align*}
+            \contraction{\kbwith,\lnot\formulawith} = 0
+        \end{align*}
+
+        \begin{block}
+            For any propositional formulas we have $\kb\models\formula$ if and only if
+            \begin{align*}
+                \contraction{\kbwith,\lnot\formulawith} = 0
+            \end{align*}
+        \end{block}
+    \end{frame}
+
+
+
+%    \begin{frame}{Semantics: Matrices represent formulas with two variables}
+%
+%        We mark the models (the possible worlds) of a formula, and choose an order by
+%        \begin{itemize}
+%            \item \var{Wet} is False on the first column and True on the second
+%            \item \var{Rained} is False on the first row and True on the second
+%        \end{itemize}
+%        Then the model-theoretic semantics of $\var{Rained}\Rightarrow\var{Wet}$ is represented by the matrix:
+%        \begin{align}
+%            \left(\var{Rained}\Rightarrow\var{Wet}\right) =
+%            \begin{bmatrix}
+%                1 & 1 \\
+%                0 & 1
+%            \end{bmatrix}
+%        \end{align}
+%
+%    \end{frame}
+
+
+
+
+\end{document}
