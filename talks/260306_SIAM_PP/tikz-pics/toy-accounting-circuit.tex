@@ -1,43 +1,5 @@
 \begin{tikzpicture}[scale=0.35, thick] % , baseline = -3.5pt
 
-%    \node[anchor=center] at (-16,14) {$a)$};
-%    \node[anchor=center] at (-4,14) {$b)$};
-%
-%    \begin{scope}[shift={(-12,2.25)}]
-%
-%        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A0) at (-1.5,10) {};
-%        \node[anchor=center] (A) at (-1.5,10) {\corelabelsize $\avariableof{0}$};
-%        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A1) at (1.5,10) {};
-%        \node[anchor=center] (A) at (1.5,10) {\corelabelsize $\avariableof{1}$};
-%
-%        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (H0) at (-1.5,5) {};
-%        \node[anchor=center] (A) at (-1.5,5) {\corelabelsize $\headvariableof{0}$};
-%        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (H1) at (1.5,5) {};
-%        \node[anchor=center] (A) at (1.5,5) {\corelabelsize $\headvariableof{1}$};
-%
-%        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (F) at (3,0) {};
-%        \node[anchor=center] (A) at (3,0) {\corelabelsize $\catvariableof{F}$};
-%
-%        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (XA1) at (0,0) {};
-%        \node[anchor=center] (A) at (0,0) {\corelabelsize $\catvariableof{A1}$};
-%
-%        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (XA2) at (-3,0) {};
-%        \node[anchor=center] (A) at (-3,0) {\corelabelsize $\catvariableof{A2}$};
-%
-%        \draw[->-] (H0) -- (A0);
-%        \draw[->-] (H1) -- (A1);
-%
-%        \coordinate (F0) at (-1.5,2.5);
-%        \draw[->-] (XA2) -- (F0);
-%        \draw[->-] (XA1) -- (F0);
-%        \draw[->-] (F0) -- (H0);
-%
-%        \coordinate (F1) at (1.5,2.5);
-%        \draw[->-] (F) -- (F1);
-%        \draw[->-] (XA1) -- (F1);
-%        \draw[->-] (F1) -- (H1);
-%    \end{scope}
-
     %% Ancilla Qubits
 
     \draw (-1,15) rectangle (1,13);
@@ -45,7 +7,7 @@
     \node[anchor=center] (text) at (0,14) {$\onehotmapof{0}$};
     \draw (1,14) -- (13.5,14);
     \draw (13.5,15) rectangle (15.5,13);
-    \node[anchor=center] (text) at (14.5,14) {$\qcaencodingof{\hypercoreof{1}}$};
+    \node[anchor=center] (text) at (14.5,14) {$R_y$};
     \draw (15.5,14) -- (18,14);
     \drawqcmeasuresymbol{19}{14}
     \draw (20,14) -- (21.5,14) node[above,midway] {\colorlabelsize $\avariableof{1}$};
@@ -58,7 +20,7 @@
     \node[anchor=center] (text) at (0,11.5) {$\onehotmapof{0}$};
     \draw (1,11.5) -- (11.5,11.5);
     \draw (11.5,10.5) rectangle (13.5,12.5);
-    \node[anchor=center] (text) at (12.5,11.5) {$\qcaencodingof{\hypercoreof{0}}$};
+    \node[anchor=center] (text) at (12.5,11.5) {$R_y$};
     \draw (13.5,11.5) -- (18,11.5);
     \drawqcmeasuresymbol{19}{11.5}
     \draw (20,11.5) -- (21.5,11.5) node[above,midway] {\colorlabelsize $\avariableof{0}$};
