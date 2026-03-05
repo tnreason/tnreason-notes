@@ -1,19 +1,11 @@
 \documentclass{beamer}
-
-% Alternative to \usetheme{claw}
-\usepackage{../template/beamercolorthemeclaw}
-\usepackage{../template/beamerfontthemeclaw}
-\usepackage{../template/beamerinnerthemeclaw}
-\usepackage{../template/beamerouterthemeclaw}
+\input{../template/ENEXA/packages.tex}
 
 \usepackage{tcolorbox}
 \usepackage{braket}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-
 \usepackage{pdfpages}
-
-\input{../template/packages.tex}
 
 \input{../../macros/general_macros.tex}
 \input{../../macros/tc_macros.tex}
@@ -25,15 +17,9 @@
 \newcommand{\atomcolor}{brown}
 \newcommand{\extractioncolor}{blue}
 \newcommand{\variationalcolor}{red}
-%\newcommand{\bigtimes}{\times}
 \newcommand{\bigtimes}{\mathop{\text{\Large$\times$}}\displaylimits}
 \newcommand{\exampleprefix}{fibu}
 \newcommand{\productsnum}{n}
-
-%\usepackage{biblatex}
-%\addbibresource{../../references.bib}
-%\bibliographystyle{plain}    % Fixes "no \bibstyle command"
-%\bibliography{../../references.bib}
 
 \tikzset{
     midarrow/.style={
@@ -61,7 +47,6 @@
 \title[Tensor networks and quantum inference for neuro-symbolic AI]{
     Tensor networks and quantum inference for neuro-symbolic AI
 }
-%\subtitle{A Tensor Network inspired Construction Scheme}
 \date[March 6, 2026]{SIAM PP26 Conference - MS79\\ March 6, 2026}
 \author[A.~Goessmann]{Alex Goessmann \\ joint work with Janina Schütte, Maximilian Fröhlich and Martin Eigel \\
 arXiv : 2601.15442}
@@ -69,22 +54,19 @@ arXiv : 2601.15442}
     Weierstraß Institute for Applied Analysis and Stochastics (WIAS)
 }
 
-%\newcommand{\semres}[1]{\mathrm{#1}}
-%\newcommand{\sempar}[1]{\emph{#1}}
-
 \begin{document}
 
 {\frame[plain]{\titlepage}}
 
-    \AtBeginSection[]
-    {
-        \begin{frame}{Outline}
-            \tableofcontents[currentsection]
-        \end{frame}
-    }
-    \begin{frame}{Outline}
-        \tableofcontents
-    \end{frame}
+%    \AtBeginSection[]
+%    {
+%        \begin{frame}{Outline}
+%            \tableofcontents[currentsection]
+%        \end{frame}
+%    }
+%    \begin{frame}{Outline}
+%        \tableofcontents
+%    \end{frame}
 
     \addtocounter{framenumber}{-1}
 
@@ -93,13 +75,13 @@ arXiv : 2601.15442}
 
     \begin{frame}{Motivation: Toy accounting rule system}
 
-        \begin{example}[Toy accounting rule system]
+        \begin{block}{Toy accounting rule system}
             Assume you want to book one of two accounts $\mathrm{A1}$ and $\mathrm{A2}$ depending on a feature $\mathrm{F}$ of an invoice, based on two rules:
             \begin{itemize}
                 \item \textcolor{\concolor}{Exactly one account must be booked.}
                 \item \textcolor{\probcolor}{If feature $\mathrm{F}$ is present on the invoice, the account $\mathrm{A1}$ is typically booked.}
             \end{itemize}
-        \end{example}
+        \end{block}
 
         \begin{itemize}
             \item {Accounting rules} are formalised in propositional logics, triggered by receipts properties.
@@ -124,9 +106,6 @@ arXiv : 2601.15442}
                 \drawtextnode{5}{-3}{\bf Detailed Visualization}
             \end{tikzpicture}
         \end{center}
-        %\begin{center}
-        %    We will come back to ontologies and knowledge graphs later in the course.
-        %\end{center}
     \end{frame}
 
     \begin{frame}{Tensors: Natural description of factored representations}
@@ -156,28 +135,6 @@ arXiv : 2601.15442}
             \end{tikzpicture}
         \end{center}
     \end{frame}
-
-%    \begin{frame}{Overview: Tensors in Artificial Intelligence}
-%
-%        \begin{block}{\emph{T}ensor \emph{N}etwork based \emph{Reason}ing ({\bf \tnreason})}
-%            Cassical and neuro-symbolic reasoning based on tensor network contractions.
-%        \end{block}
-%
-%            {\bf Representation:} Tensors \emph{appear naturally as factored representations of systems} [Russel and Norvig, 2021], such as in
-%        \begin{itemize}
-%            \item Probabilistic Representation (Uncertainties of states): Probability tensors in exponential families (generalization of graphical models)
-%            \item Logical Representation (Possibilities of states): Semantic tensors
-%        \end{itemize}
-%
-%        \medskip
-%
-%        {\bf Reasoning:} Amounts to \emph{contractions of the representations}
-%        \begin{itemize}
-%            \item Probabilistic Inference: Contract graphical models for marginals
-%            \item Logical Inference: Deciding entailment based on model counts %(to decide entailment)
-%        \end{itemize}
-%        \medskip
-%    \end{frame}
 
 
     \begin{frame}{Sparsity by tensor network decompositions}
@@ -224,8 +181,6 @@ arXiv : 2601.15442}
             \item The hard activation vector $\textcolor{\concolor}{\coloredmatrixof{0 \\ 1}{\headvariableof{A1\oplus A2}}}$ ensures that the first rule is always true.
             \item The soft activation vector $\textcolor{\probcolor}{\coloredmatrixof{1 \\ \expof{\canparam}}{\headvariableof{F\oplus A1}}}$ introduces the trainable parameter $\canparam\in\rr$ controlling the satisfaction probability of the second rule.
         \end{itemize}
-
-%        The contracted \ComputationActivationNetwork{} is a tensor of order $3$ in $\rr^{2x2x2}$, with legs decorated by the variables $\catvariableof{A1},\catvariableof{A2},\catvariableof{F}$.
     \end{frame}
 
 
@@ -243,8 +198,6 @@ arXiv : 2601.15442}
         \begin{center}
             \input{tikz-pics/toy-accounting-reasoning}
         \end{center}
-
-
 %        More advanced inference schemes:
 %        \begin{itemize}
 %            \item Parameter estimation: Moments in an inner loops, which are iteratively matched.
@@ -269,15 +222,15 @@ arXiv : 2601.15442}
             Tensor network contractions are the workhorse of inference, but they are often computationally demanding.
         \end{block}
 
-        Mitigate computational cost of contractions:
+        The similarity of quantum circuits and tensor networks allows to apply \emph{quantum algorithms for inference}.
+
         \begin{center}
-            \bf Get square root speedups through quantum inference.
+        {\bf Advantage:}
+            Square root speedups through quantum inference (provided that sparsity principles apply).
         \end{center}
 
-        The similarity of quantum circuits and tensor networks allows to apply quantum algorithms for inference tasks.
-
         \begin{block}{Quantum Rejection Sampling \cite{low_quantum_2014}}
-            Square root advantage over classical rejection sampling schemes.
+            Amplify conditioned event by the Grover algorithm to improve the sample acceptance probability.
         \end{block}
 
     \end{frame}
@@ -346,6 +299,14 @@ arXiv : 2601.15442}
     \end{frame}
 
     \begin{frame}{References}
+
+        \begin{center}
+            \bf Thank you very much for your attention!
+        \end{center}
+
+        \medskip
+
+        \small
 
         \bibliographystyle{alpha}
         \bibliography{../../references.bib}
