@@ -3,99 +3,15 @@
 \input{../../spec_files/course_preamble.tex}
 \input{../../spec_files/course_macros.tex}
 
-\title[Semantics of Propositional Logics]{
+\title[Propositional Formulas]{
     \coursechapterone \\
-    {\huge Semantics of Propositional Logics}
+    {\huge Propositional Formulas}
 }
 
 \begin{document}
 
 {\frame[plain]{\titlepage}}
-    \AtBeginSection[ ]
-    {
-        \begin{frame}{Outline}
-            \tableofcontents[currentsection]
-        \end{frame}
-    }
-    \begin{frame}{Outline}
-        \tableofcontents
-    \end{frame}
-
-    \addtocounter{framenumber}{-1}
-
-
-    \section{Use Case: DATEV Automation of Accounting}
-
-    \begin{frame}{DATEV Automation of Accounting}
-
-        DATEV, a software company from Nuremberg, sells \emph{automation solutions for accounting consultants}
-        \begin{itemize}
-            \item Consultant receives invoices from its customers
-            \item Accounting statements need to be generated
-        \end{itemize}
-
-        Screenshot from the product\footnote{\tiny https://www.datev.de/web/de/steuerberatung/loesungen/rechnungswesen/buchfuehrung-erstellen/automatisierungsservices-rechnungswesen/datev-automatisierungsservice-rechnungen}:
-        \begin{center}
-            \includegraphics[width=0.7\textwidth]{images/datev-automatisierung-rechnungen}
-        \end{center}
-    \end{frame}
-
-    \begin{frame}{Requirements}
-
-        Performance by \emph{Neural AI}:
-        \begin{itemize}
-            \item Handle most cases without the need of human supervision
-            \item Understand scenarios based on world knowledge (e.g. "Lindt" in a position indicates choclate consumption)
-        \end{itemize}
-
-        Trust and manipulations by \emph{Symbolic AI}:
-        \begin{itemize}
-            \item Customers need to guarantee certain behaviour, such as respectation of laws
-            \item Manipulation of models based on human input
-        \end{itemize}
-
-        \begin{center}
-            \bf This is a use case for Neuro-Symbolic AI!
-        \end{center}
-
-    \end{frame}
-
-    \begin{frame}{Toy Accounting Example}
-
-        To showcast the approach we study a toy accounting example:
-        %We reason about three variables (being $\truesymbol$ or $\falsesymbol$ in eac)
-
-        For each invoice three variables are either $\truesymbol$ or $\falsesymbol$:
-        \begin{itemize}
-            \item A $\var{Feature}$ is present on the receipt (e.g. whether the receipt was received or sent by the customer).
-            \item The account $\var{Account 1}$ is used to book the receipt.
-            \item The account $\var{Account 2}$ is used to book the receipt.
-        \end{itemize}
-
-        Let there be two accounting rules to be respected:
-        \begin{itemize}
-            \item When the $\var{Feature}$ is present on the receipt, the $\var{Account 1}$ needs to be booked.
-            \item Exactly one of the accounts $\var{Account 1}$ and $\var{Account 2}$ is used to book the receipt.
-        \end{itemize}
-
-    \end{frame}
-
-    \begin{frame}{Realistic Problem Sizes}
-
-        The variables and main relations are visualized in a so-called ontology\footnote{\tiny https://github.com/EnexaProject/enexa-use-case-1-business-software-solutions}:
-        \begin{center}
-            \begin{tikzpicture}
-                \drawtextnode{0}{0}{\includegraphics[height=0.4\textwidth]{images/ontology_fine_snapshot}}
-                \drawtextnode{0}{-3}{\bf Coarse Visualization}
-                \drawtextnode{5}{0}{\includegraphics[height=0.4\textwidth]{images/ontology_coarse_snapshot}}
-                \drawtextnode{5}{-3}{\bf Detailed Visualization}
-            \end{tikzpicture}
-        \end{center}
-        \begin{center}
-            We will come back to ontologies and knowledge graphs later in the course.
-        \end{center}
-    \end{frame}
-
+    \showoutlineatsection
 
     \section{Formalization by Propositional Logics}
 

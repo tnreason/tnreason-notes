@@ -12,6 +12,67 @@
 
 {\frame[plain]{\titlepage}}
 
+
+    \section{Motivation: Reasoning, its mechanization and computations}
+
+
+    \begin{frame}{How to approach Artificial Intelligence?}
+
+
+        \begin{block}{Learning: Inductive Reasoning}
+            Use training data to identify models representing the knowledge about a system.
+            %\begin{itemize}
+            %\item Model represents \emph{knowledge} about the system
+            %\item Inductive: Modelling assumptions and priors are important
+            %\end{itemize}
+        \end{block}
+
+        \begin{center}
+            \begin{tikzpicture}
+                \node [anchor=center] at (0,0) {Training Data};
+                \draw[->] (1,0) -- (2,0);
+                \node [anchor=center] at (3.5,0) {\emph{Inductive Reasoning}};
+                \draw[->] (5,0) -- (6,0);
+                \node [anchor=center] at (6.5,0) {Model};
+                \draw[->] (6.5,-0.25) -- (6.5,-0.75);
+                \node [anchor=center] at (3.5,-1) {Query};
+                \draw[->] (4,-1) -- (5,-1);
+                \node [anchor=center] at (6.5,-1) {\emph{Deductive Reasoning}};
+                \draw[->] (8,-1) -- (9,-1);
+                \node [anchor=center] at (9.75,-1) {Answer};
+            \end{tikzpicture}
+        \end{center}
+
+        \begin{block}{Inference: Deductive Reasoning}
+            Retrieve specific parts of the knowledge based on a query containing evidence.
+        \end{block}
+
+    \end{frame}
+
+
+
+    \begin{frame}{How to mechanize Reasoning?}
+
+        \begin{block}{Modelling assumptions}
+            \begin{itemize}
+                \item \textbf{Ontological}: What properties does a system have? \\
+                \hspace{0.5cm} $\rightarrow$ We assume \emph{fixed sets of categorical properties}.
+                \item \textbf{Epistemological}: What can we tell about these properties? \\
+                \hspace{0.5cm} $\rightarrow$ We associate \emph{possibilities or probabilities} with states.
+            \end{itemize}
+        \end{block}
+
+        Two main frameworks differing in the \emph{empistemological} assumptions:
+        \begin{itemize}
+            \item Logics (\emph{Possibilities}): The traditional mathematical model of intelligence.
+            \item Probability Theory (\emph{Probabilities}): Handling uncertainties about the systems state.
+        \end{itemize}
+        In both cases, we encode our knowledge in an arrangement of numbers: \emph{Tensors} with efficient representations by \emph{Tensor Networks}.
+
+    \end{frame}
+
+
+
     \begin{frame}{Recap: Tensors as Propositional Formulas}
 
 %        \begin{tabular}[c|c]

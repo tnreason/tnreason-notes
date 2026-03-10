@@ -47,17 +47,17 @@
 \newcommand{\coursechapterthree}{IV-Applications}
 
 \newcommand{\eupic}{
-\begin{center}
-	%\includegraphics[width=4cm]{/Users/alexgoessmann/Documents/ENEXA/latex_macros/images/fundedEU.png}
-\end{center}
+    \begin{center}
+    %\includegraphics[width=4cm]{/Users/alexgoessmann/Documents/ENEXA/latex_macros/images/fundedEU.png}
+    \end{center}
 }
 
 \newcommand{\enexadateveublock}{
-\begin{center}\begin{tikzpicture}
-  	%\node [anchor=center] at (0,0) {\includegraphics[width = 1.5cm]{/Users/alexgoessmann/Documents/ENEXA/latex_macros/images/DATEV.png}};
-	%\node [anchor=center] at (2.5,0.5) {\includegraphics[width = 3.5cm]{/Users/alexgoessmann/Documents/ENEXA/latex_macros/images/enexa.png}};
-	%\node [anchor=center] at (2.55,-0.5) {\includegraphics[width = 3cm]{/Users/alexgoessmann/Documents/ENEXA/latex_macros/images/fundedEU.png}};
-\end{tikzpicture}\end{center}
+    \begin{center}\begin{tikzpicture}
+    %\node [anchor=center] at (0,0) {\includegraphics[width = 1.5cm]{/Users/alexgoessmann/Documents/ENEXA/latex_macros/images/DATEV.png}};
+    %\node [anchor=center] at (2.5,0.5) {\includegraphics[width = 3.5cm]{/Users/alexgoessmann/Documents/ENEXA/latex_macros/images/enexa.png}};
+    %\node [anchor=center] at (2.55,-0.5) {\includegraphics[width = 3cm]{/Users/alexgoessmann/Documents/ENEXA/latex_macros/images/fundedEU.png}};
+    \end{tikzpicture}\end{center}
 }
 
 
@@ -92,3 +92,17 @@
 %	\end{minipage}
 %	\end{center}
 %}
+
+\newcommand{\showoutlineatsection}{
+    \AtBeginSection[ ]
+    {
+        \begin{frame}{Outline}
+        \tableofcontents[currentsection]
+        \end{frame}
+    }
+    \begin{frame}{Outline}
+    \tableofcontents
+    \end{frame}
+
+    \addtocounter{framenumber}{-1}
+}
