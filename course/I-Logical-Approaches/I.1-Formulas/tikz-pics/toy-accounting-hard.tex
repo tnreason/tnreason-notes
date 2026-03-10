@@ -1,0 +1,18 @@
+\begin{tikzpicture}[scale=1]
+    \node (A) at (0,0) {
+        $\begin{pmatrix}
+             0 & 1 \\ 1 & 0
+        \end{pmatrix}$
+    };
+    \draw[<-,dashed] (-0.9,-0.275) node[right] {\tiny $1$} -- (-0.9,0.275) node [midway, left] {\tiny $\catvariableof{A1}$} node[right] {\tiny $0$};
+    \draw[->,dashed] (-0.3,0.85) node[below] {\tiny $0$} -- (0.3,0.85) node [midway, above] {\tiny $\catvariableof{A2}$} node[below] {\tiny $1$};
+    \draw[->,dashed] (0,-0.85) node[above] {\tiny $0$} -- (1.25,-0.55) node [midway, below] {\tiny $\catvariableof{F}$} node[above] {\tiny $1$};
+
+    \node at (1.25,0.5){
+        $\begin{pmatrix}
+             0 & 0 \\ 1 & 0
+        \end{pmatrix}$
+    };
+
+    \drawtextnode{3}{0}{$\left[\catvariableof{A1},\catvariableof{A2},\catvariableof{F}\right]$}
+\end{tikzpicture}

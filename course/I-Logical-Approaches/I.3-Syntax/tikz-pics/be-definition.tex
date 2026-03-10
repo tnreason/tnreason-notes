@@ -1,0 +1,18 @@
+\begin{tikzpicture}[scale=0.35]
+    \drawtextnode{0}{0}{
+    $\bencodingofat{\exformula}{\headvariableof{\exformula},\shortcatvariables}
+    = \sum\limits_{\shortcatindices\in[2]^{\catorder}} \onehotmapofat{\exformula(\shortcatindices)}{\headvariableof{\exformula}}
+    \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables}$
+    }
+
+    \begin{scope}[shift={(12,1)}]
+        \drawtextnode{-2}{-1.5}{$,$}
+        \draw[->-] (2,1) -- (2,2.5) node[midway,right] {\colorlabelsize $\headvariableof{\lor}$};
+        \draw (0,-1) rectangle (4,1);
+        \drawtextnode{2}{0}{\corelabelsize $\bencodingof{\exformula}$}
+        \draw[->-] (0.5,-2.5) -- (0.5,-1) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+        \drawtextnode{2.5}{-1.75}{\colorlabelsize $\cdots$}
+        \draw[->-] (3.5,-2.5) -- (3.5,-1) node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+    \end{scope}
+\end{tikzpicture}
+

@@ -13,7 +13,26 @@
 {\frame[plain]{\titlepage}}
     \showoutlineatsection
 
-    \section{Formalization by Propositional Logics}
+
+    \section{Propositional Logics}
+
+    \begin{frame}{Syntax and Semantics of Logics}
+
+        Logic is build upon
+        \textbf{Syntax}
+        \begin{itemize}
+            \item How to formulate logical formulas?
+            \item Example: The formula $\var{Feature}\Rightarrow\var{Account 1}$ represents the implication, that the $\var{Account 1}$ has to be booked when the feature $\var{Feature}$ is present on the invoice.
+            \item Propositional Logics: The variables (or atomic formulas) are combined with logical connectives $\{\lnot, \land, \lor, \Rightarrow, \Leftrightarrow\}$ to build generic formulas.
+        \end{itemize}
+        and \textbf{Semantics}
+        \begin{itemize}
+            \item What do these formulas describe?
+            \item Example: From the formula $\var{Feature}\land(\var{Feature}\Rightarrow\var{Account 1})$ the formula $\var{Account 1}$ follows.
+            \item Propositional Logics: Each formula describes possible worlds, which are called models of a formula. Comparing the models defines the \textbf{entailment relation}.
+        \end{itemize}
+
+    \end{frame}
 
     \begin{frame}{States of an atomic variable}
 
@@ -119,24 +138,7 @@
         Now let us extend to the toy accounting system.
         Given the Knowledge about both formulas we have
         \begin{center}
-            \begin{tikzpicture}[scale=1]
-                \node (A) at (0,0) {
-                    $\begin{pmatrix}
-                         0 & 1 \\ 1 & 0
-                    \end{pmatrix}$
-                };
-                \draw[<-,dashed] (-0.9,-0.275) node[right] {\tiny $1$} -- (-0.9,0.275) node [midway, left] {\tiny $\catvariableof{A1}$} node[right] {\tiny $0$};
-                \draw[->,dashed] (-0.3,0.85) node[below] {\tiny $0$} -- (0.3,0.85) node [midway, above] {\tiny $\catvariableof{A2}$} node[below] {\tiny $1$};
-                \draw[->,dashed] (0,-0.85) node[above] {\tiny $0$} -- (1.25,-0.55) node [midway, below] {\tiny $\catvariableof{F}$} node[above] {\tiny $1$};
-
-                \node at (1.25,0.5){
-                    $\begin{pmatrix}
-                         0 & 0 \\ 1 & 0
-                    \end{pmatrix}$
-                };
-
-                \drawtextnode{3}{0}{$\left[\catvariableof{A1},\catvariableof{A2},\catvariableof{F}\right]$}
-            \end{tikzpicture}
+            \input{tikz-pics/toy-accounting-hard}
         \end{center}
 
         To understand the transition from the matrices to this tensor of order $3$, we need to widen our tensor formalism.
@@ -181,6 +183,72 @@
 
     \end{frame}
 
+
+    \section{Diagramatic Depiction}
+
+    \begin{frame}{Curse of dimensionality}
+
+        \begin{center}
+            \it    In view of all that..., the many obstacles we appear to have surmounted, what casts the pall over our victory celebration?
+            It is the curse of dimensionality, a malediction that has plagued the scientists from earliest days. - \text{Richard Bellman}
+        \end{center}
+
+        When having $\catorder$ variables (here: boolean variables like $\catvariableof{F}$ with $\catdim=2$), the number of states is
+        \begin{align*}
+            \prod_{\catenumerator\in\{0,...,\catorder\}} \catdimof{\catenumerator} =
+            2^{\catorder} \, .
+        \end{align*}
+        When having $\catorder=1000$:
+        \begin{align*}
+            2^{1000} \approx 10^{301} \quad \Big(\text{Number of atoms in the universe: }\approx 10^{81}\Big)
+        \end{align*}
+
+        \begin{block}{Curse of dimensionality}
+            The number of states increased exponentially with the number of variables.
+        \end{block}
+
+    \end{frame}
+
+    \begin{frame}{Consequences}
+        As consequence of the curse of dimensionality:
+        \begin{itemize}
+            \item {\bf Storage problem:} We cannot explicitly store a boolean to any state of the system.
+            \item {\bf Visualization problem:} We cannot draw large tensors in the coordinatewise picture introduced so far.
+        \end{itemize}
+
+        The solution: Introduction of \emph{Tensor Networks}
+        \begin{itemize}
+            \item Diagramatic notation of tensors by wires (instead of coordinates)
+            \item Contractions can be denoted by connections of the wires
+        \end{itemize}
+
+    \end{frame}
+
+    \begin{frame}{Depiction of Tensors}
+        We will depict
+        \begin{itemize}
+            \item \emph{tensors by blocks}
+            \item affected \emph{categorical variables by open legs}
+        \end{itemize}
+        For example, given the atomic variables
+        \[ \{\catvariableof{\atomenumerator} \, : \, \atomenumeratorin \} \]
+        with respective dimensions $\catdimof{\atomenumerator}\in\mathbb{N}$ we depict a tensor
+        \[ \hypercore \in \bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} \]
+        as
+        \begin{center}
+            \input{./tikz-pics/tensor.tex}
+        \end{center}
+    \end{frame}
+
+
+    \begin{frame}{Example: Depiction of Vectors}
+        For example, a vector
+        \[ V \in \rr^{m}\]
+        with an index variable $\catvariable\in[m]$ is depicted by a block with a single open leg
+        \begin{center}
+            \input{./tikz-pics/vector.tex}
+        \end{center}
+    \end{frame}
 
 %% To Syntax
 %

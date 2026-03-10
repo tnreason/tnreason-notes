@@ -3,146 +3,28 @@
 \input{../../spec_files/course_preamble.tex}
 \input{../../spec_files/course_macros.tex}
 
-\title[Decomposition of Propositional Formulas]{
+\title[Propositional Syntax and Tensor Network]{
     \coursechapterone \\
-    {\huge Decomposition of Propositional Formulas}
+    {\huge Propositional Syntax}
 }
 
-\usepackage{algorithmic}
+%\usepackage{algorithmic}%
 
 \begin{document}
 
 {\frame[plain]{\titlepage}}
 
+    \showoutlineatsection
 
-    \begin{frame}{Curse of Dimensionality}
 
-        Number of coordinates of a propositional formula increases exponentially with the number $\catorder$ of variables.
+    \section{Syntactical Decomposition of Formulas}
 
-        Its not just a depiction problem - it is a fundamental intractability in storage and processing!
+    \begin{frame}{Decomposition of formulas}
 
-        \begin{block}{Curse of dimensionality}
-            When reasoning about a factored system with many variables (i.e. $\atomorder$ is large), the naive enumeration of all models to formulas is infeasible.
-        \end{block}
+        So far: Decomposition of a Knowledge base into formulas
 
+        Now: Generic syntactical decompositions of formulas
     \end{frame}
-
-%
-%    \begin{frame}{Example: Reasons for a wet street}
-%
-%        Let there be a system described by three binary variables (being \var{True} or \var{False}):
-%        \begin{itemize}
-%            \item $\var{Wet}$: Observation, that the street is wet.
-%            \item \var{Rained}: It had rained.
-%            \item \var{Sprinkler}: The sprinkler had been on.
-%        \end{itemize}
-%
-%        \begin{block}{Example of Reasoning}
-%            When we know that the formulas
-%            \begin{itemize}
-%                \item $\var{Rained}\Rightarrow\var{Wet}$ : Whenever it had rained, the street is wet.
-%                \item $\var{Rained}$: It had rained.
-%            \end{itemize}
-%            hold (i.e. = \var{True}), then it follows that the street is wet (i.e. \var{Wet} = \var{True}).
-%        \end{block}
-%
-%    \end{frame}
-
-
-%
-%\begin{frame}{Entailment by comparing the position of ones}
-%
-%We summarize
-%\begin{align}
-%	\left(\var{Rained}\Rightarrow\var{Wet}\right) =
-%	\begin{bmatrix}
-%	1 & 1 \\
-%	0 & 1
-%	\end{bmatrix}
-%	\quad \text{and} \quad
-%	\var{Rained} =
-%	\begin{bmatrix}
-%	1 & 0 \\
-%	1 & 0
-%	\end{bmatrix}
-%\end{align}
-%into
-%\begin{align}
-%	\var{Rained} \land \left(\var{Rained}\Rightarrow\var{Wet}\right) =
-%	\begin{bmatrix}
-%	1 & 0 \\
-%	0 & 0
-%	\end{bmatrix} \, .
-%\end{align}
-%Comparing with
-%\begin{align}
-%	\var{Wet} =
-%	\begin{bmatrix}
-%	1 & 1 \\
-%	0 & 0
-%	\end{bmatrix} \, .
-%\end{align}
-%we notice, that every model of $\var{Rained} \land \left(\var{Rained}\Rightarrow\var{Wet}\right)$ is a model of $\var{Wet}$. We say that \var{Wet} is \textbf{entailed} and denote
-%\begin{align}
-%\Big( \var{Rained} \land \left(\var{Rained}\Rightarrow\var{Wet}\right) \Big) \models \var{Wet} \, .
-%\end{align}
-%
-%
-%\end{frame}
-%
-%
-%
-%\begin{frame}{Model-theoretic semantics: Tensors represent multiple variables}
-%
-%\textbf{Tensors} are a way to order all possible worlds in a system with multiple variables:
-%\begin{itemize}
-%	\item Each variable is associated with an \textbf{axis}.
-%	\item For each assignment to a variable we find a \textbf{coordinate}
-%\end{itemize}
-%
-%\medskip
-%
-%\textbf{Example of three variables:}\\
-% We associate the variable \var{Sprinkler} with a third direction
-%\begin{center}
-%\begin{tikzpicture}
-%	\node (A) at (-3,0) {$\left(\var{Rained}\Rightarrow\var{Wet}\right) \land \var{Sprinkler}= $};
-%	\node (A) at (0,0) {
-%		$\begin{bmatrix}
-%			0 & 0 \\
-%			0 & 0
-%		\end{bmatrix}$
-%	};
-%	\node (A) at (1,0.3) {
-%		$\begin{bmatrix}
-%			1 & 1 \\
-%			0 & 1
-%		\end{bmatrix}$
-%	};
-%\end{tikzpicture}
-%
-%\end{center}
-%
-%\end{frame}
-
-
-    \begin{frame}{The curse of dimensionality in propositional logics}
-
-        \begin{block}{Factored System}
-            A factored system is a set of $\atomorder$ variables $\catvariableof{\atomenumerator}$ indexed by $\atomenumeratorin$ each having $2$ assignments, which interact with each other.
-        \end{block}
-
-        The total number of states of a factored system is
-        \[ 2^\atomorder \, . \]
-
-
-
-        The curse of dimensionality can be mitigated by smart distributed representations of the model marking tensors.
-
-    \end{frame}
-
-
-
 
     \begin{frame}{Decomposition into logical connectives}
 
@@ -157,30 +39,41 @@
 
         \medskip
 
-        \begin{minipage}{0.65\textwidth}
-            A \textbf{graphical notation} depicts generic tensors:
-            \begin{itemize}
-                \item Tensors are rectangular boxes
-                \item Each axis of a tensor is drawn by a leg to the box
-            \end{itemize}
-        \end{minipage}
-        \begin{minipage}{0.25\textwidth}
-            \centering
-            \begin{tikzpicture}[scale=0.35,yscale=-1]
-                \draw[->] (0,1)--(0,-1) node[midway,left] {\tiny ${\exformula_1}$};
-                \draw[->] (3,1)--(3,-1) node[midway,right] {\tiny ${\exformula_2}$};
-
-                \draw (-1,-1) rectangle (4, -3);
-                \node[anchor=center] (text) at (1.5,-2) {\small $\bencodingof{\circ}$};
-
-                \draw[->] (1.5,-3) --(1.5,-5) node[midway,right]{\tiny ${\exformula_1 \exconnective \exformula_2}$};
-            \end{tikzpicture}
-        \end{minipage}
-
     \end{frame}
 
 
-    \begin{frame}{Encoding Logics using Tensors}
+    \section{Basis encodings}
+
+    \begin{frame}{Recall: One-hot encodings}
+        One-hot encodings of a state are a tensor with a single coordinate $1$ marking the corresponding state.
+
+        They build an orthogonal basis of the tensor space.
+    \end{frame}
+
+
+    \begin{frame}{Basis encodings}
+        \begin{definition}[Basis encoding]
+            The basis encodings of a formula $\exformula: \ozset^{\catorder}\rightarrow \ozset$ is the tensor
+            \begin{center}
+                \input{tikz-pics/be-definition}
+            \end{center}
+        \end{definition}
+
+        \textbf{Example:}
+        The basis encoding of the logical disjunction $\lor$ is the tensor
+        \begin{center}
+            \input{tikz-pics/be-disjunction}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}{Decomposition}
+
+        Suppose a formula is decomposed as a connective acting on two subformulas.
+
+
+    \end{frame}
+
+    \begin{frame}{Basis calculus perspective on logics}
 
 
         Boolean states are represented by one-hot encodings
@@ -193,43 +86,7 @@
 
         The truth tables of logical connectives $\exconnective\in\{\land,\lor,\Rightarrow\}$ are represented by tensors $\bencodingof{\exconnective}\in\rr^{2\times 2 \times 2}$ defined as
 
-        \begin{minipage}{0.5\textwidth}
-            \begin{align*}
-                \bencodingof{\exconnective} = \sum_{\exformula_1,\exformula_2\in\{\truesymbol,\falsesymbol\}} \onehotmapof{\exformula_1} \otimes \onehotmapof{\exformula_2} \otimes \onehotmapof{\exformula_1\exconnective\exformula_2}
-            \end{align*}
-        \end{minipage}
-        \begin{minipage}{0.45\textwidth}
-            \centering
-            \begin{tikzpicture}[scale=0.35,yscale=-1]
-                \draw[->] (0,1)--(0,-1) node[midway,left] {\tiny ${\exformula_1}$};
-                \draw[->] (3,1)--(3,-1) node[midway,right] {\tiny ${\exformula_2}$};
-
-                \draw (-1,-1) rectangle (4, -3);
-                \node[anchor=center] (text) at (1.5,-2) {\small $\bencodingof{\circ}$};
-
-                \draw[->] (1.5,-3) --(1.5,-5) node[midway,right]{\tiny ${\exformula_1 \exconnective \exformula_2}$};
-            \end{tikzpicture}
-        \end{minipage}
-        \medskip
-
-        %We interpret them by conditional probability distributions being the factors of the BPN (useful property for contractions).
-
-        \medskip
-
-        \textbf{Example:} Tensor Core to logical disjunction $\lor$ has the coordinates
-        \begin{align*}
-            \bencodingof{\lor}_{1,:,:}
-            = \begin{bmatrix}
-                  0 & 1 \\
-                  1 & 1
-            \end{bmatrix}
-            \quad \text{and} \quad \bencodingof{\lor}_{0,:,:}
-            = \begin{bmatrix}
-                  1 & 0 \\
-                  0 & 0
-            \end{bmatrix} \, .
-        \end{align*}
-        %Exploiting the standard duality of Graphical Models and Tensor Networks of their factors
+        Contracting with the one-hot encoding of the inputs gives you the one-hot encoding of the formula satisfaction.
 
 
     \end{frame}
@@ -272,6 +129,8 @@
     \end{frame}
 
 
+    \section{Revisiting entailment}
+
     \begin{frame}{Logical Inference: Entailment}
 
         The semantics of logics enable the calculation of logical consequences, framed logical inference.
@@ -293,7 +152,7 @@
 
 
 
-    \begin{frame}{Deciding entailment by Contraction}
+    \begin{frame}{Revisiting entailment}
 
         \begin{theorem}[Contraction Criterion for Entailment]
             We have $\kb\models\exformula$ (respectively $\kb\models\lnot\exformula$) if and only if
@@ -302,7 +161,7 @@
 
         We depict this condition by
         \begin{center}
-            \input{./tikz_pics/entailment_check.tex}
+            \input{./tikz-pics/entailment_check.tex}
         \end{center}
 
     \end{frame}
@@ -332,40 +191,34 @@
     \begin{frame}{Implementations in \tnreason: \\
     Subpackage \sprepresentation{}}
 
-        The subpackage \sprepresentation{} is dedicated to the implementation of logics.
+        The subpackage \sprepresentation{} is dedicated to the tensor encoding schemes such as basis encodings.
 
         \begin{center}
             \begin{tikzpicture}[scale=0.27]
+                \drawtnreasonarchitecture{}
+                \draw[blue] (-10,4) rectangle (0,8);
+                \node [anchor=center,blue] at (-5,6) {\sprepresentation{}};
 
-                \draw[dashed] (-30,15) -- (12,15) -- (12,-3) -- (-30,-3) -- (-30,15);
-
-                \draw (-10,10) rectangle (10,14);
-                \node [anchor=center] at (0,12) {\spapplication{}};
-
-                \node [anchor=center] at (-20,12) {\layerthreespec};
-                \draw[dashed] (-30,9) -- (12,9);
-                \node [anchor=center,blue] at (-20,6) {\layertwospec};
-
-                \draw[->] (6,10) -- (6,8);
-                \draw (2,4) rectangle (10,8);
-                \node [anchor=center] at (6,6) {\spreasoning{}};
-                \draw[->] (6,4) -- (6,2);
-
-                \draw[->,blue] (-6,10) -- (-6,8);
-                \draw[blue] (-10,4) rectangle (-2,8);
-                \node [anchor=center,blue] at (-6,6) {\sprepresentation{}};
-                \draw[->,blue] (-6,4) -- (-6,2);
-
-                \draw[dashed] (-30,3) -- (12,3);
-                \node [anchor=center] at (-20,0) {\layeronespec};
-
-                \draw (-10,-2) rectangle (10,2);
-                \node [anchor=center] at (0,0) {\spengine};
             \end{tikzpicture}
         \end{center}
 
     \end{frame}
 
+
+    \begin{frame}{Implementations in \tnreason: \\
+    Subpackage \spapplication{}}
+
+        The subpackage \spapplication{} interprets logical syntax in nested lists.
+
+        \begin{center}
+            \begin{tikzpicture}[scale=0.27]
+                \drawtnreasonarchitecture{}
+                \draw[blue] (-10,10) rectangle (10,14);
+                \node [anchor=center,blue] at (0,12) {\corelabelsize \spapplication{}};
+            \end{tikzpicture}
+        \end{center}
+
+    \end{frame}
 
     \begin{frame}{Representation of Propositional Formulas}
 
@@ -406,15 +259,15 @@
                         \hline
                         \textbf{Binary connective $\exconnective$} & \textbf{$\sencodingof{\exconnective}$} \\
                         \hline
-                        $\land$                                   & \stringof{and}                         \\
+                        $\land$                                    & \stringof{and}                         \\
                         \hline
-                        $\lor$                                    & \stringof{or}                          \\
+                        $\lor$                                     & \stringof{or}                          \\
                         \hline
                         $\Rightarrow$                              & \stringof{imp}                         \\
                         \hline
-                        $\oplus$                                 & \stringof{xor}                         \\
+                        $\oplus$                                   & \stringof{xor}                         \\
                         \hline
-                        $\Leftrightarrow$                           & \stringof{eq}                          \\
+                        $\Leftrightarrow$                          & \stringof{eq}                          \\
                         \hline
                     \end{tabular}};
             \end{tikzpicture}

@@ -100,9 +100,56 @@
         \tableofcontents[currentsection]
         \end{frame}
     }
-    \begin{frame}{Outline}
-    \tableofcontents
-    \end{frame}
+    %\begin{frame}{Outline}
+    %\tableofcontents
+    %\end{frame}
 
     \addtocounter{framenumber}{-1}
+}
+
+\tikzset{
+    midarrow/.style={
+        postaction={decorate},
+        decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{Straight Barb[length=4pt, width=5pt]}}
+            % Or use {Stealth}, {To}, or {Latex[open]}
+        }
+    },
+    midbackarrow/.style={
+        postaction={decorate},
+        decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{<[Straight Barb[length=4pt, width=5pt]]}}
+        }
+    },
+    >>-/.style={midarrow},
+    <<-/.style={midbackarrow}
+}
+
+\newcommand{\drawtnreasonarchitecture}{
+    \draw[dashed] (-30,15) -- (12,15) -- (12,-3) -- (-30,-3) -- (-30,15);
+
+    \draw[] (-10,10) rectangle (10,14);
+    \node [anchor=center] at (0,12) {\corelabelsize \spapplication{}};
+
+    \node [anchor=west] at (-29,12) {\layerthreespec};
+    \draw[dashed] (-30,9) -- (12,9);
+    \node [anchor=west] at (-29,6) {\layertwospec};
+
+    \draw[->] (6,10) -- (6,8);
+    \draw[] (2,4) rectangle (10,8);
+    \node [anchor=center] at (6,6) {\spreasoning{}};
+    \draw[->] (6,4) -- (6,2);
+
+    \draw[->] (-5,10) -- (-5,8);
+    \draw[] (-10,4) rectangle (0,8);
+    \node [anchor=center] at (-5,6) {\sprepresentation{}};
+    \draw[->] (-5,4) -- (-5,2);
+
+    \draw[dashed] (-30,3) -- (12,3);
+    \node [anchor=west] at (-29,0) {\layeronespec};
+
+    \draw[] (-10,-2) rectangle (10,2);
+    \node [anchor=center] at (0,0) {\spengine};
 }
