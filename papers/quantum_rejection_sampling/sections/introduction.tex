@@ -1,8 +1,9 @@
 \section{Introduction}
 
-\neuroSymbolicAI{} can be approached in the tensor network formalism \tnreason{}, unifying logical, neural and probabilistic paradigms of artificial intelligence.
+\neuroSymbolicAI{} can be approached in the tensor network formalism \tnreason{} \cite{goessmann_tensor_2026}, unifying logical, neural and probabilistic paradigms of artificial intelligence.
 Quantum Circuits are also, by the axioms of quantum mechanics, tensor networks.
-We study an rejection sampling inference scheme of a broad model class.
+This motivates this work, which investigates quantum algorithms for inference leading to efficiency increases compared with classical alternatives.
+We study an rejection sampling inference scheme of the broad model class.
 Quantum rejection sampling then brings an square root quantum advantage.
 To be more precise, we consider \ComputationActivationNetworks{}, a generic model class in \tnreason{} fo \neuroSymbolicAI{}.
 
@@ -31,3 +32,12 @@ Further literature:
     \item \cite{wittek_quantum_2017}: Review of Markov Logic Network sampling (which are a special case of \ComputationActivationNetworks{})
 \end{itemize}
 
+
+\subsection{Contributions}
+
+We apply an adjusted quantum rejection sampling approach of \cite{low_quantum_2014} for \ComputationActivationNetworks{} \cite{goessmann_tensor_2026}.
+The main adjustments are:
+\begin{itemize}
+    \item {\bf Sparse representation of uniformly controlled unitaries:} We apply similar sparsity mechanisms as for classical \ComputationActivationNetworks{} to decompose the uniformly controlled unitaries.
+    \item {\bf Ancilla augmentation:} To sample also from generic tensor networks, we introduce ancilla variables such that generic tensor networks are conditioned Bayesian networks.
+\end{itemize}

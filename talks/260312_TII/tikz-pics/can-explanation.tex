@@ -1,0 +1,76 @@
+\begin{tikzpicture}[scale=0.3, thick] % , baseline = -3.5pt
+
+
+
+    %\node[anchor=center] (text) at (1.5,10) {A novel tensor network architecture captures logical and probabilistic models (see \cite{goessmann2026}):};
+
+    \draw (-1,5) rectangle (4, 7);
+    \node[anchor=center] (text) at (1.5,6) {$\actcore$};
+
+    \draw[->-] (0,3) -- (0,4.5);
+    \node[anchor=center] (text) at (1.5,4) {\colorlabelsize $\cdots$};
+    \node[anchor=center] (text) at (1.5,3.5) {\colorlabelsize $\headvariables$};
+    \draw[->-] (3,3) -- (3,4.5);
+    \draw (-1,1) rectangle (4, 3);
+    \node[anchor=center] (text) at (1.5,2) {$\bencodingof{\sstat}$};
+    \draw[->-] (0,-0.5) -- (0,1);
+    \node[anchor=center] (text) at (1.5,0) {\colorlabelsize $\cdots$};
+    \node[anchor=center] (text) at (1.5,0.5) {\colorlabelsize $\shortcatvariables$};
+    \draw[->-] (3,-0.5) -- (3,1);
+
+    \draw (0,4.5) -- (0,5);
+    \draw (3,4.5) -- (3,5);
+
+
+    \draw[dashed] (-2,0) -- (-2,4) -- (5,4) -- (5,0) -- (-2,0);
+    \draw [thick,->] (-2,3)  to[bend right=10] (-5,-1);
+
+    \node[anchor=north] (text) at (-5,-2) {
+        \begin{minipage}{4cm}
+            \textbf{Computation} of a statistic
+            \begin{align*}
+                \sstat : \facstates \rightarrow \bigtimes_{\selindexin} [\seldimof{\selindex}]
+            \end{align*}
+            by basis encoding
+            %\begin{align*}
+            %    & \bencodingofat{\sstat}{\headvariables,\shortcatvariables} \\
+            %    & = \sum_{\shortcatindicesin} \hspace{-2.2ex}\onehotmapofat{\sstat(\shortcatindices)}{\headvariables} \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables}
+            %\end{align*}
+        \end{minipage}
+    };
+
+    \draw[dashed] (-2,7.5) -- (-2,4.5) -- (5,4.5) -- (5,7.5) -- (-2,7.5);
+    \draw [thick,->] (5,6)  to[bend left=10] (7,7);
+
+    \node[anchor=north] (text) at (16,7.75) {
+        \begin{minipage}{5cm}
+            \textbf{Activation} of a statistic by an activation core, for
+            %\begin{itemize}
+            %\item
+            \textcolor{\concolor}{knowledge bases}
+            \begin{align*}
+                \actcoreat{\headvariables} = \bigotimes_{\selindexin}
+                \coloredmatrixof{0\\1}{\headvariableof{\selindex}}
+%                \begin{pmatrix}
+%                                                                          0 \\ 1
+%                \end{pmatrix}
+            \end{align*}
+            %\item
+            and for \textcolor{\probcolor}{exponential families}
+            \begin{align*}
+                \actcoreat{\headvariables}
+                = \bigotimes_{\selindexin}
+                \coloredmatrixof{1 \\ \expof{\canparamat{\selvariable=\selindex}}}{\headvariableof{\selindex}}
+%                \begin{pmatrix}
+%                                                                          1 \\ \expof{\canparamat{\selvariable=\selindex}}
+%                \end{pmatrix}
+            \end{align*}
+            %\end{itemize}
+
+        \end{minipage}
+    };
+
+    %\draw[->-] (1.5,-3) --(1.5,-5.5) node[midway,left]{\colorlabelsize $\headvariableof{A1 \oplus A2}$};
+
+
+\end{tikzpicture}

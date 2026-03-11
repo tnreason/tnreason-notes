@@ -1,0 +1,384 @@
+\documentclass{beamer}
+\input{../template/ENEXA/packages.tex}
+
+\usepackage{tcolorbox}
+\usepackage{braket}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{pdfpages}
+
+\input{../../macros/general_macros.tex}
+\input{../../macros/tc_macros.tex}
+\input{../../macros/organization_macros.tex}
+\input{../../macros/tikz_macros.tex}
+
+\newcommand{\urisize}{\small}
+\newcommand{\importancecolor}{blue}
+\newcommand{\atomcolor}{brown}
+\newcommand{\extractioncolor}{blue}
+\newcommand{\variationalcolor}{red}
+\newcommand{\bigtimes}{\mathop{\text{\Large$\times$}}\displaylimits}
+\newcommand{\exampleprefix}{fibu}
+\newcommand{\productsnum}{n}
+
+\tikzset{
+    midarrow/.style={
+        postaction={decorate},
+        decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{Straight Barb[length=3pt, width=3pt]}}
+            % Or use {Stealth}, {To}, or {Latex[open]}
+        }
+    },
+    midbackarrow/.style={
+        postaction={decorate},
+        decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{<[Straight Barb[length=3pt, width=3pt]]}}
+        }
+    },
+    >>-/.style={midarrow},
+    <<-/.style={midbackarrow}
+}
+
+
+\usetikzlibrary{calc}
+
+\title[Tensor networks and quantum inference for neuro-symbolic AI]{
+    Tensor networks and quantum inference for neuro-symbolic AI
+}
+\date[March 12, 2026]{TII Seminar\\ March 12, 2026}
+\author[A.~Goessmann]{Alex Goessmann \\ joint work with Janina Schütte, Maximilian Fröhlich and Martin Eigel \\
+arXiv : 2601.15442}
+\institute[WIAS]{
+    Weierstraß Institute for Applied Analysis and Stochastics (WIAS)
+}
+
+\begin{document}
+
+{\frame[plain]{\titlepage}}
+
+%    \AtBeginSection[]
+%    {
+%        \begin{frame}{Outline}
+%            \tableofcontents[currentsection]
+%        \end{frame}
+%    }
+%    \begin{frame}{Outline}
+%        \tableofcontents
+%    \end{frame}
+
+    \addtocounter{framenumber}{-1}
+
+
+    \section{Tensor networks for neuro-symbolic AI}
+
+    \begin{frame}{Motivation: Toy accounting rule system}
+
+        \begin{block}{Toy accounting rule system}
+            Assume you want to book one of two accounts $\mathrm{A1}$ and $\mathrm{A2}$ depending on a feature $\mathrm{F}$ of an invoice, based on two rules:
+            \begin{itemize}
+                \item \textcolor{\concolor}{Exactly one account must be booked.}
+                \item \textcolor{\probcolor}{If feature $\mathrm{F}$ is present on the invoice, the account $\mathrm{A1}$ is typically booked.}
+            \end{itemize}
+        \end{block}
+
+        \begin{itemize}
+            \item {Accounting rules} are formalised in propositional logics, triggered by receipts properties.
+            \item These rules can either be \textcolor{\concolor}{hard restrictions}, or \textcolor{\probcolor}{prone to exceptions}.
+        \end{itemize}
+
+        \begin{center}
+            \bf We apply tensor networks for neuro-symbolic use cases like this!
+        \end{center}
+
+    \end{frame}
+
+
+    \begin{frame}{Productive accounting rule systems}
+
+        The variables and main relations of the DATEV accounting ontology\footnote{\tiny https://github.com/EnexaProject/enexa-use-case-1-business-software-solutions}:
+        \begin{center}
+            \begin{tikzpicture}
+                \drawtextnode{0}{0}{\includegraphics[height=0.4\textwidth]{images/ontology_fine_snapshot}}
+                \drawtextnode{0}{-3}{\bf Coarse Visualization}
+                \drawtextnode{5}{0}{\includegraphics[height=0.4\textwidth]{images/ontology_coarse_snapshot}}
+                \drawtextnode{5}{-3}{\bf Detailed Visualization}
+            \end{tikzpicture}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}{Tensors: Natural description of factored representations}
+
+    {\bf Factored representations}
+        are collection of variables $\shortcatvariables$, each with a finite set of states $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$
+        \cite{russell_artificial_2021}.
+        The set of states is then the cartesian product
+        \begin{align*}
+            \facstates
+        \end{align*}
+
+            {\bf Knowledge about the system}, for example the probability of each state, is a \emph{tensor}
+        \begin{align*}
+            \hypercorewith \defcols \facstates \rightarrow \rr
+        \end{align*}
+        We represent them by diagrams with legs decorated by the variables:
+        \begin{center}
+
+            \begin{tikzpicture}[scale=0.35,thick] % , baseline = -3.5pt
+                \draw (-1,-1) rectangle (5,-3);
+                \node[anchor=center] (text) at (2,-2) {\corelabelsize $\hypercore$};
+                \draw (0,-3)--(0,-5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+                \draw (1.5,-3)--(1.5,-5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
+                \node[anchor=center] (text) at (3,-4) {$\cdots$};
+                \draw (4,-3)--(4,-5) node[midway,right] {\colorlabelsize $\catvariableof{\atomorder\shortminus1}$};
+            \end{tikzpicture}
+        \end{center}
+    \end{frame}
+
+
+    \begin{frame}{Sparsity by tensor network decompositions}
+
+        We represent functions between factored state sets by their \emph{basis encodings}
+        \begin{align*}
+            \bencodingofat{\exformula}{\headvariables,\shortcatvariables}
+            = \sum_{\shortcatindicesin} \onehotmapofat{\exformula(\shortcatindices)}{\headvariables}
+            \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables}
+        \end{align*}
+
+        \begin{block}{Main sparsity principle}
+            Any decomposition of a function is reflected in a tensor network decomposition of the basis encoding.
+        \end{block}
+
+        \begin{minipage}{0.45\textwidth}
+        {\bf Example:}
+            The basis encoding of $\formulaat{\catvariableof{[3]}} = (\catvariableof{0} \lor \catvariableof{1}) \land \lnot \catvariableof{2}$ is decomposed as:
+        \end{minipage}
+        \begin{minipage}{0.45\textwidth}
+            \begin{center}
+                \input{tikz-pics/formula-decomposition}
+            \end{center}
+        \end{minipage}
+
+    \end{frame}
+
+    \begin{frame}{\ComputationActivationNetworks{} (\CompActNets{})}
+        A novel tensor network architecture captures logical and probabilistic models (see \cite{goessmann_tensor_2026}):
+        \begin{center}
+            \input{tikz-pics/can-explanation}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}{Toy accounting system as a \CompActNet{}}
+
+        We represent the toy accounting system as a \ComputationActivationNetwork{}:
+        \begin{center}
+            \input{tikz-pics/toy-accounting-network.tex}
+        \end{center}
+
+        \begin{itemize}
+            \item The hard activation vector $\textcolor{\concolor}{\coloredmatrixof{0 \\ 1}{\headvariableof{A1\oplus A2}}}$ ensures that the first rule is always true.
+            \item The soft activation vector $\textcolor{\probcolor}{\coloredmatrixof{1 \\ \expof{\canparam}}{\headvariableof{F\oplus A1}}}$ introduces the trainable parameter $\canparam\in\rr$ controlling the satisfaction probability of the second rule.
+        \end{itemize}
+    \end{frame}
+
+
+    \begin{frame}{Inference by Contractions}
+        \begin{block}{Main inference principle}
+            Model inference amounts to tensor network contractions.
+        \end{block}
+
+        \begin{itemize}
+            \item Probabilistic inference: Contractions are marginal probabilities.
+            \item Logical inference: Contractions are model counts, which decide entailment.
+        \end{itemize}
+
+            {\bf Example:} Distribution of $\catvariableof{A1}$ and $\catvariableof{A2}$ conditioned on $\catvariableof{F}=0$ is parallel to
+        \begin{center}
+            \input{tikz-pics/toy-accounting-reasoning}
+        \end{center}
+%        More advanced inference schemes:
+%        \begin{itemize}
+%            \item Parameter estimation: Moments in an inner loops, which are iteratively matched.
+%            \item Expectation propagation: Approximation framework for contractions by orchestration of efficient inference steps.
+%        \end{itemize}
+
+    \end{frame}
+
+
+    \begin{frame}{Tensor networks for neuro-symbolic AI}
+        Tensor networks provide a unifying language to capture the different paradigms of AI \cite{goessmann_tensor_2026}:
+        \begin{center}
+            \input{tikz-pics/paradigms-sketch}
+        \end{center}
+    \end{frame}
+
+
+    \section{Quantum inference for neuro-symbolic AI}
+
+    \begin{frame}{Motivation for quantum inference}
+        \begin{block}{Efficiency problem}
+            Tensor network contractions are the workhorse of inference, but they are often computationally demanding.
+        \end{block}
+
+        The similarity of quantum circuits and tensor networks allows to apply \emph{quantum algorithms for inference}.
+
+        \begin{center}
+        {\bf Advantage:}
+            Square root speedups through quantum inference (provided that sparsity principles apply).
+        \end{center}
+
+        \begin{block}{Quantum rejection sampling \cite{low_quantum_2014}}
+            Amplify conditioned event by the Grover algorithm to improve the sample acceptance probability.
+        \end{block}
+
+    \end{frame}
+
+
+    \begin{frame}{Q-samples of Bayesian networks}
+
+        Q-samples of Bayesian Networks can be prepared by controlled unitaries\cite{low_quantum_2014}:
+        \begin{center}
+            \includegraphics[width=0.9\textwidth]{images/low-screenshot}
+        \end{center}
+
+        Extension:
+        \begin{itemize}
+            \item {\bf Sparse representation:} How to find sparse decompositions of the controlled unitaries?
+            \item {\bf Ancilla augmentation:} How to represent generic tensor networks as Bayesian networks?
+        \end{itemize}
+
+    \end{frame}
+
+    \begin{frame}{Q-samples of \ComputationActivationNetworks{}}
+        \begin{center}
+            \input{tikz-pics/can-quantum}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}{From tensor networks to quantum circuits}
+
+        The \emph{oracle} to a boolean functions $\exformula$ is the controlled unitary with slices to $\shortcatindices\in[2]^{\catorder}$
+        \begin{align*}
+            \qcbencodingofat{\exformula}{\cheadvariableof{\exformula}{\insymbol}=0,\cheadvariableof{\exformula}{\outsymbol},\shortcatvariables=\shortcatindices}
+            = \onehotmapofat{\exformula(\shortcatindices)}{\cheadvariableof{\exformula}{\outsymbol}} \, .
+        \end{align*}
+            {\bf Connection:} Oracles relate with basis encodings of functions as:
+        \begin{center}
+            \input{tikz-pics/bencoding-computation-circuit}
+        \end{center}
+        The same sparsity principles can thus be applied to get efficient quantum circuits for the oracles.%, and thus for the Grover operator.
+    \end{frame}
+
+    \begin{frame}{Decomposition Sparsity}
+        The oracle to a composition of formulas is decomposed into oracles to the sub-formulas:
+        \begin{center}
+            \input{tikz-pics/oracle-decomposition}
+        \end{center}
+
+        \begin{center}
+            \bf This is analogous to the classical basis encoding decomposition!
+        \end{center}
+    \end{frame}
+
+
+    \begin{frame}{Ancilla augmentation}
+
+        \begin{block}{Strategy}
+            Represent generic tensor networks as conditioned Bayesian networks, to exploit the q-sample preparation method of \cite{low_quantum_2014}.
+        \end{block}
+
+        Given $\probwith$, find Bayesian Network $\secprobat{\shortcatvariables,\avariables}$ satisfying
+        \begin{align*}
+            \acceptanceprob \cdot \probwith
+            = \secprobat{\shortcatvariables,\avariables=1_{[\seldim]}}
+        \end{align*}
+        for some acceptance probability $\acceptanceprob\in(0,1]$.
+
+        \begin{block}{Rejection sampling approach}
+            Draw samples $(\shortcatindices,\aindexof{[\seldim]})$ from $\secprobat{\shortcatvariables,\avariables}$ and accept the sample if $\aindexof{[\seldim]}=\onetuple{[\seldim]}$.
+        \end{block}
+    \end{frame}
+
+    \begin{frame}{Ancilla augmentation of \CompActNets{}}
+
+        For an \CompActNet{} with elementary activation, the ancilla augmentation is:
+        \begin{center}
+            \input{tikz-pics/can-elementary-augmentation}
+        \end{center}
+
+    \end{frame}
+
+    \begin{frame}{Q-sample to the toy accounting system}
+
+        For the toy accounting system, we prepare a q-sample by the circuit:
+        \begin{center}
+            \input{tikz-pics/toy-accounting-circuit}
+        \end{center}
+
+    \end{frame}
+
+    \begin{frame}{Amplitude amplification}
+
+        \begin{block}{Problem of low acceptance probabilities}
+            The acceptance probability $\acceptanceprob$ is often small, rendering rejection sampling approaches inefficient.
+        \end{block}
+
+        Improvement by Quantum inference: {\bf Amplitude Amplification} on the acceptance event $\avariables=\onetuple{[\seldim]}$.
+
+            {\bf Approach for \CompActNets{}:}
+        \begin{itemize}
+            \item Turn \CompActNets{} into (conditioned) Bayesian Network $\secprobat{\shortcatvariables,\avariables}$ satisfying $\acceptanceprob \cdot \probwith
+            = \secprobat{\shortcatvariables,\avariables=1_{[\seldim]}}$ for a sample acceptance rate $\acceptanceprob\in(0,1]$.
+            \item Prepare q-samples to Bayesian Networks \cite{low_quantum_2014}, exploiting sparsity principles.
+            \item Apply the Grover operator to amplify the acceptance event $\avariables=\onetuple{[\seldim]}$.
+        \end{itemize}
+
+
+    \end{frame}
+
+
+%    \begin{frame}{}
+%    \end{frame}
+
+
+    \begin{frame}{Summary and Outlook}
+
+    {\bf Tensor networks}
+        \begin{itemize}
+            \item Tensors appear naturally as factored system representations
+            \item \emph{Sparsity principle:} Decomposition into tensor networks
+            \item \emph{Inference principle:} Tensor network contractions
+        \end{itemize}
+
+            {\bf Quantum circuits}
+        \begin{itemize}
+            \item Follow the same formalism and decomposition principles
+            \item Allow for square root speedups for inference tasks
+        \end{itemize}
+
+            {\bf Implementations} in \python{} packages:
+        \begin{itemize}
+            \item {\bf \tnreason{}}\footnote{https://pypi.org/project/tnreason/}: Tensor network based reasoning
+            \item {\bf \qcreason{}}\footnote{https://pypi.org/project/qcreason/}: Quantum inference for contractions
+        \end{itemize}
+
+    \end{frame}
+
+    \begin{frame}{References}
+
+        \begin{center}
+            \bf Thank you very much for your attention!
+        \end{center}
+
+        \medskip
+
+        \small
+
+        \bibliographystyle{alpha}
+        \bibliography{../../references.bib}
+
+    \end{frame}
+
+
+\end{document}
