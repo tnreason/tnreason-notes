@@ -1,0 +1,22 @@
+\section{Introduction}
+
+Quantum circuits are contractions of gate tensors and therefore tensor networks, and measurement probabilities are given by contractions.
+
+\subsection{Quantum and Tensor Parallelism}
+
+By its central axioms, quantum mechanics of multiple qubits is formulated by tensors capturing states and discrete time evolutions.
+Motivated by the structural similarity, we investigate how quantum circuits can be utilized for the tensor-network based approach towards efficient and explainable AI in the \tnreason{} framework.
+
+Potential Advantage: \emph{Quantum Parallelism} (see \cite[Section 3.2.5]{schuld_machine_2021}).
+\begin{itemize}
+    \item Evaluation of multiple function values by single circuit evaluation, we will relate it with the contraction of $\bencodingof{\exformula}$ here.
+    \item Contraction perspective: Loop-tolerant efficient contractions.
+    \item However: Need a generic encoding scheme to exploit this advantage, which is not known yet.
+    \item We here only provide a scheme based on post-selection, which provides a quantum advantage only through amplitude amplification.
+    Without amplitude amplification and post-selection of samples, the encoded distribution is always uniform.
+    \item Further challenge: Application in NISQ devises \cite{preskill_quantum_2018}, instead of fault-tolerant quantum computers.
+\end{itemize}
+Comparison with classical side, which we can call \emph{Tensor Network Parallelism}:
+Message-passing schemes for efficient contractions, but exact in limited cases.
+
+
