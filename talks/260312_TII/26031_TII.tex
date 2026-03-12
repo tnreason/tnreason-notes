@@ -58,12 +58,12 @@ arXiv : 2601.15442}
 
 {\frame[plain]{\titlepage}}
 
-%    \AtBeginSection[]
-%    {
-%        \begin{frame}{Outline}
-%            \tableofcontents[currentsection]
-%        \end{frame}
-%    }
+    \AtBeginSection[]
+    {
+        \begin{frame}{Outline}
+            \tableofcontents[currentsection]
+        \end{frame}
+    }
 %    \begin{frame}{Outline}
 %        \tableofcontents
 %    \end{frame}
@@ -137,6 +137,29 @@ arXiv : 2601.15442}
     \end{frame}
 
 
+    \begin{frame}{Necessity of tensor decompositions}
+
+        \begin{block}{Curse of dimensionality}
+            The number of states increases exponentially in the number of variables. \\
+            \begin{center}
+                \bf  $\rightarrow$ Coordinatewise model storage and processing impossible!
+            \end{center}
+        \end{block}
+
+        Typical approach in AI: Focus on \emph{sparse} models
+        \begin{itemize}
+            \item {\bf Logics:} Syntactical description of Knowledge bases.
+            \item {\bf Probability:} Independence structures and sufficient statistics.
+            \item {\bf Neural Networks:} Model decomposition into neurons.
+            \item {\bf Data bases:} Store only true relations.
+        \end{itemize}
+
+        \begin{center}
+            \bf All these sparsity principles amount to tensor network decompositions!
+        \end{center}
+
+    \end{frame}
+
     \begin{frame}{Sparsity by tensor network decompositions}
 
         We represent functions between factored state sets by their \emph{basis encodings}
@@ -185,12 +208,12 @@ arXiv : 2601.15442}
 
     \begin{frame}{Inference by Contractions}
         \begin{block}{Main inference principle}
-            Model inference amounts to tensor network contractions.
+            Model inference amounts to contractions of its tensor network decomposition.
         \end{block}
 
         \begin{itemize}
-            \item Probabilistic inference: Contractions are marginal probabilities.
-            \item Logical inference: Contractions are model counts, which decide entailment.
+            \item {\bf Probabilistic inference:} Contractions are marginal probabilities.
+            \item {\bf Logical inference:} Contractions are model counts, which decide entailment.
         \end{itemize}
 
             {\bf Example:} Distribution of $\catvariableof{A1}$ and $\catvariableof{A2}$ conditioned on $\catvariableof{F}=0$ is parallel to
@@ -205,8 +228,26 @@ arXiv : 2601.15442}
 
     \end{frame}
 
+    \begin{frame}{Inference as a computational bottleneck}
 
-    \begin{frame}{Tensor networks for neuro-symbolic AI}
+        The curse of dimensions poses two problems:
+        \begin{itemize}
+            \item {\bf Representation problem:} Efficient tensor network decompositions enable representations.
+            \item {\bf Reasoning problem:} Optimizing the networks and retrieving knowledge from them requires contractions (often without open variables).
+        \end{itemize}
+
+        (Approximate) inference schemes:
+        \begin{itemize}
+            \item {\bf Message passing:} Orchestrations of local contractions calculate global contractions (approximatively) e.g. Variable elimination, Belief propagation
+            \item {\bf Sampling based:} Draw samples from the distribution to estimate means, e.g. Gibbs sampling
+        \end{itemize}
+        \begin{center}
+            \bf Efficient and exact contractions only possible in special situations (minimal connectivity, boolean directed contractions, Horn logics).
+        \end{center}
+    \end{frame}
+
+
+    \begin{frame}{Summary: Tensor networks for neuro-symbolic AI}
         Tensor networks provide a unifying language to capture the different paradigms of AI \cite{goessmann_tensor_2026}:
         \begin{center}
             \input{tikz-pics/paradigms-sketch}
@@ -237,7 +278,7 @@ arXiv : 2601.15442}
 
     \begin{frame}{Q-samples of Bayesian networks}
 
-        Q-samples of Bayesian Networks can be prepared by controlled unitaries\cite{low_quantum_2014}:
+        Q-samples of Bayesian Networks can be prepared by controlled unitaries \cite{low_quantum_2014}:
         \begin{center}
             \includegraphics[width=0.9\textwidth]{images/low-screenshot}
         \end{center}
@@ -306,7 +347,23 @@ arXiv : 2601.15442}
         \begin{center}
             \input{tikz-pics/can-elementary-augmentation}
         \end{center}
+        Were we use the ancilla augmented cores
+        \begin{align*}
+            \anaugmentationofat{\selindex}{\avariableof{\selindex},\headvariableof{\selindex}}
+            = \sum_{\headindexof{\selindex}} \onehotmapofat{\headindexof{\selindex}}{\headvariableof{\selindex}}
+            \otimes \Big(&\frac{
+                \acttensorofat{\selindex}{\indexedheadvariableof{\selindex}}
+            }{
+                \max_{\secheadindexof{\selindex}}\acttensorofat{\selindex}{\headvariableof{\selindex}=\secheadindexof{\selindex}}
+            }
+            \tbasisat{\avariableof{\selindex}} \\
+            & \quad + \left(1-\frac{\acttensorofat{\selindex}{\indexedheadvariableof{\selindex}}}{\max_{\secheadindexof{\selindex}}\acttensorofat{\selindex}{\headvariableof{\selindex}=\secheadindexof{\selindex}}}\right) \fbasisat{\avariableof{\selindex}}
+            \Big) \, .
+        \end{align*}
 
+        \begin{center}
+            \bf The augmented \CompActNet{} is a Bayesian network, which q-sample can be prepared!
+        \end{center}
     \end{frame}
 
     \begin{frame}{Q-sample to the toy accounting system}
