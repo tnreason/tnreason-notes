@@ -1,15 +1,12 @@
 \section{\ActivationCircuits{}}
 
-We now study circuits preparing q-samples of Bayesian Networks.
+We now study schemes to represent the activation network, which enable us to derive sampling schemes from \CompActNets{}.
+To this end, we augment the activation network with ancilla variables, understanding it as a conditioned Bayesian network.
+We then apply controlled rotations to find q-samples.
 
-
-
-%A specific scheme to construct graph-controlled circuits with specific Bayesian Networks as measurement distributions are \activationCircuits{}.
-%Here we restrict during the preparation procedure to real and positive amplitudes (i.e. prepare q-samples).
-
+\subsection{Uniformly controlled rotations}
 
 \ActivationCircuits{} are uniformly controlled unitaries (see \cite{mottonen_transformation_2005}), where the rotation axis is chosen as the $y$-axes of the Bloch sphere, and the angles are computed by the function $h(\cdot)$ acting on a function value to be encoded.
-%\red{Introduce rotation encodings based on activation circuit action, hint at a sampling scheme of probability distributions.}
 
 %% Angle preparing
 We define the angle preparing function on $p\in[0,1]$ by
@@ -22,24 +19,19 @@ For any $p\in[0,1]$ we then have
     = \coloredmatrixof{\sqrt{1-p} \\ \sqrt{p}}{\cavariable{\outsymbol}} \, .
 \end{align*}
 
-\begin{definition}[\ActivationCircuit{}]
-    Given a function
-    \begin{align*}
-        \exformula : \facstates \rightarrow [0,1]
-    \end{align*}
-    its \activationCircuit{} is the uniformly controlled unitary
-    $\qcaencodingofat{\exformula}{\cavariable{\insymbol},\cavariable{\outsymbol},\shortcatvariables}$ defined as
-    \begin{align*} %% Could ease the definition by coordinates
-        \qcaencodingofat{\hypercore}{\cavariable{\insymbol},\cavariable{\outsymbol},\shortcatvariables}
-        = \sum_{\shortcatindicesin} \onehotmapofat{\shortcatindices}{\shortcatvariables}
-        \otimes \yrotationofat{h(\exformulaat{\shortcatindices})}{\cavariable{\insymbol},\cavariable{\outsymbol}} \, .
-    \end{align*}
-\end{definition}
-
-%% Drop the in and out
-%We will ease our notation by dropping the $\insymbol$ and $\outsymbol$ labels to the control variables.
-%This amounts to understanding the Dirac delta tensors in \activationCircuits{} as hyperedges.
-%Along that picture the quantum circuit is a tensor network on hyperedges instead of edges.
+%\begin{definition}[\ActivationCircuit{}]
+%    Given a function
+%    \begin{align*}
+%        \exformula : \facstates \rightarrow [0,1]
+%    \end{align*}
+%    its \activationCircuit{} is the uniformly controlled unitary
+%    $\qcaencodingofat{\exformula}{\cavariable{\insymbol},\cavariable{\outsymbol},\shortcatvariables}$ defined as
+%    \begin{align*} %% Could ease the definition by coordinates
+%        \qcaencodingofat{\hypercore}{\cavariable{\insymbol},\cavariable{\outsymbol},\shortcatvariables}
+%        = \sum_{\shortcatindicesin} \onehotmapofat{\shortcatindices}{\shortcatvariables}
+%        \otimes \yrotationofat{h(\exformulaat{\shortcatindices})}{\cavariable{\insymbol},\cavariable{\outsymbol}} \, .
+%    \end{align*}
+%\end{definition}
 
 %% Probability Tensor
 When we have a probability tensor, its \activationCircuit{} be prepared, since all values are in $[0,1]$.
@@ -53,72 +45,164 @@ Tensors $\hypercoreat{\shortcatvariables}$ with non-negative coordinates can be 
 \end{align*}
 When the maximum of the tensor is not known, it can be replaced by an upper bound (reducing the acceptance rate of the rejection sampling).
 
-
-
-%%% FUSE TO LATER
-%Q-samples can be prepared by \activationCircuit{}s acting on the uniform q-sample (see \exaref{exa:qSampleUniform}), as we show next.
+%%We revisit the correspondence of Bayesian Networks with graph-controlled circuits, by showing that any Bayesian Network can be prepared by \activationCircuits{} of the conditional probability distributions.
+%Q-samples of Bayesian Networks can be prepared by quantum circuits, where each conditional probability distribution is prepared by an \activationCircuit{}.
 %
-%Doing rejection sampling on the ancilla qubit corresponds with sampling from the normalized contraction with the activation tensor.
-%
-%\begin{lemma}
-%    \label{lem:qSampleDistribution}
-%    Given a distribution $\probat{\shortcatvariables}$, we construct a circuit preparing its q-sample and add the ancilla encoding of a tensor $\hypercoreat{\shortcatvariables}$.
-%    The rejection sampling scheme, measuring the ancilla qubit and the $\shortcatvariables$ qubits, rejecting the ancilla qubit measured as $0$, prepares samples from the distribution
+%\begin{theorem}[\cite{low_quantum_2014}]
+%    Let there be a Bayesian Network $\probwith$ on a directed acyclic hypergraph $\graph=([\catorder],\edges)$ with dimensions $\catdimof{\catenumerator}=2$ and decorations of the edges $\edges=\{(\parentsof{\catenumerator},\{\catenumerator\}) \wcols \catenumeratorin\}$ by conditional probabilities
 %    \begin{align*}
-%        \normalizationof{\probat{\shortcatvariables},\hypercoreat{\shortcatvariables}}{\shortcatvariables} \, .
+%        \condprobof{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \, .
 %    \end{align*}
-%\end{lemma}
+%    To each $\catenumeratorin$ we construct the function
+%    \begin{align*}
+%        \exfunctionof{\catenumerator} \defcols \bigtimes_{\seccatenumerator\in\parentsof{\catenumerator}} [2] \rightarrow [2]
+%        \quad,\quad
+%        \exfunctionofat{\catenumerator}{\catindexof{\parentsof{\catenumerator}}}
+%        = \condprobof{\catvariableof{\catenumerator}=1}{\indexedcatvariableof{\parentsof{\catenumerator}}} \, .
+%    \end{align*}
+%    Then the concatenation of the \activationCircuits{} (see \figref{fig:cpdEncoding})
+%    \begin{align*}
+%        \qcaencodingofat{
+%            \exfunctionof{\catenumerator}
+%        }{\ccatvariableof{\catenumerator}{\insymbol},\catvariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}}
+%    \end{align*}
+%    respecting the order $[\catorder]$ prepares the q-sample to the Bayesian Network $\probwith$ when acting on the initial state $\bigotimes_{\atomenumeratorin}\onehotmapofat{0}{\ccatvariableof{\catenumerator}{\insymbol}}$.
+%\end{theorem}
+%\begin{proof}
+%    Let $\qstateat{\shortcatvariables}$ be the state prepared by the \activationCircuits{} to the conditional probability distributions.
+%    We need to show that the measurement distribution of $\qstate$ is the Bayesian Network.
+%    For any $\shortcatindices\in\atomstates$ we have
+%    \begin{align*}
+%        \absof{\qstateat{\indexedshortcatvariables}}^2
+%        &= \prod_{\catenumeratorin}
+%        \left(\qcaencodingofat{
+%            \exfunctionof{\catenumerator}
+%        }{\ccatvariableof{\catenumerator}{\insymbol}=0,\indexedcatvariableof{\catenumerator},\indexedcatvariableof{\parentsof{\catenumerator}}}\right)^2 \\
+%        &= \prod_{\catenumeratorin}
+%        \condprobof{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}} \\
+%        & = \probat{\indexedshortcatvariables} \, .
+%    \end{align*}
+%\end{proof}
 
-\subsection{Q-samples of Bayesian Networks}
+%\begin{figure}
+%    \begin{center}
+%        \input{./tikz_pics/directed_to_circuit.tex}
+%    \end{center}
+%    \caption{
+%        Representation of directed and positive tensor by a controlled rotation.
+%        a) Conditional probability tensor $\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}$ being a tensor in a Bayesian Network.
+%        b) Circuit Encoding as a controlled rotation, which is the \ActivationCircuit{} of the tensor $\condprobat{\catvariableof{\catenumerator}=1}{\catvariableof{\parentsof{\catenumerator}}}$.
+%    }\label{fig:cpdEncoding}
+%\end{figure}
 
-%We revisit the correspondence of Bayesian Networks with graph-controlled circuits, by showing that any Bayesian Network can be prepared by \activationCircuits{} of the conditional probability distributions.
-Q-samples of Bayesian Networks can be prepared by quantum circuits, where each conditional probability distribution is prepared by an \activationCircuit{}.
+%\input{./examples/graph-controlled-circuits/grover-rudolph}
 
-\begin{theorem}[\cite{low_quantum_2014}]
-    Let there be a Bayesian Network $\probwith$ on a directed acyclic hypergraph $\graph=([\catorder],\edges)$ with dimensions $\catdimof{\catenumerator}=2$ and decorations of the edges $\edges=\{(\parentsof{\catenumerator},\{\catenumerator\}) \wcols \catenumeratorin\}$ by conditional probabilities
-    \begin{align*}
-        \condprobof{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \, .
-    \end{align*}
-    To each $\catenumeratorin$ we construct the function
-    \begin{align*}
-        \exfunctionof{\catenumerator} \defcols \bigtimes_{\seccatenumerator\in\parentsof{\catenumerator}} [2] \rightarrow [2]
-        \quad,\quad
-        \exfunctionofat{\catenumerator}{\catindexof{\parentsof{\catenumerator}}}
-        = \condprobof{\catvariableof{\catenumerator}=1}{\indexedcatvariableof{\parentsof{\catenumerator}}} \, .
-    \end{align*}
-    Then the concatenation of the \activationCircuits{} (see \figref{fig:cpdEncoding})
-    \begin{align*}
-        \qcaencodingofat{
-            \exfunctionof{\catenumerator}
-        }{\ccatvariableof{\catenumerator}{\insymbol},\catvariableof{\catenumerator},\catvariableof{\parentsof{\catenumerator}}}
-    \end{align*}
-    respecting the order $[\catorder]$ prepares the q-sample to the Bayesian Network $\probwith$ when acting on the initial state $\bigotimes_{\atomenumeratorin}\onehotmapofat{0}{\ccatvariableof{\catenumerator}{\insymbol}}$.
-\end{theorem}
-\begin{proof}
-    Let $\qstateat{\shortcatvariables}$ be the state prepared by the \activationCircuits{} to the conditional probability distributions.
-    We need to show that the measurement distribution of $\qstate$ is the Bayesian Network.
-    For any $\shortcatindices\in\atomstates$ we have
-    \begin{align*}
-        \absof{\qstateat{\indexedshortcatvariables}}^2
-        &= \prod_{\catenumeratorin}
-        \left(\qcaencodingofat{
-            \exfunctionof{\catenumerator}
-        }{\ccatvariableof{\catenumerator}{\insymbol}=0,\indexedcatvariableof{\catenumerator},\indexedcatvariableof{\parentsof{\catenumerator}}}\right)^2 \\
-        &= \prod_{\catenumeratorin}
-        \condprobof{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}} \\
-        & = \probat{\indexedshortcatvariables} \, .
-    \end{align*}
-\end{proof}
+\subsection{Ancilla augmentation}
 
-\begin{figure}
+The computation network consists already of directed cores and therefore is already a Bayesian network.
+The activation network however needs ancilla augmentation.
+Let us first define the ancilla augmentation of a distribution, and then find ancilla augmentations to \CompActNets{}, which are Bayesian networks.
+
+\begin{definition}[Ancilla Augmentation of a Distribution]
+    Let $\probwith$ be a probability distribution of variables $\shortcatvariables$.
+    Another distribution $\secprobat{\shortcatvariables,\avariables}$ of variables $\shortcatvariables$ and ancilla variables $\avariables$ is called an ancilla augmentation of $\probwith$, if there is $\acceptanceprob>0$ with
+    \begin{align*}
+        \acceptanceprob \cdot \probwith
+        = \secprobat{\shortcatvariables,\avariables=1_{[\seldim]}} \, .
+    \end{align*}
+    We refer to $\acceptanceprob$ as the corresponding acceptance probability.
+\end{definition}
+
+%% Rejection Sampling, interpretation of \acceptanceprob
+Sampling from the distribution can be done by rejection sampling, also called post selection, on the ancilla augmented distribution in the following way.
+When drawing a sample $(\shortcatindices,\aindex)$ from $\secprobat{\shortcatvariables,\avariable}$ and rejecting it whenever $\aindex=0$, the accepted samples are distributed as $\probwith$.
+We then have $\acceptanceprob$ as the probability of accepting a sampling in this rejection sampling method.
+The acceptance probability is critical in determining the efficiency of this approach, since we need to draw $\sim\frac{1}{\acceptanceprob}$ samples from $\secprobat{\shortcatvariables,\avariable}$ to get an accepted sample.
+
+%%% Augmentation cores
+%We perform the ancilla augmentation on \ComputationActivationNetworks{} by replacing each activation core $\acttensorofat{\edge}{\headvariableof{\edge}}$ with the augmented core
+%\begin{align*}
+%    \anaugmentationofat{\edge}{\avariableof{\edge},\headvariableof{\edge}}
+%    = \sum_{\catindexof{\edge}} \onehotmapofat{\catindexof{\edge}}{\headvariableof{\edge}} \otimes \Big(
+%    \frac{\acttensorofat{\edge}{\indexedheadvariableof{\edge}}}{
+%        \max_{\secheadindexof{\edge}}\acttensorofat{\edge}{\indexedheadvariableof{\edge}}
+%    } \tbasisat{\avariableof{\edge}}
+%    + \big(
+%    1 - \frac{\acttensorofat{\edge}{\indexedheadvariableof{\edge}}}{
+%        \max_{\secheadindexof{\edge}}\acttensorofat{\edge}{\indexedheadvariableof{\edge}}
+%    }
+%    \big) \fbasisat{\avariableof{\edge}}
+%    \Big)
+%\end{align*}
+
+
+\begin{definition}
+    The \activationCircuit{} of a non-negative tensor $\acttensorofat{\edge}{\headvariableof{\edge}}$ is the controlled unitary
+    \begin{align*}
+        \qcaencodingofat{\acttensorof{\edge}}{\cavariableof{\edge}{\insymbol},\cavariableof{\edge}{\outsymbol},\headvariableof{\edge}}
+        = \sum_{\headindexof{\edge}} \onehotmapofat{\headindexof{\edge}}{\headvariableof{\edge}} \otimes
+        \yrotationofat{h\left(\frac{\acttensorofat{\edge}{\indexedheadvariableof{\edge}}}{
+            \max_{\secheadindexof{\edge}}\acttensorofat{\edge}{\headvariableof{\edge}=\secheadindexof{\edge}}
+        }\right)}{\cavariable{\insymbol},\cavariable{\outsymbol}} \, .
+    \end{align*}
+    The \activationCircuit{} of a tensor network $\{\acttensorofat{\edge}{\headvariableof{\edge}}\wcols\edgein\}$ is the contraction of the activation tensors to each tensor in the network, that is
+    \begin{align*}
+        \qcaencodingofat{\{\acttensorofat{\edge}{\headvariableof{\edge}}\wcols\edgein\}}{\cavariableof{\edges}{\insymbol},\cavariableof{\edges}{\outsymbol},\headvariableof{\nodes}}
+        = \contractionof{
+            \{\qcaencodingofat{\acttensorof{\edge}}{\cavariableof{\edge}{\insymbol},\cavariableof{\edge}{\outsymbol},\headvariableof{\edge}}\wcols\edgein\}
+        }{\cavariableof{\edges}{\insymbol},\cavariableof{\edges}{\outsymbol},\headvariableof{\nodes}} \, .
+    \end{align*}
+\end{definition}
+
+\begin{figure}[t]
     \begin{center}
-        \input{./tikz_pics/directed_to_circuit.tex}
+        \input{tikz_pics/sampling/can_elementary_augmentation}
     \end{center}
-    \caption{
-        Representation of directed and positive tensor by a controlled rotation.
-        a) Conditional probability tensor $\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}$ being a tensor in a Bayesian Network.
-        b) Circuit Encoding as a controlled rotation, which is the \ActivationCircuit{} of the tensor $\condprobat{\catvariableof{\catenumerator}=1}{\catvariableof{\parentsof{\catenumerator}}}$.
-    }\label{fig:cpdEncoding}
+    \caption{Ancilla augmentation of an elementary \ComputationActivationNetwork{} a) by replacing each leg vector of the elementary activation tensor by an directed ancilla augmentation.}
+    \label{fig:canElementaryAugmentation}
 \end{figure}
 
-\input{./examples/graph-controlled-circuits/grover-rudolph}
+%% Elementary CAN Augmentation
+Elementary \ComputationActivationNetworks{} can be augmented by ancilla augmentation of each leg vector in the activation tensor network (see \figref{fig:canElementaryAugmentation}).
+We understand ancilla variables as variables in a Bayesian Network having single parents, corresponding with the ancilla augmentation of an elementary tensor.
+For an example, see \figref{fig:toyAccounting}.
+
+%% Hidden variables in activation graph
+To a generic activation hypergraph $\graph$, we would do ancilla augmentation for the activation tensor network, where each hidden variable is treated as a distributed qubit.
+To treat it as a distributed qubit, each hidden activation qubit is prepared in uniform state (i.e. a Hadamard gate acting on a ground state) and will be omitted in the measurement scheme (either not measured, or its measurement ignored).
+This can be understood from a tensor network perspective, where marginalization means contracting, which is exactly how hidden activation variables are used.
+For an example in the $\ttformat$ format, see \figref{fig:canTTAugmentation}.
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz_pics/sampling/can_TT_augmentation}
+    \end{center}
+    \caption{Ancilla augmentation of an $\ttformat$ \ComputationActivationNetwork{} a) by a Bayesian Network b).
+    The hidden variables in the $\ttformat$ activation tensor are treated as distributed variables.
+    Marginalization over the hidden variables and conditioning on the activation variables in state $1$, we reproduce the \ComputationActivationNetwork{}.}
+    \label{fig:canTTAugmentation}
+\end{figure}
+
+\subsection{Q-samples of \CompActNets{}}
+
+
+\begin{theorem}
+    Given a \CompActNet{} with statistic $\sstat$ and activation tensor network $\acttensorat{\headvariables}$, the circuit composed of
+    \begin{itemize}
+        \item Hadamard transforms on the distributed qubits $\shortcatvariables$
+        \item Computation circuit $\qcbencodingof{\sstat}$
+        \item Activation circuit to $\qcaencodingof{\acttensorat{\headvariables}}$
+    \end{itemize}
+    prepares the q-sample of a distribution $\secprobat{\headvariables,\shortcatvariables,\avariables}$, which is conditioned on $\avariables=\onetuple{[\seldim]}$ the \CompActNet{}, that is
+    \begin{align*}
+        \secprobat{\headvariables,\shortcatvariables,\avariables=\onetuple{[\seldim]}}
+        = \normalizationof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\acttensorat{\headvariables}}{\headvariables,\shortcatvariables} \, .
+    \end{align*}
+\end{theorem}
+
+\input{examples/sampling/toy_accounting_circuit}
+
+% Bayesian network perspective
+By the ancilla augmentation, a \CompActNet{} is turned into a Bayesian network, which has additional sparse structure in its computation network.
+We can therefore understand the \computationCircuits{} and \activationCircuits{} as q-sample preparating circuits as in \cite{low_quantum_2014}.
+The main difference is that we apply sparsity principles to further decompose the \computationCircuits{}.

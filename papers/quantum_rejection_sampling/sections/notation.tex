@@ -1,5 +1,7 @@
 \section{Notation}
 
+\subsection{Tensor networks}
+
 We here use the tensor network notation \cite{goessmann_tensor_2026}.
 The modes of each tensors are assigned by variables, and denoted in brackets as
 \begin{align*}
@@ -9,13 +11,38 @@ Quantum gates are along this line unitary tensors with incoming and outgoing var
 The Pauli-X for example is denoted by
 \begin{align*}
     \paulixat{\cavariable{\insymbol},\cavariable{\outsymbol}} \coloneqq
-    \coloredmatrixof{
-        0 & 1 \\
-        1 & 0}{\cavariable{\insymbol},\cavariable{\outsymbol}} \, .
+    \coloredmatrixof{0 & 1 \\ 1 & 0}{\cavariable{\insymbol},\cavariable{\outsymbol}} \, .
 \end{align*}
 Contractions are denoted by angle brackets with the variables left open specified in further brackets.
 Circuits are contractions of the unitaries, leaving only the last output variables open.
-Computational basis measurements of circuits are coordinatewise squared absoluted of the contracted circuit.
+Computational basis measurements of circuits are coordinatewise squared absolut of the contracted circuit.
+
+\subsection{\ComputationActivationNetworks{}}
+
+\ComputationActivationNetworks{} (\CompActNets{}) are tensor networks representing logical, probabilistic and neural models \cite{goessmann_tensor_2026}.
+\red{We here introduce them for Boolean statistics.}
+
+To any Boolean function $\formula:[2]^{\catorder}\rightarrow[2]$ we define its basis encoding
+\begin{align*}
+    \bencodingofat{\formula}{\headvariable,\shortcatvariables}
+    = \sum_{\shortcatindices\in[2]^{\catorder}} \onehotmapofat{\formula(\shortcatindices)}{\headvariable} \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables}\, ,
+\end{align*}
+where we denote the basis vectors as $\fbasisat{\catvariable}=\coloredmatrixof{1 \\ 0}{\catvariable}$ and $\tbasisat{\catvariable}=\coloredmatrixof{0 \\ 1}{\catvariable}$.
+
+\begin{definition}[\ComputationActivationNetwork{} (\CompActNets{})]
+    \label{def:compActNets}
+    Let there be a function $\sstat : [2]^{\catorder} \allowbreak \rightarrow [2]^{\seldim}$ with basis encoding $\bencodingofat{\sstat}{\headvariables,\shortcatvariables}$.
+    Let there further be a hypergraph $\graph=(\nodes,\edges)$ with nodes $\nodes$ containing $[\seldim]$.
+    We define the by $\sstat$ computable and by $\graph$ activated family of distributions by
+    \begin{align*}
+        \realizabledistsof{\sstat,\graph}
+        = \left\{ \normalizationof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\contractionof{\acttensor}{\headvariables} %\} \cup \{\hypercoreofat{\edge}{\sstatcatof{\edge}} \wcols \edgein \}
+        }{\shortcatvariables}
+              \wcols \acttensorat{\headvariableof{\nodes}} \in \tnsetof{\graph} \right\} \, .
+    \end{align*}
+    We refer to any member $\probat{\shortcatvariables}\in\realizabledistsof{\sstat,\graph}$ as a \emph{\ComputationActivationNetwork{}} (or shorter as a \emph{\CompActNet{}}).
+    We call $\bencsstatwith$ (and any decomposition of it) the \emph{computation network} and $\acttensorat{\headvariableof{\nodes}}$ the \emph{activation network}.
+\end{definition}
 
 \subsection{Q-samples}
 

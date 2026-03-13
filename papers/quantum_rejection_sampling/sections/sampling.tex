@@ -1,8 +1,8 @@
-\section{Sampling from \ComputationActivationNetworks{}}\label{sec:sampling}
+\section{Quantum Rejection Sampling from \ComputationActivationNetworks{}}\label{sec:sampling}
 
 In general quantum rejection sampling consist in two steps:
 \begin{itemize}
-    \item Find an ancilla augmentation of a distribution, such that there is a circuit preparing the q-sample of the augmented distribution
+    \item Represent the distribution to be sampled as a conditionalization of a preparable distribution
     \item Amplify the amplitude of the ancilla qubits in state $1$ by repeated Grover operators
 \end{itemize}
 
@@ -12,39 +12,8 @@ In particular, we build compositions of \computationCircuits{} and \activationCi
 % Graph-controlled circuits
 Both are defined using controlled single qubit gates (see Sections 4.2-3 in \cite{nielsen_quantum_2010}) with ancilla qubits being the target qubits.
 
-\subsection{Preparing ancilla augmented distributions for \ComputationActivationNetworks{}}
 
-The computation network consists already of directed cores and therefore is already a Bayesian network.
-The activation network however needs ancilla augmentation.
 
-\begin{figure}[t]
-    \begin{center}
-        \input{tikz_pics/sampling/can_elementary_augmentation}
-    \end{center}
-    \caption{Ancilla augmentation of an elementary \ComputationActivationNetwork{} a) by replacing each leg vector of the elementary activation tensor by an directed ancilla augmentation.}
-    \label{fig:canElementaryAugmentation}
-\end{figure}
-
-%% Elementary CAN Augmentation
-Elementary \ComputationActivationNetworks{} can be augmented by ancilla augmentation of each leg vector in the activation tensor network (see \figref{fig:canElementaryAugmentation}).
-We understand ancilla variables as variables in a Bayesian Network having single parents, corresponding with the ancilla augmentation of an elementary tensor.
-For an example, see \figref{fig:toyAccounting}.
-
-%% Hidden variables in activation graph
-To a generic activation hypergraph $\graph$, we would do ancilla augmentation for the activation tensor network, where each hidden variable is treated as a distributed qubit.
-To treat it as a distributed qubit, each hidden activation qubit is prepared in uniform state (i.e. a Hadamard gate acting on a ground state) and will be omitted in the measurement scheme (either not measured, or its measurement ignored).
-This can be understood from a tensor network perspective, where marginalization means contracting, which is exactly how hidden activation variables are used.
-For an example in the $\ttformat$ format, see \figref{fig:canTTAugmentation}.
-
-\begin{figure}[t]
-    \begin{center}
-        \input{tikz_pics/sampling/can_TT_augmentation}
-    \end{center}
-    \caption{Ancilla augmentation of an $\ttformat$ \ComputationActivationNetwork{} a) by a Bayesian Network b).
-    The hidden variables in the $\ttformat$ activation tensor are treated as distributed variables.
-    Marginalization over the hidden variables and conditioning on the activation variables in state $1$, we reproduce the \ComputationActivationNetwork{}.}
-    \label{fig:canTTAugmentation}
-\end{figure}
 
 \subsection{Amplitude Amplification}
 
@@ -77,8 +46,8 @@ In the subspace $\subspaceof{}$ spanned by the axes
 which can be thought of the polar angle coordinate of the state
 \begin{align*}
     \qstateofat{0}{\avariables,\headvariables,\shortcatvariables}
-    = \sinof{\frac{\rotanglesymbol}{2}} \qstateofat{0}{\avariables,\headvariables,\shortcatvariables}
-    + \cosof{\frac{\rotanglesymbol}{2}} \qstateofat{1}{\avariables,\headvariables,\shortcatvariables}
+    = \sinof{\frac{\rotanglesymbol}{2}} \qstateofat{\goodstatesymbol}{\avariables,\headvariables,\shortcatvariables}
+    + \cosof{\frac{\rotanglesymbol}{2}} \qstateofat{\badstatesymbol}{\avariables,\headvariables,\shortcatvariables}
 \end{align*}
 where we define an angle $\rotanglesymbol$ by
 \begin{align*}
@@ -94,7 +63,7 @@ The amplitude amplification scheme now iterates between
         - 2 \onehotmapofat{\onetuple{[\seldim]}}{\cavariableof{[\seldim]}{\insymbol}}
         \otimes \onehotmapofat{\onetuple{[\seldim]}}{\cavariableof{[\seldim]}{\outsymbol}}
     \end{align*}
-    \item Reflection $\reflectionof{}$ along $\qstate$, by
+    \item Reflection $\reflectionof{\qstate}$ along $\qstate$, by
     \begin{align*}
         \reflectionofat{\qstate}{\cavariableof{[\seldim]}{\insymbol},\cheadvariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol},\cheadvariableof{[\seldim]}{\outsymbol},\cavariableof{[\seldim]}{\outsymbol}}
         =& \identityat{\cavariableof{[\seldim]}{\insymbol},\cheadvariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol},\cheadvariableof{[\seldim]}{\outsymbol},\cavariableof{[\seldim]}{\outsymbol}} \\
@@ -158,6 +127,4 @@ For \ComputationActivationNetworks{} we find a q-sample by concatenating \comput
         We measure the distributed qubits $\shortcatvariables$ and the ancilla qubits $\avariableof{[\seldim]}$ and reject all samples, where an ancilla qubit is measured as $0$.
     }\label{fig:caCircuit}
 \end{figure}
-
-\input{examples/sampling/toy_accounting_circuit}
 

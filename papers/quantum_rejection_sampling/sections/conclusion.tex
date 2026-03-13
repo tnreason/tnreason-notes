@@ -1,23 +1,19 @@
 \section{Conclusion and Outlook}
 
-We have characterized an intuitive class of Quantum Circuits, namely graph-controlled circuits.
-We have shown that their prepared distributions are exactly the Bayesian Networks on the corresponding hypergraph.
-Along this class the demonstrated rejection sampling schemes by \ComputationActivationCircuits{} achieve the best acceptance probability.
-Using amplitude amplification, we get a square root improvement of the quantum rejection sampling scheme compared with classical rejection sampling.
+%We have characterized an intuitive class of Quantum Circuits, namely graph-controlled circuits.
+%We have shown that their prepared distributions are exactly the Bayesian Networks on the corresponding hypergraph.
+%Along this class the demonstrated rejection sampling schemes by \ComputationActivationCircuits{} achieve the best acceptance probability.
+%Using amplitude amplification, we get a square root improvement of the quantum rejection sampling scheme compared with classical rejection sampling.
 
 To improve on this quantum speedup, different circuit designs are necessary.
 We could allow for hypergraphs with cycles, where e.g. the distributed qubits are rotated conditioned on the statistic qubits.
 Such schemes shall be investigated in future research.
 However, an improvement beyond scaling constants is not expected, since the amplitude amplification procedure already achieves the Heisenberg limit \cite{brassard_quantum_2002,zwierz_general_2010}.
 
-
-
 %% Variational Inference Application
 Our quantum rejection sampling scheme can be used as a subroutine in variational inference schemes, for example when estimating the parameters of the \ComputationActivationNetwork{}.
 When sampling from probability distributions, we can use these samples to estimate probabilistic queries, i.e. perform forward inference.
 Building on such particle-based forward inference schemes in inner loops, we can perform various inference schemes for \ComputationActivationNetworks{}, such as backward inference and message passing schemes.
-
-
 
 %% Quantum Moment Matching
 One might further investigate the relation between amplitude amplification and change of the canonical parameters in \HybridLogicNetwork{}.
