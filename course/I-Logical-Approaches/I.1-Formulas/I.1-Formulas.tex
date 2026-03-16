@@ -25,7 +25,7 @@
             \item Example: The formula $\var{Feature}\Rightarrow\var{Account 1}$ represents the implication, that the $\var{Account 1}$ has to be booked when the feature $\var{Feature}$ is present on the invoice.
             \item Propositional Logics: The variables (or atomic formulas) are combined with logical connectives $\{\lnot, \land, \lor, \Rightarrow, \Leftrightarrow\}$ to build generic formulas.
         \end{itemize}
-        and \textbf{Semantics}
+        and \textbf{Semantics} (later)
         \begin{itemize}
             \item What do these formulas describe?
             \item Example: From the formula $\var{Feature}\land(\var{Feature}\Rightarrow\var{Account 1})$ the formula $\var{Account 1}$ follows.
@@ -44,7 +44,7 @@
         \begin{center}
             \begin{tikzpicture}[scale=1]
                 \node (A) at (0,0) {
-                    $\coloredmatrixof{\cdot \\ \cdot }{\catvariable}$
+                    $\coloredmatrixof{\only<1>{\cdot \\ \cdot}\only<2>{\textcolor{red}{0} \\\textcolor{red}{1}}\only<3>{0 \\ 1}}{\only<1-2>{\cdot}\only<3>{\textcolor{red}{\catvariable}}}$
                 };
                 \draw[dashed,->] (-0.5,0.2) to (-1.5,0.2) node[left]{\small $\mathrm{False}$};
                 \draw[dashed,->] (-0.5,-0.2) to (-1.5,-0.2) node[left]{\small $\mathrm{True}$};
@@ -54,8 +54,8 @@
         \textbf{Conventions:}
         \begin{itemize}
 %            \item We assign to each state a coordinate of a vector, in which we can store whether the variable can be in the state
-            \item We assign a $0$ in the coordinate, when the corresponding state is not possible, and a $1$ if the corresponding state is possible.
-            \item In the brackets after a vector we denote the corresponding variable.
+            \item \only<2>{\textcolor{red}}{We assign a $0$ in the coordinate, when the corresponding state is not possible, and a $1$ if the corresponding state is possible.}
+            \item \only<3>{\textcolor{red}}{In the brackets after a vector we denote the corresponding variable.}
         \end{itemize}
 
 
@@ -134,14 +134,92 @@
     \end{frame}
 
 
-    \begin{frame}{Knowledge about the Toy Accounting System}
-        Now let us extend to the toy accounting system.
-        Given the Knowledge about both formulas we have
+
+    \begin{frame}{Representation of the toy accounting system in a truth table}
+
+        \begin{tabular}{ccc|cc|c}
+            $\catvariableof{A1}$                         & $\catvariableof{A2}$                         & $\catvariableof{F}$                          & $\catvariableof{A1}\oplus\catvariableof{A2}$ & $\catvariableof{F}\Rightarrow\catvariableof{A1}$ & $(\catvariableof{A1}\oplus\catvariableof{A2})\land(\catvariableof{F}\Rightarrow\catvariableof{A1})$ \\
+            \hline
+            \only<1,3->{0}\only<2>{\textcolor{red}{0}}   & \only<1,3->{0}\only<2>{\textcolor{red}{0}}                      & \only<1,3->{0}\only<2>{\textcolor{red}{0}}                      & 0                                            & 1                                                & \only<1,3->{0}\only<2>{\textcolor{red}{0}}                                                                                                   \\
+            \only<1-2,4->{0}\only<3>{\textcolor{red}{0}} & \only<1-2,4->{0}\only<3>{\textcolor{red}{0}}                      & \only<1-2,4->{1}\only<3>{\textcolor{red}{1}}                     & 0                                            & 0                                                & \only<1-2,4->{0}\only<3>{\textcolor{red}{0}}                                                                                                     \\
+            \only<1-3,5->{0}\only<4>{\textcolor{red}{0}} & \only<1-3,5->{1}\only<4>{\textcolor{red}{1}}                     & \only<1-3,5->{0}\only<4>{\textcolor{red}{0}}                    & 1                                            & 1                                                & \only<1-3,5->{1}\only<4>{\textcolor{red}{1}}                                                                                                    \\
+            0                                            & 1                                            & 1                                            & 1                                            & 0                                                & 0                                                                                                   \\
+            1                                            & 0                                            & 0                                            & 1                                            & 1                                                & 1                                                                                                   \\
+            1                                            & 0                                            & 1                                            & 1                                            & 1                                                & 1                                                                                                   \\
+            1                                            & 1                                            & 0                                            & 0                                            & 1                                                & 0                                                                                                   \\
+            1                                            & 1                                            & 1                                            & 0                                            & 1                                                & 0                                                                                                   \\
+        \end{tabular}
+        \only<1>{
+            Limitations of the truth table method:
+            \begin{itemize}
+                \item Many rows when having many variables (exponential increase when having $\catorder$ variables: $2^{\catorder}$)
+                \item Computation structure is not obvious
+            \end{itemize}}
         \begin{center}
-            \input{tikz-pics/toy-accounting-hard}
+            \bf We will represent logics using tensors instead!
+        \end{center}
+        \only<2->{
+            \begin{center}
+                \begin{tikzpicture}[scale=2]
+                    %\node (A) at (-4,0) {$\probofat{(X_{A1}\oplus X_{A2}, X_F\Rightarrow X_{A1}),\big(\{0\},(1),(0,\theta)\big)}{X_{A1},X_{A2},X_{F}} \,\, = \,\, \frac{1}{1+3 \cdot \expof{\canparam}} \, \cdot $};
+                    \node (A) at (0,0) [scale=1.5] {
+                        $\begin{pmatrix}
+                             \only<3->{0}\only<2>{\textcolor{red}{0}}    &   \only<2-3>{\cdot}\only<4>{\textcolor{red}{1}}\only<5>{1}\\
+                             \only<2-4>{\cdot}\only<5>{1} & \only<2-4>{\cdot}\only<5>{0}
+                        \end{pmatrix}$
+                    };
+                    \node (A) at (1.25,0.3) [scale=1.5] {
+                        $\begin{pmatrix}
+                             \only<2>{\cdot}\only<3>{\textcolor{red}{0}}\only<4->{0} & \only<2-4>{\cdot}\only<5>{0} \\
+                             \only<2-4>{\cdot}\only<5>{1} & \only<2-4>{\cdot}\only<5>{0}
+                        \end{pmatrix}$
+                    };
+                    \draw[->,dashed] (-0.25,0.5) node[below] {\tiny $0$} -- (0.25,0.5) node [midway, above] {\tiny $X_{A2}$} node[below] {\tiny $1$};
+                    \draw[<-,dashed] (-0.6,-0.2) node[right] {\tiny $1$} -- (-0.6,0.2) node [midway, left] {\tiny $X_{A1}$} node[right] {\tiny $0$};
+                    \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (1.25,-0.2) node [midway, below] {\tiny $X_F$} node[above] {\tiny $1$};
+                \end{tikzpicture}
+            \end{center}
+        }
+    \end{frame}
+
+    \begin{frame}{Tensor representation of the toy accounting system}
+
+        The system is described by a tensor of order $\catorder=3$:
+        \begin{center}
+            \begin{tikzpicture}[scale=2]
+                %\node (A) at (-4,0) {$\probofat{(X_{A1}\oplus X_{A2}, X_F\Rightarrow X_{A1}),\big(\{0\},(1),(0,\theta)\big)}{X_{A1},X_{A2},X_{F}} \,\, = \,\, \frac{1}{1+3 \cdot \expof{\canparam}} \, \cdot $};
+                \node (A) at (0,0) [scale=1.5] {
+                    $\begin{pmatrix}
+                         0 & \only<2>{\textcolor{red}{1}}\only<1,3->{1}  \\
+                         1 & \only<1>{\textcolor{red}{0}}\only<2->{0}
+                    \end{pmatrix}$
+                };
+                \node (A) at (1.25,0.3) [scale=1.5] {
+                    $\begin{pmatrix}
+                         0 & \only<3>{\textcolor{red}{0}}\only<1,2>{0} \\
+                         1 & 0
+                    \end{pmatrix}$
+                };
+                \draw[->,dashed] (-0.25,0.5) node[below] {\tiny $0$} -- (0.25,0.5) node [midway, above] {\tiny $X_{A2}$} node[below] {\tiny $1$};
+                \draw[<-,dashed] (-0.6,-0.2) node[right] {\tiny $1$} -- (-0.6,0.2) node [midway, left] {\tiny $X_{A1}$} node[right] {\tiny $0$};
+                \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (1.25,-0.2) node [midway, below] {\tiny $X_F$} node[above] {\tiny $1$};
+            \end{tikzpicture}
         \end{center}
 
-        To understand the transition from the matrices to this tensor of order $3$, we need to widen our tensor formalism.
+        Interpretation:
+        \begin{itemize}
+            \item Coordinate $1$: The variable assignment respects the accounting rules
+            \item Coordinate $0$: The variable assignments violates the accounting rules
+        \end{itemize}
+
+        Examples:
+        \begin{itemize}
+            \item \only<1>{\textcolor{red}{$\catvariableof{F}=0,\catvariableof{A1}=1,\catvariableof{A2}=1$: Violation of first rule, thus coordinate 0.}}
+            \only<2->{$\catvariableof{F}=0,\catvariableof{A1}=1,\catvariableof{A2}=1$: Violation of first rule, thus coordinate 0.}
+            \item \only<2>{\textcolor{red}{$\catvariableof{F}=0,\catvariableof{A1}=0,\catvariableof{A2}=1$: Both rules respected, thus coordinate 1.}}
+            \only<3->{$\catvariableof{F}=0,\catvariableof{A1}=0,\catvariableof{A2}=1$: Both rules respected, thus coordinate 1.}
+            \item \only<3>{\textcolor{red}{$\catvariableof{F}=1,\catvariableof{A1}=0,\catvariableof{A2}=1$: Violation of second rule, thus coordinate 0.}}
+        \end{itemize}
 
     \end{frame}
 
@@ -149,17 +227,20 @@
     \section{Coarser Picture: Tensors}
 
     \begin{frame}{Situation of $\atomorder$ variables}
-        Let us now imagine that we have $\atomorder$ variables $\catvariableof{0},\ldots,\catvariableof{\atomorder-1}$.
+        Let us now imagine that we have $\atomorder$ variables $\catvariableof{0},\ldots,\catvariableof{\atomorder-1}$.\\
+        \medskip
 
-        The coordinatewise description would be confusing for $\atomorder>3$!
 
         The states are the set
         \begin{align*}
-            \bigtimes_{\catenumeratorin} \{0,1\}
+            \bigtimes_{\catenumerator\in\{0,1,2\}} \{0,1\}
         \end{align*}
         of $2^{\catorder}$ state tuples.
 
-        We use a diagramatic depiction instead:
+        The coordinatewise description would be confusing for $\atomorder>3$!\\
+        \medskip
+
+%        We use a diagrammatic depiction instead:
 
 
     \end{frame}
@@ -184,7 +265,7 @@
     \end{frame}
 
 
-    \section{Diagramatic Depiction}
+    \section{Diagrammatic Depiction}
 
     \begin{frame}{Curse of dimensionality}
 
@@ -241,12 +322,20 @@
     \end{frame}
 
 
-    \begin{frame}{Example: Depiction of Vectors}
+    \begin{frame}{Examples}
         For example, a vector
-        \[ V \in \rr^{m}\]
-        with an index variable $\catvariable\in[m]$ is depicted by a block with a single open leg
+        \[ v[\catvariableof{0}] \in \rr^{\catdimof{0}}\]
+        with an row index variable $\catvariableof{0}\in[\catdimof{0}]$ is depicted as:
         \begin{center}
             \input{./tikz-pics/vector.tex}
+        \end{center}
+        A matrix $M[\catvariableof{1},\catvariableof{0}]$ with row and column index variables $\catvariableof{1}\in[\catdimof{1}],\,\catvariableof{0}\in[\catdimof{0}]$ is depicted as:
+        \begin{center}
+            \input{./tikz-pics/matrix.tex}
+        \end{center}
+        This notation is especially useful to denote contractions like the matrix-vector product:
+        \begin{center}
+            \input{./tikz-pics/matrix-vector.tex}
         \end{center}
     \end{frame}
 

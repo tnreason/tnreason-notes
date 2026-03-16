@@ -14,8 +14,84 @@
 {\frame[plain]{\titlepage}}
     \showoutlineatsection
 
+    \begin{frame}{My background}
+
+        \begin{tabular}{ll}
+            06/18 - 12/18 & {\bf Fritz Haber Institute, Max Planck Society}                 \\
+            & Data-driven prediction of crystal properties                    \\
+            01/19 - 12/21 & {\bf Institute of Mathematics, TU Berlin}                       \\
+            & PhD in Statistical Learning Theory on:                          \\
+            & "Uniform Concentration of Tensor and Neural Networks:           \\
+            & An approach towards Recovery Guarantees"                        \\
+            since 01/23   & {\bf ENEXA (EU Horizon Research Project)}                       \\
+            & Tensor-network based approaches                                 \\
+            & to reason efficiently on Knowledge Graphs                       \\
+            \hline
+            06/21 - 06/22 & {\bf InstruNEXT GmbH}                                           \\
+            & Data-driven optimization of photomask baking processes          \\
+            07/22 - 12/22 & {\bf Schneider Electric SE}                                     \\
+            & Benchmarking of AI-dedicated hardware                           \\
+            01/23 - 06/25 & {\bf DATEV eG}                                                  \\
+            & Automation of Accounting                                        \\
+            \hline
+            since 06/25   & {\bf Weierstraß Institute for Applied Analysis and Stochastics} \\
+            & Neuro-Symbolic AI, Quantum Machine Learning
+        \end{tabular}
+    \end{frame}
+
 
     \section{Neuro-Symbolic AI}
+
+    \begin{frame}{The future of the software industry}
+%        \begin{center}
+%            DATEV is an abbreviation of data processing \\ (in german: \emph{DATE}n-\emph{V}erarbeitung)
+%        \end{center}
+        \medskip
+
+        \begin{columns}
+
+            \column{0.5 \linewidth}
+            \textbf{Traditional "symbolic" approach}
+            \begin{itemize}
+                \item Software designed by hard-coded logic
+                \item \textcolor{red!90!black}{Requires structured input}
+                \item \textcolor{green!80!black}{Human-interpretable behavior}
+            \end{itemize}
+
+
+            \column{0.5 \linewidth}
+            \textbf{AI-based "neural" approach}
+            \begin{itemize}
+                \item Software consists in AI agents based on LLMs
+                \item \textcolor{green!80!black}{Flexible input handling}
+                \item \textcolor{red!90!black}{Black box models}
+            \end{itemize}
+
+        \end{columns}
+
+        \medskip
+
+        \begin{block}{Aim of neuro-symbolic AI}
+            Integrate both approaches:
+            \begin{itemize}
+                \item Human-interpretable model structure
+                \item Flexibility by controlled LLMs
+            \end{itemize}
+%            Advance
+        \end{block}
+
+%        \begin{block}{Advantages of Neuro-Symbolic Methods}
+%            \begin{itemize}
+%                \item Exploit expert knowledge when learning models or designing them declaratively
+%                \item Maintain control through intrinsic model interpretability
+%                \item Minimize user interaction by uncertainty assessments
+%            \end{itemize}
+%%		Intrinsic explainability of models is of central importance (more than in other companies).
+%%		Can we provide efficient methods based on neuro-symbolic architectures?
+%        \end{block}
+
+    \end{frame}
+
 
     \begin{frame}{Strenghts and weaknesses of LLMs}
 
@@ -117,8 +193,7 @@
 
     \begin{frame}{Toy Accounting Example}
 
-        To showcast the approach we study a toy accounting example:
-
+        To showcast the approach we study a toy accounting example.
         For each invoice three variables are either $\truesymbol$ or $\falsesymbol$:
         \begin{itemize}
             \item A $\var{Feature}$ is present on the receipt (e.g. whether the receipt was received or sent by the customer).
@@ -157,95 +232,109 @@
     \begin{frame}{Tensors: Natural description of factored representations}
 
     {\bf Factored representations}
-        are collection of variables $\shortcatvariables$, each with a finite set of states $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$.
+        are collection of variables $\{\catvariableof{0},\ldots,\catvariableof{\catorder-1}\}$, each with a finite set of states $\{0,\ldots,\catdimof{\catenumerator}-1\}$.
         The set of states is then the cartesian product
         \begin{align*}
-            \facstates
+            \bigtimes_{\catenumerator\in\{0,\ldots,\catorder-1\}} \{0,\ldots,\catdimof{\catenumerator}-1\}
         \end{align*}
 
-            {\bf Knowledge about the system}, for example the probability of each state, is a \emph{tensor}
+            {\bf Knowledge about the system}, for example the possibility of each state, is a \emph{tensor}
         \begin{align*}
-            \hypercorewith \defcols \facstates \rightarrow \rr
+            \hypercore \defcols \bigtimes_{\catenumerator\in\{0,\ldots,\catorder-1\}} \{0,\ldots,\catdimof{\catenumerator}-1\} \rightarrow \rr
         \end{align*}
 
-        We visualize such maps by the coordinates
-        \begin{align*}
-            \textbf{$\catorder=1$:}\,\,\,\textbf{Vectors}\,\,
-            \begin{pmatrix}
-                0 \\ 1
-            \end{pmatrix}
-            \quad , \quad
-            \textbf{$\catorder=2$:}\,\,\,\textbf{Matrices}\,\,
-            \begin{pmatrix}
-                0 & 1 \\ 1 & 0
-            \end{pmatrix}
-        \end{align*}
+
     \end{frame}
+
 
     \begin{frame}{Factored representation of the toy accounting system}
 
-        Recall the two accounting rules:
-        \begin{itemize}
-            \item When the $\var{Feature}$ is present on the receipt, the $\var{Account 1}$ needs to be booked.
-            \item Exactly one of the accounts $\var{Account 1}$ and $\var{Account 2}$ is used to book the receipt.
-        \end{itemize}
-
-        We model this by boolean Variables, taking valued in $\{0,1\}$ (i.e. $\catdim=2$):
-        \begin{itemize}
-            \item Value $1$: The variable assignment is allowed given our knowledge about the system.
-            \item Value $0$: The variable assignments is forbidden given our knowledge about the system.
-        \end{itemize}
-
-        The system has a factored representation by the variables taking values in $\{0,1\}$:
+        The system has a factored representation by the variables taking values in $\{0,1\}$ (i.e. $\catdim=2$):
         \begin{itemize}
             \item $\catvariableof{F}$: Whether the $\var{Feature}$ is present on the receipt.
             \item $\catvariableof{A1}$: Whether the  $\var{Account 1}$ is used.
             \item $\catvariableof{A2}$: Whether the  $\var{Account 2}$ is used.
         \end{itemize}
-    \end{frame}
 
-    \begin{frame}{Tensor representation of the toy accounting system}
-
-        The system is described by a tensor of order $\catorder=3$:
-        \begin{center}
-            \begin{tikzpicture}[scale=2]
-                %\node (A) at (-4,0) {$\probofat{(X_{A1}\oplus X_{A2}, X_F\Rightarrow X_{A1}),\big(\{0\},(1),(0,\theta)\big)}{X_{A1},X_{A2},X_{F}} \,\, = \,\, \frac{1}{1+3 \cdot \expof{\canparam}} \, \cdot $};
-                \node (A) at (0,0) [scale=1.5] {
-                    $\begin{pmatrix}
-                         0 & \only<2>{\textcolor{red}{1}}\only<1,3->{1}  \\
-                         1 & \only<1>{\textcolor{red}{0}}\only<2->{0}
-                    \end{pmatrix}$
-                };
-                \node (A) at (1.25,0.3) [scale=1.5] {
-                    $\begin{pmatrix}
-                         0 & \only<3>{\textcolor{red}{0}}\only<1,2>{0} \\
-                         1 & 0
-                    \end{pmatrix}$
-                };
-                \draw[->,dashed] (-0.25,0.5) node[below] {\tiny $0$} -- (0.25,0.5) node [midway, above] {\tiny $X_{A2}$} node[below] {\tiny $1$};
-                \draw[<-,dashed] (-0.6,-0.2) node[right] {\tiny $1$} -- (-0.6,0.2) node [midway, left] {\tiny $X_{A1}$} node[right] {\tiny $0$};
-                \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (1.25,-0.2) node [midway, below] {\tiny $X_F$} node[above] {\tiny $1$};
-            \end{tikzpicture}
-        \end{center}
-
-        Interpretation:
+        Recall the two accounting rules:
         \begin{itemize}
-            \item Coordinate $1$: The variable assignment respects the accounting rules
-            \item Coordinate $0$: The variable assignments violates the accounting rules
+            \item When the $\var{Feature}$ is present on the receipt, the $\var{Account 1}$ needs to be booked: $\catvariableof{A1}\oplus\catvariableof{A2}$
+            \item Exactly one of the accounts $\var{Account 1}$ and $\var{Account 2}$ is used to book the receipt: $\catvariableof{F}\Rightarrow\catvariableof{A1}$
         \end{itemize}
 
-        Examples:
-        \begin{itemize}
-            \item \only<1>{\textcolor{red}{$\catvariableof{F}=0,\catvariableof{A1}=1,\catvariableof{A2}=1$: Violation of first rule, thus coordinate 0.}}
-            \only<2->{$\catvariableof{F}=0,\catvariableof{A1}=1,\catvariableof{A2}=1$: Violation of first rule, thus coordinate 0.}
-            \item \only<2>{\textcolor{red}{$\catvariableof{F}=0,\catvariableof{A1}=0,\catvariableof{A2}=1$: Both rules respected, thus coordinate 1.}}
-            \only<3->{$\catvariableof{F}=0,\catvariableof{A1}=0,\catvariableof{A2}=1$: Both rules respected, thus coordinate 1.}
-            \item \only<3>{\textcolor{red}{$\catvariableof{F}=1,\catvariableof{A1}=0,\catvariableof{A2}=1$: Violation of second rule, thus coordinate 0.}}
-        \end{itemize}
+%        We model this by boolean Variables, taking valued in $\{0,1\}$ (i.e. $\catdim=2$):
+%        \begin{itemize}
+%            \item Value $1$: The variable assignment is allowed given our knowledge about the system.
+%            \item Value $0$: The variable assignments is forbidden given our knowledge about the system.
+%        \end{itemize}
+
 
     \end{frame}
 
+    \begin{frame}{Coordinatewise tensor visualization}
+        Boolean tensors of leg-dimension $\catdim=2$ are
+        \begin{align*}
+            \hypercore \defcols \bigtimes_{\catenumerator\in\{0,\ldots,\catorder-1\}} \{0,1\} \rightarrow \rr \, .
+        \end{align*}
+        We visualize such maps as
+        \begin{itemize}
+            \item \textbf{$\catorder=1$: Vectors}
+            \begin{align*}
+                \begin{pmatrix}
+                    0 \\ 1
+                \end{pmatrix}
+            \end{align*}
+            \item \textbf{$\catorder=2$: Matrices}
+            \begin{align*}
+                \begin{pmatrix}
+                    0 & 1 \\ 1 & 0
+                \end{pmatrix}
+            \end{align*}
+            \item \textbf{$\catorder=3$: Order-3 tensors}
+            \begin{center}
+                \begin{tikzpicture}[scale=1]
+                    \node (A) at (0,0) {
+                        $\begin{pmatrix}
+                             0 & 1 \\ 1 & 0
+                        \end{pmatrix}$
+                    };
+                    % \draw[<-,dashed] (-0.9,-0.275) node[right] {\tiny $1$} -- (-0.9,0.275) node [midway, left] {\tiny $\catvariableof{A1}$} node[right] {\tiny $0$};
+                    % \draw[->,dashed] (-0.3,0.85) node[below] {\tiny $0$} -- (0.3,0.85) node [midway, above] {\tiny $\catvariableof{A2}$} node[below] {\tiny $1$};
+                    % \draw[->,dashed] (0,-0.85) node[above] {\tiny $0$} -- (1.25,-0.55) node [midway, below] {\tiny $\catvariableof{F}$} node[above] {\tiny $1$};
 
+                    \node at (1.25,0.5){
+                        $\begin{pmatrix}
+                             0 & 0 \\ 1 & 0
+                        \end{pmatrix}$
+                    };
+
+                    %\drawtextnode{3}{0}{$\left[\catvariableof{A1},\catvariableof{A2},\catvariableof{F}\right]$}
+                \end{tikzpicture}
+            \end{center}
+
+        \end{itemize}
+%        \begin{align*}
+%            \,\,\,\textbf{Vectors}\,\,
+%            \quad , \quad
+%            \textbf{$\catorder=2$:}\,\,\,\textbf{Matrices}\,\,
+%        \end{align*}
+%        \begin{align*}
+%            \textbf{$\catorder=3$:}\,\,\,\textbf{Tensors of order $3$}\,\,
+%            \begin{pmatrix}
+%                0 \\ 1
+%            \end{pmatrix}
+%        \end{align*}
+    \end{frame}
+
+%    \begin{frame}{Preview: Knowledge about the Toy Accounting System}
+%        %Now let us extend to the toy accounting system.
+%%        Given the knowledge about both formulas we have the tensor:
+%        The toy accounting system is represented by the tensor:
+%        \begin{center}
+%            \input{tikz/toy-accounting-hard}
+%        \end{center}
+%        %       To understand the transition from the matrices to this tensor of order $3$, we need to widen our tensor formalism.
+%    \end{frame}
 
     \begin{frame}{A computational interface: \\
     Tensors in Artificial Intelligence}
@@ -382,47 +471,9 @@
     \end{frame}
 
 
-    \section{Python package \tnreason{}}
-
-    \begin{frame}{Python package \tnreason{}}
-
-        %The course will be accompanied by demonstrations in \tnreason{}.
-%        Aim: Prototyping
-
-        \begin{center}
-            \emph{tnreason} = \emph{T}ensor-\emph{N}etwork \emph{Reason}ing
-        \end{center}
-
-        Functionality:
-        \begin{itemize}
-            \item Inference of Factored Systems based on logical and probabilistic concepts
-            \item Neuro-Symbolic Reasoning Methods based on parametrized logics
-        \end{itemize}
-
-
-        \begin{center}
-            \begin{tikzpicture}[scale=0.27]
-                \drawtnreasonarchitecture{}
-            \end{tikzpicture}
-        \end{center}
-
-
-    \end{frame}
-
-    \begin{frame}{Installation}
-
-        \tnreason is maintained on github:
-        \begin{center}
-            \href{https://github.com/tnreason/tnreason-py}{https://github.com/tnreason/tnreason-py}
-        \end{center}
-
-        Installation using pip:
-        \begin{centeredscript}
-            !pip install tnreason
-        \end{centeredscript}
-
-
-    \end{frame}
 
 
 \end{document}
+
+
+
