@@ -17,39 +17,36 @@
     \begin{frame}{My background}
 
         \begin{tabular}{ll}
+            10/11 - 05/18 & {\bf University of Würzburg, TU Berlin} \\
+            & Basic training in mathematics and physics \\
             06/18 - 12/18 & {\bf Fritz Haber Institute, Max Planck Society}                 \\
             & Data-driven prediction of crystal properties                    \\
             01/19 - 12/21 & {\bf Institute of Mathematics, TU Berlin}                       \\
-            & PhD in Statistical Learning Theory on:                          \\
-            & "Uniform Concentration of Tensor and Neural Networks:           \\
-            & An approach towards Recovery Guarantees"                        \\
-            since 01/23   & {\bf ENEXA (EU Horizon Research Project)}                       \\
-            & Tensor-network based approaches                                 \\
-            & to reason efficiently on Knowledge Graphs                       \\
+            & PhD in statistical learning theory                         \\
+            %& "Uniform Concentration of Tensor and Neural Networks:           \\
+            %& An approach towards Recovery Guarantees"                        \\
+            %since 01/23   & {\bf ENEXA (EU Horizon Research Project)}                       \\
+            %& Tensor-network based approaches                                 \\
+            %& to reason efficiently on Knowledge Graphs                       \\
             \hline
             06/21 - 06/22 & {\bf InstruNEXT GmbH}                                           \\
             & Data-driven optimization of photomask baking processes          \\
             07/22 - 12/22 & {\bf Schneider Electric SE}                                     \\
-            & Benchmarking of AI-dedicated hardware                           \\
+            & AI-dedicated hardware                           \\
             01/23 - 06/25 & {\bf DATEV eG}                                                  \\
             & Automation of Accounting                                        \\
             \hline
             since 06/25   & {\bf Weierstraß Institute for Applied Analysis and Stochastics} \\
-            & Neuro-Symbolic AI, Quantum Machine Learning
+            & Neuro-symbolic AI, quantum machine learning
         \end{tabular}
     \end{frame}
 
 
-    \section{Neuro-Symbolic AI}
+    \section{Neuro-symbolic AI}
 
     \begin{frame}{The future of the software industry}
-%        \begin{center}
-%            DATEV is an abbreviation of data processing \\ (in german: \emph{DATE}n-\emph{V}erarbeitung)
-%        \end{center}
-        \medskip
 
         \begin{columns}
-
             \column{0.5 \linewidth}
             \textbf{Traditional "symbolic" approach}
             \begin{itemize}
@@ -57,7 +54,6 @@
                 \item \textcolor{red!90!black}{Requires structured input}
                 \item \textcolor{green!80!black}{Human-interpretable behavior}
             \end{itemize}
-
 
             \column{0.5 \linewidth}
             \textbf{AI-based "neural" approach}
@@ -77,25 +73,14 @@
                 \item Human-interpretable model structure
                 \item Flexibility by controlled LLMs
             \end{itemize}
-%            Advance
         \end{block}
-
-%        \begin{block}{Advantages of Neuro-Symbolic Methods}
-%            \begin{itemize}
-%                \item Exploit expert knowledge when learning models or designing them declaratively
-%                \item Maintain control through intrinsic model interpretability
-%                \item Minimize user interaction by uncertainty assessments
-%            \end{itemize}
-%%		Intrinsic explainability of models is of central importance (more than in other companies).
-%%		Can we provide efficient methods based on neuro-symbolic architectures?
-%        \end{block}
 
     \end{frame}
 
 
     \begin{frame}{Strenghts and weaknesses of LLMs}
 
-        \begin{block}{Weaknesses of LLMs}
+        \begin{block}{Strengths of LLMs}
             \begin{itemize}
                 \item \textbf{Translation:} Translations between natural (e.g. english) and formal (e.g. python) languages
                 \item \textbf{Generation:} Creation of new texts similar to existing corpus
@@ -103,7 +88,7 @@
         \end{block}
 
         \begin{block}{Two major concerns about LLMs}
-            Besides having astonishing knowledge representation capabilities, LLMs lack in
+            Besides having astonishing memory capabilities, LLMs lack in
             \begin{itemize}
                 \item \textbf{Explainability:} Problems with hallucinations and formal verifiability
                 \item \textbf{Efficiency:} Massive power consumptions during reasoning
@@ -113,17 +98,17 @@
     \end{frame}
 
 
-    \begin{frame}{Extend the capabilities of LLMs}
+    \begin{frame}{How to extend the capabilities of LLMs?}
 
         \begin{itemize}
             \item State-of-the-art AI is built around the inference of LLMs
             \item But: Inference of LLMs is not the only thing, in which computers are good at!
         \end{itemize}
 
-        Examples:
+            {\bf Examples:}
         \begin{itemize}
-            \item Execute an algorithm: \emph{Programming languages}, e.g. python
-            \item Retrieve knowledge from a structured database: \emph{Query languages}, e.g. SQL, SPARQL
+            \item Execution of an algorithm: \emph{Programming languages}, e.g. python
+            \item Retrieval of knowledge from a structured database: \emph{Query languages}, e.g. SQL, SPARQL
         \end{itemize}
 
         \begin{block}{Aim: Extend the capabilities of LLMs}
@@ -133,7 +118,7 @@
 
     \end{frame}
 
-    \begin{frame}{The Neuro-Symbolic AI Initiative}
+    \begin{frame}{The neuro-symbolic AI initiative}
 
     {\bf Neural AI:}
         Bringing \emph{efficiency}
@@ -186,7 +171,7 @@
         \end{itemize}
 
         \begin{center}
-            \bf This is a use case for Neuro-Symbolic AI!
+            \bf This requires a form of neuro-symbolic AI!
         \end{center}
 
     \end{frame}
@@ -229,38 +214,29 @@
     \section{Tensors in Artificial Intelligence}
 
 
-    \begin{frame}{Tensors: Natural description of factored representations}
+    \begin{frame}{Representation of the toy accounting system}
 
-    {\bf Factored representations}
-        are collection of variables $\{\catvariableof{0},\ldots,\catvariableof{\catorder-1}\}$, each with a finite set of states $\{0,\ldots,\catdimof{\catenumerator}-1\}$.
-        The set of states is then the cartesian product
-        \begin{align*}
-            \bigtimes_{\catenumerator\in\{0,\ldots,\catorder-1\}} \{0,\ldots,\catdimof{\catenumerator}-1\}
-        \end{align*}
-
-            {\bf Knowledge about the system}, for example the possibility of each state, is a \emph{tensor}
-        \begin{align*}
-            \hypercore \defcols \bigtimes_{\catenumerator\in\{0,\ldots,\catorder-1\}} \{0,\ldots,\catdimof{\catenumerator}-1\} \rightarrow \rr
-        \end{align*}
-
-
-    \end{frame}
-
-
-    \begin{frame}{Factored representation of the toy accounting system}
-
-        The system has a factored representation by the variables taking values in $\{0,1\}$ (i.e. $\catdim=2$):
+        The system has a representation by the variables taking values in $\{0,1\}$ (i.e. $\catdim=2$):
         \begin{itemize}
             \item $\catvariableof{F}$: Whether the $\var{Feature}$ is present on the receipt.
             \item $\catvariableof{A1}$: Whether the  $\var{Account 1}$ is used.
             \item $\catvariableof{A2}$: Whether the  $\var{Account 2}$ is used.
         \end{itemize}
 
-        Recall the two accounting rules:
+        The system states are the cartesian product of the variable states $\{0,1\}$:
+        \begin{align*}
+            \bigtimes_{\catenumerator\in\{F,A1,A2\}} \{0,1\}
+            = \{&(0,0,0), (0,0,1), (0,1,0), (0,1,1), \\
+            &(1,0,0), (1,0,1), (1,1,0), (1,1,1)\}
+        \end{align*}
+%        \begin{block}{How to represent the accounting rules?}
+        The toy accounting rules exclude some states:
         \begin{itemize}
             \item When the $\var{Feature}$ is present on the receipt, the $\var{Account 1}$ needs to be booked: $\catvariableof{A1}\oplus\catvariableof{A2}$
             \item Exactly one of the accounts $\var{Account 1}$ and $\var{Account 2}$ is used to book the receipt: $\catvariableof{F}\Rightarrow\catvariableof{A1}$
         \end{itemize}
+        %       \end{block}
+
 
 %        We model this by boolean Variables, taking valued in $\{0,1\}$ (i.e. $\catdim=2$):
 %        \begin{itemize}
@@ -280,19 +256,27 @@
         \begin{itemize}
             \item \textbf{$\catorder=1$: Vectors}
             \begin{align*}
+                \catvariableof{A1}: \quad
                 \begin{pmatrix}
                     0 \\ 1
                 \end{pmatrix}
             \end{align*}
             \item \textbf{$\catorder=2$: Matrices}
             \begin{align*}
+                \catvariableof{A1}\oplus\catvariableof{A2}: \quad
                 \begin{pmatrix}
                     0 & 1 \\ 1 & 0
+                \end{pmatrix}
+                \quad, \quad
+                \catvariableof{F}\Rightarrow\catvariableof{A1}: \quad
+                \begin{pmatrix}
+                    1 & 1 \\ 0 & 1
                 \end{pmatrix}
             \end{align*}
             \item \textbf{$\catorder=3$: Order-3 tensors}
             \begin{center}
                 \begin{tikzpicture}[scale=1]
+                    \drawtextnode{-3}{0.25}{$(\catvariableof{A1}\oplus\catvariableof{A2})\land(\catvariableof{F}\Rightarrow\catvariableof{A1})$:}
                     \node (A) at (0,0) {
                         $\begin{pmatrix}
                              0 & 1 \\ 1 & 0
@@ -336,27 +320,45 @@
 %        %       To understand the transition from the matrices to this tensor of order $3$, we need to widen our tensor formalism.
 %    \end{frame}
 
-    \begin{frame}{A computational interface: \\
-    Tensors in Artificial Intelligence}
 
-        On the \emph{software} side:
-        \begin{itemize}
-            \item Parallel computing based on tensor algebra
-            \item Standard ML libraries: TensorFlow, Pytorch
-        \end{itemize}
 
-        On the \emph{hardware} side:
-        \begin{itemize}
-            \item Dedicated for graphic processing: Graphic Processing Units (GPUs)
-            \item AI-dedicated hardware: Tensor Processing Units (TPUs)
-        \end{itemize}
-        \begin{center}
-            \includegraphics[width=0.5\textwidth]{images/tensorflow.png}
-            \includegraphics[width=0.2\textwidth]{images/nvidia-a100.jpeg}
-            \includegraphics[width=0.3\textwidth]{images/google_tpu.png}
-        \end{center}
+    \begin{frame}{Tensors: Natural description of factored representations}
+
+    {\bf Factored representations}
+        are collection of variables $\{\catvariableof{0},\ldots,\catvariableof{\catorder-1}\}$, each with a finite set of states $\{0,\ldots,\catdimof{\catenumerator}-1\}$ (so far: $\{0,1\}$ for $\catdim=2$).
+        The set of states is then the cartesian product
+        \begin{align*}
+            \bigtimes_{\catenumerator\in\{0,\ldots,\catorder-1\}} \{0,\ldots,\catdimof{\catenumerator}-1\}
+        \end{align*}
+
+            {\bf Knowledge about the system}, for example the possibility of each state, is a \emph{tensor}
+        \begin{align*}
+            \hypercore \defcols \bigtimes_{\catenumerator\in\{0,\ldots,\catorder-1\}} \{0,\ldots,\catdimof{\catenumerator}-1\} \rightarrow \rr
+        \end{align*}
     \end{frame}
 
+
+    \begin{frame}{Tensors for neuro-symbolic AI}
+
+        Tensors (and their networks) are a unifying language for Artificial Intelligence
+        \begin{itemize}
+            \item {\bf Logical knowledge bases:} Boolean coordinates, decomposition by logical syntax
+            \item {\bf Probability distributions:} Non-negative coordinates, decomposition by independencies
+            \item {\bf Neural networks:} Representation of arbitrary function decompositions
+            \item {\bf Data bases:} Relations stored in tables are tensors
+        \end{itemize}
+
+        Tensors capture the
+        \begin{itemize}
+            \item \emph{Structure of symbolic AI}
+            \item \emph{Flexibility of neural AI}
+        \end{itemize}
+
+        \begin{center}
+            \bf We exploit the tensor formalism in this course for neuro-symbolic AI.
+        \end{center}
+
+    \end{frame}
 
     \begin{frame}{Tensors for neuro-symbolic AI}
 
@@ -369,11 +371,35 @@
             Contractions of tensor networks.
         \end{itemize}
 
-        We orient on the preprint:
+        The course orients on the preprint:
         \begin{center}
             \includegraphics[width=0.7\textwidth]{images/arxiv_snap}
         \end{center}
 
+    \end{frame}
+
+    \begin{frame}{Tensors:
+    A computational interface for Machine Learning}
+
+        On the \emph{software} side:
+        \begin{itemize}
+            \item Parallel computing enabled through (multi-)linear algebra
+            \item Tensors are main classes is standard ML libraries: TensorFlow, Pytorch
+        \end{itemize}
+
+        On the \emph{hardware} side:
+        \begin{itemize}
+            \item Dedicated for graphic processing: Graphic Processing Units (GPUs)
+            \item AI-dedicated hardware: Tensor Processing Units (TPUs)
+        \end{itemize}
+        \begin{center}
+            \includegraphics[width=0.5\textwidth]{images/tensorflow.png}
+            \includegraphics[width=0.2\textwidth]{images/nvidia-a100.jpeg}
+            \includegraphics[width=0.3\textwidth]{images/google_tpu.png}
+        \end{center}
+%        \begin{center}
+%            \bf Machine Learning
+%        \end{center}
     \end{frame}
 
 
@@ -381,99 +407,133 @@
 
     \begin{frame}{I - Logical Approaches}
         \begin{minipage}{0.65\linewidth}
+            Logic as the theory of human reasoning:
+            \begin{itemize}
+                \item Dating back to greek philosophers modelling Human Intelligence
+                \item Traditional approaches to Artificial Intelligence
+            \end{itemize}
+
+            Logics consists in
+            \begin{itemize}
+                \item {\bf Syntax:} Description of knowledge
+                \item {\bf Semantics:} Interpretation of knowledge, inference of new knowledge
+            \end{itemize}
+            \begin{block}{Challenges}
+                \begin{itemize}
+                    \item Find sparse representation mechanisms
+                    \item Efficient reasoning schemes based on tensor network contractions
+                \end{itemize}
+            \end{block}
+            \end{minipage}
+            \begin{minipage}{0.3\linewidth}
+                \begin{center}
+                    \includegraphics[width=2cm]{images/aristotle.png}\\
+                    {\tiny Aristotle}\footnote{\tiny https://de.wikipedia.org/wiki/Aristoteles} \\
+                    \medskip
+                    \includegraphics[width=3cm]{images/sakana_fish.png}\\
+                    {\tiny Modified Sudoku puzzles}\footnote{\tiny https://sakana.ai/sudoku-bench/} \\
+                \end{center}
+            \end{minipage}
+%            {\bf Example:} When it holds, that
+%        \begin{align*}
+%            & \mathrm{hasCampusInSchweinfurt(THWS)} \quad \text{and}\\
+%            &\quad  \forall x : \mathrm{hasCampusInSchweinfurt}(x) \rightarrow \mathrm{hasCampusInGermany}(x)
+%        \end{align*}
+%        then also
+%        \begin{align*}
+%            \mathrm{hasCampusInGermany(THWS)} \, .
+%        \end{align*}
+%        %\footnotetext[1]
+        \end{frame}
+
+        \begin{frame}{II - Probabilistic Approaches}
+            Bayesian Networks model probabilistic relations between variables
             \begin{center}
-                \it
-                How to represent knowledge? \\
-                $\rightarrow$ {\bf Syntax} \\
-                \medskip
-                How to infer knowledge from given knowledge? \\
-                $\rightarrow$ {\bf Semantics}
+                \includegraphics[width=6cm]{images/burglary.png}
             \end{center}
-        \end{minipage}
-        \begin{minipage}{0.25\linewidth}
+
+            \begin{block}{Challenges}
+                \begin{itemize}
+                    \item Learn the dependence structure of the variables
+                    \item Extract the causal relations of the variables
+                \end{itemize}
+            \end{block}
+
+
+            %      \begin{block}{Challenge}
+            %          Since causality requires intervention with data or expert knowledge, how can we certify the causality of our models?
+            %      \end{block}
+        \end{frame}
+
+        \begin{frame}{III - Statistical Models of Knowledge Graphs}
+            Extension from factored representations to \emph{structured representations}:
+            \begin{itemize}
+                \item Worlds contain objects from classes.
+                \item The objects are enumerated using further tensor axes.
+            \end{itemize}
             \begin{center}
-                \includegraphics[width=3cm]{images/aristotle.png}\\
-                {\small Aristotle}
+                \includegraphics[width=0.6\textwidth]{images/kg-example.png}\footnote{\tiny https://ml-digest.com/knowledge-graphs/}
             \end{center}
-        \end{minipage}
-            {\bf Example:} When it holds, that
-        \begin{align*}
-            & \mathrm{hasCampusInSchweinfurt(THWS)} \quad \text{and}\\
-            &\quad  \forall x : \mathrm{hasCampusInSchweinfurt}(x) \rightarrow \mathrm{hasCampusInGermany}(x)
-        \end{align*}
-        then also
-        \begin{align*}
-            \mathrm{hasCampusInGermany(THWS)} \, .
-        \end{align*}
-        %\footnotetext[1]{\tiny https://de.wikipedia.org/wiki/Aristoteles}
-    \end{frame}
+            \begin{block}{Challenges}
+                \begin{itemize}
+                    \item Reason about the relations in a knowledge graph
+                    \item Predict the connectivity of new objects
+                \end{itemize}
+ %               Predict the connectivity of objects, using neuro-symbolic statistical models.
+            \end{block}
+        \end{frame}
 
-    \begin{frame}{II - Probabilistic Approaches}
-        Bayesian Networks model probabilistic
-        \begin{center}
-            \includegraphics[width=6cm]{images/burglary.png}
-        \end{center}
-
-            {\bf Challenges:}
-        \begin{itemize}
-            \item Learn the dependence structure of the variables
-            \item Extract the causal relations of the variables
-        \end{itemize}
-
-        %      \begin{block}{Challenge}
-        %          Since causality requires intervention with data or expert knowledge, how can we certify the causality of our models?
-        %      \end{block}
-    \end{frame}
-
-    \begin{frame}{III - Statistical Models of Knowledge Graphs}
-        Extension to \emph{structured representations}:
-        \begin{itemize}
-            \item Worlds contain objects from classes.
-            \item The objects are enumerated using further tensor axes.
-        \end{itemize}
-        \begin{center}
-            \includegraphics[width=0.6\textwidth]{images/kg-example.png}\footnote{\tiny https://ml-digest.com/knowledge-graphs/}
-        \end{center}
-        \begin{block}{Main goal}
-            Predict the connectivity of objects, using neuro-symbolic statistical models.
-        \end{block}
-    \end{frame}
-
-    \begin{frame}{IV - Quantum Machine Learning}
-
-        Quantum circuits are tensor networks\footnote{\tiny https://docs.pennylane.ai/en/stable/introduction/inspecting-circuits.html}:
-        \begin{center}
-            \includegraphics[width=0.5\textwidth]{images/circuit-example.png}
-        \end{center}
-
-        \begin{block}{Main goal}
-            Increase the efficiency of reasoning with tensor networks by quantum computation.
-        \end{block}
-
-    \end{frame}
-
-    \begin{frame}{Literature}
-
-        Introductory Textbooks:
-        \begin{itemize}
-            \item \textbf{Russel, Norvig: Artificial Intelligence - A Modern Approach} (Fourth Edition), Pearson Education 2021
-            \item \textbf{Koller, Friedman: Probabilistic Graphical Models: Principles and Techniques}, MIT Press 2009
-            \item \textbf{Antoniou et al: A Semantic Web Primer} (Third Edition), MIT 2012
-            \item \textbf{Schuld, Petruccione: Machine Learning with Quantum Computers}, Springer 2021
-        \end{itemize}
-
-        Advanced Textbooks:
-        \begin{itemize}
-            \item \textbf{Wainwright, Jordan: Graphical Models, Exponential Families and Variational Inference}, now 2008
-            \item \textbf{Hackbusch: Tensor Spaces and Numerical Tensor Calculus}, Springer 2019
-        \end{itemize}
-
-    \end{frame}
+        \begin{frame}{IV - Quantum Machine Learning}
 
 
+            \begin{minipage}{0.55\linewidth}
+                Quantum computation
+                \begin{itemize}
+                    \item Formulated in tensor spaces
+                    \item Quantum circuits: Tensor networks
+                \end{itemize}
+                Quantum machine learning
+                \begin{itemize}
+                    \item Inference in quantum circuits
+                    \item Promise: Efficiency increase (to be shown)
+                \end{itemize}
+            \end{minipage}
+            \begin{minipage}{0.4\linewidth}
+            \begin{center}
+                \includegraphics[width=1\textwidth]{images/circuit-example.png} \\
+                {\tiny Example of a Quantum Circuit\footnote{\tiny https://docs.pennylane.ai/en/stable/introduction/inspecting-circuits.html}:}
+            \end{center}
+            \end{minipage}
+
+            \begin{block}{Challenges}
+                \begin{itemize}
+                    \item Find sparse quantum circuits exploiting a models sparsity
+                    \item Increase the efficiency of reasoning with tensor networks by quantum computation.
+                \end{itemize}
+            \end{block}
+
+        \end{frame}
+
+        \begin{frame}{Further literature}
+
+            Introductory textbooks:
+            \begin{itemize}
+                \item \textbf{Russel, Norvig: Artificial Intelligence - A Modern Approach} (Fourth Edition), Pearson Education 2021
+                \item \textbf{Koller, Friedman: Probabilistic Graphical Models: Principles and Techniques}, MIT Press 2009
+                \item \textbf{Antoniou et al: A Semantic Web Primer} (Third Edition), MIT 2012
+                \item \textbf{Schuld, Petruccione: Machine Learning with Quantum Computers}, Springer 2021
+            \end{itemize}
+
+            Advanced textbooks:
+            \begin{itemize}
+                \item \textbf{Wainwright, Jordan: Graphical Models, Exponential Families and Variational Inference}, now 2008
+                \item \textbf{Hackbusch: Tensor Spaces and Numerical Tensor Calculus}, Springer 2019
+            \end{itemize}
+
+        \end{frame}
 
 
-\end{document}
+    \end{document}
 
 
 

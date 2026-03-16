@@ -1,0 +1,23 @@
+\frametitle{Subpackage \spengine {}: Contractions}
+
+        Reflected in the notation
+        \[ \contractionof{\tnetof{\graph}}{\nodes} \]
+        a contraction is defined by
+        \begin{itemize}
+            \item Tensor Network $\tnetof{\graph}$, i.e. a dictionary of tensor cores
+            \item Open Variables $\nodes$
+        \end{itemize}
+        Contraction calls are done by
+        \begin{minted}{python}
+    from tnreason import engine
+    engine.contract(coreDict, openColors)
+        \end{minted}
+%        \begin{centeredscript}
+%            \emph{}
+%        \end{centeredscript}
+        Where
+        \begin{itemize}
+            %\item \emph{contractionMethod:} str, chooses one of the contraction providers
+            \item \emph{coreDict}: Dictionary of tensor cores (of the above formats), representing the Tensor Network $\tnetof{\graph}$
+            \item \emph{openColors}: List $\nodes$ of str, each str identifying a color, that is a variable to be left open in the contraction
+        \end{itemize}

@@ -19,12 +19,13 @@
     \begin{frame}{Recall: Curse of Dimensionality}
 
         \begin{block}{Observation}
-            Number of coordinates of a propositional formula increases exponentially with the number $\catorder$ of variables.
+            The number of coordinates of a propositional formula increases exponentially with the number $\catorder$ of variables.
         \end{block}
+        \begin{center}
+            \bf  Its not just a depiction problem - it is a fundamental intractability in storage and processing!
+        \end{center}
 
-        Its not just a depiction problem - it is a fundamental intractability in storage and processing!
-
-        \begin{block}{Curse of dimensionality}
+        \begin{block}{Curse of dimensionality: Storage problem}
             When reasoning about a factored system with many variables (i.e. $\atomorder$ is large), the naive enumeration of all models to formulas is infeasible.
         \end{block}
 
@@ -59,28 +60,66 @@
             \label{def:tensorProduct}
             Let there be two tensor
             \begin{align*}
-                \hypercore \facstates \rightarrow \rr \quad \text{and} \quad  \sechypercore \facstates \rightarrow \rr \, .
+                \hypercorewith \wcols \facstates \rightarrow \rr
+                \quad \text{and} \quad  \sechypercoreat{\headvariables} \wcols \headstates \rightarrow \rr \, .
             \end{align*}
             Then there tensor product is the map
             \begin{align*}
-                \hypercore \otimes \sechypercore :  \left(\facstates\right) \times \left(\secfacstates\right) \rightarrow \rr
+            (\hypercore \otimes \sechypercore)
+                \,[\shortcatvariables,\headvariables] :  \left(\facstates\right) \times \left(\headstates\right) \rightarrow \rr
             \end{align*}
-            defined for $\catindices\in\facstates$ and $\seccatindices\in\secfacstates$ as
+            defined for $\shortcatindices\in\facstates$ and $\headindexof{[\seldim]}\in\headstates$ as
             \begin{align*}
-                \hypercore \otimes \sechypercore(\catindices,\seccatindices)
-                =  \hypercore(\catindices)\cdot \sechypercore(\seccatindices) \, .
+            (\hypercore \otimes \sechypercore)
+                \,[\indexedshortcatvariables,\headvariables=\headindexof{[\seldim]}]
+%                \hypercore \otimes \sechypercore(\catindices,\seccatindices)
+                =  \hypercoreat{\indexedshortcatvariables} \cdot \sechypercoreat{\headvariables=\headindexof{[\seldim]}} \, .
             \end{align*}
         \end{definition}
 
     \end{frame}
 
+    \begin{frame}{Example: One-hot encodings}
+        \begin{definition}[One-hot encoding to atomic representations]
+            The one-hot encoding of a variable $\catvariableof{0}$ with dimension $\catdimof{0}\in\nn$ is the map
+            \begin{align*}
+                \onehotmapofat{\catindexof{0}}{\catvariableof{0}=\seccatindexof{0}}
+                = \begin{cases}
+                      1 & \text{  if  } \catindexof{0} = \seccatindexof{0} \\
+                      0 & \text{ else}
+                \end{cases}
+            \end{align*}
+            that is the vector in $\rr^{\catdimof{0}}$ with a $1$ at the position of the state and $0$ else.
+        \end{definition}
+            {\bf Example:} The one-hot encoding $\onehotmapofat{2}{\catvariableof{0}} \in \rr^4$ has the coordinates
+        \begin{align*}
+            \onehotmapofat{2}{\catvariableof{0}} 
+            = \coloredmatrixof{0 \\ 0 \\ 1 \\ 0}{\catvariableof{0}}
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{Example: One-hot encodings}
+        \begin{definition}[One-hot encoding to factored representations]
+            The one-hot encoding of a factored representation with variables $\shortcatvariables=\{\catvariableof{\atomenumerator} \, : \, \atomenumeratorin \}$ in state $\catindices$ is the tensor product
+            \begin{align}
+                \onehotmapofat{(\shortcatindices)}{\shortcatvariables}
+                = \bigotimes_{\atomenumeratorin} \onehotmapofat{\catindexof{\atomenumerator}}{\catvariableof{\catenumerator}}
+            \end{align}
+            of the one-hot encodings of the variables.
+        \end{definition}
+        We can depict the one-hot encoding by
+        \begin{center}
+            \input{./tikz-pics/one_hot_tensorproduct.tex}
+        \end{center}
+    \end{frame}
+
 
     \begin{frame}{Example: One-hot encodings}
 
-        \textbf{Example:} The one-hot encoding $\onehotmapof{(0,2,1)} \in  \bigotimes_{\atomenumerator\in[3]}\rr^4$
+        \textbf{Example:} The one-hot encoding $\onehotmapofat{(0,2,1)}{\catvariableof{0},\catvariableof{1},\catvariableof{2}} \in  \bigotimes_{\atomenumerator\in[3]}\rr^4$
         with the coordinates
         \begin{align*}
-            \onehotmapof{(0,1,1)}(\catindexof{0},\catindexof{1},\catindexof{2})
+            \onehotmapofat{(0,1,1)}{\indexedcatvariableof{0},\indexedcatvariableof{1},\indexedcatvariableof{2}}
             = \begin{cases}
                   1 & \text{  if  } \catindexof{0} = 0, \,\, \catindexof{1} = 1 \text{  and  } \catindexof{2} = 1 \\
                   0 & \text{ else}
@@ -113,19 +152,7 @@
     \end{frame}
 
 
-    \begin{frame}{Example: One-hot encodings}
-        \begin{definition}[One-hot encoding of Factored Systems]
-            The one-hot encoding of a factored systems with variables $\{\catvariableof{\atomenumerator} \, : \, \atomenumeratorin \}$ in state $\catindices$ is the tensor product
-            \begin{align}
-                \onehotmapof{(\catindices)} = \bigotimes_{\atomenumeratorin} \onehotmapof{\catindexof{\atomenumerator}}
-            \end{align}
-            of the one-hot encodings of the variables.
-        \end{definition}
-        We can depict the one-hot encoding by
-        \begin{center}
-            \input{./tikz-pics/one_hot_tensorproduct.tex}
-        \end{center}
-    \end{frame}
+
 
 
     \begin{frame}{Depicting common legs: Hypergraphs}
@@ -160,7 +187,7 @@
             \[  \{0,\ldots,\atomorder-1\} \quad \text{represent the variables } \quad \{\catvariableof{0},\ldots,\catvariableof{\atomorder-1}\}\]
             Further, we associate the dimensions $\catdimof{\node}$ of the respective variable with them.
             \item Hyperedges are decorated by tensors
-            \[ \edge = \{\node \, : \, \node \in \edge \} \quad \text{represents the tensor} \quad \hypercoreof{\edge} \in \bigotimes_{\node\in\edge} \rr^{\catdimof{\node}}\]
+            \[ \edge = \{\node \, : \, \node \in \edge \} \quad \text{represents the tensor} \quad \hypercoreofat{\edge}{\catvariableof{\edge}} \in \bigotimes_{\node\in\edge} \rr^{\catdimof{\node}}\]
         \end{itemize}
 
         We now decorate hyperedges by tensors
@@ -178,10 +205,11 @@
             Let $\graph=(\nodes,\edges)$ be a hypergraph (that is edges are arbitrary nonempty subsets of nodes) with nodes decorated by random variables $\catvariableof{\node}$ with dimensions
             \[ \catdimof{\node} \in \mathbb{N} \]
             and hyperedges $\edge\in\edges$ decorated by core tensors
-            \[ \hypercoreof{\edge} \in \bigotimes_{\node\in\edge}\rr^{\catdimof{\node}} \, . \]
+            \[ \hypercoreofat{\edge}{\catvariableof{\edge}} \in \bigotimes_{\node\in\edge}\rr^{\catdimof{\node}} \, . \]
             Then we call the set
-            \[ \tnetof{\graph} = \{\hypercoreof{\edge} \, : \, \edge\in\edges\} \]
-            the Tensor Network of the decorated hypergraph $\graph$.
+            \[ \tnetofat{\graph}{\nodevariables} \coloneqq
+            \{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edges\} \]
+            the \emph{tensor network} to the decorated hypergraph $\graph$.
         \end{definition}
 
     \end{frame}
@@ -406,9 +434,8 @@
             Let $\kbat{\shortcatvariables}$ and $\formulawith$ be two propositional formulas.
             If for all worlds $\shortcatindices$, for which $\kbat{\indexedshortcatvariables}=1$, we also have $\formulaat{\indexedshortcatvariables}=1$, then we say that $\formula$ is entailed by $\kb$ and denote
             \begin{align*}
-                \kb \models \formula
+                \kb \models \formula \, .
             \end{align*}
-
         \end{definition}
 
         \textbf{Aim:} How to express this as a computation?
@@ -457,8 +484,9 @@
 
         Functionality:
         \begin{itemize}
-            \item Inference of Factored Systems based on logical and probabilistic concepts
-            \item Neuro-Symbolic Reasoning Methods based on parametrized logics
+            \item Representations of logical and probabilistic models as tensor networks
+%            \item Inference of Factored Systems based on logical and probabilistic concepts
+            \item Neuro-symbolic reasoning based on tensor network contractions
         \end{itemize}
 
 
@@ -471,17 +499,19 @@
 
     \end{frame}
 
-    \begin{frame}{Installation}
+    \begin{frame}[fragile]{Installation}
 
         \tnreason is maintained on github:
-        \href{https://github.com/tnreason/tnreason-py}{https://github.com/tnreason/tnreason-py}
+        \begin{center}
+            \href{https://github.com/tnreason/tnreason-py}{https://github.com/tnreason/tnreason-py}
+        \end{center}
+
         %\end{center}
-
+        \medskip
         Installation using pip:
-        \begin{centeredscript}
-            !pip install tnreason
-        \end{centeredscript}
-
+        \begin{minted}{python}
+    pip install tnreason==2.0.0
+        \end{minted}
 
     \end{frame}
 
@@ -504,7 +534,7 @@
 
     \end{frame}
 
-    \begin{frame}{Subpackage \spengine{}: Cores}
+    \begin{frame}[fragile]{Subpackage \spengine{}: Cores}
 
         Each Tensor core has attributes
         \begin{itemize}
@@ -514,14 +544,14 @@
         \end{itemize}
         The implemented core types differ in the values argument.
         Cores are instantiated by
-        \begin{centeredscript}
-            \emph{engine.getCore(coreType)(coreValues, coreColors, coreName)}
-        \end{centeredscript}
-
+        \begin{minted}{python}
+    from tnreason import engine
+    engine.getCore(coreType)(coreValues, coreColors, coreName)
+        \end{minted}
     \end{frame}
 
 
-    \begin{frame}{Subpackage \spengine{}: Contractions}
+    \begin{frame}[fragile]{Subpackage \spengine{}: Contractions}
 
         Reflected in the notation
         \[ \contractionof{\tnetof{\graph}}{\nodes} \]
@@ -531,13 +561,17 @@
             \item Open Variables $\nodes$
         \end{itemize}
         Contraction calls are done by
-        \begin{centeredscript}
-            \emph{engine.contract(contractionMethod, coreDict, openColors)}
-        \end{centeredscript}
+        \begin{minted}{python}
+    from tnreason import engine
+    engine.contract(coreDict, openColors)
+        \end{minted}
+%        \begin{centeredscript}
+%            \emph{}
+%        \end{centeredscript}
         Where
         \begin{itemize}
-            \item \emph{contractionMethod:} str, chooses one of the contraction providers
-            \item \emph{coreDict}: Dictionary of TensorCores (of the above formats), representing the Tensor Network $\tnetof{\graph}$
+            %\item \emph{contractionMethod:} str, chooses one of the contraction providers
+            \item \emph{coreDict}: Dictionary of tensor cores (of the above formats), representing the Tensor Network $\tnetof{\graph}$
             \item \emph{openColors}: List $\nodes$ of str, each str identifying a color, that is a variable to be left open in the contraction
         \end{itemize}
     \end{frame}

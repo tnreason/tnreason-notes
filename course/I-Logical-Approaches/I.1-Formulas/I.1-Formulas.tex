@@ -25,11 +25,11 @@
             \item Example: The formula $\var{Feature}\Rightarrow\var{Account 1}$ represents the implication, that the $\var{Account 1}$ has to be booked when the feature $\var{Feature}$ is present on the invoice.
             \item Propositional Logics: The variables (or atomic formulas) are combined with logical connectives $\{\lnot, \land, \lor, \Rightarrow, \Leftrightarrow\}$ to build generic formulas.
         \end{itemize}
-        and \textbf{Semantics} (later)
+        and \textbf{Semantics}
         \begin{itemize}
-            \item What do these formulas describe?
+            \item How to interpret logical formulas?
             \item Example: From the formula $\var{Feature}\land(\var{Feature}\Rightarrow\var{Account 1})$ the formula $\var{Account 1}$ follows.
-            \item Propositional Logics: Each formula describes possible worlds, which are called models of a formula. Comparing the models defines the \textbf{entailment relation}.
+            \item Propositional Logics: Each formula describes possible worlds, which are called models of a formula. Comparing the models defines the \textbf{entailment relation} (later).
         \end{itemize}
 
     \end{frame}
@@ -110,8 +110,23 @@
 
     \end{frame}
 
-    \begin{frame}{Knowledge about two variables}
-        The rule, that exactly one of the accounts $\var{Account 1}$ and $\var{Account 2}$ is booked is then encoded in the matrix
+    \begin{frame}{Representation of the first accounting rule}
+        As a truth table:
+        \begin{center}
+            \begin{tabular}{cc|c}
+                $\catvariableof{A1}$ & $\catvariableof{A2}$ & $\catvariableof{A1}\oplus\catvariableof{A2}$ \\
+                \hline
+                0                    & 0                    & 0                                            \\
+                0                    & 1                    & 1                                            \\
+                1                    & 0                    & 1                                            \\
+                1                    & 1                    & 0
+            \end{tabular}
+        \end{center}
+        We store the accounting rule $\catvariableof{A1}\oplus\catvariableof{A2}$ in a matrix:
+        \begin{itemize}
+            \item Understand $\catvariableof{A1},\catvariableof{A2}$ as row and column selection
+            \item Encode the truth of $\catvariableof{A1}\oplus\catvariableof{A2}$ in the respective coordinate
+        \end{itemize}
         \begin{center}
             \begin{tikzpicture}[scale=1]
                 \node (A) at (0,0) {
@@ -126,13 +141,34 @@
             \end{tikzpicture}
         \end{center}
 
+    \end{frame}
+
+    \begin{frame}{Knowledge about two variables}
+        The rule, that exactly one of the accounts $\var{Account 1}$ and $\var{Account 2}$ is booked is then encoded in the matrix
+        \begin{center}
+            \begin{tikzpicture}[scale=1]
+                \node (A) at (0,0) {
+                    $\coloredmatrixof{0 & 1 \\ 1 & 0}{\catvariableof{A1},\catvariableof{A2}}$
+                };
+                %\draw[dashed,->] (-1.5,0.2) to (-2.5,0.2) node[left]{\small $(\mathrm{False},\mathrm{False})$};
+                %\draw[dashed,->] (-1.5,-0.2) to (-2.5,-0.2) node[left]{\small $(\mathrm{True},\mathrm{False})$};
+
+                %\draw[dashed,->] (-0.5,0.5) to (-0.5,1) node[above]{\small $(\mathrm{False},\mathrm{True})$};
+               % \draw[dashed,->] (-0.5,-.5) to (-0.5,-1) node[below]{\small $(\mathrm{True},\mathrm{True})$};
+
+            \end{tikzpicture}
+        \end{center}
+
         The rule that $\var{Account 1}$ is booked when $\var{Feature}$ is present by:
         \begin{align*}
             \coloredmatrixof{1 & 1 \\ 0 & 1}{\catvariableof{F},\catvariableof{A1}}
         \end{align*}
 
-    \end{frame}
+        \begin{center}
+            \bf To encode both, we need a tensor of order $3$!
+        \end{center}
 
+    \end{frame}
 
 
     \begin{frame}{Representation of the toy accounting system in a truth table}
@@ -226,21 +262,37 @@
 
     \section{Coarser Picture: Tensors}
 
-    \begin{frame}{Situation of $\atomorder$ variables}
+    \begin{frame}{Notation for $\atomorder$ variables}
         Let us now imagine that we have $\atomorder$ variables $\catvariableof{0},\ldots,\catvariableof{\atomorder-1}$.\\
         \medskip
 
+        Conventions:
+        \begin{itemize}
+            \item We abbreviate sets as
+            \begin{align*}
+            [\catorder]
+                \coloneqq \{0,\ldots,\catorder-1\}
+            \end{align*}
+            \item Tuples of variables
+            \begin{align*}
+                \shortcatvariables \coloneqq \catvariableof{0},\ldots,\catvariableof{\atomorder-1}
+            \end{align*}
+            \item The states of variable tuples $\shortcatvariables$ are
+            \begin{align*}
+            [2]
+                ^{\catorder} \coloneqq \bigtimes_{\catenumerator\in\{0,\ldots,\catorder-1\}} \{0,1\}
+            \end{align*}
+            \item A specific state corresponds with an index tuple
+            \begin{align*}
+                \shortcatindices \coloneqq (\catindexof{0},\ldots,\catindexof{\catorder-1}) \in  [2]^{\catorder}
+            \end{align*}
+        \end{itemize}
 
-        The states are the set
-        \begin{align*}
-            \bigtimes_{\catenumerator\in\{0,1,2\}} \{0,1\}
-        \end{align*}
-        of $2^{\catorder}$ state tuples.
+%        \begin{center}
+%        {\bf Problem:} The coordinatewise description would be confusing for $\atomorder>3$.
+%        \end{center}
 
-        The coordinatewise description would be confusing for $\atomorder>3$!\\
-        \medskip
 
-%        We use a diagrammatic depiction instead:
 
 
     \end{frame}
@@ -249,13 +301,13 @@
         \begin{definition}[Propositional Formula]
             A \emph{propositional formula} of order $\atomorder\in\nn$ is a map
             \begin{align*}
-                \exformula : \bigtimes_{\catenumeratorin} \{0,1\} \rightarrow \{0,1\} \, .
+                \formulawith \wcols [2]^{\catorder} \rightarrow [2] \, .
             \end{align*}
 %            \[ \hypercore : \facstates \rightarrow \rr \, . \]
             \begin{itemize}
-                \item We refer to $\hypercoreat{\indexedshortcatvariables}\in\rr$ by the \emph{coordinate} of $\hypercore$ with the indices $\shortcatindices=\catindices$.
+                \item We refer to $\formulaat{\indexedshortcatvariables}\in\rr$ as the \emph{coordinate} of $\formulawith$ to the indices $\shortcatindices=\catindices$.
                 \item By scalar multiplication and addition of maps, tensors build linear spaces called \emph{tensor spaces}
-                \[ \hypercore \in \bigotimes_{\catenumeratorin} \rr^2 \, . \]
+                \[ \formulaat{\shortcatvariables} \in \bigotimes_{\catenumeratorin} \rr^2 \, . \]
             \end{itemize}
         \end{definition}
 
@@ -290,31 +342,33 @@
 
     \end{frame}
 
-    \begin{frame}{Consequences}
-        As consequence of the curse of dimensionality:
+    \begin{frame}{Consequences of the curse of dimensionality}
+        The following problems are {\bf inevitable when having many variables}:
         \begin{itemize}
             \item {\bf Storage problem:} We cannot explicitly store a boolean to any state of the system.
             \item {\bf Visualization problem:} We cannot draw large tensors in the coordinatewise picture introduced so far.
         \end{itemize}
 
-        The solution: Introduction of \emph{Tensor Networks}
+        \medskip
+
+        The solution: Introduction of \emph{tensor networks}
         \begin{itemize}
-            \item Diagramatic notation of tensors by wires (instead of coordinates)
+            \item Visualization based on a diagramatic tensor notation (instead of coordinates)
             \item Contractions can be denoted by connections of the wires
         \end{itemize}
 
     \end{frame}
 
-    \begin{frame}{Depiction of Tensors}
+    \begin{frame}{Depiction of tensors}
         We will depict
         \begin{itemize}
             \item \emph{tensors by blocks}
-            \item affected \emph{categorical variables by open legs}
+            \item affected \emph{categorical variables by legs}
         \end{itemize}
         For example, given the atomic variables
-        \[ \{\catvariableof{\atomenumerator} \, : \, \atomenumeratorin \} \]
+        \[ \shortcatvariables = \big(\catvariableof{0},\ldots,\catvariableof{\catorder-1}\big) \]
         with respective dimensions $\catdimof{\atomenumerator}\in\mathbb{N}$ we depict a tensor
-        \[ \hypercore \in \bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} \]
+        \[ \formulawith \in \bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} \]
         as
         \begin{center}
             \input{./tikz-pics/tensor.tex}
@@ -339,33 +393,7 @@
         \end{center}
     \end{frame}
 
-%% To Syntax
-%
-%    \begin{frame}{Depiction of Tensors}
-%        We will depict
-%        \begin{itemize}
-%            \item \emph{tensors by blocks}
-%            \item affected \emph{categorical variables by open legs}
-%        \end{itemize}
-%        For example, given the atomic variables
-%        \[ \{\catvariableof{\atomenumerator} \, : \, \atomenumeratorin \} \]
-%        with respective dimensions $\catdimof{\atomenumerator}\in\mathbb{N}$ we depict a tensor
-%        \[ \hypercore \in \bigotimes_{\atomenumeratorin} \rr^{\catdimof{\atomenumerator}} \]
-%        as
-%        \begin{center}
-%            \input{./tikz_pics/tensor.tex}
-%        \end{center}
-%    \end{frame}
-%
-%
-%    \begin{frame}{Example: Depiction of Vectors}
-%        For example, a vector
-%        \[ V \in \rr^{m}\]
-%        with an index variable $\catvariable\in[m]$ is depicted by a block with a single open leg
-%        \begin{center}
-%            \input{./tikz_pics/vector.tex}
-%        \end{center}
-%    \end{frame}
+
 
 
 \end{document}

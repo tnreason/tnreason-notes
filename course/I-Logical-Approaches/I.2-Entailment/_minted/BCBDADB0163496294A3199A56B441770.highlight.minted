@@ -1,0 +1,4 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+    \PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{tnreason}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{engine}
+    \PYG{n}{engine}\PYG{o}{.}\PYG{n}{getCore}\PYG{p}{(}\PYG{n}{coreType}\PYG{p}{)}\PYG{p}{(}\PYG{n}{coreValues}\PYG{p}{,} \PYG{n}{coreColors}\PYG{p}{,} \PYG{n}{coreName}\PYG{p}{)}
+\end{MintedVerbatim}
