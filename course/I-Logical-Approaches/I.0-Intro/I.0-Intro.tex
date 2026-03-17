@@ -4,8 +4,8 @@
 \input{../../spec_files/course_macros.tex}
 
 \title[Introduction to Neuro-Symbolic AI]{
-    \coursechapterone \\
-    {\huge Introduction to Neuro-Symbolic AI}
+%\coursechapterone \\
+        {\huge Introduction to Neuro-Symbolic AI}
 }
 \date{March 16, 2026}
 
@@ -17,12 +17,12 @@
     \begin{frame}{My background}
 
         \begin{tabular}{ll}
-            10/11 - 05/18 & {\bf University of Würzburg, TU Berlin} \\
-            & Basic training in mathematics and physics \\
+            10/11 - 05/18 & {\bf University of Würzburg, TU Berlin}                         \\
+            & Basic training in mathematics and physics                       \\
             06/18 - 12/18 & {\bf Fritz Haber Institute, Max Planck Society}                 \\
             & Data-driven prediction of crystal properties                    \\
             01/19 - 12/21 & {\bf Institute of Mathematics, TU Berlin}                       \\
-            & PhD in statistical learning theory                         \\
+            & PhD in statistical learning theory                              \\
             %& "Uniform Concentration of Tensor and Neural Networks:           \\
             %& An approach towards Recovery Guarantees"                        \\
             %since 01/23   & {\bf ENEXA (EU Horizon Research Project)}                       \\
@@ -32,7 +32,7 @@
             06/21 - 06/22 & {\bf InstruNEXT GmbH}                                           \\
             & Data-driven optimization of photomask baking processes          \\
             07/22 - 12/22 & {\bf Schneider Electric SE}                                     \\
-            & AI-dedicated hardware                           \\
+            & AI-dedicated hardware                                           \\
             01/23 - 06/25 & {\bf DATEV eG}                                                  \\
             & Automation of Accounting                                        \\
             \hline
@@ -188,8 +188,8 @@
 
         Let there be two accounting rules to be respected:
         \begin{itemize}
-            \item When the $\var{Feature}$ is present on the receipt, the $\var{Account 1}$ needs to be booked.
             \item Exactly one of the accounts $\var{Account 1}$ and $\var{Account 2}$ is used to book the receipt.
+            \item When the $\var{Feature}$ is present on the receipt, the $\var{Account 1}$ needs to be booked.
         \end{itemize}
 
     \end{frame}
@@ -232,8 +232,8 @@
 %        \begin{block}{How to represent the accounting rules?}
         The toy accounting rules exclude some states:
         \begin{itemize}
-            \item When the $\var{Feature}$ is present on the receipt, the $\var{Account 1}$ needs to be booked: $\catvariableof{A1}\oplus\catvariableof{A2}$
             \item Exactly one of the accounts $\var{Account 1}$ and $\var{Account 2}$ is used to book the receipt: $\catvariableof{F}\Rightarrow\catvariableof{A1}$
+            \item When the $\var{Feature}$ is present on the receipt, the $\var{Account 1}$ needs to be booked: $\catvariableof{A1}\oplus\catvariableof{A2}$
         \end{itemize}
         %       \end{block}
 
@@ -424,16 +424,16 @@
                     \item Efficient reasoning schemes based on tensor network contractions
                 \end{itemize}
             \end{block}
-            \end{minipage}
-            \begin{minipage}{0.3\linewidth}
-                \begin{center}
-                    \includegraphics[width=2cm]{images/aristotle.png}\\
-                    {\tiny Aristotle}\footnote{\tiny https://de.wikipedia.org/wiki/Aristoteles} \\
-                    \medskip
-                    \includegraphics[width=3cm]{images/sakana_fish.png}\\
-                    {\tiny Modified Sudoku puzzles}\footnote{\tiny https://sakana.ai/sudoku-bench/} \\
-                \end{center}
-            \end{minipage}
+        \end{minipage}
+        \begin{minipage}{0.3\linewidth}
+            \begin{center}
+                \includegraphics[width=2cm]{images/aristotle.png}\\
+                {\tiny Aristotle}\footnote{\tiny https://de.wikipedia.org/wiki/Aristoteles} \\
+                \medskip
+                \includegraphics[width=3cm]{images/sakana_fish.png}\\
+                {\tiny Modified Sudoku puzzles}\footnote{\tiny https://sakana.ai/sudoku-bench/} \\
+            \end{center}
+        \end{minipage}
 %            {\bf Example:} When it holds, that
 %        \begin{align*}
 %            & \mathrm{hasCampusInSchweinfurt(THWS)} \quad \text{and}\\
@@ -444,96 +444,96 @@
 %            \mathrm{hasCampusInGermany(THWS)} \, .
 %        \end{align*}
 %        %\footnotetext[1]
-        \end{frame}
+    \end{frame}
 
-        \begin{frame}{II - Probabilistic Approaches}
-            Bayesian Networks model probabilistic relations between variables
-            \begin{center}
-                \includegraphics[width=6cm]{images/burglary.png}
-            \end{center}
+    \begin{frame}{II - Probabilistic Approaches}
+        Bayesian Networks model probabilistic relations between variables
+        \begin{center}
+            \includegraphics[width=6cm]{images/burglary.png}
+        \end{center}
 
-            \begin{block}{Challenges}
-                \begin{itemize}
-                    \item Learn the dependence structure of the variables
-                    \item Extract the causal relations of the variables
-                \end{itemize}
-            \end{block}
-
-
-            %      \begin{block}{Challenge}
-            %          Since causality requires intervention with data or expert knowledge, how can we certify the causality of our models?
-            %      \end{block}
-        \end{frame}
-
-        \begin{frame}{III - Statistical Models of Knowledge Graphs}
-            Extension from factored representations to \emph{structured representations}:
+        \begin{block}{Challenges}
             \begin{itemize}
-                \item Worlds contain objects from classes.
-                \item The objects are enumerated using further tensor axes.
+                \item Learn the dependence structure of the variables
+                \item Extract the causal relations of the variables
             \end{itemize}
-            \begin{center}
-                \includegraphics[width=0.6\textwidth]{images/kg-example.png}\footnote{\tiny https://ml-digest.com/knowledge-graphs/}
-            \end{center}
-            \begin{block}{Challenges}
-                \begin{itemize}
-                    \item Reason about the relations in a knowledge graph
-                    \item Predict the connectivity of new objects
-                \end{itemize}
- %               Predict the connectivity of objects, using neuro-symbolic statistical models.
-            \end{block}
-        \end{frame}
-
-        \begin{frame}{IV - Quantum Machine Learning}
+        \end{block}
 
 
-            \begin{minipage}{0.55\linewidth}
-                Quantum computation
-                \begin{itemize}
-                    \item Formulated in tensor spaces
-                    \item Quantum circuits: Tensor networks
-                \end{itemize}
-                Quantum machine learning
-                \begin{itemize}
-                    \item Inference in quantum circuits
-                    \item Promise: Efficiency increase (to be shown)
-                \end{itemize}
-            \end{minipage}
-            \begin{minipage}{0.4\linewidth}
+        %      \begin{block}{Challenge}
+        %          Since causality requires intervention with data or expert knowledge, how can we certify the causality of our models?
+        %      \end{block}
+    \end{frame}
+
+    \begin{frame}{III - Statistical Models of Knowledge Graphs}
+        Extension from factored representations to \emph{structured representations}:
+        \begin{itemize}
+            \item Worlds contain objects from classes.
+            \item The objects are enumerated using further tensor axes.
+        \end{itemize}
+        \begin{center}
+            \includegraphics[width=0.6\textwidth]{images/kg-example.png}\footnote{\tiny https://ml-digest.com/knowledge-graphs/}
+        \end{center}
+        \begin{block}{Challenges}
+            \begin{itemize}
+                \item Reason about the relations in a knowledge graph
+                \item Predict the connectivity of new objects
+            \end{itemize}
+            %               Predict the connectivity of objects, using neuro-symbolic statistical models.
+        \end{block}
+    \end{frame}
+
+    \begin{frame}{IV - Quantum Machine Learning}
+
+
+        \begin{minipage}{0.55\linewidth}
+            Quantum computation
+            \begin{itemize}
+                \item Formulated in tensor spaces
+                \item Quantum circuits: Tensor networks
+            \end{itemize}
+            Quantum machine learning
+            \begin{itemize}
+                \item Inference in quantum circuits
+                \item Promise: Efficiency increase (to be shown)
+            \end{itemize}
+        \end{minipage}
+        \begin{minipage}{0.4\linewidth}
             \begin{center}
                 \includegraphics[width=1\textwidth]{images/circuit-example.png} \\
                 {\tiny Example of a Quantum Circuit\footnote{\tiny https://docs.pennylane.ai/en/stable/introduction/inspecting-circuits.html}:}
             \end{center}
-            \end{minipage}
+        \end{minipage}
 
-            \begin{block}{Challenges}
-                \begin{itemize}
-                    \item Find sparse quantum circuits exploiting a models sparsity
-                    \item Increase the efficiency of reasoning with tensor networks by quantum computation.
-                \end{itemize}
-            \end{block}
-
-        \end{frame}
-
-        \begin{frame}{Further literature}
-
-            Introductory textbooks:
+        \begin{block}{Challenges}
             \begin{itemize}
-                \item \textbf{Russel, Norvig: Artificial Intelligence - A Modern Approach} (Fourth Edition), Pearson Education 2021
-                \item \textbf{Koller, Friedman: Probabilistic Graphical Models: Principles and Techniques}, MIT Press 2009
-                \item \textbf{Antoniou et al: A Semantic Web Primer} (Third Edition), MIT 2012
-                \item \textbf{Schuld, Petruccione: Machine Learning with Quantum Computers}, Springer 2021
+                \item Find sparse quantum circuits exploiting a models sparsity
+                \item Increase the efficiency of reasoning with tensor networks by quantum computation.
             \end{itemize}
+        \end{block}
 
-            Advanced textbooks:
-            \begin{itemize}
-                \item \textbf{Wainwright, Jordan: Graphical Models, Exponential Families and Variational Inference}, now 2008
-                \item \textbf{Hackbusch: Tensor Spaces and Numerical Tensor Calculus}, Springer 2019
-            \end{itemize}
+    \end{frame}
 
-        \end{frame}
+    \begin{frame}{Further literature}
+
+        Introductory textbooks:
+        \begin{itemize}
+            \item \textbf{Russel, Norvig: Artificial Intelligence - A Modern Approach} (Fourth Edition), Pearson Education 2021
+            \item \textbf{Koller, Friedman: Probabilistic Graphical Models: Principles and Techniques}, MIT Press 2009
+            \item \textbf{Antoniou et al: A Semantic Web Primer} (Third Edition), MIT 2012
+            \item \textbf{Schuld, Petruccione: Machine Learning with Quantum Computers}, Springer 2021
+        \end{itemize}
+
+        Advanced textbooks:
+        \begin{itemize}
+            \item \textbf{Wainwright, Jordan: Graphical Models, Exponential Families and Variational Inference}, now 2008
+            \item \textbf{Hackbusch: Tensor Spaces and Numerical Tensor Calculus}, Springer 2019
+        \end{itemize}
+
+    \end{frame}
 
 
-    \end{document}
+\end{document}
 
 
 
