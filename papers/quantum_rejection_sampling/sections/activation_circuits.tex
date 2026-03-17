@@ -185,9 +185,10 @@ For an example in the $\ttformat$ format, see \figref{fig:canTTAugmentation}.
 
 \subsection{Q-samples of \CompActNets{}}
 
+Having investigated schemes to perform the activation, we can now describe circuits preparing q-samples of augmented \ComputationActivationNetworks{}.
 
 \begin{theorem}
-    Given a \CompActNet{} with statistic $\sstat$ and activation tensor network $\acttensorat{\headvariables}$, the circuit composed of
+    Given a \CompActNet{} with statistic $\sstat$ and activation tensor network $\acttensorat{\headvariables}$, the circuit (see \figref{fig:caCircuit}) composed of
     \begin{itemize}
         \item Hadamard transforms on the distributed qubits $\shortcatvariables$
         \item Computation circuit $\qcbencodingof{\sstat}$
@@ -200,7 +201,19 @@ For an example in the $\ttformat$ format, see \figref{fig:canTTAugmentation}.
     \end{align*}
 \end{theorem}
 
-\input{examples/sampling/toy_accounting_circuit}
+%For \ComputationActivationNetworks{} we find a q-sample by concatenating \computationCircuits{} and \activationCircuits{} (see \figref{fig:caCircuit}).
+
+\begin{figure}
+    \begin{center}
+        \input{tikz_pics/activation-circuits/ca_circuit}
+    \end{center}
+    \caption{
+        Quantum Circuit to reproduce a q-sample of an augmented \ComputationActivationNetwork{}.
+        We measure the distributed qubits $\shortcatvariables$ and the ancilla qubits $\avariableof{[\seldim]}$ and reject all samples, where an ancilla qubit is measured as $0$.
+    }\label{fig:caCircuit}
+\end{figure}
+
+\input{examples/activation-circuits/toy_accounting_circuit}
 
 % Bayesian network perspective
 By the ancilla augmentation, a \CompActNet{} is turned into a Bayesian network, which has additional sparse structure in its computation network.
