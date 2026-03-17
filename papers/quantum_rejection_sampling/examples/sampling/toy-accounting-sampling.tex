@@ -1,7 +1,18 @@
 \begin{example}[Sampling from the toy accounting]
 
-    For positive $\canparam$: $\repnumof{\mathrm{opt}}=0$
+    We have
+    \begin{align*}
+        \acceptanceprob
+        = \begin{cases}
+              \frac{1}{3+\expof{-\canparam}} & \ifspace \canparam \geq 0 \\
+              \frac{1}{3\cdot\expof{\canparam}+1} & \ifspace \canparam < 0
+        \end{cases}
+    \end{align*}
 
-    For large negative $\canparam$: Effectively only one model (i.e. minimal acceptance prob), $\repnumof{\mathrm{opt}}=1$
+    For positive $\canparam$:
+    $\repnumof{\mathrm{opt}}=0$
+
+    For large negative $\canparam$:
+    Effectively only one model (i.e. minimal acceptance prob), $\repnumof{\mathrm{opt}}=1$
 
 \end{example}
