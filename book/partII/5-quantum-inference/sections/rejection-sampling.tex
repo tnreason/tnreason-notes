@@ -2,49 +2,13 @@
 
 In general quantum rejection sampling consist in two steps:
 \begin{itemize}
-    \item Find an ancilla augmentation of a distribution, such that there is a circuit preparing the q-sample of the augmented distribution
+    \item Find an ancilla augmentation of a distribution, such that there is a circuit preparing a state with the augmented distribution as measurement distribution
     \item Amplify the amplitude of the ancilla qubits in state $1$ by repeated Grover operators
 \end{itemize}
 
-We investigate, how the above circuit encoding schemes can be applied in the preparation of q-samples to \ComputationActivationNetworks{}.
-In particular, we build compositions of \computationCircuits{} and \activationCircuits{}, for which conditional distributions coincide with \ComputationActivationNetworks{}.
-
-% Graph-controlled circuits
-Both are defined using controlled single qubit gates (see Sections 4.2-3 in \cite{nielsen_quantum_2010}) with ancilla qubits being the target qubits.
-
-\subsection{Preparing ancilla augmented distributions for \ComputationActivationNetworks{}}
-
-The computation network consists already of directed cores and therefore is already a Bayesian network.
-The activation network however needs ancilla augmentation.
-
-\begin{figure}[t]
-    \begin{center}
-        \input{partII/5-quantum-inference/tikz/rejection-sampling/can_elementary_augmentation}
-    \end{center}
-    \caption{Ancilla augmentation of an elementary \ComputationActivationNetwork{} a) by replacing each leg vector of the elementary activation tensor by an directed ancilla augmentation.}
-    \label{fig:canElementaryAugmentation}
-\end{figure}
-
-%% Elementary CAN Augmentation
-Elementary \ComputationActivationNetworks{} can be augmented by ancilla augmentation of each leg vector in the activation tensor network (see \figref{fig:canElementaryAugmentation}).
-We understand ancilla variables as variables in a Bayesian Network having single parents, corresponding with the ancilla augmentation of an elementary tensor.
-For an example, see \figref{fig:toyAccounting}.
-
-%% Hidden variables in activation graph
-To a generic activation hypergraph $\graph$, we would do ancilla augmentation for the activation tensor network, where each hidden variable is treated as a distributed qubit.
-To treat it as a distributed qubit, each hidden activation qubit is prepared in uniform state (i.e. a Hadamard gate acting on a ground state) and will be omitted in the measurement scheme (either not measured, or its measurement ignored).
-This can be understood from a tensor network perspective, where marginalization means contracting, which is exactly how hidden activation variables are used.
-For an example in the $\ttformat$ format, see \figref{fig:canTTAugmentation}.
-
-\begin{figure}[t]
-    \begin{center}
-        \input{partII/5-quantum-inference/tikz/rejection-sampling/can_TT_augmentation}
-    \end{center}
-    \caption{Ancilla augmentation of an $\ttformat$ \ComputationActivationNetwork{} a) by a Bayesian Network b).
-    The hidden variables in the $\ttformat$ activation tensor are treated as distributed variables.
-    Marginalization over the hidden variables and conditioning on the activation variables in state $1$, we reproduce the \ComputationActivationNetwork{}.}
-    \label{fig:canTTAugmentation}
-\end{figure}
+\red{We here investigate, how the acceptance probability of a can be increased by amplitude amplification, while the distribution is still an ancilla augmentation.
+Reason: Any quantum state in $\spanof{\qstateof{\goodstatesymbol},\qstateof{\badstatesymbol}}\backslash\spanof{\qstateof{\badstatesymbol}}$ is an ancilla augmentation.
+}
 
 \subsection{Amplitude Amplification}
 
@@ -145,19 +109,11 @@ Note however that we compare quantum circuit length with the number of classical
 %- Cannot be the case, when the encoding is determined by the activation tensor alone: Needs to use the computated statistic as well.
 %Negative result in \cite[Section~6.6]{nielsen_quantum_2010}: When using multiple applications of \computationCircuit{} in combination with further unitaries, need at least as many applications as with amplitude amplification.
 
-\subsection{Sampling from \ComputationActivationNetworks{}}
 
-For \ComputationActivationNetworks{} we find a q-sample by concatenating \computationCircuits{} and \activationCircuits{} (see \figref{fig:caCircuit}).
+\subsection{Examples}
 
-\begin{figure}
-    \begin{center}
-        \input{partII/5-quantum-inference/tikz/rejection-sampling/ca_circuit}
-    \end{center}
-    \caption{
-        Quantum Circuit to reproduce a q-sample of an augmented \ComputationActivationNetwork{}.
-        We measure the distributed qubits $\shortcatvariables$ and the ancilla qubits $\avariableof{[\seldim]}$ and reject all samples, where an ancilla qubit is measured as $0$.
-    }\label{fig:caCircuit}
-\end{figure}
+\input{../papers/quantum_rejection_sampling/examples/sampling/formula-sampling}
 
-\input{partII/5-quantum-inference/examples/rejection-sampling/toy_accounting_circuit}
+\input{../papers/quantum_rejection_sampling/examples/sampling/toy-accounting-sampling}
+
 

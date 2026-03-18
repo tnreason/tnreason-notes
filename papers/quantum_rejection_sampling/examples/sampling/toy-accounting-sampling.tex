@@ -1,18 +1,35 @@
-\begin{example}[Sampling from the toy accounting]
-
-    We have
+\begin{example}[Sampling from the toy accounting system]
+    For the toy accounting system we have
     \begin{align*}
-        \acceptanceprob
+        \max_{\catindexof{F},\catindexof{A1},\catindexof{A2}\in[2]}
+        \probat{\indexedcatvariableof{F},\indexedcatvariableof{A1},\indexedcatvariableof{A2}}
         = \begin{cases}
               \frac{1}{3+\expof{-\canparam}} & \ifspace \canparam \geq 0 \\
               \frac{1}{3\cdot\expof{\canparam}+1} & \ifspace \canparam < 0
         \end{cases}
     \end{align*}
-
-    For positive $\canparam$:
-    $\repnumof{\mathrm{opt}}=0$
-
-    For large negative $\canparam$:
-    Effectively only one model (i.e. minimal acceptance prob), $\repnumof{\mathrm{opt}}=1$
-
+    and therefore the acceptance probability when sampling $(\catvariableof{F},\catvariableof{A1},\catvariableof{A2})$ from uniform by
+    \begin{align*}
+        \acceptanceprob
+        = \frac{1}{8} \cdot \left(\max_{\catindexof{F},\catindexof{A1},\catindexof{A2}\in[2]}
+        \probat{\indexedcatvariableof{F},\indexedcatvariableof{A1},\indexedcatvariableof{A2}}\right)^{-1}
+        = \begin{cases}
+              \frac{3+\expof{-\canparam}}{8} & \ifspace \canparam \geq 0 \\
+              \frac{3\cdot\expof{\canparam}+1}{8} & \ifspace \canparam < 0
+        \end{cases} \, .
+    \end{align*}
+    The optimal number of amplifications is then
+    \begin{align*}
+        \repnumof{\optsymbol}
+        = \begin{cases}
+              0 & \ifspace \canparam \geq \canparamof{\mathrm{critical}} \\
+              1 & \ifspace \canparam < \canparamof{\mathrm{critical}}
+        \end{cases}
+    \end{align*}
+    for
+    \begin{align*}
+        \canparamof{\mathrm{critical}}
+        = \lnof{1-\frac{4\cosof{1}}{3}} \approx -1.27 \, .
+    \end{align*}
+    Note that in the limit of $\canparam\rightarrow -\infty$, we effectively have a single model and therefore a minimum of the acceptance probability among the distributions of three Boolean variables.
 \end{example}

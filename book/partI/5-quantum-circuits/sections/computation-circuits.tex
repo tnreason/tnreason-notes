@@ -248,3 +248,30 @@ Note that while this is necessary in some applications, it is not necessary for 
 %    \item \textbf{Coarse Structure:} Arrange the logical connective representing circuits according to the syntactical hypergraph, where parent head variables appear as distributed variables at their children.
 %\end{itemize}
 %
+
+
+%%% OLD: From Moment Estimation
+%\subsubsection{Decomposition into auxiliary statistic qubits}
+%
+%% Decomposition Sparsity requires uncomputation of the ancilla qubits
+%We can exploit \decompositionSparsity{} to find a sparse representation of a \computationCircuit{} with further auxiliary statistic qubits.
+%Any auxiliary statistic qubits $\headvariable$ is prepared in the initial state $\fbasisat{\headvariable}$, only the head statistic qubit is prepared in the anti-symmetric state.
+%To prepare a sign encoding such that the auxiliary statistic qubits are disentangled, one has to uncompute all auxiliary statistic qubits, by applying the respective \computationCircuits{} with auxiliary target qubits again.
+%
+%
+%To be more precise, let $\headvariables$ be auxiliary statistic qubits representing the subformulas $\hlnstat$ in a syntactic decomposition of $\exformula$, applying a decomposed \computationCircuit{} on the initial state then gives
+%\begin{align*}
+%    \left(\sum_{\shortcatindicesin} (-1)^{\exformula(\shortcatindices)} \qstateofat{0}{\indexedshortcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \otimes \onehotmapofat{\hlnstat(\shortcatindices)}{\headvariables}\right)
+%\end{align*}
+%Notice, that in this case the auxiliary qubits are entangled with the distributed qubits.
+%This can be resolved by applying the adjoint of the \computationCircuit{} except for those where the control is on the ancilla qubit.
+%We then have
+%\begin{align*}
+%    &\left(\sum_{\shortcatindicesin} (-1)^{\exformula(\shortcatindices)} \qstateofat{0}{\indexedshortcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \right) \otimes \onehotmapofat{\hlnstat(\shortcatindices)\oplus \hlnstat(\shortcatindices)}{\headvariables} \\
+%    &\quad =\left(\sum_{\shortcatindicesin} (-1)^{\exformula(\shortcatindices)} \qstateofat{0}{\indexedshortcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \right) \otimes \onehotmapofat{0_{[\seldim]}}{\headvariables}
+%\end{align*}
+%
+%Alternatively, one can include the auxiliary statistic qubits into the distributed qubits, and understand the parts of the \computationCircuit{} not affecting the ancilla qubit as part of the initial state preparing unitary $\unitarysymbol$.
+%Note that this perspective has been applied in section \secref{sec:sampling}, where we took $\unitarysymbol$ as the \ComputationActivationCircuit{} preparing the q-sample of the ancilla augmentation.
+%
+%

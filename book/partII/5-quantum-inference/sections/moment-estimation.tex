@@ -1,5 +1,22 @@
 \section{Moment Estimation}\label{sec:amplitudeEstimation}
 
+\red{Use here amplitude amplification scheme from a different perspective:
+    \begin{itemize}
+        \item Good and bad states by the restriction to the support of formulas
+        \item Good state reflection using the oracle on an disentangled ancilla qubit in the Hadamard basis state $\qstateof{+}$
+    \end{itemize}
+}
+
+\begin{figure}
+    \begin{center}
+        \input{partII/5-quantum-inference/tikz/moment-estimation/ancilla-grover}
+    \end{center}
+    \caption{Amplification scheme of the at the models of a Boolean function $\exformula$ supported coordinates of a quantum state.
+    The ancilla variable $\headvariable$ is prepared as an disentagled Hadamard basis vector and stays disentangled during the following reflections.
+    The oracle $\qcbencodingof{\formula}$ effectively performs the reflection $\reflectionof{\goodstatesymbol}$ across the good state supported at the models of $\formula$.}
+    \label{fig:ancillaGrover}
+\end{figure}
+
 Given a distribution $\probwith$ and a propositional formula $\formulaat{\shortcatvariables}$, we now investigate how to use Quantum Phase Estimation to estimate
 \begin{align*}
     \meanparam
@@ -8,31 +25,174 @@ Given a distribution $\probwith$ and a propositional formula $\formulaat{\shortc
 
 We assume that
 \begin{itemize}
-    \item a circuit $\unitarysymbol$ preparing a q-sample of $\probwith$
+    \item a circuit $\unitarysymbol$ preparing a state with measurement distribution $\probwith$, i.e.
+    \begin{align*}
+        \qstateofat{0}{\ccatvariableof{[\catorder]}{\outsymbol}}
+        = \contractionof{\onehotmapofat{\zerotuple{[\catorder]}}{\ccatvariableof{[\catorder]}{\insymbol}},
+            \unitaryat{\ccatvariableof{[\catorder]}{\insymbol},\ccatvariableof{[\catorder]}{\outsymbol}}
+        }{\ccatvariableof{[\catorder]}{\outsymbol}}
+    \end{align*}
+    and
+    \begin{align*}
+        \absof{\qstateofat{0}{\shortcatvariables}}^2
+        = \probwith
+    \end{align*}
     \item a \computationCircuit{} for $\formulawith$
 \end{itemize}
 
-\subsection{Eigenvalues the formula-amplifying Grover operator}
 
-The Grover operator $\groverofat{\probtensor,\formula}{\shortcatvariables^{\insymbol},\shortcatvariables^{\outsymbol},\avariable^{\insymbol},\avariable^{\outsymbol}}$ amplifying $\formula$
+%% FROM AMPLIFICATION
+%\subsection{Effective reflection by single \computationCircuits{}}
+
+%\red{Note, that the \computationCircuit{} is not a reflection, but acts as one when preparing the ancilla in the real anti-symmetric state.}
+%To start let
+%\begin{itemize}
+%    \item $\qstateofat{0}{\shortcatvariables}$ has the measurement distribution $\probofat{0}{\shortcatvariables}$
+%    \item $\unitarysymbol$ be a unitary preparing the state
+%    \item $\qcbencodingof{\exformula}$ be a \computationCircuit{} to a formula $\exformula$
+%\end{itemize}
+
+%\subsubsection{Decomposition of the q-sample}
+%
+%The we split the initial state into vectors supported at the models of $\exformula$ and the complement as
+%\begin{align*}
+%    \qstateofat{0}{\shortcatvariables}
+%    =\qstateofat{\goodstatesymbol}{\shortcatvariables}+\qstateofat{\badstatesymbol}{\shortcatvariables}
+%\end{align*}
+%where
+%\begin{align*}
+%    \qstateofat{\goodstatesymbol}{\shortcatvariables}
+%    &= \sum_{\shortcatindicesin\wcols\exformulaat{\indexedshortcatvariables}=1} \sqrt{\probat{\indexedshortcatvariables}}
+%    \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \\
+%    \qstateofat{\badstatesymbol}{\shortcatvariables}
+%    &= \sum_{\shortcatindicesin\wcols\exformulaat{\indexedshortcatvariables}=0} \sqrt{\probat{\indexedshortcatvariables}}
+%    \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
+%\end{align*}
+
+%We further define for a boolean formula
+%\begin{align*}
+%    \qstateofat{\probof{0},\exformula}{\shortcatvariables}
+%    = \frac{\qstateofat{\goodstatesymbol}{\shortcatvariables}}{\normof{\qstateofat{\goodstatesymbol}{\shortcatvariables}}}
+%\end{align*}
+%and have consistently for its negation
+%\begin{align*}
+%    \qstateofat{\probof{0},\lnot\exformula}{\shortcatvariables}
+%    = \frac{\qstateofat{\badstatesymbol}{\shortcatvariables}}{\normof{\qstateofat{\badstatesymbol}{\shortcatvariables}}}
+%\end{align*}
+
+%We define an angle $\rotanglesymbol$ by
+%\begin{align*}
+%    \sinof{\frac{\rotanglesymbol}{2}} \coloneqq \normof{\qstateofat{\goodstatesymbol}{\shortcatvariables}}
+%\end{align*}
+%and have
+%\begin{align*}
+%    \qstateofat{0}{\shortcatvariables}
+%    = \sinof{\frac{\rotanglesymbol}{2}} \qstateofat{\probof{0},\exformula}{\shortcatvariables} +
+%    \cosof{\frac{\rotanglesymbol}{2}} \qstateofat{\probof{0},\exformula}{\shortcatvariables} \, .
+%\end{align*}
+%Further we have that
+%\begin{align*}
+%    \meanparam^{0}
+%    &= \contraction{\probofat{0}{\shortcatvariables},\formulawith} \\
+%    &= \sum_{\shortcatindicesin} \absof{\qstateofat{0}{\indexedshortcatvariables}\formulaat{\indexedshortcatvariables}}^2 \\
+%    &= \left(\|\qstateofat{\goodstatesymbol}{\shortcatvariables}\|_2\right)^2 \\
+%    &= \left(\sinof{\frac{\rotanglesymbol}{2}}\right)^2 \, .
+%\end{align*}
+%
+%We prepare an ancilla qubit in the anti-symmetric state and consider as initial state
+%\begin{align*}
+%    \qstateofat{0}{\shortcatvariables} \otimes
+%    \sqrt{\frac{1}{2}}\cdot\coloredmatrixof{1\\-1}{\avariable} \,.
+%\end{align*}
+%
+%The \computationCircuit{} $\qcbencodingof{\exformula}$ acting on this state prepares a state
+%\begin{align*}
+%    \left(\qstateofat{\badstatesymbol}{\shortcatvariables}-\qstateofat{\goodstatesymbol}{\shortcatvariables}\right) \otimes
+%    \sqrt{\frac{1}{2}}\cdot\coloredmatrixof{1\\-1}{\avariable}  \,.
+%\end{align*}
+%This is the reflection on the subspace spanned by the one-hot encodings of the models of $\exformula$.
+
+
+
+\subsection{Moments }
+
+%We define the moment of the measurement distribution to $\qstateof{0}$ with respect to $\exformula$ as
+We have
 \begin{align*}
-    (\unitaryof{\textdagger}\circ\reflectionof{0}\circ \unitarysymbol) \otimes \qcbencodingof{\exformula}
+    %\meanparam
+    \sum_{\shortcatindices\in[2]^{\catorder} \wcols \formula(\shortcatindices)=1}
+    \absof{\qstateofat{0}{\indexedshortcatvariables}}^2
+    = \contraction{\probat{\shortcatvariables},\formulaat{\shortcatvariables}}  = \meanparam \, .
 \end{align*}
-acting on the initial state
+This insight motivates us to define the orthonormal quantum states
 \begin{align*}
-    \onehotmapofat{0}{\shortcatvariables} \otimes \sqrt{\frac{1}{2}}\cdot\coloredmatrixof{1\\-1}{\avariable} \, .
+    \qstateofat{\goodstatesymbol}{\shortcatvariables}
+    &= \frac{1}{\sqrt{\meanparam}} \sum_{\shortcatindices\in[2]^{\catorder} \wcols \formula(\shortcatindices)=1}
+    \qstateofat{0}{\indexedshortcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \\
+    \qstateofat{\badstatesymbol}{\shortcatvariables}
+    &= \frac{1}{\sqrt{1-\meanparam}} \sum_{\shortcatindices\in[2]^{\catorder} \wcols \formula(\shortcatindices)=0}
+    \qstateofat{0}{\indexedshortcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables}
 \end{align*}
+and split the prepared state into a weighted sum of them as
+\begin{align*}
+    \qstateofat{0}{\shortcatvariables}
+    = \sqrt{\meanparam} \cdot \qstateofat{\goodstatesymbol}{\shortcatvariables}
+    + \sqrt{1-\meanparam} \cdot \qstateofat{\badstatesymbol}{\shortcatvariables} \, .
+\end{align*}
+
+%% Comparison with quantum rejection sampling
+Note that here the mean parameter $\meanparam$ is the analogon to the acceptance probability $\acceptanceprob$ in quantum rejection sampling.
+To be more precise, when aiming to sample from the models of $\exformula$ using a rejection sampling scheme starting with the uniform distribution, the acceptance probability would be $\meanparam$.
+Instead of amplifying this acceptance probability we here want to measure it to retrieve the mean parameter.
+
+
+\subsection{Preparation of the effective Grover operator}
+
+The mean parameter can be retrieved from the eigenvalues of an associated (effective) Grover operator as we prepare next.
+
+The Grover operator $\groverofat{\qstateof{0},\formula}{\cheadvariable{\insymbol},\cheadvariable{\outsymbol},\ccatvariableof{[\catorder]}{\insymbol},\ccatvariableof{[\catorder]}{\outsymbol}}$ consists in (see \figref{fig:ancillaGrover})
+\begin{itemize}
+    \item Effective reflection across $\qstateof{\goodstatesymbol}$ by $\qcbencodingof{\formula}$.
+    \item Reflection across $\qstateof{0}$ by $(\unitaryof{\textdagger}\circ\reflectionof{\fbasis}\circ \unitarysymbol)$ where $\reflectionof{\fbasis}$ is the reflection across the ground state $\onehotmapofat{\zerotuple{[\catorder]}}{\shortcatvariables}$ leaving $\headvariable$ invariant.
+\end{itemize}
+
+
+%The Grover operator $\groverofat{\probtensor,\formula}{\shortcatvariables^{\insymbol},\shortcatvariables^{\outsymbol},\avariable^{\insymbol},\avariable^{\outsymbol}}$ amplifying $\formula$
+%\begin{align*}
+%    (\unitaryof{\textdagger}\circ\reflectionof{0}\circ \unitarysymbol) \otimes \qcbencodingof{\exformula}
+%\end{align*}
+%acting on the initial state
+%\begin{align*}
+%    \onehotmapofat{0}{\shortcatvariables} \otimes \sqrt{\frac{1}{2}}\cdot\coloredmatrixof{1\\-1}{\avariable} \, .
+%\end{align*}
+
+\subsubsection{Effective reflection by the oracle}
+
+The oracle acts as
+\begin{align*}
+    \contractionof{
+    \qstateofat{0}{\shortcatvariables},\hplusbasat{\cheadvariable{\insymbol}},
+    \qcbencodingofat{\exformula}{\cheadvariable{\insymbol},\cheadvariable{\outsymbol}}}{\cheadvariable{\outsymbol},\shortcatvariables}
+    =\hplusbasat{\cheadvariable{\outsymbol}}
+    \otimes \left(-\sqrt{\meanparam}\qstateof{\goodstatesymbol}+\sqrt{1-\meanparam}\qstateof{\badstatesymbol}\right) \, ,
+\end{align*}
+and is therefore an effective reflection across $\qstateof{\badstatesymbol}$.
+We can exploit the usual sparsity mechanisms to prepare the oracle.
+
+
+
+\subsection{Eigenvalues to the formula-amplifying Grover operator}
 
 % Plane projection
 We describe the Grover operator by its action on the projection onto the plane
 \begin{align*}
-    \spanof{\qstateof{\probtensor,\formula},\qstateof{\probtensor,\lnot\formula}}
+    \spanof{\qstateof{\goodstatesymbol},\qstateof{\badstatesymbol}}
 \end{align*}
 as
 \begin{align*}
     \coloredmatrixof{\cosof{\rotanglesymbol} & \sinof{\rotanglesymbol} \\
     -\sinof{\rotanglesymbol} & \cosof{\rotanglesymbol}}{
-        \indvariableof{\insymbol},\indvariableof{\outsymbol}
+        \indvariable^{\insymbol},\indvariable^{\outsymbol}
     } \, .
 \end{align*}
 Here we introduce a boolean variables $\indvariable$ to select the two axis on the plane, and copy it to $\indvariableof{\insymbol},\indvariableof{\outsymbol}$.
@@ -50,10 +210,24 @@ to the eigenstates
     \frac{1}{2}
     \coloredmatrixof{1\\\pm i}{\indvariable} \, .
 \end{align*}
-
-When measuring the phase register we get a phase
+Through measuring the phase $\phasecore\in\{\pm\rotanglesymbol\}$ of one of these eigenvalues we can therefore retrieve the mean by
 \begin{align*}
-    2\pi \cdot \sum_{\selindexin} 2^{-(\selindex+1)} \aindexof{\selindex} % 0.\phi_0\phi_1\ldots\phi_{\seldim-1}
+    \meanparam
+    = \left(\sinof{\frac{\phasecore}{2}}\right)^2 \, .
+\end{align*}
+
+\subsection{Quantum Phase Estimation}
+
+% Generic Quantum Phase Estimation
+The phase of the Grover eigenvalues can be estimated using the Quantum Phase Estimation routine \cite{kitaev_quantum_1995, cleve_quantum_1998}.
+We prepare auxiliary qubits $\avariables$ and perform for each $\selindexin$ $2^{\selindex}$ repetitions of $\groverof{\probtensor,\exformula}$ controlled on $\avariableof{\selindex}$.
+The inverse Fourier transform on the auxiliary qubits is supported on the (2-adic representation of the) phases on the eigenvalues, i.e. $\pm\rotanglesymbol$, and can be detected by a computational basis measure of the ancilla variables.
+
+% For the mean
+When measuring the phase register as $\aindexof{[\seldim]}$ we compute a phase
+\begin{align*}
+    \phasecore
+    =2\pi \cdot \sum_{\selindexin} 2^{-(\selindex+1)} \aindexof{\selindex} % 0.\phi_0\phi_1\ldots\phi_{\seldim-1}
 \end{align*}
 which is either $\alpha$ or $-\alpha$.
 We retrieve the mean in both cases by
@@ -61,9 +235,3 @@ We retrieve the mean in both cases by
     \meanparam
     = \sin^2\left(\pi \cdot \sum_{\selindexin} 2^{-(\selindex+1)} \aindexof{\selindex}\right) \, .
 \end{align*}
-
-\subsection{Quantum Phase Estimation}
-
-We prepare auxiliary qubits $\avariables$ and perform for each $\selindexin$ $2^{\selindex}$ repetitions of $\groverof{\probtensor,\exformula}$ controlled on $\avariableof{\selindex}$.
-The inverse Fourier transform on the auxiliary qubits is supported on the (2-adic representation of the) phases on the eigenvalues, i.e. $\pm\rotanglesymbol$, and can be detected by a computational basis measure of the ancilla variables.
-
