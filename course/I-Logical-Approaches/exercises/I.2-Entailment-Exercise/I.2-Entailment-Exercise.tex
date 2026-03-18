@@ -1,0 +1,35 @@
+\documentclass{scrartcl}
+
+\begin{document}
+    \begin{center}
+        \rule{\textwidth}{0.2pt}
+        \vspace{0.25cm}\\
+        \textbf{
+            Foundations of Neuro-Symbolic AI\\
+            Exercise Sheet 1}\\
+        \vspace{0.25cm}
+        \rule{\textwidth}{0.2pt}
+    \end{center}
+    \medskip
+    \textbf{Situation:}\\
+    Imagine reasoning about whether a Burglary or an Earthquake appeared at your home, with access to the information whether the Alarm started, and whether the neighbors John or Mary called.
+    We know, that:
+    \begin{itemize}
+        \item Whenever a Burglary or an Earthquake appears, the Alarm clock rings.
+        \item Whenever the Alarm glock rings then we receive a call at least by one of the neighbors John and Mary.
+        \item The neighbor John never calls.
+    \end{itemize}
+    \medskip
+    \textbf{Task 1:}\\
+    Define suitable Boolean variables giving a factored representation of this system and express the knowledge in corresponding formulas.\\
+    \medskip \\
+    \textbf{Task 2:}\\
+    Find the truth table representation and the tensor representation of the formulas. \\
+    \medskip \\
+    \textbf{Task 3:} \\
+    Decide by explicit tensor network contractions, which of these statements follows from our knowledge.
+    \begin{itemize}
+        \item When the Alarm clock rings, either a Burglary or an Earthquake happened.
+        \item When the Alarm clock rings, then Mary calls.
+    \end{itemize}
+\end{document}
