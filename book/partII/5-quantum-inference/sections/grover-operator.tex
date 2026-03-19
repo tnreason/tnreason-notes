@@ -1,0 +1,103 @@
+\section{Grover operator}\label{sec:groverOperator}
+
+\red{We derive quantum inference schemes based on the Grover operator, which we want to first introduce in full generality.}
+
+\subsection{Definition}
+
+Let us assume we have two orthogonal states
+\begin{itemize}
+    \item $\qstateofat{\goodstatesymbol}{\shortcatvariables}$
+    \item $\qstateofat{\badstatesymbol}{\shortcatvariables}$
+\end{itemize}
+spanning a real subspace $\subspaceof{}=\spanof{\qstateofat{\goodstatesymbol}{\shortcatvariables},\qstateofat{\goodstatesymbol}{\shortcatvariables}}$ and let us choose another state
+\begin{align*}
+    \qstateofat{0}{\shortcatvariables}
+    \in \subspaceof{}\, .
+\end{align*}
+Then there is $\rotanglesymbol\in[0,4\pi)$ with
+\begin{align*}
+    \qstateofat{0}{\shortcatvariables}
+    = \sinof{\frac{\rotanglesymbol}{2}}\qstateofat{\goodstatesymbol}{\shortcatvariables}
+    + \cosof{\frac{\rotanglesymbol}{2}}\qstateofat{\badstatesymbol}{\shortcatvariables} \, .
+\end{align*}
+Consider the reflection about the states $\qstateof{\badstatesymbol}$ and $\qstateof{0}$ by
+\begin{align*}
+    \reflectionofat{\badstatesymbol}{\inshortcatvariables,\outshortcatvariables}
+    &= 2 \cdot \qstateofat{\badstatesymbol}{\inshortcatvariables} \otimes \qstateofat{\badstatesymbol}{\outshortcatvariables} - \identityat{\inshortcatvariables,\outshortcatvariables} \\
+    \reflectionofat{0}{\inshortcatvariables,\outshortcatvariables}
+    &= 2 \cdot \qstateofat{0}{\inshortcatvariables} \otimes \qstateofat{0}{\outshortcatvariables} - \identityat{\inshortcatvariables,\outshortcatvariables} \, ,
+\end{align*}
+and their concatenation
+\begin{align*}
+    \groverat{\inshortcatvariables,\outshortcatvariables}
+    = \contractionof{
+        \reflectionofat{\badstatesymbol}{\inshortcatvariables,\ccatvariableof{[\catorder]}{\midsymbol}},
+        \reflectionofat{0}{\ccatvariableof{[\catorder]}{\midsymbol},\outshortcatvariables}
+    }{\inshortcatvariables,\outshortcatvariables}
+\end{align*}
+which is called the \emph{Grover operator}.
+
+\subsection{Action on projected quantum states}
+
+The Grover operator leaves any quantum state $\qstate$ invariant, which is orthogonal to $\qstateof{\goodstatesymbol}$ and $\qstateof{\badstatesymbol}$.
+The projection of the quantum state onto $\subspaceof{}$ gets rotated by the Grover operator (see \figref{fig:rotationSketch}).
+To be more precise, we denote the projection by $(\mathcal{P}\qstate)[\selvariable]$ which has the coordinates
+\begin{align*}
+    \left(\mathcal{P}_{\subspaceof{}}\qstate\right)\left[\selvariable=0\right]
+    &= \contraction{\left(\qstatewith\right)^{\dagger},\qstateofat{\goodstatesymbol}{\shortcatvariables}}\\
+    \left(\mathcal{P}_{\subspaceof{}}\qstate\right)\left[\selvariable=1\right]
+    &= \contraction{\left(\qstatewith\right)^{\dagger},\qstateofat{\goodstatesymbol}{\shortcatvariables}} \, .
+\end{align*}
+We define a matrix representation of the Grover operator as
+\begin{align*}
+    \groverofat{\mathrm{red}}{\cselvariable{\outsymbol},\cselvariable{\insymbol}}
+    = \coloredmatrixof{
+        \cosof{\rotanglesymbol} & -\sinof{\rotanglesymbol} \\
+        \sinof{\rotanglesymbol} & \cosof{\rotanglesymbol}
+    }{\cselvariable{\outsymbol},\cselvariable{\insymbol}}
+\end{align*}
+and it holds for any quantum state $\qstatewith$ that
+\begin{align*}
+    \left(\mathcal{P}_{\subspaceof{}}\groversymbol\qstate\right)\left[\cselvariable{\outsymbol}\right]
+    = \contractionof{\groverofat{\mathrm{red}}{\cselvariable{\outsymbol},\cselvariable{\insymbol}},
+        \left(\mathcal{P}_{\subspaceof{}}\qstate\right)\left[\cselvariable{\insymbol}\right]
+    }{\outsymbol} \, .
+\end{align*}
+The Grover operator therefore has the eigenvalues:
+\begin{itemize}
+    \item $\expof{\pm i \rotanglesymbol}$ with the eigen spaces spanned by $\qstateof{\goodstatesymbol}\pm i \qstateof{\badstatesymbol}$
+    \item $1$ with the eigen space by the orthogonal complement of $\subspaceof{}$
+\end{itemize}
+Application the Grover operator $\repnum\in\nn$ times on $\qstateof{0}$ results in the state
+\begin{align*}
+    \qstateofat{\repnum}{\shortcatvariables}
+    = \sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol} \qstateofat{\goodstatesymbol}{\shortcatvariables}
+    + \cosof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol} \qstateofat{\badstatesymbol}{\shortcatvariables} \, .
+\end{align*}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{partII/5-quantum-inference/tikz/grover-operator/rotation_sketch.tikz}
+    \end{center}
+    \caption{Grover operator as a rotation in $\spanof{\qstateof{\goodstatesymbol},\qstateof{\badstatesymbol}}$.}
+    \label{fig:rotationSketch}
+\end{figure}
+
+\subsection{Circuit Realization}
+
+Let us now investigate how the reflection operations can be realized by circuits.
+The reflection $\reflectionof{}$ about the ground state $\onehotmapofat{\zerotuple{[\catorder]}}{\shortcatvariables}$ is realized by Pauli-X and controlled Pauli-Z.
+Having a unitary $\unitarysymbol$ preparing $\qstateof{0}$ by action on the ground state, we realize the reflection
+\begin{align*}
+    \reflectionofat{0}{\inshortcatvariables,\outshortcatvariables}
+    = \contractionof{
+        \unitaryofat{\dagger}{\inshortcatvariables,\ccatvariableof{[\catorder]}{\midsymbol,0}},
+        \reflectionofat{}{\ccatvariableof{[\catorder]}{\midsymbol,0},\ccatvariableof{[\catorder]}{\midsymbol,1}},
+        \unitaryat{\ccatvariableof{[\catorder]}{\midsymbol,1},\outshortcatvariables}
+    }{\inshortcatvariables,\outshortcatvariables} \, .
+\end{align*}
+
+We will investigate different effective schemes to realize $\reflectionof{\badstatesymbol}$ later.
+
+
+

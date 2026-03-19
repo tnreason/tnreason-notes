@@ -1,5 +1,7 @@
 \section{Quantum Rejection Sampling}\label{sec:sampling}
 
+
+
 In general quantum rejection sampling consist in two steps:
 \begin{itemize}
     \item Find an ancilla augmentation of a distribution, such that there is a circuit preparing a state with the augmented distribution as measurement distribution
@@ -10,70 +12,77 @@ In general quantum rejection sampling consist in two steps:
 Reason: Any quantum state in $\spanof{\qstateof{\goodstatesymbol},\qstateof{\badstatesymbol}}\backslash\spanof{\qstateof{\badstatesymbol}}$ is an ancilla augmentation.
 }
 
-\subsection{Amplitude Amplification}
+\subsection{Acceptance Amplification}
 
-The above scheme prepares the ancilla augmented \ComputationActivationNetwork{}
+
+\red{Let there be a quantum state, which measurement distribution is an ancilla augmentation $\secprobat{\avariables,\shortcatvariables}$ of a target distribution $\probwith$.
+We now show how Grover operators can be used to amplify the acceptance state.
+This is an instance of amplitude amplification.}
+
+\subsubsection{Grover construction}
+
+We relate the state $\qstateof{\goodstatesymbol}$ with the event $\avariables=\onetuple{[\seldim]}$, by constructing it as
 \begin{align*}
-    \secprobat{\avariables,\headvariables,\shortcatvariables}
-    = \acceptanceprob \cdot \onehotmapofat{1_{[\seldim]}}{\avariables}
-    \otimes \contractionof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\probwith}{\headvariables,\shortcatvariables}
-    + (1-\acceptanceprob) \probofat{\perp}{\shortcatvariables,\headvariables,\avariables}
-\end{align*}
-and the prepared state is the combination of q-samples
-\begin{align*}
-    \qstateofat{0}{\avariables,\headvariables,\shortcatvariables}
-    = \sqrt{\acceptanceprob} \cdot \onehotmapofat{1_{[\seldim]}}{\avariables}
+    \qstateofat{\goodstatesymbol}{\avariables,\headvariables,\shortcatvariables}
+    =\onehotmapofat{\onetuple{[\seldim]}}{\avariables}
     \otimes \contractionof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\sqrt{\probwith}}{\headvariables,\shortcatvariables}
-    + \sqrt{(1-\acceptanceprob)} \sqrt{\probofat{\perp}{\shortcatvariables,\headvariables,\avariables}} \, .
+\end{align*}
+The complement state $\qstateof{\badstatesymbol}$ is constructed if $\acceptanceprob\neq1$ (in which case the acceptance amplilification scheme would not be necessary)
+\begin{align*}
+    \probofat{\badstatesymbol}{\avariables,\headvariables,\shortcatvariables}
+    = \frac{1}{1-\acceptanceprob}
+    \cdot\left(
+             \secprobat{\avariables,\headvariables,\shortcatvariables}-\acceptanceprob \cdot \onehotmapofat{\onetuple{[\seldim]}}{\avariables}\otimes\probat{\headvariables,\shortcatvariables}
+    \right)
+\end{align*}
+and
+\begin{align*}
+    \qstateofat{\badstatesymbol}{\avariables,\headvariables,\shortcatvariables}=\sqrt{\probofat{\perp}{\avariables,\headvariables,\shortcatvariables}} \, .
 \end{align*}
 
-Sampling from the augmented \ComputationActivationNetwork{} can be also done classically by forward sampling:
-Just draw the variables from uniform, calculate the value qubit by a logical circuit inference and accept with probability by the computed value.
+% Grover operator instance
+%We build the Grover operator (see \secref{sec:groverOperator}) with respect to
+%\begin{itemize}
+%%    \item $$
+%    \item $\qstateof{\badstatesymbol}=\sqrt{\probof{\perp}}$
+%\end{itemize}
+%and the state
 
-To achieve a quantum advantage we need amplitude amplification on the ancilla qubits.
-%This can provide a square root speedup in the complexity compared with classical rejection sampling.
-
-In the subspace $\subspaceof{}$ spanned by the axes
-\begin{itemize}
-    \item $\qstateof{\goodstatesymbol}=\onehotmapofat{1_{[\seldim]}}{\avariables}\otimes \contractionof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\sqrt{\probwith}}{\headvariables,\shortcatvariables}$
-    \item $\qstateof{\badstatesymbol}=\sqrt{\probof{\perp}}$
-\end{itemize}
-which can be thought of the polar angle coordinate of the state
+We thus have
 \begin{align*}
     \qstateofat{0}{\avariables,\headvariables,\shortcatvariables}
     = \sinof{\frac{\rotanglesymbol}{2}} \qstateofat{0}{\avariables,\headvariables,\shortcatvariables}
     + \cosof{\frac{\rotanglesymbol}{2}} \qstateofat{1}{\avariables,\headvariables,\shortcatvariables}
 \end{align*}
-where we define an angle $\rotanglesymbol$ by
+where the $\rotanglesymbol$ is related to the acceptance probability as
 \begin{align*}
-    \sinof{\frac{\rotanglesymbol}{2}} \coloneqq \sqrt{\acceptanceprob}
+    \sinof{\frac{\rotanglesymbol}{2}}
+    = \sqrt{\acceptanceprob} \, .
 \end{align*}
 
-The amplitude amplification scheme now iterates between
-\begin{itemize}
-    \item Reflection $\reflectionof{\goodstatesymbol}$ along $\qstateof{\goodstatesymbol}$, by
-    \begin{align*}
-        \reflectionofat{\goodstatesymbol}{\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol}}
-        = \identityat{\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol}}
-        - 2 \onehotmapofat{\onetuple{[\seldim]}}{\cavariableof{[\seldim]}{\insymbol}}
-        \otimes \onehotmapofat{\onetuple{[\seldim]}}{\cavariableof{[\seldim]}{\outsymbol}}
-    \end{align*}
-    \item Reflection $\reflectionof{}$ along $\qstate$, by
-    \begin{align*}
-        \reflectionofat{\qstate}{\cavariableof{[\seldim]}{\insymbol},\cheadvariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol},\cheadvariableof{[\seldim]}{\outsymbol},\cavariableof{[\seldim]}{\outsymbol}}
-        =& \identityat{\cavariableof{[\seldim]}{\insymbol},\cheadvariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol},\cheadvariableof{[\seldim]}{\outsymbol},\cavariableof{[\seldim]}{\outsymbol}} \\
-        &- 2 \qstateofat{0}{\cavariableof{[\seldim]}{\insymbol},\cheadvariableof{[\seldim]}{\insymbol},\ccatvariableof{[\catorder]}{\insymbol}} \otimes
-        \qstateofat{0}{\cavariableof{[\seldim]}{\outsymbol},\cheadvariableof{[\seldim]}{\outsymbol},\ccatvariableof{[\catorder]}{\outsymbol}}
-        %U (\identityat{\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol}} - 2 \onehotmapofat{1_{[\seldim]}}{\cavariableof{[\seldim]}{\insymbol}} \otimes \onehotmapofat{1_{[\seldim]}}{\cavariableof{[\seldim]}{\outsymbol}}) U^T
-    \end{align*}
-    This reflection can be done by concatenating the operator preparing the ancilla-augmentation of the \ComputationActivationNetwork{} with a initial state reflection.
-\end{itemize}
+\subsubsection{Circuit Realization}
 
-Now the application of $\repnum$ grover operators $\reflectionof{}\reflectionof{\goodstatesymbol}$ on $\qstateof{0}$ prepares a state (see \figref{fig:rotationSketch})
+% Realization of the grover operator
+While the reflection $\reflectionof{0}$ is realized as described in \secref{sec:groverOperator}, the reflection $\reflectionof{\badstatesymbol}$ is a multi-controlled Pauli-Z on the ancilla variables.
 \begin{align*}
-    \qstateofat{\repnum}{\avariables,\headvariables,\shortcatvariables}
-    = \sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol} \qstateofat{\goodstatesymbol}{\avariables,\headvariables,\shortcatvariables}
-    + \sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol} \qstateofat{\badstatesymbol}{\avariables,\headvariables,\shortcatvariables}
+    -\reflectionofat{\badstatesymbol}{\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol}}
+    = \contractionof{
+        \mathrm{MC^{\seldim-1}}\paulizat{\cavariableof{\seldim-1}{\insymbol},\cavariableof{\seldim-1}{\outsymbol},\avariableof{[\seldim-1]}},
+        \identityat{\avariableof{[\seldim-1]},\cavariableof{[\seldim-1]}{\insymbol},\cavariableof{[\seldim-1]}{\outsymbol}}
+    }{\cavariableof{[\seldim]}{\insymbol},\cavariableof{[\seldim]}{\outsymbol}}
+\end{align*}
+Note that a global phase of $-1$ is introduced, which leaves the measurement distribution invariant.
+% THIS WOULD MAKE A DIFFERENCE IN QUANTUM PHASE ESTIMATION!
+
+
+\subsection{Optimal rotation numbers}
+
+% Application
+Now the application of $\repnum$ grover operators $\groversymbol$ on $\qstateof{0}$ prepares a state
+\begin{align*}
+    \qstateofat{\repnum}{\avariables,\shortcatvariables}
+    = \sinof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol} \qstateofat{\goodstatesymbol}{\avariables,\shortcatvariables}
+    + \cosof{\left(\frac{1}{2}+\repnum\right)\rotanglesymbol} \qstateofat{\badstatesymbol}{\avariables,\shortcatvariables}
 \end{align*}
 The state is closest to $\qstateof{\goodstatesymbol}$ when
 \begin{align*}
@@ -92,14 +101,6 @@ we get a bound
 This shows that we have a square root improvement on classical rejection sampling, which would require $\frac{1}{\acceptanceprob}$ repetitions to produce a sample.
 Note however that we compare quantum circuit length with the number of classical repetitions in sampling.
 
-\begin{figure}[t]
-    \begin{center}
-        \input{partII/5-quantum-inference/tikz/rejection-sampling/rotation_sketch.tikz}
-    \end{center}
-    \caption{Sketch of the amplitude amplification scheme.}
-    \label{fig:rotationSketch}
-\end{figure}
-
 
 %Note, that the variable qubits are uniformly distributed when only the computation circuit is applied.
 %When sampling the probability distribution, we need the ancilla qubits to be in state $1$ in order for the sample to be valid.
@@ -109,6 +110,27 @@ Note however that we compare quantum circuit length with the number of classical
 %- Cannot be the case, when the encoding is determined by the activation tensor alone: Needs to use the computated statistic as well.
 %Negative result in \cite[Section~6.6]{nielsen_quantum_2010}: When using multiple applications of \computationCircuit{} in combination with further unitaries, need at least as many applications as with amplitude amplification.
 
+\subsection{Applications on \CompActNets{}}
+
+The above scheme prepares the ancilla augmented \ComputationActivationNetwork{}
+\begin{align*}
+    \secprobat{\avariables,\headvariables,\shortcatvariables}
+    = \acceptanceprob \cdot \onehotmapofat{\onetuple{[\seldim]}}{\avariables}
+    \otimes \contractionof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\probwith}{\headvariables,\shortcatvariables}
+    + (1-\acceptanceprob) \probofat{\perp}{\shortcatvariables,\headvariables,\avariables}
+\end{align*}
+and the prepared state is the combination of q-samples
+\begin{align*}
+    \qstateofat{0}{\avariables,\headvariables,\shortcatvariables}
+    = \sqrt{\acceptanceprob} \cdot \onehotmapofat{\onetuple{[\seldim]}}{\avariables}
+    \otimes \contractionof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\sqrt{\probwith}}{\headvariables,\shortcatvariables}
+    + \sqrt{(1-\acceptanceprob)} \sqrt{\probofat{\perp}{\shortcatvariables,\headvariables,\avariables}} \, .
+\end{align*}
+%Here we understand $\headvariables$ as extending $\shortcatvariables$.
+
+Sampling from the augmented \ComputationActivationNetwork{} can be also done classically by forward sampling:
+Just draw the variables from uniform, calculate the value qubit by a logical circuit inference and accept with probability by the computed value.
+To achieve a quantum advantage we manipulate the circuit first by the amplitude amplification scheme and increase the acceptance probability.
 
 \subsection{Examples}
 

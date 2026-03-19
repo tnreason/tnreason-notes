@@ -13,7 +13,7 @@
     \end{center}
     \caption{Amplification scheme of the at the models of a Boolean function $\exformula$ supported coordinates of a quantum state.
     The ancilla variable $\headvariable$ is prepared as an disentagled Hadamard basis vector and stays disentangled during the following reflections.
-    The oracle $\qcbencodingof{\formula}$ effectively performs the reflection $\reflectionof{\goodstatesymbol}$ across the good state supported at the models of $\formula$.}
+    The oracle $\qcbencodingof{\formula}$ effectively performs the reflection $\reflectionof{\badstatesymbol}$ across the bad state supported at the models of $\formula$.}
     \label{fig:ancillaGrover}
 \end{figure}
 
@@ -27,10 +27,10 @@ We assume that
 \begin{itemize}
     \item a circuit $\unitarysymbol$ preparing a state with measurement distribution $\probwith$, i.e.
     \begin{align*}
-        \qstateofat{0}{\ccatvariableof{[\catorder]}{\outsymbol}}
-        = \contractionof{\onehotmapofat{\zerotuple{[\catorder]}}{\ccatvariableof{[\catorder]}{\insymbol}},
-            \unitaryat{\ccatvariableof{[\catorder]}{\insymbol},\ccatvariableof{[\catorder]}{\outsymbol}}
-        }{\ccatvariableof{[\catorder]}{\outsymbol}}
+        \qstateofat{0}{\outshortcatvariables}
+        = \contractionof{\onehotmapofat{\zerotuple{[\catorder]}}{\inshortcatvariables},
+            \unitaryat{\inshortcatvariables,\outshortcatvariables}
+        }{\outshortcatvariables}
     \end{align*}
     and
     \begin{align*}
@@ -150,7 +150,7 @@ Instead of amplifying this acceptance probability we here want to measure it to 
 
 The mean parameter can be retrieved from the eigenvalues of an associated (effective) Grover operator as we prepare next.
 
-The Grover operator $\groverofat{\qstateof{0},\formula}{\cheadvariable{\insymbol},\cheadvariable{\outsymbol},\ccatvariableof{[\catorder]}{\insymbol},\ccatvariableof{[\catorder]}{\outsymbol}}$ consists in (see \figref{fig:ancillaGrover})
+The Grover operator $\groverofat{\qstateof{0},\formula}{\cheadvariable{\insymbol},\cheadvariable{\outsymbol},\inshortcatvariables,\outshortcatvariables}$ consists in (see \figref{fig:ancillaGrover})
 \begin{itemize}
     \item Effective reflection across $\qstateof{\goodstatesymbol}$ by $\qcbencodingof{\formula}$.
     \item Reflection across $\qstateof{0}$ by $(\unitaryof{\textdagger}\circ\reflectionof{\fbasis}\circ \unitarysymbol)$ where $\reflectionof{\fbasis}$ is the reflection across the ground state $\onehotmapofat{\zerotuple{[\catorder]}}{\shortcatvariables}$ leaving $\headvariable$ invariant.
