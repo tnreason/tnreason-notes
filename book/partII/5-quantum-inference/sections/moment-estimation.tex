@@ -1,9 +1,10 @@
 \section{Moment Estimation}\label{sec:amplitudeEstimation}
 
-\red{Use here amplitude amplification scheme from a different perspective:
+\red{Instead of amplitude amplification we here exploit the Grover operator from a different perspective:
     \begin{itemize}
         \item Good and bad states by the restriction to the support of formulas
-        \item Good state reflection using the oracle on an disentangled ancilla qubit in the Hadamard basis state $\qstateof{+}$
+        \item Good state reflection using the oracle on an disentangled ancilla qubit in the Hadamard basis state $\hminusbasat{\headvariable}$
+        \item We perform Quantum Phase Estimation to extract the moment through the phase of the eigenvalue of the Grover algorithm
     \end{itemize}
 }
 
@@ -114,7 +115,10 @@ We assume that
 
 
 
-\subsection{Moments }
+\subsection{Moments as rotation angles}
+
+We construct a Grover operator, which rotation angle determines the moment.
+The moment can therefore be estimated based on the measurement of the operators eigenvalue phases.
 
 %We define the moment of the measurement distribution to $\qstateof{0}$ with respect to $\exformula$ as
 We have
@@ -145,16 +149,12 @@ Note that here the mean parameter $\meanparam$ is the analogon to the acceptance
 To be more precise, when aiming to sample from the models of $\exformula$ using a rejection sampling scheme starting with the uniform distribution, the acceptance probability would be $\meanparam$.
 Instead of amplifying this acceptance probability we here want to measure it to retrieve the mean parameter.
 
+%% Preparation of the effective Grover operator
+We prepare the reflection $-\reflectionof{0}$ in the Pauli-Z scheme and the reflection $\reflectionof{\badstatesymbol}$ in the oracle scheme (see \secref{sec:groverOperator}).
+Their concatenation results in the negated Grover operator, which causes a phase offset by $\pi$.
 
-\subsection{Preparation of the effective Grover operator}
-
-The mean parameter can be retrieved from the eigenvalues of an associated (effective) Grover operator as we prepare next.
-
-The Grover operator $\groverofat{\qstateof{0},\formula}{\cheadvariable{\insymbol},\cheadvariable{\outsymbol},\inshortcatvariables,\outshortcatvariables}$ consists in (see \figref{fig:ancillaGrover})
-\begin{itemize}
-    \item Effective reflection across $\qstateof{\goodstatesymbol}$ by $\qcbencodingof{\formula}$.
-    \item Reflection across $\qstateof{0}$ by $(\unitaryof{\textdagger}\circ\reflectionof{\fbasis}\circ \unitarysymbol)$ where $\reflectionof{\fbasis}$ is the reflection across the ground state $\onehotmapofat{\zerotuple{[\catorder]}}{\shortcatvariables}$ leaving $\headvariable$ invariant.
-\end{itemize}
+%\subsection{}
+%The mean parameter can be retrieved from the eigenvalues of an associated (effective) Grover operator as we prepare next.
 
 
 %The Grover operator $\groverofat{\probtensor,\formula}{\shortcatvariables^{\insymbol},\shortcatvariables^{\outsymbol},\avariable^{\insymbol},\avariable^{\outsymbol}}$ amplifying $\formula$
@@ -166,49 +166,54 @@ The Grover operator $\groverofat{\qstateof{0},\formula}{\cheadvariable{\insymbol
 %    \onehotmapofat{0}{\shortcatvariables} \otimes \sqrt{\frac{1}{2}}\cdot\coloredmatrixof{1\\-1}{\avariable} \, .
 %\end{align*}
 
-\subsubsection{Effective reflection by the oracle}
+%\subsubsection{Effective reflection by the oracle}
 
-The oracle acts as
-\begin{align*}
-    \contractionof{
-    \qstateofat{0}{\shortcatvariables},\hplusbasat{\cheadvariable{\insymbol}},
-    \qcbencodingofat{\exformula}{\cheadvariable{\insymbol},\cheadvariable{\outsymbol}}}{\cheadvariable{\outsymbol},\shortcatvariables}
-    =\hplusbasat{\cheadvariable{\outsymbol}}
-    \otimes \left(-\sqrt{\meanparam}\qstateof{\goodstatesymbol}+\sqrt{1-\meanparam}\qstateof{\badstatesymbol}\right) \, ,
-\end{align*}
-and is therefore an effective reflection across $\qstateof{\badstatesymbol}$.
-We can exploit the usual sparsity mechanisms to prepare the oracle.
+%The oracle acts as
+%\begin{align*}
+%    \contractionof{
+%    \qstateofat{0}{\shortcatvariables},\hminusbasat{\cheadvariable{\insymbol}},
+%    \qcbencodingofat{\exformula}{\cheadvariable{\insymbol},\cheadvariable{\outsymbol}}}{\cheadvariable{\outsymbol},\shortcatvariables}
+%    =\hminusbasat{\cheadvariable{\outsymbol}}
+%    \otimes \left(-\sqrt{\meanparam}\qstateof{\goodstatesymbol}+\sqrt{1-\meanparam}\qstateof{\badstatesymbol}\right) \, ,
+%\end{align*}
+%and is therefore an effective reflection across $\qstateof{\badstatesymbol}$.
+%We can exploit the usual sparsity mechanisms to prepare the oracle.
+
+%The Grover operator $\groverofat{\qstateof{0},\formula}{\cheadvariable{\insymbol},\cheadvariable{\outsymbol},\inshortcatvariables,\outshortcatvariables}$ consists in (see \figref{fig:ancillaGrover})
+%\begin{itemize}
+%    \item Effective reflection across $\qstateof{\goodstatesymbol}$ by $\qcbencodingof{\formula}$.
+%    \item Negated reflection across $\qstateof{0}$ by $(\unitaryof{\textdagger}\circ\reflectionof{\fbasis}\circ \unitarysymbol)$ where $\reflectionof{\fbasis}$ is the reflection across the ground state $\onehotmapofat{\zerotuple{[\catorder]}}{\shortcatvariables}$ leaving $\headvariable$ invariant.
+%\end{itemize}
 
 
+\subsection{Retrieving the moment from the phase}
 
-\subsection{Eigenvalues to the formula-amplifying Grover operator}
+%% Plane projection -> To groverOperator Section
+%We describe the Grover operator by its action on the projection onto the plane
+%\begin{align*}
+%    \spanof{\qstateof{\goodstatesymbol},\qstateof{\badstatesymbol}}
+%\end{align*}
+%as
+%\begin{align*}
+%    \coloredmatrixof{\cosof{\rotanglesymbol} & \sinof{\rotanglesymbol} \\
+%    -\sinof{\rotanglesymbol} & \cosof{\rotanglesymbol}}{
+%        \indvariable^{\insymbol},\indvariable^{\outsymbol}
+%    } \, .
+%\end{align*}
+%Here we introduce a boolean variables $\indvariable$ to select the two axis on the plane, and copy it to $\indvariableof{\insymbol},\indvariableof{\outsymbol}$.
 
-% Plane projection
-We describe the Grover operator by its action on the projection onto the plane
-\begin{align*}
-    \spanof{\qstateof{\goodstatesymbol},\qstateof{\badstatesymbol}}
-\end{align*}
-as
-\begin{align*}
-    \coloredmatrixof{\cosof{\rotanglesymbol} & \sinof{\rotanglesymbol} \\
-    -\sinof{\rotanglesymbol} & \cosof{\rotanglesymbol}}{
-        \indvariable^{\insymbol},\indvariable^{\outsymbol}
-    } \, .
-\end{align*}
-Here we introduce a boolean variables $\indvariable$ to select the two axis on the plane, and copy it to $\indvariableof{\insymbol},\indvariableof{\outsymbol}$.
+The eigenvalues of the Grover operator are (see \secref{sec:groverOperator}) $\expof{\pm i\rotanglesymbol}$ and $1$.
+%\end{align*}
+%to the eigenstates
+%\begin{align*}
+%    \frac{1}{2}
+%    \coloredmatrixof{1\\\pm i}{\indvariable} \, .
+%\end{align*}
+Note that the projection of the state $\qstateof{0}$ onto the eigen space to the eigen value $1$ vanishes, and the corresponding trivial phase is not measured by the Quantum Phase Estimation procedure.
+
 The rotation angle is related to $\meanparam$ as
 \begin{align*}
     \rotanglesymbol = 2 \cdot \sin^{-1}\left(\sqrt{\meanparam}\right)
-\end{align*}
-
-Its eigenvalues are thus
-\begin{align*}
-    \expof{\pm i\rotanglesymbol}
-\end{align*}
-to the eigenstates
-\begin{align*}
-    \frac{1}{2}
-    \coloredmatrixof{1\\\pm i}{\indvariable} \, .
 \end{align*}
 Through measuring the phase $\phasecore\in\{\pm\rotanglesymbol\}$ of one of these eigenvalues we can therefore retrieve the mean by
 \begin{align*}

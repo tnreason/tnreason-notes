@@ -1,15 +1,10 @@
 \section{Grover operator}\label{sec:groverOperator}
 
-\red{We derive quantum inference schemes based on the Grover operator, which we want to first introduce in full generality.}
+We derive quantum inference schemes based on the Grover operator, which we want to first introduce in full generality.
 
 \subsection{Definition}
 
-Let us assume we have two orthogonal states
-\begin{itemize}
-    \item $\qstateofat{\goodstatesymbol}{\shortcatvariables}$
-    \item $\qstateofat{\badstatesymbol}{\shortcatvariables}$
-\end{itemize}
-spanning a real subspace $\subspaceof{}=\spanof{\qstateofat{\goodstatesymbol}{\shortcatvariables},\qstateofat{\goodstatesymbol}{\shortcatvariables}}$ and let us choose another state
+Let us assume we have two orthogonal quantum states $\qstateofat{\goodstatesymbol}{\shortcatvariables},\qstateofat{\badstatesymbol}{\shortcatvariables}$ spanning a subspace $\subspaceof{}=\spanof{\qstateofat{\goodstatesymbol}{\shortcatvariables},\qstateofat{\goodstatesymbol}{\shortcatvariables}}$ and let us choose another state
 \begin{align*}
     \qstateofat{0}{\shortcatvariables}
     \in \subspaceof{}\, .
@@ -39,7 +34,7 @@ which is called the \emph{Grover operator}.
 
 \subsection{Action on projected quantum states}
 
-The Grover operator leaves any quantum state $\qstate$ invariant, which is orthogonal to $\qstateof{\goodstatesymbol}$ and $\qstateof{\badstatesymbol}$.
+The Grover operator leaves any quantum state $\qstate$ invariant, which is orthogonal to $\qstateof{\goodstatesymbol}$ and $\qstateof{\badstatesymbol}$ (such states get a factor $(-1)$ by both reflection operations).
 The projection of the quantum state onto $\subspaceof{}$ gets rotated by the Grover operator (see \figref{fig:rotationSketch}).
 To be more precise, we denote the projection by $(\mathcal{P}\qstate)[\selvariable]$ which has the coordinates
 \begin{align*}
@@ -83,21 +78,129 @@ Application the Grover operator $\repnum\in\nn$ times on $\qstateof{0}$ results 
     \label{fig:rotationSketch}
 \end{figure}
 
-\subsection{Circuit Realization}
+\subsection{Circuit Realization of the reflection operators}
 
 Let us now investigate how the reflection operations can be realized by circuits.
-The reflection $\reflectionof{}$ about the ground state $\onehotmapofat{\zerotuple{[\catorder]}}{\shortcatvariables}$ is realized by Pauli-X and controlled Pauli-Z.
-Having a unitary $\unitarysymbol$ preparing $\qstateof{0}$ by action on the ground state, we realize the reflection
+
+
+% THIS WOULD MAKE A DIFFERENCE IN QUANTUM PHASE ESTIMATION!
+
+\subsubsection{Construction based on controlled Pauli-Z}
+
+First, the reflection about the state $\onehotmapofat{\onetuple{[\catorder]}}{\shortcatvariables}$ is realized by a multiple controlled Pauli-Z (see \figref{fig:reflectionZRealization})
+%    \begin{align*}
+%        -\reflectionofat{\goodstatesymbol}{\inshortcatvariables,\outshortcatvariables}
+%        = \mathrm{MC}^{\seldim-1}\paulizat{\cavariableof{\seldim-1}{\insymbol},\cavariableof{\seldim-1}{\outsymbol},\avariableof{[\seldim-1]}}
+%    \end{align*}
 \begin{align*}
-    \reflectionofat{0}{\inshortcatvariables,\outshortcatvariables}
+    -\reflectionofat{\onehotmapof{\onetuple{[\catorder]}}}{\inshortcatvariables,\outshortcatvariables}
+    = \contractionof{
+        \mathrm{MC^{\catorder-1}}\paulizat{\ccatvariableof{\catorder-1}{\insymbol},\ccatvariableof{\catorder-1}{\outsymbol},\catvariableof{[\catorder-1]}},
+        \identityat{\ccatvariableof{[\catorder-1]},\ccatvariableof{[\catorder-1]}{\insymbol},\ccatvariableof{[\catorder-1]}{\outsymbol}}
+    }{\inshortcatvariables,\outshortcatvariables}
+\end{align*}
+Note that a global phase of $-1$ is introduced, which leaves the measurement distribution invariant.
+% Extending to e_1
+Adding layers of Pauli-X gates to each $\catenumeratorin$ before and after $-\reflectionofat{\onehotmapof{\onetuple{[\catorder]}}}{\inshortcatvariables,\outshortcatvariables}$ (see \figref{fig:reflectionZRealization}) prepares the negated reflection $-\reflectionofat{\onehotmapof{\zerotuple{[\catorder]}}}{\inshortcatvariables,\outshortcatvariables}$, since
+\begin{align*}
+    \tbasisat{\ccatvariableof{\catenumerator}{\outsymbol}}
+    = \contractionof{
+        \paulizat{\ccatvariableof{\catenumerator}{\outsymbol},\ccatvariableof{\catenumerator}{\insymbol}},\fbasisat{\ccatvariableof{\catenumerator}{\insymbol}}
+    }{\ccatvariableof{\catenumerator}{\outsymbol}} \, .
+\end{align*}
+% Extending to U
+Having a unitary $\unitarysymbol$ preparing $\qstate$ by action on the ground state, we realize the reflection (see \figref{fig:reflectionZRealization})
+\begin{align*}
+    \reflectionofat{\qstate}{\inshortcatvariables,\outshortcatvariables}
     = \contractionof{
         \unitaryofat{\dagger}{\inshortcatvariables,\ccatvariableof{[\catorder]}{\midsymbol,0}},
-        \reflectionofat{}{\ccatvariableof{[\catorder]}{\midsymbol,0},\ccatvariableof{[\catorder]}{\midsymbol,1}},
+        \reflectionofat{\onehotmapof{\zerotuple{[\catorder]}}}{\ccatvariableof{[\catorder]}{\midsymbol,0},\ccatvariableof{[\catorder]}{\midsymbol,1}},
         \unitaryat{\ccatvariableof{[\catorder]}{\midsymbol,1},\outshortcatvariables}
     }{\inshortcatvariables,\outshortcatvariables} \, .
 \end{align*}
 
-We will investigate different effective schemes to realize $\reflectionof{\badstatesymbol}$ later.
 
+\begin{figure}[t]
+    \begin{center}
+        \input{partII/5-quantum-inference/tikz/grover-operator/reflection-z-realization}
+    \end{center}
+    \caption{
+        Preparation of the negated reflection operator $-\reflectionof{\qstate}$ about a state $\qstate$, which is prepared by a unitary $\unitarysymbol$ acting on the ground state $\onehotmapofat{\zerotuple{[\catorder]}}{\shortcatvariables}$.
+        The multiply controlled Pauli-Z is the negated reflection $-\reflectionof{\onetuple{[\catorder]}}$, and extended to the negated reflection $-\reflectionof{\onetuple{[\catorder]}}$ about the ground state by adding layers of single qubit Pauli-X.
+        When concatenating with $\unitaryof{\dagger}$ and $\unitarysymbol$, the $-\reflectionof{\qstate}$ results.
+    }
+    \label{fig:reflectionZRealization}
+\end{figure}
 
+\subsubsection{Construction based on oracle with ancilla head qubit}
+
+Alternatively we can use the phasekick technique when acting on an disentangled ancilla qubit prepared in the Hadamard basis state
+\begin{align*}
+    \hminusbasat{\headvariable}
+    = \frac{1}{\sqrt{2}} \cdot \coloredmatrixof{1 \\ -1}{\headvariable} \, .
+\end{align*}
+We notice, that
+\begin{align*}
+    \contractionof{
+        \qcbencodingofat{\exformula}{\cheadvariable{\outsymbol},\cheadvariable{\insymbol},\indexedshortcatvariables},
+        \hminusbasat{\cheadvariable{\insymbol}}
+    }{\cheadvariable{\outsymbol}}
+    = \begin{cases}
+          \hminusbasat{\cheadvariable{\insymbol}} & \ifspace \exformula(\shortcatindices) = 0\\
+          -\hminusbasat{\cheadvariable{\insymbol}} & \ifspace \exformula(\shortcatindices) = 1
+    \end{cases}
+\end{align*}
+
+Let us consider the span of one-hot encoded models of $\lnot\exformula$, namely
+\begin{align*}
+    \subspaceof{\lnot\exformula}
+    \coloneqq \spanof{\onehotmapofat{\shortcatindices}{\shortcatvariables}\wcols\exformula(\shortcatindices)=0}
+\end{align*}
+and the span of one-hot encoded models
+\begin{align*}
+    \subspaceof{\exformula}
+    \coloneqq\spanof{\onehotmapofat{\shortcatindices}{\shortcatvariables}\wcols\exformula(\shortcatindices)=1} \, .
+\end{align*}
+The reflection across $\subspaceof{\lnot\exformula}$ is then performed by (see \figref{fig:reflectionCCRealization})
+\begin{align*}
+    \reflectionofat{\subspaceof{\lnot\exformula}}{\outshortcatvariables,\inshortcatvariables}
+    = \contractionof{
+        \hminusbasat{\cheadvariable{\outsymbol}},
+        \qcbencodingofat{\exformula}{\cheadvariable{\outsymbol},\cheadvariable{\insymbol},\shortcatvariables},
+        \hminusbasat{\cheadvariable{\insymbol}},
+        \identityat{\shortcatvariables,\outshortcatvariables,\inshortcatvariables}
+    }{\outshortcatvariables,\inshortcatvariables}
+\end{align*}
+We further have
+\begin{align*}
+    \reflectionofat{\subspaceof{\exformula}}{\outshortcatvariables,\inshortcatvariables}
+    = -\reflectionofat{\left(\subspaceof{\exformula}\right)^{\perp}}{\outshortcatvariables,\inshortcatvariables}
+    = -\reflectionofat{\subspaceof{\lnot\exformula}}{\outshortcatvariables,\inshortcatvariables} \, .
+\end{align*}
+When preparing a disentangled ancilla qubit $\headvariable$ in the basis state $\hminusbasat{\headvariable}$, the oracle $\qcbencodingof{\exformula}$ is effectively a negated reflection across the span of one-hot encoded models of $\exformula$.
+
+%This is an effective
+%This further coincides with the effective negative reflection across the span of one-hot encoded models
+%\begin{align*}
+%    \subspaceof{\exformula}
+%    \coloneqq\spanof{\onehotmapofat{\shortcatindices}{\shortcatvariables}\wcols\exformula(\shortcatindices)=1} \, .
+%\end{align*}
+
+%We will investigate different effective schemes to realize $\reflectionof{\badstatesymbol}$ later.
+%\begin{itemize}
+%    \item When $\qstateof{\goodstatesymbol}=\onehotmapofat{\onetuple{[\seldim]}}{\avariables}\otimes $ and $\qstate$
+%    \item Reflection across the hyperplane $\spanof{\onehotmapofat{\shortcatindices}{\shortcatvariables}\wcols\exformula(\shortcatindices)=0}$ effectively by $\qcbencodingof{\exformula}$ acting on an auxiliary disentangled qubit in $\hminusbasat{\headvariable}$
+%\end{itemize}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{partII/5-quantum-inference/tikz/grover-operator/reflection-cc-realization}
+    \end{center}
+    \caption{
+        Realization of the reflection across the subspace of one-hot encoded models to a Boolean function $\formula$.
+        An ancilla qubit is prepared in the Hadamard basis state $\hminusbas$ and serves as the head qubit of the oracle $\qcbencodingof{\formula}$.
+        By the phase kickback effect, the qubit stays disentangled and the reflection $-\reflectionof{\subspaceof{\formula}}$ is effectively performed on the qubits $\shortcatvariables$.
+    }
+    \label{fig:reflectionCCRealization}
+\end{figure}
 
