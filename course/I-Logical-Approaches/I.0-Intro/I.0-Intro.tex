@@ -3,49 +3,42 @@
 \input{../../spec_files/course_preamble.tex}
 \input{../../spec_files/course_macros.tex}
 
-\title[Introduction to Neuro-Symbolic AI]{
-%\coursechapterone \\
-        {\huge Introduction to Neuro-Symbolic AI}
+\setslidetitledate{
+    Introduction to Neuro-Symbolic AI
+}{
+    March 16, 2026
 }
-\date{March 16, 2026}
 
 \begin{document}
 
 {\frame[plain]{\titlepage}}
     \showoutlineatsection
 
-    \begin{frame}{My background}
-
-        \begin{tabular}{ll}
-            10/11 - 05/18 & {\bf University of Würzburg, TU Berlin}                         \\
-            & Basic training in mathematics and physics                       \\
-            06/18 - 12/18 & {\bf Fritz Haber Institute, Max Planck Society}                 \\
-            & Data-driven prediction of crystal properties                    \\
-            01/19 - 12/21 & {\bf Institute of Mathematics, TU Berlin}                       \\
-            & PhD in statistical learning theory                              \\
-            %& "Uniform Concentration of Tensor and Neural Networks:           \\
-            %& An approach towards Recovery Guarantees"                        \\
-            %since 01/23   & {\bf ENEXA (EU Horizon Research Project)}                       \\
-            %& Tensor-network based approaches                                 \\
-            %& to reason efficiently on Knowledge Graphs                       \\
-            \hline
-            06/21 - 06/22 & {\bf InstruNEXT GmbH}                                           \\
-            & Data-driven optimization of photomask baking processes          \\
-            07/22 - 12/22 & {\bf Schneider Electric SE}                                     \\
-            & AI-dedicated hardware                                           \\
-            01/23 - 06/25 & {\bf DATEV eG}                                                  \\
-            & Automation of Accounting                                        \\
-            \hline
-            since 06/25   & {\bf Weierstraß Institute for Applied Analysis and Stochastics} \\
-            & Neuro-symbolic AI, quantum machine learning
-        \end{tabular}
-    \end{frame}
-
+%    \begin{frame}{My background}
+%
+%        \begin{tabular}{ll}
+%            10/11 - 05/18 & {\bf University of Würzburg, TU Berlin}                         \\
+%            & Basic training in mathematics and physics                       \\
+%            06/18 - 12/18 & {\bf Fritz Haber Institute, Max Planck Society}                 \\
+%            & Data-driven prediction of crystal properties                    \\
+%            01/19 - 12/21 & {\bf Institute of Mathematics, TU Berlin}                       \\
+%            & PhD in statistical learning theory                              \\
+%            \hline
+%            06/21 - 06/22 & {\bf InstruNEXT GmbH}                                           \\
+%            & Data-driven optimization of photomask baking processes          \\
+%            07/22 - 12/22 & {\bf Schneider Electric SE}                                     \\
+%            & AI-dedicated hardware                                           \\
+%            01/23 - 06/25 & {\bf DATEV eG}                                                  \\
+%            & Automation of Accounting                                        \\
+%            \hline
+%            since 06/25   & {\bf Weierstraß Institute for Applied Analysis and Stochastics} \\
+%            & Neuro-symbolic AI, quantum machine learning
+%        \end{tabular}
+%    \end{frame}
 
     \section{Neuro-symbolic AI}
 
     \begin{frame}{The future of the software industry}
-
         \begin{columns}
             \column{0.5 \linewidth}
             \textbf{Traditional "symbolic" approach}
@@ -74,12 +67,9 @@
                 \item Flexibility by controlled LLMs
             \end{itemize}
         \end{block}
-
     \end{frame}
 
-
     \begin{frame}{Strenghts and weaknesses of LLMs}
-
         \begin{block}{Strengths of LLMs}
             \begin{itemize}
                 \item \textbf{Translation:} Translations between natural (e.g. english) and formal (e.g. python) languages
@@ -94,12 +84,9 @@
                 \item \textbf{Efficiency:} Massive power consumptions during reasoning
             \end{itemize}
         \end{block}
-
     \end{frame}
 
-
     \begin{frame}{How to extend the capabilities of LLMs?}
-
         \begin{itemize}
             \item State-of-the-art AI is built around the inference of LLMs
             \item But: Inference of LLMs is not the only thing, in which computers are good at!
@@ -114,12 +101,9 @@
         \begin{block}{Aim: Extend the capabilities of LLMs}
             Integrate inference of LLMs with inference in task-specific formal languages.
         \end{block}
-%        Inference in formal languages:
-
     \end{frame}
 
     \begin{frame}{The neuro-symbolic AI initiative}
-
     {\bf Neural AI:}
         Bringing \emph{efficiency}
         \begin{itemize}
@@ -136,14 +120,11 @@
         \begin{block}{How to bring both paradigms together?}
             Design neural architectures representing symbolic reasoning.
         \end{block}
-
     \end{frame}
-
 
     \section{Use Case: DATEV Automation of Accounting}
 
     \begin{frame}{DATEV Automation of Accounting}
-
         DATEV, a software company from Nuremberg, sells \emph{automation solutions for accounting consultants}
         \begin{itemize}
             \item Consultant receives invoices from its customers
@@ -157,7 +138,6 @@
     \end{frame}
 
     \begin{frame}{Requirements}
-
         Performance by \emph{Neural AI}:
         \begin{itemize}
             \item Handle most cases without the need of human supervision
@@ -173,11 +153,9 @@
         \begin{center}
             \bf This requires a form of neuro-symbolic AI!
         \end{center}
-
     \end{frame}
 
     \begin{frame}{Toy Accounting Example}
-
         To showcast the approach we study a toy accounting example.
         For each invoice three variables are either $\truesymbol$ or $\falsesymbol$:
         \begin{itemize}
@@ -191,11 +169,9 @@
             \item Exactly one of the accounts $\var{Account 1}$ and $\var{Account 2}$ is used to book the receipt.
             \item When the $\var{Feature}$ is present on the receipt, the $\var{Account 1}$ needs to be booked.
         \end{itemize}
-
     \end{frame}
 
     \begin{frame}{Realistic Problem Sizes}
-
         The variables and main relations are visualized in a so-called ontology\footnote{\tiny https://github.com/EnexaProject/enexa-use-case-1-business-software-solutions}:
         \begin{center}
             \begin{tikzpicture}
@@ -210,12 +186,9 @@
         \end{center}
     \end{frame}
 
-
     \section{Tensors in Artificial Intelligence}
 
-
     \begin{frame}{Representation of the toy accounting system}
-
         The system has a representation by the variables taking values in $\{0,1\}$ (i.e. $\catdim=2$):
         \begin{itemize}
             \item $\catvariableof{F}$: Whether the $\var{Feature}$ is present on the receipt.
@@ -229,22 +202,11 @@
             = \{&(0,0,0), (0,0,1), (0,1,0), (0,1,1), \\
             &(1,0,0), (1,0,1), (1,1,0), (1,1,1)\}
         \end{align*}
-%        \begin{block}{How to represent the accounting rules?}
         The toy accounting rules exclude some states:
         \begin{itemize}
             \item Exactly one of the accounts $\var{Account 1}$ and $\var{Account 2}$ is used to book the receipt: $\catvariableof{F}\Rightarrow\catvariableof{A1}$
             \item When the $\var{Feature}$ is present on the receipt, the $\var{Account 1}$ needs to be booked: $\catvariableof{A1}\oplus\catvariableof{A2}$
         \end{itemize}
-        %       \end{block}
-
-
-%        We model this by boolean Variables, taking valued in $\{0,1\}$ (i.e. $\catdim=2$):
-%        \begin{itemize}
-%            \item Value $1$: The variable assignment is allowed given our knowledge about the system.
-%            \item Value $0$: The variable assignments is forbidden given our knowledge about the system.
-%        \end{itemize}
-
-
     \end{frame}
 
     \begin{frame}{Coordinatewise tensor visualization}
@@ -282,48 +244,17 @@
                              0 & 1 \\ 1 & 0
                         \end{pmatrix}$
                     };
-                    % \draw[<-,dashed] (-0.9,-0.275) node[right] {\tiny $1$} -- (-0.9,0.275) node [midway, left] {\tiny $\catvariableof{A1}$} node[right] {\tiny $0$};
-                    % \draw[->,dashed] (-0.3,0.85) node[below] {\tiny $0$} -- (0.3,0.85) node [midway, above] {\tiny $\catvariableof{A2}$} node[below] {\tiny $1$};
-                    % \draw[->,dashed] (0,-0.85) node[above] {\tiny $0$} -- (1.25,-0.55) node [midway, below] {\tiny $\catvariableof{F}$} node[above] {\tiny $1$};
-
                     \node at (1.25,0.5){
                         $\begin{pmatrix}
                              0 & 0 \\ 1 & 0
                         \end{pmatrix}$
                     };
-
-                    %\drawtextnode{3}{0}{$\left[\catvariableof{A1},\catvariableof{A2},\catvariableof{F}\right]$}
                 \end{tikzpicture}
             \end{center}
-
         \end{itemize}
-%        \begin{align*}
-%            \,\,\,\textbf{Vectors}\,\,
-%            \quad , \quad
-%            \textbf{$\catorder=2$:}\,\,\,\textbf{Matrices}\,\,
-%        \end{align*}
-%        \begin{align*}
-%            \textbf{$\catorder=3$:}\,\,\,\textbf{Tensors of order $3$}\,\,
-%            \begin{pmatrix}
-%                0 \\ 1
-%            \end{pmatrix}
-%        \end{align*}
     \end{frame}
 
-%    \begin{frame}{Preview: Knowledge about the Toy Accounting System}
-%        %Now let us extend to the toy accounting system.
-%%        Given the knowledge about both formulas we have the tensor:
-%        The toy accounting system is represented by the tensor:
-%        \begin{center}
-%            \input{tikz/toy-accounting-hard}
-%        \end{center}
-%        %       To understand the transition from the matrices to this tensor of order $3$, we need to widen our tensor formalism.
-%    \end{frame}
-
-
-
     \begin{frame}{Tensors: Natural description of factored representations}
-
     {\bf Factored representations}
         are collection of variables $\{\catvariableof{0},\ldots,\catvariableof{\catorder-1}\}$, each with a finite set of states $\{0,\ldots,\catdimof{\catenumerator}-1\}$ (so far: $\{0,1\}$ for $\catdim=2$).
         The set of states is then the cartesian product
@@ -337,9 +268,7 @@
         \end{align*}
     \end{frame}
 
-
     \begin{frame}{Tensors for neuro-symbolic AI}
-
         Tensors (and their networks) are a unifying language for Artificial Intelligence
         \begin{itemize}
             \item {\bf Logical knowledge bases:} Boolean coordinates, decomposition by logical syntax
@@ -357,11 +286,9 @@
         \begin{center}
             \bf We exploit the tensor formalism in this course for neuro-symbolic AI.
         \end{center}
-
     \end{frame}
 
     \begin{frame}{Tensors for neuro-symbolic AI}
-
         \begin{itemize}
             \item {\bf Modelling principle:}
             Representation of logical and probabilistic models by tensors.
@@ -375,7 +302,6 @@
         \begin{center}
             \includegraphics[width=0.7\textwidth]{images/arxiv_snap}
         \end{center}
-
     \end{frame}
 
     \begin{frame}{Tensors:
@@ -397,11 +323,7 @@
             \includegraphics[width=0.2\textwidth]{images/nvidia-a100.jpeg}
             \includegraphics[width=0.3\textwidth]{images/google_tpu.png}
         \end{center}
-%        \begin{center}
-%            \bf Machine Learning
-%        \end{center}
     \end{frame}
-
 
     \section{Topics of the course}
 
@@ -434,16 +356,6 @@
                 {\tiny Modified Sudoku puzzles}\footnote{\tiny https://sakana.ai/sudoku-bench/} \\
             \end{center}
         \end{minipage}
-%            {\bf Example:} When it holds, that
-%        \begin{align*}
-%            & \mathrm{hasCampusInSchweinfurt(THWS)} \quad \text{and}\\
-%            &\quad  \forall x : \mathrm{hasCampusInSchweinfurt}(x) \rightarrow \mathrm{hasCampusInGermany}(x)
-%        \end{align*}
-%        then also
-%        \begin{align*}
-%            \mathrm{hasCampusInGermany(THWS)} \, .
-%        \end{align*}
-%        %\footnotetext[1]
     \end{frame}
 
     \begin{frame}{II - Probabilistic Approaches}
@@ -458,11 +370,6 @@
                 \item Extract the causal relations of the variables
             \end{itemize}
         \end{block}
-
-
-        %      \begin{block}{Challenge}
-        %          Since causality requires intervention with data or expert knowledge, how can we certify the causality of our models?
-        %      \end{block}
     \end{frame}
 
     \begin{frame}{III - Statistical Models of Knowledge Graphs}
@@ -479,13 +386,10 @@
                 \item Reason about the relations in a knowledge graph
                 \item Predict the connectivity of new objects
             \end{itemize}
-            %               Predict the connectivity of objects, using neuro-symbolic statistical models.
         \end{block}
     \end{frame}
 
     \begin{frame}{IV - Quantum Machine Learning}
-
-
         \begin{minipage}{0.55\linewidth}
             Quantum computation
             \begin{itemize}
@@ -511,11 +415,9 @@
                 \item Increase the efficiency of reasoning with tensor networks by quantum computation.
             \end{itemize}
         \end{block}
-
     \end{frame}
 
     \begin{frame}{Further literature}
-
         Introductory textbooks:
         \begin{itemize}
             \item \textbf{Russel, Norvig: Artificial Intelligence - A Modern Approach} (Fourth Edition), Pearson Education 2021
@@ -529,11 +431,6 @@
             \item \textbf{Wainwright, Jordan: Graphical Models, Exponential Families and Variational Inference}, now 2008
             \item \textbf{Hackbusch: Tensor Spaces and Numerical Tensor Calculus}, Springer 2019
         \end{itemize}
-
     \end{frame}
 
-
 \end{document}
-
-
-

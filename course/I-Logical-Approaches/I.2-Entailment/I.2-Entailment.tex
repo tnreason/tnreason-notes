@@ -3,21 +3,21 @@
 \input{../../spec_files/course_preamble.tex}
 \input{../../spec_files/course_macros.tex}
 
-\title[Knowledge Bases, Entailment and Contractions of Tensors]{
-    \coursechapterone \\
-    {\huge Knowledge Bases, Entailment and Contractions of Tensors}
+\setslidetitledate{
+    Knowledge Bases, Entailment and Contractions of Tensors
+}{
+    March 23, 2026
 }
 
 \begin{document}
 
-{\frame[plain]{\titlepage}}
+    {\frame[plain]{\titlepage}}
     \showoutlineatsection
 
 
     \section{Knowledge Bases}
 
     \begin{frame}{Recall: Curse of Dimensionality}
-
         \begin{block}{Observation}
             The number of coordinates of a propositional formula increases exponentially with the number $\catorder$ of variables.
         \end{block}
@@ -53,7 +53,7 @@
     \end{frame}
 
 
-    \section{Contraction of Tensors}
+    \section{Tensor Networks}
 
     \begin{frame}{Separated Combination of Tensors: \\ Tensor Products}
         \begin{definition}[Tensor Product]
@@ -65,12 +65,12 @@
             \end{align*}
             Then there tensor product is the map
             \begin{align*}
-            (\hypercore \otimes \sechypercore)
+                (\hypercore \otimes \sechypercore)
                 \,[\shortcatvariables,\headvariables] :  \left(\facstates\right) \times \left(\headstates\right) \rightarrow \rr
             \end{align*}
             defined for $\shortcatindices\in\facstates$ and $\headindexof{[\seldim]}\in\headstates$ as
             \begin{align*}
-            (\hypercore \otimes \sechypercore)
+                (\hypercore \otimes \sechypercore)
                 \,[\indexedshortcatvariables,\headvariables=\headindexof{[\seldim]}]
 %                \hypercore \otimes \sechypercore(\catindices,\seccatindices)
                 =  \hypercoreat{\indexedshortcatvariables} \cdot \sechypercoreat{\headvariables=\headindexof{[\seldim]}} \, .
@@ -90,26 +90,37 @@
                 \end{cases}
             \end{align*}
             that is the vector in $\rr^{\catdimof{0}}$ with a $1$ at the position of the state and $0$ else.
+            \stantikzpic{
+                \drawsmalltensor{0}{0}{\corelabelsize $\onehotmapof{\catindexof{0}}$}
+                \draw (0,-1) -- (0,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+                \drawtextnode{3}{0}{${=}$}
+                \drawtextnode{11}{0}{
+                    $\coloredmatrixof{0 & \cdots & 0 & 1 & 0 & \cdots& 0}{\catvariableof{0}}$
+                }
+                \draw[dashed] (4.5,-1) -- (4.5,-1.75) node[anchor=north] {\colorlabelsize $0$};
+                \draw[dashed] (10,-1) -- (10,-1.75) node[anchor=north] {\colorlabelsize $\catindexof{0}$};
+                \draw[dashed] (15.5,-1) -- (15.5,-1.75) node[anchor=north] {\colorlabelsize  $\catdimof{0}-1$};
+            }
         \end{definition}
             {\bf Example:} The one-hot encoding $\onehotmapofat{2}{\catvariableof{0}} \in \rr^4$ has the coordinates
         \begin{align*}
-            \onehotmapofat{2}{\catvariableof{0}} 
-            = \coloredmatrixof{0 \\ 0 \\ 1 \\ 0}{\catvariableof{0}}
+            \onehotmapofat{2}{\catvariableof{0}}
+            = \coloredmatrixof{0 & 0 & 1 & 0}{\catvariableof{0}}
         \end{align*}
     \end{frame}
 
     \begin{frame}{Example: One-hot encodings}
         \begin{definition}[One-hot encoding to factored representations]
-            The one-hot encoding of a factored representation with variables $\shortcatvariables=\{\catvariableof{\atomenumerator} \, : \, \atomenumeratorin \}$ in state $\catindices$ is the tensor product
+            The one-hot encoding of a factored representation with variables $\shortcatvariables=\{\catvariableof{\atomenumerator} \wcols, \atomenumeratorin \}$ in state $\catindices$ is the tensor product
             \begin{align}
-                \onehotmapofat{(\shortcatindices)}{\shortcatvariables}
+                \onehotmapofat{\shortcatindices}{\shortcatvariables}
                 = \bigotimes_{\atomenumeratorin} \onehotmapofat{\catindexof{\atomenumerator}}{\catvariableof{\catenumerator}}
             \end{align}
             of the one-hot encodings of the variables.
         \end{definition}
         We can depict the one-hot encoding by
         \begin{center}
-            \input{./tikz-pics/one_hot_tensorproduct.tex}
+            \input{./tikz/one_hot_tensorproduct.tex}
         \end{center}
     \end{frame}
 
@@ -168,7 +179,7 @@
 
         We depict nodes by gray circles and hyperedges as connections of them:
         \begin{center}
-            \input{./tikz-pics/hypergraph.tex}
+            \input{./tikz/hypergraph.tex}
         \end{center}
         In this example:
         \begin{itemize}
@@ -192,7 +203,7 @@
 
         We now decorate hyperedges by tensors
         \begin{center}
-            \input{./tikz-pics/hypercore.tex}
+            \input{./tikz/hypercore.tex}
         \end{center}
 
     \end{frame}
@@ -223,7 +234,7 @@
         \end{itemize}
 
         \begin{center}
-            \input{./tikz-pics/network.tex}
+            \input{./tikz/network.tex}
         \end{center}
 
         We choose two diagrammatic depictions:
@@ -266,7 +277,7 @@
         \vfill
 
         \begin{center}
-            \input{./tikz-pics/product-contraction.tex}
+            \input{./tikz/product-contraction.tex}
         \end{center}
 
 
@@ -331,7 +342,7 @@
 
         We visualize the product by leg connection of multiple vectors:
         \begin{center}
-            \input{./tikz-pics/hadamard.tex}
+            \input{./tikz/hadamard.tex}
         \end{center}
 
     \end{frame}
@@ -380,7 +391,7 @@
         \end{itemize}
 
         \begin{center}
-            \input{tikz-pics/toy-accounting-kb}
+            \input{tikz/toy-accounting-kb}
         \end{center}
 
         \begin{center}
@@ -401,7 +412,7 @@
         \end{itemize}
 
         \begin{center}
-            \input{./tikz-pics/contraction.tex}
+            \input{./tikz/contraction.tex}
         \end{center}
 
     \end{frame}

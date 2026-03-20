@@ -1,0 +1,113 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\setslidetitledate{
+    Logical Inference and Message Passing Algorithms
+}{
+    March 30, 2026
+}
+
+
+\begin{document}
+
+    {\frame[plain]{\titlepage}}
+
+    \showoutlineatsection
+
+
+    \section{Montonocity of Entailment}
+
+    \begin{frame}{Motivation}
+        Contractions of large knowledge bases get infeasible.
+
+        Inference algorithms focus on subsets of knowledge graphs.
+
+    \end{frame}
+
+    \begin{frame}{}
+
+        \begin{theorem}[Monotonicity of Entailment]
+            Given a knowledge base $\kb$ of formulas, let $\seckb\subset\kb$ be a subset and let $\formula$ be another propositional formula.
+            If
+            \begin{align*}
+                \seckb\models\formula
+            \end{align*}
+            then also
+            \begin{align*}
+                \kb\models\formula
+            \end{align*}
+        \end{theorem}
+
+    \end{frame}
+
+
+    \begin{frame}{Soundness but no Completeness}
+        Notice that the back direction does not hold:
+        When $\kb\models\formula$, then $\seckb\models\formula$ does not always hold.
+
+
+    \end{frame}
+
+
+    \section{Syntactical Inference Rules}
+
+    \begin{frame}{Inference using Syntax}
+
+        So far: Inference and Entailment is formulated by semantics (with tensor interpretations).
+
+    \end{frame}
+
+    \begin{frame}{Modus Ponens}
+
+        When $\catvariableof{0}\rightarrow\catvariableof{1}$ and $\catvariableof{0}$ is true then also $\catvariableof{1}$.
+
+        \begin{block}{Modus Ponens Inference Rule}
+            \begin{align*}
+                \frac{
+                    \catvariableof{0}\rightarrow\catvariableof{1} \,,\,\, \catvariableof{0}
+                }{
+                    \catvariableof{1}
+                }
+            \end{align*}
+        \end{block}
+    \end{frame}
+
+
+
+    \begin{frame}{Generalization: Resolution}
+
+        When $\catvariableof{0}\rightarrow\catvariableof{1}$ and $\catvariableof{0}$ is true then also $\catvariableof{1}$.
+
+        \begin{block}{Resolution Inference Rule}
+            \begin{align*}
+                \frac{
+                    \clauseof{0}{} \lor \catvariableof{1} \,,\,\, \clauseof{1}{} \lor \lnot\catvariableof{1}
+                }{
+                    \clauseof{0}{} \lor \clauseof{1}{}
+                }
+            \end{align*}
+        \end{block}
+
+
+    \end{frame}
+
+
+    \section{Forward Chaining in Horn Logic}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+

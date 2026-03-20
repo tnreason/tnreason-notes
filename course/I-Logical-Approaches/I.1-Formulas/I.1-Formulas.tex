@@ -3,22 +3,20 @@
 \input{../../spec_files/course_preamble.tex}
 \input{../../spec_files/course_macros.tex}
 
-\title[Propositional Formulas]{
-    \coursechapterone \\
-    {\huge Propositional Formulas}
+\setslidetitledate{
+    Propositional Formulas
+}{
+    March 16, 2026
 }
-\date{March 16, 2026}
 
 \begin{document}
 
-{\frame[plain]{\titlepage}}
+    {\frame[plain]{\titlepage}}
     \showoutlineatsection
-
 
     \section{Propositional Logics}
 
     \begin{frame}{Syntax and Semantics of Logics}
-
         Logic is build upon
         \textbf{Syntax}
         \begin{itemize}
@@ -32,11 +30,9 @@
             \item Example: From the formula $\var{Feature}\land(\var{Feature}\Rightarrow\var{Account 1})$ the formula $\var{Account 1}$ follows.
             \item Propositional Logics: Each formula describes possible worlds, which are called models of a formula. Comparing the models defines the \textbf{entailment relation} (later).
         \end{itemize}
-
     \end{frame}
 
     \begin{frame}{States of an atomic variable}
-
         Any atomic variable $\catvariable$ (e.g. the feature $\catvariableof{F}$ present on the invoice) can be in two states
         \begin{align*}
             \mathrm{False} \Leftrightarrow 0 \quad,\quad \mathrm{True} \Leftrightarrow 1
@@ -54,16 +50,12 @@
 
         \textbf{Conventions:}
         \begin{itemize}
-%            \item We assign to each state a coordinate of a vector, in which we can store whether the variable can be in the state
             \item \only<2>{\textcolor{red}}{We assign a $0$ in the coordinate, when the corresponding state is not possible, and a $1$ if the corresponding state is possible.}
             \item \only<3>{\textcolor{red}}{In the brackets after a vector we denote the corresponding variable.}
         \end{itemize}
-
-
     \end{frame}
 
     \begin{frame}{Encoding knowledge about a variable}
-
         The knowledge about an atomic variable is aligned in an two-dimensional vector:
         \begin{itemize}
             \item When the variable is known to be $\mathrm{True}$:
@@ -83,9 +75,7 @@
                 \coloredmatrixof{0\\0}{\catvariable}
             \end{align*}
         \end{itemize}
-
     \end{frame}
-
 
     \begin{frame}{Knowledge about two variables}
         Let us extend the system to two variables:
@@ -108,7 +98,6 @@
                 \draw[->,dashed] (-0.3,0.85) node[below] {\tiny $0$} -- (0.3,0.85) node [midway, above] {\tiny $\catvariableof{A2}$} node[below] {\tiny $1$};
             \end{tikzpicture}
         \end{center}
-
     \end{frame}
 
     \begin{frame}{Representation of the first accounting rule}
@@ -141,7 +130,6 @@
 
             \end{tikzpicture}
         \end{center}
-
     \end{frame}
 
     \begin{frame}{Knowledge about two variables}
@@ -151,12 +139,6 @@
                 \node (A) at (0,0) {
                     $\coloredmatrixof{0 & 1 \\ 1 & 0}{\catvariableof{A1},\catvariableof{A2}}$
                 };
-                %\draw[dashed,->] (-1.5,0.2) to (-2.5,0.2) node[left]{\small $(\mathrm{False},\mathrm{False})$};
-                %\draw[dashed,->] (-1.5,-0.2) to (-2.5,-0.2) node[left]{\small $(\mathrm{True},\mathrm{False})$};
-
-                %\draw[dashed,->] (-0.5,0.5) to (-0.5,1) node[above]{\small $(\mathrm{False},\mathrm{True})$};
-               % \draw[dashed,->] (-0.5,-.5) to (-0.5,-1) node[below]{\small $(\mathrm{True},\mathrm{True})$};
-
             \end{tikzpicture}
         \end{center}
 
@@ -168,12 +150,9 @@
         \begin{center}
             \bf To encode both, we need a tensor of order $3$!
         \end{center}
-
     \end{frame}
 
-
     \begin{frame}{Representation of the toy accounting system in a truth table}
-
         \begin{tabular}{ccc|cc|c}
             $\catvariableof{A1}$                         & $\catvariableof{A2}$                         & $\catvariableof{F}$                          & $\catvariableof{A1}\oplus\catvariableof{A2}$ & $\catvariableof{F}\Rightarrow\catvariableof{A1}$ & $(\catvariableof{A1}\oplus\catvariableof{A2})\land(\catvariableof{F}\Rightarrow\catvariableof{A1})$ \\
             \hline
@@ -198,7 +177,6 @@
         \only<2->{
             \begin{center}
                 \begin{tikzpicture}[scale=2]
-                    %\node (A) at (-4,0) {$\probofat{(X_{A1}\oplus X_{A2}, X_F\Rightarrow X_{A1}),\big(\{0\},(1),(0,\theta)\big)}{X_{A1},X_{A2},X_{F}} \,\, = \,\, \frac{1}{1+3 \cdot \expof{\canparam}} \, \cdot $};
                     \node (A) at (0,0) [scale=1.5] {
                         $\begin{pmatrix}
                              \only<3->{0}\only<2>{\textcolor{red}{0}}    &   \only<2-3>{\cdot}\only<4>{\textcolor{red}{1}}\only<5>{1}\\
@@ -220,26 +198,24 @@
     \end{frame}
 
     \begin{frame}{Tensor representation of the toy accounting system}
-
         The system is described by a tensor of order $\catorder=3$:
         \begin{center}
             \begin{tikzpicture}[scale=2]
-                %\node (A) at (-4,0) {$\probofat{(X_{A1}\oplus X_{A2}, X_F\Rightarrow X_{A1}),\big(\{0\},(1),(0,\theta)\big)}{X_{A1},X_{A2},X_{F}} \,\, = \,\, \frac{1}{1+3 \cdot \expof{\canparam}} \, \cdot $};
-                \node (A) at (0,0) [scale=1.5] {
-                    $\begin{pmatrix}
-                         0 & \only<2>{\textcolor{red}{1}}\only<1,3->{1}  \\
-                         1 & \only<1>{\textcolor{red}{0}}\only<2->{0}
-                    \end{pmatrix}$
-                };
-                \node (A) at (1.25,0.3) [scale=1.5] {
-                    $\begin{pmatrix}
-                         0 & \only<3>{\textcolor{red}{0}}\only<1,2>{0} \\
-                         1 & 0
-                    \end{pmatrix}$
-                };
-                \draw[->,dashed] (-0.25,0.5) node[below] {\tiny $0$} -- (0.25,0.5) node [midway, above] {\tiny $X_{A2}$} node[below] {\tiny $1$};
-                \draw[<-,dashed] (-0.6,-0.2) node[right] {\tiny $1$} -- (-0.6,0.2) node [midway, left] {\tiny $X_{A1}$} node[right] {\tiny $0$};
-                \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (1.25,-0.2) node [midway, below] {\tiny $X_F$} node[above] {\tiny $1$};
+                  \node (A) at (0,0) [scale=1.5] {
+                      $\begin{pmatrix}
+                           0 & \only<2>{\textcolor{red}{1}}\only<1,3->{1}  \\
+                           1 & \only<1>{\textcolor{red}{0}}\only<2->{0}
+                      \end{pmatrix}$
+                  };
+                  \node (A) at (1.25,0.3) [scale=1.5] {
+                      $\begin{pmatrix}
+                           0 & \only<3>{\textcolor{red}{0}}\only<1,2>{0} \\
+                           1 & 0
+                      \end{pmatrix}$
+                  };
+                  \draw[->,dashed] (-0.25,0.5) node[below] {\tiny $0$} -- (0.25,0.5) node [midway, above] {\tiny $X_{A2}$} node[below] {\tiny $1$};
+                  \draw[<-,dashed] (-0.6,-0.2) node[right] {\tiny $1$} -- (-0.6,0.2) node [midway, left] {\tiny $X_{A1}$} node[right] {\tiny $0$};
+                  \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (1.25,-0.2) node [midway, below] {\tiny $X_F$} node[above] {\tiny $1$};
             \end{tikzpicture}
         \end{center}
 
@@ -257,9 +233,7 @@
             \only<3->{$\catvariableof{F}=0,\catvariableof{A1}=0,\catvariableof{A2}=1$: Both rules respected, thus coordinate 1.}
             \item \only<3>{\textcolor{red}{$\catvariableof{F}=1,\catvariableof{A1}=0,\catvariableof{A2}=1$: Violation of second rule, thus coordinate 0.}}
         \end{itemize}
-
     \end{frame}
-
 
     \section{Coarser Picture: Tensors}
 
@@ -271,7 +245,7 @@
         \begin{itemize}
             \item We abbreviate sets as
             \begin{align*}
-            [\catorder]
+                [\catorder]
                 \coloneqq \{0,\ldots,\catorder-1\}
             \end{align*}
             \item Tuples of variables
@@ -280,7 +254,7 @@
             \end{align*}
             \item The states of variable tuples $\shortcatvariables$ are
             \begin{align*}
-            [2]
+                [2]
                 ^{\catorder} \coloneqq \bigtimes_{\catenumerator\in\{0,\ldots,\catorder-1\}} \{0,1\}
             \end{align*}
             \item A specific state corresponds with an index tuple
@@ -288,14 +262,6 @@
                 \shortcatindices \coloneqq (\catindexof{0},\ldots,\catindexof{\catorder-1}) \in  [2]^{\catorder}
             \end{align*}
         \end{itemize}
-
-%        \begin{center}
-%        {\bf Problem:} The coordinatewise description would be confusing for $\atomorder>3$.
-%        \end{center}
-
-
-
-
     \end{frame}
 
     \begin{frame}{Propositional Formulas}
@@ -304,7 +270,6 @@
             \begin{align*}
                 \formulawith \wcols [2]^{\catorder} \rightarrow [2] \, .
             \end{align*}
-%            \[ \hypercore : \facstates \rightarrow \rr \, . \]
             \begin{itemize}
                 \item We refer to $\formulaat{\indexedshortcatvariables}\in\rr$ as the \emph{coordinate} of $\formulawith$ to the indices $\shortcatindices=\catindices$.
                 \item By scalar multiplication and addition of maps, tensors build linear spaces called \emph{tensor spaces}
@@ -313,15 +278,11 @@
         \end{definition}
 
         A propositional formula is also called a \emph{tensor of leg dimension $2$}.
-
-
     \end{frame}
-
 
     \section{Diagrammatic Depiction}
 
     \begin{frame}{Curse of dimensionality}
-
         \begin{center}
             \it    In view of all that..., the many obstacles we appear to have surmounted, what casts the pall over our victory celebration?
             It is the curse of dimensionality, a malediction that has plagued the scientists from earliest days. - \text{Richard Bellman}
@@ -340,7 +301,6 @@
         \begin{block}{Curse of dimensionality}
             The number of states increased exponentially with the number of variables.
         \end{block}
-
     \end{frame}
 
     \begin{frame}{Consequences of the curse of dimensionality}
@@ -357,7 +317,6 @@
             \item Visualization based on a diagramatic tensor notation (instead of coordinates)
             \item Contractions can be denoted by connections of the wires
         \end{itemize}
-
     \end{frame}
 
     \begin{frame}{Depiction of tensors}
@@ -376,7 +335,6 @@
         \end{center}
     \end{frame}
 
-
     \begin{frame}{Examples}
         For example, a vector
         \[ v[\catvariableof{0}] \in \rr^{\catdimof{0}}\]
@@ -393,8 +351,5 @@
             \input{./tikz/matrix-vector.tex}
         \end{center}
     \end{frame}
-
-
-
 
 \end{document}
