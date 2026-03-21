@@ -1,0 +1,76 @@
+\stantikzpic{
+    \node[anchor=west] at (-20,5){{\bf Recall:} The toy accounting system $\kbat{\catvariableof{A1},\catvariableof{A2},\catvariableof{F}}$ is represented by the tensor};
+    \drawtextnode{-10}{0}{$
+    (\catvariableof{A1}\oplus\catvariableof{A2})\land(\catvariableof{F}\Rightarrow\catvariableof{A1}) \,\,=$
+    }
+    \node (A) at (0,0) [scale=1] {
+        $\begin{pmatrix}
+             0 & 1 \\
+             1 & 0
+        \end{pmatrix}$
+    };
+    \node (A) at (4,1.5) [scale=1] {
+        $\begin{pmatrix}
+             0 & 0\\
+             1 & 0
+        \end{pmatrix}$
+    };
+    \drawtextnode{8.5}{0.25}{$\left[\catvariableof{A1},\catvariableof{A2},\catvariableof{F}\right]$}
+    \draw[->,dashed] (-0.8,2.5) node[below] {\tiny $0$} -- (0.8,2.5) node [midway, above] {\tiny $X_{A2}$} node[below] {\tiny $1$};
+    \draw[<-,dashed] (-2.5,-0.8) node[right] {\tiny $1$} -- (-2.5,0.8) node [midway, left] {\tiny $X_{A1}$} node[right] {\tiny $0$};
+    \draw[->,dashed] (0,-2.5) node[above] {\tiny $0$} -- (4,-1) node [midway, below] {\tiny $X_F$} node[above] {\tiny $1$};
+
+    \node[anchor=west] at (-20,-5) {{\bf Question:} Is the formula $\formulaat{\catvariableof{A1},\catvariableof{A2},\catvariableof{F}}=(\catvariableof{A2}\Rightarrow\lnot\catvariableof{F})$ entailed?};
+
+    \only<2-3>{
+        \node[anchor=west] at (-18,-7) {\textcolor{red}{1. Negate the formula $\formula$}};
+    }
+
+    \only<3>{
+        \node[anchor=west] at (-18,-9) {\textcolor{blue}{2. Contract with $\kb$}};
+        \draw[blue,<->] (5.75,-7.5) to [bend right = 50] (5.75,-0.5);
+        \drawtextnode{10.75}{-4}{\corelabelsize \textcolor{blue}{$\contraction{\kb,\lnot\formula}=1$}}
+    }
+
+    \only<4>{
+        \node[anchor=west] at (-18,-7) {Answer: Since $\contraction{\kb,\lnot\formula}\neq0$ we do not have entailment ($\kb\not\models\formula$)!};
+    }
+
+    \begin{scope}[shift={(0,-11)}]
+
+        \drawtextnode{-8}{0}{$ \only<2-3>{\textcolor{red}{\lnot}}
+        (\catvariableof{A2}\Rightarrow\lnot\catvariableof{F}) \,\,  =$
+        }
+        \only<1,4>{
+            \node (A) at (0,0) [scale=1] {
+                $\begin{pmatrix}
+                     1 & 0 \\
+                     1 & 0
+                \end{pmatrix}$
+            };
+            \node (A) at (4,1.5) [scale=1] {
+                $\begin{pmatrix}
+                     1 & 1\\
+                     1 & 1
+                \end{pmatrix}$
+            };}
+        \only<2-3>{
+            \node (A) at (0,0) [scale=1,red] {
+                $\begin{pmatrix}
+                     0 & 1 \\
+                     0 & 1
+                \end{pmatrix}$
+            };
+            \node (A) at (4,1.5) [scale=1,red] {
+                $\begin{pmatrix}
+                     0 & 0\\
+                     0 & 0
+                \end{pmatrix}$
+            };}
+
+        \drawtextnode{8.5}{0.25}{$\left[\catvariableof{A1},\catvariableof{A2},\catvariableof{F}\right]$}
+        \draw[->,dashed] (-0.8,2.5) node[below] {\tiny $0$} -- (0.8,2.5) node [midway, above] {\tiny $X_{A2}$} node[below] {\tiny $1$};
+        \draw[<-,dashed] (-2.5,-0.8) node[right] {\tiny $1$} -- (-2.5,0.8) node [midway, left] {\tiny $X_{A1}$} node[right] {\tiny $0$};
+        \draw[->,dashed] (0,-2.5) node[above] {\tiny $0$} -- (4,-1) node [midway, below] {\tiny $X_F$} node[above] {\tiny $1$};
+    \end{scope}
+}

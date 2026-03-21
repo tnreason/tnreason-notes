@@ -246,24 +246,6 @@
     \end{frame}
 
 
-    \begin{frame}{Contraction of Tensor Networks}
-
-        \begin{definition}[Contraction]
-            Let $\tnetof{\graph}$ be a tensor network on a decorated hypergraph $\graph=(\nodes,\edges)$.
-            For any subset $\secnodes\subset\nodes$ we define the contraction to be the tensor
-            \begin{align}
-                \contractionof{\tnetof{\graph}}{\catvariableof{\secnodes}} \in \bigotimes_{\node\in\secnodes} \rr^{\catdimof{\node}}
-            \end{align}
-            defined coordinatewise by the sum
-            \begin{align}
-                \contractionof{\tnetof{\graph}}{\indexedcatvariableof{\secnodes}} =
-                \sum_{\{\catindexof{\node} \in \catdimof{\node} \, : \, \node \in \nodes/\secnodes\}}
-                \prod_{\edge\in\edges}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
-            \end{align}
-        \end{definition}
-
-    \end{frame}
-
     \begin{frame}{Tensor Networks}
 
         Tensor Networks are build by
@@ -400,7 +382,82 @@
     \end{frame}
 
 
-    \section{Entailment}
+    \section{Contractions}
+
+    \begin{frame}{Scalar products of vectors}
+
+        Let there be a variable $\catvariable$ taking values in $[\catdim]$ and vectors
+        \begin{align*}
+            \vectorofat{0}{\catvariable}\in\rr^{\catdim} \quad \text{and}\quad\vectorofat{1}{\catvariable}\in\rr^{\catdim} \, .
+        \end{align*}
+        We denote their scalar product by % $\langle\vectorof{0},\vectorof{1}\rangle$ is
+        \begin{align*}
+            \contraction{\vectorofat{0}{\catvariable},\vectorofat{1}{\catvariable}}
+            = \sum_{\catindexin} \vectorofat{0}{\indexedcatvariable} \cdot \vectorofat{1}{\indexedcatvariable} \, .
+        \end{align*}
+        and visualize it diagramatically with \emph{closed legs}:
+        \stantikzpic{
+            \drawsmalltensor{0}{0}{\corelabelsize $\vectorof{0}$}
+            \draw (1,0) -- (3,0) node[midway,above] {\colorlabelsize $\catvariable$};
+            \drawsmalltensor{4}{0}{\corelabelsize $\vectorof{1}$}
+        }
+        \begin{block}{Einstein sum convention}
+            The indices to variables, which not left open in an contraction, are summed over.
+        \end{block}
+    \end{frame}
+
+    \begin{frame}{Matrix-vector contraction}
+
+        Let there now be a matrix $\matrixat{\catvariableof{1},\catvariableof{0}}\in\rr^{\catdimof{1}\times\catdimof{0}}$ and a vector $\vectorofat{}{\catvariableof{0}}\in\rr^{\catdimof{0}}$.
+        The matrix-vector (product) contraction is the vector
+        \begin{align*}
+            M\vectorof{}[\catvariableof{1}]
+        \end{align*}
+        with coordinates to $\catindexofin{1}$ by
+        \begin{align*}
+            M\vectorof{}[\indexedcatvariableof{1}]
+            =\sum_{\catindexofin{0}} \matrixat{\indexedcatvariableof{1},\indexedcatvariableof{0}} \cdot \vectorat{\indexedcatvariableof{0}} \, .
+        \end{align*}
+        We visualize it diagrammatically with a closed and one open leg:
+        \stantikzpic{
+            \draw (-7,2)--(-5,2) node[midway,above] {\tiny $\catvariableof{1}$};
+            \draw (-5,1) rectangle (-3,3);
+            \node[anchor=center] (text) at (-4,2) {\small $M\vectorof{}$};
+
+            \drawtextnode{-2}{2}{${=}$}
+
+            \draw (-1,2)--(1,2) node[midway,above] {\tiny $\catvariableof{1}$};
+            \draw (1,1) rectangle (3,3);
+            \node[anchor=center] (text) at (2,2) {\small $M$};
+            \draw (3,2)--(5,2) node[midway,above] {\tiny $\catvariableof{0}$};
+
+            \draw (5,1) rectangle (7,3);
+            \node[anchor=center] (text) at (6,2) {\small $\vectorof{}$};
+        }
+
+    \end{frame}
+
+    \begin{frame}{Contraction of Tensor Networks}
+
+%        \begin{center}
+%            Let us now generalize the examples
+%        \end{center}
+
+        \begin{definition}[Contraction]
+            Let $\tnetof{\graph}$ be a tensor network on a decorated hypergraph $\graph=(\nodes,\edges)$.
+            For any subset $\secnodes\subset\nodes$ we define the contraction to be the tensor
+            \begin{align}
+                \contractionof{\tnetof{\graph}}{\catvariableof{\secnodes}} \in \bigotimes_{\node\in\secnodes} \rr^{\catdimof{\node}}
+            \end{align}
+            defined coordinatewise by the sum
+            \begin{align}
+                \contractionof{\tnetof{\graph}}{\indexedcatvariableof{\secnodes}} =
+                \sum_{\{\catindexof{\node} \in \catdimof{\node} \, : \, \node \in \nodes/\secnodes\}}
+                \prod_{\edge\in\edges}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
+            \end{align}
+        \end{definition}
+
+    \end{frame}
 
     \begin{frame}{Contractions with closed variables}
 
@@ -418,23 +475,35 @@
     \end{frame}
 
 
-    \begin{frame}{Model counts}
+    \section{Entailment}
 
-        So far: Knowledge bases as contractions with all variables open.
-        Now: Contractions without open variables.
+    \begin{frame}{Contraction without open variables: Model counts}
 
-        We have
+        {\bf So far:} Knowledge bases are contractions of formulas keeping all variables open.
+        \medskip \\
+        {\bf Now:} Contractions without open variables:
         \begin{align*}
-            &\contraction{\kbwith,\formulawith} \\
-            &\quad = \#\{\shortcatindices\in[2]^{\catorder} \wcols \kbat{\indexedshortcatvariables}=\formulaat{\indexedshortcatvariables}=1\}
+            \contraction{\formulawith}
+            = \sum_{\shortcatindices\in[2]^{\catorder}} \formulaat{\indexedshortcatvariables}
+            = \#\{\shortcatindices \wcols \formulaat{\indexedshortcatvariables}=1\}
         \end{align*}
-        That is, the number of common models is counted
+        \begin{block}{Contraction of formulas without open variables}
+            The contraction $\contraction{\formulawith}$ of a formula without leaving variables open is the \emph{count of its models} (that are states $\shortcatindices$ with $\formulaat{\indexedshortcatvariables}=1$).
+            If $\contraction{\formulawith}=0$, we say the formula is \emph{unsatisfiable}.
+        \end{block}
 
-        So if
-        \begin{align*}
-            \contraction{\kbwith,\formulawith} = \contraction{\kbwith}
-        \end{align*}
-        then $\kb\models\formula$.
+%        We have
+%        \begin{align*}
+%            &\contraction{\kbwith,\formulawith} \\
+%            &\quad = \#\{\shortcatindices\in[2]^{\catorder} \wcols \kbat{\indexedshortcatvariables}=\formulaat{\indexedshortcatvariables}=1\}
+%        \end{align*}
+%        That is, the number of common models is counted
+
+%        So if
+%        \begin{align*}
+%            \contraction{\kbwith,\formulawith} = \contraction{\kbwith}
+%        \end{align*}
+%        then $\kb\models\formula$.
 
 
     \end{frame}
@@ -449,46 +518,58 @@
             \end{align*}
         \end{definition}
 
-        \textbf{Aim:} How to express this as a computation?
+        \textbf{How to express this as a contraction?}\\
+        For any propositional formulas we have $\kb\models\formula$ if and only if
+        \begin{align*}
+            \contraction{\kbwith,\formulawith}
+            = \contraction{\kbwith}
+        \end{align*}
 
-        \begin{center}
-            \bf We develop the contraction formalism of tensors for this.
-        \end{center}
+%        \begin{center}
+%            \bf We develop the contraction formalism of tensors for this.
+%        \end{center}
 
     \end{frame}
 
 
-    \begin{frame}{Entailment by contractions}
-
-        Trick:
+    \begin{frame}{Vanishing contraction criterion}
+        Since $\kb\models\formula$ is equal to
         \begin{align*}
             \contraction{\kbwith,\formulawith} = \contraction{\kbwith}
         \end{align*}
-        is equal to
+        it is further equal to
         \begin{align*}
-            \contraction{\kbwith}-\contraction{\kbwith,\formulawith} = 0
+            0 =& \contraction{\kbwith}-\contraction{\kbwith,\formulawith} \\
+            =& \contraction{\kbwith,\oneswith}-\contraction{\kbwith,\formulawith} \\
+            = & \contraction{\kbwith,\oneswith-\formulawith} \\
+            =&\contraction{\kbwith,\lnot\formulawith} \, .
         \end{align*}
-        and
-        \begin{align*}
-            \contraction{\kbwith,\lnot\formulawith} = 0
-        \end{align*}
+%        and
+%        \begin{align*}
+%            \contraction{\kbwith,\lnot\formulawith} = 0
+%        \end{align*}
 
         \begin{block}{Contraction criterion for entailment}
             For any propositional formulas we have $\kb\models\formula$ if and only if
             \begin{align*}
-                \contraction{\kbwith,\lnot\formulawith} = 0
+                \contraction{\kbwith,\lnot\formulawith} = 0 \, ,
             \end{align*}
+            that is when $\kb\land(\lnot\formula)$ is unsatisfiable.
         \end{block}
+    \end{frame}
+
+    \begin{frame}{Entailment in the toy accounting system}
+        \input{tikz/toy-accounting-contingent}
+    \end{frame}
+
+    \begin{frame}{Entailment in the toy accounting system}
+        \input{tikz/toy-accounting-entailed}
     \end{frame}
 
 
     \section{Python package \tnreason{}}
 
     \begin{frame}{Python package \tnreason{}}
-
-        %The course will be accompanied by demonstrations in \tnreason{}.
-%        Aim: Prototyping
-
         \begin{center}
             \emph{tnreason} = \emph{T}ensor-\emph{N}etwork \emph{Reason}ing
         \end{center}
@@ -496,23 +577,18 @@
         Functionality:
         \begin{itemize}
             \item Representations of logical and probabilistic models as tensor networks
-%            \item Inference of Factored Systems based on logical and probabilistic concepts
             \item Neuro-symbolic reasoning based on tensor network contractions
         \end{itemize}
-
-
         \begin{center}
             \begin{tikzpicture}[scale=0.27]
                 \drawtnreasonarchitecture{}
             \end{tikzpicture}
         \end{center}
-
-
     \end{frame}
 
     \begin{frame}[fragile]{Installation}
 
-        \tnreason is maintained on github:
+        \tnreason{} is maintained on github:
         \begin{center}
             \href{https://github.com/tnreason/tnreason-py}{https://github.com/tnreason/tnreason-py}
         \end{center}
@@ -525,9 +601,6 @@
         \end{minted}
 
     \end{frame}
-
-
-    %\section{\tnreason{} subpackage \spengine{}}
 
     \begin{frame}{Implementation in \tnreason: \\
     Subpackage \spengine}
@@ -545,45 +618,53 @@
 
     \end{frame}
 
-    \begin{frame}[fragile]{Subpackage \spengine{}: Cores}
-
-        Each Tensor core has attributes
+    \begin{frame}[fragile]{Subpackage \spengine{}: Tensors}
+        The class \pyinline{engine.TensorCore}
         \begin{itemize}
-            \item \emph{values} (array-like): storing the value of the coordinates
-            \item \emph{colors} (list of str): specifying the name of the variables represented by its axes
+            \item \emph{colors} (list of str): stores strings representing $\catvariableof{\catenumerator}$ for $\catenumeratorin$
+            \item \emph{shape} (list of int): stores the leg dimensions $\catdimof{\catenumerator}$ for $\catenumeratorin$
             \item \emph{name} (str): to distinguish from other cores
+            \item \emph{values} (array-like): stores the coordinates (differing in sub-classes)
         \end{itemize}
         The implemented core types differ in the values argument.
         Cores are instantiated by
         \begin{minted}{python}
     from tnreason import engine
-    engine.getCore(coreType)(coreValues, coreColors, coreName)
+    tensorCore = engine.getCore(coreType)(coreValues, coreColors, coreName)
+        \end{minted}
+    \end{frame}
+
+    \begin{frame}[fragile]{Subpackage \spengine{}: Tensor Networks}
+        Tensor networks $\tnetof{\graph}$ in \tnreason{} are dictionaries \pyinline{coreDict} of str tensor nemes valued by \pyinline{engine.TensorCore} instances.
+        \medskip \\
+        The hypergraph $\graph=(\edges,\nodes)$ is stored
+        \begin{itemize}
+            \item Each $\edge$ is represented by an instance \pyinline{tensorCore} of \pyinline{engine.TensorCore}
+            \item The incidence relations are stored by \pyinline{tensorCore.values}
+        \end{itemize}
+
+        \medskip
+        Visualization with \pyinline{matplotlib}:
+        \begin{minted}{python}
+    engine.draw_fractor_graph(coreDict)
         \end{minted}
     \end{frame}
 
 
     \begin{frame}[fragile]{Subpackage \spengine{}: Contractions}
-
         Reflected in the notation
-        \[ \contractionof{\tnetof{\graph}}{\nodes} \]
-        a contraction is defined by
-        \begin{itemize}
-            \item Tensor Network $\tnetof{\graph}$, i.e. a dictionary of tensor cores
-            \item Open Variables $\nodes$
-        \end{itemize}
-        Contraction calls are done by
+        \begin{align*}
+            \contractionof{\tnetof{\graph}}{\catvariableof{\secnodes}}
+        \end{align*}
+        contraction calls are done by
         \begin{minted}{python}
     from tnreason import engine
-    engine.contract(coreDict, openColors)
+    contractedNetwork = engine.contract(coreDict, openColors)
         \end{minted}
-%        \begin{centeredscript}
-%            \emph{}
-%        \end{centeredscript}
         Where
         \begin{itemize}
-            %\item \emph{contractionMethod:} str, chooses one of the contraction providers
-            \item \emph{coreDict}: Dictionary of tensor cores (of the above formats), representing the Tensor Network $\tnetof{\graph}$
-            \item \emph{openColors}: List $\nodes$ of str, each str identifying a color, that is a variable to be left open in the contraction
+            \item \emph{coreDict}: Dictionary of tensor cores representing $\extnet$
+            \item \emph{openColors}: List of str identifying the variables (and their order) $\catvariableof{\secnodes}$ left open in the contraction
         \end{itemize}
     \end{frame}
 

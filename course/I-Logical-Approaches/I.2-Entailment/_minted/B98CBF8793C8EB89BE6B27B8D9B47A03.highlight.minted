@@ -1,4 +1,4 @@
 \begin{MintedVerbatim}[commandchars=\\\{\}]
     \PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{tnreason}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{engine}
-    \PYG{n}{engine}\PYG{o}{.}\PYG{n}{contract}\PYG{p}{(}\PYG{n}{coreDict}\PYG{p}{,} \PYG{n}{openColors}\PYG{p}{)}
+    \PYG{n}{contractedNetwork} \PYG{o}{=} \PYG{n}{engine}\PYG{o}{.}\PYG{n}{contract}\PYG{p}{(}\PYG{n}{coreDict}\PYG{p}{,} \PYG{n}{openColors}\PYG{p}{)}
 \end{MintedVerbatim}
