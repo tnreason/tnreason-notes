@@ -668,5 +668,34 @@
         \end{itemize}
     \end{frame}
 
+    \begin{frame}{Implementations in \tnreason{}: \\
+    Subpackage \sprepresentation{}}
+
+        The subpackage \sprepresentation{} is dedicated to tensor encoding schemes.
+
+        \begin{center}
+            \begin{tikzpicture}[scale=0.27]
+                \drawtnreasonarchitecture{}
+                \draw[blue] (-10,4) rectangle (0,8);
+                \node [anchor=center,blue] at (-5,6) {\sprepresentation{}};
+
+            \end{tikzpicture}
+        \end{center}
+
+    \end{frame}
+
+    \begin{frame}[fragile]{Subpackage \sprepresentation{}: Coordinate encodings}
+        Creation of a tensor $\hypercorewith$ when having a function computing each coordinate:
+        \begin{minted}{python}
+    from tnreason import representation
+    tensorCore = representation.create_tensor_encoding(
+        inShape, inColors, outColors, function)
+        \end{minted}
+        \begin{itemize}
+            \item inShape, inColors: specifying the leg dimension and the names of the variables ($\shortcatvariables$)
+            \item function (e.g. in lambda calculus): computes the coordinate given the state of the variables
+        \end{itemize}
+
+    \end{frame}
 
 \end{document}

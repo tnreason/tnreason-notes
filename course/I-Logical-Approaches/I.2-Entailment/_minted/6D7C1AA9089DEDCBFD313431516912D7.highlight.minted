@@ -1,0 +1,5 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+    \PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{tnreason}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{representation}
+    \PYG{n}{tensorCore} \PYG{o}{=} \PYG{n}{representation}\PYG{o}{.}\PYG{n}{create\PYGZus{}tensor\PYGZus{}encoding}\PYG{p}{(}
+        \PYG{n}{inShape}\PYG{p}{,} \PYG{n}{inColors}\PYG{p}{,} \PYG{n}{outColors}\PYG{p}{,} \PYG{n}{function}\PYG{p}{)}
+\end{MintedVerbatim}

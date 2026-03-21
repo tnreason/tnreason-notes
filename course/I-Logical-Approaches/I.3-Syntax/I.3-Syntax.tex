@@ -28,7 +28,7 @@
     \begin{frame}{Decomposition into logical connectives}
 
         \textbf{Strategy:}
-        Store the semantics of formulas $\exformula_1, \exformula_2$ and $\exformula_1\exconnective\exformula_2$ at each decomposition of the formula.
+        Store the semantics of formulas $\formulaof{1}, \formulaof{2}$ and $\formulaof{1}\exconnective\formulaof{2}$ at each decomposition of the formula.
 
         \medskip
 
@@ -215,11 +215,13 @@
 
 
         Boolean states are represented by one-hot encodings
-        \[ \onehotmapof{\truesymbol} = \tbasis = \begin{bmatrix}
-                                                     0 \\ 1
+        \[ \onehotmapof{\truesymbol} = \tbasis =
+        \begin{bmatrix}
+            0 \\ 1
         \end{bmatrix}
-        \quad \text{and} \quad \onehotmapof{\falsesymbol} = \fbasis = \begin{bmatrix}
-                                                                          1 \\ 0
+        \quad \text{and} \quad \onehotmapof{\falsesymbol} = \fbasis =
+        \begin{bmatrix}
+            1 \\ 0
         \end{bmatrix}\, . \]
 
         The truth tables of logical connectives $\exconnective\in\{\land,\lor,\Rightarrow\}$ are represented by tensors $\bencodingof{\exconnective}\in\rr^{2\times 2 \times 2}$ defined as
@@ -254,8 +256,6 @@
                 \item "Passing" of previous messages (blue contractions) to compute new messages (red contraction)
             \end{itemize}
         }
-
-
     \end{frame}
 
 
@@ -336,11 +336,28 @@
 
     \end{frame}
 
+    \begin{frame}[fragile]{Subpackage \sprepresentation{}: Basis encodings}
+        Creation of a basis encoding $\bencodingofat{\exformula}{\headvariableof{\exformula},\shortcatvariables}$:
+        \begin{minted}{python}
+    from tnreason import representation
+    basisEncodedCore = representation.create_basis_encoding_from_lambda(
+        inShape, outShape, inColors, outColors, function)
+        \end{minted}
+        \begin{itemize}
+            \item inShape, outShape, inColors, outColors: specifying the leg dimension and the names of the incoming variables ($\shortcatvariables$) and the outgoing variables ($\headvariableof{\exformula}$)
+            \item function: computes the state of the outgoing variables given the state of the incoming variables
+        \end{itemize}
+
+    \end{frame}
 
     \begin{frame}{Implementations in \tnreason: \\
     Subpackage \spapplication{}}
 
-        The subpackage \spapplication{} interprets logical syntax in nested lists.
+        The subpackage \spapplication{} provides high-level models
+        \begin{itemize}
+            \item Interpretation of propositional syntax
+            \item Training on empirical data (later)
+        \end{itemize}
 
         \begin{center}
             \begin{tikzpicture}[scale=0.27]
@@ -352,34 +369,34 @@
 
     \end{frame}
 
-    \begin{frame}{Representation of Propositional Formulas}
+%    \begin{frame}{Representation of Propositional Formulas}
+%
+%        Propositional formulas have three representations specified in the subpackage \sprepresentation{}:
+%        \begin{itemize}
+%            \item \emph{Syntax} of formulas $\exformula$ is stored in a script language $\scriptrepof{\exformula}$ based on nested lists of strings
+%            \item \emph{Semantics} of formulas is stored by tensor networks of connective cores
+%            \item Random variable representing the formula satisfaction
+%        \end{itemize}
+%
+%    \end{frame}
 
-        Propositional formulas have three representations specified in the subpackage \sprepresentation{}:
-        \begin{itemize}
-            \item \emph{Syntax} of formulas $\exformula$ is stored in a script language $\sencodingof{\exformula}$ based on nested lists of strings
-            \item \emph{Semantics} of formulas is stored by tensor networks of connective cores
-            \item Random variable representing the formula satisfaction
-        \end{itemize}
-
-    \end{frame}
 
 
-
-    \begin{frame}{Representation of Syntax}
+    \begin{frame}[fragile]{Representation of Syntax}
 
         In \tnreason, propositional syntax is represented by \emph{nested lists of strings}, for example:
-        \begin{centeredscript}
-            ["and", ["not", "Rained"], ["imp", "Rained", "Wet"]]
-        \end{centeredscript}
+        \begin{minted}{python}
+    ["and", ["not", "Rained"], ["imp", "Rained", "Wet"]]
+        \end{minted}
         \medskip
 
-        Connective have a defined representation as strings:
+        Connectives $\exconnective$ get assigned a string $\scriptrepof{\exconnective}$:
         \begin{center}
             \begin{tikzpicture}
                 \node [anchor=center] at (0,0) {
                     \begin{tabular}{|c|c|}
                         \hline
-                        \textbf{Unary connective $\exconnective$} & \textbf{$\sencodingof{\exconnective}$} \\
+                        \textbf{Unary connective $\exconnective$} & \textbf{$\scriptrepof{\exconnective}$} \\
                         \hline
                         $\lnot$                                   & \stringof{not}                         \\
                         \hline
@@ -389,7 +406,7 @@
                 \node [anchor=center] at (5,0) {
                     \begin{tabular}{|c|c|}
                         \hline
-                        \textbf{Binary connective $\exconnective$} & \textbf{$\sencodingof{\exconnective}$} \\
+                        \textbf{Binary connective $\exconnective$} & \textbf{$\scriptrepof{\exconnective}$} \\
                         \hline
                         $\land$                                    & \stringof{and}                         \\
                         \hline
@@ -410,15 +427,14 @@
     \end{frame}
 
     \begin{frame}{Representation of Syntax}
-
         Having strings representing
         \begin{itemize}
             \item Connectives (by defined representations)
             \item Atomic Formulas (all other strings)
         \end{itemize}
-        we represent formulas $\exformula_1\exconnective,\exformula_2$
+        we represent formulas $\formulaof{1}\exconnective\formulaof{2}$
         \begin{centeredscript}
-            [$\sencodingof{\exconnective}$, $\sencodingof{\exformula_1}$, $\sencodingof{\exformula_2}$]
+    $\scriptrepof{\formulaof{1}\exconnective\formulaof{2}}$ = [$\scriptrepof{\exconnective}$, $\scriptrepof{\formulaof{1}}$, $\scriptrepof{\formulaof{2}}$]
         \end{centeredscript}
         where we apply the conventions
         \begin{itemize}
@@ -427,56 +443,38 @@
         \end{itemize}
     \end{frame}
 
-
-
     \begin{frame}{Examples of representations}
-
-%\begin{itemize}
-%	\item 
         Atomic variable $\var{Rained}$ by
         \begin{centeredscript}
-            $\sencodingof{\var{Rained}}$ = "Rained"
+            $\scriptrepof{\var{Rained}}$ = \pyinline{"Rained"}
         \end{centeredscript}
-%	\item 
         Negative literal $\lnot\var{Rained}$ by
         \begin{centeredscript}
-            ["not","Rained"]
+            $\scriptrepof{\lnot\var{Rained}}$ = \pyinline{["not","Rained"]}
         \end{centeredscript}
-%	\item 
         Horn clause $\left(\var{Rained}\Rightarrow\var{Wet}\right)$ by
         \begin{centeredscript}
-            ["imp","Rained","Wet"]
+            $\scriptrepof{\var{Rained}\Rightarrow\var{Wet}}$ = \pyinline{["imp","Rained","Wet"]}
         \end{centeredscript}
-%	\item 
         Knowledge Base
-        $(\lnot\var{Rained})\land(\var{Rained}\Rightarrow\var{Wet})$ by
+        $\kb=(\lnot\var{Rained})\land(\var{Rained}\Rightarrow\var{Wet})$ by
         \begin{centeredscript}
-            ["and", ["not", "Rained"], ["imp", "Rained", "Wet"]]
+            $\scriptrepof{\kb}$ = \pyinline{["and", ["not", "Rained"], ["imp", "Rained", "Wet"]]}
         \end{centeredscript}
-%\end{itemize}
-
     \end{frame}
 
 
-    \begin{frame}{Semantics}
-
-        The recursive structure of the nested lists $\sencodingof{\exformula}$ is exploited in finding tensor network representations of $\exformula$.
-        The function
-        \begin{centeredscript}
-            encoding.create\_raw\_cores()
-        \end{centeredscript}
-        creates the connective cores to $\sencodingof{\exformula}$ by
+    \begin{frame}{Basis encoding decompositions}
+        The recursive structure of the nested lists \pyinline{expression}=$\scriptrepof{\exformula}$ is exploited in finding tensor network representations of $\exformula$.
+        \begin{minted}{python}
+    from tnreason.representation import formula_to_cores as ftc
+    coreDict = ftc.create_formula_computation_cores(expression)
+        \end{minted}
+        The function creates a tensor networks of basis encodings to connectives by:
         \begin{itemize}
-            \item When $\sencodingof{\exformula}$ a list, create $\bencodingof{\sencodingof{\exformula}[0]}$ and add to the tensor networks created by recursive calls to the subformulas $\sencodingof{\exformula}[1:]$
-            \item Return empty list, when $\sencodingof{\exformula}$ is a string
+            \item If $\scriptrepof{\exformula}$ a list, add $\bencodingof{\scriptrepof{\exformula}[0]}$ and add tensors from recursive calls to the subformulas $\scriptrepof{\exformula}[1:]$
+            \item Return empty dictionary, when $\scriptrepof{\exformula}$ is a string (then an atom)
         \end{itemize}
-
-        Then we have
-        \begin{align*}
-            \exformula = \contractionof{encoding.create\_raw\_cores(\sencodingof{\exformula}) \} \cup \{ \onehotmapof{1} }{\enumeratedatoms}
-        \end{align*}
-
-
     \end{frame}
 
 

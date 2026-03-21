@@ -1,0 +1,5 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+    \PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{tnreason}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{representation}
+    \PYG{n}{basisEncodedCore} \PYG{o}{=} \PYG{n}{representation}\PYG{o}{.}\PYG{n}{create\PYGZus{}basis\PYGZus{}encoding\PYGZus{}from\PYGZus{}lambda}\PYG{p}{(}
+        \PYG{n}{inShape}\PYG{p}{,} \PYG{n}{outShape}\PYG{p}{,} \PYG{n}{inColors}\PYG{p}{,} \PYG{n}{outColors}\PYG{p}{,} \PYG{n}{function}\PYG{p}{)}
+\end{MintedVerbatim}

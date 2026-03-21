@@ -1,15 +1,12 @@
-\frametitle{Subpackage \spengine {}: Contractions}
-Reflected in the notation
-        \begin{align*}
-            \contractionof{\tnetof{\graph}}{\catvariableof{\secnodes}}
-        \end{align*}
-        contraction calls are done by
+\frametitle{Subpackage \sprepresentation {}: Coordinate encodings}
+Creation of a tensor $\hypercorewith$ when having a function computing each coordinate:
         \begin{minted}{python}
-    from tnreason import engine
-    contractedNetwork = engine.contract(coreDict, openColors)
+    from tnreason import representation
+    tensorCore = representation.create_tensor_encoding(
+        inShape, inColors, outColors, function)
         \end{minted}
-        Where
         \begin{itemize}
-            \item \emph{coreDict}: Dictionary of tensor cores representing $\extnet$
-            \item \emph{openColors}: List of str identifying the variables (and their order) $\catvariableof{\secnodes}$ left open in the contraction
+            \item inShape, inColors: specifying the leg dimension and the names of the variables ($\shortcatvariables$)
+            \item function (e.g. in lambda calculus): computes the coordinate given the state of the variables
         \end{itemize}
+

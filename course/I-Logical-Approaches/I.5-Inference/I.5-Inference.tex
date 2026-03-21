@@ -22,7 +22,7 @@
     \begin{frame}{Motivation}
         Contractions of large knowledge bases get infeasible.
 
-        Inference algorithms focus on subsets of knowledge graphs.
+        Inference algorithms focus on subsets of knowledge bases.
 
     \end{frame}
 
@@ -50,6 +50,58 @@
 
     \end{frame}
 
+    \begin{frame}{Invariance of adding entailled formulas}
+
+        When $\kb\models\formula$, then
+        \begin{align*}
+            \kbwith
+            = \contractionof{\kbwith,\formulawith}{\shortcatvariables}
+        \end{align*}
+
+        \begin{block}{}
+        \end{block}
+
+    \end{frame}
+
+    \begin{frame}{Support tensors}
+
+        Support tensor to a tensor $\hypercorewith$: $\nonzeroof{\hypercorewith}$ with coordinates
+        \begin{align*}
+            \nonzeroof{\hypercoreat{\indexedshortcatvariables}}
+            = \begin{cases}
+                  1 & \ifspace \hypercoreat{\indexedcatvariables}\neq 0 \\
+                  0 & \text{else}
+            \end{cases}
+        \end{align*}
+
+        \begin{block}{Invariance under adding support tensor to sub-contractions}
+            Any support tensor of a sub-contraction can be added to a tensor network: When $\secgraph$ a sub-hypergraph of $\graph$, then
+            \begin{align*}
+                \contractionof{\extnetwith}{\nodevariables}
+                = \contractionof{\extnetwith,
+                    \nonzeroof{\contractionof{\tnetofat{\secgraph}{\nodevariables}}{\catvariableof{\secnodes}}}
+                }{\nodevariables}
+            \end{align*}
+        \end{block}
+
+        In propositional logics, this means:
+        \begin{align*}
+            \nonzeroof{\contractionof{\extnetwith}{\nodevariables}}
+            \models \nonzeroof{\contractionof{\tnetofat{\secgraph}{\nodevariables}}{\catvariableof{\secnodes}}}
+        \end{align*}
+
+
+    \end{frame}
+
+
+    \begin{frame}{Interpretation as a Message Passing Scheme}
+
+        Support cores are messages
+
+        Computation by sub-contractions (including previous messages)
+
+    \end{frame}
+
 
     \section{Syntactical Inference Rules}
 
@@ -57,21 +109,49 @@
 
         So far: Inference and Entailment is formulated by semantics (with tensor interpretations).
 
+        Syntactical Inference Rules find entailed formulas using syntax only.
+
+        We here derive them as instances of sub-contractions support adding.
+
+        Notation: When $\formula$ is entailed by $\seckb$ we denote
+        \begin{align*}
+            \frac{
+                \seckb
+            }{
+                \exformula
+            }
+        \end{align*}
+
     \end{frame}
 
     \begin{frame}{Modus Ponens}
 
+        {\bf Modus Ponens} is the simplest inference rule: When an implication holds and the premise is true, then the head follows.
         When $\catvariableof{0}\rightarrow\catvariableof{1}$ and $\catvariableof{0}$ is true then also $\catvariableof{1}$.
 
         \begin{block}{Modus Ponens Inference Rule}
+
             \begin{align*}
                 \frac{
-                    \catvariableof{0}\rightarrow\catvariableof{1} \,,\,\, \catvariableof{0}
+                    (\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1})\rightarrow\catvariableof{\catorder} \,,\,\, (\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1})
                 }{
-                    \catvariableof{1}
+                    \catvariableof{\catorder}
                 }
             \end{align*}
         \end{block}
+
+
+
+        Contraction:
+        \begin{center}
+            \input{tikz/modus-ponens-contraction}
+        \end{center}
+%        \begin{align*}
+%            \tbasisat{\catvariableof{1}}
+%            = \contractionof{(\catvariableof{0}\rightarrow\catvariableof{1})[\catvariableof{0},\catvariableof{1}],\tbasisat{\catvariableof{0}}}{
+%                \catvariableof{1}
+%            }
+%        \end{align*}
     \end{frame}
 
 
@@ -96,6 +176,20 @@
 
     \section{Forward Chaining in Horn Logic}
 
+
+    \begin{frame}{Scheduling is key}
+
+        \begin{block}{Number of large contractions}
+            The number of possible subcontractions grows fast with the number $k$ of the subcontraction: $\binom{\cardof{\edges}}{k}$
+        \end{block}
+
+        Selection of contractions to be performed is central to algorithm design
+        \begin{itemize}
+            \item Forward chaining
+            \item SLD resolution (e.g. in ProLog)
+        \end{itemize}
+
+    \end{frame}
 
 \end{document}
 
