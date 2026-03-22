@@ -1,0 +1,40 @@
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{amsmath,amssymb}
+
+\input{../../../../macros/general_macros}
+\input{../../../../macros/tc_macros}
+\input{../../../../macros/tikz_macros}
+\input{../../../../macros/organization_macros}
+
+\newcommand{\usecasebox}[2]{
+    \begin{tcolorbox}[colback=white, colframe=black, boxrule=0.8pt]
+    \begin{center}
+    {\textbf{#1}}
+    \end{center}
+    #2
+    \end{tcolorbox}
+    \medskip
+}
+
+\newcommand{\exercisehead}[3]{
+    \pagestyle{empty}
+    \begin{center}
+    \rule{\textwidth}{0.2pt}
+    \vspace{0.25cm}\\
+    \textbf{
+        Exercise Sheet #1: \\
+        #2} \\
+    \medskip
+    Foundations of Neuro-Symbolic AI\\
+    Summer term 2026, THWS, Alex Goessmann
+    \\
+    \medskip
+    #3
+    \vspace{0.25cm}
+    \rule{\textwidth}{0.2pt}
+    \end{center}
+    \medskip
+}
+
+\newcommand{\addtask}[2]{\par \noindent \textbf{Task #1:} \\ #2 \par \bigskip }

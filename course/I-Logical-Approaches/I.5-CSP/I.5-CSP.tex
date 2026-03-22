@@ -1,0 +1,121 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\setslidetitledate{
+    Constraint Satisfaction Problems
+}{
+    March 30, 2026
+}
+
+\begin{document}
+
+    {\frame[plain]{\titlepage}}
+
+    \showoutlineatsection
+
+
+    \section{Graph Coloring}
+
+    \begin{frame}{Graph Coloring}
+
+        \begin{block}{Graph Coloring Problem}
+            Given a graph $\graph=(\nodes,\edges)$
+        \end{block}
+
+    \end{frame}
+
+    \begin{frame}{Representation of Graph Coloring}
+        Each node color is a variable.
+
+        To each edge $\edge=\{\node_{0},\node_{1}\}$ the matrix
+        \begin{align*}
+            \hypercoreofat{\edge}{\catvariableof{\node_{0}},\catvariableof{\node_{1}}}
+            = \onesat{\catvariableof{\node_{0}},\catvariableof{\node_{1}}} - \identityat{\catvariableof{\node_{0}},\catvariableof{\node_{1}}} \, .
+        \end{align*}
+        with off-diagonal support enforces different color constraint.
+    \end{frame}
+
+    \begin{frame}{Edge inference scheme}
+
+        Each node color gets assigned a vector of possibilities.
+        \begin{align*}
+            \vectorofat{\node_0}{\catvariableof{\node_0}}
+            = \nonzeroof{
+                \contractionof{
+                    \vectorofat{\node_0}{\catvariableof{\node_0}},
+                    \hypercoreofat{\edge}{\catvariableof{\node_{0}},\catvariableof{\node_{1}}},
+                    \vectorofat{\node_0}{\catvariableof{\node_1}}
+                }{\catvariableof{\node_0}}
+            }
+        \end{align*}
+
+    \end{frame}
+
+
+    \section{Sudoku}
+
+    \begin{frame}{Representation of Sudoku}
+
+        By hidden variables storing digit at a field, digit positions in rows, columns and squares.
+
+        Computation perspective: Hidden variables computing the atomic variables.
+
+    \end{frame}
+
+    \begin{frame}{Adjusting possible variable assignments}
+
+        Easiest inference scheme: Adjusting possible variable assignments
+
+    \end{frame}
+
+
+    \section{Generic Constraint Satisfaction Problems}
+
+    \begin{frame}{Arc consistency}
+
+        More generic inference rules: Generating locally consistent assignments.
+    \end{frame}
+
+
+    \begin{frame}{Outlook}
+
+        Sub-contractions model inference rules
+        \begin{itemize}
+            \item Logics: Modus ponens, resolutions
+            \item CSPs: arc-consistency
+        \end{itemize}
+
+        Tradeoff in the sub-contraction size:
+        \begin{itemize}
+            \item Efficiency: Number of possible sub-contractions, computational demand to perform a sub-contraction
+            \item Generality: Larger contractions can perform more complex reasoning steps
+        \end{itemize}
+
+        Scheduling is a central challenge for efficient inference.
+        Examples:
+        \begin{itemize}
+            \item Forward Chaining
+            \item SLD Resolution
+        \end{itemize}
+
+
+
+
+    \end{frame}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
