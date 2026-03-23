@@ -17,7 +17,7 @@
 
     \section{Knowledge Bases}
 
-    \begin{frame}{Recall: Curse of Dimensionality}
+    \begin{frame}{Motivation: Curse of dimensionality}
         \begin{block}{Observation}
             The number of coordinates of a propositional formula increases exponentially with the number $\catorder$ of variables.
         \end{block}
@@ -28,26 +28,32 @@
         \begin{block}{Curse of dimensionality: Storage problem}
             When reasoning about a factored system with many variables (i.e. $\atomorder$ is large), the naive enumeration of all models to formulas is infeasible.
         \end{block}
-
     \end{frame}
 
-    \begin{frame}{Motivation: Knowledge Base Representation}
-
-        There is further sparsity in the
+    \begin{frame}{Motivation: Knowledge bases}
+        There are further sparsity principles:
         \begin{itemize}
-            \item We often have a list of formulas.
+            \item We often have a conjunction over multiple formulas.
             \item Each formula is just affected by a few variables.
         \end{itemize}
 
-        \begin{definition}{Knowledge base}
-            Knowledge bases are conjunctions over sets of formulas $\{\formulaof{\selindex} \wcols \selindexin\}$
+        \begin{definition}[Knowledge base]
+            Knowledge bases are conjunctions over formulas $\{\formulaof{\selindex} \wcols \selindexin\}$, that is
             \begin{align*}
-                \kb = \bigwedge_{\selindexin} \formulaof{\selindex}
+                \kb = \bigwedge_{\selindexin} \formulaof{\selindex} \, .
+            \end{align*}
+            We represnet them by a tensor
+            \begin{align*}
+                \kbat{\shortcatvariables}
+                = \begin{cases}
+                      1 & \ifspace \uniquantwrtof{\selindexin}{\formulaofat{\selindex}{\indexedshortcatvariables} = 1} \\
+                      0 & \text{else} \, .
+                \end{cases}
             \end{align*}
         \end{definition}
 
         \begin{center}
-            \bf How to exploit this sparsity in the effective representation of our knowledge?
+            \bf How to exploit this sparsity for more effective representation?
         \end{center}
 
     \end{frame}
@@ -55,18 +61,17 @@
 
     \section{Tensor Networks}
 
-    \begin{frame}{Separated Combination of Tensors: \\ Tensor Products}
+    \begin{frame}{Combination of tensors with distinct variables: Tensor products}
         \begin{definition}[Tensor Product]
             \label{def:tensorProduct}
-            Let there be two tensor
+            Let there be two tensors $\hypercorewith$ and $\sechypercoreat{\headvariables}$ with disjoint variables.
+%            \begin{align*}
+%                \hypercorewith \wcols \facstates \rightarrow \rr
+%                \quad \text{and} \quad  \sechypercoreat{\headvariables} \wcols \headstates \rightarrow \rr \, .
+%            \end{align*}
+            Then there tensor product is a tensor
             \begin{align*}
-                \hypercorewith \wcols \facstates \rightarrow \rr
-                \quad \text{and} \quad  \sechypercoreat{\headvariables} \wcols \headstates \rightarrow \rr \, .
-            \end{align*}
-            Then there tensor product is the map
-            \begin{align*}
-                (\hypercore \otimes \sechypercore)
-                \,[\shortcatvariables,\headvariables] :  \left(\facstates\right) \times \left(\headstates\right) \rightarrow \rr
+                (\hypercore \otimes \sechypercore)\,[\shortcatvariables,\headvariables] %:  \left(\facstates\right) \times \left(\headstates\right) \rightarrow \rr
             \end{align*}
             defined for $\shortcatindices\in\facstates$ and $\headindexof{[\seldim]}\in\headstates$ as
             \begin{align*}
@@ -76,6 +81,32 @@
                 =  \hypercoreat{\indexedshortcatvariables} \cdot \sechypercoreat{\headvariables=\headindexof{[\seldim]}} \, .
             \end{align*}
         \end{definition}
+
+        \stantikzpic{
+            \draw (-16,-1) rectangle (-4,1);
+            \drawtextnode{-10}{0}{$\hypercore\otimes\sechypercore$}
+            \draw (-15,-1) -- (-15,-3) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \drawtextnode{-14}{-2}{$\cdots$}
+            \draw (-11,-1) -- (-11,-3) node[midway,left] {\colorlabelsize $\catvariableof{\atomorder-1}$};
+
+            \draw (-9,-1) -- (-9,-3) node[midway,left] {\colorlabelsize $\headvariableof{0}$};
+            \drawtextnode{-8}{-2}{$\cdots$}
+            \draw (-5,-1) -- (-5,-3) node[midway,left] {\colorlabelsize $\headvariableof{\seldim-1}$};
+
+            \drawtextnode{-2}{0}{${=}$}
+
+            \draw (0,-1) rectangle (6,1);
+            \drawtextnode{3}{0}{$\hypercore$}
+            \draw (1,-1) -- (1,-3) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \drawtextnode{2}{-2}{$\cdots$}
+            \draw (5,-1) -- (5,-3) node[midway,left] {\colorlabelsize $\catvariableof{\atomorder-1}$};
+
+            \draw (7,-1) rectangle (13,1);
+            \drawtextnode{10}{0}{$\sechypercore$}
+            \draw (8,-1) -- (8,-3) node[midway,left] {\colorlabelsize $\headvariableof{0}$};
+            \drawtextnode{9}{-2}{$\cdots$}
+            \draw (12,-1) -- (12,-3) node[midway,left] {\colorlabelsize $\headvariableof{\seldim-1}$};
+        }
 
     \end{frame}
 
@@ -111,7 +142,7 @@
 
     \begin{frame}{Example: One-hot encodings}
         \begin{definition}[One-hot encoding to factored representations]
-            The one-hot encoding of a factored representation with variables $\shortcatvariables=\{\catvariableof{\atomenumerator} \wcols, \atomenumeratorin \}$ in state $\catindices$ is the tensor product
+            The one-hot encoding of a factored representation with variables $\shortcatvariables=\{\catvariableof{\atomenumerator} \wcols \atomenumeratorin \}$ in state $\catindices$ is the tensor product
             \begin{align*}
                 \onehotmapofat{\shortcatindices}{\shortcatvariables}
                 = \bigotimes_{\atomenumeratorin} \onehotmapofat{\catindexof{\atomenumerator}}{\catvariableof{\catenumerator}}
@@ -158,21 +189,28 @@
                   0 & \text{ else}
             \end{cases} \, .
         \end{align*}
-
-
     \end{frame}
 
-
-
-
+    \begin{frame}{Tensor networks}
+        Tensor networks are build by
+        \begin{itemize}
+            \item Separated combination of tensors $\hypercoreof{\edge_1},\hypercoreof{\edge_2}, \hypercoreof{\edge_3}$: \emph{Tensor Products}
+            \only<2->{
+                \item Connecting Tensors along common legs: \emph{Contractions} (with all legs left open)
+            }
+        \end{itemize}
+        \vfill
+        \begin{center}
+            \input{./tikz/product-contraction.tex}
+        \end{center}
+    \end{frame}
 
     \begin{frame}{Depicting common legs: Hypergraphs}
-
-        \begin{definition}{Hypergraph}
+        \begin{definition}[Hypergraph]
             A hypergraph $\graph=(\nodes,\edges)$ consists of two sets:
             \begin{itemize}
-                \item Nodes $\node\in\nodes$
-                \item Hyperedges $\edge\in\edges$, where each is is a subset $\edge\subset\nodes$ of nodes
+                \item Nodes $\node\in\nodes$ (corresponding with variables)
+                \item Hyperedges $\edge\in\edges$, where each is is a subset $\edge\subset\nodes$ of nodes (corresponding with tensors)
             \end{itemize}
         \end{definition}
 
@@ -181,6 +219,7 @@
         \begin{center}
             \input{./tikz/hypergraph.tex}
         \end{center}
+        \vspace{-1cm}
         In this example:
         \begin{itemize}
             \item $\nodes = \{0,1,2,3\}$
@@ -201,7 +240,7 @@
             \[ \edge = \{\node \, : \, \node \in \edge \} \quad \text{represents the tensor} \quad \hypercoreofat{\edge}{\catvariableof{\edge}} \in \bigotimes_{\node\in\edge} \rr^{\catdimof{\node}}\]
         \end{itemize}
 
-        We now decorate hyperedges by tensors
+        We now decorate hyperedges by tensors and depict them by $a)$ hypergraph diagrams $b)$ tensor network diagrams:
         \begin{center}
             \input{./tikz/hypercore.tex}
         \end{center}
@@ -213,14 +252,19 @@
     \begin{frame}{Tensor Networks}
 
         \begin{definition}[Tensor Network]
-            Let $\graph=(\nodes,\edges)$ be a hypergraph (that is edges are arbitrary nonempty subsets of nodes) with nodes decorated by random variables $\catvariableof{\node}$ with dimensions
-            \[ \catdimof{\node} \in \mathbb{N} \]
+            Let $\graph=(\nodes,\edges)$ be a hypergraph with nodes decorated by variables $\catvariableof{\node}$ with dimensions $\catdimof{\node} \in \mathbb{N}$.
             and hyperedges $\edge\in\edges$ decorated by core tensors
             \[ \hypercoreofat{\edge}{\catvariableof{\edge}} \in \bigotimes_{\node\in\edge}\rr^{\catdimof{\node}} \, . \]
-            Then we call the set
+            Then the set $\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edgein\}$ builds the \emph{tensor network} to the decorated hypergraph $\graph$ and we say it decomposes the tensor
             \[ \tnetofat{\graph}{\nodevariables} \coloneqq
-            \{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edges\} \]
-            the \emph{tensor network} to the decorated hypergraph $\graph$.
+            \contractionof{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edges}{\nodevariables} \, .
+                %\{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edges\}
+            \]
+            with coordinates
+            \begin{align*}
+                \tnetofat{\graph}{\indexedcatvariableof{\nodes}}
+                = \prod_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
+            \end{align*}
         \end{definition}
 
     \end{frame}
@@ -237,89 +281,29 @@
             \input{./tikz/network.tex}
         \end{center}
 
-        We choose two diagrammatic depictions:
+        We use two diagrammatic depictions:
         \begin{itemize}
-            \item[a)] The defining Hypergraph
-            \item[b)] The contraction diagram
+            \item[a)] The defining hypergraph
+            \item[b)] The tensor network diagram
         \end{itemize}
 
     \end{frame}
 
 
-    \begin{frame}{Tensor Networks}
-
-        Tensor Networks are build by
-        \begin{itemize}
-            \item Separated Combination of Tensors $\hypercoreof{\edge_1},\hypercoreof{\edge_2}, \hypercoreof{\edge_3}$: \emph{Tensor Products}
-            \only<2->{
-                \item Connecting Tensors along common legs and closing legs: \emph{Contractions}
-            }
-        \end{itemize}
-
-        \vfill
-
-        \begin{center}
-            \input{./tikz/product-contraction.tex}
-        \end{center}
 
 
-    \end{frame}
-
-    \begin{frame}{Example: Matrix-Vector Multiplications}
-
-        The blockwise notation is especially useful in visualizing contractions.
-
-        The simplest contraction is the matrix-vector multiplications.
-        \medskip
-
-        {\bf Example:} Knowing that $\catvariableof{A2}=1$, what are the possible values of $\catvariableof{A1}$?
-
-        \begin{center}
-            \begin{tikzpicture}
-                \drawtextnode{0}{0}{
-                    $\coloredmatrixof{0 & 1 \\ 1 & 0}{\catvariableof{A1},\catvariableof{A2}}$
-                }
-                \drawtextnode{2.25}{0}{
-                    $\coloredmatrixof{0 \\ 1 }{\catvariableof{A2}}$
-                }
-                \drawtextnode{3.5}{0}{${=}$}
-                \drawtextnode{4.75}{0}{
-                    $\coloredmatrixof{1 \\ 0}{\catvariableof{A1}}$
-                }
-            \end{tikzpicture}
-        \end{center}
-
-        In the blockwise notation the matrix-vector multiplication is depicted by:
-        \begin{center}
-            \begin{tikzpicture}[scale=0.65]
-
-                \draw (-1,0) -- (-3,0) node[midway,above] {$\catvariableof{A1}$};
-                \draw (-1,-1) rectangle (1,1);
-                \drawtextnode{0}{0}{$\blankmatrix{0 & 1 \\ 1 & 0}$}
-                \draw (1,0) -- (3,0) node[midway,above] {$\catvariableof{A2}$};
-                \draw (3,-1) rectangle (5,1);
-                \drawtextnode{4}{0}{$\blankmatrix{0 \\ 1 }$}
-
-                \drawtextnode{6}{0}{${=}$}
-
-                \draw (7,0) -- (9,0) node[midway,above] {$\catvariableof{A1}$};
-                \draw (9,-1) rectangle (11,1);
-                \drawtextnode{10}{0}{$\blankmatrix{1 \\ 0 }$}
-
-            \end{tikzpicture}
-        \end{center}
-    \end{frame}
 
 
-    \begin{frame}{Example of a Tensor Contraction: Hadamard Product}
+    \begin{frame}{Example of a Tensor Network: Hadamard Product of vectors}
 
-        Let $V^k\in\rr^p$ be vectors for $\atomenumeratorin$. Their \emph{Hadamard product} is the vector
+        Let $\vectorofat{\catenumerator}{\catvariable}\in\rr^m$ be vectors for $\atomenumeratorin$. Their \emph{Hadamard product} is the vector
         \begin{align*}
-            V^1\circ V^2 \circ \ldots \circ V^{\atomorder-1} \in \rr^p
+            (V^1\circ V^2 \circ \ldots \circ V^{\atomorder-1})[\catvariable] \in \rr^m
         \end{align*}
         defined by
         \begin{align*}
-            \left( V^1\circ V^2 \circ \ldots \circ V^{\atomorder-1} \right)_\catindex = \prod_{\atomenumeratorin} V^\atomenumerator_\catindex \, .
+            \left( V^1\circ V^2 \circ \ldots \circ V^{\atomorder-1} \right)\left[\indexedcatvariable\right]
+            = \prod_{\atomenumeratorin} \vectorofat{\catenumerator}{\indexedcatvariable} \, .
         \end{align*}
 
         We visualize the product by leg connection of multiple vectors:
@@ -351,34 +335,66 @@
 
     \end{frame}
 
-    \begin{frame}{Knowledge Bases as Contractions}
+    \begin{frame}{Knowledge bases as tensor networks}
 
-        We model each formula in a Knowledge base as a decoration
-        \begin{itemize}
-            \item hyperedge $\edgeof{\selindex}$ of affected variables
-            \item decorating tensor $\formulaofat{\selindex}{\catvariableof{\edgeof{\selindex}}}$
-        \end{itemize}
-        For any Knowledge base we have
-        \begin{align*}
-            \kbat{\nodevariables}
-            = \contractionof{\formulaofat{\selindex}{\catvariableof{\edgeof{\selindex}}}}{\nodevariables}
-        \end{align*}
+        \only<1>{
+            Given a knowledge base $\kb=\{\formulaof{\selindex}\wcols\selindexin\}$ we
+            \begin{itemize}
+                \item Create for each $\selindexin$ a hyperedge $\edgeof{\selindex}$ containing the nodes to the variables $\catvariableof{\edgeof{\selindex}}$ appearing in the formula $\formulaof{\selindex}$
+                \item Build a set of nodes, which correspond with the variables appearing in the formulas
+                \begin{align*}
+                    \nodes = \bigcup_{\selindexin}\edgeof{\selindex}
+                \end{align*}
+            \end{itemize}
+        }
+        \begin{theorem}[Tensor network decomposition of knowledge bases]
+            For any knowledge base $\kb=\{\formulaof{\selindex}\wcols\selindexin\}$ the corresponding tensor $\kbat{\nodevariables}$ is decomposed into the formulas by
+            \begin{align*}
+                \kbat{\nodevariables}
+                = \contractionof{\formulaofat{\selindex}{\catvariableof{\edgeof{\selindex}}}}{\nodevariables} \, .
+            \end{align*}
+        \end{theorem}
+        \only<2>{
+            \textbf{Proof:}
+            For each $\catindexof{\nodes}\in\bigtimes_{\node\in\nodes}[2]$ we have $\kbat{\indexedcatvariableof{\nodes}}=1$ if and only if for all $\selindexin$ $\formulaofat{\selindex}{\indexedcatvariableof{\edgeof{\selindex}}}=1$.
+            This is equal to
+            \begin{align*}
+                \kbat{\indexedcatvariableof{\nodes}}
+                = \prod_{\selindexin} \formulaofat{\selindex}{\indexedcatvariableof{\edgeof{\selindex}}} \, .
+            \end{align*}
+        }
+
     \end{frame}
 
     \begin{frame}{Tensor network decomposition of the toy accounting system}
         Toy accounting system:
         \begin{itemize}
-            \item $\formulaof{0}=\catvariableof{A1}\oplus \catvariableof{A2}$ by $\edgeof{0}=\{A1,A2\}$
-            \item $\formulaof{1}=\catvariableof{F}\Rightarrow\catvariableof{A1}$ by $\edgeof{1}=\{F,A1\}$
+            \item $\formulaof{0}=(\catvariableof{A1}\oplus \catvariableof{A2})$ by $\edgeof{0}=\{A1,A2\}$
+            \item $\formulaof{1}=(\catvariableof{F}\Rightarrow\catvariableof{A1})$ by $\edgeof{1}=\{F,A1\}$
         \end{itemize}
+        The corresponding hypergraph is thus:
+        \stantikzpic{
+            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (A2) at (0,-3) {};
+            \drawtextnode{0}{-3}{\corelabelsize $\catvariableof{A2}$}
+            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (A1) at (3,-3) {};
+            \drawtextnode{3}{-3}{\corelabelsize $\catvariableof{A1}$}
+            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (F) at (6,-3) {};
+            \drawtextnode{6}{-3}{\corelabelsize $\catvariableof{F}$}
+            \draw (A2) to[bend right=-70] (A1);
+            \drawtextnode{1.5}{-0.5}{\corelabelsize $\edgeof{0}$}
+            \draw (A1) to[bend right=-70] (F);
+            \drawtextnode{4.5}{-0.5}{\corelabelsize $\edgeof{1}$}
+        }
 
+
+        We have a tensor network decomposition by decorating tensors as:
         \begin{center}
             \input{tikz/toy-accounting-kb}
         \end{center}
 
-        \begin{center}
-            \bf Knowledge bases are decomposed into a tensor network of formulas.
-        \end{center}
+%        \begin{center}
+%            \bf Knowledge bases are decomposed into a tensor network of formulas.
+%        \end{center}
     \end{frame}
 
 
@@ -437,12 +453,57 @@
 
     \end{frame}
 
+    \begin{frame}{Example: Matrix-vector contractions for reasoning}
+
+    %       The blockwise notation is especially useful in visualizing contractions.
+%        The simplest contraction is the matrix-vector multiplications.
+%        \medskip
+
+        {\bf Example:} Knowing that $\catvariableof{A2}=1$, what are the possible values of $\catvariableof{A1}$?
+        \begin{center}
+            \begin{tikzpicture}
+                \drawtextnode{0}{0}{
+                    $\coloredmatrixof{0 & 1 \\ 1 & 0}{\catvariableof{A1},\catvariableof{A2}}$
+                }
+                \drawtextnode{2.25}{0}{
+                    $\coloredmatrixof{0 \\ 1 }{\catvariableof{A2}}$
+                }
+                \drawtextnode{3.25}{0}{${=}$}
+                \drawtextnode{5.25}{0}{
+                    $\coloredmatrixof{0 \cdot 0 + 1\cdot 1\\ 1\cdot 0 + 0 \cdot 1}{\catvariableof{A1}}$
+                }
+                \drawtextnode{7}{0}{${=}$}
+                \drawtextnode{8}{0}{
+                    $\coloredmatrixof{1\\ 0}{\catvariableof{A1}}$
+                }
+            \end{tikzpicture}
+        \end{center}
+        Interpretation: When $\catvariableof{A2}$ is known to be $\truesymbol$, then $\catvariableof{A1}$ is $\falsesymbol$.
+
+        \medskip
+        In the blockwise notation the matrix-vector multiplication is depicted by:
+        \begin{center}
+            \begin{tikzpicture}[scale=0.65]
+
+                \draw (-1,0) -- (-3,0) node[midway,above] {$\catvariableof{A1}$};
+                \draw (-1,-1) rectangle (1,1);
+                \drawtextnode{0}{0}{$\blankmatrix{0 & 1 \\ 1 & 0}$}
+                \draw (1,0) -- (3,0) node[midway,above] {$\catvariableof{A2}$};
+                \draw (3,-1) rectangle (5,1);
+                \drawtextnode{4}{0}{$\blankmatrix{0 \\ 1 }$}
+
+                \drawtextnode{6}{0}{${=}$}
+
+                \draw (7,0) -- (9,0) node[midway,above] {$\catvariableof{A1}$};
+                \draw (9,-1) rectangle (11,1);
+                \drawtextnode{10}{0}{$\blankmatrix{1 \\ 0 }$}
+
+            \end{tikzpicture}
+        \end{center}
+    \end{frame}
+
+
     \begin{frame}{Contraction of Tensor Networks}
-
-%        \begin{center}
-%            Let us now generalize the examples
-%        \end{center}
-
         \begin{definition}[Contraction]
             Let $\tnetof{\graph}$ be a tensor network on a decorated hypergraph $\graph=(\nodes,\edges)$.
             For any subset $\secnodes\subset\nodes$ we define the contraction to be the tensor
@@ -456,11 +517,9 @@
                 \prod_{\edge\in\edges}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
             \end{align*}
         \end{definition}
-
     \end{frame}
 
     \begin{frame}{Contractions with closed variables}
-
         \textbf{Example of a contraction}:
         \begin{itemize}
             \item Four categorical variables $\nodes = \{\catvariableof{0},\catvariableof{1},\catvariableof{2},\catvariableof{3}\}$ appearing as nodes and decorated by their dimensions $\catdimof{:}$.
@@ -471,14 +530,13 @@
         \begin{center}
             \input{./tikz/contraction.tex}
         \end{center}
-
     \end{frame}
 
 
     \section{Entailment}
 
     \begin{frame}{Contraction without open variables: Model counts}
-
+        \par
         {\bf So far:} Knowledge bases are contractions of formulas keeping all variables open.
         \medskip \\
         {\bf Now:} Contractions without open variables:
@@ -491,21 +549,6 @@
             The contraction $\contraction{\formulawith}$ of a formula without leaving variables open is the \emph{count of its models} (that are states $\shortcatindices$ with $\formulaat{\indexedshortcatvariables}=1$).
             If $\contraction{\formulawith}=0$, we say the formula is \emph{unsatisfiable}.
         \end{block}
-
-%        We have
-%        \begin{align*}
-%            &\contraction{\kbwith,\formulawith} \\
-%            &\quad = \#\{\shortcatindices\in[2]^{\catorder} \wcols \kbat{\indexedshortcatvariables}=\formulaat{\indexedshortcatvariables}=1\}
-%        \end{align*}
-%        That is, the number of common models is counted
-
-%        So if
-%        \begin{align*}
-%            \contraction{\kbwith,\formulawith} = \contraction{\kbwith}
-%        \end{align*}
-%        then $\kb\models\formula$.
-
-
     \end{frame}
 
     \begin{frame}{Entailment}
@@ -524,11 +567,6 @@
             \contraction{\kbwith,\formulawith}
             = \contraction{\kbwith}
         \end{align*}
-
-%        \begin{center}
-%            \bf We develop the contraction formalism of tensors for this.
-%        \end{center}
-
     \end{frame}
 
 
@@ -544,11 +582,7 @@
             = & \contraction{\kbwith,\oneswith-\formulawith} \\
             =&\contraction{\kbwith,\lnot\formulawith} \, .
         \end{align*}
-%        and
-%        \begin{align*}
-%            \contraction{\kbwith,\lnot\formulawith} = 0
-%        \end{align*}
-
+        \vspace{-0.5cm}
         \begin{block}{Contraction criterion for entailment}
             For any propositional formulas we have $\kb\models\formula$ if and only if
             \begin{align*}
@@ -573,7 +607,6 @@
         \begin{center}
             \emph{tnreason} = \emph{T}ensor-\emph{N}etwork \emph{Reason}ing
         \end{center}
-
         Functionality:
         \begin{itemize}
             \item Representations of logical and probabilistic models as tensor networks
@@ -587,7 +620,6 @@
     \end{frame}
 
     \begin{frame}[fragile]{Installation}
-
         \tnreason{} is maintained on github:
         \begin{center}
             \href{https://github.com/tnreason/tnreason-py}{https://github.com/tnreason/tnreason-py}
@@ -599,12 +631,10 @@
         \begin{minted}{python}
     pip install tnreason==2.0.0
         \end{minted}
-
     \end{frame}
 
     \begin{frame}{Implementation in \tnreason: \\
     Subpackage \spengine}
-
         The subpackage \spengine is dedicated to tensor networks and contractions.
 
         \begin{center}
@@ -614,8 +644,6 @@
                 \node [anchor=center,blue] at (0,0) {\spengine};
             \end{tikzpicture}
         \end{center}
-
-
     \end{frame}
 
     \begin{frame}[fragile]{Subpackage \spengine{}: Tensors}
@@ -634,7 +662,7 @@
         \end{minted}
     \end{frame}
 
-    \begin{frame}[fragile]{Subpackage \spengine{}: Tensor Networks}
+    \begin{frame}[fragile]{Subpackage \spengine{}: Tensor networks}
         Tensor networks $\tnetof{\graph}$ in \tnreason{} are dictionaries \pyinline{coreDict} of str tensor nemes valued by \pyinline{engine.TensorCore} instances.
         \medskip \\
         The hypergraph $\graph=(\edges,\nodes)$ is stored
@@ -642,14 +670,12 @@
             \item Each $\edge$ is represented by an instance \pyinline{tensorCore} of \pyinline{engine.TensorCore}
             \item The incidence relations are stored by \pyinline{tensorCore.values}
         \end{itemize}
-
         \medskip
         Visualization with \pyinline{matplotlib}:
         \begin{minted}{python}
     engine.draw_fractor_graph(coreDict)
         \end{minted}
     \end{frame}
-
 
     \begin{frame}[fragile]{Subpackage \spengine{}: Contractions}
         Reflected in the notation
@@ -670,18 +696,14 @@
 
     \begin{frame}{Implementations in \tnreason{}: \\
     Subpackage \sprepresentation{}}
-
         The subpackage \sprepresentation{} is dedicated to tensor encoding schemes.
-
         \begin{center}
             \begin{tikzpicture}[scale=0.27]
                 \drawtnreasonarchitecture{}
                 \draw[blue] (-10,4) rectangle (0,8);
                 \node [anchor=center,blue] at (-5,6) {\sprepresentation{}};
-
             \end{tikzpicture}
         \end{center}
-
     \end{frame}
 
     \begin{frame}[fragile]{Subpackage \sprepresentation{}: Coordinate encodings}
@@ -695,7 +717,6 @@
             \item inShape, inColors: specifying the leg dimension and the names of the variables ($\shortcatvariables$)
             \item function (e.g. in lambda calculus): computes the coordinate given the state of the variables
         \end{itemize}
-
     \end{frame}
 
 \end{document}

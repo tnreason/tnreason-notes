@@ -9,4 +9,3 @@ Creation of a tensor $\hypercorewith$ when having a function computing each coor
             \item inShape, inColors: specifying the leg dimension and the names of the variables ($\shortcatvariables$)
             \item function (e.g. in lambda calculus): computes the coordinate given the state of the variables
         \end{itemize}
-

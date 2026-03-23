@@ -2,27 +2,29 @@
 \input{../../../spec_files/exercise_preamble}
 
 \begin{document}
-    \exercisehead{1}{Modeling with Propositional Logics}{March 23, 2026}
+    \exercisehead{1}{Modeling with Propositional Logic}{March 23, 2026}
     \usecasebox{Alarm System}{
-        Imagine reasoning about whether a Burglary or an Earthquake appeared at your home, with access to the information whether the Alarm started, and whether the neighbors John or Mary called.
-        We know, that:
+        Imagine you want to estimate whether a Burglary or an Earthquake happened at your home, depending on whether your Alarm rings and whether your neighbors John and Mary called you.
+        You know that:
         \begin{itemize}
-            \item Whenever a Burglary or an Earthquake appears, the Alarm clock rings.
-            \item Whenever the Alarm glock rings then we receive a call at least by one of the neighbors John and Mary.
+            \item When a Burglary or an Earthquake occurs, the Alarm rings.
+            \item When the Alarm rings then we receive a call from at least one of the neighbors John and Mary.
             \item The neighbor John never calls.
         \end{itemize}
     }
     \addtask{1}{
-    Define suitable Boolean variables giving a factored representation of this system and express the knowledge in corresponding formulas.
+    Define suitable Boolean variables for a factored representation of this system and express the knowledge by propositional formulas.
+    Draw the tensor network diagram representing the knowledge base.
     }
     \addtask{2}{
-    Find the truth table representation and the tensor representation of the formulas.
+    Find the truth table representation and the tensor representation of each formula in the knowledge base.
     }
     \addtask{3}{
-    Decide by explicit tensor network contractions, which of these statements is entailed by our knowledge:
+    Decide which of these statements are entailed by our knowledge:
     \begin{itemize}
-        \item When the Alarm clock rings, either a Burglary or an Earthquake happened.
-        \item When the Alarm clock rings, then Mary calls.
+        \item When the Alarm rings, either a Burglary or an Earthquake happened.
+        \item When the Alarm rings, then Mary calls.
+        \item When neither Mary nor John calls, then the alarm did not ring and neither a Burglary nor an Earthquake happened.
     \end{itemize}
     }
 \end{document}
