@@ -25,6 +25,13 @@
 
     \section{Formalization}
 
+    Nomenclature in \cite{russell_artificial_2021}:
+    \begin{itemize}
+        \item Domains to variables as possible assignments $\rightarrow$ support of knowledge cores
+        \item Alldiff constraint $\rightarrow$ when order the number of possible states, then a computation from hidden variables assigning each state to label of variables
+    \end{itemize}
+
+
     \begin{definition}
         Let there be a hypergraph $\graph=(\nodes,\edges)$ and $\extnet$ be a tensor network of boolean constraint tensors $ \hypercoreofat{\edge}{\catvariableof{\edge}}$ to each $\edgein$, that is
         \[ \extnet = \{ \hypercoreofat{\edge}{\catvariableof{\edge}} \, : \, \edge\in\edges \} \, .\]
@@ -48,6 +55,15 @@
     Their results can be passed to further contractions by message passing.
     Whenever a local contraction vanishes, the CSP is unsatisfiable.
     However, the converse is not true: In general, we cannot conclude that the CSP is satisfiable, when a message-passing scheme does converge without vanishing.
+
+    \subsubsection{AC-3}
+
+    A specific instance of Knowledge Propagation (see report) is AC-3 \cite{mackworth_consistency_1977}.
+    Here we consider only edges of cardinality 2, and contract the knowledge cores to the adjacent nodes with leaving one node variable open (to the receiving node).
+
+    \subsubsection{PC-2}
+
+    Extends the message passing scheme of AC-3 by enlarging the contractions to respect path consistency.
 
     \subsection{Guessing}
 
@@ -89,37 +105,37 @@
     As described in the main report.
 
     \subsection{Sudoku}
+    %See the nesy paper.
 
-    See the computation activation drafts in the summary.
-%
-%    \begin{example}[Sudoku as propositional knowledge base]
-%        We index the rows and the columns by tuples $(r0,r1)$ and $(co,c1)$, where $r0,r1,c0,c1\in[3]$. The first index indicates the block and the second counts the row or column inside that block.
-%        For each $r0,r1,c0,c1\in[3]$ and $n\in[9]$ we then define an atomic variable $\catvariableof{r0,r1,c0,c1,n}\in\{0,1\}$ indicating whether in the row $(r0,r1)$ and column $(co,c1)$ the number $n$ is written.
-%        The Sudoku rules then amount to the formula
-%        \begin{align*}
-%            \kb = &\left( \bigwedge_{r0,r1,c0,c1\in[3]} \left( \bigoplus_{n\in[9]} \catvariableof{r0,r1,c0,c1,n} \right) \right) \land
-%            \left( \bigwedge_{r0,r1\in[3], n\in[9]} \left( \bigoplus_{c0,c1\in[3]} \catvariableof{r0,r1,c0,c1,n} \right) \right) \land \\
-%            &\left( \bigwedge_{c0,c1\in[3], n\in[9]} \left( \bigoplus_{c0,c1\in[3]} \catvariableof{r0,r1,c0,c1,n} \right) \right) \land
-%            \left( \bigwedge_{r0,c0\in[3], n\in[9]} \left( \bigoplus_{r1,c1\in[3]} \catvariableof{r0,r1,c0,c1,n} \right) \right) \, ,
-%        \end{align*}
-%        where $\bigoplus$ is the $9$-ary exclusive or connective (that is $1$ if and only if exactly one of the arguments is $1$).
-%        The four outer brackets in $\kb$ mark the constraints, that at each position exactly one number is assigned, further that in each row each number is assigned once, and similar for the columns and the squares of the board.
-%        When solving a specific Sudoku instance, one typically knows from an initial board assignment $E$ a collection of atomic variables, which hold, and needs to find further atomic variables, which are entailed.
-%        This means, we need to decide for each $(r_0,r_1,c_0,c_1,n)\notin E$ whether the Sudoku rules and the initial board imply that the atomic variable $\catvariableof{r0,r1,c0,c1,n}$ (i.e. assignment to the board) is true
-%        \begin{align*}
-%            \left(\kb \land \bigwedge_{(r_0,r_1,c_0,c_1,n)\in E} \catvariableof{r0,r1,c0,c1,n} \right) \models \catvariableof{r0,r1,c0,c1,n}
-%        \end{align*}
-%        or false
-%        \begin{align*}
-%            \left(\kb \land \bigwedge_{(r_0,r_1,c_0,c_1,n)\in E} \catvariableof{r0,r1,c0,c1,n} \right) \models \lnot\catvariableof{r0,r1,c0,c1,n} \, .
-%        \end{align*}
-%        In other words, for each assignment to the board, that fulfills the Sudoku rules and the initial board, do we write the number $n$ in row $(r0,r1)$ and column $(c0,c1)$?
-%        If and only if the Sudoku has a unique solution given the initial board assignment $E$, exactly one of these entailment statements holds for each $(r_0,r_1,c_0,c_1,n)\notin E$.
-%        Deciding which is equivalent to solving of the Sudoku.
-%    \end{example}
-%
-%    As described in the main report, Sudoku rules place categorical constraints on sets of atomic variable.
-%    Each formula $\bigoplus_{\cdots}\cdots$ can be decomposed into a basis CP format, where the rank is given by the number of variables, and the decomposition variable can be interpreted as a categorical variable.
+    \subsubsection{Arc consistency}
+
+    Simplest reasoning method: AC-3 algorithm (see Section 5.2.2 in \cite{russell_artificial_2021}), propagating constraints along matrices.
+
+    Extensions:
+    \begin{itemize}
+        \item Path consistency: Consider third variable when computing the propagated update on two variables
+        \item k-consistency: Consider k-th variable when computing propagated updated on k-1 variable in a subset of k
+    \end{itemize}
+    Problem of extensions:
+    \begin{itemize}
+        \item Increasing number of possible contractions (each of which can still be performed efficiently)
+        \item Selection of contractions requires a strategy, brute force (as in AC-3) not possible
+    \end{itemize}
+
+    \subsubsection{Naked triple}
+
+    Naked triple technique (see Section 5.2.6 in \cite{russell_artificial_2021}):
+    Find three position variables in a row, column, or square, which domains are all subsets of a set of three digits.
+    Then this subset can be erased from all other position variables in the row, column, or square.
+
+    Contraction representation ($n=3$ to match the above):
+    Build sub-network of
+    \begin{itemize}
+        \item knowledge cores to $n$ position variables
+        \item constraint cores connecting with the $n$ row/column/square variables
+        \item single constraint core to any other position variable in the row/column/square
+    \end{itemize}
+    Leave the single other position variable open, and sent the support of contraction message to it.
 
     \subsubsection{Sakana Fish Puzzle}
 
@@ -264,5 +280,8 @@
         At each parent with a single child, the other choice has been ruled out by constraint propagation.
         In our toy example with minimally connected constraints, single-core constraint propagation ensures that the guessed reasoning path remains consistent.}
     \end{figure}
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
 
 \end{document}

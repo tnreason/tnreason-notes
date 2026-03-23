@@ -164,17 +164,31 @@
 
     \begin{frame}{Generalization: Resolution}
 
-        When $\catvariableof{0}\rightarrow\catvariableof{1}$ and $\catvariableof{0}$ is true then also $\catvariableof{1}$.
+%        When $\catvariableof{0}\rightarrow\catvariableof{1}$ and $\catvariableof{0}$ is true then also $\catvariableof{1}$.
 
+%        Let us now generalize modus ponens to resolution.
+ 
+        
+        
         \begin{block}{Resolution Inference Rule}
             \begin{align*}
                 \frac{
-                    \clauseof{0}{} \lor \catvariableof{1} \,,\,\, \clauseof{1}{} \lor \lnot\catvariableof{1}
+                    \formulaof{0} \lor \catvariable \,,\,\, \formulaof{1} \lor \lnot\catvariable
                 }{
-                    \clauseof{0}{} \lor \clauseof{1}{}
+                    \formulaof{0} \lor \formulaof{1}
                 }
             \end{align*}
         \end{block}
+
+%        Compare with modus ponens: ! WOULD NEED MULTIPLE USAGES, for each premise clause
+%        \begin{align*}
+%            \frac{
+%            \lnot\catvariableof{0} \lor \ldots \lor \lnot\catvariableof{\catorder-1} \lor \catvariableof{\catorder} \,,\,\, \catvariableof{\catorder}
+%            }{
+%            \catvariableof{\catorder}
+%            }
+%        \end{align*}
+
 
 
     \end{frame}

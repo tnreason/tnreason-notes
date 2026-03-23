@@ -112,10 +112,10 @@
     \begin{frame}{Example: One-hot encodings}
         \begin{definition}[One-hot encoding to factored representations]
             The one-hot encoding of a factored representation with variables $\shortcatvariables=\{\catvariableof{\atomenumerator} \wcols, \atomenumeratorin \}$ in state $\catindices$ is the tensor product
-            \begin{align}
+            \begin{align*}
                 \onehotmapofat{\shortcatindices}{\shortcatvariables}
                 = \bigotimes_{\atomenumeratorin} \onehotmapofat{\catindexof{\atomenumerator}}{\catvariableof{\catenumerator}}
-            \end{align}
+            \end{align*}
             of the one-hot encodings of the variables.
         \end{definition}
         We can depict the one-hot encoding by
@@ -314,13 +314,13 @@
     \begin{frame}{Example of a Tensor Contraction: Hadamard Product}
 
         Let $V^k\in\rr^p$ be vectors for $\atomenumeratorin$. Their \emph{Hadamard product} is the vector
-        \begin{align}
+        \begin{align*}
             V^1\circ V^2 \circ \ldots \circ V^{\atomorder-1} \in \rr^p
-        \end{align}
+        \end{align*}
         defined by
-        \begin{align}
+        \begin{align*}
             \left( V^1\circ V^2 \circ \ldots \circ V^{\atomorder-1} \right)_\catindex = \prod_{\atomenumeratorin} V^\atomenumerator_\catindex \, .
-        \end{align}
+        \end{align*}
 
         We visualize the product by leg connection of multiple vectors:
         \begin{center}
@@ -446,15 +446,15 @@
         \begin{definition}[Contraction]
             Let $\tnetof{\graph}$ be a tensor network on a decorated hypergraph $\graph=(\nodes,\edges)$.
             For any subset $\secnodes\subset\nodes$ we define the contraction to be the tensor
-            \begin{align}
+            \begin{align*}
                 \contractionof{\tnetof{\graph}}{\catvariableof{\secnodes}} \in \bigotimes_{\node\in\secnodes} \rr^{\catdimof{\node}}
-            \end{align}
+            \end{align*}
             defined coordinatewise by the sum
-            \begin{align}
+            \begin{align*}
                 \contractionof{\tnetof{\graph}}{\indexedcatvariableof{\secnodes}} =
-                \sum_{\{\catindexof{\node} \in \catdimof{\node} \, : \, \node \in \nodes/\secnodes\}}
+                \sum_{\catindexof{\nodes\backslash\secnodes}\in\bigtimes_{\node\in\nodes\backslash\secnodes}[\catdimof{\node}]}
                 \prod_{\edge\in\edges}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
-            \end{align}
+            \end{align*}
         \end{definition}
 
     \end{frame}
