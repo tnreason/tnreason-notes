@@ -1,42 +1,11 @@
-\frametitle{Representation of Syntax}
-
-        In \tnreason, propositional syntax is represented by \emph{nested lists of strings}, for example:
+\frametitle{Basis encoding decompositions}
+The recursive structure of the nested lists \pyinline{expression}=$\scriptrepof{\exformula}$ is exploited in finding tensor network representations of $\exformula$.
         \begin{minted}{python}
-    ["and", ["not", "Rained"], ["imp", "Rained", "Wet"]]
+    from tnreason.representation import formula_to_cores as ftc
+    coreDict = ftc.create_formula_computation_cores(expression)
         \end{minted}
-        \medskip
-
-        Connectives $\exconnective$ get assigned a string $\scriptrepof{\exconnective}$:
-        \begin{center}
-            \begin{tikzpicture}
-                \node [anchor=center] at (0,0) {
-                    \begin{tabular}{|c|c|}
-                        \hline
-                        \textbf{Unary connective $\exconnective$} & \textbf{$\scriptrepof{\exconnective}$} \\
-                        \hline
-                        $\lnot$                                   & \stringof{not}                         \\
-                        \hline
-                        $()$                                      & \stringof{id}                          \\
-                        \hline
-                    \end{tabular}};
-                \node [anchor=center] at (5,0) {
-                    \begin{tabular}{|c|c|}
-                        \hline
-                        \textbf{Binary connective $\exconnective$} & \textbf{$\scriptrepof{\exconnective}$} \\
-                        \hline
-                        $\land$                                    & \stringof{and}                         \\
-                        \hline
-                        $\lor$                                     & \stringof{or}                          \\
-                        \hline
-                        $\Rightarrow$                              & \stringof{imp}                         \\
-                        \hline
-                        $\oplus$                                   & \stringof{xor}                         \\
-                        \hline
-                        $\Leftrightarrow$                          & \stringof{eq}                          \\
-                        \hline
-                    \end{tabular}};
-            \end{tikzpicture}
-        \end{center}
-
-        Any other string is interpreted by an atomic formula (a so-called propositional symbol).
-
+        The function creates a tensor networks of basis encodings to connectives by:
+        \begin{itemize}
+            \item If $\scriptrepof{\exformula}$ a list, add $\bencodingof{\scriptrepof{\exformula}[0]}$ and add tensors from recursive calls to the subformulas $\scriptrepof{\exformula}[1:]$
+            \item Return empty dictionary, when $\scriptrepof{\exformula}$ is a string (then an atom)
+        \end{itemize}

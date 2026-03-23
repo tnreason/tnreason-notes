@@ -1,0 +1,4 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+    \PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{tnreason}\PYG{n+nn}{.}\PYG{n+nn}{representation}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{formula\PYGZus{}to\PYGZus{}cores} \PYG{k}{as} \PYG{n}{ftc}
+    \PYG{n}{coreDict} \PYG{o}{=} \PYG{n}{ftc}\PYG{o}{.}\PYG{n}{create\PYGZus{}formula\PYGZus{}computation\PYGZus{}cores}\PYG{p}{(}\PYG{n}{expression}\PYG{p}{)}
+\end{MintedVerbatim}
