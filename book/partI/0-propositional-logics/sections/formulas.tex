@@ -1,0 +1,56 @@
+\section{Propositonal Formulas}
+
+We choose a semantic-central definition and define propositional formulas as maps from states to
+
+\subsubsection{Formulas as maps}
+
+
+We now choose a semantic centric approach to propositional logic, by defining formulas as boolean tensors.
+Then we investigate the corresponding syntax of formulas as specification of a tensor network decomposition of the \basisEncoding{} of formulas.
+
+% Intro of formulas
+Logics is especially useful in interpreting boolean tensors representing Propositional Knowledge Bases, based on connections with abstract human thinking.
+To make this more precise, we associate each such tensor with a formula $\exformula$ being a composition of the atomic variables with logical connectives as we proof next.
+
+\begin{definition}
+    \label{def:formulas}
+    A propositional formula $\formulaat{\shortcatvariables}$ depending on $\atomorder$ atoms $\catvariableof{\atomenumerator}$ is a boolean-valued tensor
+    \begin{align*}
+        \formulaat{\shortcatvariables} \defcols \atomstates \rightarrow \ozset \subset \rr \, .
+    \end{align*}
+    We call a state $\shortcatindices \in \atomstates$ a model of a propositional formula $\formula$, if
+    \begin{align*}
+        \formulaat{\indexedshortcatvariables}=1 \, .
+    \end{align*}
+    If there is a model to a propositional formula, we say the formula is satisfiable.
+\end{definition}
+
+% Boolean Tensors
+The propositional formulas coincide therefore with the boolean tensors (see \defref{def:booleanTensor}).
+
+
+% Decomposition into model sums
+Since propositional formulas are binary valued tensors, the generic decomposition of \lemref{lem:tensorBasisDecomposition} simplifies to
+\begin{align}
+    \label{eq:formulaModelDecomposition}
+    \formulaat{\shortcatvariables} = \sum_{\catindices\in\atomstates} \formulaat{\indexedcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \\
+    = \sum_{\catindices\in\atomstates \wcols \formulaat{\indexedcatvariables}=1}  \onehotmapofat{\catindices}{\shortcatvariables} \, .
+\end{align}
+Thus, any propositional formula is the sum over the one-hot encodings of its models.
+This is equal to the encoding of the set of models, which will be introduced in \charef{cha:basisCalculus} (see \defref{def:subsetEncoding}).
+
+We depict this decomposition in the diagrammatic notation by
+\begin{center}
+    \input{./partI/0-propositional-logics/tikz/formula_direct.tex}
+\end{center}
+
+%% Semantic approach
+We here chose a semantic approach to propositional logic in contrary to the standard syntactical approach.
+Instead of defining formulas by connectives acting on atomic formulas, we define them here as binary valued functions of the states of a factored system.
+They are interpreted by marking possible states as models, given the knowledge of $\exformula$.
+The syntactical side will then be introduced later by studying decompositions of formulas.
+
+
+\subsubsection{Knowledge bases}
+
+Knowledge bases of propositional formulas are our first examples of tensor network decompositions.

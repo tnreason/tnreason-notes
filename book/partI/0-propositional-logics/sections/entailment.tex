@@ -1,0 +1,217 @@
+\section{Entailment}
+
+We here discuss entailment in propositinal logics based on contractions of formulas.
+
+%% From report
+Entailment is the central consequence relation among logical formulas.
+Let us define this relation first based on the models of a knowledge base and a test formula.
+
+\begin{definition}[Entailment of propositional formulas]
+    \label{def:logicalEntailment}
+    Given two propositional formulas $\kb$ and $\exformula$ we say that $\kb$ entails $\exformula$, denoted by $\kb\models\exformula$, if any model of $\kb$ is also a model of $\exformula$, that is
+    \begin{align*}
+        \uniquantwrtof{\shortatomindicesin}{\imppremhead{\kbat{\indexedshortcatvariables}=1}{\formulaat{\indexedshortcatvariables}=1}} \, .
+    \end{align*}
+    If $\kb\models\lnot\exformula$ holds, we say that $\kb$ contradicts $\exformula$.
+\end{definition}
+
+% Connection with tensor formalism
+To use the tensor network formalism for the decision of entailment, we will in the following develop three equivalent criteria for entailment. %, based on contractions.
+
+\subsect{Deciding Entailment by Contractions}
+
+First of all, we can decide entailment based on vanishing contractions with the negated test formula.
+
+\begin{theorem}[Contraction Criterion of Entailment]
+    \label{the:contCriterionLogEntailment}
+    We have $\kb\models\exformula$ if and only if
+    \begin{align*}
+        \contraction{\kb,\lnot\exformula} = 0 \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    \proofleftsymbol:
+    If for a $\shortatomindicesin$ we have $\kbat{\indexedshortcatvariables}=1$ but not $\big(\exformulaat{\indexedshortcatvariables}=1\big)$, we would have $\big(\lnot\exformulaat{\indexedshortcatvariables}=1\big)$ and
+    \begin{align*}
+        \contraction{\kb,\lnot\exformula} =
+        \sum_{\shortatomindicesin} \kbat{\indexedshortcatvariables} \cdot \exformulaat{\indexedshortcatvariables} > 1 \, .
+    \end{align*}
+    Thus, whenever the contraction vanishes, we have
+    \begin{align*}
+        \uniquantwrtof{\shortatomindicesin}{\imppremhead{\kbat{\indexedshortcatvariables}=1}{\formulaat{\indexedshortcatvariables}=1}} \, .
+    \end{align*}
+    %for all $\shortatomindicesin$ that $\big(\kbat{\indexedshortcatvariables}=1\big) \rightarrow \big(\formulaat{\indexedshortcatvariables}=1\big)$.
+
+    \proofrightsymbol:
+    Conversely, if the contraction $\contraction{\kb,\lnot\exformula}$ does not vanish, we would find $\shortatomindicesin$ with $\kbat{\indexedshortcatvariables}=1$ and $\lnot\formulaat{\indexedshortcatvariables}=1$, therefore $\formulaat{\indexedshortcatvariables}=0$.
+    It follows that $\kb\models\exformula$ does not hold.
+\end{proof}
+
+
+% Can use basis encoding
+The contraction criterion can be extended to the decision of contradiction as well, since $\kb\models\lnot\exformula$ is equivalent to $\contraction{\kb,\exformula}=0$.
+Therefore, entailment and contradiction can be decided simultaneously by a single contraction, as we state next.
+%To decide whether a formula is entailed, or its negation is entailed (in which case one says that the formula is contradicted) by a single contraction, one can perform the contraction
+%\begin{align*}
+%	\hypercore = \contractionof{\kbat{\shortcatvariables},\formulaat{\shortcatvariables,\exformulavar}}{\exformulavar}
+%\end{align*}
+
+\begin{theorem}
+    \label{the:entailmentContradictionContraction}
+    Given propositional formulas $\kb$ and $\exformula$ we build
+    \begin{align*}
+        \hypercoreat{\exformulavar}
+        = \contractionof{\kbat{\shortcatvariables},\formulaccwith}{\exformulavar} \, .
+    \end{align*}
+    Then $\kb\models\exformula$ is equivalent to $\hypercoreat{\exformulavar=0}=0$, and $\kb\models\lnot\exformula$ is equivalent to $\hypercoreat{\exformulavar=1}=0$ \, .
+\end{theorem}
+\begin{proof}
+    This follows from \theref{the:contCriterionLogEntailment} using that
+    \begin{align*}
+        \contraction{\kb,\lnot\exformula} = \hypercoreat{\exformulavar=0}
+    \end{align*}
+    and
+    \begin{align*}
+        \contraction{\kb,\exformula} = \hypercoreat{\exformulavar=1} \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+
+
+
+
+\subsect{Deciding Entailment by Partial Ordering}
+
+% Subset relation
+Logical entailment can be understood by subset relations of the models of the respective formulas.
+This perspective can be applied with subset encodings in \charef{cha:basisCalculus}.
+The subset relation corresponds with partial ordering of its encoded tensors, as will be shown in \theref{the:subsetRelationSubsetEncoding}.
+For two propositional formulas, we denote to this end $\exformula\prec\secexformula$ (see \defref{def:partialOrder}), if and only if for all $\shortatomindicesin$
+\begin{align*}
+    \exformulaat{\indexedshortcatvariables} \leq \secexformulaat{\shortcatindices}  \, .
+\end{align*}
+
+\begin{theorem}[Partial Ordering Criterion of Entailment]
+    \label{the:orderingEntailmentCriterion}
+    We have $\kb\models\exformula$ if and only if $\kbat{\shortcatvariables}\prec\exformulaat{\shortcatvariables}$.
+\end{theorem}
+\begin{proof}
+    Since both $\kb$ and $\exformula$ are boolean tensors, we have for any $\shortatomindicesin$ that
+    \begin{align*}
+        \kbat{\indexedshortcatvariables},\formulaat{\indexedshortcatvariables}\in\ozset \, .
+    \end{align*}
+    Thus,
+    \begin{align*}
+        \uniquantwrtof{\shortatomindicesin}{\kbat{\indexedshortcatvariables}\leq\formulaat{\indexedshortcatvariables}}
+    \end{align*}
+    is equivalent to
+    \begin{align*}
+        \uniquantwrtof{\shortatomindicesin}{\imppremhead{\kbat{\indexedshortcatvariables}=1}{\formulaat{\indexedshortcatvariables}=1}} \, .
+    \end{align*}
+    This states that $\kbat{\shortcatvariables}\prec\exformulaat{\shortcatvariables}$ is equivalent to $\kb\models\exformula$.
+\end{proof}
+
+
+
+\subsect{Redundancy of Entailed Formulas}
+
+Another interpretation of entailment is by redundancy of a formula in a Knowledge Base.
+This is especially interesting for the sparse representation of Knowledge Bases.
+%Towards getting insights on this we first show that entailed formulas can be dropped from the Knowledge Base.
+
+\begin{theorem}[Redundancy Criterion of Entailment]
+    \label{the:ReduncancyOfEntailed}
+    If and only if $\kb\models\exformula$ we have
+    \begin{align*}
+        \kbat{\shortcatvariables}= \contractionof{\kb,\exformula}{\shortcatvariables}  \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    For any formula $\exformula$ we have
+    \begin{align*}
+        \onesat{\shortcatvariables} = \exformulaat{\shortcatvariables} + \lnot\exformulaat{\shortcatvariables}
+    \end{align*}
+    and thus
+    \begin{align*}
+        \kbat{\shortcatvariables}
+        & = \contractionof{\kbat{\shortcatvariables},\onesat{\shortcatvariables}}{\shortcatvariables} \\
+        & = \contractionof{\kbat{\shortcatvariables},\exformulaat{\shortcatvariables}}{\shortcatvariables} +  \contractionof{\kbat{\shortcatvariables},\lnot\exformulaat{\shortcatvariables}}{\shortcatvariables} \, .
+    \end{align*}
+    Now, by \theref{the:contCriterionLogEntailment} we have $\kb\models\exformula$, if and only if $\contractionof{\kbat{\shortcatvariables},\lnot\exformulaat{\shortcatvariables}}{\shortcatvariables}=0$, which is thus equal to
+    \begin{align*}
+        \kbat{\shortcatvariables}
+        = \contractionof{\kbat{\shortcatvariables},\exformulaat{\shortcatvariables}}{\shortcatvariables} \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+%This provides us with another interpretation of the entailment relation, in terms of redundant formulas.
+%\begin{remark}[Sparsest Description of a Knowledge Base]
+%	Given a set of worlds indexed by $\hypercore$, find the sparsest set of formulas $\kb$ such that
+%		\[ \hypercore = {\kb} \]
+%	would be benefitial for small computational complexity.
+%	Since the formula tensors are invariant under entailment, we can drop entailed formulas.
+%\end{remark}
+
+\subsect{Contraction Knowledge Base}
+
+We exploit the contraction and redundancy criteria of entailment to sketch an implementation of a propositional Knowledge Base in \algoref{alg:contractionKB}.
+Here the function $\mathrm{ASK}(\exformula)$ returns, whether a formula $\exformula$ is entailed or contradicted by a Knowledge Base.
+If the formula is neither entailed or contradicted, we say it is contingent.
+If it is both, we have $\kbat{\shortcatvariables}=0$ and thus an inconsistent Knowledge Base.
+Exploiting \theref{the:entailmentContradictionContraction} we decide these situations based on a single contraction.
+
+The function $\mathrm{TELL}(\exformula)$ incorporates an additional formula $\exformula$ into a Knowledge Base $\kb$.
+Here we exploit \theref{the:ReduncancyOfEntailed} and do not add a formula, which is entailed in order to maintain a sparse representation. %(in which case it returns Incons).
+The function further refuses to add a formula, which would make the Knowledge Base inconsistent (returns Refused) and only changes the Knowledge Base in case of a contingent formula (returns Added).
+
+
+\begin{figure}
+    \begin{center}
+        \input{partI/0-propositional-logics/tikz/entailment/ask-decision-table.tex}
+    \end{center}
+    \caption{Table of possible logical relations between a knowledge base $\kb$ and $\formula$, based on whether the knowledge base entails the formula ($\kb\models\formula$) and its negation ($\kb\models\lnot\formula$).}\label{fig:askDecisionTable}
+\end{figure}
+
+
+% Works also for Markov Networks!
+\begin{algorithm}[hbt!]
+    \caption{Contraction Knowledge Base with operations ASK and TELL}\label{alg:contractionKB}
+    \vspace{0.3cm} \textbf{ASK}($\kb$, $\exformula$)
+    \begin{algorithmic}
+    \iosepline
+    \Require Knowledge base $\kb$, query formula $\exformula$
+    \Ensure Decision which relation between $\kb$ and $\exformula$ holds (see \figref{fig:askDecisionTable})
+    \iosepline
+        \State{$\hypercoreat{\formulavar} \algdefsymbol \contractionof{\{\secexformulaat{\shortcatvariables} \wcols \secexformula\in\kb\},\bencodingofat{\exformula}{\formulavar,\shortcatvariables}}{\formulavar}$}
+        \If{$\hypercoreat{\formulavar=0}=0$ and $\hypercoreat{\formulavar=1}=0$ }
+            \State \Return \stringof{Inconsistent}
+        \ElsIf{$\hypercoreat{\formulavar=0}=0$}
+            \State \Return \stringof{Entailed}
+        \ElsIf{$\hypercoreat{\formulavar=1}=0$}
+            \State \Return \stringof{Contradicted}
+        \Else
+            \State \Return \stringof{Contingent}
+        \EndIf
+    \vspace{0.1cm}
+    \hrule
+    \end{algorithmic}
+    \vspace{0.3cm} \textbf{TELL}($\kb$, $\exformula$)
+    \begin{algorithmic}
+        \iosepline
+    \Require Knowledge base $\kb$, query formula $\exformula$
+    \Ensure Decision whether a formula is added to the knowledge base (\stringof{Added}), or an exception in (\stringof{Inconsistent}, \stringof{Redundant} or \stringof{Refused}) is raised.
+    \iosepline
+        \State{answer $\algdefsymbol$ ASK($\exformula$)}
+        \If{answer is \stringof{Inconsistent}:}
+            \State \Return \stringof{Inconsistent}
+        \ElsIf{answer is \stringof{Entailed}:}
+            \State \Return \stringof{Redundant}
+        \ElsIf{answer is \stringof{Contradicted}:}
+            \State \Return \stringof{Refused}
+        \ElsIf{answer is \stringof{Contingent}:}
+            \State $\kb \algdefsymbol \kb\cup\{\exformula\}$
+            \State \Return \stringof{Added}
+        \EndIf
+    \end{algorithmic}
+
+\end{algorithm}
