@@ -96,10 +96,7 @@ For any $\truthstate\in\truthset$ we have
 Performing the negation now amounts to switching the coordinates of the encoded vector, which can be performed by contraction with a transposition matrix
 \begin{align*}
     \bencodingofat{\lnot}{\headvariableof{\lnot},\catvariable} =
-    \begin{bmatrix}
-        0 & 1 \\
-        1 & 0
-    \end{bmatrix} \, ,
+    \coloredmatrixof{0 & 1 \\ 1 & 0}{\headvariableof{\lnot},\catvariable} \, ,
 \end{align*}
 where in this notation we always understand the first variable $\catvariable$ as the row index selector and the second variable $\headvariableof{\notucon}$ as the column index selector.
 We then have
@@ -121,11 +118,13 @@ This amounts to posing a global directionality constraint on the boolean tensor,
 
 \subsection{Basis encodings}
 
-\red{Also: Add entailment by basis calculus diagram.}
+\todo{Add entailment by basis calculus diagram.}
 
 \subsubsection{Definition}
 
-Here
+\begin{definition}
+
+\end{definition}
 
 
 \subsubsection{Formula representation by \ComputationActivationNetworks{}}
@@ -354,7 +353,7 @@ These properties motivate a hypergraph-based definition of syntactical compositi
 
 \begin{definition}
     \label{def:formulaDecomposition}
-    A syntactical hypergraph is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ (see \defref{def:hypergraphs}) such that
+    A syntactical circuit is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ (see \defref{def:hypergraphs}) such that
     \begin{itemize}
         \item each hyperedge $\edge=(\incomingnodes,\outgoingnodes)$ has exactly one outgoing node, i.e. $\cardof{\outgoingnodes}=1$
         \item each node $\nodein$ carries a boolean variable $\headvariableof{\node}$ and appears at most once as the outgoing node of a hyperedge % well-definedness
@@ -364,7 +363,7 @@ These properties motivate a hypergraph-based definition of syntactical compositi
         \end{align*}
         \item the node not appearing as an outgoing node are labeled by $[\atomorder]$
     \end{itemize}
-    We say that the syntactical hypergraph is single-rooted, if exactly one node $\secnode$ does not appear as an incoming node of a hyperedge.
+    We say that the syntactical circuit is single-rooted, if exactly one node $\secnode$ does not appear as an incoming node of a hyperedge.
     In this case this unique node is called the root node. % head node
     We assign atomic formulas to the nodes $[\atomorder]$ and recursively assign to each further node $\node$ a node formula % connective $\connectiveofat{\node}{\headvariableof{\incomingnodes}}$.
     \begin{align*}
@@ -380,14 +379,14 @@ These properties motivate a hypergraph-based definition of syntactical compositi
     %In this way, we define a formula $\exformula$ by the assignment to the variable of the single node $\node$ not appearing as an incoming node.
     %We say that $\exformula$ is
 %	We then say, that the composition of the syntax hypergraph is the formula %$\exformulaat{\catvariableof{[\atomorder]}}$
-%	We further call any syntactical hypergraph, which composition is a formula $\exformula$, a syntactical decomposition of $\exformula$.
+%	We further call any syntactical circuit, which composition is a formula $\exformula$, a syntactical decomposition of $\exformula$.
 \end{definition}
 
 We are now prepared to show the main result of this chapter, the representation of formulas as contracted \basisEncoding{} of their decomposition.
 
 \begin{theorem}
     \label{the:formulaDecompositionRep}
-    For any syntactical hypergraph $\graph$ with composition $\exformula$ we have
+    For any syntactical circuit $\graph$ with composition $\exformula$ we have
     \begin{align*}
 %		\bencodingofat{\exformula}{\formulavar,\shortcatvariables}
         \exformulaat{\shortcatvariables}
@@ -536,6 +535,8 @@ We now provide a generic scheme to find syntactical decompositions to arbitrary 
 %
 %Let us now show that any formula tensor can be decomposed into a network of these connective symbols and atomic formula tensors.
 
+
+\todo{Use the $\hardparam$ parametrization instead of the nodes 0 1 parametrization.}
 
 \begin{definition}[Terms and Clauses]
     \label{def:clauses}

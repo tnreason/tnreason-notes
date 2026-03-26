@@ -10,9 +10,62 @@ When having a Constraint Satisfaction Problem on a large number of variables, wh
 An alternative to deciding entailment by global operations is the use of local operations.
 Here we interpret a part of the network (for example a single core) as an own knowledge base (with atomic formulas being the roots of the directed subgraph, that is potentially differing with the atoms in the global perspective) and perform entailment with respect to that.
 
+\subsection{Manipulation of constraint tensor networks}
+
+\todo{Reformulate inference algorithms based on the following operations:}
+Leaving the contraction invariant:
+\begin{itemize}
+    \item[i] Adding the support of a sub-contraction of a graph $\secgraph\subset\graph$ and nodes $\secnodes\subset\nodes$, and drop some $\edge\in\secgraph$ with $\edge\subset\secnodes$.
+    \item[ii] Partition an edge $\edge$ into two edges $\edgeof{0},\edgeof{1}$ decorated by $\hypercoreofat{\edgeof{0}}{\catvariableof{\edgeof{0}}},\hypercoreofat{\edgeof{1}}{\catvariableof{\edgeof{1}}}$, if
+    \begin{align*}
+        \hypercoreofat{\edge}{\catvariableof{\edge}}
+        = \hypercoreofat{\edgeof{0}}{\catvariableof{\edgeof{0}}} \otimes \hypercoreofat{\edgeof{1}}{\catvariableof{\edgeof{1}}}
+    \end{align*}
+\end{itemize}
+Monotonic decrease of solutions:
+\begin{itemize}
+    \item Adding constraint tensors.
+    Thus, the network is satisfiable if an increased one is satisfiable.
+    If a decreased one is unsatisfiable, then also the network is unsatisfiable.
+\end{itemize}
+
+Elementary networks are satisfiable when not containing the zero tensor.
+
+\red{Need partial ordering for the monotonicity?}
+
+\subsubsection{Examples}
+
+\begin{example}[Modus ponens]
+    When there is an edge
+    \begin{align*}
+        \edge
+        = \innodes \cup \outnodes
+    \end{align*}
+    with
+    \begin{align*}
+        \hypercoreofat{\edge}{\catvariableof{\edge}}
+        = \left(\bigwedge_{\node\in\innodes}\catvariableof{\node}\right) \Rightarrow \left(\bigwedge_{\node\in\outnodes}\catvariableof{\node}\right)
+    \end{align*}
+    and for each $\node\in\innodes$ an edge $\{\node\}$ with $\hypercoreofat{\{\node\}}{\catvariableof{\node}}=\tbasisat{\catvariableof{\node}}$, then:
+    \begin{itemize}
+        \item Choose $\secgraph=\left(\edge,\{\edge\}\cup\bigcup_{\node\in\innodes}\{\node\}\right)$, $\secnodes=\edge$
+        \item Apply $i$ rule to replace $\secgraph$ with $\hypercoreofat{\edge}{\catvariableof{\edge}}=\bigtimes_{\node\in\edge}\tbasisat{\catvariableof{\node}}$
+        \item Apply $ii$ rule to split into edges $\{\node\}$ for $\node\in\edge$ with $\tbasisat{\catvariableof{\node}}$
+    \end{itemize}
+\end{example}
+
+\begin{example}[Resolution]
+    When there are two clauses with a complementary literal can apply $i$ with the complementary literal variable left out of the open variables and get the resolvent clause.
+    Notice that the old clauses cannot always be dropped, since they are no subsets of $\secnodes$-
+\end{example}
+
+%Show the grand resolution theorem based on the increase method.
+
 \subsect{Monotonicity of Entailment}
 
-\red{Remove markov networks for monotonocity statements!}
+\todo{Remove markov networks for monotonocity statements.
+Understand as the proof of the rule $i$.
+}
 
 Vanishing local contractions provide sufficient but not necessary criterion to decide entailment, as we show in the next theorem.
 
@@ -74,7 +127,41 @@ To prove the theorem, we first establish the following lemma that states if a co
     \theref{the:monotonEntailment} therefore just provides a sufficient but not necessary criterion of entailment with respect to $\probtensor^{\graph}$.
 \end{remark}
 
-\subsect{Message cores}
+
+
+\subsection{Syntactical inference algorithms}
+
+\todo{
+    Clauses are tensors, which either shrink or trivialize when contracted with basis vectors.
+}
+
+\subsubsection{Forward Chaining in Horn Logics}
+
+\todo{
+    When all clauses definite and of length at most $2$, then both the $\onetuple{\nodes}$ and $\zerotuple{\nodes}$ satisfy the constraints.
+    Forward chaining as copying length $1$ clauses to other clauses and contract them.
+    When terminated all clauses are of lenght at most $2$, and definite if they initially where definite (then any clause of length $1$ is a fact).
+}
+
+\subsubsection{Resolution}
+
+\begin{theorem}[Grand resolution theorem]
+    When a constraint tensor network of clauses is unsatisfiable, then the empty clause is in the closure under resolution.
+\end{theorem}
+\begin{proof}
+    We give a standard proof \cite{russell_artificial_2021} with the perspective of contractions.
+    Having a clause tensor network we add basis vectors to get a elementary tensor network, which is satisfiable when we started with the closure under resolution.
+\end{proof}
+
+\subsection{Constraint Propagation}
+
+\todo{
+    Understand constraint propagation as an iterative application of the $(i)$ manipulation rule where messages are computed and contracted into memory cores.
+    (Each step applies the rule twice: New message core computed and fused into old message core.)
+    Call $\kcore$ memory core, which is updated by a message.
+}
+
+%\subsect{Message cores}
 
 To store preliminary conclusions, we define auxiliary message cores storing constraints on variables $\edge\subset\nodes$.
 They are understood as logical formulas to the atomization variables $\left(\catvariableof{\edge}=\catindexof{\edge}\right)$ of the respective formulas
@@ -94,9 +181,6 @@ They are understood as logical formulas to the atomization variables $\left(\cat
         \nonzerocirc\contractionof{\extnet}{\catvariableof{\edge}}=\kcoreofat{\edge}{\catvariableof{\edge}} \, .
     \end{align*}
 \end{definition}
-
-
-\subsect{Knowledge Propagation}
 
 We now provide a solution algorithm for constraint satisfaction problems by propagating local contractions.
 The dynamic programming paradigm is implemented by the storage of partial entailment results in message cores.
@@ -202,6 +286,7 @@ There are different ways of implementing \algoref{alg:knowledgePropagation}, by 
     After each update in \algoref{alg:knowledgePropagation}, $\kcoreof{\secedge}$ is further monotonically decreasing with respect to the partial ordering.
 \end{theorem}
 \begin{proof}
+    \todo{This follows from soundness of the $i$ manipulation rule.}
     We show the first claim by induction over the update steps in \algoref{alg:knowledgePropagation}.
     At the start, where $\kcoreofat{\edge}{\edgevariables} = \onesat{\edgevariables}$, we trivially have
     \begin{align*}
@@ -385,7 +470,7 @@ then
     \tbasisat{\secexformulavar} =
     \contractionof{\{\formulaat{\shortcatvariables} \wcols \formula\in\formulaset\} \cup \{\bencodingofat{\secexformula}{\secexformulavar,\shortcatvariables}\}}{\secexformulavar} \, ,
 \end{align*}
-that is the inference rule can be performed in when $\formulaset$ are in $\arbset$.
+that is the inference rule can be performed when $\formulaset$ are in $\arbset$.
 
 \begin{example}{Modus Ponens}
     For example, when for two formulas $\exformula,\secexformula\in\formulaset$ we have $\exformula\models\secexformula$, then when $\kcoreofat{\{\exformula\}}{\exformulavar} = \tbasisat{\formulavar}$ we have

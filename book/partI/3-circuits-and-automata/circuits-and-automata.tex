@@ -9,13 +9,17 @@
 }
 
 
-Topics:
-\begin{itemize}
-    \item Decomposition hypergraphs generalizing the syntactical hypergraphs in PL, to be called \emph{circuits}
-    \item Automata from the sketches
-\end{itemize}
+%Topics:
+%\begin{itemize}
+%    \item circuits generalizing the syntactical hypergraphs in PL, to be called \emph{circuits}
+%    \item Automata from the sketches
+%\end{itemize}
 
-\section{The neural paradigm}\label{sec:neurPar}
+\section{Generalized basis encodings}
+
+\todo{Here: Introduce arbitrary set enumeration variables and basis encodings of functions between sets.}
+
+\section{Circuit decompositions}\label{sec:neurPar}
 
 The neural paradigm of artificial intelligence exploits the decomposition of functions into neurons, which are aligned in a directed acyclic graph.
 We show in this section how functions decomposable into neurons can be represented by tensor networks.
@@ -71,12 +75,11 @@ As a main principle of tensor decompositions, we now show that basis encodings o
     \label{fig:functionDecomposition}
 \end{figure}
 
-
-\noindent We now define a more generic decomposition of discrete functions.
+We now define a more generic decomposition of discrete functions.
 
 \begin{definition}
-    \label{def:decompositionHypergraph}
-    A \emph{decomposition hypergraph} is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ such that the following holds.
+    \label{def:circuit}
+    A \emph{circuit} is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ such that the following holds.
     \begin{itemize}
         \item Each node $\nodein$ is decorated by a set $\arbsetof{\node}$ of finite cardinality $\catdimof{\node}$, a variable $\catvariableof{\node}$, and an index interpretation function
         \begin{align*}
@@ -118,16 +121,16 @@ As a main principle of tensor decompositions, we now show that basis encodings o
         \quad,\quad
         \exfunctionof{\graph} = \bigtimes_{\selindexin} \exfunctionof{\node^{\outsymbol}_\selindex}
     \end{align*}
-    the composition function to the decomposition hypergraph $\graph$.
+    the composition function to the circuit $\graph$.
 \end{definition}
 
 % Neural Paradigm
-The neural paradigm in AI can be modeled by the existence of decomposition hypergraphs for functions on large sets.
-We now show how decomposition hypergraphs enable the sparse representation of composition functions by tensor networks.
+The neural paradigm in AI can be modeled by the existence of circuits for functions on large sets.
+We now show how circuits enable the sparse representation of composition functions by tensor networks.
 
 \begin{theorem}
     \label{the:functionDecompositionRep}
-    For any decomposition hypergraph $\graph$ with composition formula $\exfunctionof{\graph}$, we have
+    For any circuit $\graph$ with composition formula $\exfunctionof{\graph}$, we have
     \begin{align*}
         \bencodingofat{\exfunctionof{\graph}}{\headvariables,\shortcatvariables}
         = \contractionof{\left\{\bencodingofat{\secexfunctionof{\edge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}} \wcols \edge=(\incomingnodes,\outgoingnodes)\in\edges\right\}
@@ -233,7 +236,7 @@ We are now concerned with an efficient inference algorithm based on tensor netwo
 \end{algorithm}
 
 % Application
-We apply the Directed Belief Propagation, Algorithm \algoref{alg:directedBeliefPropagation}, on a decomposition hypergraph, where we add hyperedges to each leaf node and assign one-hot encodings of input states.
+We apply the Directed Belief Propagation, Algorithm \algoref{alg:directedBeliefPropagation}, on a circuit, where we add hyperedges to each leaf node and assign one-hot encodings of input states.
 We then show that the messages are the one-hot encodings to the evaluations of the node functions.
 
 \begin{theorem}
@@ -278,3 +281,4 @@ Edges with empty incoming sets are carrying one-hot encodings of input states an
 %If all tensors are boolean and directed, then the messages in directed belief propagation give the one-hot encodings of the node formulas evaluated at the inverse $\shortcatindices$ one-hot encoding at the leafs.
 %In particular, the messages are the correct contractions of the subgraph. % Needs the further above theorem?
 %
+

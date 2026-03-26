@@ -10,6 +10,12 @@ Following Chapter~5 in \cite{russell_artificial_2021}, we now define Constraint 
     \begin{align*}
         \extnet = \{ \hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edges \} \, .
     \end{align*}
+    We then call $\extnet$ a constraint tensor network and the tensor
+    \begin{align*}
+        \extnetat{\nodevariables}
+        = \contractionof{\extnet}{\nodevariables}
+    \end{align*}
+    its contraction.
     The Constraint Satisfaction Problem (CSP) to $\extnet$ is the decision whether there is a state $\catindexof{\nodes}$ such that
     \begin{align*}
         \contractionof{\extnet}{\indexedcatvariableof{\nodes}} = 1 \, .

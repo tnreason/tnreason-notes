@@ -1208,14 +1208,14 @@ We here show, that they can be captures by the knowledge propagation scheme, if 
 
 Whenever
 \begin{align*}
-    \bigvee_{\exformula\in\formulaset} \exformula \models \secexformula
+    \bigwedge_{\exformula\in\formulaset} \exformula \models \secexformula
 \end{align*}
 then
 \begin{align*}
     \tbasisat{\secexformulavar} =
     \contractionof{\{\formulaat{\shortcatvariables} \wcols \formula\in\formulaset\} \cup \{\bencodingofat{\secexformula}{\secexformulavar,\shortcatvariables}\}}{\secexformulavar} \, ,
 \end{align*}
-that is the inference rule can be performed in when $\formulaset$ are in $\arbset$.
+that is the inference rule is performed when $\formulaset$ are in $\arbset$.
 
 \begin{example}{Modus Ponens}
     For example, when for two formulas $\exformula,\secexformula\in\formulaset$ we have $\exformula\models\secexformula$, then when $\kcoreofat{\{\exformula\}}{\exformulavar} = \tbasisat{\formulavar}$ we have

@@ -50,7 +50,51 @@ Instead of defining formulas by connectives acting on atomic formulas, we define
 They are interpreted by marking possible states as models, given the knowledge of $\exformula$.
 The syntactical side will then be introduced later by studying decompositions of formulas.
 
-
-\subsubsection{Knowledge bases}
+\subsection{Knowledge bases}
 
 Knowledge bases of propositional formulas are our first examples of tensor network decompositions.
+
+\begin{definition}
+    A propositional knowledge base is a set $\kb=\{\formulaofat{\selindex}{\catvariableof{\edgeof{\selindex}}} \wcols \selindexin\}$ of propositional formulas dependent on variables $\catvariableof{\edgeof{\selindex}}$.
+    The corresponding formula $\kbat{\nodevariables}$ depending on $\nodevariables=\bigcup_{\selindexin}\catvariableof{\edgeof{\selindex}}$ has coordinates to $\catindexof{\nodes}\in\bigtimes_{\nodein}\catstatesof{\node}$
+    \begin{align*}
+        \kbat{\indexedcatvariableof{\nodes}}
+        = \begin{cases}
+              1 & \ifspace \uniquantwrtof{\selindexin}{\formulaofat{\selindex}{\indexedcatvariableof{\edgeof{\selindex}}}=1}\\
+              0 & \text{else} \, .
+        \end{cases}
+        % \bigvee_{\selindexin} \formulaofat{\selindex}{\catvariableof{\edgeof{\selindex}}} \, .
+    \end{align*}
+\end{definition}
+
+% By conjunctions
+We will later investigate syntactical decompositions and denote
+\begin{align*}
+    \kbat{\catvariableof{\nodes}}
+    = \bigvee_{\selindexin} \formulaofat{\selindex}{\catvariableof{\edgeof{\selindex}}} \, .
+\end{align*}
+
+
+%%
+\begin{theorem}[Tensor network representation of knowledge base]
+    Let there be a propositional knowledge base $\kb=\{\formulaof{\selindex}\wcols\selindexin\}$.
+    Then the
+    \begin{align*}
+        \kbat{\nodevariables}
+        = \contractionof{
+            \formulaat{\catvariableof{\edgeof{\selindex}}} \wcols \selindexin
+        }{\nodevariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We have for any $\catindexof{\nodes}$ that
+    \begin{align*}
+        \kbat{\indexedcatvariableof{\nodes}}
+        = \contractionof{
+            \formulaat{\catvariableof{\edgeof{\selindex}}} \wcols \selindexin
+        }{\indexedcatvariableof{\nodes}}
+        = \prod_{\selindexin} \formulaat{\indexedcatvariableof{\edgeof{\selindex}}}
+    \end{align*}
+    where by $\catindexof{\edgeof{\selindex}}$ we denote the reduction of the tuple $\catindexof{\nodes}$ to the indices $\edgeof{\selindex}$.
+    It follows that $\kbat{\indexedcatvariableof{\nodes}}=1$ if and only if $\uniquantwrtof{\selindexin}{\formulaofat{\selindex}{\indexedcatvariableof{\edgeof{\selindex}}}=1}$.
+\end{proof}
