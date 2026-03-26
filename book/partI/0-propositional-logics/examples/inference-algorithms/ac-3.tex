@@ -1,0 +1,24 @@
+\begin{example}[AC-3 as a Constraint propagation scheme]
+    The AC-3 algorithm (see \cite{mackworth_consistency_1977}) is a specific instance, where message cores are assigned to single variables and propagation is performed on single constraint cores.
+    We assume that each edge has cardinality $2$, that is $\graph$ is a graph.
+    Here the inference clusters are
+    \begin{align*}
+        \arbset
+        = \big\{\{\edge\} \wcols \edgein\big\} \, .
+    \end{align*}
+    The message edges are
+    \begin{align*}
+        \domainedges
+        = \big\{\{\node\} \wcols \nodein\big\} \, .
+    \end{align*}
+    At each local inference step to the edge $\edge=\{\nodeof{0},\nodeof{1}\}$ we compute
+    \begin{align*}
+        \contractionof{
+            \kcoreofat{\{\nodeof{0}\}}{\catvariableof{\nodeof{0}}},
+            \hypercoreofat{\edge}{\catvariableof{\nodeof{0},\nodeof{1}}},
+            \kcoreofat{\{\nodeof{0}\}}{\catvariableof{\nodeof{1}}}
+        }{\catvariableof{\nodeof{0}}} \, .
+    \end{align*}
+
+
+\end{example}
