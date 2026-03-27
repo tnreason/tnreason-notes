@@ -70,7 +70,7 @@ Since probability distributions contract to $1$, they are directed (see \defref{
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/1-probability-theory/tikz-pics/probability_tensor.tex}
+        \input{tikz-pics/probability_tensor.tex}
     \end{center}
     \caption{Probability distributions of variables $\catvariableof{0},\ldots,\catvariableof{\atomorder-1}$, sketched
     a) by a directed edge $\edge$ with all variables outgoing, which is decorated b) by a directed tensor $\probwith$.}\label{fig:probabilityTensor}
@@ -171,7 +171,7 @@ Let us now justify this terminology and show, that any marginal distribution is 
 In a tensor network diagram we often represent variables $\secexrandom$ not appearing as open variables of a contraction as contracted with the trivial tensor $\onesat{\secexrandom}$.
 Following this notation, we depict the marginal distribution in \defref{def:marginalProbability} by
 \begin{center}
-    \input{partI/1-probability-theory/tikz-pics/marginalized_probability.tex}
+    \input{tikz-pics/marginalized_probability.tex}
 \end{center}
 Since we have shown, that marginal distributions are themself probability distributions, they inherit the outgoing directionality in tensor network diagrams.
 
@@ -195,7 +195,7 @@ Normalizations of probability distributions result in conditional distributions 
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/1-probability-theory/tikz-pics/ones_property_cond.tex}
+        \input{tikz-pics/ones_property_cond.tex}
     \end{center}
     \caption{Depiction of conditional probability distributions a) by an edge with the incoming variable $\secexrandom$ and the outgoing variable $\secexrandom$, which is decorated by b) the directed tensor $\condprobof{\exrandom}{\secexrandom}$. }
     \label{fig:conditionalDistribution}
@@ -204,7 +204,7 @@ Normalizations of probability distributions result in conditional distributions 
 Since conditional probabilities are normalizations of probability tensors, they are directed and therefore depicted by directed hyperedges (see \figref{fig:conditionalDistribution}).
 For any $\secexrandindin$ we depict the slice $\condprobof{\exrandom}{\indexedsecexrandom}$ defined by a normalization operation as
 \begin{center}
-    \input{partI/1-probability-theory/tikz-pics/conditional_probability.tex}
+    \input{tikz-pics/conditional_probability.tex}
 \end{center}
 
 As we have done before for marginal distribution, we relate \defref{def:conditionalProbability} with a more convenient coordinatewise definition of conditional probabilities.
@@ -233,7 +233,7 @@ Each slice of the conditioned distribution with respect to incoming variables is
     and therefore each slice is normalized.
     We can visualize this calculation exploiting our diagramatic notation as
     \begin{center}
-        \input{partI/1-probability-theory/tikz-pics/proof_cond_normed.tex}
+        \input{tikz-pics/proof_cond_normed.tex}
     \end{center}
     Since for any $\secexrandindin$ the slice $\condprobof{\exrandom}{\indexedsecexrandom}$ is non-negative and contracts to $1$, we conclude that it is a probability distribution.
 \end{proof}
@@ -415,7 +415,7 @@ We state next an equivalent independence criterion based on a contraction equati
 Two jointly distributed variables are by \theref{the:independenceProductCriterion} independent, if and only if their joint distribution $\probat{\exrandom,\secexrandom}$ is the tensor product of marginal probabilities.
 Using tensor network diagrams we depict this property by
 \begin{center}
-    \input{partI/1-probability-theory/tikz-pics/independent_decomposition.tex}
+    \input{tikz-pics/independent_decomposition.tex}
 \end{center}
 Let us notice, that the assumption of independence reduces the degrees of freedom from $\exranddim\cdot\secexranddim-1$ to $(\exranddim-1)+(\secexranddim-1)$.
 The decomposition into marginal distributions furthermore exploits this reduced freedom and provides an efficient storage.
@@ -469,7 +469,7 @@ We can further exploit conditional independence to find tensor network decomposi
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/1-probability-theory/tikz-pics/cond_independence_decomposition.tex}
+        \input{tikz-pics/cond_independence_decomposition.tex}
     \end{center}
     \caption{Diagrammatic visualization of the contraction equation in \corref{cor:secCriterionCondIndepencence}.
     Conditional independence of $\exrandom$ and $\secexrandom$ given $\thirdexrandom$ holds if the contraction on the right side is equal to the probability tensor on the left side.}
@@ -534,7 +534,7 @@ Following our motivation of sparse decompositions, we now combine this result wi
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/1-probability-theory/tikz-pics/markov_chain.tex}
+        \input{tikz-pics/markov_chain.tex}
     \end{center}
     \caption{Depiction of a Markov Chain Decomposition by a
     a) hypergraph with the nodes $\nodes=[\catorder]$ and edges $\edges=\big\{\{0\}\cup\{\{\catenumerator,\catenumerator+1\} \wcols\catenumeratorin, \, \catenumerator>1\} \big\}$ and
@@ -695,9 +695,9 @@ From the proof of \theref{the:condIndMN} Markov Networks with zero coordinates s
 However, the reverse is not true, that is there are distributions with vanishing coordinates, which satisfy the conditional independence assumptions, but cannot be represented as a Markov Network (see Example~4.4 in \cite{koller_probabilistic_2009}).
 
 
-\input{partI/1-probability-theory/examples/coin_toss_hc}
+\input{examples/coin_toss_hc}
 
-\input{partI/1-probability-theory/examples/student_hc}
+\input{examples/student_hc}
 
 
 \subsect{Bayesian Networks}
@@ -743,7 +743,7 @@ This allows us to verify with \theref{the:conditionalContractionPreservation} th
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/1-probability-theory/tikz-pics/bayesian_factor.tex}
+        \input{tikz-pics/bayesian_factor.tex}
     \end{center}
     \caption{Example of a Factor of a Bayesian Network to the node $\catvariableof{\node}$ with parents $\catvariableof{0},\ldots,\catvariableof{\catorder-1}$, as an directed edge a) which is decorated by a directed tensor b).}
     \label{fig:BayesianFactor}
@@ -931,7 +931,7 @@ As a consequence, tasks such as the determination of the partition functions or 
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/1-probability-theory/tikz-pics/hidden_markov_model.tex}
+        \input{tikz-pics/hidden_markov_model.tex}
     \end{center}
     \caption{Decomposition of a probability distribution in the Hidden Markov Model, consistent of state variables $\catvariableof{\catenumerator}$ and observation variables $\randomeof{\catenumerator}$.
     Given the models conditional independence assumptions, the distribution is a Bayesian Network on the directed hypergraph a).
@@ -958,7 +958,7 @@ Let us now introduce sufficient statistics towards studying further tensor netwo
     We say that $\sstat$ is a sufficient statistic for $\thirdcatvariable$ if $\catvariable$ is independent of $\thirdcatvariable$ conditioned on $\headvariableof{\sstat}$.
 \end{definition}
 
-\input{partI/1-probability-theory/examples/sufstat_probability}
+\input{examples/sufstat_probability}
 
 \exaref{exa:sufStatProb} hints at a connection between sufficient statistics and decompositions into \CompActNets{}.
 More generally, such decompositions are provided by the Fisher-Neyman Factorization Theorem.
@@ -976,7 +976,7 @@ More generally, such decompositions are provided by the Fisher-Neyman Factorizat
     \end{align*}
     We depict this equation diagrammatically by
     \begin{center}
-        \input{partI/1-probability-theory/tikz-pics/computation_decomposition.tikz}
+        \input{tikz-pics/computation_decomposition.tikz}
     \end{center}
 \end{theorem}
 \begin{proof}
@@ -1002,9 +1002,9 @@ Any decomposition of $\bencodingofat{\sstat}{\headvariables,\shortcatvariables}$
 The activation tensor $\acttensorat{\headvariables,\indexedthirdcatvariable}$, whose decomposition is called the \emph{activation network}, is specific to each member of the family.
 We now show in two examples how families of distributions can be represented in \CompActNets{} by sufficient statistics.
 
-\input{partI/1-probability-theory/examples/coin_toss_fn}
+\input{examples/coin_toss_fn}
 
-\input{partI/1-probability-theory/examples/graphical_models_as_cans}
+\input{examples/graphical_models_as_cans}
 
 \section{Efficient contractions by message passing}
 
@@ -1124,10 +1124,10 @@ Note that by construction $\sedge\in\preedgeset$.
 % Example by Student Markov network
 We illustrate the usage of \algoref{alg:treeBeliefPropagation} on the Markov network of \exaref{exa:studentHC}.
 
-\input{partI/1-probability-theory/examples/student_bp}
+\input{examples/student_bp}
 
 
 %% Further sections from prob reasoning
-\input{partI/1-probability-theory/sections/queries}
-\input{partI/1-probability-theory/sections/sampling}
-\input{partI/1-probability-theory/sections/max-likelihood}
+\input{sections/queries}
+\input{sections/sampling}
+\input{sections/max-likelihood}

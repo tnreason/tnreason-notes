@@ -11,7 +11,7 @@ The activation network however needs ancilla augmentation.
 
 \begin{figure}[t]
     \begin{center}
-        \input{partII/5-quantum-inference/tikz/rejection-sampling/can_elementary_augmentation}
+        \input{tikz/rejection-sampling/can_elementary_augmentation}
     \end{center}
     \caption{Ancilla augmentation of an elementary \ComputationActivationNetwork{} a) by replacing each leg vector of the elementary activation tensor by an directed ancilla augmentation.}
     \label{fig:canElementaryAugmentation}
@@ -30,7 +30,7 @@ For an example in the $\ttformat$ format, see \figref{fig:canTTAugmentation}.
 
 \begin{figure}[t]
     \begin{center}
-        \input{partII/5-quantum-inference/tikz/rejection-sampling/can_TT_augmentation}
+        \input{tikz/rejection-sampling/can_TT_augmentation}
     \end{center}
     \caption{Ancilla augmentation of an $\ttformat$ \ComputationActivationNetwork{} a) by a Bayesian Network b).
     The hidden variables in the $\ttformat$ activation tensor are treated as distributed variables.
@@ -44,7 +44,7 @@ For \ComputationActivationNetworks{} we find a q-sample by concatenating \comput
 
 \begin{figure}
     \begin{center}
-        \input{partII/5-quantum-inference/tikz/rejection-sampling/ca_circuit}
+        \input{tikz/rejection-sampling/ca_circuit}
     \end{center}
     \caption{
         Quantum Circuit to reproduce a q-sample of an augmented \ComputationActivationNetwork{}.
@@ -52,4 +52,4 @@ For \ComputationActivationNetworks{} we find a q-sample by concatenating \comput
     }\label{fig:caCircuit}
 \end{figure}
 
-\input{partII/5-quantum-inference/examples/rejection-sampling/toy_accounting_circuit}
+\input{examples/rejection-sampling/toy_accounting_circuit}

@@ -49,7 +49,7 @@ Topics
 \end{definition}
 
 % From NESY
-\input{partII/0-elementary-can/examples/coin_toss_exp}
+\input{examples/coin_toss_exp}
 
 We used the selection encoding to represent the weighted summation over the statistics, that is the tensor (see \defref{def:selectionEncoding})
 \begin{align*}
@@ -67,7 +67,7 @@ The selection encoding represent the weighted sum of the statistic coordinates b
 For more details on this representation scheme, we refer to \theref{the:linCompSelEncoding} in \charef{cha:coordinateCalculus}.
 Up to normalization, we sketch the probability distribution of any member by the tensor network diagram
 \begin{center}
-     \input{partII/0-elementary-can/tikz-pics/energy_representation.tex}
+     \input{tikz-pics/energy_representation.tex}
 \end{center}
 We here denote by an ellipsis the coordinatewise transformation by the exponential function (see \secref{sec:coordinatewiseTransforms}).
 Since such coordinatewise transformation are nonlinear, they are a caveat for efficient contraction of the diagram.
@@ -221,7 +221,7 @@ which hyperedges contain single variables.
 We call this graph elementary, since it corresponds with elementary tensor network formats consistent of tensor products of vectors.
 For unary activation cores, that is for the elementary graph $\elgraph$, any member of $\realizabledistsof{\sstat,\elgraph}$ has up to a normalization factor a tensor network decomposition by the diagram
 \begin{center}
-     \input{partII/0-elementary-can/tikz-pics/unary_realizable.tex}
+     \input{tikz-pics/unary_realizable.tex}
 \end{center}
 Comparing this representation scheme with \theref{the:expFamilyTensorRep}, we conclude as the next corollary, that any member of an exponential family with trivial base measure can be represented by an elementary activation tensors.
 
@@ -235,7 +235,7 @@ Comparing this representation scheme with \theref{the:expFamilyTensorRep}, we co
 
 For elements of the exponential family with general boolean base measure we have with the activation cores constructed in \theref{the:expFamilyTensorRep}
 \begin{center}
-     \input{partII/0-elementary-can/tikz-pics/expdist_unary_realizable.tex}
+     \input{tikz-pics/expdist_unary_realizable.tex}
 \end{center}
 where the partition function represents the normalizing contraction of the tensor network.
 Let us note, that when choosing activation cores with nontrivial support, we can also prepare boolean base measures and in principle extend \corref{cor:unaryActivationExpdistRealization} to families of nontrivial base measures.
