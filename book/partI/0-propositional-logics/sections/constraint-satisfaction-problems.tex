@@ -1,5 +1,4 @@
-
-\sect{Constraint Satisfaction Problems}
+\section{Constraint Satisfaction Problems}
 
 Let us now explore a more general class of logical inference problems and discuss probabilistic entailment within that class.
 We then provide further examples based on categorical constraints.
@@ -10,113 +9,160 @@ Following Chapter~5 in \cite{russell_artificial_2021}, we now define Constraint 
     \begin{align*}
         \extnet = \{ \hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edges \} \, .
     \end{align*}
-    We then call $\extnet$ a constraint tensor network and the tensor
-    \begin{align*}
+    We then call $\extnet$ a \emph{constraint network} and the tensor
+    \begin{align*} % Necessary? Can also  directly use the contraction
         \extnetat{\nodevariables}
         = \contractionof{\extnet}{\nodevariables}
     \end{align*}
     its contraction.
-    The Constraint Satisfaction Problem (CSP) to $\extnet$ is the decision whether there is a state $\catindexof{\nodes}$ such that
+    The \emph{constraint satisfaction problem (CSP)} to the constraint network $\extnet$ is the decision whether there is a state $\catindexof{\nodes}$ such that
     \begin{align*}
         \contractionof{\extnet}{\indexedcatvariableof{\nodes}} = 1 \, .
     \end{align*}
     We say the CSP is satisfiable, when there is such a state, and unsatisfiable if not.
 \end{definition}
 
-\input{partI/0-propositional-logics/examples/constraint-satisfaction-problems/kb-as-csp}
+\input{examples/constraint-satisfaction-problems/kb-as-csp}
 
-%\subsect{Deciding Entailment on Markov Networks}
-%
-%Deciding entailment on Markov Networks is a general class of constraint satisfaction problems.
-%Here, any factor tensor in the Markov Networks produces a constraint tensor in the respective CSP.
-%
-%\begin{theorem}
-%    \label{the:factorReduction}
-%    Let $\probof{\graph}$ be a Markov Network to the Tensor Network $\extnet=\extnetasset$ on a hypergraph $\graph=(\nodes,\edges)$. % $\secnodes\subset\nodes$ be a subset and
-%%	\begin{align*}
-%%		\probat{\catvariableof{\secnodes}} = \normalizationof{\{\hypercoreat{\edge} \wcols \edge\in\edges \}}{\catvariableof{\secnodes}}
-%%	\end{align*}
-%    For each $\edge\in\edges$ we build the factor constraint cores
-%    \begin{align*}
-%        \sechypercoreofat{\edge}{\catvariableof{\edge}} = \nonzerocirc\hypercoreofat{\edge}{\catvariableof{\edge}} \, .
-%    \end{align*}
-%    Let further $\exformulaat{\catvariableof{\secnodes}}$ be a formula depending on the variables $\secnodes$, and build $\secgraph=(\nodes,\edges\cup\{\secnodes\})$.
-%    Then we have that $\probof{\graph}\models\exformula$ if and only if the constraint satisfaction problem of $\secgraph$ to the constraint tensors
-%    \begin{align*}
-%        \{\sechypercoreof{\edge} \wcols \edge\in\edges \} \cup \{\lnot\exformula \}
-%    \end{align*}
-%    is unsatisfiable.
-%    %and
-%    %	\[ \tilde{\probtensor}[\catvariableof{\secnodes}] = \normalizationof{\{\nonzerofunction \circ \hypercoreat{\edge} \wcols \edge\in\edges \}}{\catvariableof{\secnodes}} \]
-%    %Then we have for any $\exformula$ that $\probtensor\models\exformula$ if and only if $\tilde{\probtensor}\models\exformula$.
-%\end{theorem}
-%\begin{proof}
-%    We first show, that
-%    \begin{align*}
-%        \nonzerocirc\probofat{\graph}{\nodevariables} =
-%        \contractionof{\{\sechypercoreof{\edge} \wcols \edge\in\edges \}}{\nodevariables} \, . %\nonzerocirc\tilde{\probtensor} \, .
-%    \end{align*}
-%    To this end, let $\catindexof{\nodes}\in\nodestatesof{\nodes}$ be arbitrary.
-%    We have $\probofat{\graph}{\indexednodevariables}=0$ if and only if at there is an edge $\edge\in\edges$ with $\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}$.
-%    But this is equivalent to
-%    \begin{align*}
-%        \contractionof{\{\sechypercoreof{\edge} \wcols \edge\in\edges \}}{\nodevariables} \, .
-%    \end{align*}
-%    We thus have for any $\catindexof{\nodes}\in\nodestatesof{\nodes}$
-%    \begin{align*}
-%        \nonzerocirc\probofat{\graph}{\indexednodevariables} =
-%        \contractionof{\{\sechypercoreof{\edge} \wcols \edge\in\edges \}}{\indexednodevariables} \, . %\nonzerocirc\tilde{\probtensor} \, .
-%    \end{align*}
-%
-%    To continue, we have $\probof{\graph}\models\exformula$ if and only if
-%    \begin{align*}
-%        \contraction{\extnetat{\shortcatvariables},\lnot\exformulaat{\shortcatvariables}} = 0
-%    \end{align*}
-%    which is equal to
-%    \begin{align*}
-%        \contraction{\nonzerocirc\extnetat{\shortcatvariables},\lnot\exformulaat{\shortcatvariables}} = 0 \, .
-%    \end{align*}
-%    We notice that this is the unsatisfiability of the claimed Constraint Satisfaction Problem.
-%
-%%	We first show
-%%	\begin{align}\label{eq:proofFacReduction}
-%%		 \nonzerocirc\probtensor = \nonzerocirc\tilde{\probtensor} \, .
-%%	\end{align}
-%%	The claim follows then from \theref{the:entailmentProbToLogical}.
-%%	To show \eqref{eq:proofFacReduction} let there be $\indexedcatvariableof{\secnodes}$ such that $\probtensor[\indexedcatvariableof{\secnodes}]=0$.
-%%	Then for any $\indexedcatvariableof{\nodes}$ extending  $\indexedcatvariableof{\secnodes}$ we have $\contractionof{\{\hypercoreat{\edge} \wcols \edge\in\edges \}}{\indexedcatvariableof{\nodes}} = 0$ and thus also $\contractionof{\{\nonzerocirc\hypercoreat{\edge} \wcols \edge\in\edges \}}{\indexedcatvariableof{\nodes}} = 0$ and $\tilde{\probtensor}[\indexedcatvariableof{\secnodes}]=0$.
-%%	One can similarly show, that when $\tilde{\probtensor}[\indexedcatvariableof{\secnodes}]=0$ then also ${\probtensor}[\indexedcatvariableof{\secnodes}]=0$.
-%%	The support of the distributions $\probtensor$ and $\tilde{\probtensor}$ is thus identical and \eqref{eq:proofFacReduction} holds.
-%\end{proof}
-%
-%% Consequence: Reduction of probabilitic entailment to logical entailment.
-%For any positive tensor $\hypercore$ we have
-%\[ \nonzerocirc\hypercoreat{\catvariableof{\edge}} = \onesat{\catvariableof{\edge}} \, , \]
-%which does not influence the distribution and can be omitted from the Markov Network.
-%By \theref{the:factorReduction}, when deciding entailment, we can reduce all tensors of a Markov Network to their support and omit those with full support.
-%Since the support indicating tensors $\nonzerocirc\hypercoreat{\catvariableof{\edge}}$ are boolean, each is a propositional formula and the Markov Network is turned into a Knowledge Base of their conjunctions.
-%Deciding probabilistic entailment is thus traced back to logical entailment.
-%
-%%Exponential families
-%Exponential families have a tensor network representation by a Markov Network (see \theref{the:expFamilyTensorRep}).
-%However, all factors corresponding with a coordinate of the statistic $\sstat$ have a trivial support, and therefore do not influence the support of the distribution.
-%The only tensors with non-trivial support are those to the boolean base measure $\basemeasure$.
+\subsection{Manipulation of constraint tensor networks}
+
+\todo{Decide whether tensor networks should be denoted hyperedge-based and not graph based.}
+
+\begin{theorem}[Invariance under adding subcontractions, Rule $(i)$]
+    Let there be a constraint network $\tnetof{\edges}$ on the hypergraph $\graph=(\nodes,\edges)$ and choose an arbitrary subset $\secedges\subset\edges$ and $\secnodes\subset\nodes$.
+    We further choose a reduced subset $\edgesof{\mathrm{reduced}}\subset\edges$ with $\edges\backslash\secedges \subset\edgesof{\mathrm{reduced}}$ and for any $\edge\in\edges\backslash\edgesof{\mathrm{reduced}}$ we have $\edge\subset\secnodes$.
+    Then we have
+    \begin{align*}
+        \contractionof{\tnetof{\edges}}{\nodevariables}
+        =
+        \contractionof{
+            \tnetof{\edgesof{\mathrm{reduced}}}
+            \cup \{\nzcontractionof{\tnetof{\secedges}}{\secnodes}\}
+        }{\nodevariables} \, .
+    \end{align*}
+\end{theorem}
+
+\begin{theorem}[Invariance under splitting disentangled edges, Rule $(ii)$]
+    Let there be a constraint network $\tnetof{\edges}$ and let for some $\edgein$ with $\edge=\edgeof{0}\dot{\cup}\edgeof{1}$ exist tensors $\hypercoreofat{\edgeof{0}}{\catvariableof{\edgeof{0}}}$ and $\hypercoreofat{\edgeof{1}}{\catvariableof{\edgeof{1}}}$ obeying
+    \begin{align*}
+        \hypercoreofat{\edge}{\catvariableof{\edge}}
+        =  \hypercoreofat{\edgeof{0}}{\catvariableof{\edgeof{0}}} \otimes  \hypercoreofat{\edgeof{1}}{\catvariableof{\edgeof{1}}} \, .
+    \end{align*}
+    Then
+    \begin{align*}
+        \contractionof{\tnetof{\edges}}{\nodevariables}
+        = \contractionof{\tnetof{(\edges\cup\{\edgeof{0},\edgeof{1}\})\backslash\{\edge\}}}{\nodevariables} \, .
+    \end{align*}
+
+\end{theorem}
+
+\todo{Reformulate inference algorithms based on the following operations:}
+Leaving the contraction invariant:
+\begin{itemize}
+    \item[i] Adding the support of a sub-contraction of a graph $\secgraph\subset\graph$ and nodes $\secnodes\subset\nodes$, and drop some $\edge\in\secgraph$ with $\edge\subset\secnodes$.
+    \item[ii] Partition an edge $\edge$ into two edges $\edgeof{0},\edgeof{1}$ decorated by $\hypercoreofat{\edgeof{0}}{\catvariableof{\edgeof{0}}},\hypercoreofat{\edgeof{1}}{\catvariableof{\edgeof{1}}}$, if
+    \begin{align*}
+        \hypercoreofat{\edge}{\catvariableof{\edge}}
+        = \hypercoreofat{\edgeof{0}}{\catvariableof{\edgeof{0}}} \otimes \hypercoreofat{\edgeof{1}}{\catvariableof{\edgeof{1}}}
+    \end{align*}
+\end{itemize}
+Monotonic decrease of solutions:
+\begin{itemize}
+    \item Adding constraint tensors.
+    Thus, the network is satisfiable if an increased one is satisfiable.
+    If a decreased one is unsatisfiable, then also the network is unsatisfiable.
+\end{itemize}
+
+Elementary networks are satisfiable when not containing the zero tensor.
+
+\red{Need partial ordering for the monotonicity?}
 
 
+%Show the grand resolution theorem based on the increase method.
+
+\subsection{Examples}
+
+We now investigate examples of constraint networks and their manipulations.
+
+\subsubsection{Clauses}
+
+An interesting class of constraint networks are those where each constraint is a clause.
+Many logical inference algorithms are understood as manipulations of the constraint networks \cite{brachman_knowledge_2014}.
+Before presenting the basic syntactical inference rules, let us derive contraction properties of clauses.
+
+\begin{lemma}
+    For any clause $\clauseofat{\hardparam}{\catvariableof{\hardlegset}}$ and any $\catenumerator\in\hardlegset$ and $\secheadindexof{\catenumerator}\in[2]$ we have
+    \begin{align*}
+        \contractionof{
+            \clauseofat{\hardparam}{\catvariableof{\hardlegset}},\onehotmapofat{\headindexof{\catenumerator}}{\catvariableof{\catenumerator}}
+        }{\catvariableof{\hardlegset}}
+        = \begin{cases}
+              \clauseof{\hardparam}{\catvariableof{\hardlegset\backslash\{\catenumerator\}}} \otimes \onehotmapofat{\headindexof{\catenumerator}}{\catvariableof{\catenumerator}}
+              & \ifspace \headindexof{\catenumerator} = \secheadindexof{\catenumerator} \\
+              \onesat{\catvariableof{\hardlegset\backslash\{\catenumerator\}}}\otimes \onehotmapofat{\headindexof{\catenumerator}}{\catvariableof{\catenumerator}}
+              & \ifspace \headindexof{\catenumerator} \neq \secheadindexof{\catenumerator}
+        \end{cases} \, .
+    \end{align*}
+\end{lemma}
 
 
-\subsect{Categorical Constraints}\label{sec:categoricalTN}
 
-%% Categorical variables with more possibilities
-We so far in this chapter made the assumption that all categorical variables in factored systems to be represented by propositional logics take binary values (i.e. $\catdim=2$).
-In cases where a categorical variable $\catvariable$ takes multiple values we define for each $\catindex$ an atomic formula $\catvariableof{\catindex}$ representing whether $\catvariable$ is assigned by $\catindex$ in a specific state.
-%\[ \catvariableof{\catindex} =  (\catvariable = \catindex \, . \] Confusing notation
-Following this construction we have the constraint that exactly one of the atoms $\catvariableof{\catindex}$ is $1$ at each state.
+\begin{example}[Modus ponens]
+    When there is an edge
+    \begin{align*}
+        \edge
+        = \innodes \cup \outnodes
+    \end{align*}
+    with
+    \begin{align*}
+        \hypercoreofat{\edge}{\catvariableof{\edge}}
+        = \left(\bigwedge_{\node\in\innodes}\catvariableof{\node}\right) \Rightarrow \left(\bigwedge_{\node\in\outnodes}\catvariableof{\node}\right)
+    \end{align*}
+    and for each $\node\in\innodes$ an edge $\{\node\}$ with $\hypercoreofat{\{\node\}}{\catvariableof{\node}}=\tbasisat{\catvariableof{\node}}$, then:
+    \begin{itemize}
+        \item Choose $\secgraph=\left(\edge,\{\edge\}\cup\bigcup_{\node\in\innodes}\{\node\}\right)$, $\secnodes=\edge$
+        \item Apply $i$ rule to replace $\secgraph$ with $\hypercoreofat{\edge}{\catvariableof{\edge}}=\bigtimes_{\node\in\edge}\tbasisat{\catvariableof{\node}}$
+        \item Apply $ii$ rule to split into edges $\{\node\}$ for $\node\in\edge$ with $\tbasisat{\catvariableof{\node}}$
+    \end{itemize}
+\end{example}
 
-%% Capture constraint
-%To capture the constraints resulting from this construction we introduce auxiliary parts. % of Bayesian Propositional Networks.
-%Such constraints can also be expressed by a formula but would result in an unnecessary large tensor network.
+%\subsubsection{Examples}
 
+Notice, that any basis vector is also a clause.
+We further derive a contraction property of arbitrary clauses with negated literals.
+
+\begin{lemma}
+    Let there be two clauses $\clauseofat{(\hardlegset^0,\headindex^0_{\hardlegset^0})}{\catvariableof{\hardlegset^0}}$, $\clauseofat{(\hardlegset^1,\headindex^1_{\hardlegset^1})}{\catvariableof{\hardlegset^1}}$ and let us assume there is $\catenumerator\in(\hardlegset^0\cap\hardlegset^1)$ with
+    \begin{align*}
+        \headindex^0_{\catenumerator} \neq \headindex^1_{\catenumerator} \, .
+    \end{align*}
+    Then
+    \begin{align*}
+        &\nzcontractionof{
+            \clauseofat{(\hardlegset^0,\headindex^0_{\hardlegset^0})}{\catvariableof{\hardlegset^0}},
+            \clauseofat{(\hardlegset^1,\headindex^1_{\hardlegset^1})}{\catvariableof{\hardlegset^1}}
+        }{
+            \catvariableof{(\hardlegset^0\cup\hardlegset^1)\backslash\{\catenumerator\}}
+        } \\
+        &\quad=
+        \begin{cases}
+            \onesat{\catvariableof{(\hardlegset^0\cup\hardlegset^1)\backslash\{\catenumerator\}}}
+            & \ifspace \existquantwrtof{\seccatenumerator\in(\hardlegset^0\cup\hardlegset^1)\backslash\{\catenumerator\}}{\headindex^0_{\seccatenumerator}\neq\headindex^1_{\seccatenumerator}} \\
+            \clauseofat{(\hardlegset^0\cup\hardlegset^1)\backslash\{\catenumerator\},\headindexof{(\hardlegset^0\cup\hardlegset^1)\backslash\{\catenumerator\}}}{
+                \catvariableof{(\hardlegset^0\cup\hardlegset^1)\backslash\{\catenumerator\}}
+            } & \text{else} \, .
+        \end{cases}
+    \end{align*}
+\end{lemma}
+
+
+\begin{example}[Resolution]
+    When there are two clauses with a complementary literal can apply $i$ with the complementary literal variable left out of the open variables and get the resolvent clause.
+    Notice that the old clauses cannot always be dropped, since they are no subsets of $\secnodes$.
+    This is different to the modus ponens inference rule.
+\end{example}
+
+\subsubsection{Categorical Constraints}\label{sec:categoricalTN}
 
 %% Categorical selection map
 \begin{definition}[Categorical Constraint and Atomization Variables]\label{def:catConAtomVar}
@@ -132,124 +178,67 @@ Following this construction we have the constraint that exactly one of the atoms
     We then call the variables  $\catvariableof{0},\ldots,\catvariableof{\catdim-1}$ the atomization variables to the categorical variable $\catvariable$.
 \end{definition}
 
-%% Decomposition
-%We notice that the categorical constraint tensor is the basis encoding of the map $\categoricalmap \defcols [\atomorder] \rightarrow \bigtimes_{\atomenumeratorin} [2]$ defined as
-%\begin{align*}
-%    \categoricalmapat{\atomenumerator} = \onehotmapof{\atomenumerator} \, .
-%\end{align*}
 We notice that the categorical constraint tensor is the basis encoding of the one-hot map on $[\catdim]$.
-With \theref{the:functionDecompositionBasisCP} the basis encoding $\categoricalcore$ decomposes in a basis $\cpformat$ format (see \figref{fig:CategoricalDecomposition}b) of if its coordinate maps $\categoricalmapof{\catenumerator}$, where $\catenumerator\in[\catdim]$, defined as
+The restriction to the image coordinate $\catenumerator$ of the one-hot map is the function
 \begin{align*}
-    \categoricalmapofat{\atomenumerator}{\secatomenumerator}
+    \categoricalmapofat{\catenumerator}{\seccatenumerator}
     = \begin{cases}
-          1 & \ifspace \seccatenumerator=\atomenumerator \\
+          1 & \ifspace \seccatenumerator=\catenumerator \\
           0 & \text{else} \, .
-      \end{cases}
+    \end{cases}
 \end{align*}
-%
-%\begin{align*}
-%    \categoricalmapofat{\catenumerator}{\indexedcatvariableof{\catenumerator},\indexedcatvariable}
-%    = \begin{cases}
-%          1 & \ifspace \catindex=\catenumerator \andspace \catindexof{\catenumerator} = 1 \\
-%          1 & \ifspace \catindex\neq\catenumerator \andspace \catindexof{\catenumerator} = 0 \\
-%          0 & \text{else} \, .
-%    \end{cases}
-%\end{align*}
-Their basis encoding are decomposed as
+The basis encoding of the one-hot map is decomposed as
 \begin{align}
     \categoricalcoreofat{\catenumerator}{\catvariableof{\catenumerator},\catvariable}
     = \tbasisat{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\catenumerator}{\catvariable}
     + \onehotmapofat{0}{\catvariableof{\catenumerator}} \otimes \big(\onesat{\catvariable}- \onehotmapofat{\catenumerator}{\catvariable}\big) \, .
 \end{align}
-We thus have by \theref{the:functionDecompositionBasisCP}
+We thus have (see \figref{fig:categoricalDecomposition}) %by \theref{the:functionDecompositionBasisCP} NEED NEW REFERENCE?
 \begin{align*}
     \bencodingofat{\categoricalmap}{\catvariableof{[\catdim]},\catvariable}
     = \contractionof{\left\{\categoricalcoreofat{\catenumerator}{\catvariableof{\catenumerator},\catvariable} \wcols \catindex\in[\catdim]\right\}}{\catvariable, \catvariableof{0}, \ldots, \catvariableof{\catdim-1}} \, .
 \end{align*}
 
 
-In the next theorem we show how a categorical constraint can be enforced in a tensor network by adding the tensor $\categoricalmap$ to a contraction.
 
-\begin{theorem}
-    For any tensor $\hypercoreat{\shortcatvariables}$ and a categorical constraint defined by an ordered subset $\catvariableof{\variableset}\subset\shortcatvariables$, a variable $\catvariable\in\shortcatvariables$ we have
-    \begin{align*}
-        &\contractionof{\hypercoreat{\shortcatvariables},\categoricalcoreat{\catvariableof{\variableset},\catvariable}}{\indexedcatvariables} \\
-        & \quad  = \begin{cases}
-              \hypercoreat{\indexedcatvariables} & \ifspace \exists \catindex : \catindexof{\variableset} = \onehotmapof{\catindex} \\
-              0 & \text{else} \, .
-        \end{cases}
-    \end{align*}
-    Here by $\catindexof{\variableset}$ we denote the restriction of $\shortcatindices$ on the set $\variableset$.
-\end{theorem}
-\begin{proof}
-    For any $\catindexof{[\atomorder]}$ we have
-    \[ \contractionof{\{\hypercoreat{\shortcatvariables},\categoricalcoreat{\catvariableof{\variableset},\catvariable}\}}{\indexedcatvariables}  =
-    \hypercoreat{\shortcatindices} \cdot \categoricalcoreat{\indexedcatvariableof{\variableset},\indexedcatvariable} \, .
-    \]
-    If $\catindexof{\variableset} = \onehotmapof{\catindex}$ we have $\categoricalmap[\indexedcatvariableof{\variableset},\indexedcatvariable] = 1$ and thus
-    \[ \contractionof{\hypercoreat{\shortcatvariables},\categoricalcoreat{\catvariableof{\variableset},\catvariable}}{\indexedcatvariables}  =  \hypercoreat{\shortcatindices}  \, . \]
-    If this is not the case then $\categoricalcoreat{\indexedcatvariableof{\variableset},\indexedcatvariable} = 0$ and
-    \begin{align*}
-        \contractionof{\hypercoreat{\shortcatvariables},\categoricalcoreat{\catvariableof{\variableset},\catvariable}}{\indexedcatvariables}  = 0 \, . & \qedhere
-    \end{align*}
-\end{proof}
+
+%% Not necessary
+%In the next theorem we show how a categorical constraint can be enforced in a tensor network by adding the tensor $\categoricalmap$ to a contraction.
+%\begin{theorem}
+%    For any tensor $\hypercoreat{\shortcatvariables}$ and a categorical constraint defined by an ordered subset $\catvariableof{\variableset}\subset\shortcatvariables$, a variable $\catvariable\in\shortcatvariables$ we have
+%    \begin{align*}
+%        &\contractionof{\hypercoreat{\shortcatvariables},\categoricalcoreat{\catvariableof{\variableset},\catvariable}}{\indexedcatvariables} \\
+%        & \quad  = \begin{cases}
+%                       \hypercoreat{\indexedcatvariables} & \ifspace \exists \catindex : \catindexof{\variableset} = \onehotmapof{\catindex} \\
+%                       0 & \text{else} \, .
+%        \end{cases}
+%    \end{align*}
+%    Here by $\catindexof{\variableset}$ we denote the restriction of $\shortcatindices$ on the set $\variableset$.
+%\end{theorem}
+%\begin{proof}
+%    For any $\catindexof{[\atomorder]}$ we have
+%    \[ \contractionof{\{\hypercoreat{\shortcatvariables},\categoricalcoreat{\catvariableof{\variableset},\catvariable}\}}{\indexedcatvariables}  =
+%    \hypercoreat{\shortcatindices} \cdot \categoricalcoreat{\indexedcatvariableof{\variableset},\indexedcatvariable} \, .
+%    \]
+%    If $\catindexof{\variableset} = \onehotmapof{\catindex}$ we have $\categoricalmap[\indexedcatvariableof{\variableset},\indexedcatvariable] = 1$ and thus
+%    \[ \contractionof{\hypercoreat{\shortcatvariables},\categoricalcoreat{\catvariableof{\variableset},\catvariable}}{\indexedcatvariables}  =  \hypercoreat{\shortcatindices}  \, . \]
+%    If this is not the case then $\categoricalcoreat{\indexedcatvariableof{\variableset},\indexedcatvariable} = 0$ and
+%    \begin{align*}
+%        \contractionof{\hypercoreat{\shortcatvariables},\categoricalcoreat{\catvariableof{\variableset},\catvariable}}{\indexedcatvariables}  = 0 \, . & \qedhere
+%    \end{align*}
+%\end{proof}
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/0-propositional-logics/tikz/constraint-satisfaction-problems/categorical-decomposition.tex}
+        \input{tikz/constraint-satisfaction-problems/categorical-decomposition.tex}
     \end{center}
     \caption{Representation of a categorical constraint in a $\cpformat$ Format tensor network.
     a) Representation of the dependency of the graphical model.
     b) Tensor Representation with further network decomposition.
     }
-    \label{fig:CategoricalDecomposition}
+    \label{fig:categoricalDecomposition}
 \end{figure}
 
-% Drop?
-\begin{remark}[Constraint Satisfaction Problems of Categorical Constraints]
-    We can define CSPs by collection of categorical constraints.
-    An example, where the corresponding Constraint Satisfaction Problem is unsatisfiable are the categorical constraints to the three sets
-    \[ \{\catvariableof{0},\catvariableof{1},\catvariableof{2},\catvariableof{3}\} \, , \, \{\catvariableof{0},\catvariableof{1}\}\, ,\,\{\catvariableof{2},\catvariableof{3}\} \, . \]
-%	Besides the categorical cores also the datacores have a similar bayesian network affecting the atoms by another hidden variable.
-%	Combining both is well-defined, only when all datapoints satisfy the categorical constraints (that is only one of the atoms in each constraint is active).
-\end{remark}
-
-
-\begin{example}[Sudoku]
-    \label{exa:sudoku}
-    An interesting example, where categorical constraints are combined is Sudoku, the game of assigning numbers to a grid (see for example Section~5.2.6 in \cite{russell_artificial_2021}).
-    The basic variables therein are $\catvariableof{i,j}$, with $\catdimof{i,j}=n^2$ and $i,j\in[n^2]$.
-    By understanding $i$ as a line index and $j$ as a column index, they are ordered in a grid as sketched in \figref{fig:sudokuGrid} in the case $n=3$.
-
-    For a $n\in\nn$ we further define the atomization variables $\catvariableof{i,j,k}$ where $i,j,k\in[n^2]$ and $\catdimof{i,j,k}=2$.
-    These $n^6$ variables are the booleans indicating whether a specific position has a specific number assigned.
-    The consistency of the atomization variables to the basic variables is then for each $i,j\in[n^2]$ ensured by the categorical constraints on the sets
-    \[ \{\catvariableof{i,j,k} \wcols k\in [n^2] \} \, . \]
-
-    We further have $3\cdot n^2$ constraints by the
-    \begin{itemize}
-        \item Row constraints: Each number $k$ appears exactly once in each row $i\in[n^2]$, captured by the constraints
-        \[ \{\catvariableof{i,j,k}  \wcols j \in [n^2] \} \, . \]
-        \item Column constraints: Each number $k$ appears exactly once in each column $j\in[n^2]$, captured by the constraints
-        \[ \{\catvariableof{i,j,k}  \wcols i \in [n^2] \} \, . \]
-        \item Square constraints: Each number appears exactly once in each square $s,r\in[n]$, captured by the constraints
-        \[ \{\catvariableof{i+n\cdot s,j+n\cdot r,k}  \wcols i,j \in [n] \} \, . \]
-    \end{itemize}
-
-    In total we have $3\cdot n^2 + n^4$ constraints for $n^6$ variables.
-
-    Deciding whether a Sudoku has a solution is a Constraint Satisfaction Problem \cite{simonis_sudoku_2005}, which is NP-hard \cite{agerbeck_multi-agent_2008}.
-    Let us notice, that due to this large number of variables and constraints, direct solution of the problem by a global contraction is not feasible.
-    For efficient algorithmic solutions, we instead refer to \secref{subsec:LocalEntailment}.
-
-%    \begin{figure}
-%        \begin{center}
-%            \input{PartII/tikz_pics/network_representation/sudoku_grid.tex}
-%        \end{center}
-%        \caption{
-%            Sudoku grid of basic categorical variables $\catvariableof{i,j}$, here drawn in the standard case of $n=3$, each with dimension $\catdim=n^2=9$.
-%            Each basic categorical variables has $n^2$ corresponding atomization variables, which are further atomization variables to the row, column and squares constraints.
-%            Instead of depicting those constraints by hyperedges in a variable dependency graph, we here just indicate their existence through row, column and squares blocks.
-%        }\label{fig:sudokuGrid}
-%    \end{figure}
-\end{example}
+\todo{
+    Add Sudoku from the NeSy paper, call the boolean variables atomization variables.
+}

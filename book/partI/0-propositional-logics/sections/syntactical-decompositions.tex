@@ -3,8 +3,6 @@
 When syntax is available for formulas, we find tensor network decompositions.
 This is a first example of basis calculus.
 
-
-
 \subsection{Encoding of Booleans}\label{sec:booleanEncoding}
 
 Before investigating schemes for syntactical decompositions, we revisit the encoding of Booleans.
@@ -73,7 +71,6 @@ While placing the disjunction $\lor$ as the logical connective effectively execu
 \end{align*}
 Thus, the problem of affine linear operations cannot be resolved by a clever choice of an interpretation function with image in $\ozset$.
 
-
 \subsubsection{Representation by Basis Vectors} % This is what Basis Calculus does! Refer to that here?
 
 While contractions can just perform conjunctions, we need a representation trick to extend the contraction expressivity to arbitrary connectives and resolve the affine representation problem.
@@ -115,7 +112,6 @@ In basis calculus on the other hand, booleans are represented by elements of $\o
 In that scheme, there are pairs of two coordinates (building slice vectors of the tensors), which are restricted to be different from each other.
 This amounts to posing a global directionality constraint on the boolean tensor, as will be shown in \theref{the:bencodingDirected}.
 
-
 \subsection{Basis encodings}
 
 \todo{Add entailment by basis calculus diagram.}
@@ -125,7 +121,6 @@ This amounts to posing a global directionality constraint on the boolean tensor,
 \begin{definition}
 
 \end{definition}
-
 
 \subsubsection{Formula representation by \ComputationActivationNetworks{}}
 
@@ -180,7 +175,7 @@ Furthermore, the \basisEncoding{} connects with the formalism of \ComputationAct
 
 \begin{figure}[t]
     \begin{center}
-        \input{./partI/0-propositional-logics/tikz/formula_bencoding.tex}
+        \input{tikz/formula_bencoding.tex}
     \end{center}
     \caption{\BasisEncoding{} of a propositional formula.
     The encoding is a sum of the one hot encodings of all states of the factored system in a tensor product with basis vectors, which encode whether the state is a model of the formula.
@@ -207,10 +202,7 @@ The contraction of the \basisEncoding{} with one-hot encodings to worlds $\short
 We thus interpret the contractions as calculating in basis vectors, whether the world $\shortcatindices$ is a model of the formula $\exformula$.
 This is the basis calculus scheme and will be investigated it in more detail in \charef{cha:basisCalculus} (see \theref{the:basisCalculus}).
 
-
-
 \subsection{}
-
 
 \subsection{Circuit decomposition}
 
@@ -252,7 +244,7 @@ Atomic formulas and their basis encodings have an especially compelling represen
     \end{align*}
     The decomposition is depicted in a network diagram as
     \begin{center}
-        \input{./partI/0-propositional-logics/tikz/atomic_ft.tex}
+        \input{tikz/atomic_ft.tex}
     \end{center}
 \end{lemma}
 \begin{proof}
@@ -261,7 +253,7 @@ Atomic formulas and their basis encodings have an especially compelling represen
         \bencodingofat{\atomicformulaof{\atomenumerator}}{\headvariableof{\atomenumerator},\shortcatvariables}
         =& \sum_{\catindices\in\atomstates} \onehotmapofat{\catindices}{\shortcatvariables} \otimes \onehotmapofat{\formulaofat{\atomenumerator}{\indexedcatvariables}}{\headvariableof{\atomenumerator}} \\
         =& \left( \onehotmapofat{0,0}{\catvariableof{\atomenumerator},\headvariableof{\atomenumerator}} +
-        \onehotmapofat{1,1}{\catvariableof{\atomenumerator},\headvariableof{\atomenumerator}} \right) \otimes \onesat{\catvariableof{\secatomenumerator} \wcols \secatomenumerator \neq \atomenumerator} \\
+               \onehotmapofat{1,1}{\catvariableof{\atomenumerator},\headvariableof{\atomenumerator}} \right) \otimes \onesat{\catvariableof{\secatomenumerator} \wcols \secatomenumerator \neq \atomenumerator} \\
         =& \contractionof{\identityat{\catvariableof{\atomenumerator},\headvariableof{\atomenumerator}}}{\shortcatvariables,\headvariableof{\atomenumerator}} \, . \qedhere
     \end{align*}
 \end{proof}
@@ -284,7 +276,7 @@ We now exploit such syntactical decompositions of formulas to derive tensor netw
 
 \begin{figure}[t]
     \begin{center}
-        \input{./partI/0-propositional-logics/tikz/unary_binary_composition.tex}
+        \input{tikz/unary_binary_composition.tex}
     \end{center}
     \caption{Representation of syntactical compositions of formulas by basis encodings.
     a) Unary connective $\exconnective$ acting on a formula $\exformula$.
@@ -392,7 +384,7 @@ We are now prepared to show the main result of this chapter, the representation 
         \exformulaat{\shortcatvariables}
         = \breakablecontractionof{
             &\left\{
-            \bencodingofat{\connectiveof{\node}}{\headvariableof{\node},\headvariableof{\incomingnodes}} \wcols (\incomingnodes,\{\node\})\in\edges
+                 \bencodingofat{\connectiveof{\node}}{\headvariableof{\node},\headvariableof{\incomingnodes}} \wcols (\incomingnodes,\{\node\})\in\edges
             \right\} \cup \\
             & \{\identityat{\headvariableof{\atomenumerator},\catvariableof{\atomenumerator}} \wcols \atomenumeratorin\}
             \cup \{\tbasisat{\headvariableof{\secnode}}\}
@@ -407,7 +399,7 @@ We are now prepared to show the main result of this chapter, the representation 
         \bencodingofat{\formulaof{\node}}{\headvariableof{\node},\shortcatvariables}
         = \breakablecontractionof{
             &\left\{
-            \bencodingofat{\connectiveof{\thirdnode}}{\headvariableof{\thirdnode},\headvariableof{\incomingnodes}} \wcols \thirdnode\prec\node \ncond (\incomingnodes,\{\thirdnode\})\in\edges
+                 \bencodingofat{\connectiveof{\thirdnode}}{\headvariableof{\thirdnode},\headvariableof{\incomingnodes}} \wcols \thirdnode\prec\node \ncond (\incomingnodes,\{\thirdnode\})\in\edges
             \right\} \cup \left\{\bencodingofat{\connectiveof{\node}}{\headvariableof{\node},\headvariableof{\incomingnodes}}\right\}  \cup \\
             & \quad \{\identityat{\headvariableof{\atomenumerator},\catvariableof{\atomenumerator}} \wcols \atomenumeratorin\}
         }{\shortcatvariables} \, .
@@ -424,7 +416,7 @@ We are now prepared to show the main result of this chapter, the representation 
         }{\headvariableof{\formulaat{\shortcatvariables}},\shortcatvariables} \\
         & = \breakablecontractionof{
             \left\{
-            \bencodingofat{\connectiveof{\thirdnode}}{\headvariableof{\thirdnode},\headvariableof{\incomingnodes}} \wcols \thirdnode\prec\node \ncond (\incomingnodes,\{\thirdnode\})\in\edges
+                \bencodingofat{\connectiveof{\thirdnode}}{\headvariableof{\thirdnode},\headvariableof{\incomingnodes}} \wcols \thirdnode\prec\node \ncond (\incomingnodes,\{\thirdnode\})\in\edges
             \right\} \cup \left\{\bencodingofat{\connectiveof{\node}}{\headvariableof{\node},\headvariableof{\incomingnodes}}\right\} \cup \\
             & \quad\quad\quad \{\identityat{\headvariableof{\atomenumerator},\catvariableof{\atomenumerator}} \wcols \atomenumeratorin\}
         }{\shortcatvariables} \, .
@@ -439,7 +431,7 @@ Examples of unary ($\atomorder=1$) and binary ($\atomorder=2$) connectives are f
 
 \begin{figure}[t]
     \begin{center}
-        \input{./partI/0-propositional-logics/tikz/decomposition_example.tex}
+        \input{tikz/decomposition_example.tex}
     \end{center}
     \caption{Decomposition of the formula tensor to $\exformula = a \land b \land \lnot c$ into unary (matrix) and binary (third order tensor) cores.
     a) Syntactical decomposition of $\exformula$ as a hypergraph $\graph$ according to \defref{def:formulaDecomposition}.
@@ -520,7 +512,6 @@ Examples of unary ($\atomorder=1$) and binary ($\atomorder=2$) connectives are f
     This is because associativity can be exploited to represent the basis encoding by any tree-structured composition of binary $\land$ and $\lor$ connectives.
 \end{remark}
 
-
 \subsection{Minterm and maxterm decompositions}\label{sec:termClauseDecomposition}
 %\subsect{Syntactical Decomposition of Formulas}
 
@@ -528,32 +519,30 @@ Examples of unary ($\atomorder=1$) and binary ($\atomorder=2$) connectives are f
 We have seen how syntactical decompositions of formulas into connectives acting can be exploited to find effective representations by tensor networks.
 We now provide a generic scheme to find syntactical decompositions to arbitrary propositional formulas.
 
-%Here the question arises here, how to perform such decompositions in case of a missing syntactical representation of a formula.
-%By \defref{def:formulas} any binary tensor is a formula.
-%We show in the following, how we can find a syntactic specification of a formula given its tensor.
-
-%
-%Let us now show that any formula tensor can be decomposed into a network of these connective symbols and atomic formula tensors.
-
-
-\todo{Use the $\hardparam$ parametrization instead of the nodes 0 1 parametrization.}
-
 \begin{definition}[Terms and Clauses]
     \label{def:clauses}
-    Given two disjoint subsets $\nodesof{0}$ and $\nodesof{1}$ of $[\atomorder]$, the corresponding term is the formula defined on the indices $\shortcatindices\in\atomstates$ by
+    Given a subset $\hardlegset\subset[\catorder]$ and $\headindexof{\hardlegset}\in\bigtimes_{\catenumerator\in\hardlegset}[2]$, the corresponding term is the formula
     \begin{align*}
-        \termofat{\nodesof{0}}{\nodesof{1}}{\shortcatvariables}
-        =\left( \bigwedge_{\atomenumerator\in\nodesof{0}} \lnot\atomicformulaof{\atomenumerator} \right)  \land \left( \bigwedge_{\atomenumerator\in\nodesof{1}} \atomicformulaof{\atomenumerator} \right)
+        \termofat{\hardlegset}{\shortcatvariables}
+        = \left(\bigwedge_{\catenumerator\in\hardlegset\wcols\headindexof{\catenumerator}=0}\lnot\atomicformulaofat{\catenumerator}{\catvariableof{\catenumerator}}\right)
+        \land
+        \left(\bigwedge_{\catenumerator\in\hardlegset\wcols\headindexof{\catenumerator}=1}\atomicformulaofat{\catenumerator}{\catvariableof{\catenumerator}}\right)
     \end{align*}
-    and the corresponding clause is the formula defined on the indices $\catindices\in\atomstates$ by
+    and the corresponding clause is the formula
+    \begin{align*}
+        \clauseofat{\hardlegset}{\shortcatvariables}
+        = \left(\bigvee_{\catenumerator\in\hardlegset\wcols\headindexof{\catenumerator}=0}\atomicformulaofat{\catenumerator}{\catvariableof{\catenumerator}}\right)
+        \lor
+        \left(\bigvee_{\catenumerator\in\hardlegset\wcols\headindexof{\catenumerator}=1}\lnot\atomicformulaofat{\catenumerator}{\catvariableof{\catenumerator}}\right)
+    \end{align*}
     \begin{align*}
         \clauseofat{\nodesof{0}}{\nodesof{1}}{\shortcatvariables}
         =\left( \bigvee_{\atomenumerator\in\nodesof{0}} \atomicformulaof{\atomenumerator} \right)  \lor \left( \bigvee_{\atomenumerator\in\nodesof{1}} \lnot\atomicformulaof{\atomenumerator} \right)  \, ,
     \end{align*}
-    where by $\land_{\atomenumerator\in\nodes}$ and $\lor_{\atomenumerator\in\nodes}$ we refer to the $n$-ary connectives $\land$ and $\lor$.
-    %We call the clause a minterm, if $\nodesof{0}\cup\nodesof{1} = [\atomorder]$.
-    We call the term a minterm and the clause a maxterm, if $\nodesof{0}\cup\nodesof{1} = [\atomorder]$.
+    We call the term a minterm and the clause a maxterm, if $\hardlegset = [\catorder]$.
 \end{definition}
+
+\todo{Use the $\hardparam$ parametrization instead of the nodes 0 1 parametrization in the following.}
 
 %%
 Terms and Clauses have for any index tuple $\shortcatindices$ a polynomial representation by
@@ -609,15 +598,16 @@ Based on this insight, we can decompose any propositional formula into a conjunc
     \label{the:tensorToMaxMinTerms}
     For any boolean tensor $\hypercoreat{\shortcatvariables}\in\atomspace$  we have
     \begin{align*}
-        \hypercoreat{\shortcatvariables} = \left( \bigvee_{\hyperonecoordinates}
-        \termof{\catzeropositions}{\catonepositions}
+        \hypercoreat{\shortcatvariables} =
+        \left( \bigvee_{\hyperonecoordinates}
+                                               \termof{\catzeropositions}{\catonepositions}
         \right)
         [\shortcatvariables]
     \end{align*}
     and
     \begin{align*}
         \hypercoreat{\shortcatvariables} = \left( \bigwedge_{\hyperzerocoordinates}
-        \clauseof{\catzeropositions}{\catonepositions}
+                                               \clauseof{\catzeropositions}{\catonepositions}
         \right)
         [\shortcatvariables] \, .
     \end{align*}
@@ -642,15 +632,14 @@ The decompositions found in \theref{the:tensorToMaxMinTerms} are also called can
 
 %% Universality of representations
 \begin{remark}[Efficient Representation in Propositional Syntax]
-    % Relation with binary CP
+% Relation with binary CP
     The decomposition in \theref{the:tensorToMaxMinTerms} is a basis CP decomposition of the binary tensor and will further be investigated in \charef{cha:sparseRepresentation}.
     The formulas constructed in the proof of \theref{the:tensorToMaxMinTerms} are however just one possibility to represent a formula tensor in propositional syntax.
     Typically there are much sparser representations for many formula tensors, in the sense that less connectives and atomic symbols are required.
     Having such a sparser syntactical description of a propositional formula can be exploited to find a shorter conjunctive normal form of the formula and construct a sparse polynomial based on similar ideas as in \theref{the:tensorToMaxMinTerms}.
-    %One way to eliminate syntactical redundancies are through schemes for decompositions called normal forms, for example the Conjunctive Normal Form (CNF) or the Disjunctive Normal Form (DNF).
+%One way to eliminate syntactical redundancies are through schemes for decompositions called normal forms, for example the Conjunctive Normal Form (CNF) or the Disjunctive Normal Form (DNF).
     We will provide such constructions in \charef{cha:sparseRepresentation}, where we show that dropping the demand of directionality and investigating binary CP Decompositions will improve the sparsity of the polynomial formula representation.
 \end{remark}
-
 
 \subsection{Outlook}
 

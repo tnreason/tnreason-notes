@@ -1,17 +1,17 @@
 \begin{tikzpicture}[scale=0.35, yscale=-1, thick] % , baseline = -3.5pt
 
     \begin{scope}
-        [shift={(-15,0)}]
+    [shift={(-15,0)}]
 
         \node[anchor=center] (text) at (-3,-6) {${a)}$};
 
-        \node [circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (T1) at (0,2) {\colorlabelsize $\catvariableof{a}$};
-        \node [circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (T2) at (3,2) {\colorlabelsize $\catvariableof{b}$};
-        \node [circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (T3) at (6,2) {\colorlabelsize $\catvariableof{c}$};
+        \drawvariablenode{0}{2}{$\catvariableof{a}$}{T1}
+        \drawvariablenode{3}{2}{$\catvariableof{b}$}{T2}
+        \drawvariablenode{6}{2}{$\catvariableof{c}$}{T3}
 
-        \node [circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (and) at (1.5,-3) {\colorlabelsize $\headvariableof{a\land b}$};
+        \drawvariablenode{1.5}{-3}{$\headvariableof{a\land b}$}{and}
         \coordinate (lowandcenter) at (1.5, -0.5);
-        \node [circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (not) at (6,-3) {\colorlabelsize $\headvariableof{\lnot c}$};
+        \drawvariablenode{6}{-3}{$\headvariableof{\lnot c}$}{not}
         \coordinate (lnotcenter) at (6, -0.5);
 
         \draw [->-] (T1) -- (lowandcenter);
@@ -21,7 +21,7 @@
         \draw [->-] (T3) -- (lnotcenter);
         \draw [->-] (lnotcenter) -- (not);
 
-        \node [circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (head) at (3.25,-8) {\colorlabelsize $\headvariableof{a\land b \land \lnot c}$};
+        \drawvariablenode{3.25}{-8}{$\headvariableof{\exformula}$}{head}
         \coordinate (highandcenter) at (3.28, -5.5);
 
         \draw [->-] (and) -- (highandcenter);
@@ -42,7 +42,7 @@
 
 
     \begin{scope}
-        [shift={(7,0)}]
+    [shift={(7,0)}]
 
         \draw[->-] (0,1)--(0,-1) node[midway,left] {\colorlabelsize $\catvariableof{a}$};
         \draw[->-] (3,1)--(3,-1) node[midway,right] {\colorlabelsize $\catvariableof{b}$};
@@ -53,19 +53,18 @@
 
         \draw[->-] (1.5,-3) --(1.5,-5) node[midway,right]{\colorlabelsize $\headvariableof{a \land b}$};
 
-        \draw (5,-1) rectangle (7, -3);
-        \node[anchor=center] (text) at (6,-2) {\corelabelsize $\bencodingof{\lnot}$};
+        \drawsquaretensor{6}{-2}{$\bencodingof{\lnot}$}
 
         \draw[->-] (6,-3) --(6,-5) node[midway,right]{\colorlabelsize $\headvariableof{\lnot c}$};
 
         \draw (0.5,-5) rectangle (6.5,-7);
         \node[anchor=center] (text) at (3.5,-6) {\corelabelsize $\bencodingof{\land}$};
 
-        \draw[->-] (4,-7) -- (4,-8.5) node[right] {\colorlabelsize $\headvariableof{a \land b \land \lnot c}$};
+        \draw[->-] (4,-7) -- (4,-8.5) node[right] {\colorlabelsize $\headvariableof{\exformula}$};
         \drawvariabledot{4}{-8}
         \draw[] (4,-8) -- (4,-9);
-        \draw (3,-9) rectangle (5,-11);
-        \node[anchor=center] (text) at (4,-10) {$\tbasis$};
+
+        \drawsquaretensor{4}{-10}{$\tbasis$}
 
     \end{scope}
 

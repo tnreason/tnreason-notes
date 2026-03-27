@@ -10,56 +10,6 @@ When having a Constraint Satisfaction Problem on a large number of variables, wh
 An alternative to deciding entailment by global operations is the use of local operations.
 Here we interpret a part of the network (for example a single core) as an own knowledge base (with atomic formulas being the roots of the directed subgraph, that is potentially differing with the atoms in the global perspective) and perform entailment with respect to that.
 
-\subsection{Manipulation of constraint tensor networks}
-
-\todo{Reformulate inference algorithms based on the following operations:}
-Leaving the contraction invariant:
-\begin{itemize}
-    \item[i] Adding the support of a sub-contraction of a graph $\secgraph\subset\graph$ and nodes $\secnodes\subset\nodes$, and drop some $\edge\in\secgraph$ with $\edge\subset\secnodes$.
-    \item[ii] Partition an edge $\edge$ into two edges $\edgeof{0},\edgeof{1}$ decorated by $\hypercoreofat{\edgeof{0}}{\catvariableof{\edgeof{0}}},\hypercoreofat{\edgeof{1}}{\catvariableof{\edgeof{1}}}$, if
-    \begin{align*}
-        \hypercoreofat{\edge}{\catvariableof{\edge}}
-        = \hypercoreofat{\edgeof{0}}{\catvariableof{\edgeof{0}}} \otimes \hypercoreofat{\edgeof{1}}{\catvariableof{\edgeof{1}}}
-    \end{align*}
-\end{itemize}
-Monotonic decrease of solutions:
-\begin{itemize}
-    \item Adding constraint tensors.
-    Thus, the network is satisfiable if an increased one is satisfiable.
-    If a decreased one is unsatisfiable, then also the network is unsatisfiable.
-\end{itemize}
-
-Elementary networks are satisfiable when not containing the zero tensor.
-
-\red{Need partial ordering for the monotonicity?}
-
-\subsubsection{Examples}
-
-\begin{example}[Modus ponens]
-    When there is an edge
-    \begin{align*}
-        \edge
-        = \innodes \cup \outnodes
-    \end{align*}
-    with
-    \begin{align*}
-        \hypercoreofat{\edge}{\catvariableof{\edge}}
-        = \left(\bigwedge_{\node\in\innodes}\catvariableof{\node}\right) \Rightarrow \left(\bigwedge_{\node\in\outnodes}\catvariableof{\node}\right)
-    \end{align*}
-    and for each $\node\in\innodes$ an edge $\{\node\}$ with $\hypercoreofat{\{\node\}}{\catvariableof{\node}}=\tbasisat{\catvariableof{\node}}$, then:
-    \begin{itemize}
-        \item Choose $\secgraph=\left(\edge,\{\edge\}\cup\bigcup_{\node\in\innodes}\{\node\}\right)$, $\secnodes=\edge$
-        \item Apply $i$ rule to replace $\secgraph$ with $\hypercoreofat{\edge}{\catvariableof{\edge}}=\bigtimes_{\node\in\edge}\tbasisat{\catvariableof{\node}}$
-        \item Apply $ii$ rule to split into edges $\{\node\}$ for $\node\in\edge$ with $\tbasisat{\catvariableof{\node}}$
-    \end{itemize}
-\end{example}
-
-\begin{example}[Resolution]
-    When there are two clauses with a complementary literal can apply $i$ with the complementary literal variable left out of the open variables and get the resolvent clause.
-    Notice that the old clauses cannot always be dropped, since they are no subsets of $\secnodes$-
-\end{example}
-
-%Show the grand resolution theorem based on the increase method.
 
 \subsect{Monotonicity of Entailment}
 
@@ -153,6 +103,14 @@ To prove the theorem, we first establish the following lemma that states if a co
     Having a clause tensor network we add basis vectors to get a elementary tensor network, which is satisfiable when we started with the closure under resolution.
 \end{proof}
 
+\subsubsection{Generic inference rules}
+
+More generally, whenever
+\begin{align*}
+    \bigwedge_{\exformula\in\formulaset} \exformula \models \secexformula
+\end{align*}
+then the support of the sub contraction of $\formulaset$ leaving the variables of $\secexformula$ open produces a formula entailing $\secexformula$.
+
 \subsection{Constraint Propagation}
 
 \todo{
@@ -194,7 +152,7 @@ This local entailment scheme is called Knowledge Propagation and described in a 
 
 \todo{
     Adjust constraint propagation to match tnreason message passing schemes:
-    Queue contains
+    Queue containing $\secgraph$ and open nodes $\secnodes$.
 }
 
 \begin{algorithm}[hbt!]
@@ -263,10 +221,10 @@ The message cores are understood as messages, which propagate information from d
 There are different ways of implementing \algoref{alg:knowledgePropagation}, by choosing the set $\arbset$ of constraint sets $\secedges$ and domain $\domainedges$. % and a stopping criterion.
 
 
-\input{partI/0-propositional-logics/examples/inference-algorithms/ac-3}
+\input{examples/inference-algorithms/ac-3}
 
 
-%The central property used in knowledge propagation is that any subcontraction can be added to the constraint network without changing it.
+%The central property used in constraint propagation is that any subcontraction can be added to the constraint network without changing it.
 %\begin{theorem}\label{the:booleanContractionInvariance}
 %	Given a boolean tensor network $\extnet$ on $\graph$ and $\secedges\subset\edges$.
 %	For $\secgraph=(\secnodes,\secedges)$ with $\nodes=\cup_{\edge\in\secedges}\edge$ and the tensor network $\tnetof{\secgraph}$ with boolean tensors coinciding on $\secedges$ with those in $\extnet$ we have
@@ -282,7 +240,7 @@ There are different ways of implementing \algoref{alg:knowledgePropagation}, by 
 
 \begin{theorem}
     \label{the:soundnessKnowledgePropagation}
-    At any state of the Knowledge Propagation \algoref{alg:knowledgePropagation}, we have that each message core $\kcoreof{\secedge}$ is sound for $\extnet$.
+    At any state of the constraint propagation \algoref{alg:knowledgePropagation}, we have that each message core $\kcoreof{\secedge}$ is sound for $\extnet$.
     After each update in \algoref{alg:knowledgePropagation}, $\kcoreof{\secedge}$ is further monotonically decreasing with respect to the partial ordering.
 \end{theorem}
 \begin{proof}
@@ -333,7 +291,7 @@ There are different ways of implementing \algoref{alg:knowledgePropagation}, by 
     \end{align*}
 \end{proof}
 
-Let us now show that Knowledge Propagation always terminates.
+Let us now show that constraint propagation always terminates.
 We can further characterize the message cores at termination.
 
 \begin{definition}
@@ -347,7 +305,7 @@ We can further characterize the message cores at termination.
 This property is similar to the completeness of a message core, when interpreting the other message cores and the constraints $\{\hypercoreof{\edge} \wcols \edge\in\secedges\}$ as posing a Constraint Satisfaction Problem.
 
 \begin{theorem}
-    Knowledge Propagation \algoref{alg:knowledgePropagation} always terminates.
+    constraint propagation \algoref{alg:knowledgePropagation} always terminates.
 %    At termination, each message core $\kcoreof{}$
     At termination we further for each $\secedges\in\arbset$ and $\edge\in\domainedges$ with $\edge\cap\bigcup_{\edge\in\secedges}\edge\neq\varnothing$, that the message cores $\{\kcoreof{\edge} \wcols \edge\in\domainedges, \, \edge\cap\bigcup_{\edge\in\secedges}\edge\neq\varnothing\}$ are consistent with $\{\hypercoreof{\edge} \wcols \edge\in\secedges\}$.
 \end{theorem}
@@ -368,17 +326,17 @@ This property is similar to the completeness of a message core, when interpretin
 %    since otherwise the queue $\graphqueue$ would at least contain $\secedges$ and the while loop would not terminate.
 \end{proof}
 
-%A direct consequence of this theorem is that when running Knowledge Propagation with all edges, then
+%A direct consequence of this theorem is that when running constraint propagation with all edges, then
 %\begin{corollary}
 %    When we choose $\arbset=\{\edges\}$ for an CSP $\extnet$, then the message cores returned by \algoref{alg:knowledgePropagation} are complete.
 %\end{corollary}
 
 
-We can exploit the Knowledge Propagation \algoref{alg:knowledgePropagation} for the solution of Constraint Satisfaction Problems, by taking $\extnet$ as the tensor network of constraint tensors.
+We can exploit the constraint propagation \algoref{alg:knowledgePropagation} for the solution of Constraint Satisfaction Problems, by taking $\extnet$ as the tensor network of constraint tensors.
 Whenever a message core vanishes, we can conclude that the Constraint Satisfaction Problems is not satisfiable, as we show next.
 
 \begin{corollary}
-    Let us for a Constraint Satisfaction Problem encoded by $\extnet$ run Knowledge Propagation \algoref{alg:knowledgePropagation}.
+    Let us for a Constraint Satisfaction Problem encoded by $\extnet$ run constraint propagation \algoref{alg:knowledgePropagation}.
     Whenever for any $\secedge\in\edges$ we have $\kcoreofat{\secedge}{\catvariableof{\secedge}}=\zerosat{\catvariableof{\secedge}}$, then the Constraint Satisfaction Problem is not satisfiable.
 \end{corollary}
 \begin{proof}
@@ -392,8 +350,57 @@ Whenever a message core vanishes, we can conclude that the Constraint Satisfacti
     \end{align*}
 \end{proof}
 
-% Combination with backtracking search
-When the Knowledge Propagation \algoref{alg:knowledgePropagation} converges in a given implementation and no message core vanishes, we can however not conclude that the Constraint Satisfaction Problem is not satisfiable.
+
+\subsect{Applications}
+
+Let us exemplify the usage of constraint propagation on Constraint Satisfaction Problems posed by entailment queries on Markov Networks.
+
+\begin{corollary}
+    \label{cor:knowledgePropagationMarkovNetworks}
+    Let \algoref{alg:knowledgePropagation} be run on the cores $\tnetof{\graph}\cup\{\bencodingof{\exformula}\}$ with an arbitrary design of $\secedges$.
+    Whenever for a formula $\formulaat{\catvariableof{\secnodes}}$ and a $\kcoreof{\edge}$ we have
+    \[ \contractionof{\kcoreof{\edge},\bencodingof{\exformula}}{\exformulavar=0} =0  \]
+    then the Markov Network $\extnet$ probabilistically entails $\exformula$.
+    If on the contrary
+    \[ \contractionof{\kcoreof{\edge},\bencodingof{\exformula}}{\exformulavar=1} =0  \]
+    then the Markov Network $\extnet$ probabilistically entails $\lnot\exformula$, that is probabilistically contradicts $\exformula$.
+\end{corollary}
+\begin{proof}
+    This follows from \theref{the:soundnessKnowledgePropagation} ensuring the soundness of constraint propagation and the sufficiency of local entailment.
+\end{proof}
+
+\begin{example}[Batch decision of entailment]
+    Let $\formulaset$ be a set of formulas and $\probofat{\graph}{\shortcatvariables}$ a Markov Network, for which it shall be decided, which formulas in $\formulaset$ are entailed, contradicted or contingent.
+    We can in addition to the cores of the Markov Network create the cores $\{\bencodingofat{\exformula}{\formulavar,\shortcatvariables} \wcols \exformula\in\formulaset\}$ and prepare the message cores
+    \begin{align*}
+        \kcoreofat{\{\formula\}}{\formulavar} \, .
+    \end{align*}
+    To decide entailment batchwise, constraint propagation \algoref{alg:knowledgePropagation} can be run.
+    Whenever during the algorithm we have that for a $\formula$, then \corref{cor:knowledgePropagationMarkovNetworks} implies that if
+    \begin{align*}
+        \kcoreofat{\{\formula\}}{\formulavar} =
+        \begin{cases}
+            \tbasisat{\formulavar} & \text{then, the formula is entailed by }\probof{\graph} \, . \\
+            \fbasisat{\formulavar} & \text{then, the formula is contradicted by }\probof{\graph} \, .\\
+            \onesat{\formulavar} & \text{then no conclusion can be drawn.}
+        \end{cases}
+    \end{align*}
+    Note, that $\kcoreofat{\{\formula\}}{\formulavar} = \zerosat{\formulavar}$ can not happen, since this would mean that $\nonzeroof{\probof{\graph}}$ is inconsistent.
+    Thus, at any stage of \algoref{alg:knowledgePropagation}, one of the three holds.
+    % Inference rules such as modus ponens can be mimicked.
+\end{example}
+
+
+
+
+\subsection{Backtracking search}
+
+\todo{
+    Understand as adding basis vectors which are locally possible (i.e. can satisfy affected constraints).
+}
+
+% Combination of constraint propagation with backtracking search
+When the constraint propagation \algoref{alg:knowledgePropagation} converges in a given implementation and no message core vanishes, we can however not conclude that the Constraint Satisfaction Problem is not satisfiable.
 However, for any index tuple $\catindexof{\nodes}$ to be a solution of the CSP to $\extnet$, we have the necessary condition
 \begin{align*}
     \uniquantwrtof{\secedge\in\secedges}{\kcoreofat{\edge}{\catvariableof{\secedge}=\restrictionofto{\catindexof{\nodes}}{\secedges}}=1} \, ,
@@ -412,79 +419,11 @@ One can understand the guess of an assignment $\catindexof{\node}$ to a variable
     \kcoreofat{\{\node\}}{\catvariableof{\node}}
     = \onehotmapofat{\catindexof{\node}}{\catvariableof{\node}} \, .
 \end{align*}
-Therefore, Knowledge Propagation \algoref{alg:knowledgePropagation} can be integrated with backtracking search, with iterations between propagations of knowledge and guessing of additional variables.
+Therefore, constraint propagation \algoref{alg:knowledgePropagation} can be integrated with backtracking search, with iterations between propagations of knowledge and guessing of additional variables.
 %The message cores $\kcoreof{\edge}$ are subset encoding of possible local choices, according to which variables can be assigned.
 
 
-\subsect{Applications}
 
-Let us exemplify the usage of Knowledge Propagation on Constraint Satisfaction Problems posed by entailment queries on Markov Networks.
-
-\begin{corollary}
-    \label{cor:knowledgePropagationMarkovNetworks}
-    Let \algoref{alg:knowledgePropagation} be run on the cores $\tnetof{\graph}\cup\{\bencodingof{\exformula}\}$ with an arbitrary design of $\secedges$.
-    Whenever for a formula $\formulaat{\catvariableof{\secnodes}}$ and a $\kcoreof{\edge}$ we have
-    \[ \contractionof{\kcoreof{\edge},\bencodingof{\exformula}}{\exformulavar=0} =0  \]
-    then the Markov Network $\extnet$ probabilistically entails $\exformula$.
-    If on the contrary
-    \[ \contractionof{\kcoreof{\edge},\bencodingof{\exformula}}{\exformulavar=1} =0  \]
-    then the Markov Network $\extnet$ probabilistically entails $\lnot\exformula$, that is probabilistically contradicts $\exformula$.
-\end{corollary}
-\begin{proof}
-    This follows from \theref{the:soundnessKnowledgePropagation} ensuring the soundness of Knowledge Propagation and the sufficiency of local entailment.
-\end{proof}
-
-\begin{example}[Batch decision of entailment]
-    Let $\formulaset$ be a set of formulas and $\probofat{\graph}{\shortcatvariables}$ a Markov Network, for which it shall be decided, which formulas in $\formulaset$ are entailed, contradicted or contingent.
-    We can in addition to the cores of the Markov Network create the cores $\{\bencodingofat{\exformula}{\formulavar,\shortcatvariables} \wcols \exformula\in\formulaset\}$ and prepare the message cores
-    \begin{align*}
-        \kcoreofat{\{\formula\}}{\formulavar} \, .
-    \end{align*}
-    To decide entailment batchwise, Knowledge Propagation \algoref{alg:knowledgePropagation} can be run.
-    Whenever during the algorithm we have that for a $\formula$, then \corref{cor:knowledgePropagationMarkovNetworks} implies that if
-    \begin{align*}
-        \kcoreofat{\{\formula\}}{\formulavar} =
-        \begin{cases}
-            \tbasisat{\formulavar} & \text{then, the formula is entailed by }\probof{\graph} \, . \\
-            \fbasisat{\formulavar} & \text{then, the formula is contradicted by }\probof{\graph} \, .\\
-            \onesat{\formulavar} & \text{then no conclusion can be drawn.}
-        \end{cases}
-    \end{align*}
-    Note, that $\kcoreofat{\{\formula\}}{\formulavar} = \zerosat{\formulavar}$ can not happen, since this would mean that $\nonzeroof{\probof{\graph}}$ is inconsistent.
-    Thus, at any stage of \algoref{alg:knowledgePropagation}, one of the three holds.
-    % Inference rules such as modus ponens can be mimicked.
-\end{example}
-
-
-\subsect{Mimicking Inference Rules by Propagation}
-
-While so far we have discussed semantic based entailment, there are inference rules exploiting only logical syntax to infer entailed statements.
-We here show, that they can be captures by the knowledge propagation scheme, if the sets $\arbset$ and $\domainedges$ are chosen properly.
-
-Whenever
-\begin{align*}
-    \bigvee_{\exformula\in\formulaset} \exformula \models \secexformula
-\end{align*}
-then
-\begin{align*}
-    \tbasisat{\secexformulavar} =
-    \contractionof{\{\formulaat{\shortcatvariables} \wcols \formula\in\formulaset\} \cup \{\bencodingofat{\secexformula}{\secexformulavar,\shortcatvariables}\}}{\secexformulavar} \, ,
-\end{align*}
-that is the inference rule can be performed when $\formulaset$ are in $\arbset$.
-
-\begin{example}{Modus Ponens}
-    For example, when for two formulas $\exformula,\secexformula\in\formulaset$ we have $\exformula\models\secexformula$, then when $\kcoreofat{\{\exformula\}}{\exformulavar} = \tbasisat{\formulavar}$ we have
-    \begin{align*}
-        \tbasisat{\secexformulavar}
-        = \contractionof{(\exformula\Rightarrow\secexformula)[\exformulavar,\secexformulavar],\kcoreofat{\{\exformula\}}{\exformulavar}}{\secexformulavar} \, ,
-    \end{align*}
-    that is entailment of $\secexformula$ can be concluded using a single update.
-
-    When we have a Knowledge Base of horn clauses, we run Knowledge Propagation with each horn clause being a constraint core and a message core for any variable.
-    \algoref{alg:knowledgePropagation} therefore resembles the forward chaining algorithm of propositional logics (see Figure~7.15 in \cite{russell_artificial_2021}).
-    It is known, that forward chaining is complete for Horn Logic.
-    Thus, the message cores returned in that case by \algoref{alg:knowledgePropagation} are complete for the Knowledge Base as a CSP.
-\end{example}
 
 \subsection{Discussion}
 

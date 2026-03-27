@@ -8,6 +8,7 @@
 \newcommand{\nodegrayscale}{gray!50}
 \newcommand{\colorlabelsize}{\tiny}
 \newcommand{\corelabelsize}{\small}
+\newcommand{\variablenodelabelsize}{\small}
 
 \newcommand{\skeletoncolor}{blue}
 \newcommand{\probcolor}{purple!60}
@@ -44,9 +45,22 @@
     \node[anchor=center,align=center] at (#1,#2) {#3};
 }
 
+%% TO BE DROPPED, use drawsquaretensor instead
 \newcommand{\drawsmalltensor}[3]{
     \draw (#1-1,#2-1) rectangle (#1+1,#2+1);
-    \node[anchor=center,align=center] at (#1,#2) {#3};
+%    \node[anchor=center,align=center] at (#1,#2) {#3};
+    \drawtextnode{#1}{#2}{#3}
+}
+
+\newcommand{\drawvariablenode}[4]{
+    \node [circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (#4) at (#1,#2) {};
+    \drawtextnode{#1}{#2}{\variablenodelabelsize #3}
+}
+
+\newcommand{\drawsquaretensor}[3]{
+    \draw (#1-1,#2-1) rectangle (#1+1,#2+1);
+%    \node[anchor=center,align=center] at (#1,#2) {#3};
+    \drawtextnode{#1}{#2}{\corelabelsize #3}
 }
 
 \newcommand{\shortminus}{\scalebox{0.4}[1.0]{$-$}}
@@ -55,16 +69,14 @@
     \draw[fill] (#1,#2) circle (\dotsize);
 }
 
+
+
+
 \newcommand{\drawvectormark}[2]{
     \draw[black, line width=0.6pt] (#1,#2) ++(-0.24,0.24) -- ++(0.48,-0.48);
     \draw[black, line width=0.6pt] (#1,#2) ++(-0.24,-0.24) -- ++(0.48,0.48);
 }
 
-\newcommand{\drawcnotsymbol}[2]{
-    \draw (#1,#2) circle (1);
-    \draw ($(#1,#2)+(-1,0)$) -- ($(#1,#2)+(1,0)$);
-    \draw ($(#1,#2)+(0,-1)$) -- ($(#1,#2)+(0,1)$);
-}
 
 %\newcommand{\drawcontroldot}[2]{
 %    \draw (#1,#2) circle (0.3cm);
@@ -74,43 +86,53 @@
 % Draws indices and below the indices the core
 \newcommand{\drawatomindices}[2]{
     \begin{scope}
-        [shift={(#1,#2)}]
-        \draw[-<-] (0,1)--(0,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
-        \draw[-<-] (1.5,1)--(1.5,-1) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
-        \node[anchor=center] (text) at (3,0) {$\cdots$};
-        \draw[-<-] (4,1)--(4,-1) node[midway,right] {\colorlabelsize $\catvariableof{\atomorder\shortminus1}$};
+    [shift={(#1,#2)}]
+    \draw[-<-] (0,1)--(0,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+    \draw[-<-] (1.5,1)--(1.5,-1) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
+    \node[anchor=center] (text) at (3,0) {$\cdots$};
+    \draw[-<-] (4,1)--(4,-1) node[midway,right] {\colorlabelsize $\catvariableof{\atomorder\shortminus1}$};
     \end{scope}
 }
 \newcommand{\drawundiratomindices}[2]{
     \begin{scope}
-        [shift={(#1,#2)}]
-        \draw[] (0,1)--(0,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
-        \draw[] (1.5,1)--(1.5,-1) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
-        \node[anchor=center] (text) at (3,0) {$\cdots$};
-        \draw[] (4,1)--(4,-1) node[midway,right] {\colorlabelsize $\catvariableof{\atomorder\shortminus1}$};
+    [shift={(#1,#2)}]
+    \draw[] (0,1)--(0,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+    \draw[] (1.5,1)--(1.5,-1) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
+    \node[anchor=center] (text) at (3,0) {$\cdots$};
+    \draw[] (4,1)--(4,-1) node[midway,right] {\colorlabelsize $\catvariableof{\atomorder\shortminus1}$};
     \end{scope}
 }
 
 \newcommand{\drawatomcore}[3]{
     \begin{scope}
-        [shift={(#1,#2)}]
-        \draw (-1,-1) rectangle (5,-3);
-        \node[anchor=center] (text) at (2,-2) {#3};
+    [shift={(#1,#2)}]
+    \draw (-1,-1) rectangle (5,-3);
+    \node[anchor=center] (text) at (2,-2) {#3};
     \end{scope}
 }
+
+
+%% Quantum Circuits
 
 \newcommand{\drawqcmeasuresymbol}[2]{
     \begin{scope}
-        [shift={(#1,#2)},scale=1]
-        \draw (-1,-1) rectangle (1,1);
-        \draw (-0.8,-0.5) arc[start angle=180, end angle=0, radius=0.8];
-        \draw[->] (0,-0.75) -- (-0.5,0.75);
+    [shift={(#1,#2)},scale=1]
+    \draw (-1,-1) rectangle (1,1);
+    \draw (-0.8,-0.5) arc[start angle=180, end angle=0, radius=0.8];
+    \draw[->] (0,-0.75) -- (-0.5,0.75);
     \end{scope}
 }
 
+\newcommand{\drawcnotsymbol}[2]{
+    \draw (#1,#2) circle (1);
+    \draw ($(#1,#2)+(-1,0)$) -- ($(#1,#2)+(1,0)$);
+    \draw ($(#1,#2)+(0,-1)$) -- ($(#1,#2)+(0,1)$);
+}
+
+%% CSP
 
 \newenvironment{sudoku4x4}{%
-    % Code executed when you start \begin{sudoku4x4}
+% Code executed when you start \begin{sudoku4x4}
     \begin{tikzpicture}[
         sudokucell/.style={
             minimum size=0.6cm,
@@ -128,6 +150,6 @@
         }
     ]
 }{%
-    % Code executed when you finish \end{sudoku4x4}
+% Code executed when you finish \end{sudoku4x4}
     \end{tikzpicture}
 }

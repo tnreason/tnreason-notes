@@ -547,18 +547,23 @@
 \newcommand{\enumeratedatoms}{\atomicformulaof{0},\ldots,\atomicformulaof{\atomorder-1}}
 \newcommand{\atomformulaset}{\formulasetof{\mlnatomsymbol}}
 
-\newcommand{\clause}{Z^{\lor}}
-\newcommand{\clauseof}[2]{\clause_{#1,#2}}
-\newcommand{\clauseofat}[3]{\clauseof{#1}{#2}\left[#3\right]}
-\newcommand{\maxtermof}[1]{\clause_{#1}}
-\newcommand{\maxtermformulaset}{\formulasetof{\mlnmaxtermsymbol}}
+\newcommand{\termsymbol}{Z^{\land}}
+\newcommand{\termof}[1]{\termsymbol_{#1}}
+\newcommand{\termofat}[2]{\termsymbol_{#1}\left[#2\right]}
 
-\newcommand{\term}{Z^{\land}}
-\newcommand{\termof}[2]{\term_{#1,#2}}
-\newcommand{\termofat}[3]{\termof{#1}{#2}\left[#3\right]}
-\newcommand{\mintermof}[1]{\term_{#1}}
+\newcommand{\clausesymbol}{Z^{\lor}}
+\newcommand{\clauseof}[1]{\clausesymbol_{#1}}
+\newcommand{\clauseofat}[2]{\clausesymbol_{#1}\left[#2\right]}
+
+\newcommand{\maxtermof}[1]{\clauseof{#1}}
+
+\newcommand{\mintermof}[1]{\termof{#1}}
 \newcommand{\mintermofat}[2]{\mintermof{#1}\left[#2\right]}
-\newcommand{\mintermformulaset}{\formulasetof{\mlnmintermsymbol}}
+
+
+
+
+
 
 \newcommand{\indexedplaceholderof}[1]{\placeholderof{#1}_{\atomlegindexof{#1}}}
 \newcommand{\indexedplaceholders}{\indexedplaceholderof{1},\ldots,\indexedplaceholderof{\atomorder}}
