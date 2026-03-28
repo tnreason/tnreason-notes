@@ -1,0 +1,101 @@
+\documentclass{beamer}
+
+\input{../../spec_files/course_preamble.tex}
+\input{../../spec_files/course_macros.tex}
+
+\title[Circuits]{
+    \coursechapterone \\
+    {\huge Circuits}
+}
+
+\begin{document}
+
+    {\frame[plain]{\titlepage}}
+
+    \showoutlineatsection
+
+
+    \section{Motivation}
+
+    \begin{frame}{Propositional Syntax}
+
+        Propositional syntax decomposes formulas into connectives applied on sub-formulas.
+
+        When understanding formulas as functions, we get a decomposition into circuits of connectives.
+
+        This decomposition is reflected in the tensor network decomposition of basis encodings.
+
+        \begin{center}
+            \bf Can we generalize to arbitrary functions and find tensor network decompositions based on circuits?
+        \end{center}
+
+        Example: Neural networks are circuits of neurons.
+
+    \end{frame}
+
+    \begin{frame}{Circuits as a computational model}
+
+        Circuits are a fundamental computational model, which is used in many areas of computer science, e.g., in complexity theory, logic, and machine learning.
+
+    \end{frame}
+
+
+    \section{Example: $\catdim$-adic sums}
+
+    \begin{frame}{$\catdim$-adic representation of integers}
+
+        Tensor: Each coordinate is the integer to the $\catdim$-adic representation given by the indices.
+
+        How to decompose the sum tensors, which are tensors with legs to both variables?
+
+    \end{frame}
+
+    \begin{frame}{Decomposition into half-adders}
+
+        Summation can be done by concatenation of half-adders, which are circuits with two input legs and two output legs, one for the sum and one for the carry.
+
+    \end{frame}
+
+    \begin{frame}{Extension to multiplications}
+        Do the multiplication for each digit of the right number separately, then add the results.
+
+        In this way: Generalize to
+
+    \end{frame}
+
+
+    \section{General circuits}
+
+    \begin{frame}{Set enumerating variables}
+
+        Generic basis encodings of functions contain set enumerating variables to the input and target sets.
+
+    \end{frame}
+
+    \begin{frame}{Circuit}
+
+        A circuit is a decorated hypergraph.
+
+    \end{frame}
+
+    \begin{frame}{Decomposition into tensor networks}
+
+        The basis encoding to a function of a circuit is decomposed into basis encodings of the node functions.
+
+    \end{frame}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+

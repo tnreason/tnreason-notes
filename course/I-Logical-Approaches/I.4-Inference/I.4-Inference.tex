@@ -21,7 +21,18 @@
 
     \begin{frame}{Motivation}
         Contractions of large knowledge bases get infeasible.
+        \begin{center}
+            \bf Is it really necessary to perform large contractions?
+        \end{center}
 
+        \begin{block}{Example: Entailment in the toy accounting system}
+            When knowing that feature $\catvariableof{F}$ is true, we can conclude that $\catvariableof{A1}$ is true, without considering other accounting rules.
+        \end{block}
+
+    \end{frame}
+
+
+    \begin{frame}{Outlook: Inference algorithms}
         Inference algorithms focus on subsets of knowledge bases.
 
         We now show that:
@@ -64,7 +75,8 @@
             = \contractionof{\kbwith,\formulawith}{\shortcatvariables}
         \end{align*}
 
-        \begin{block}{}
+        \begin{block}{Interpretation}
+            We can add memory formulas to a knowledge base.
         \end{block}
 
     \end{frame}
@@ -100,11 +112,19 @@
     \end{frame}
 
 
-    \begin{frame}{Interpretation as a Message Passing Scheme}
+    \begin{frame}{Inference algorithms based on sub-contractions}
 
-        Support cores are messages
 
         Computation by sub-contractions (including previous messages)
+
+        \begin{block}{Problem: Many possible sub-contractions}
+            In large tensor networks, there are many possible sub-contractions.
+            For efficiency, different scheduling policies emerge:
+            \begin{itemize}
+                \item Syntactical inference algorithms (today)
+                \item Message passing algorithms (next lecture)
+            \end{itemize}
+        \end{block}
 
     \end{frame}
 
@@ -129,6 +149,34 @@
         \end{align*}
 
     \end{frame}
+
+    \begin{frame}{Clauses}
+
+        Given $\hardlegset\subset[\catorder]$ and $\headindexof{\hardlegset}\in\bigtimes_{\catenumerator\in\hardlegset}[2]$ the corresponding clause is
+        \begin{align*}
+            \clauseofat{\hardparam}{\catvariableof{\hardlegset}}
+            = \onesat{\catvariableof{\hardlegset}} - \onehotmapofat{\headindexof{\hardlegset}}{\catvariableof{\hardlegset}}
+        \end{align*}
+
+        Special types:
+        \begin{itemize}
+            \item Horn clause: There is at most one $\catenumerator\in\hardlegset$ with $\headindexof{\catenumerator}=1$
+            \item Definite clause: There is at exactly one $\catenumerator\in\hardlegset$ with $\headindexof{\catenumerator}=1$
+        \end{itemize}
+
+        Interpretation of definite clauses: Implications
+        Example:
+        \begin{align*}
+            \Big(\catvariableof{F} \land \catvariableof{GP1} \rightarrow \catvariableof{MAT}\Big)
+            &\Leftrightarrow
+            \lnot \Big((\catvariableof{F} \land \catvariableof{GP1}) \lor \catvariableof{MAT} \Big) \\
+            &\Leftrightarrow
+            \Big(\lnot\catvariableof{F} \lor \lnot \catvariableof{GP1} \lor \catvariableof{MAT} \Big)
+        \end{align*}
+
+    \end{frame}
+
+
 
     \begin{frame}{Modus Ponens}
 
@@ -161,15 +209,108 @@
     \end{frame}
 
 
+    \section{Forward Chaining in Horn Logic}
+
+
+
+
+    \begin{frame}[fragile]{Forward Chaining}
+        \begin{algorithm}[H] % Force 'Here' to disable floating
+            \begin{algorithmic}
+                \Require Set of clauses $\mathcal{C}$
+                \Ensure Entailed literals $\mathcal{L}$, remaining set of clauses
+                \iosepline
+                \State Initialize $\mathcal{L}=\varnothing$
+                \While{exists a clause $(\{\node,\secheadindexof{\node}\})$ of length 1 in $\mathcal{C}$}
+                    \For{all clauses $\hardparam$ with $\node\in\hardlegset$}
+                        \If{$\headindexof{\node}\neq\secheadindexof{\node}$}
+                            \State $\hardparam\algdefsymbol(\hardlegset\backslash\{\node\},\headindexof{\hardlegset\backslash\{\node\}})$
+                        \Else
+                            \State $\mathcal{C}.\mathrm{drop(}\hardparam\mathrm{)}$
+                        \EndIf
+                    \EndFor
+                    \State $\mathcal{L}.\mathrm{append(}\{\node,\secheadindexof{\node}\}\mathrm{)}$
+                \EndWhile
+            \end{algorithmic}
+        \end{algorithm}
+    \end{frame}
+
+    \begin{frame}{Forward chaining in a contraction perspective}
+        Underlying is the contraction
+        \stantikzpic{
+            \draw (-3,-1) rectangle (3,1);
+            \drawtextnode{0}{0}{$\clauseof{\hardparam}$}
+            \draw (-2.5,-1) -- (-2.5,-3);
+            \drawtextnode{-1.25}{-2}{\tiny $\cdots$}
+            \draw (0,-1) -- (0,-3);
+            \draw (2,-1) -- (2,-3);
+            \draw (0.5,-5) rectangle (3.5,-3);
+            \drawtextnode{2}{-4}{$\clauseof{\{\node\},\secheadindexof{\node}}$}
+            \drawtextnode{4}{0}{${=}$}
+
+            \begin{scope}[shift={(9,3)}]
+                \draw (-3,-1) rectangle (3,1);
+                \drawtextnode{0}{0}{\corelabelsize $\clauseof{(\hardlegset\backslash\{\node\},\headindexof{\hardlegset\backslash\{\node\}})}$}
+                \draw (-2.5,-1) -- (-2.5,-3);
+                \drawtextnode{0}{-2}{\tiny $\cdots$}
+                \draw (2.5,-1) -- (2.5,-3);
+
+                \drawtextnode{10}{0}{If $\secheadindexof{\node}\neq\headindexof{\node}$}
+            \end{scope}
+
+            \begin{scope}[shift={(9,-3)}]
+                \draw (-3,-1) rectangle (3,1);
+                \drawtextnode{0}{0}{\corelabelsize $\ones$}
+                \draw (-2.5,-1) -- (-2.5,-3);
+                \drawtextnode{0}{-2}{\tiny $\cdots$}
+                \draw (2.5,-1) -- (2.5,-3);
+
+                \drawtextnode{10}{0}{If $\secheadindexof{\node}=\headindexof{\node}$}
+            \end{scope}
+        }
+        %Note that $\onehotmapofat{\catindexof{\node}}{\catvariableof{\node}}=\clauseof{\{\node\},1-\catindexof{\node}}$.
+        Therefore:
+        \begin{itemize}
+            \item When clauses "disagreeing" on $\node$: Larger clause shrinks
+            \item When clauses "agreeing" on $\node$: Larger clause becomes trivial
+        \end{itemize}
+
+    \end{frame}
+
+
+
+    \begin{frame}{Definite Clauses}
+        Each knowledge base of definite clause has $\catindexof{\nodes}=\onetuple{\nodes}$ as a model.
+
+        If in addition the length of each clause is at least 2, then also $\zerotuple{\nodes}$ as a model.
+
+    \end{frame}
+
+
+    \begin{frame}{Forward chaining is complete on definite clauses}
+        \begin{theorem}
+            When $\kb$ is all clauses in are definite, i.e. have exactly one positive literal, then $\mathcal{L}$ contains all entailed literals
+        \end{theorem}
+        \medskip
+
+        \textbf{Sketch of the proof:}
+        \begin{itemize}
+            \item Forward chaining on definite clauses terminates with a knowledge base of definite clauses of length at least $2$
+            \item The final knowledge base has $\onetuple{\nodes}$ and $\zerotuple{\nodes}$ as a model
+            \item The final knowledge base does therefore not entail for any $\node\in\nodes$ the literals $\catvariableof{\node}$ or $\lnot\catvariableof{\node}$
+        \end{itemize}
+    \end{frame}
+
+
+    \section{Resolution}
 
     \begin{frame}{Generalization: Resolution}
 
 %        When $\catvariableof{0}\rightarrow\catvariableof{1}$ and $\catvariableof{0}$ is true then also $\catvariableof{1}$.
 
 %        Let us now generalize modus ponens to resolution.
- 
-        
-        
+
+
         \begin{block}{Resolution Inference Rule}
             \begin{align*}
                 \frac{
@@ -194,14 +335,17 @@
     \end{frame}
 
 
-    \section{Forward Chaining in Horn Logic}
-
-
     \begin{frame}{Scheduling is key}
 
         \begin{block}{Number of large contractions}
-            The number of possible subcontractions grows fast with the number $k$ of the subcontraction: $\binom{\cardof{\edges}}{k}$
+            The number of possible sub-contractions grows fast with the number $k$ of the subcontraction: $\binom{\cardof{\edges}}{k}$
         \end{block}
+
+        Resolution:
+        \begin{itemize}
+            \item Restricts the possible sub-contractions to those of clauses with complementary clauses
+            \item Requires further scheduling policies for efficiency
+        \end{itemize}
 
         Selection of contractions to be performed is central to algorithm design
         \begin{itemize}

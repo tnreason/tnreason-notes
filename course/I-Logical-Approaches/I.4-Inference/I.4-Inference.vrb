@@ -1,0 +1,19 @@
+\frametitle{Forward Chaining}
+\begin{algorithm}[H] % Force 'Here' to disable floating
+            \begin{algorithmic}
+                \Require Set of clauses $\mathcal{C}$
+                \Ensure Entailed literals $\mathcal{L}$, remaining set of clauses
+                \iosepline
+                \State Initialize $\mathcal{L}=\varnothing$
+                \While{exists a clause $(\{\node,\secheadindexof{\node}\})$ of length 1 in $\mathcal{C}$}
+                    \For{all clauses $\hardparam$ with $\node\in\hardlegset$}
+                        \If{$\headindexof{\node}\neq\secheadindexof{\node}$}
+                            \State $\hardparam\algdefsymbol(\hardlegset\backslash\{\node\},\headindexof{\hardlegset\backslash\{\node\}})$
+                        \Else
+                            \State $\mathcal{C}.\mathrm{drop(}\hardparam\mathrm{)}$
+                        \EndIf
+                    \EndFor
+                    \State $\mathcal{L}.\mathrm{append(}\{\node,\secheadindexof{\node}\}\mathrm{)}$
+                \EndWhile
+            \end{algorithmic}
+        \end{algorithm}
