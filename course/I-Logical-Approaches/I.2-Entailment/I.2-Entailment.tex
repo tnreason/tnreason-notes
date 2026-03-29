@@ -492,6 +492,7 @@
         \end{center}
     \end{frame}
 
+
     \section{Entailment}
 
     \begin{frame}{Contraction without open variables: Model counts}
@@ -504,10 +505,73 @@
             = \sum_{\shortcatindices\in[2]^{\catorder}} \formulaat{\indexedshortcatvariables}
             = \#\{\shortcatindices \wcols \formulaat{\indexedshortcatvariables}=1\}
         \end{align*}
+        \stantikzpic{
+            \draw (-1,-1) rectangle (5,1);
+            \drawtextnode{2}{0}{\corelabelsize $\exformula$}
+            \draw (0,-1) -- (0,-2) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \drawvariabledot{0}{-2}
+            \drawtextnode{2}{-1.5}{$\cdots$}
+            \draw (4,-1) -- (4,-2) node[midway,left] {\colorlabelsize $\catvariableof{\catorder-1}$};
+            \drawvariabledot{4}{-2}
+        }
+
         \begin{block}{Contraction of formulas without open variables}
             The contraction $\contraction{\formulawith}$ of a formula without leaving variables open is the \emph{count of its models} (that are states $\shortcatindices$ with $\formulaat{\indexedshortcatvariables}=1$).
             If $\contraction{\formulawith}=0$, we say the formula is \emph{unsatisfiable}.
         \end{block}
+    \end{frame}
+
+    \begin{frame}{Example: Model count in the toy accounting system}
+        Recall the coordinate-wise representation of the toy accounting system:
+        \begin{center}
+            \begin{tikzpicture}[scale=2]
+                  \node (A) at (0,0) [scale=1.5] {
+                      $\begin{pmatrix}
+                           0 & 1  \\
+                           1 & 0
+                      \end{pmatrix}$
+                  };
+                  \node (A) at (1.25,0.3) [scale=1.5] {
+                      $\begin{pmatrix}
+                           0 & 0 \\
+                           1 & 0
+                      \end{pmatrix}$
+                  };
+                  \draw[->,dashed] (-0.25,0.5) node[below] {\tiny $0$} -- (0.25,0.5) node [midway, above] {\tiny $X_{A2}$} node[below] {\tiny $1$};
+                  \draw[<-,dashed] (-0.6,-0.2) node[right] {\tiny $1$} -- (-0.6,0.2) node [midway, left] {\tiny $X_{A1}$} node[right] {\tiny $0$};
+                  \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (1.25,-0.2) node [midway, below] {\tiny $X_F$} node[above] {\tiny $1$};
+            \end{tikzpicture}
+        \end{center}
+
+
+        The model count of the toy accounting system is thus:
+        \begin{center}
+            \begin{tikzpicture}[scale=0.35, thick, yscale=-1, xscale=-1] % , baseline = -3.5pt
+                \begin{scope}[shift={(10,0)}]
+                    \drawtextnode{2}{-2}{$\contraction{\formulaofat{0}{\catvariableof{A1},\catvariableof{A2}},\formulaofat{1}{\catvariableof{F},\catvariableof{A1}}}$}
+
+                    \drawtextnode{-4.5}{-2}{${=}$}
+
+                    \drawtextnode{-19.5}{-2}{${=}\quad 3$}
+                \end{scope}
+
+                \draw[]  (3,1.75)--(3,-1) node[midway,left] {\colorlabelsize $\catvariableof{A2}$};
+                \drawvariabledot{3}{1.75}
+                \draw[] (-1.5,1) to[bend right=20] (-3,-1);
+                \draw[] (-1.5,1) to[bend right=-20] (0,-1);
+                \drawvariabledot{-1.5}{1}
+                \drawtextnode{-1.5}{1.5}{\colorlabelsize $\catvariableof{A1}$}
+
+                \draw[] (-6,1.75)--(-6,-1) node[midway,left] {\colorlabelsize $\catvariableof{F}$};
+                \drawvariabledot{-6}{1.75}
+
+                \draw (-7,-1) rectangle (-2, -3);
+                \node[anchor=center] (text) at (-4.5,-2) {${\Leftarrow}$};
+
+                \draw (-1,-1) rectangle (4, -3);
+                \node[anchor=center] (text) at (1.5,-2) {${\oplus}$};
+            \end{tikzpicture}
+        \end{center}
     \end{frame}
 
     \begin{frame}{Entailment}
@@ -557,6 +621,7 @@
         \input{tikz/toy-accounting-entailed}
     \end{frame}
 
+
     \section{Python package \tnreason{}}
 
     \begin{frame}{Python package \tnreason{}}
@@ -603,7 +668,7 @@
     \end{frame}
 
     \begin{frame}[fragile]{Subpackage \spengine{}: Tensors}
-        The class \pyinline{engine.TensorCore}
+        The class \pyinline{engine.TensorCore} has attributes
         \begin{itemize}
             \item \emph{colors} (list of str): stores strings representing $\catvariableof{\catenumerator}$ for $\catenumeratorin$
             \item \emph{shape} (list of int): stores the leg dimensions $\catdimof{\catenumerator}$ for $\catenumeratorin$

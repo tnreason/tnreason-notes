@@ -1,35 +1,37 @@
-\begin{tikzpicture}[scale=0.3, yscale=1, thick] % , baseline = -3.5pt
-    
-    \draw[->-] (0,-1)--(0,1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
-    \draw[->-] (1.5,-1)--(1.5,1) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
-    \draw[->-] (3,-1)--(3,1) node[midway,right] {\colorlabelsize $\catvariableof{2}$};
+\stantikzpic{
+
+    \draw[->-] (-1.5,-1)--(-1.5,1) node[midway,left] {\colorlabelsize $\catvariableof{B}$};
+    \draw[->-] (0.5,-1)--(0.5,1) node[midway,right] {\colorlabelsize $\catvariableof{E}$};
+    \draw[->-] (2.5,-1)--(2.5,1) node[midway,right] {\colorlabelsize $\catvariableof{J}$};
+    \draw[->-] (4.5,-1)--(4.5,1) node[midway,right] {\colorlabelsize $\catvariableof{M}$};
     \draw (-2,1) rectangle (5, 3);
-    \node[anchor=center] (text) at (1.5,2) {\corelabelsize $\bencodingof{(\catvariableof{0}\land\catvariableof{1}) \lor (\lnot\catvariableof{2})}$};
-    \draw[->-] (1.5,3)--(1.5,5) node[midway,right] {\colorlabelsize ${\headvariableof{(0\land1)\lor \lnot2}}$};
+    \node[anchor=center] (text) at (1.5,2) {\corelabelsize $\bencodingof{\exformula}$};
+    \draw[->-] (1.5,3)--(1.5,5) node[midway,right] {\colorlabelsize ${\headvariableof{\exformula}}$};
 
     \node[anchor=center] (text) at (7,2) {${=}$};
 
 
-    \begin{scope}[shift={(9,0)}]
+    \begin{scope}[shift={(11,0)}]
 
-        \draw[->-] (0,-1)--(0,1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
-        \draw[->-] (3,-1)--(3,1) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
-        \draw[->-] (6,-1)--(6,1) node[midway,right] {\colorlabelsize $\catvariableof{2}$};
+        \draw[->-] (-1,-1)--(-1,1) node[midway,left] {\colorlabelsize $\catvariableof{B}$};
+        \draw[->-] (2,-1)--(2,1) node[midway,right] {\colorlabelsize $\catvariableof{E}$};
+        \draw[->-] (6,-1)--(6,1) node[midway,right] {\colorlabelsize $\catvariableof{J}$};
+        \draw[->-] (9,-1)--(9,1) node[midway,right] {\colorlabelsize $\catvariableof{M}$};
 
-        \draw (-1,1) rectangle (4, 3);
-        \node[anchor=center] (text) at (1.5,2) {\corelabelsize $\bencodingof{\land}$};
+        \draw (-2,1) rectangle (3, 3);
+        \node[anchor=center] (text) at (0.5,2) {\corelabelsize $\bencodingof{\lor}$};
 
-        \draw[->-] (1.5,3) --(1.5,5) node[midway,right]{\colorlabelsize ${\headvariableof{0\land1}}$};
+        \draw[->-] (2,3) --(2,5) node[midway,right]{\colorlabelsize ${\headvariableof{B\lor E}}$};
 
-        \draw (5,1) rectangle (7, 3);
-        \node[anchor=center] (text) at (6,2) {\corelabelsize $\bencodingof{\lnot}$};
+        \draw (5,1) rectangle (10, 3);
+        \node[anchor=center] (text) at (7.5,2) {\corelabelsize $\bencodingof{\lor}$};
 
-        \draw[->-] (6,3) --(6,5) node[midway,right]{\colorlabelsize $\headvariableof{\lnot 2}$};
+        \draw[->-] (6,3) --(6,5) node[midway,right]{\colorlabelsize $\headvariableof{J \lor M}$};
 
-        \draw (0.5,5) rectangle (7,7);
-        \node[anchor=center] (text) at (3.75,6) {\corelabelsize $\bencodingof{\lor}$};
+        \draw (0.5,5) rectangle (7.5,7);
+        \node[anchor=center] (text) at (4,6) {\corelabelsize $\bencodingof{\Rightarrow}$};
 
-        \draw[->-] (3.75,7) -- (3.75,9) node[midway,right] {\colorlabelsize ${\headvariableof{(0\land1)\lor \lnot2}}$};
+        \draw[->-] (4,7) -- (4,9) node[midway,right] {\colorlabelsize $\headvariableof{\exformula}$};
     \end{scope}
 
-\end{tikzpicture}
+}

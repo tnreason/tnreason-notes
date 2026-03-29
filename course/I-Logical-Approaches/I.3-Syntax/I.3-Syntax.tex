@@ -15,22 +15,6 @@
 
     \showoutlineatsection
 
-
-%    \section{Reflection: Tensors in logics}
-%
-%    \begin{frame}{Tensors in propositional logics}
-%
-%        We have seen that:
-%        \begin{itemize}
-%            \item Tensors are necessary to describe logics
-%            \item Tensor contractions are equivalent to deciding entailment
-%        \end{itemize}
-%
-%
-%
-%    \end{frame}
-
-
     \section{Motivation: Propositional syntax}
 
     \begin{frame}{Decomposition of formulas}
@@ -50,42 +34,10 @@
         \end{align*}
 
         Intuitively we can decompose the
-        \stantikzpic{
-            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (B) at (0,-5) {};
-            \drawtextnode{0}{-5}{\corelabelsize $\catvariableof{B}$}
-            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (E) at (5,-5) {};
-            \drawtextnode{5}{-5}{\corelabelsize $\catvariableof{E}$}
-
-            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (Y1) at (2.5,-2) {};
-            \drawtextnode{2.5}{-2}{\corelabelsize $\headvariableof{B\lor E}$}
-
-            \draw[->-] (B) -- (2.5,-4);
-            \draw[->-] (E) -- (2.5,-4);
-            \draw[->-] (2.5,-4) -- (Y1);
-
-            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (J) at (10,-5) {};
-            \drawtextnode{10}{-5}{\corelabelsize $\catvariableof{J}$}
-            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (M) at (15,-5) {};
-            \drawtextnode{15}{-5}{\corelabelsize $\catvariableof{M}$}
-
-            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (Y2) at (12.5,-2) {};
-            \drawtextnode{12.5}{-2}{\corelabelsize $\headvariableof{J\lor M}$}
-
-            \draw[->-] (J) -- (12.5,-4);
-            \draw[->-] (M) -- (12.5,-4);
-            \draw[->-] (12.5,-4)--(Y2);
-
-            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (Y) at (7.5,1) {};
-            \drawtextnode{7.5}{1}{\corelabelsize $\headvariableof{\formula}$}
-
-            \draw[->-] (Y1) -- (7.5,-1);
-            \draw[->-] (Y2) -- (7.5,-1);
-            \draw[->-] (7.5,-1)--(Y);
-
-        }
+        \input{tikz/syntactical-circuit-example}
 
         \only<2>{
-            In this lecture we:
+            In this lecture we formalize this intuition:
             \begin{itemize}
                 \item understand each $\headvariable$ as a \emph{hidden variable}
                 \item decorate directed hyperedges by \emph{basis encodings} to find tensor network decompositions
@@ -127,7 +79,7 @@
     \end{frame}
 
 
-    \section{Basis calculus}
+    \section{Basis encodings for basis calculus}
 
     \begin{frame}{Recall: One-hot encodings}
         One-hot encodings of a state are a tensor with a single coordinate $1$ marking the corresponding state.
@@ -155,6 +107,23 @@
         They build an orthogonal basis of the tensor space.
     \end{frame}
 
+
+
+    \begin{frame}{Basis encodings}
+        \begin{definition}[Basis encoding]
+            The basis encodings of a formula $\formulawith \defcols \ozset^{\catorder}\rightarrow \ozset$ is the tensor
+            \begin{center}
+                \input{tikz/be-definition}
+            \end{center}
+        \end{definition}
+
+        \textbf{Example:}
+        The basis encoding of the logical disjunction $\lor$ is the tensor
+        \begin{center}
+            \input{tikz/be-disjunction}
+        \end{center}
+    \end{frame}
+
     \begin{frame}{Coordinate and basis encoding}
 
         {\bf Coordinate encoding:} \\
@@ -173,21 +142,118 @@
 
     \end{frame}
 
+    \begin{frame}{Hidden variables perspective}
 
-    \begin{frame}{Basis encodings}
-        \begin{definition}[Basis encoding]
-            The basis encodings of a formula $\formulawith \defcols \ozset^{\catorder}\rightarrow \ozset$ is the tensor
-            \begin{center}
-                \input{tikz/be-definition}
-            \end{center}
-        \end{definition}
+        Basis encoding introduce \emph{hidden variables $\headvariableof{\exformula}$} representing the satisfaction of the formula
+        \begin{align*}
+            \bencodingofat{\exformula}{\headvariableof{\exformula},\shortcatvariables}
+            = \left(\headvariableof{\exformula}\Leftrightarrow \exformula\right) \left[\headvariableof{\exformula},\shortcatvariables\right]
+        \end{align*}
+        We depict this as
+        \stantikzpic{
+        %\drawsmalltensor{0}{4}{\corelabelsize $\fbasis$}
+            \draw[->-] (0,1) -- (0,3) node[midway,right]{\colorlabelsize $\headvariableof{\exformula}$};
+            \draw (-1.5,-1) rectangle (1.5,1);
+            \drawtextnode{0}{0}{\corelabelsize $\bencodingof{\formula}$}
+            \draw[->-] (-1,-3) -- (-1,-1);
+            \drawtextnode{0}{-1.5}{\colorlabelsize $\cdots$}
+            \drawtextnode{0}{-2.25}{\colorlabelsize $\shortcatvariables$}
+            \draw[->-] (1,-3) -- (1,-1);
+            \drawtextnode{3}{0}{${=}$}
 
-        \textbf{Example:}
-        The basis encoding of the logical disjunction $\lor$ is the tensor
-        \begin{center}
-            \input{tikz/be-disjunction}
-        \end{center}
+            \begin{scope}[shift={(6,-1.5)}]
+%                \drawsmalltensor{0}{5.5}{\corelabelsize $\fbasis$}
+                \draw (0,3.5) -- (0,4.5)  node[midway,right]{\colorlabelsize $\headvariableof{\exformula}$};
+                \drawsmalltensor{0}{2.5}{\corelabelsize $\tbasis$}
+                %\draw[->-] (0,1) -- (0,3) node[midway,right]{\colorlabelsize $\headvariableof{\exformula}$};
+                \draw (-1.5,-1) rectangle (1.5,1);
+                \drawtextnode{0}{0}{\corelabelsize ${\formula}$}
+                \draw[] (-1,-2) -- (-1,-1);
+                \drawtextnode{0}{-1.5}{\colorlabelsize $\cdots$}
+                \drawtextnode{0}{-2.25}{\colorlabelsize $\shortcatvariables$}
+                \draw[] (1,-2) -- (1,-1);
+            \end{scope}
+
+            \drawtextnode{8.5}{0}{${+}$}
+
+            \begin{scope}[shift={(11,-1.5)}]
+                %               \drawsmalltensor{0}{5.5}{\corelabelsize $\fbasis$}
+                \draw (0,3.5) -- (0,4.5)  node[midway,right]{\colorlabelsize $\headvariableof{\exformula}$};
+                \drawsmalltensor{0}{2.5}{\corelabelsize $\fbasis$}
+                \draw (-1.5,-1) rectangle (1.5,1);
+                \drawtextnode{0}{0}{\corelabelsize ${\lnot\formula}$}
+                \draw[] (-1,-2) -- (-1,-1);
+                \drawtextnode{0}{-1.5}{\colorlabelsize $\cdots$}
+                \drawtextnode{0}{-2.25}{\colorlabelsize $\shortcatvariables$}
+                \draw[] (1,-2) -- (1,-1);
+            \end{scope}
+
+            \drawtextnode{14}{0}{${=}$}
+
+            \begin{scope}[shift={(17,0)}]
+                \draw (0,1) -- (0,2)  node[midway,right]{\colorlabelsize $\headvariableof{\exformula}$};
+                \draw (-1.5,-1) rectangle (1.5,1);
+                \drawtextnode{0}{0}{\corelabelsize ${\headvariableof{\formula}\Leftrightarrow\exformula}$}
+                \draw[] (-1,-2) -- (-1,-1);
+                \drawtextnode{0}{-1.5}{\colorlabelsize $\cdots$}
+                \drawtextnode{0}{-2.25}{\colorlabelsize $\shortcatvariables$}
+                \draw[] (1,-2) -- (1,-1);
+            \end{scope}
+        }
+
+
     \end{frame}
+
+    \begin{frame}{Retrieval of the formula}
+
+        We retrieve the formula $\formulawith$ from its basis encoding by contracting with $\tbasisat{\headvariableof{\exformula}}$:
+        \stantikzpic{
+            \drawsmalltensor{0}{4}{\corelabelsize $\tbasis$}
+            \draw[->-] (0,1) -- (0,3) node[midway,right]{\colorlabelsize $\headvariableof{\exformula}$};
+            \draw (-1.5,-1) rectangle (1.5,1);
+            \drawtextnode{0}{0}{\corelabelsize $\bencodingof{\formula}$}
+            \draw[->-] (-1,-3) -- (-1,-1);
+            \drawtextnode{0}{-2}{\colorlabelsize $\shortcatvariables$}
+            \draw[->-] (1,-3) -- (1,-1);
+            \drawtextnode{3}{0}{${=}$}
+
+            \begin{scope}[shift={(6,-1.5)}]
+                \drawsmalltensor{0}{5.5}{\corelabelsize $\tbasis$}
+                \draw (0,3.5) -- (0,4.5);
+                \drawsmalltensor{0}{2.5}{\corelabelsize $\tbasis$}
+                %\draw[->-] (0,1) -- (0,3) node[midway,right]{\colorlabelsize $\headvariableof{\exformula}$};
+                \draw (-1.5,-1) rectangle (1.5,1);
+                \drawtextnode{0}{0}{\corelabelsize ${\formula}$}
+                \draw[] (-1,-2) -- (-1,-1);
+                \drawtextnode{0}{-2}{\colorlabelsize $\cdots$}
+                \draw[] (1,-2) -- (1,-1);
+            \end{scope}
+
+            \drawtextnode{8.5}{0}{${+}$}
+
+            \begin{scope}[shift={(11,-1.5)}]
+                \drawsmalltensor{0}{5.5}{\corelabelsize $\tbasis$}
+                \draw (0,3.5) -- (0,4.5);
+                \drawsmalltensor{0}{2.5}{\corelabelsize $\fbasis$}
+                \draw (-1.5,-1) rectangle (1.5,1);
+                \drawtextnode{0}{0}{\corelabelsize ${\lnot\formula}$}
+                \draw[] (-1,-2) -- (-1,-1);
+                \drawtextnode{0}{-2}{\colorlabelsize $\cdots$}
+                \draw[] (1,-2) -- (1,-1);
+            \end{scope}
+
+            \drawtextnode{14}{0}{${=}$}
+
+            \begin{scope}[shift={(17,0)}]
+                \draw (-1.5,-1) rectangle (1.5,1);
+                \drawtextnode{0}{0}{\corelabelsize ${\formula}$}
+                \draw[] (-1,-2) -- (-1,-1);
+                \drawtextnode{0}{-2}{\colorlabelsize $\cdots$}
+                \draw[] (1,-2) -- (1,-1);
+            \end{scope}
+        }
+    \end{frame}
+
 
     \begin{frame}{Solution of the non-linearity problem}
 
@@ -254,13 +320,42 @@
 
     \begin{frame}{Basis calculus perspective on logics}
 
-        Boolean states are represented by one-hot encodings
-        \[ \truesymbol \leftrightarrow \coloredmatrixof{0 \\ 1}{\catvariable}
-        \quad \text{and} \quad \falsesymbol \leftrightarrow \coloredmatrixof{1 \\ 0}{\catvariable}\, . \]
+        \begin{block}{Vector representation of Booleans}
+            Boolean states can be represented by one-hot encodings
+            \begin{align*}
+                \truesymbol \leftrightarrow \coloredmatrixof{0 \\ 1}{\catvariable}
+                \quad \text{and} \quad \falsesymbol \leftrightarrow \coloredmatrixof{1 \\ 0}{\catvariable}\, .
+            \end{align*}
+        \end{block}
 
-        The truth tables of logical connectives $\exconnective\in\{\land,\lor,\Rightarrow\}$ are represented by tensors $\bencodingof{\exconnective}\in\rr^{2\times 2 \times 2}$ defined as
+        Function evaluation by contraction: For each $\shortcatindices\in[2]^{\catorder}$ we have
+        \begin{align*}
+            \onehotmapofat{\exformula(\shortcatindices)}{\headvariableof{\exformula}}
+            = \contractionof{
+                \bencodingofat{\exformula}{\headvariableof{\exformula},\shortcatvariables},
+                \onehotmapofat{\shortcatindices}{\shortcatvariables}
+            }{
+                \headvariableof{\exformula}
+            } \, .
+        \end{align*}
+        That is:
+        \vspace{-0.5cm}
+        \stantikzpic{
+            \draw[->-] (3,1) -- (3,3) node[midway,right] {\colorlabelsize $\headvariableof{\exformula}$};
+            \draw (0,-1) rectangle (6,1);
+            \drawtextnode{3}{0}{\corelabelsize $\bencodingof{\formula}$}
+            \draw[->-] (1,-3) -- (1,-1) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+            \draw[->-] (5,-3) -- (5,-1) node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+            \drawsmalltensor{1}{-4}{\corelabelsize $\onehotmapof{\catindexof{0}}$}
+            \drawtextnode{3}{-2}{\colorlabelsize $\cdots$}
+            \drawsmalltensor{5}{-4}{\corelabelsize $\onehotmapof{\catindexof{\catorder-1}}$}
 
-        Contracting with the one-hot encoding of the inputs gives the one-hot encoding of the formula satisfaction.
+            \drawtextnode{8}{0}{${=}$}
+            \draw[->-] (11,1) -- (11,3) node[midway,right] {\colorlabelsize $\headvariableof{\exformula}$};
+            \draw (9.5,-1) rectangle (12.5,1);
+            \drawtextnode{11}{0}{\corelabelsize $\onehotmapof{\formula(\shortcatindices)}$}
+
+        }
 
 
     \end{frame}
@@ -273,43 +368,91 @@
             \item Contract with the basis encoding of a function
             \item Get one-hot encoding of $\formula(\shortcatindices)$ as a result
         \end{itemize}
-        For any $\shortcatindices$ it holds that:
-        \stantikzpic{
-            \draw[->-] (3,1) -- (3,3) node[midway,right] {\colorlabelsize $\headvariableof{\exformula}$};
-            \draw (0,-1) rectangle (6,1);
-            \drawtextnode{3}{0}{\corelabelsize $\bencodingof{\formula}$}
-            \draw[->-] (1,-3) -- (1,-1) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
-            \draw[->-] (5,-3) -- (5,-1) node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
-            \drawsmalltensor{1}{-4}{\corelabelsize $\onehotmapof{\catindexof{0}}$}
-            \drawsmalltensor{5}{-4}{\corelabelsize $\onehotmapof{\catindexof{\catorder-1}}$}
 
-            \drawtextnode{8}{0}{${=}$}
-            \draw[->-] (11,1) -- (11,3) node[midway,right] {\colorlabelsize $\headvariableof{\exformula}$};
-            \draw (9.5,-1) rectangle (12.5,1);
-            \drawtextnode{11}{0}{\corelabelsize $\onehotmapof{\formula(\shortcatindices)}$}
-
-        }
-
+        \begin{block}{Basis calculus scheme}
+            States are represented by basis vectors (their one-hot encodings) and processed by contractions with basis encodings.
+        \end{block}
     \end{frame}
+
+
+    \section{Decompositions and message passing inference}
 
 
     \begin{frame}{Decomposition of basis encodings}
 
-%        \begin{block}{Representation of Composed Formulas}
-%            The semantics of complex formulas are retrieved by \emph{contractions} of their connective semantics, which are summations of tensor coordinates among shared axes.
-%            \begin{itemize}
-%                \item Choose distributed representation to avoid contractions
-%                \item Only execute those contractions required by reasoning
-%            \end{itemize}
-%        \end{block}
-
-        Example of a decomposition:
-        \begin{center}
+        \only<1>{
+            Recall our motivation:
+            \begin{itemize}
+                \item Formulas are high-dimensional tensors, but they (often) have structure by their syntax
+                \item Propositional syntax introduces multiple hidden variables
+                \item Use syntax to find tensor network decompositions
+            \end{itemize}
+        }
+        {\bf Example:} $\formulaat{\catvariableof{B},\catvariableof{E},\catvariableof{J},\catvariableof{M}}
+        = \left(\catvariableof{B} \lor \catvariableof{E}\right) \Rightarrow \left(\catvariableof{J} \lor \catvariableof{M}\right)$
+        \input{tikz/syntactical-circuit-example}
+        \only<1>{
+            Idea:
+            \begin{itemize}
+                \item Introduce for each sub-formula a hidden variable $\headvariable$
+                \item Prepare a basis encoding for each sub-formula
+            \end{itemize}
+        }
+        \only<2->{
+            This results in the decomposition
+            \vspace{-0.5cm}
             \input{./tikz/be-decomposition}
-        \end{center}
-
+        }
     \end{frame}
 
+    \begin{frame}{\DecompositionSparsity{}}
+
+        \begin{theorem}
+            The basis encoding of a composed formula is the contraction of the basis encodings to its connectives.
+        \end{theorem}
+        \textbf{Proof sketch:} When contracting the decomposition with one-hot encodings of any $\shortcatindices\in[2]^{\catorder}$, we get by basis calculus the one-hot encodings of the composition formulas, and finally the one-hot encoding of the whole formula.
+        This coincides with contracting the full basis encoding since
+        \begin{align*}
+            \contractionof{\bencodingofat{\formula}{\headvariableof{\exformula},\shortcatvariables},\onehotmapofat{\shortcatindices}{\shortcatvariables}}{
+                \headvariableof{\exformula}
+            }
+            = \onehotmapofat{\formulaat{\indexedshortcatvariables}}{\headvariableof{\formula}} \, .
+        \end{align*}
+
+        \begin{block}{\DecompositionSparsity{}}
+            When a function can be decomposed into connective functions, its corresponding tensor has a tensor network decomposition by the basis encodings of the connective functions.
+%            When there is a syntactical representation of a formula, we find a tensor network decomposition of the formula.
+        \end{block}
+    \end{frame}
+
+
+    \begin{frame}{\DecompositionSparsity{} for inference}
+
+            {\bf Recall:} Logical inference (deciding entailment) requires tensor network contractions.
+        Since naive computation schemes are intractable, can we exploit tensor network decompositions for efficient inference?
+\medskip \\
+            {\bf Formula evaluation} as an inference instance:
+        \stantikzpic{
+            \draw[->-] (-1.5,-1)--(-1.5,1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \draw[->-] (1,-1)--(1,1) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+            \drawtextnode{2.75}{0}{\colorlabelsize $\cdots$}
+            \draw[->-] (4.5,-1)--(4.5,1) node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+            \draw (-2,1) rectangle (5, 3);
+            \node[anchor=center] (text) at (1.5,2) {\corelabelsize $\bencodingof{\exformula}$};
+            \draw[->-] (1.5,3)--(1.5,5) node[midway,right] {\colorlabelsize ${\headvariableof{\exformula}}$};
+
+            \drawsquaretensor{-1.5}{-2}{$\onehotmapof{\catindexof{0}}$}
+            \drawsquaretensor{1}{-2}{$\onehotmapof{\catindexof{1}}$}
+            \drawsquaretensor{4.5}{-2}{$\onehotmapof{\catindexof{\catorder-1}}$}
+        }
+        In the entailment perspective:
+        \begin{itemize}
+            \item Knowledge by a state: $\kbwith=\onehotmapofat{\shortcatindices}{\shortcatvariables}$
+            \item Investigate whether formula $\exformula$ is entailed amounts to deciding whether $\formula(\shortcatindices)=1$
+        \end{itemize}
+
+
+    \end{frame}
 
     \begin{frame}{Formula evaluation by message passing of one-hot encodings}
 
@@ -319,9 +462,10 @@
                 \item Input states are prepared by their one-hot encodings
                 \item Contractions with the basis encodings result in the one-hot encoding of the output
             \end{itemize}
-            Advantage: Contractions can performed by local contractions.
+                {\bf Advantage:} Decomposition of basis encodings enables to decompose global contractions into local contractions.
         }
-
+        \par
+        {\bf Example:} Evaluation of the formula $\formulaof{\catvariableof{[3]}}=\Big((\catvariableof{0}\land\catvariableof{1})\lor\lnot\catvariableof{2}\Big)$
         \begin{center}
             \input{./tikz/basis-calculus}
         \end{center}
@@ -329,30 +473,12 @@
         \only<6>{
             This is a first example of a \emph{message passing scheme:}
             \begin{itemize}
-                \item "Messages" are computed by contractions of sub-networks (two blue contractions, one red contraction)
-                \item "Passing" of previous messages (blue contractions) to compute new messages (red contraction)
+                \item {\bf Messages} are computed by contractions of sub-networks (two blue contractions, one red contraction)
+                \item {\bf Passing} of previous messages (blue contractions) to compute new messages (red contraction)
             \end{itemize}
         }
     \end{frame}
 
-
-
-
-
-    \begin{frame}{\DecompositionSparsity{}}
-
-        \begin{theorem}
-            The basis encoding of a composed formula is the contraction of the basis encodings to its connectives.
-        \end{theorem}
-        \textbf{Proof:} When contracting the decomposition with one-hot encodings of any $\shortcatindices\in[2]^{\catorder}$, we get by basis calculus the one-hot encodings of the composition formulas, and finally the one-hot encoding of the whole formula.
-        This coincides with contracting the full basis encoding since
-        \begin{align*}
-            \contractionof{\bencodingofat{\formula}{\headvariableof{\exformula},\shortcatvariables},\onehotmapofat{\shortcatindices}{\shortcatvariables}}{
-                \headvariableof{\exformula}
-            }
-            = \onehotmapofat{\formulaat{\indexedshortcatvariables}}{\headvariableof{\formula}} \, .
-        \end{align*}
-    \end{frame}
 
 %    \section{Revisiting entailment}
 %
@@ -392,25 +518,25 @@
 %    \end{frame}
 
 
-    \begin{frame}{Advantages of the Network Decomposition}
-
-        \begin{block}{Model-theoretic Semantics by Tensor Networks}
-            \begin{itemize}
-                \item \textbf{Tensors encode the models} of propositional formulas by their nonzero coordinates
-                \item \textbf{Networks eliminate redundancies} when representing similar formulas
-            \end{itemize}
-            %Contractions with cores $\bencodingof{\exconnective}$ can be designed for various reasoning tasks.
-        \end{block}
-
-        \medskip
-
-        This is an implementation of the \textbf{neural paradigm}, resulting in
-        \begin{itemize}
-            \item Effective representation: Latent variables by logical formulas
-            \item Differential parametrization: Multilinearity with respect to each core tensor
-        \end{itemize}
-
-    \end{frame}
+%    \begin{frame}{Advantages of the Network Decomposition}
+%
+%        \begin{block}{Model-theoretic Semantics by Tensor Networks}
+%            \begin{itemize}
+%                \item \textbf{Tensors encode the models} of propositional formulas by their nonzero coordinates
+%                \item \textbf{Networks eliminate redundancies} when representing similar formulas
+%            \end{itemize}
+%            %Contractions with cores $\bencodingof{\exconnective}$ can be designed for various reasoning tasks.
+%        \end{block}
+%
+%        \medskip
+%
+%        This is an implementation of the \textbf{neural paradigm}, resulting in
+%        \begin{itemize}
+%            \item Effective representation: Latent variables by logical formulas
+%            \item Differential parametrization: Multilinearity with respect to each core tensor
+%        \end{itemize}
+%
+%    \end{frame}
 
 
     \section{Implementations in \tnreason{}}
@@ -521,7 +647,7 @@
 
     \end{frame}
 
-    \begin{frame}{Representation of Syntax}
+    \begin{frame}{Propositional syntax in \tnreason{}}
         Having strings representing
         \begin{itemize}
             \item Connectives (by defined representations)

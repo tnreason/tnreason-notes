@@ -1,0 +1,32 @@
+        \stantikzpic{
+            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (B) at (0,-5) {};
+            \drawtextnode{0}{-5}{\corelabelsize $\catvariableof{B}$}
+            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (E) at (5,-5) {};
+            \drawtextnode{5}{-5}{\corelabelsize $\catvariableof{E}$}
+
+            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (Y1) at (2.5,-2) {};
+            \drawtextnode{2.5}{-2}{\corelabelsize $\headvariableof{B\lor E}$}
+
+            \draw[->-] (B) -- (2.5,-4);
+            \draw[->-] (E) -- (2.5,-4);
+            \draw[->-] (2.5,-4) -- (Y1);
+
+            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (J) at (10,-5) {};
+            \drawtextnode{10}{-5}{\corelabelsize $\catvariableof{J}$}
+            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (M) at (15,-5) {};
+            \drawtextnode{15}{-5}{\corelabelsize $\catvariableof{M}$}
+
+            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (Y2) at (12.5,-2) {};
+            \drawtextnode{12.5}{-2}{\corelabelsize $\headvariableof{J\lor M}$}
+
+            \draw[->-] (J) -- (12.5,-4);
+            \draw[->-] (M) -- (12.5,-4);
+            \draw[->-] (12.5,-4)--(Y2);
+
+            \node [circle, draw, thick, fill=gray!50, minimum size = \nodeminsize] (Y) at (7.5,1) {};
+            \drawtextnode{7.5}{1}{\corelabelsize $\headvariableof{\formula}$}
+
+            \draw[->-] (Y1) -- (7.5,-1);
+            \draw[->-] (Y2) -- (7.5,-1);
+            \draw[->-] (7.5,-1)--(Y);
+        }
