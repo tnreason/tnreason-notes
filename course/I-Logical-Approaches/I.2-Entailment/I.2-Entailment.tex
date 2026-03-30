@@ -574,7 +574,30 @@
         \end{center}
     \end{frame}
 
-    \begin{frame}{Entailment}
+    \begin{frame}{Entailment: Motivation}
+        Entailment is the logical formalization of "what can be deduced" from knowledge about a system.
+        \begin{itemize}
+            \item Knowledge is represented by a knowledge base $\kbwith$
+            \item We want to investigate whether some formula $\formulawith$
+        \end{itemize}
+
+            {\bf Example:}
+        Given the toy accounting system, which of these statements can be deduced?
+        \begin{itemize}
+            \item "Whenever the account $\var{Account 2}$ is booked, the $\var{Feature}$ is present on the invoice."
+            \begin{align*}
+                \formulaat{\catvariableof{A2},\catvariableof{F}} = \big(\catvariableof{A2}\Rightarrow\catvariableof{F}\big)
+            \end{align*}
+            \item "It is never the case that $\var{Account 1}$ is booked and the $\var{Feature}$ is not present on the invoice".
+            \begin{align*}
+                \formulaat{\catvariableof{A1},\catvariableof{F}} = \lnot\big(\catvariableof{A1}\land\lnot\catvariableof{F}\big)
+            \end{align*}
+        \end{itemize}
+
+
+    \end{frame}
+
+    \begin{frame}{Formalization of entailment}
         \begin{definition}[Entailment]
             Let $\kbat{\shortcatvariables}$ and $\formulawith$ be two propositional formulas.
             If for all worlds $\shortcatindices$, for which $\kbat{\indexedshortcatvariables}=1$, we also have $\formulaat{\indexedshortcatvariables}=1$, then we say that $\formula$ is entailed by $\kb$ and denote
@@ -732,7 +755,7 @@
         \begin{minted}{python}
     from tnreason import representation
     tensorCore = representation.create_tensor_encoding(
-        inShape, inColors, outColors, function)
+        inShape, inColors, function)
         \end{minted}
         \begin{itemize}
             \item inShape, inColors: specifying the leg dimension and the names of the variables ($\shortcatvariables$)

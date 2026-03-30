@@ -1,0 +1,247 @@
+\documentclass{scrartcl}
+\input{../../../spec_files/exercise_preamble}
+
+\begin{document}
+    \solutionhead{1}{Modeling with Propositional Logic}{March 23, 2026}
+    \addtask{1}{
+        The Boolean variables are:
+        \begin{itemize}
+            \item $\catvariableof{B}$: A Burglary happened.
+            \item $\catvariableof{E}$: An Earthquake happened.
+            \item $\catvariableof{A}$: The Alarm rings.
+            \item $\catvariableof{J}$: John calls.
+            \item $\catvariableof{M}$: Mary calls.
+        \end{itemize}
+        The knowledge base is represented by the formulas:
+        \begin{itemize}
+            \item $\formulaof{0} = \big((\catvariableof{B} \lor \catvariableof{E}) \Rightarrow \catvariableof{A}\big)$:
+            When a Burglary or an Earthquake occurs, the Alarm rings.
+            \item $\formulaof{1} = \big(\catvariableof{A} \Rightarrow (\catvariableof{J} \lor \catvariableof{M})\big)$:
+            When the Alarm rings then we receive a call from at least one of the neighbors John and Mary.
+            \item $\formulaof{2} = \big(\neg \catvariableof{J}\big)$:
+            The neighbor John never calls.
+        \end{itemize}
+    }
+    \addtask{2}{
+        The truth table representation of the formulas is given by:
+        \begin{itemize}
+            \item $\formulaof{0} = \big((\catvariableof{B} \lor \catvariableof{E}) \Rightarrow \catvariableof{A}\big)$:
+            \begin{center}
+                \begin{tikzpicture}[scale=2]
+                    \node (tab) at (-3,0) {
+                        \begin{tabular}{ccc|c|c}
+                            $\catvariableof{B}$ & $\catvariableof{E}$ & $\catvariableof{A}$ & $(\catvariableof{B} \lor \catvariableof{E})$ & $\formulaof{0}$ \\
+                            \hline
+                            0                   & 0                   & 0                   & 0                                            & 1               \\
+                            0                   & 0                   & 1                   & 0                                            & 1               \\
+                            0                   & 1                   & 0                   & 1                                            & 0               \\
+                            0                   & 1                   & 1                   & 1                                            & 1               \\
+                            1                   & 0                   & 0                   & 1                                            & 0               \\
+                            1                   & 0                   & 1                   & 1                                            & 1               \\
+                            1                   & 1                   & 0                   & 1                                            & 0               \\
+                            1                   & 1                   & 1                   & 1                                            & 1               \\
+                        \end{tabular}
+                    };
+
+                    \node (A) at (0,0) [scale=1] {
+                        $\begin{pmatrix}
+                             1 & 0  \\
+                             0 & 0
+                        \end{pmatrix}$
+                    };
+                    \node (A) at (0.8,0.3) [scale=1] {
+                        $\begin{pmatrix}
+                             1 & 1 \\
+                             1 & 1
+                        \end{pmatrix}$
+                    };
+                    \draw[->,dashed] (-0.15,0.5) node[below] {\tiny $0$} -- (0.15,0.5) node [midway, above] {\tiny $\catvariableof{E}$} node[below] {\tiny $1$};
+                    \draw[<-,dashed] (-0.6,-0.15) node[right] {\tiny $1$} -- (-0.6,0.15) node [midway, left] {\tiny $\catvariableof{B}$} node[right] {\tiny $0$};
+                    \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (0.8,-0.2) node [midway, below] {\tiny $\catvariableof{A}$} node[above] {\tiny $1$};
+                \end{tikzpicture}
+            \end{center}
+            \item $\formulaof{1} = \big(\catvariableof{A} \Rightarrow (\catvariableof{M}\lor\catvariableof{J})\big)$:
+            \begin{center}
+                \begin{tikzpicture}[scale=2]
+                    \node (tab) at (-3,0) {
+                        \begin{tabular}{ccc|c|c}
+                            $\catvariableof{J}$ & $\catvariableof{M}$ & $\catvariableof{A}$ & $(\catvariableof{J} \lor \catvariableof{M})$ & $\formulaof{1}$ \\
+                            \hline
+                            0                   & 0                   & 0                   & 0                                            & 1               \\
+                            0                   & 0                   & 1                   & 0                                            & 0               \\
+                            0                   & 1                   & 0                   & 1                                            & 1               \\
+                            0                   & 1                   & 1                   & 1                                            & 1               \\
+                            1                   & 0                   & 0                   & 1                                            & 1               \\
+                            1                   & 0                   & 1                   & 1                                            & 1               \\
+                            1                   & 1                   & 0                   & 1                                            & 1               \\
+                            1                   & 1                   & 1                   & 1                                            & 1               \\
+                        \end{tabular}
+                    };
+
+                    \node (A) at (0,0) [scale=1] {
+                        $\begin{pmatrix}
+                             1 & 1  \\
+                             1 & 1
+                        \end{pmatrix}$
+                    };
+                    \node (A) at (0.8,0.3) [scale=1] {
+                        $\begin{pmatrix}
+                             0 & 1 \\
+                             1 & 1
+                        \end{pmatrix}$
+                    };
+                    \draw[->,dashed] (-0.15,0.5) node[below] {\tiny $0$} -- (0.15,0.5) node [midway, above] {\tiny $\catvariableof{M}$} node[below] {\tiny $1$};
+                    \draw[<-,dashed] (-0.6,-0.15) node[right] {\tiny $1$} -- (-0.6,0.15) node [midway, left] {\tiny $\catvariableof{J}$} node[right] {\tiny $0$};
+                    \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (0.8,-0.2) node [midway, below] {\tiny $\catvariableof{A}$} node[above] {\tiny $1$};
+                \end{tikzpicture}
+            \end{center}
+            \item $\formulaof{2} = \lnot\catvariableof{J}$:
+            \begin{center}
+                \begin{tikzpicture}[scale=2]
+                    \node (tab) at (-3,0) {
+                        \begin{tabular}{c|c}
+                            $\catvariableof{J}$ & $\formulaof{2}$ \\
+                            \hline
+                            0                   & 1               \\
+                            1                   & 0
+                        \end{tabular}
+                    };
+                    \node (A) at (0,0) [scale=1] {
+                        $\begin{pmatrix}
+                             1  \\
+                             0
+                        \end{pmatrix}$
+                    };
+                    \draw[<-,dashed] (-0.6,-0.15) node[right] {\tiny $1$} -- (-0.6,0.15) node [midway, left] {\tiny $\catvariableof{J}$} node[right] {\tiny $0$};
+                \end{tikzpicture}
+            \end{center}
+        \end{itemize}
+    }
+    \addtask{3}{
+        We define test formulas $\formula[\cdot]$ and decide entailment by investigating whether $\contraction{\kb[\cdot],\lnot\formula[\cdot]}=0$.
+        \begin{itemize}
+            \item "When the Alarm rings, either a Burglary or an Earthquake happened." \\
+            Intuitively, this is not entailed, since the Alarm can ring without a Burglary or an Earthquake happening. \\
+            Test formula:
+            \begin{align*}
+                \formulaofat{3}{\catvariableof{A},\catvariableof{B},\catvariableof{E}}
+                =\big(\catvariableof{A}\Rightarrow(\catvariableof{B}\lor\catvariableof{E})\big)
+            \end{align*}
+            We construct an example state where $\kb$ is satisfied, but $\formulaof{4}$ is not satisfied:
+            \begin{align*}
+                (\catindexof{A},\catindexof{B},\catindexof{E},\catindexof{M},\catindexof{J}) = (1,0,0,1,0)
+            \end{align*}
+            We have $\kbat{\catvariableof{B}=0,\catvariableof{E}=0,\catvariableof{A}=1,\catvariableof{J}=0,\catvariableof{M}=1}=1$ since
+            \begin{align*}
+                &\formulaofat{0}{\catvariableof{A}=1,\catvariableof{B}=0,\catvariableof{E}=0} = 1 \\
+                &\formulaofat{1}{\catvariableof{A}=1,\catvariableof{J}=0,\catvariableof{M}=1} = 1 \\
+                &\formulaofat{2}{\catvariableof{J}=0} = 1
+            \end{align*}
+            but
+            \begin{align*}
+                &\formulaofat{3}{\catvariableof{A}=1,\catvariableof{B}=0,\catvariableof{E}=0} = 0 \, .
+            \end{align*}
+            Therefore $\contraction{\kbat{\catvariableof{B},\catvariableof{E},\catvariableof{A},\catvariableof{J},\catvariableof{M}},\lnot\formulaofat{3}{\catvariableof{A},\catvariableof{B},\catvariableof{E}}}>1$ and
+            \begin{align*}
+                \kb\not\models\formulaof{3} \, .
+            \end{align*}
+            \item "When the Alarm rings, then Mary calls." \\
+            Intuitively, this already follows from the last two formulas, since when the Alarm rings, then at least one of the neighbors calls, and since John never calls, it must be Mary who calls. \\
+            Test formula:
+            \begin{align*}
+                \formulaofat{4}{\catvariableof{A},\catvariableof{M}}
+                =\big(\catvariableof{A}\Rightarrow\catvariableof{M}\big)
+            \end{align*}
+            We have
+            \vspace{-1cm}
+            \begin{center}
+                \begin{tikzpicture}[scale=2]
+                    \node[anchor=east] at (-1.2,0)  {$\contractionof{\formulaofat{1}{\catvariableof{A},\catvariableof{M},\catvariableof{J}},\formulaofat{2}{\catvariableof{J}}}{\catvariableof{A},\catvariableof{M},\catvariableof{J}}=$};
+                    \node (A) at (0,0) [scale=1] {
+                        $\begin{pmatrix}
+                             1 & 1  \\
+                             0 & 1
+                        \end{pmatrix}$
+                    };
+                    \node (A) at (0.8,0.3) [scale=1] {
+                        $\begin{pmatrix}
+                             0 & 0 \\
+                             0 & 0
+                        \end{pmatrix}$
+                    };
+                    \draw[->,dashed] (-0.15,0.5) node[below] {\tiny $0$} -- (0.15,0.5) node [midway, above] {\tiny $\catvariableof{M}$} node[below] {\tiny $1$};
+                    \draw[<-,dashed] (-0.6,-0.15) node[right] {\tiny $1$} -- (-0.6,0.15) node [midway, left] {\tiny $\catvariableof{A}$} node[right] {\tiny $0$};
+                    \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (0.8,-0.2) node [midway, below] {\tiny $\catvariableof{J}$} node[above] {\tiny $1$};
+                    \begin{scope}[shift={(0,-1.25)}]
+                        \node[anchor=east] at (-1.2,0)  {$\formulaofat{4}{\catvariableof{A},\catvariableof{M},\catvariableof{J}}=$};
+                        \node (A) at (0,0) [scale=1] {
+                            $\begin{pmatrix}
+                                 1 & 1  \\
+                                 0 & 1
+                            \end{pmatrix}$
+                        };
+                        \node (A) at (0.8,0.3) [scale=1] {
+                            $\begin{pmatrix}
+                                 1 & 1  \\
+                                 0 & 1
+                            \end{pmatrix}$
+                        };
+                        \draw[->,dashed] (-0.15,0.5) node[below] {\tiny $0$} -- (0.15,0.5) node [midway, above] {\tiny $\catvariableof{M}$} node[below] {\tiny $1$};
+                        \draw[<-,dashed] (-0.6,-0.15) node[right] {\tiny $1$} -- (-0.6,0.15) node [midway, left] {\tiny $\catvariableof{A}$} node[right] {\tiny $0$};
+                        \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (0.8,-0.2) node [midway, below] {\tiny $\catvariableof{J}$} node[above] {\tiny $1$};
+                    \end{scope}
+                \end{tikzpicture}
+            \end{center}
+            Comparing both we have
+            \begin{align*}
+                \contractionof{
+                    \formulaofat{1}{\catvariableof{A},\catvariableof{M},\catvariableof{J}},
+                    \formulaofat{2}{\catvariableof{J}},
+                    \lnot\formulaofat{4}{\catvariableof{A},\catvariableof{M},\catvariableof{J}}}{\catvariableof{A},\catvariableof{M},\catvariableof{J}}
+                = \zerosat{\catvariableof{A},\catvariableof{M},\catvariableof{J}}
+            \end{align*}
+            where by $\zerosat{\cdot}$ we denote tensors which coordinates are always $0$.
+            Including further tensors will thus also yield the tensor of $0$ coordinates, and therefore
+            \begin{align*}
+                \contractionof{
+                    \formulaofat{0}{\catvariableof{B},\catvariableof{E},\catvariableof{A}},
+                    \formulaofat{1}{\catvariableof{A},\catvariableof{M},\catvariableof{J}},
+                    \formulaofat{2}{\catvariableof{J}},
+                    \lnot\formulaofat{4}{\catvariableof{A},\catvariableof{M},\catvariableof{J}}}{\catvariableof{A},\catvariableof{M},\catvariableof{J}}
+                = \zerosat{\catvariableof{A},\catvariableof{M},\catvariableof{J}}
+            \end{align*}
+            and
+            \begin{align*}
+                \contraction{
+                    \formulaofat{0}{\catvariableof{B},\catvariableof{E},\catvariableof{A}},
+                    \formulaofat{1}{\catvariableof{A},\catvariableof{M},\catvariableof{J}},
+                    \formulaofat{2}{\catvariableof{J}},
+                    \lnot\formulaofat{4}{\catvariableof{A},\catvariableof{M},\catvariableof{J}}}
+                = 0 \, .
+            \end{align*}
+            We conclude that $\kb\models\formulaof{4}$.
+            \item "When neither Mary nor John calls, then either the alarm did not ring, or a Burglary did not happen or an Earthquake did not happen."\\
+            Test formula:
+            \begin{align*}
+                \formulaofat{5}{\catvariableof{B},\catvariableof{E},\catvariableof{A},\catvariableof{M},\catvariableof{J}}
+                = \big((\lnot\catvariableof{M}\land\lnot\catvariableof{J})\Rightarrow(\lnot\catvariableof{A}\lor\lnot\catvariableof{B}\lor\lnot\catvariableof{E})\big)
+            \end{align*}
+            Trick: There is a single $0$ coordinate to $\formulaof{5}$, namely at the state
+            \begin{align*}
+                (\catindexof{B},\catindexof{E},\catindexof{A},\catindexof{M},\catindexof{J}) = (1,1,1,0,0) \, .
+            \end{align*}
+            The negation $\lnot\formulaof{5}$ has thus a single $1$ coordinate at this state.
+            It follows that
+            \begin{align*}
+                & \contraction{
+                    \kbat{\catvariableof{B},\catvariableof{E},\catvariableof{A},\catvariableof{M},\catvariableof{J}},
+                    \lnot\formulaofat{5}{\catvariableof{B},\catvariableof{E},\catvariableof{A},\catvariableof{M},\catvariableof{J}}
+                } \\
+                &\quad= \kbat{\catvariableof{B}=1,\catvariableof{E}=1,\catvariableof{A}=1,\catvariableof{J}=0,\catvariableof{M}=0} \\
+                &\quad= 0
+            \end{align*}
+            We used that the knowledge base $\kb$ is not satisfied at this state, since the formula $\formulaof{1}$ is violated.
+            We conclude that $\kb\models\formulaof{5}$.
+        \end{itemize}
+    }
+\end{document}

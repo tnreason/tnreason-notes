@@ -3,7 +3,7 @@ Creation of a tensor $\hypercorewith$ when having a function computing each coor
         \begin{minted}{python}
     from tnreason import representation
     tensorCore = representation.create_tensor_encoding(
-        inShape, inColors, outColors, function)
+        inShape, inColors, function)
         \end{minted}
         \begin{itemize}
             \item inShape, inColors: specifying the leg dimension and the names of the variables ($\shortcatvariables$)

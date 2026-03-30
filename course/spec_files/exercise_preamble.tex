@@ -8,6 +8,8 @@
 \input{../../../../macros/tikz_macros}
 \input{../../../../macros/organization_macros}
 
+\input{../../../spec_files/course_macros}
+
 \newcommand{\usecasebox}[2]{
     \begin{tcolorbox}[colback=white, colframe=black, boxrule=0.8pt]
     \begin{center}
@@ -26,6 +28,27 @@
     \vspace{0.25cm}
     \textbf{
         Exercise Sheet #1: \\
+        #2} \\
+    \medskip
+    Foundations of Neuro-Symbolic AI\\
+    Summer term 2026, THWS, Alex Goessmann
+    \\
+    \medskip
+    #3
+    \vspace{0.25cm}
+    \rule{\textwidth}{0.2pt}
+    \end{center}
+    \medskip
+}
+
+\newcommand{\solutionhead}[3]{
+    \pagestyle{empty}
+    \begin{center}
+    \rule{\textwidth}{0.2pt}
+    \par
+    \vspace{0.25cm}
+    \textbf{
+        Solution to Exercise Sheet #1: \\
         #2} \\
     \medskip
     Foundations of Neuro-Symbolic AI\\
