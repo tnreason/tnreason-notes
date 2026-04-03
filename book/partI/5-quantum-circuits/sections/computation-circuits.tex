@@ -19,7 +19,7 @@ We here suggest a quantum pendant to basis encodings, which has the decompositio
     \end{align*}
 \end{definition}
 
-\input{partI/5-quantum-circuits/examples/computation-circuits/cnot-benc}
+\input{examples/computation-circuits/cnot-benc}
 
 % Multiple output variables
 Functions with multiple output variables, i.e. $\exformula:\atomstates\rightarrow\bigtimes_{\selindexin}[2]$, can be encoded image coordinate wise as a concatenation of the respective circuits.
@@ -55,7 +55,7 @@ Based on the equivalence of \computationCircuits{} and contracted \basisEncoding
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/5-quantum-circuits/tikz/computation-circuits/bencoding_computation_circuit}
+        \input{tikz/computation-circuits/bencoding_computation_circuit}
     \end{center}
     \caption{Relation of computation circuit and basis encodings.
     The \computationCircuit{} of a function is the contraction of its \basisEncoding{} with the \basisEncoding{} of the mod2 sum $\oplus$.}
@@ -63,7 +63,7 @@ Based on the equivalence of \computationCircuits{} and contracted \basisEncoding
 \end{figure}
 
 % Good place?
-\input{partI/5-quantum-circuits/examples/computation-circuits/mcnot-benc}
+\input{examples/computation-circuits/mcnot-benc}
 
 \subsection{\PolynomialSparsity{}}
 
@@ -78,7 +78,7 @@ Based on the equivalence of \computationCircuits{} and contracted \basisEncoding
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/5-quantum-circuits/tikz/computation-circuits/mod2_sum_computation_circuit}
+        \input{tikz/computation-circuits/mod2_sum_computation_circuit}
     \end{center}
     \caption{Equivalence of the composition of \computationCircuits{} with the \computationCircuit{} of their mod2 sum (\lemref{lem:comCircuitCommutative}).}
     \label{fig:mod2ComputationCircuit}
@@ -145,7 +145,7 @@ This encoding strategy exploits a modified (by mod2 calculus) \polynomialSparsit
 
 \begin{figure}
     \begin{center}
-        \input{partI/5-quantum-circuits/tikz/computation-circuits/slice_computation_circuit}
+        \input{tikz/computation-circuits/slice_computation_circuit}
     \end{center}
     \caption{
         Representation of an slice as a controlled $\mathrm{CNOT}$ gate.
@@ -219,7 +219,7 @@ Note that while this is necessary in some applications, it is not necessary for 
 
 %\begin{figure}
 %    \begin{center}
-%        \input{partI/5-quantum-circuits/tikz/computation-circuits/decomposition_sparsity}
+%        \input{tikz/computation-circuits/decomposition_sparsity}
 %    \end{center}
 %    \caption{
 %        Exploitation of \DecompositionSparsity{} in \computationCircuit{}s.
@@ -230,14 +230,14 @@ Note that while this is necessary in some applications, it is not necessary for 
 
 \begin{figure}
     \begin{center}
-        \input{partI/5-quantum-circuits/tikz/computation-circuits/proof_decomposition_sparsity}
+        \input{tikz/computation-circuits/proof_decomposition_sparsity}
     \end{center}
     \caption{
         Proof of \lemref{lem:comCirDecSpar} based on basis calculus.
     }\label{fig:proofDecomposition}
 \end{figure}
 
-\input{partI/5-quantum-circuits/examples/computation-circuits/mcnot-decomposition}
+\input{examples/computation-circuits/mcnot-decomposition}
 
 %\subsection{Preparation by fine and coarse structure}
 %

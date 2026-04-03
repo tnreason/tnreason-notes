@@ -69,7 +69,7 @@ As a main principle of tensor decompositions, we now show that basis encodings o
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/3-circuits-and-automata/tikz-pics/unary_binary_composition}
+        \input{tikz-pics/unary_binary_composition}
     \end{center}
     \caption{Tensor network decomposition of the basis encoding of a function $\exformula$, which is the composition of the functions $\formulaof{0},\ldots,\formulaof{\seldim-1}$ with a function $\chainingfunction$.}
     \label{fig:functionDecomposition}
@@ -196,7 +196,7 @@ We now show how circuits enable the sparse representation of composition functio
 % Weights
 When neurons have tunable parameters, we can discretize those by sets $\arbsetof{\catenumerator}$ and understand them as additional input variables.
 
-\input{partI/3-circuits-and-automata/examples/m_adic_representation}
+\input{examples/m_adic_representation}
 
 \subsection{Function evaluation by message passing}
 
@@ -272,7 +272,7 @@ We then show that the messages are the one-hot encodings to the evaluations of t
 We notice that we can interpret any directed acyclic hypergraph for which each node appears exactly once as an outgoing node and which is decorated by boolean and directed tensors $\extnet$.
 Edges with empty incoming sets are carrying one-hot encodings of input states and all further edges carry functions.
 
-\input{partI/3-circuits-and-automata/examples/m_adic_propagation}
+\input{examples/m_adic_propagation}
 
 
 %Let $\graph$ be a directed acyclic hypergraph, where each node appears exactly once as an outgoing node, and which is decorated by boolean and directed tensors $\extnet$.

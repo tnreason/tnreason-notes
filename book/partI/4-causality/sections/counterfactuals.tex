@@ -5,7 +5,7 @@ Counterfactual twin networks are two copies of the original causal model, one re
 They further share response variables, which capture the functional relationships between variables in the causal model.
 These response variables are modeled as selection variables in the \tnreason{} formalism.
 
-\input{partI/4-causality/examples/patient_counterfactual}
+\input{examples/patient_counterfactual}
 
 \subsection{Response Variables}
 
@@ -26,7 +26,7 @@ The response augmented conditional probability core is defined as (see \figref{f
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/4-causality/tikz_pics/response_variable}
+        \input{tikz_pics/response_variable}
     \end{center}
     \caption{Introduction of response variables: a) as a Bayesian network, b) decoration by the basis encoding of the corresponding function.}
     \label{fig:responseVariable}
@@ -46,7 +46,7 @@ To answer counterfactual queries, we now construct the counterfactual twinned ne
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/4-causality/tikz_pics/counterfactual_twinned_network}
+        \input{tikz_pics/counterfactual_twinned_network}
     \end{center}
     \caption{Counterfactual twinned network: a) as a Bayesian network.
     b) Decorations by causal augmented basis encodings by a do-variable for $\catvariableof{\catenumerator}$, a conditional probability distribution for $\selvariableof{\catenumerator}$ and a basis encoding for the counterfactual variable $\tildecatvariableof{\catenumerator}$.}

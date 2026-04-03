@@ -145,7 +145,7 @@ Q-samples of Bayesian Networks can be prepared by quantum circuits, where each c
 
 \begin{figure}
     \begin{center}
-        \input{partI/5-quantum-circuits/tikz/directed_to_circuit.tex}
+        \input{tikz/directed_to_circuit.tex}
     \end{center}
     \caption{
         Representation of directed and positive tensor by a controlled rotation.
@@ -154,7 +154,7 @@ Q-samples of Bayesian Networks can be prepared by quantum circuits, where each c
     }\label{fig:cpdEncoding}
 \end{figure}
 
-\input{partI/5-quantum-circuits/examples/graph-controlled-circuits/grover-rudolph}
+\input{examples/graph-controlled-circuits/grover-rudolph}
 
 
 \subsection{Equivalence with Bayesian Networks}
@@ -384,7 +384,7 @@ Given a distribution $\probat{\shortcatvariables}$ we add an ancilla variable $\
 
 \begin{figure}
     \begin{center}
-        \input{partI/5-quantum-circuits/tikz/graph-controlled-circuits/ancilla_augmentation}
+        \input{tikz/graph-controlled-circuits/ancilla_augmentation}
     \end{center}
     \caption{
         Ancilla augmentation of a distribution $\probwith$.
@@ -448,7 +448,7 @@ Given a distribution $\probat{\shortcatvariables}$ we add an ancilla variable $\
 % Circuit diagram and acceptance probability
 In our tensor network circuit notation, \lemref{lem:actCircuitAncilla} states the equation
 \begin{center}
-    \input{partI/5-quantum-circuits/tikz/graph-controlled-circuits/activation_ancilla_preparation}
+    \input{tikz/graph-controlled-circuits/activation_ancilla_preparation}
 \end{center}
 for the acceptance probability (see proof of \lemref{lem:actCircuitAncilla})
 \begin{align*}
@@ -584,7 +584,7 @@ However, when we want to apply the same scheme as above, one needs to encode $\m
 
 Let us now show how multiple ancilla variables can be designed to sample from arbitrary Markov Networks.
 
-\input{partI/5-quantum-circuits/examples/graph-controlled-circuits/elementary_tensors}
+\input{examples/graph-controlled-circuits/elementary_tensors}
 
 Let there be a Markov Network, i.e. any non-vanishing tensor network of non-negative tensors, which is understood as a probability disribution after normalization (see \cite{goessmann_tensor_2026}).
 For an example of a Markov Network see \figref{fig:markovNetworkAugmentation}a.
@@ -723,7 +723,7 @@ In this case, one faces a tradeoff between the size of the circuit to prepare an
 
 \begin{figure}
     \begin{center}
-        \input{partI/5-quantum-circuits/tikz/graph-controlled-circuits/markov_network_augmentation}
+        \input{tikz/graph-controlled-circuits/markov_network_augmentation}
     \end{center}
     \caption{Ancilla augmentation of a Markov Network a) onto a Bayesian Network b).
     To this end the arbitrary non-negative cores $\hypercoreof{\edge}$ are replaced by directed ancilla augmented cores $\sechypercoreof{\edge}$, with ancilly variables outgoing.}

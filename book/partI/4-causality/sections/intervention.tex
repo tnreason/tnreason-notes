@@ -4,7 +4,7 @@ So far, there are several hypergraphs to model a probability distributions by a 
 We now want to understand the directed hyperedges as causal relationships between the variables, beyond encoding of conditional independencies (see \exaref{exa:patientTreatmentOutcome}).
 To this end, we model the effects of interventions, which will distinguish between multiple Bayesian Networks modeling the same joint distribution.
 
-\input{partI/4-causality/examples/patient_treatment_outcome}
+\input{examples/patient_treatment_outcome}
 
 Interventions on Bayesian Networks are modeled by the do-calculus \cite{pearl_causality_2009}, which we capture here based on do-variables.
 
@@ -89,7 +89,7 @@ We can proof them in the tensor network formalism based on network separations, 
 
 An example for a simplification is given by the randomized controlled trial.
 
-\input{partI/4-causality/examples/randomized_controlled_trial}
+\input{examples/randomized_controlled_trial}
 
 \subsubsection{Backdoor Criterion}
 
@@ -125,7 +125,7 @@ The Backdoor Criterion and the Frontdoor Criterion exploit mediator variables $\
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/4-causality/tikz_pics/backdoor_criterion}
+        \input{tikz_pics/backdoor_criterion}
     \end{center}
     \caption{Causal graph for the Backdoor Criterion.
     a) The mediator variable $\catvariableof{M}$ blocks any backdoor path from $\catvariableof{0}$ to $\catvariableof{1}$, potentially through a confounding variable $\catvariableof{U}$.
@@ -174,7 +174,7 @@ The Backdoor Criterion and the Frontdoor Criterion exploit mediator variables $\
 
 \begin{figure}[t]
     \begin{center}
-        \input{partI/4-causality/tikz_pics/frontdoor_criterion}
+        \input{tikz_pics/frontdoor_criterion}
     \end{center}
     \caption{Causal graph for the Frontdoor Criterion.}
     \label{fig:frontdoorCriterion}

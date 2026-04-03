@@ -1,0 +1,89 @@
+\begin{example}
+    For example we have
+    \begin{itemize}
+        \item John knows everyone: Knows(John,z)
+        \item People who know each other are friends: Knows(x,y) $\Rightarrow$ Friends(x,y)
+    \end{itemize}
+    The unification of Knows(John,z) and Knows(x,y) is given by the substitution $x\mapsto$ John and $y \mapsto z$.
+    We apply the unification on the second rule and get Knows(John,y) $\Rightarrow$ Friends(John,y).
+
+
+    Now we do modus ponens on the activation network and get Friends(John,z).
+    \stantikzpic{
+% From Knows(John,z)
+        \drawsquaretensor{0}{4}{$\tbasis$}
+        \draw (0,2) -- (0,3);
+
+        % From Knows(x,y) $\Rightarrow$ Friends(x,y)
+        \draw (3,3) rectangle (7,5);
+        \drawtextnode{5}{4}{\corelabelsize $\Rightarrow$};
+        \draw (0,2) to[bend right=20] (4,3);
+        \draw (6,2) -- (6,3);
+
+        \drawvariabledot{0}{2}
+        \drawvariabledot{6}{2}
+
+        %% SUBSTITUTION
+        \draw [->-] (0,1) -- (0,2) node[midway,right] {\colorlabelsize $\indvariableof{Knows}$};
+        \draw (-2,-1) rectangle (2,1);
+        \drawtextnode{0}{0}{\corelabelsize $\bencodingof{Knows}$};
+
+        \begin{scope}[shift={(6,0)}]
+            \draw [->-] (0,1) -- (0,2) node[midway,right] {\colorlabelsize $\indvariableof{Friends}$};
+            \draw (-2,-1) rectangle (2,1);
+            \drawtextnode{0}{0}{\corelabelsize $\bencodingof{Friends}$};
+        \end{scope}
+
+        \draw[->-] (1.5,-4) to[bend right=-40] (-1.5,-1);
+        \draw[->-] (1.5,-4) to[bend right=40] (4.5,-1);
+        \drawvariabledot{1.5}{-4}
+        \draw[->-] (1.5,-5) -- (1.5,-4) node[midway,right] {\colorlabelsize $\indvariableof{x}$};
+        \drawsquaretensor{1.5}{-6}{$\onehotmapof{John}$}
+
+        \draw[->-] (4.5,-4) to[bend right=-40] (1.5,-1);
+        \draw[->-] (4.5,-4) to[bend right=40] (7.5,-1);
+        \drawvariabledot{4.5}{-4}
+        \draw[->-] (4.5,-5) -- (4.5,-4) node[midway,right] {\colorlabelsize $\indvariableof{z}$};
+        \drawsquaretensor{4.5}{-6}{$\identity$}
+        \draw[->-] (4.5,-8.5) -- (4.5,-7) node[midway,right] {\colorlabelsize $\indvariableof{z}$};
+
+        \drawtextnode{13}{0}{${=}$}
+    %%% RIGHT SIDE
+        \begin{scope}[shift={(20,0)}]
+            % From Knows(John,z)
+            \drawsquaretensor{0}{4}{$\tbasis$}
+            \draw (0,2) -- (0,3);
+
+            % Modus ponens infered
+            \drawsquaretensor{6}{4}{$\tbasis$}
+            \draw (6,2) -- (6,3);
+
+            \drawvariabledot{0}{2}
+            \drawvariabledot{6}{2}
+
+            %% SUBSTITUTION
+            \draw [->-] (0,1) -- (0,2) node[midway,right] {\colorlabelsize $\indvariableof{Knows}$};
+            \draw (-2,-1) rectangle (2,1);
+            \drawtextnode{0}{0}{\corelabelsize $\bencodingof{Knows}$};
+
+            \begin{scope}[shift={(6,0)}]
+                \draw [->-] (0,1) -- (0,2) node[midway,right] {\colorlabelsize $\indvariableof{Friends}$};
+                \draw (-2,-1) rectangle (2,1);
+                \drawtextnode{0}{0}{\corelabelsize $\bencodingof{Friends}$};
+            \end{scope}
+
+            \draw[->-] (1.5,-4) to[bend right=-40] (-1.5,-1);
+            \draw[->-] (1.5,-4) to[bend right=40] (4.5,-1);
+            \drawvariabledot{1.5}{-4}
+            \draw[->-] (1.5,-5) -- (1.5,-4) node[midway,right] {\colorlabelsize $\indvariableof{x}$};
+            \drawsquaretensor{1.5}{-6}{$\onehotmapof{John}$}
+
+            \draw[->-] (4.5,-4) to[bend right=-40] (1.5,-1);
+            \draw[->-] (4.5,-4) to[bend right=40] (7.5,-1);
+            \drawvariabledot{4.5}{-4}
+            \draw[->-] (4.5,-5) -- (4.5,-4) node[midway,right] {\colorlabelsize $\indvariableof{z}$};
+            \drawsquaretensor{4.5}{-6}{$\identity$}
+            \draw[->-] (4.5,-8.5) -- (4.5,-7) node[midway,right] {\colorlabelsize $\indvariableof{z}$};
+        \end{scope}
+    }
+\end{example}

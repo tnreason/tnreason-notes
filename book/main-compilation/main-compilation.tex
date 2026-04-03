@@ -8,7 +8,7 @@
 
 
 % RECOMMENDED %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[graybox,envcountchap,sectrefs]{style-files/SNmono}
+\documentclass[graybox,envcountchap,sectrefs]{../style-files/SNmono}
 
 %\usepackage{mathptmx}
 %\usepackage{helvet}
@@ -21,7 +21,7 @@
 \usepackage{multicol}        % used for the two-column index
 \usepackage[bottom]{footmisc}% places footnotes at page bottom
 
-\usepackage{newtxtext}       % 
+\usepackage{newtxtext}       %
 \usepackage[varvw]{newtxmath}       % selects Times Roman as basic font
 
 \makeindex             % used for the subject index
@@ -31,14 +31,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{tikz}
 
-\input{../macros/general_macros.tex}
-\input{../macros/tc_macros.tex}
-\input{../macros/tikz_macros.tex}
-\input{../macros/organization_macros.tex}
-\input{../macros/implementation_macros.tex}
+\input{../../macros/general_macros.tex}
+\input{../../macros/tc_macros.tex}
+\input{../../macros/tikz_macros.tex}
+\input{../../macros/organization_macros.tex}
+\input{../../macros/implementation_macros.tex}
 
 %% Adjustment for compilation
-\input{style-files/book-adjustments}
+\input{../style-files/book-adjustments}
 
 
 
@@ -59,27 +59,27 @@
 
     \tableofcontents
 
-    \input{./OtherContent/acronym.tex}
+    \input{../OtherContent/acronym.tex}
 
-    \input{preliminaries/preliminaries}
-
+%    \input{../preliminaries/preliminaries}
+    \subimport{../}{preliminaries/preliminaries.tex}
     \mainmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \subimport{partI/}{partI}
-    \subimport{partII/}{partII}
-    \subimport{partIII/}{partIII}
+    \subimport{../partI/}{partI}
+    \subimport{../partII/}{partII}
+    \subimport{../partIII/}{partIII}
 %    \input{partI/partI}
 %    \input{partII/partII}
 %    \input{partIII/partIII}
 
     \backmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \input{OtherContent/glossary}
+    \input{../OtherContent/glossary}
 %    \input{OtherContent/solutions}
     \printindex
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \bibliographystyle{plain}
-    \bibliography{../references.bib}
+    \bibliography{../../references.bib}
 \end{document}
 
 
