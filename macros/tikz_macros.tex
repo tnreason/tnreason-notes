@@ -129,6 +129,14 @@
     \draw ($(#1,#2)+(0,-1)$) -- ($(#1,#2)+(0,1)$);
 }
 
+\newcommand{\stantikzpic}[1]{
+    \begin{center}
+    \begin{tikzpicture}[scale=0.35, thick]
+    #1
+    \end{tikzpicture}
+    \end{center}
+}
+
 %% CSP
 
 \newenvironment{sudoku4x4}{%

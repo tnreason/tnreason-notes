@@ -1,0 +1,189 @@
+\begin{example}[Sudoku representation]
+We index the rows and the columns by tuples $(r0,r1)$ and $(co,c1)$, where $r0,r1,c0,c1\in[\sudokunum]$. The first index indicates the block and the second counts the row or column inside that block.
+    For each $r0,r1,c0,c1\in[\sudokunum]$ and $i\in[\sudokunum^2]$ we then define an atomic variable $\catvariableof{r0,r1,c0,c1,i}\in\{0,1\}$ indicating whether in the row $(r0,r1)$ and column $(co,c1)$ the number $i$ is written.
+    The Sudoku rules then amount to the formula
+    \begin{align*}
+        \sudokukbof{\sudokunum}  \coloneqq
+        &\left( \bigwedge_{r0,r1,c0,c1\in[\sudokunum]} \left( \woneoplus_{i\in[\sudokunum^2]} \catvariableof{r0,r1,c0,c1,i} \right) \right) \land
+        \left( \bigwedge_{r0,r1\in[\sudokunum], i\in[\sudokunum^2]} \left( \woneoplus_{c0,c1\in[\sudokunum]} \catvariableof{r0,r1,c0,c1,i} \right) \right) \land \\
+        &\left( \bigwedge_{c0,c1\in[\sudokunum], i\in[\sudokunum^2]} \left( \woneoplus_{c0,c1\in[\sudokunum]} \catvariableof{r0,r1,c0,c1,i} \right) \right) \land
+        \left( \bigwedge_{r0,c0\in[\sudokunum], i\in[\sudokunum^2]} \left( \woneoplus_{r1,c1\in[\sudokunum]} \catvariableof{r0,r1,c0,c1,i} \right) \right) \, ,
+    \end{align*}
+    where $\woneoplus$ is the $\sudokunum^2$-ary exclusive or connective (that is $1$ if and only if exactly one of the arguments is $1$).
+    The four outer brackets in $\kb$ mark the constraints that at each position exactly one number is assigned, further that in each row each number is assigned once, and similar for the columns and the squares of the board.
+    When solving a specific Sudoku instance, one typically knows from an initial board assignment $\sudokustartevidence$ a collection of atomic variables, which hold, and needs to find further atomic variables, which are entailed.
+    This means, we need to decide for each $(r_0,r_1,c_0,c_1,i)\notin \sudokustartevidence$ whether the Sudoku rules and the initial board imply that the atomic variable $\catvariableof{r0,r1,c0,c1,i}$ (i.e. assignment to the board) is true
+    \begin{align*}
+        \sudokukbof{\sudokunum} \land \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in \sudokustartevidence} \catvariableof{r0,r1,c0,c1,i} \right) \models \catvariableof{r0,r1,c0,c1,i}
+    \end{align*}
+    or false
+    \begin{align*}
+%        \label{eq:sudokukb}
+        \kb \land \left(\bigwedge_{(r_0,r_1,c_0,c_1,i)\in \sudokustartevidence} \catvariableof{r0,r1,c0,c1,i} \right) \models \lnot\catvariableof{r0,r1,c0,c1,i} \, .
+    \end{align*}
+%    In other words, for each assignment to the board, that fulfills the Sudoku rules and the initial board, do we write the number $n$ in row $(r0,r1)$ and column $(c0,c1)$?
+    If and only if the Sudoku has a unique solution given the initial board assignment $\sudokustartevidence$, exactly one of these entailment statements holds for each $(r_0,r_1,c_0,c_1,i)\notin \sudokustartevidence$.
+    Deciding which is equivalent to solving the Sudoku.
+%    We model Sudoku as a hypergraph of
+%    \begin{itemize}
+%        \item Nodes labeled by $\sudokunum^6$ tuples $(r0,r1,c0,c1,i)$:
+%        \begin{align*}
+%            \nodes = \{(r0,r1,c0,c1,i) \wcols r0,r1,c0,c1 \in [\sudokunum]\ncond i \in [\sudokunum^2]\}
+%        \end{align*}
+%        \item Hyperedges by the $4\cdot \sudokunum^4$ constraints (implementing the position, row, columns and square contraints):
+%        \begin{align*}
+%            \edges =& \big\{\{(r0,r1,c0,c1,i) \wcols r0,r1,c0,c1\in[\sudokunum]\} \wcols r0,r1,c0,c1\in[\sudokunum]\big\} \cup \\
+%            &\big\{\{(r0,r1,c0,c1,i) \wcols r0,r1,c0,c1\in[\sudokunum]\} \wcols r0,r1\in[\sudokunum], i\in[\sudokunum^2]\big\} \cup \\
+%            &\big\{\{(r0,r1,c0,c1,i) \wcols r0,r1,c0,c1\in[\sudokunum]\} \wcols c0,c1\in[\sudokunum], i\in[\sudokunum^2]\big\} \cup \\
+%            &\big\{\{(r0,r1,c0,c1,i) \wcols r0,r1,c0,c1\in[\sudokunum]\} \wcols r0,c0\in[\sudokunum], i\in[\sudokunum^2]\big\} \cup
+%        \end{align*}
+%        Each hypercore is carried by a tensor representing the logical formula $\woneoplus$ on $\sudokunum^2$ boolean variables.
+%    \end{itemize}
+
+    We now exploit \theref{the:kbDecomposition} to find efficient tensor network representation of the Sudoku knowledge base from \exaref{exa:sudokuEntailment}.
+    We directly get, that the knowledge base $\sudokukbof{\sudokunum}$ of Sudoku rules is a tensor network of the $4\cdot \sudokunum^4$ constraint formulas using the $\sudokunum^2$-ary connective $\woneoplus$, and the evidence $\sudokustartevidence$ can be encoded by vectors $\tbasisat{\catvariableof{(r_0,r_1,c_0,c_1,i)}}$.
+    To get a representation by matrices instead of tensors of order $\sudokunum^2$, we introduce a hidden variable $\decvariable$ taking values in $[\sudokunum^2]$ for each of the constraints.
+    With the usage of matrices
+    \begin{align*}
+        \hypercoreofat{\catenumerator}{\catvariableof{\catenumerator},\decvariable}
+        = \fbasisat{\catvariableof{\catenumerator}} \otimes \onesat{\decvariable} + (\tbasisat{\catvariableof{\catenumerator}}-\fbasisat{\catvariableof{\catenumerator}}) \otimes \onehotmapofat{\catenumerator}{\decvariable}
+    \end{align*}
+    we have the decomposition
+    \begin{align*}
+        \woneoplus[\catvariableof{[\sudokunum^2]}]
+        = \contractionof{\{\hypercoreofat{\catenumerator}{\catvariableof{\catenumerator},\decvariable} \wcols \catenumerator\in[\sudokunum^2]\}}{\catvariableof{[\sudokunum^2]}} \, ,
+    \end{align*}
+    which is a $\cpformat$ decomposition (see \exaref{exa:cpFormat}) depicted in \figref{fig:sudokuDecomposition} a).
+
+    %% Alternative TT decomposition
+    Alternatively there is a $\ttformat$ decomposition (see \exaref{exa:ttFormat}) of the constraint $\woneoplus$, which we depict in \figref{fig:sudokuDecomposition} b).
+    We introduce for $\catenumerator\in[\catorder-1]$ hidden variables $\decvariable^{\catenumerator}$ of dimension $2$, which are interpreted as the indicator, whether one of the variables $\catvariableof{[\catenumerator]}$ is true.
+    Following this interpretation we introduce $\ttformat$ cores
+    \begin{align*}
+        \sechypercoreofat{0}{\catvariableof{0},\secdecvariable^{0}}
+        &= \tbasisat{\catvariableof{0}}\otimes\tbasisat{\secdecvariable^{0}}
+        + \fbasisat{\catvariableof{0}}\otimes\fbasisat{\secdecvariable^{0}} \\
+        \sechypercoreofat{\catorder-1}{\secdecvariable^{\catorder-2},\catvariableof{\catorder-1}}
+        &= \fbasisat{\secdecvariable^{\catorder-2}} \otimes \tbasisat{\catvariableof{\catorder-1}}
+        + \tbasisat{\secdecvariable^{\catorder-2}} \otimes \fbasisat{\catvariableof{\catorder-1}}
+    \end{align*}
+    and for $\catenumerator\in\{1,\ldots,\catorder-2\}$
+    \begin{align*}
+        \sechypercoreofat{\catenumerator}{\secdecvariable^{\catenumerator-1},\catvariableof{\catenumerator},\secdecvariable^{\catenumerator}}
+        = \identityat{\secdecvariable^{\catenumerator-1},\secdecvariable^{\catenumerator}}  \otimes \fbasisat{\catvariableof{\catenumerator}}
+        + \fbasisat{\secdecvariable^{\catenumerator-1}} \otimes \tbasisat{\catvariableof{\catenumerator}} \otimes \tbasisat{\secdecvariable^{\catenumerator-1}} \, .
+    \end{align*}
+    We notice, that the $\ttformat$ decomposition of the constraint $\woneoplus$ introduces $\catorder-1$ many hidden variables of dimension $2$, whereas the $\cpformat$ decomposition introduces a single hidden variable of dimension $\catorder$.
+    However, in the following we will further apply the $\cpformat$ decomposition. % Reason: fewer variables to handle in message passing
+
+    \begin{figure}[t]
+        \stantikzpic{
+                \draw (-6,-1) rectangle (-12,1);
+                \node[anchor=center] (A) at (-9,0) {\corelabelsize $\woneoplus$};
+                \draw (-11.5,-1)--(-11.5,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{0,0,0,0,0}$};
+                \draw (-11,-1)--(-11,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{0,0,0,0,1}$};
+                \node[anchor=center] (A) at (-9,-2.5) {$\cdots$};
+                \draw (-7,-1)--(-7,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{0,0,0,0,\sudokunum^2\shortminus 1}$};
+
+                \node[anchor=center] (A) at (-3.5,1) {$a)$};
+                \node[anchor=center] (A) at (-3.5,0) {$=$};
+
+                \draw (-1,-1) rectangle (1,1);
+                \node[anchor=center] (A) at (0,0) {\corelabelsize $\hypercoreof{0}$};
+                \draw (0,-1)--(0,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{0,0,0,0,0}$};
+
+                \draw (3,-1) rectangle (5,1);
+                \node[anchor=center] (A) at (4,0) {\corelabelsize $\hypercoreof{1}$};
+                \draw (4,-1)--(4,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{0,0,0,0,1}$};
+
+                \node[anchor=center] (text) at (8,0) {$\hdots$};
+
+                \draw (10.75,-1) rectangle (13.25,1);
+                \node[anchor=center] (A) at (12,0) {\corelabelsize $\hypercoreof{\sudokunum^2\shortminus1}$};
+                \draw (12,-1)--(12,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{0,0,0,0,\sudokunum^2\shortminus1}$};
+
+                \drawvariabledot{6}{4}
+                \node[anchor=south] (text) at (6,4) {\colorlabelsize $\decvariableof{0,0,0,0,:}$};
+
+                \draw (6,4) to[bend right= 20] (0,1);
+                \draw (6,4) to[bend right= 10] (4,1);
+                \draw (6,4) to[bend right= -20] (12,1);
+
+                \begin{scope}[shift={(0,-7)}]
+                    \node[anchor=center] (A) at (-3.5,1) {$b)$};
+                    \node[anchor=center] (A) at (-3.5,0) {$=$};
+
+                    \draw (-2,-1) rectangle (0,1);
+                    \node[anchor=center] (A) at (-1,0) {\corelabelsize $\sechypercoreof{0}$};
+                    \draw (-1,-1)--(-1,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{0,0,0,0,0}$};
+
+                    \draw (0,0) -- (3,0) node [midway,above] {\colorlabelsize $\secdecvariableof{0,0,0,0,:}^0$};
+
+                    \draw (3,-1) rectangle (5,1);
+                    \node[anchor=center] (A) at (4,0) {\corelabelsize $\sechypercoreof{1}$};
+                    \draw (4,-1)--(4,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{0,0,0,0,1}$};
+
+                    \node[anchor=center] (text) at (6.5,1) {\colorlabelsize $\secdecvariableof{0,0,0,0,:}^{1}$};
+                    \draw (5,0) -- (7,0); % node [midway,above] {\colorlabelsize $\secdecvariableof{0,0,0,0,:}^1$};
+
+                    \node[anchor=center] (text) at (8,0) {$\hdots$};
+
+                    \node[anchor=center] (text) at (10.25,1) {\colorlabelsize $\secdecvariableof{0,0,0,0,:}^{\sudokunum^2\shortminus2}$};
+                    \draw (9.75,0) -- (11.75,0);
+
+                    \draw (11.75,-1) rectangle (14.25,1);
+                    \node[anchor=center] (A) at (13,0) {\corelabelsize $\sechypercoreof{\sudokunum^2\shortminus1}$};
+                    \draw (13,-1)--(13,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{0,0,0,0,\sudokunum^2\shortminus1}$};
+                \end{scope}
+        }
+        \caption{Decomposition of the position constraint $\woneoplus$ at position $(r0,r1,c0,c1)=(0,0,0,0)$ into a) a $\cpformat$ decomposition with hidden variable $\decvariableof{0,0,0,0,:}$ and b) a $\ttformat$ decomposition with $d-1$ hidden variables $\decvariableof{0,0,0,0,:}^k, k\in[d-1]$.}
+        \label{fig:sudokuDecomposition}
+    \end{figure}
+
+    Given evidence $\sudokustartevidence$ we denote the Sudoku knowledge base $\sudokukbof{\sudokunum,\sudokustartevidence}$.
+    We model the Sudoku knowledge base $\sudokukbof{\sudokunum,\sudokustartevidence}$ as a tensor network on a hypergraph $\graphof{\mathrm{Sudoku},n}$ consistent in
+    \begin{itemize}
+        \item $\sudokunum^6+4\cdot \sudokunum^4$ nodes by $\sudokunum^6$ categorical variables $\catvariableof{(r0,r1,c0,c1,i)}$ and by $4\cdot \sudokunum^4$ decomposition variables to the constraints
+        \item $5\cdot \sudokunum^6$ edges
+        \begin{align*}
+            \edges=
+            \bigcup_{r0,r1,c0,c1\in[\sudokunum]}
+            \big\{
+            &\{\catvariableof{(r0,r1,c0,c1,i)}\},\{\catvariableof{(r0,r1,c0,c1,i)},\decvariableof{r0,r1,c0,c1,:}\},\{\catvariableof{(r0,r1,c0,c1,i)},\decvariableof{r0,r1,:,:,i}\},\\
+            &\{\catvariableof{(r0,r1,c0,c1,i)},\decvariableof{:,:,c0,c1,i}\},
+            \{\catvariableof{(r0,r1,c0,c1,i)},\decvariableof{r0,:,c0,:,i}\}\big\}
+        \end{align*}
+        We denote the decomposition variables to the position, row, column and square constraints by $\decvariableof{r0,r1,c0,c1,:}$, $\decvariableof{r0,r1,:,:,i}$, $\decvariableof{:,:,c0,c1,i}$ and $\decvariableof{r0,:,c0,:,i}$.
+    \end{itemize}
+    Each edge containing a decomposition variable is decorated by a matrix $\hypercoreofat{\catenumerator}{\catvariable,\decvariable}$ corresponding to a core in the $\cpformat$ decomposition of a constraint.
+    Here $\catenumerator$ is determined by the tuple $(r0,r1,c0,c1,i)$ and the type of the constraint (for example, for the variable $\catvariableof{(0,1,1,2,1)}$ and the row constraint $\decvariableof{(0,1,:,:,1)}$ we have $\catenumerator=1\cdot n + 2$.
+    We further assign to each edge containing a single variable $\{\catvariableof{(r0,r1,c0,c1,i)}\}$ either the vector $\tbasisat{\catvariableof{(r0,r1,c0,c1,i)}}$ if $(r0,r1,c0,c1,i)\in \sudokustartevidence$ or the trivial vector $\onesat{\catvariableof{(r0,r1,c0,c1,i)}}$.
+
+
+
+
+    %% Concrete example
+    For a more concrete example, let $n=2$ and
+    \begin{align*}
+        \sudokustartevidence = \{&(0,0,0,0,0),(0,0,1,0,2),(0,0,1,1,1), %first row
+        (0,1,0,1,1), \\ %second row
+        &(1,0,1,0,3), %third row
+        (1,1,0,0,3),(1,1,0,1,2) %fourth row
+        \} \, .
+    \end{align*}
+    We visualize this evidence by writing $i+1$ in a grid cell $(r0,r1,c0,c1)$ to indicate that $(r0,r1,c0,c1,i)\in \sudokustartevidence$:
+    \begin{center}
+        \begin{sudoku4x4}
+            \matrix[sudokumatrix] (M) at (0,0) {
+                1 & \ & 3 & 2 \\
+                \ & 2 & \  & \  \\
+                \ & \ & 4 & \ \\
+                4 & 3 &  \ & \  \\
+            };
+            \draw[thick]([yshift=9.5pt,xshift=-0.6pt]M-1-2.east) -- ([yshift=-9.5pt,xshift=-0.6pt]M-4-2.east);
+            \draw[thick]([xshift=-9.5pt,yshift=0.6pt]M-2-1.south) -- ([xshift=9.5pt,yshift=0.6pt]M-2-4.south);
+        \end{sudoku4x4}
+    \end{center}
+
+
+\end{example}

@@ -1,0 +1,48 @@
+\begin{example}[Queens assignment game]
+    For arbitrary $n_0,n_1\in\nn$ we have a chess board of $n_0\times n_1$ positions with $n_0$ columns and $n_1$ rows.
+    We want to assign $r$ queens onto positions of the chess board, such that each column and each row contains at most one queen.
+
+    We assign to each position $(i,j)$ of the chess board a boolean variable $\catvariableof{i,j}\in\{0,1\}$, which indicates whether there is a queen at position $(i,j)$.
+    The constraints that each row $i$ and each column $j$ contains at most one queen can then be expressed by the constraints $\hypercoreofat{\mathrm{row},i}{\catvariableof{i\times[n_1]}}$ defined by coordinates
+    \begin{align*}
+        \hypercoreofat{\mathrm{row},i}{\indexedcatvariableof{i\times[n_1]}}
+        &= \begin{cases}
+               1 & \ifspace \sum_{j\in[n_1]}\catindexof{i,j}\leq 1 \\
+               0 & \text{else}
+        \end{cases} \\
+        \hypercoreofat{\mathrm{col},j}{\indexedcatvariableof{[n_0]\times j}}
+        &= \begin{cases}
+               1 & \ifspace \sum_{i\in[n_0]}\catindexof{i,j}\leq 1 \\
+               0 & \text{else} \, .
+        \end{cases}
+    \end{align*}
+
+    We introduce decomposition variables $\decvariableof{\mathrm{row},i}$ and $\decvariableof{\mathrm{col},i}$ of dimension $\decdimof{\mathrm{row},i}=n_1+1$ and $\decdimof{\mathrm{col},i}=n_0+1$.
+    The first $n_1$ (respectively $n_0$) states shall be interpreted by a queen in the row (repectively column) at the corresponding position.
+    The last state is interpreted by a missing queen in that row (respectively column).
+    This interpretation is enforced by the matrices
+    \begin{align*}
+        \hypercoreofat{\mathrm{row},i,j}{\catvariableof{i,j},\decvariableof{\mathrm{row},i}}
+        = \tbasisat{\catvariableof{i,j}} \otimes \onehotmapofat{j}{\decvariableof{\mathrm{row},i}}
+        + \fbasisat{\catvariableof{i,j}} \otimes \left(\onesat{\decvariableof{\mathrm{row},i}}-\onehotmapofat{j}{\decvariableof{\mathrm{row},i}} \right)
+    \end{align*}
+    and we have the property
+    \begin{align*}
+        \hypercoreofat{\mathrm{row},i}{\catvariableof{i\times[n_1]}}
+        = \contractionof{
+            \{\hypercoreofat{\mathrm{row},i,j}{\catvariableof{i,j},\decvariableof{\mathrm{row},i}} \wcols j \in [n_1]\}
+        }{\catvariableof{i\times[n_1]}} \, .
+    \end{align*}
+
+    %% Number of assignments
+    The tensor of possible assignments to the queens game
+    \begin{align*}
+        \contractionof{
+            \{\hypercoreofat{\mathrm{row},i,j}{\catvariableof{i,j},\decvariableof{\mathrm{row},i}} \wcols i\in[n_0]\ncond j\in[n_1]\}
+            \cup
+            \{\hypercoreofat{\mathrm{col},i,j}{\catvariableof{i,j},\decvariableof{\mathrm{col},i}} \wcols i\in[n_0]\ncond j\in[n_1]\}
+        }{\catvariableof{[n_0]\times[n_1]}} \, .
+    \end{align*}
+    The number of possible assignments of queens to a $n_0\times n_1$ board is the contraction without open variables.
+
+\end{example}

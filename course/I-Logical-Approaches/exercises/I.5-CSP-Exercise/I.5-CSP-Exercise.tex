@@ -3,18 +3,18 @@
 
 \begin{document}
     \exercisehead{3}{Constraint Satisfaction Problems}{XXX}
-    \usecasebox{The $n$-queens game}{
-        For an arbitrary $n\in\nn$ we have a chess board of $n\times n$ positions with $n$ columns and $n$ rows.
-        We want to assign $n$ queens onto positions of the chess board, such that each column and each row contains at most one queen.
+    \usecasebox{Queens assignment game}{
+        For arbitrary $n_0,n_1\in\nn$ we have a chess board of $n_0\times n_1$ positions with $n_0$ columns and $n_1$ rows.
+        We want to assign $r$ queens onto positions of the chess board, such that each column and each row contains at most one queen.
     }
     \addtask{1}{
         Design the N-queens game as a Constraint Satisfaction Problem. What are the variables, their leg dimensions, and the contraints?\\
     }
     \addtask{2}{
-        Assume an assignment of all $n$ queens given.
+        Assume an assignment of all $r$ queens given.
         Find an contraction-based method to verify whether the assignment respects the constraints.
     }
     \addtask{3}{
-        Implement an algorithm using \texttt{tnreason} solving the $n$-queens game.
+        Implement an algorithm using \texttt{tnreason} solving the queens assignment game.
     }
 \end{document}
