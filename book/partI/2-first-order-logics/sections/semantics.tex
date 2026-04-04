@@ -1,60 +1,16 @@
-\section{Semantics of First-Order Logic}
+\section{Knowledge bases}
 
-We present the semantics using basis calculus.
-
-\subsection{Worlds}
-
-Worlds in First-Order Logics contain varying numbers of objects.
-We use domain variables $\indvariable$ to enumerate the sets of objects.
-
-Worlds are represented by three sets of tensors:
-\begin{itemize}
-    \item One-hot encodings of constants
-    \item Coordinate encodings for each predicate
-    \item Basis encoding of each function
-\end{itemize}
-
-\subsection{Basis encodings of terms}
-
-Terms are object valued functions, which $r_{\folterm}$ different arguments are also object valued and called variables.
-We represent terms by the corresponding basis encodings
+FOL knowledge bases without existential quantifiers are understood as contraction equations.
+That is, exactly those worlds are models, for which
 \begin{align*}
-    \bencodingofat{\folterm}{
-        \indvariableof{\folterm}, \indvariableof{[r_{\folterm}]}
-    }
+    \contractionof{
+        \{\folexformulaof{\selindex}\left[\indvariableof{[r_{\folexformulaof{\selindex}}]}\right] \wcols \selindexin\}
+    }{\indvariableof{\nodes}}
+    = \onesat{\indvariableof{\nodes}} \, .
 \end{align*}
 
-Basic blocks:
-\begin{itemize}
-    \item Constant
-    \stantikzpic{
-        \draw[->-] (0,1) -- (0,2.5) node[midway,right] {\colorlabelsize $\indvariableof{\folterm}$};
-        \drawsquaretensor{0}{0}{$\onehotmapof{\indindex}$}
-    }
-    \item Variable
-    \stantikzpic{
-        \draw[->-] (0,1) -- (0,2.5) node[midway,right] {\colorlabelsize $\indvariableof{\folterm}$};
-        \drawsquaretensor{0}{0}{$\identity$}
-        \draw[->-] (0,-2.5) -- (0,-1) node[midway,right] {\colorlabelsize $\indvariable$};
-    }
-    \item Function of terms
-    \stantikzpic{
-        \draw[->-] (2,1) -- (2,2.5) node[midway,right] {\colorlabelsize $\indvariableof{\folterm}$};
-        \draw (-1,-1) rectangle (5,1);
-        \drawtextnode{2}{0}{\corelabelsize $\bencodingof{\exfunction}$}
-        \draw[->-] (0,-2.5) -- (0,-1) node[midway,right] {\colorlabelsize $\indvariableof{0}$};
-        \draw[->-] (4,-2.5) -- (4,-1) node[midway,right] {\colorlabelsize $\indvariableof{r_{\exfunction}}$};
-    }
-\end{itemize}
-Contractions of those terms along directed acyclic graphs with single root nodes represent more complex terms.
-As such, basis encodings of functions can be contracted with constants, variables or other functions to build up basis encodings of more complex terms.
+\subsection{Substitution}
 
-\subsection{Atomic sentences}
+Understood as slice restriction of the equation: If the whole tensor is trivial, each slice is trivial.
+Formal as a constraint network manipulation: Adding a sub-contraction (but with basis vector in addition!).
 
-Atomic sentences are contractions of coordinate encodings of predicates with basis encodings of terms.
-
-\subsection{Complex sentences}
-
-Quantifier free sentences are contractions of basis encodings to atomic sentences with basis encodings of the connectives.
-
-Quantifiers act as non-linear transforms of tensors.

@@ -1,0 +1,128 @@
+\section{Semantic Structure}
+
+\todo{Understand semantics as model sets, over which distributions can be defined.}
+
+We now investigate the \semanticStructure{} of a \firstOrderLogic{} theory, when restricting to database semantics.
+This involves the representation of collections of worlds, where each has a \substitutionStructure{} as discussed above.
+
+\subsection{World Enumerating Variables}
+
+Given database semantics, we have a finite set of worlds, which we enumerate by tuples of variables $\catvariable$.
+
+\begin{definition}[World enumerating variables]
+    \label{def:worldEnumeratingVariables}
+    Given a \firstOrderLogic{} theory with constant symbols $\worlddomain$, function symbols $\{\folfunctionof{\secatomenumerator}\wcols\secatomenumeratorin\}$ and predicate symbols $\{\folpredicateof{\atomenumerator}\wcols\atomenumeratorin\}$, we enumerate the world under database semantics by a tuple
+    \begin{align*}
+        \worldvariables
+        = \left(\bigtimes_{\seccatenumeratorin}\bigtimes_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}} \catvariableof{\seccatenumerator,\indindexof{\seccatenumerator}} \right)
+        \times \left(\bigtimes_{\catenumeratorin}\bigtimes_{\indindexof{\catenumerator}\in\in[\inddim]^{\indorderof{\catenumerator}}} \catvariableof{\catenumerator,\indindexof{\catenumerator}} \right)
+    \end{align*}
+    of boolean variables.
+    In the world indexed by $\worldindices$, the grounding tensor of the function $\folfunctionof{\secatomenumerator}$ is
+    \begin{align*}
+        \bencodingofat{\groundingof{\folfunctionof{\secatomenumerator}}}{\indvariableof{\secatomenumerator},\indvariableof{[\inddimof{\secatomenumerator}]}}
+        = \sum_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}\wcols\indindexof{\seccatenumerator}=1} \onehotmapofat{\indindexof{\seccatenumerator}}{\indvariableof{\seccatenumerator}}
+    \end{align*}
+    and of the predicate $\folpredicateof{\atomenumerator}$
+    \begin{align*}
+        \groundingofat{\folpredicateof{\atomenumerator}}{\indvariableof{[\inddimof{\atomenumerator}]}}
+        = \sum_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\atomenumerator}}\wcols\indindexof{\atomenumerator}=1}
+        \onehotmapofat{\indindexof{\atomenumerator}}{\indvariableof{\atomenumerator}} \, .
+    \end{align*}
+\end{definition}
+
+We further have the restriction that each basis encoded function is a directed tensor.
+To restrict to those worlds, where this is true, we further introduce the validation base measure $\basemeasureat{\worldvariables}$ with coordinates
+\begin{align*}
+    \basemeasureat{\indexedworldvariables} =
+    \begin{cases}
+        1 & \ifspace \uniquantwrtof{\secatomenumeratorin}{\sum_{\indindexof{\secatomenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}}=1} \\
+        0 & \text{else}
+    \end{cases} \, .
+\end{align*}
+
+\subsection{Representation of Terms and Formulas}
+
+Combining its \substitutionStructure{} and \semanticStructure{} we represent a \firstOrderLogic{} term $\folterm$ with arity $\inddimof{\folterm}$ as a tensor
+\begin{align*}
+    \bencodingofat{\folterm}{\indvariableof{\folterm},\indvariableof{[\inddimof{\folterm}]},\worldvariables} =
+    \sum_{\worldindices\wcols\basemeasureat{\indexedworldvariables}=1}
+    \bencodingofat{\groundingof{\folterm}}{\indvariableof{\folterm},\indvariableof{[\inddimof{\folterm}]}}
+    \otimes \onehotmapofat{\worldindices}{\worldvariables} \, .
+\end{align*}
+and a formula as the tensor
+\begin{align*}
+    \folexformulawith =
+    \sum_{\worldindices\wcols\basemeasureat{\indexedworldvariables}=1} \groundingofat{\folexformula}{\indvariableof{\folexformula}}
+    \otimes \onehotmapofat{\worldindices}{\worldvariables} \, .
+\end{align*}
+
+From \defref{def:worldEnumeratingVariables} the representation of predicate and function symbols are directly derived from the $\worldvariables$, that is
+\begin{align*}
+    \folpredicateofat{\atomenumerator}{\indvariableof{[\inddimof{\atomenumerator}]},\indexedworldvariables}
+    = \sum_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}\wcols\indindexof{\seccatenumerator}=1}
+    \onehotmapofat{\indindexof{\seccatenumerator}}{\indvariableof{\seccatenumerator}}
+\end{align*}
+and
+\begin{align*}
+    \bencodingofat{\folfunctionof{\secatomenumerator}}{\indvariableof{\secatomenumerator},\indvariableof{[\inddimof{\secatomenumerator}]},\indexedworldvariables}
+    = \sum_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}\wcols\indindexof{\seccatenumerator}=1} \onehotmapofat{\indindexof{\seccatenumerator}}{\indvariableof{\seccatenumerator}}
+\end{align*}
+
+\subsection{Case of Propositional Logic}
+
+\PropositionalLogic{} as discussed in (see \charef{cha:logicalRepresentation}) is the special case of \firstOrderLogic{} with empty sets of constant and function symbols, and $\indorderof{\atomenumerator}=0$ for the predicate symbols.
+With the convention $[]^{0}=[2]$ the worlds are enumerated by the tuple
+\begin{align*}
+    \worldvariables = \bigtimes_{\atomenumeratorin} \catvariableof{\atomenumerator}
+\end{align*}
+which we have in previous chapters abbreviated by $\shortcatindices$.
+
+
+To represent logical formulas as sets of possible worlds, and distributions of worlds, we applied in \parref{par:one} one-hot encodings of possible worlds.
+For the case of \propositionalLogic{}, this is
+\begin{align*}
+    \onehotmapofat{\worldindices}{\shortcatvariables}
+    = \bigotimes_{\atomenumeratorin} \onehotmapofat{\catindexof{\atomenumerator}}{\catvariableof{\atomenumerator}} \, .
+\end{align*}
+
+\subsection{One-hot Encoding of Worlds}
+
+Let us now generalize the one-hot encodings of propositional logic worlds to worlds of \firstOrderLogic{}.
+To encode the boolean tensors $\worldindices$ describing \firstOrderLogic{}s as basis elements of a tensor space, we take the one-hot encoding
+\begin{align*}
+    \onehotmap \defcols \worldindexset \rightarrow \worldtensorspace
+\end{align*}
+defined by
+\begin{align*}
+    \onehotmapofat{\worldindices}{\worldvariables}
+    =
+    \left(\bigotimes_{\seccatenumeratorin}\bigotimes_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}}
+        \onehotmapofat{\catindexof{\seccatenumerator,\indindexof{\seccatenumerator}}}{\catvariableof{\seccatenumerator,\indindexof{\seccatenumerator}}}\right)
+    \otimes\left(\bigotimes_{\atomenumeratorin}\bigotimes_{\indindexof{\atomenumerator}\in[\inddim]^{\indorderof{\atomenumerator}}}
+        \onehotmapofat{\catindexof{\catenumerator,\indindexof{\catenumerator}}}{\catvariableof{\catenumerator,\indindexof{\catenumerator}}} \right)
+\end{align*}
+This is a tensor of order $\catorder\cdot\inddim^{\indorder}$, in a tensor space of dimension $2^{\left(\catorder\cdot\inddim^{\indorder}\right)}$.
+Storage of such tensors in naive formats would not be possible.
+However, the basis $\cpformat$ format discussed in \charef{cha:sparseRepresentation} still provides storage with demand linear in the order $\catorder\cdot\inddim^{\indorder}$.
+
+
+\subsection{Probability Distributions}
+
+Having established the formalism of one-hot encodings also in the case of \firstOrderLogic{} worlds, we can now proceed with the definition of distributions and formulas, analogously to the development in \parref{par:one}.
+Probability distributions over worlds coinciding on their domain are then non-negative and normalized tensors $\probat{\worldvariables}$ where each coordinate of a world $\worldindices$ is captured by a boolean random variable $\catvariableof{\atomenumerator,\shortindindices}$, indicating whether the $\atomenumerator$-th predicate holds on the object tuple indexed by $\shortindindices$.
+
+% High-dimensional - watch out for repetitions!
+We notice that by definition these probability distributions are distributions of
+\begin{align*}
+    \left(\sum_{\catenumeratorin}\inddim^{\indorderof{\catenumerator}}\right) +  \left(\sum_{\seccatenumeratorin}\inddim^{\indorderof{\seccatenumerator}}\right)
+\end{align*}
+Booleans.
+% One-hot encodings minimal
+Unfortunately, it is not possible to design encoding spaces of smaller dimension, when our aim is to get any distribution over possible worlds by an element in the encoding space.
+This is due to the fact, that one-hot encodings provide a basis in the tensor space, as will be shown in \charef{cha:coordinateCalculus}.
+The reason for the large encoding space dimension is therefore rooted in the equal number of possible worlds and not in an overhead in the dimension of the one-hot encoding space.
+We will later in this chapter investigate methods to handle such high-dimensional distributions in the formalism of exponential families.
+
+
+

@@ -1,0 +1,99 @@
+
+\section{Syntax and Semantics of \firstOrderLogic{}}
+
+%Since \firstOrderLogic{} follows structured representations of a system, a \firstOrderLogic{} world consists in objects and relations between them.
+The framework of \firstOrderLogic{} generalizes \propositionalLogic{} analogously to the generalization of factored system representations towards structured system representations \cite{russell_artificial_2021}.
+This more expressive framework is designed to reason about relations and functions between objects.
+To capture this framework by tensors we here first define the syntax and then investigate tensor representations of the semantics.
+
+\subsection{Syntax}
+
+A \firstOrderLogic{} theory consists in a finite set of constant symbols $\worlddomain$, a set of function symbols $\{\folfunctionof{\secatomenumerator}\wcols\secatomenumeratorin\}$, a set of predicate symbols $\{\folpredicateof{\atomenumerator}\wcols\atomenumeratorin\}$ and an arity map assigning the arity $\indorderof{\secatomenumerator}$ to the function $\folfunctionof{\secatomenumerator}$ and the arity $\indorderof{\atomenumerator}$ to the predicate $\folpredicateof{\atomenumerator}$.
+
+\subsection{Tensor Representation of Semantics}
+
+We here follow the model-theoretic semantics of \firstOrderLogic{}, where sets of possible worlds are considered.
+% Database
+We only treat in this work database semantics, where we assume that the domain $\worlddomain$ of each world has a one-to-one mapping to the constants of the theory and is therefore constant among the worlds.
+Database semantics is central to combine the \semanticStructure{} with the \substitutionStructure{}.
+Under this assumption, the dimension of the \substitutionStructure{} does not depend on the specific world, and we can combine both structures in a single tensor space to be defined in the next sections.
+
+% Index interpretation of world domain
+To each world there is a world domain $\worlddomain$ of objects, which we assume to be finite.
+We exploit the set-encoding formalism discussed in more detail in \charef{cha:basisCalculus} and use bijective index interpretation maps
+\begin{align*}
+    \indexinterpretation \defcols [\inddim] \rightarrow \worlddomain \, .
+\end{align*}
+A so-called term variable $\indvariable$ takes states $\indindexin$, which represent objects
+\begin{align*}
+    \indexinterpretationat{\indindex} \in \worlddomain \, .
+\end{align*}
+
+% Relations
+The relations between objects are described by $\indorder$-ary predicates $\folpredicate$.
+Given a specific world $\worldindices$ the truth of relations is represented by boolean tensors
+\begin{align*}
+    \groundingof{\folpredicate} \defcols \symindstates\rightarrow\ozset \, .
+\end{align*}
+Given a tuple $\indindexlist\in\symindstates$ the boolean
+\begin{align*}
+    \groundingofat{\folpredicate}{\indexedindvariableof{0},\ldots,\indexedindvariableof{\indorder-1}} \in\ozset
+\end{align*}
+is called a grounding and encodes, whether the relation $\folpredicate$ is satisfied in the world $\worldindices$ for the objects $\indexinterpretationat{\indindexof{0}},\ldots,\indexinterpretationat{\indindexof{\indorder-1}}$.
+
+% Functions
+Functions in \firstOrderLogic{} are object-valued maps
+\begin{align*}
+    \groundingof{\folfunction}\defcols \worlddomain^{\inddim} \rightarrow \worlddomain \, .
+\end{align*}
+While relations are represented by their coordinate encodings, functions are represented by directed basis encodings
+\begin{align*}
+    \bencodingofat{\groundingof{\folfunction}}{\indvariableof{\folfunction},\shortindvariables}
+\end{align*}
+where to each object tuple $\indexinterpretationat{\indindexof{0}},\ldots,\indexinterpretationat{\indindexof{\indorder-1}}$ the vector $\bencodingofat{\groundingof{\folfunction}}{\indvariableof{\folfunction},\indexedshortindvariables}$ is the one-hot encoding of the object, that is
+\begin{align*}
+    \bencodingofat{\groundingof{\folfunction}}{\indvariableof{\folfunction},\indexedshortindvariables}
+    = \onehotmapofat{\groundingofat{\folfunction}{\indexinterpretationat{\indindexof{0}},\ldots,\indexinterpretationat{\indindexof{\indorder-1}}}}{\indvariableof{\folfunction}} \, .
+\end{align*}
+
+
+
+%% NEW
+\subsection{Worlds}
+
+Worlds in First-Order Logics contain varying numbers of objects.
+We use domain variables $\indvariable$ to enumerate the sets of objects.
+
+Worlds are represented by three sets of tensors:
+\begin{itemize}
+    \item One-hot encodings of constants
+    \item Coordinate encodings for each predicate
+    \item Basis encoding of each function
+\end{itemize}
+
+
+%\subsection{Database semantics}
+
+% Database Semantics
+%\begin{align*}
+%    \bigotimes_{\atomenumeratorin,\shortindindices\in[\inddim]^{\indorder}} \rr^2 \, .
+%\end{align*}
+
+\subsection{Two Tensor Structures}
+
+In comparison with \propositionalLogic{}, \firstOrderLogic{} bears two natural tensor structures.
+\begin{itemize}
+    \item \textbf{\SemanticStructure{}:} As in \propositionalLogic{}, we enumerate possible worlds by a collection of variables $\catvariable$.
+    This is a representation of the model-theoretic semantics, where subsets of worlds are represented by boolean tensors.
+    \item \textbf{\SubstitutionStructure{}:}
+    Different to \propositionalLogic{}, a formula can have variables and the evaluation of a formula on a world is represented by its grounding tensor.
+    Given a world which contains objects in the domain $\worlddomain$, we can substitute variables by objects in the domain.
+    In this way, each predicate with $\inddim$ variables is represented in that world as a boolean tensor of order $\inddim$.
+\end{itemize}
+% Russel reference
+While the \semanticStructure{} appears already in factored representations of systems, the \substitutionStructure{} arises in more generality when treating structured representations of systems \cite{russell_artificial_2021}.
+
+
+
+
+
