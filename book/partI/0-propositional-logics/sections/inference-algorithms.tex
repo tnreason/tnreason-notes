@@ -77,8 +77,6 @@ To prove the theorem, we first establish the following lemma that states if a co
     \theref{the:monotonEntailment} therefore just provides a sufficient but not necessary criterion of entailment with respect to $\probtensor^{\graph}$.
 \end{remark}
 
-
-
 \subsection{Syntactical inference algorithms}
 
 \todo{
@@ -92,6 +90,44 @@ To prove the theorem, we first establish the following lemma that states if a co
     Forward chaining as copying length $1$ clauses to other clauses and contract them.
     When terminated all clauses are of lenght at most $2$, and definite if they initially where definite (then any clause of length $1$ is a fact).
 }
+
+\subsubsection{Generalized Forward Chaining}
+
+We generalize forward chaining to arbitrary constraint networks.
+Main elements:
+\begin{itemize}
+    \item Constraint vectors are contracted with constraint tensors containing the corresponding node.
+    \item If the split successes and results in a new constraint vector, we continue step 1 with the new constraint vector.
+\end{itemize}
+
+\begin{algorithm}[hbt!]
+    \caption{Generalized Forward Chaining}\label{alg:genForwardChaining}
+    \begin{algorithmic}
+        \Require Constraint tensor network $\extnet$ on $\graph=(\nodes,\edges)$, message edges $\domainedges$ and a set $\arbset$ of subsets of $\edges$ for local propagation
+        \Ensure
+        \iosepline
+        \State
+        \State Initialize a queue $\graphqueue$ by all nodes with constraint vectors
+%        \begin{align*}
+%            \graphqueue =
+%        \end{align*}
+        \While{$\graphqueue$ is not empty}
+            \State Choose a node variable $\node$ from $\graphqueue$
+            \For{All $\edge\in\domainedges$ with $\node\in\edge$}
+                \State Contract
+                \begin{align*}
+                    \hypercoreofat{\edge}{\catvariableof{\edge}}
+                    = \contractionof{\hypercoreofat{\edge}{\catvariableof{\edge}},\hypercoreofat{\{\node\}}{\catvariableof{\node}}}{\catvariableof{\edge}}
+                \end{align*}
+                \State Try to split $\hypercoreofat{\edge}{\catvariableof{\edge}}$ into $\{\node\}$ and $\edge\backslash\{\node\}$
+                \If{Splitting successful and $\cardof{\edge\backslash\{\node\}}=1$}
+                    \State Add $\edge\backslash\{\node\}$ to the queue
+                \EndIf
+            \EndFor
+        \EndWhile
+        \State \Return $\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edge\in\domainedges\}$
+    \end{algorithmic}
+\end{algorithm}
 
 \subsubsection{Resolution}
 
@@ -305,7 +341,7 @@ We can further characterize the message cores at termination.
 This property is similar to the completeness of a message core, when interpreting the other message cores and the constraints $\{\hypercoreof{\edge} \wcols \edge\in\secedges\}$ as posing a Constraint Satisfaction Problem.
 
 \begin{theorem}
-    constraint propagation \algoref{alg:knowledgePropagation} always terminates.
+    The Constraint propagation \algoref{alg:knowledgePropagation} always terminates.
 %    At termination, each message core $\kcoreof{}$
     At termination we further for each $\secedges\in\arbset$ and $\edge\in\domainedges$ with $\edge\cap\bigcup_{\edge\in\secedges}\edge\neq\varnothing$, that the message cores $\{\kcoreof{\edge} \wcols \edge\in\domainedges, \, \edge\cap\bigcup_{\edge\in\secedges}\edge\neq\varnothing\}$ are consistent with $\{\hypercoreof{\edge} \wcols \edge\in\secedges\}$.
 \end{theorem}
@@ -390,9 +426,6 @@ Let us exemplify the usage of constraint propagation on Constraint Satisfaction 
     % Inference rules such as modus ponens can be mimicked.
 \end{example}
 
-
-
-
 \subsection{Backtracking search}
 
 \todo{
@@ -421,9 +454,6 @@ One can understand the guess of an assignment $\catindexof{\node}$ to a variable
 \end{align*}
 Therefore, constraint propagation \algoref{alg:knowledgePropagation} can be integrated with backtracking search, with iterations between propagations of knowledge and guessing of additional variables.
 %The message cores $\kcoreof{\edge}$ are subset encoding of possible local choices, according to which variables can be assigned.
-
-
-
 
 \subsection{Discussion}
 

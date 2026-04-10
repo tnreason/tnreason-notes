@@ -24,7 +24,13 @@ Following Chapter~5 in \cite{russell_artificial_2021}, we now define Constraint 
 
 \input{examples/constraint-satisfaction-problems/kb-as-csp}
 
+
+
 \subsection{Manipulation of constraint tensor networks}
+
+We study basic manipulations of constraint tensor networks, which are leaving the contracted network invariant and which are leading to monotonically decreasing solution sets.
+
+\subsubsection{Invariant}
 
 \todo{Decide whether tensor networks should be denoted hyperedge-based and not graph based.}
 
@@ -56,31 +62,67 @@ Following Chapter~5 in \cite{russell_artificial_2021}, we now define Constraint 
 
 \end{theorem}
 
-\todo{Reformulate inference algorithms based on the following operations:}
-Leaving the contraction invariant:
-\begin{itemize}
-    \item[i] Adding the support of a sub-contraction of a graph $\secgraph\subset\graph$ and nodes $\secnodes\subset\nodes$, and drop some $\edge\in\secgraph$ with $\edge\subset\secnodes$.
-    \item[ii] Partition an edge $\edge$ into two edges $\edgeof{0},\edgeof{1}$ decorated by $\hypercoreofat{\edgeof{0}}{\catvariableof{\edgeof{0}}},\hypercoreofat{\edgeof{1}}{\catvariableof{\edgeof{1}}}$, if
-    \begin{align*}
-        \hypercoreofat{\edge}{\catvariableof{\edge}}
-        = \hypercoreofat{\edgeof{0}}{\catvariableof{\edgeof{0}}} \otimes \hypercoreofat{\edgeof{1}}{\catvariableof{\edgeof{1}}}
-    \end{align*}
-\end{itemize}
-Monotonic decrease of solutions:
-\begin{itemize}
-    \item Adding constraint tensors.
-    Thus, the network is satisfiable if an increased one is satisfiable.
-    If a decreased one is unsatisfiable, then also the network is unsatisfiable.
-\end{itemize}
 
-Elementary networks are satisfiable when not containing the zero tensor.
+\subsubsection{Monotonicity}
 
-\red{Need partial ordering for the monotonicity?}
+\todo{Monotonicity of logic generalized here.}
+
+%\todo{Reformulate inference algorithms based on the following operations:}
+%Leaving the contraction invariant:
+%\begin{itemize}
+%    \item[i] Adding the support of a sub-contraction of a graph $\secgraph\subset\graph$ and nodes $\secnodes\subset\nodes$, and drop some $\edge\in\secgraph$ with $\edge\subset\secnodes$.
+%    \item[ii] Partition an edge $\edge$ into two edges $\edgeof{0},\edgeof{1}$ decorated by $\hypercoreofat{\edgeof{0}}{\catvariableof{\edgeof{0}}},\hypercoreofat{\edgeof{1}}{\catvariableof{\edgeof{1}}}$, if
+%    \begin{align*}
+%        \hypercoreofat{\edge}{\catvariableof{\edge}}
+%        = \hypercoreofat{\edgeof{0}}{\catvariableof{\edgeof{0}}} \otimes \hypercoreofat{\edgeof{1}}{\catvariableof{\edgeof{1}}}
+%    \end{align*}
+%\end{itemize}
+%Monotonic decrease of solutions:
+%\begin{itemize}
+%    \item Adding constraint tensors.
+%    Thus, the network is satisfiable if an increased one is satisfiable.
+%    If a decreased one is unsatisfiable, then also the network is unsatisfiable.
+%\end{itemize}
+%
+%Elementary networks are satisfiable when not containing the zero tensor.
+%
+%\red{Need partial ordering for the monotonicity?}
 
 
 %Show the grand resolution theorem based on the increase method.
 
-\subsection{Examples}
+\subsection{Solution Approaches}
+
+Let us now use the manipulation approaches to derive solution approaches to CSPs.
+
+\subsubsection{Elementarization}
+
+We notice that finding a solution assignment to a constraint network $\extnet$ is finding a one-hot encoding with
+\begin{align*}
+    \onehotmapofat{\catindexof{\nodes}}{\nodevariables}
+    \prec
+    \contractionof{\extnet}{\nodevariables} \, .
+\end{align*}
+
+One-hot encodings are in particular non-vanishing elementary tensors.
+
+Let us generalize this approach to solving CSPs by elementarization:
+\begin{itemize}
+    \item Find a non-vanishing elementary tensor network, which entails the
+\end{itemize}
+
+Modus ponens is an elementarization approach: The implication edges are split into elementary vectors.
+
+\subsubsection{Vanishing sub-contraction}
+
+When a sub-contraction of the constraint network is vanishing, we know that the CSP has no solution.
+
+This is a typical approach in logics, e.g. the aim of resolution.
+
+
+
+
+\subsection{Knowledge bases as constraint networks}
 
 We now investigate examples of constraint networks and their manipulations.
 
@@ -104,6 +146,9 @@ Before presenting the basic syntactical inference rules, let us derive contracti
         \end{cases} \, .
     \end{align*}
 \end{lemma}
+\begin{proof}
+    Using the tensor representation of clauses, by the $\onesat{\catvariableof{\hardlegset}}-\bigotimes_{\catenumerator\in\hardlegset}\onehotmapofat{\headindexof{\catenumerator}}{\catvariableof{\catenumerator}}$.
+\end{proof}
 
 
 
@@ -167,7 +212,20 @@ We further derive a contraction property of arbitrary clauses with negated liter
     This is different to the modus ponens inference rule.
 \end{example}
 
-\subsubsection{Categorical Constraints}\label{sec:categoricalTN}
+
+
+
+
+\subsection{Further Examples}
+
+\todo{
+    Instead of categorical constraints, say exactly-one constraint.
+    Call the categorical variable the constraint decomposition variable?
+}
+
+We further investigate Sudoku and the N-Queens problem as examples of constraint networks, which are constructed using "exactly-one" constraint.
+
+%\subsubsection{Categorical Constraints}\label{sec:categoricalTN}
 
 \red{These are the exactly one constraints, used in Sudoku.}
 
@@ -245,6 +303,11 @@ We thus have (see \figref{fig:categoricalDecomposition}) %by \theref{the:functio
     }
     \label{fig:categoricalDecomposition}
 \end{figure}
+
+
+
+
+
 
 \todo{
     Add Sudoku from the NeSy paper, call the boolean variables atomization variables.
