@@ -15,9 +15,10 @@
 
     \showoutlineatsection
 
-    \section{Motivation: Propositional syntax}
 
-    \begin{frame}{Decomposition of formulas}
+    \section{Propositional syntax}
+
+    \begin{frame}{Motivation: Sparsity in formulas}
         \only<1>{
             \par
             {\bf Recall:} Tensor networks as a sparsity principle
@@ -33,7 +34,7 @@
             = \left(\catvariableof{B} \lor \catvariableof{E}\right) \Rightarrow \left(\catvariableof{J} \lor \catvariableof{M}\right)
         \end{align*}
 
-        Intuitively we can decompose the
+        Intuitively we can decompose the formula as
         \input{tikz/syntactical-circuit-example}
 
         \only<2>{
@@ -60,13 +61,76 @@
 %    \end{frame}
 
 
+    \begin{frame}{Propositional Syntax}
+
+        Propositional syntax (e.g. $\formula = \left(\catvariableof{B} \lor \catvariableof{E}\right) \Rightarrow \left(\catvariableof{J} \lor \catvariableof{M}\right)$) consists in
+        \begin{itemize}
+            \item Atomic formulas (here: $\catvariableof{B}$, $\catvariableof{E}$, $\catvariableof{J}$, $\catvariableof{M}$)
+            \item Connectives (here: $\lor$, $\Rightarrow$)
+        \end{itemize}
+        \input{tikz/syntax-explanation}
+        \only<1>{
+                {\bf Atomic formulas} ("propositinal symbols"), e.g. $\catvariableof{B}$:\\
+            A world $(\catindexof{B}$, $\catindexof{E}$, $\catindexof{J}$, $\catindexof{M})\in[2]^4$ is a model, if and only if $\catindexof{B}=1$.
+        }
+        \only<2->{
+            Connectives building {\bf complex formulas}, e.g. $\catvariableof{B}\lor\catvariableof{E}$:\\
+            Satisfaction computed by the satisfaction of the sub-formulas
+        }
+        \only<2>{
+            \begin{center}
+                \begin{tabular}{cc|c}
+                    $\catvariableof{B}$ & $\catvariableof{E}$ & $\catvariableof{B}\lor\catvariableof{E}$ \\
+                    \hline
+                    0                   & 0                   & 0                                        \\
+                    0                   & 1                   & 1                                        \\
+                    1                   & 0                   & 1                                        \\
+                    1                   & 1                   & 1
+                \end{tabular}
+            \end{center}
+        }
+        \only<3>{
+            \begin{center}
+                \begin{tabular}{cc|c}
+                    $\catvariableof{B}\lor\catvariableof{E}$ & $\catvariableof{J}\lor\catvariableof{M}$ & $\formula$ \\
+                    \hline
+                    0                                        & 0                                        & 1          \\
+                    0                                        & 1                                        & 1          \\
+                    1                                        & 0                                        & 0          \\
+                    1                                        & 1                                        & 1
+                \end{tabular}
+            \end{center}
+
+        }
+
+    \end{frame}
+
+
     \begin{frame}{How to represent formulas as tensor networks?}
 
+        \begin{block}{Task: Exploit the syntax}
+            The syntactical representation of formulas is the sparsity principle of propositional logics to avoid the curse of dimensions.
+            Can we capture this principle by tensor network decompositions?
+        \end{block}
+        To be more precise:
+        \begin{itemize}
+            \item Suppose we have a tensor network decomposition of formulas $\formulaof{0}$ and $\formulaof{1}$.
+            \item How to contract the tensor networks to get $\formulaof{0}\exconnective\formulaof{1}$ (where $\exconnective\in\{\lor,\land,\Rightarrow,\cdots\}$)?
+        \end{itemize}
+        \medskip
+        {\bf Recall:} Contraction of both formulas (or tensor network decomposition of them) is the logical conjunction
+        \begin{align*}
+            \Big(\formulaof{0}\land\formulaof{1}\Big)[\shortcatvariables] =
+            \contractionof{\formulaofat{0}{\shortcatvariables},\formulaofat{1}{\shortcatvariables}}{\shortcatvariables}
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{The non-linearity problem}
         \begin{block}{Multilinearity of tensor networks}
             Tensor networks are multilinear, that is linear in each core tensor decorating an edge.
         \end{block}
 
-        The logical conjunction is the only connective function which is multilinear.
+        The logical conjunction is the only connective which is multilinear.
 
         \begin{block}{Non-linearity problem}
             How to represent non-linear formulas like $\lnot\catvariable$ in a tensor network?
@@ -416,7 +480,7 @@
             \contractionof{\bencodingofat{\formula}{\headvariableof{\exformula},\shortcatvariables},\onehotmapofat{\shortcatindices}{\shortcatvariables}}{
                 \headvariableof{\exformula}
             }
-            = \onehotmapofat{\formulaat{\indexedshortcatvariables}}{\headvariableof{\formula}} \, .
+            = \onehotmapofat{\formula(\shortcatindices)}{\headvariableof{\formula}} \, .
         \end{align*}
 
         \begin{block}{\DecompositionSparsity{}}
@@ -428,10 +492,10 @@
 
     \begin{frame}{\DecompositionSparsity{} for inference}
 
-            {\bf Recall:} Logical inference (deciding entailment) requires tensor network contractions.
+        {\bf Recall:} Logical inference (deciding entailment) requires tensor network contractions.
         Since naive computation schemes are intractable, can we exploit tensor network decompositions for efficient inference?
-\medskip \\
-            {\bf Formula evaluation} as an inference instance:
+        \medskip \\
+        {\bf Formula evaluation} as an inference instance:
         \stantikzpic{
             \draw[->-] (-1.5,-1)--(-1.5,1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
             \draw[->-] (1,-1)--(1,1) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
@@ -537,6 +601,107 @@
 %        \end{itemize}
 %
 %    \end{frame}
+
+
+    \section{Rules of replacement and clauses}
+
+    \begin{frame}{Manipulations of syntax}
+
+        There are different syntactical representations of the same formula, some of them are found by syntactical manipulations.
+        \begin{align*}
+            \Big( \catvariableof{B} \Rightarrow \catvariableof{A} \Big)
+            \equiv \Big(\lnot (\catvariableof{B}\land \catvariableof{A})\Big)
+        \end{align*}
+
+        \begin{block}{Tensor network perspective}
+            Equivalence of syntactical representations
+        \end{block}
+
+            {\bf Example:} De-morgan rule is the contraction equivalence
+        \stantikzpic{
+            \draw[->-] (0,1) -- (0,2.5) node[midway,right] {\colorlabelsize $\headvariable$};
+            \drawsmalltensor{0}{0}{$\bencodingof{\lnot}$}
+            \draw[->-] (0,-2.5) -- (0,-1);
+            \draw (-3,-2.5) rectangle (3,-4.5);
+            \drawtextnode{0}{-3.5}{\corelabelsize $\bencodingof{\land}$}
+            \draw[->-] (-2,-6) -- (-2,-4.5) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+            \draw[->-] (2,-6) -- (2,-4.5) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+
+            \drawtextnode{5}{-2.25}{${=}$}
+
+            \begin{scope}[shift={(10,0)}]
+                \draw[->-] (0,1) -- (0,2.5) node[midway,right] {\colorlabelsize $\headvariable$};
+                \draw (-3,-1) rectangle (3,1);
+                \drawtextnode{0}{0}{\corelabelsize $\bencodingof{\lor}$}
+                \draw[->-] (-2,-2.5) -- (-2,-1);
+                \draw[->-] (2,-2.5) -- (2,-1);
+                \drawsmalltensor{-2}{-3.5}{$\bencodingof{\lnot}$}
+                \drawsmalltensor{2}{-3.5}{$\bencodingof{\lnot}$}
+
+                \draw[->-] (-2,-6) -- (-2,-4.5) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+                \draw[->-] (2,-6) -- (2,-4.5) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+            \end{scope}
+        }
+
+    \end{frame}
+
+    \begin{frame}{Rules of replacement}
+        \begin{itemize}
+            \item Elimination of bi-implications
+            \begin{align*}
+                \Big(\exformulaof{0} \Leftrightarrow \exformulaof{1}\Big)
+                \equiv
+                \Big((\exformulaof{0}\Rightarrow\exformulaof{1}) \land (\exformulaof{1}\Rightarrow\exformulaof{0}))
+            \end{align*}
+            \item Elimination of implications
+            \begin{align*}
+                \Big(\exformulaof{0} \Rightarrow \exformulaof{1}\Big)
+                \equiv
+                \Big(\lnot\exformulaof{0} \lor \exformulaof{1})
+            \end{align*}
+            \item De-morgan rules
+            \begin{align*}
+                &\lnot\Big(\exformulaof{0} \land \exformulaof{1}\Big)
+                \equiv
+                \Big(\lnot\exformulaof{0} \lor \lnot \exformulaof{1} \Big)
+                \quad, \quad\\
+                &\lnot\Big(\exformulaof{0} \lor \exformulaof{1}\Big)
+                \equiv
+                \Big(\lnot\exformulaof{0} \land \lnot \exformulaof{1} \Big)
+            \end{align*}
+            \item Distributive rule
+            \begin{align*}
+                &\exformulaof{0} \lor \Big(\exformulaof{1} \land \exformulaof{2}\Big)
+                \equiv
+                \Big((\exformulaof{0} \lor \exformulaof{1}) \land (\exformulaof{0} \lor \exformulaof{2})\Big)
+            \end{align*}
+        \end{itemize}
+
+
+    \end{frame}
+
+    \begin{frame}{Clauses}
+
+        Atomic formulas and there negations are called {\bf positive and negative literals}. \\
+        {\bf Clauses} are logical disjunctions of literals. \\
+        A syntactical representation of a formula is in the conjunctive normal form, if it is a conjunction of clauses (a knowledge base of clauses).
+
+    \end{frame}
+
+    \begin{frame}{Conjunctive normal form (CNF)}
+        Using the rules of replacement, any syntactical representation of a formula can be transfered into the CNF.
+        \medskip \\
+        {\bf Example:} The formula $\formula = \left(\catvariableof{B} \lor \catvariableof{E}\right) \Rightarrow \left(\catvariableof{J} \lor \catvariableof{M}\right)$
+        has a CNF with the clauses $\left(\lnot\catvariableof{B} \lor \catvariableof{B} \lor \catvariableof{E}\right)$ and $\left(\lnot\catvariableof{E} \lor \catvariableof{B} \lor \catvariableof{E}\right)$.
+        We find the CNF by the rules of equivalence:
+        \begin{align*}
+            &\left(\catvariableof{B} \lor \catvariableof{E}\right) \Rightarrow \left(\catvariableof{B} \lor \catvariableof{E}\right)  & \text{(eliminate the implication)}\\ % Elimination of implication
+            &\equiv \lnot \left(\catvariableof{B} \lor \catvariableof{E}\right) \lor \left(\catvariableof{B} \lor \catvariableof{E}\right) & \text{(apply de-morgan)}\\ %  De-morgan
+            &\equiv \left(\lnot\catvariableof{B} \land \lnot\catvariableof{E}\right) \lor \left(\catvariableof{B} \lor \catvariableof{E}\right) & \text{(apply the distributive law)}\\ % distributive
+            &\equiv \left(\lnot\catvariableof{B} \lor \catvariableof{B} \lor \catvariableof{E}\right) \land \left(\lnot\catvariableof{E} \lor \catvariableof{B} \lor \catvariableof{E}\right)&
+        \end{align*}
+
+    \end{frame}
 
 
     \section{Implementations in \tnreason{}}
