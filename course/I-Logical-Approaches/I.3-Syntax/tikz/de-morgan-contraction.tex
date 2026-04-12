@@ -1,0 +1,24 @@
+\stantikzpic{
+    \draw[->-] (0,1) -- (0,2.5) node[midway,right] {\colorlabelsize $\headvariable$};
+    \drawsmalltensor{0}{0}{$\bencodingof{\lnot}$}
+    \draw[->-] (0,-2.5) -- (0,-1);
+    \draw (-3,-2.5) rectangle (3,-4.5);
+    \drawtextnode{0}{-3.5}{\corelabelsize $\bencodingof{\land}$}
+    \draw[->-] (-2,-6) -- (-2,-4.5) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+    \draw[->-] (2,-6) -- (2,-4.5) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+
+    \drawtextnode{5}{-2.25}{${=}$}
+
+    \begin{scope}[shift={(10,0)}]
+        \draw[->-] (0,1) -- (0,2.5) node[midway,right] {\colorlabelsize $\headvariable$};
+        \draw (-3,-1) rectangle (3,1);
+        \drawtextnode{0}{0}{\corelabelsize $\bencodingof{\lor}$}
+        \draw[->-] (-2,-2.5) -- (-2,-1);
+        \draw[->-] (2,-2.5) -- (2,-1);
+        \drawsmalltensor{-2}{-3.5}{$\bencodingof{\lnot}$}
+        \drawsmalltensor{2}{-3.5}{$\bencodingof{\lnot}$}
+
+        \draw[->-] (-2,-6) -- (-2,-4.5) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+        \draw[->-] (2,-6) -- (2,-4.5) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+    \end{scope}
+}

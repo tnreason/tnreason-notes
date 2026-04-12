@@ -6,7 +6,7 @@
 \setslidetitledate{
     Constraint Satisfaction Problems
 }{
-    April 13, 2026
+    April 27, 2026
 }
 
 \begin{document}
@@ -21,21 +21,54 @@
     \begin{frame}{Graph Coloring}
 
         \begin{block}{Graph Coloring Problem}
-            Given a graph $\graph=(\nodes,\edges)$
+            Given a graph $\graph=(\nodes,\edges)$ and $\catdim$ colors, find a coloring of the nodes, such that adjacent nodes have different colors.
         \end{block}
 
+            {\bf Example:} Paint the states of australia\\
+        \begin{minipage}{0.45\textwidth}
+            \includegraphics[width=5cm]{img/russel_australia}
+        \end{minipage}
+        \begin{minipage}{0.45\textwidth}
+            \begin{itemize}
+                \item How many colors are required?
+                \item How many possible colorings can be done?
+            \end{itemize}
+        \end{minipage}
     \end{frame}
 
     \begin{frame}{Representation of Graph Coloring}
         Each node color is a variable.
 
-        To each edge $\edge=\{\node_{0},\node_{1}\}$ the matrix
+        To each edge $\edge=\{\node_{0},\node_{1}\}$ the "different" constraint matrix
         \begin{align*}
-            \hypercoreofat{\edge}{\catvariableof{\node_{0}},\catvariableof{\node_{1}}}
+            \hypercoreofat{\mathrm{diff},\{\node_0,\node_1\}}{\catvariableof{\node_{0}},\catvariableof{\node_{1}}}
             = \onesat{\catvariableof{\node_{0}},\catvariableof{\node_{1}}} - \identityat{\catvariableof{\node_{0}},\catvariableof{\node_{1}}} \, .
         \end{align*}
         with off-diagonal support enforces different color constraint.
+
+            {\bf Example:} Painting the states of australia with $\catdim$ colors
+        \begin{minipage}{0.45\textwidth}
+            \begin{itemize}
+                \item Model the color of each state by a $\catdim$ dimensional variable
+                \item Each edge between neighbored states is decorated by the "different" constraint matrix
+            \end{itemize}
+        \end{minipage}
+        \begin{minipage}{0.45\textwidth}
+
+            \input{tikz/australia-states}
+        \end{minipage}
+
     \end{frame}
+
+    \begin{frame}{Contraction properties of the "different" constraint}
+
+        If one node is known (i.e. encoded as a basis vector), then constraint disentangles.
+        (This holds for any constraint!)
+
+        If multiple possibilities, then entanglement remains.
+
+    \end{frame}
+
 
     \begin{frame}{Edge inference scheme}
 
@@ -61,6 +94,7 @@
         By hidden variables storing digit at a field, digit positions in rows, columns and squares.
 
         Computation perspective: Hidden variables computing the atomic variables.
+        Speciality of Sudoku constraint: Can disentangle to basis vector $\fbasis$ when position variable
 
     \end{frame}
 
@@ -70,7 +104,12 @@
 
     \end{frame}
 
+
+    \section{Solution by forward chaining}
+
     \begin{frame}{Solution by forward chaining like method}
+
+        Here: AC-3 a generalization of forward chaining to leg dimensions $\catdim>2$!
 
         Can show:
         AC-3 and forward chaining do the most basic inference scheme, i.e. keeping track of possible assignments based on single constraint matrices.
@@ -78,7 +117,7 @@
     \end{frame}
 
 
-    \section{Generic Constraint Satisfaction Problems}
+
 
     \begin{frame}{Arc consistency}
 
@@ -108,6 +147,51 @@
         \end{itemize}
 
 
+    \end{frame}
+
+
+    \section{Solution by backtracking search}
+
+    \begin{frame}{Idea of backtracking}
+
+        Guess an assignment to disentangle a node.
+        When running into an inconsistency, guess an alternative assignment.
+
+
+    \end{frame}
+
+    \begin{frame}{Combination with constraint simplification}
+
+        Do generic forward chaining or constraint propagation to simplify constraints before guessing.
+
+
+    \end{frame}
+
+    \begin{frame}{Example: Painting australias states}
+
+        Take three colors: red, blue, green
+
+        \input{tikz/australia-states-backtracking}
+        \begin{itemize}
+            \item \only<2->{
+            Guess $\catvariableof{WA}$ to be red.
+        }
+            \item \only<3->{
+            Consequences for $\catvariableof{NT}$ and $\catvariableof{SA}$: red or green
+        }
+            \item \only<4->{
+            Guess $\catvariableof{NT}$ to be green.
+            }
+            \item \only<5->{
+            As a consequence, $\catvariableof{SA}$ has to be blue.
+            }
+            \item \only<6->{
+            The colors $\catvariableof{Q}$, $\catvariableof{NSW}$, $\catvariableof{V}$ also follow.
+            }
+            \item \only<7>{
+                The variable $\catvariableof{T}$ is disconnected and can be chosen arbitrarly.
+            }
+        \end{itemize}
 
 
     \end{frame}

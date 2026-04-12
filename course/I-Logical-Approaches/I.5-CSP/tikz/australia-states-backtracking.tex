@@ -1,0 +1,89 @@
+\stantikzpic{
+    \only<1>{
+        \drawvariablenode{0}{0}{$\catvariableof{WA}$}{WA}
+    }
+    \only<2->{
+        \begin{scope}[red]
+            \drawvariablenode{0}{0}{$\catvariableof{WA}$}{WA}
+        \end{scope}
+    }
+
+    \only<1-3>{
+        \drawvariablenode{5}{3}{$\catvariableof{NT}$}{NT}
+    }
+    \only<3>{
+        \fill[green!70!black] (5.5,4.75) circle (0.3cm);
+        \fill[blue] (4.5,4.75) circle (0.3cm);
+    }
+    \only<4->{
+        \begin{scope}[green!70!black]
+            \drawvariablenode{5}{3}{$\catvariableof{NT}$}{NT}
+        \end{scope}
+    }
+
+    \only<1-4>{
+        \drawvariablenode{5}{-2}{$\catvariableof{SA}$}{SA}
+    }
+    \only<3>{
+        \fill[green!70!black] (5,-3.75) circle (0.3cm);
+        \fill[blue] (4,-3.5) circle (0.3cm);
+    }
+    \only<4>{
+        \fill[blue] (4,-3.5) circle (0.3cm);
+    }
+    \only<5->{
+        \begin{scope}[blue]
+            \drawvariablenode{5}{-2}{$\catvariableof{SA}$}{SA}
+        \end{scope}
+    }
+
+    \only<1-6>{
+        \drawvariablenode{10}{3}{$\catvariableof{Q}$}{Q}
+    }
+    \only<4>{
+        \fill[red] (10.5,4.75) circle (0.3cm);
+        \fill[blue] (9.5,4.75) circle (0.3cm);
+    }
+    \only<5>{
+        \fill[red] (10,4.75) circle (0.3cm);
+    }
+    \only<6->{
+        \begin{scope}[red]
+            \drawvariablenode{10}{3}{$\catvariableof{Q}$}{Q}
+        \end{scope}
+    }
+
+    \only<1-5>{
+        \drawvariablenode{10}{-2}{$\catvariableof{NSW}$}{NSW}
+        \drawvariablenode{7.5}{-6}{$\catvariableof{V}$}{V}
+    }
+    \only<6->{
+        \begin{scope}[green!70!black]
+            \drawvariablenode{10}{-2}{$\catvariableof{NSW}$}{NSW}
+        \end{scope}
+    }
+    \only<6->{
+        \begin{scope}[red]
+            \drawvariablenode{7.5}{-6}{$\catvariableof{V}$}{V}
+        \end{scope}
+    }
+
+    \only<1-6>{
+        \drawvariablenode{12.5}{-5}{$\catvariableof{T}$}{T}
+    }
+    \only<7>{
+        \begin{scope}[blue]
+            \drawvariablenode{12.5}{-5}{$\catvariableof{T}$}{T}
+        \end{scope}
+    }
+
+    \draw (WA) -- (NT);
+    \draw (WA) -- (SA);
+    \draw (NT) -- (SA);
+    \draw (NT) -- (Q);
+    \draw (SA) -- (Q);
+    \draw (SA) -- (V);
+    \draw (SA) -- (NSW);
+    \draw (Q) -- (NSW);
+    \draw (NSW) -- (V);
+}

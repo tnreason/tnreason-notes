@@ -6,7 +6,7 @@
 \setslidetitledate{
     Propositional Syntax and Tensor Network Decompositions
 }{
-    March 30, 2026
+    April 13, 2026
 }
 
 \begin{document}
@@ -27,7 +27,7 @@
                 \item Can we exploit further sparsity in the syntax of the formulas?
             \end{itemize}
         }
-        \textbf{Example:} The formula {\it "When a burglary or an earthquake occurs, either our neighbor John or Mary call."}
+        \textbf{Example:} The formula {\it "When a burglary or an earthquake occurs, either our neighbor John or Mary calls."}
         has a representation by
         \begin{align*}
             \formulaat{\catvariableof{B},\catvariableof{E},\catvariableof{J},\catvariableof{M}}
@@ -63,14 +63,14 @@
 
     \begin{frame}{Propositional Syntax}
 
-        Propositional syntax (e.g. $\formula = \left(\catvariableof{B} \lor \catvariableof{E}\right) \Rightarrow \left(\catvariableof{J} \lor \catvariableof{M}\right)$) consists in
+        Propositional syntax (e.g. $\formula = \left(\catvariableof{B} \lor \catvariableof{E}\right) \Rightarrow \left(\catvariableof{J} \lor \catvariableof{M}\right)$) consists of
         \begin{itemize}
             \item Atomic formulas (here: $\catvariableof{B}$, $\catvariableof{E}$, $\catvariableof{J}$, $\catvariableof{M}$)
             \item Connectives (here: $\lor$, $\Rightarrow$)
         \end{itemize}
         \input{tikz/syntax-explanation}
         \only<1>{
-                {\bf Atomic formulas} ("propositinal symbols"), e.g. $\catvariableof{B}$:\\
+                {\bf Atomic formulas} ("propositional symbols"), e.g. $\catvariableof{B}$:\\
             A world $(\catindexof{B}$, $\catindexof{E}$, $\catindexof{J}$, $\catindexof{M})\in[2]^4$ is a model, if and only if $\catindexof{B}=1$.
         }
         \only<2->{
@@ -208,7 +208,7 @@
 
     \begin{frame}{Hidden variables perspective}
 
-        Basis encoding introduce \emph{hidden variables $\headvariableof{\exformula}$} representing the satisfaction of the formula
+        Basis encodings introduce \emph{hidden variables $\headvariableof{\exformula}$} representing the satisfaction of the formula
         \begin{align*}
             \bencodingofat{\exformula}{\headvariableof{\exformula},\shortcatvariables}
             = \left(\headvariableof{\exformula}\Leftrightarrow \exformula\right) \left[\headvariableof{\exformula},\shortcatvariables\right]
@@ -609,96 +609,117 @@
 
         There are different syntactical representations of the same formula, some of them are found by syntactical manipulations.
         \begin{align*}
-            \Big( \catvariableof{B} \Rightarrow \catvariableof{A} \Big)
-            \equiv \Big(\lnot (\catvariableof{B}\land \catvariableof{A})\Big)
+            \textbf{Example: } \quad \text{De Morgan rule} \quad
+            \lnot\Big(\catvariableof{0} \land \catvariableof{1}\Big)
+            \equiv \Big(\lnot\catvariableof{0} \lor \lnot\catvariableof{1})\Big)
         \end{align*}
 
         \begin{block}{Tensor network perspective}
-            Equivalence of syntactical representations
+            Equivalence of syntactical representations correspond with equivalence of corresponding tensor network contractions.
         \end{block}
 
-            {\bf Example:} De-morgan rule is the contraction equivalence
-        \stantikzpic{
-            \draw[->-] (0,1) -- (0,2.5) node[midway,right] {\colorlabelsize $\headvariable$};
-            \drawsmalltensor{0}{0}{$\bencodingof{\lnot}$}
-            \draw[->-] (0,-2.5) -- (0,-1);
-            \draw (-3,-2.5) rectangle (3,-4.5);
-            \drawtextnode{0}{-3.5}{\corelabelsize $\bencodingof{\land}$}
-            \draw[->-] (-2,-6) -- (-2,-4.5) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
-            \draw[->-] (2,-6) -- (2,-4.5) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
-
-            \drawtextnode{5}{-2.25}{${=}$}
-
-            \begin{scope}[shift={(10,0)}]
-                \draw[->-] (0,1) -- (0,2.5) node[midway,right] {\colorlabelsize $\headvariable$};
-                \draw (-3,-1) rectangle (3,1);
-                \drawtextnode{0}{0}{\corelabelsize $\bencodingof{\lor}$}
-                \draw[->-] (-2,-2.5) -- (-2,-1);
-                \draw[->-] (2,-2.5) -- (2,-1);
-                \drawsmalltensor{-2}{-3.5}{$\bencodingof{\lnot}$}
-                \drawsmalltensor{2}{-3.5}{$\bencodingof{\lnot}$}
-
-                \draw[->-] (-2,-6) -- (-2,-4.5) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
-                \draw[->-] (2,-6) -- (2,-4.5) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
-            \end{scope}
-        }
+        The De Morgan rule corresponds with the contraction equation:
+        \input{tikz/de-morgan-contraction}
 
     \end{frame}
 
     \begin{frame}{Rules of replacement}
+        For any propositional formulas $\formulaof{0}$ and $\formulaof{1}$ the following is true:
         \begin{itemize}
             \item Elimination of bi-implications
             \begin{align*}
-                \Big(\exformulaof{0} \Leftrightarrow \exformulaof{1}\Big)
+                \Big(\formulaof{0} \Leftrightarrow \formulaof{1}\Big)
                 \equiv
-                \Big((\exformulaof{0}\Rightarrow\exformulaof{1}) \land (\exformulaof{1}\Rightarrow\exformulaof{0}))
+                \Big((\formulaof{0}\Rightarrow\formulaof{1}) \land (\formulaof{1}\Rightarrow\formulaof{0})\Big)
             \end{align*}
             \item Elimination of implications
             \begin{align*}
-                \Big(\exformulaof{0} \Rightarrow \exformulaof{1}\Big)
+                \Big(\formulaof{0} \Rightarrow \formulaof{1}\Big)
                 \equiv
-                \Big(\lnot\exformulaof{0} \lor \exformulaof{1})
+                \Big(\lnot\formulaof{0} \lor \formulaof{1})
             \end{align*}
-            \item De-morgan rules
+            \item De Morgan rules
             \begin{align*}
-                &\lnot\Big(\exformulaof{0} \land \exformulaof{1}\Big)
+                &\lnot\Big(\formulaof{0} \land \formulaof{1}\Big)
                 \equiv
-                \Big(\lnot\exformulaof{0} \lor \lnot \exformulaof{1} \Big)
+                \Big(\lnot\formulaof{0} \lor \lnot \formulaof{1} \Big)
                 \quad, \quad\\
-                &\lnot\Big(\exformulaof{0} \lor \exformulaof{1}\Big)
+                &\lnot\Big(\formulaof{0} \lor \formulaof{1}\Big)
                 \equiv
-                \Big(\lnot\exformulaof{0} \land \lnot \exformulaof{1} \Big)
+                \Big(\lnot\formulaof{0} \land \lnot \formulaof{1} \Big)
             \end{align*}
             \item Distributive rule
             \begin{align*}
-                &\exformulaof{0} \lor \Big(\exformulaof{1} \land \exformulaof{2}\Big)
+                &\Big(\formulaof{0} \lor (\formulaof{1} \land \formulaof{2})\Big)
                 \equiv
-                \Big((\exformulaof{0} \lor \exformulaof{1}) \land (\exformulaof{0} \lor \exformulaof{2})\Big)
+                \Big((\formulaof{0} \lor \formulaof{1}) \land (\formulaof{0} \lor \formulaof{2})\Big)
             \end{align*}
         \end{itemize}
 
 
     \end{frame}
 
-    \begin{frame}{Clauses}
+    \begin{frame}{Clauses and conjunctive normal form}
 
-        Atomic formulas and there negations are called {\bf positive and negative literals}. \\
-        {\bf Clauses} are logical disjunctions of literals. \\
-        A syntactical representation of a formula is in the conjunctive normal form, if it is a conjunction of clauses (a knowledge base of clauses).
+        \begin{itemize}
+            \item Atomic formulas and their negations are called {\bf positive and negative literals}.
+            For example:
+            \begin{align*}
+                \lnot\catvariableof{B} \quad \text{is a negative literal}
+                \quad, \quad
+                \catvariableof{J} \quad \text{is a positive literal}
+            \end{align*}
+            \item {\bf Clauses} are disjunctions of literals.
+            For example:
+            \begin{align*}
+                \lnot\catvariableof{B} \lor \catvariableof{J} \lor \catvariableof{M}
+            \end{align*}
+            \item A syntactical representation of a formula is in the {\bf conjunctive normal form}, if it is a conjunction of clauses (a knowledge base of clauses).
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Parametrization of clauses}
+
+        We parametrize a clause by
+        \begin{itemize}
+            \item a set $\hardlegset$ marking the atomic formulas appearing in the clause
+            \item indices $\headindexof{\hardlegset}\in[2]^{\cardof{\hardlegset}}$ storing whether the literal is positive or negative
+            \begin{align*}
+                \headindexof{\catenumerator}
+                = \begin{cases}
+                      0 & \text{If the literal is positive, i.e. $\catvariableof{\catenumerator}$ appearing in the clause} \\
+                      1 & \text{If the literal is negative, i.e. $\lnot\catvariableof{\catenumerator}$ appearing in the clause}
+                \end{cases}
+            \end{align*}
+        \end{itemize}
+        and denote it by $\clauseof{\hardlegset,\headindexof{\hardlegset}}$.
+
+        \vfill
+
+        The tenosr to the clause is decomposed as:
+        \begin{align*}
+            \clauseof{\hardlegset,\headindexof{\hardlegset}}
+            = \underbrace{\onesat{\catvariableof{\hardlegset}}}_{\text{always satisfied}}
+            - \underbrace{\bigotimes_{\catenumerator\in\hardlegset} \onehotmapofat{\headindexof{\catenumerator}}{\catvariableof{\catenumerator}}}_{\text{except for the world $\headindexof{\hardlegset}$}}
+        \end{align*}
+        \begin{center}
+            {\bf We exploit this structure for efficient storage and processing of clauses.}
+        \end{center}
 
     \end{frame}
 
     \begin{frame}{Conjunctive normal form (CNF)}
-        Using the rules of replacement, any syntactical representation of a formula can be transfered into the CNF.
+        Using the rules of replacement, any syntactical representation of a formula (involving only unary and binary connectives) can be transfered into the CNF.
         \medskip \\
         {\bf Example:} The formula $\formula = \left(\catvariableof{B} \lor \catvariableof{E}\right) \Rightarrow \left(\catvariableof{J} \lor \catvariableof{M}\right)$
         has a CNF with the clauses $\left(\lnot\catvariableof{B} \lor \catvariableof{B} \lor \catvariableof{E}\right)$ and $\left(\lnot\catvariableof{E} \lor \catvariableof{B} \lor \catvariableof{E}\right)$.
         We find the CNF by the rules of equivalence:
         \begin{align*}
-            &\left(\catvariableof{B} \lor \catvariableof{E}\right) \Rightarrow \left(\catvariableof{B} \lor \catvariableof{E}\right)  & \text{(eliminate the implication)}\\ % Elimination of implication
-            &\equiv \lnot \left(\catvariableof{B} \lor \catvariableof{E}\right) \lor \left(\catvariableof{B} \lor \catvariableof{E}\right) & \text{(apply de-morgan)}\\ %  De-morgan
-            &\equiv \left(\lnot\catvariableof{B} \land \lnot\catvariableof{E}\right) \lor \left(\catvariableof{B} \lor \catvariableof{E}\right) & \text{(apply the distributive law)}\\ % distributive
-            &\equiv \left(\lnot\catvariableof{B} \lor \catvariableof{B} \lor \catvariableof{E}\right) \land \left(\lnot\catvariableof{E} \lor \catvariableof{B} \lor \catvariableof{E}\right)&
+            &\left(\catvariableof{B} \lor \catvariableof{E}\right) \Rightarrow \left(\catvariableof{J} \lor \catvariableof{M}\right)  & \text{(eliminate the implication)}\\
+            &\equiv \lnot \left(\catvariableof{B} \lor \catvariableof{E}\right) \lor \left(\catvariableof{J} \lor \catvariableof{M}\right) & \text{(apply De Morgan)}\\
+            &\equiv \left(\lnot\catvariableof{B} \land \lnot\catvariableof{E}\right) \lor \left(\catvariableof{J} \lor \catvariableof{M}\right) & \text{(apply the distributive law)}\\ % distributive
+            &\equiv \underbrace{\left(\lnot\catvariableof{B} \lor \catvariableof{J} \lor \catvariableof{M}\right)}_{\text{first clause}}
+            \land \underbrace{\left(\lnot\catvariableof{E} \lor \catvariableof{J} \lor \catvariableof{M}\right)}_{\text{second clause}}&
         \end{align*}
 
     \end{frame}

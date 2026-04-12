@@ -1,4 +1,4 @@
-\frametitle{Forward Chaining}
+\frametitle{Forward Chaining Algorithm}
 \begin{algorithm}[H] % Force 'Here' to disable floating
             \begin{algorithmic}
                 \Require Set of clauses $\mathcal{C}$

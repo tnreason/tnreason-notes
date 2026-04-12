@@ -11,9 +11,7 @@
 
 
 \begin{document}
-
     {\frame[plain]{\titlepage}}
-
     \showoutlineatsection
 
 
@@ -135,24 +133,23 @@
 
         So far: Inference and Entailment is formulated by semantics (with tensor interpretations).
 
-        Syntactical Inference Rules find entailed formulas using syntax only.
+        Syntactical Inference Rules find entailed formulas using syntactical representations only.
 
-        We here derive them as instances of sub-contractions support adding.
+%        We here derive them as instances of sub-contractions support adding.
 
         Notation: When $\formula$ is entailed by $\seckb$ we denote
         \begin{align*}
             \frac{
-                \seckb
+                \overbrace{\seckb}^{\text{has to be known for the rule to apply}}
             }{
-                \exformula
+                \underbrace{\exformula}_{\text{is added to the knowledge base}}
             }
         \end{align*}
-
     \end{frame}
 
-    \begin{frame}{Clauses}
 
-        Given $\hardlegset\subset[\catorder]$ and $\headindexof{\hardlegset}\in\bigtimes_{\catenumerator\in\hardlegset}[2]$ the corresponding clause is
+    \begin{frame}{Clauses}
+        {\bf Recall:} Given $\hardlegset\subset[\catorder]$ and $\headindexof{\hardlegset}\in\bigtimes_{\catenumerator\in\hardlegset}[2]$ the corresponding clause is
         \begin{align*}
             \clauseofat{\hardparam}{\catvariableof{\hardlegset}}
             = \onesat{\catvariableof{\hardlegset}} - \onehotmapofat{\headindexof{\hardlegset}}{\catvariableof{\hardlegset}}
@@ -176,15 +173,11 @@
 
     \end{frame}
 
-
-
     \begin{frame}{Modus Ponens}
 
-        {\bf Modus Ponens} is the simplest inference rule: When an implication holds and the premise is true, then the head follows.
-        When $\catvariableof{0}\rightarrow\catvariableof{1}$ and $\catvariableof{0}$ is true then also $\catvariableof{1}$.
 
         \begin{block}{Modus Ponens Inference Rule}
-
+            {\bf Modus Ponens} is the simplest inference rule: When an implication holds and the premise is true, then the head follows.
             \begin{align*}
                 \frac{
                     (\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1})\rightarrow\catvariableof{\catorder} \,,\,\, (\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1})
@@ -193,28 +186,22 @@
                 }
             \end{align*}
         \end{block}
-
-
-
-        Contraction:
+        Modus ponens corresponds with the contraction equation:
         \begin{center}
             \input{tikz/modus-ponens-contraction}
         \end{center}
-%        \begin{align*}
-%            \tbasisat{\catvariableof{1}}
-%            = \contractionof{(\catvariableof{0}\rightarrow\catvariableof{1})[\catvariableof{0},\catvariableof{1}],\tbasisat{\catvariableof{0}}}{
-%                \catvariableof{1}
-%            }
-%        \end{align*}
     \end{frame}
 
 
-    \section{Forward Chaining in Horn Logic}
+    \begin{frame}{Forward Chaining}
+
+        Iterate modus ponens until the premises of none of the remaining implications are known:
 
 
 
+    \end{frame}
 
-    \begin{frame}[fragile]{Forward Chaining}
+    \begin{frame}[fragile]{Forward Chaining Algorithm}
         \begin{algorithm}[H] % Force 'Here' to disable floating
             \begin{algorithmic}
                 \Require Set of clauses $\mathcal{C}$
@@ -278,11 +265,43 @@
     \end{frame}
 
 
+    \begin{frame}{Modus ponens as removing edges}
+
+        We now keep also the colors to the premises open:
+
+        \input{tikz/modus-ponens-disentangling}
+
+        Thus we understand modus ponens as a method to turn tensors to elementary tensors.
+
+    \end{frame}
+
+
+    \begin{frame}{More general: Contraction of clauses}
+        When contracting a clause (where $\catenumerator\in\hardlegset$) with a basis vector $\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}$ we have two possible situations:
+        \begin{itemize}
+            \item The clause becomes trivial, if $\catindexof{\catenumerator}\neq\headindexof{\catenumerator}$
+            \item The clause shrinks, if $\catindexof{\catenumerator}=\headindexof{\catenumerator}$
+        \end{itemize}
+
+
+    \end{frame}
 
     \begin{frame}{Definite Clauses}
-        Each knowledge base of definite clause has $\catindexof{\nodes}=\onetuple{\nodes}$ as a model.
 
-        If in addition the length of each clause is at least 2, then also $\zerotuple{\nodes}$ as a model.
+        \begin{lemma}
+            A knowledge base of definite clauses of length at least $2$ always has the states $\onetuple{\nodes}$ and $\zerotuple{\nodes}$ as models.
+        \end{lemma}
+            {\bf Proof sketch:} By using the contraction of clauses properties we know that:
+        \begin{itemize}
+            \item When contracting with $\bigtimes_{\nodein}\tbasisat{\catvariableof{\node}}$, all clauses become trivial.
+            \item When contracting with $\bigtimes_{\nodein}\fbasisat{\catvariableof{\node}}$, all clauses become trivial.
+        \end{itemize}
+        Thus, $\catindexof{\nodes}=\onetuple{\nodes}$ and $\catindexof{\nodes}=\zerotuple{\nodes}$ are models of the knowledge base.
+
+
+%        Each knowledge base of definite clause has $\catindexof{\nodes}=\onetuple{\nodes}$ as a model.
+
+%        If in addition the length of each clause is at least 2, then also $\zerotuple{\nodes}$ as a model.
 
     \end{frame}
 
@@ -302,7 +321,40 @@
     \end{frame}
 
 
-    \section{Resolution}
+
+    \begin{frame}{Generalization: Contraction perspective}
+
+        First toy accounting rule $\catvariableof{A1}\oplus\catvariableof{A2}$ does not have a CNF of definite clauses!
+
+        \begin{align*}
+            \catvariableof{A1}\oplus\catvariableof{A2}
+            \equiv
+            \Big(\lnot\catvariableof{A1}\lor\lnot\catvariableof{A2} \Big) \land \Big(\catvariableof{A1}\lor\catvariableof{A2} \Big)
+        \end{align*}
+
+        But: We can still do contractions to simplify.
+
+            {\bf Example:} When knowing that $\catvariableof{A2}$ is true, we get with this accounting that $\catvariableof{A1}$ is false:
+        \stantikzpic{
+            \draw (-3,-1) rectangle (3,1);
+            \drawtextnode{0}{0}{$\catvariableof{A1}\oplus\catvariableof{A1}$}
+            \draw (-2,-2.5) -- (-2,-1) node[midway,left] {\colorlabelsize $\catvariableof{A1}$};;
+            \draw (2,-2.5) -- (2,-1);
+            \drawvariabledot{2}{-1.75}
+            \draw (2,-1.75) -- (4,-1.75) node[anchor=west] {\colorlabelsize $\catvariableof{A2}$};
+            \drawsmalltensor{2}{-3.5}{$\tbasis$}
+            \drawtextnode{7.5}{-1.75}{${=}$}
+            \begin{scope}[shift={(13,0)}]
+                \drawsmalltensor{-2}{-3.5}{$\fbasis$}
+                \draw (-2,-2.5) -- (-2,-1) node[midway,left] {\colorlabelsize $\catvariableof{A1}$};;
+                \draw (2,-2.5) -- (2,-1) node[midway, right] {\colorlabelsize $\catvariableof{A2}$};
+                \drawsmalltensor{2}{-3.5}{$\tbasis$}
+            \end{scope}
+        }
+
+    \end{frame}
+
+    %\section{Resolution}
 
     \begin{frame}{Generalization: Resolution}
 
@@ -354,6 +406,7 @@
         \end{itemize}
 
     \end{frame}
+
 
 \end{document}
 

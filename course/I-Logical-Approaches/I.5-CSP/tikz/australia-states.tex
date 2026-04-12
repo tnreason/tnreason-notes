@@ -1,0 +1,21 @@
+\stantikzpic{
+
+    \drawvariablenode{0}{0}{$\catvariableof{WA}$}{WA}
+    \drawvariablenode{5}{3}{$\catvariableof{NT}$}{NT}
+    \drawvariablenode{5}{-2}{$\catvariableof{SA}$}{SA}
+    \drawvariablenode{10}{3}{$\catvariableof{Q}$}{Q}
+    \drawvariablenode{10}{-2}{$\catvariableof{NSW}$}{NSW}
+    \drawvariablenode{7.5}{-6}{$\catvariableof{V}$}{V}
+
+    \drawvariablenode{12.5}{-5}{$\catvariableof{T}$}{T}
+
+    \draw (WA) -- (NT);
+    \draw (WA) -- (SA);
+    \draw (NT) -- (SA);
+    \draw (NT) -- (Q);
+    \draw (SA) -- (Q);
+    \draw (SA) -- (V);
+    \draw (SA) -- (NSW);
+    \draw (Q) -- (NSW);
+    \draw (NSW) -- (V);
+}
