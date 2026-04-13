@@ -725,6 +725,140 @@
     \end{frame}
 
 
+    \section{Connection to knowledge base representations}
+
+    \begin{frame}{Representation of knowledge bases}
+
+        {\bf Recall:} A knowledge base is the co
+        \begin{align*}
+            \kbat{\nodevariables}
+            = \contractionof{\{\formulaofat{\selindex}{\catvariableof{\edgeof{\selindex}}}\wcols\selindexin\}}{\nodevariables} \, .
+        \end{align*}
+
+        The knowledge base is a formula itself
+        \begin{align*}
+            \kb = \bigwedge_{\selindexin}\formulaof{\selindex}
+        \end{align*}
+        and has a representation by decomposed basis encodings:
+        \stantikzpic{
+            \drawtextnode{-8}{-1.75}{${=}$}
+
+            \begin{scope}[shift={(-15,-2)}]
+                \draw (-5,-1) rectangle (5,1);
+                \drawtextnode{0}{0}{\corelabelsize $\kb$}
+                \draw[] (-3.5,-2.5) -- (-3.5,-1) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+                \draw[] (3.5,-2.5) -- (3.5,-1) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+                \drawtextnode{0}{-1.75}{$\cdots$}
+            \end{scope}
+
+            \drawsmalltensor{0}{3.5}{\corelabelsize $\tbasis$}
+            \draw[->-] (0,1) -- (0,2.5) node[midway,right] {\colorlabelsize $\headvariableof{\kb}$};
+            \draw (-5,-1) rectangle (5,1);
+            \drawtextnode{0}{0}{\corelabelsize $\bencodingof{\land}$}
+
+            \drawtextnode{0}{-1.75}{$\cdots$}
+
+            \draw[->-] (-3.5,-2.5) -- (-3.5,-1) node[midway,right] {\colorlabelsize $\headvariableof{0}$};
+            \draw (-5,-2.5) rectangle (-2,-4.5);
+            \drawtextnode{-3.5}{-3.5}{\corelabelsize $\bencodingof{\formulaof{0}}$}
+            \draw[->-] (-4.5,-6) -- (-4.5,-4.5);
+            \drawtextnode{-3.5}{-5.25}{$\cdots$}
+            \draw[->-] (-2.5,-6) -- (-2.5,-4.5);
+
+            \draw[->-] (3.5,-2.5) -- (3.5,-1) node[midway,right] {\colorlabelsize $\headvariableof{\seldim-1}$};;
+            \draw (5,-2.5) rectangle (2,-4.5);
+            \drawtextnode{3.5}{-3.5}{\corelabelsize $\bencodingof{\formulaof{\seldim-1}}$}
+            \draw[->-] (4.5,-6) -- (4.5,-4.5);
+            \drawtextnode{3.5}{-5.25}{$\cdots$}
+            \draw[->-] (2.5,-6) -- (2.5,-4.5);
+        }
+
+    \end{frame}
+
+    \begin{frame}{Representation of knowledge bases}
+        Both representations are equal since
+
+        \stantikzpic{
+            \drawsmalltensor{0}{3.5}{\corelabelsize $\tbasis$}
+            \draw[->-] (0,1) -- (0,2.5) node[midway,right] {\colorlabelsize $\headvariableof{\kb}$};
+            \draw (-5,-1) rectangle (5,1);
+            \drawtextnode{0}{0}{\corelabelsize $\bencodingof{\land}$}
+
+            \drawtextnode{0}{-1.75}{$\cdots$}
+
+            \draw[->-] (-3.5,-2.5) -- (-3.5,-1) node[midway,right] {\colorlabelsize $\headvariableof{0}$};
+            \draw (-5,-2.5) rectangle (-2,-4.5);
+            \drawtextnode{-3.5}{-3.5}{\corelabelsize $\bencodingof{\formulaof{0}}$}
+            \draw[->-] (-4.5,-6) -- (-4.5,-4.5);
+            \drawtextnode{-3.5}{-5.25}{$\cdots$}
+            \draw[->-] (-2.5,-6) -- (-2.5,-4.5);
+
+            \draw[->-] (3.5,-2.5) -- (3.5,-1) node[midway,right] {\colorlabelsize $\headvariableof{\seldim-1}$};;
+            \draw (5,-2.5) rectangle (2,-4.5);
+            \drawtextnode{3.5}{-3.5}{\corelabelsize $\bencodingof{\formulaof{\seldim-1}}$}
+            \draw[->-] (4.5,-6) -- (4.5,-4.5);
+            \drawtextnode{3.5}{-5.25}{$\cdots$}
+            \draw[->-] (2.5,-6) -- (2.5,-4.5);
+
+            \drawtextnode{8}{-1.75}{${=}$}
+
+            \begin{scope}[shift={(15,0)}]
+%                            \drawsmalltensor{0}{3.5}{\corelabelsize $\tbasis$}
+%                \draw[->-] (0,1) -- (0,2.5) node[midway,right] {\colorlabelsize $\headvariableof{\kb}$};
+%                \draw (-5,-1) rectangle (5,1);
+%                \drawtextnode{0}{0}{\corelabelsize $\bencodingof{\land}$}
+
+                \drawsmalltensor{-3.5}{0}{\corelabelsize $\tbasis$}
+                \drawsmalltensor{3.5}{0}{\corelabelsize $\tbasis$}
+
+                \drawtextnode{0}{-1.75}{$\cdots$}
+
+                \draw[->-] (-3.5,-2.5) -- (-3.5,-1) node[midway,right] {\colorlabelsize $\headvariableof{0}$};
+                \draw (-5,-2.5) rectangle (-2,-4.5);
+                \drawtextnode{-3.5}{-3.5}{\corelabelsize $\bencodingof{\formulaof{0}}$}
+                \draw[->-] (-4.5,-6) -- (-4.5,-4.5);
+                \drawtextnode{-3.5}{-5.25}{$\cdots$}
+                \draw[->-] (-2.5,-6) -- (-2.5,-4.5);
+
+                \draw[->-] (3.5,-2.5) -- (3.5,-1) node[midway,right] {\colorlabelsize $\headvariableof{\seldim-1}$};;
+                \draw (5,-2.5) rectangle (2,-4.5);
+                \drawtextnode{3.5}{-3.5}{\corelabelsize $\bencodingof{\formulaof{\seldim-1}}$}
+                \draw[->-] (4.5,-6) -- (4.5,-4.5);
+                \drawtextnode{3.5}{-5.25}{$\cdots$}
+                \draw[->-] (2.5,-6) -- (2.5,-4.5);
+            \end{scope}
+
+
+
+            \begin{scope}[shift={(15,-5)}]
+                \drawtextnode{-7}{-3.75}{${=}$}
+                \drawtextnode{0}{-3.75}{$\cdots$}
+
+                \draw (-5,-2.5) rectangle (-2,-4.5);
+                \drawtextnode{-3.5}{-3.5}{\corelabelsize ${\formulaof{0}}$}
+                \draw[] (-4.5,-6) -- (-4.5,-4.5);
+                \drawtextnode{-3.5}{-5.25}{$\cdots$}
+                \draw[] (-2.5,-6) -- (-2.5,-4.5);
+
+                \draw (5,-2.5) rectangle (2,-4.5);
+                \drawtextnode{3.5}{-3.5}{\corelabelsize ${\formulaof{\seldim-1}}$}
+                \draw[] (4.5,-6) -- (4.5,-4.5);
+                \drawtextnode{3.5}{-5.25}{$\cdots$}
+                \draw[] (2.5,-6) -- (2.5,-4.5);
+
+                \drawtextnode{6}{-5}{$\cdot$}
+            \end{scope}
+
+        }
+        We simplified the basis encoding of the conjunction by
+        \begin{align*}
+            \bencodingofat{\land}{\headvariableof{\land}=1,\shortcatvariables}
+            = \bigotimes_{\catenumeratorin} \tbasisat{\catvariableof{\catenumerator}} \, .
+        \end{align*}
+
+    \end{frame}
+
+
     \section{Implementations in \tnreason{}}
 
     \begin{frame}{Implementations in \tnreason{}: \\
