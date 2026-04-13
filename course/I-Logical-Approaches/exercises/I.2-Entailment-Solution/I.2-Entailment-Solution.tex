@@ -244,4 +244,140 @@
             We conclude that $\kb\models\formulaof{5}$.
         \end{itemize}
     }
+    \addtask{4}{
+        The decompositions of the basis encodings to $\formulaof{0},\formulaof{1},\formulaof{2}$ based on the syntactical representations above are:
+        \begin{itemize}
+            \item $\formulaof{0} = \big((\catvariableof{B} \lor \catvariableof{E}) \Rightarrow \catvariableof{A}\big)$:
+            \stantikzpic{
+                \begin{scope}[shift={(-12,-2)}]
+                    \drawtextnode{7}{3.5}{${=}$}
+
+                    \draw[->-] (2,4.5) -- (2,6) node[midway,left] {\colorlabelsize $\headvariableof{\formulaof{0}}$};
+                    \draw (-1,2.5) rectangle (5,4.5);
+                    \drawtextnode{2}{3.5}{\corelabelsize $\bencodingof{\formulaof{0}}$}
+                    \draw [->-] (4,1) -- (4,2.5) node[midway,right] {\colorlabelsize $\catvariableof{A}$};
+                    \draw [->-] (2,1) -- (2,2.5) node[midway,left] {\colorlabelsize $\catvariableof{E}$};
+                    \draw [->-] (0,1) -- (0,2.5) node[midway,left] {\colorlabelsize $\catvariableof{B}$};
+                \end{scope}
+
+                \draw[->-] (2,4.5) -- (2,6) node[midway,left] {\colorlabelsize $\headvariableof{\formulaof{0}}$};
+                \draw (-1,2.5) rectangle (5,4.5);
+                \drawtextnode{2}{3.5}{\corelabelsize $\bencodingof{\Rightarrow}$}
+                \draw [->-] (4,-2.5) -- (4,2.5) node[midway,right] {\colorlabelsize $\catvariableof{A}$};
+
+                \draw[->-] (0,1) -- (0,2.5) node[midway,left] {\colorlabelsize $\headvariableof{B\lor E}$};
+                \draw (-2,-1) rectangle (2,1);
+                \drawtextnode{0}{0}{\corelabelsize $\bencodingof{\lor}$}
+
+                \draw [->-] (-1.5,-2.5) -- (-1.5,-1) node[midway,left] {\colorlabelsize $\catvariableof{B}$};
+                \draw [->-] (1.5,-2.5) -- (1.5,-1) node[midway,left] {\colorlabelsize $\catvariableof{E}$};
+            }
+            \item $\formulaof{1} = \big(\catvariableof{A}  \Rightarrow (\catvariableof{J}\lor\catvariableof{M})\big)$:
+            \stantikzpic{
+                \begin{scope}[shift={(-12,-2)}]
+                    \drawtextnode{7}{3.5}{${=}$}
+
+                    \draw[->-] (2,4.5) -- (2,6) node[midway,left] {\colorlabelsize $\headvariableof{\formulaof{1}}$};
+                    \draw (-1,2.5) rectangle (5,4.5);
+                    \drawtextnode{2}{3.5}{\corelabelsize $\bencodingof{\formulaof{1}}$}
+                    \draw [->-] (4,1) -- (4,2.5) node[midway,right] {\colorlabelsize $\catvariableof{M}$};
+                    \draw [->-] (2,1) -- (2,2.5) node[midway,left] {\colorlabelsize $\catvariableof{J}$};
+                    \draw [->-] (0,1) -- (0,2.5) node[midway,left] {\colorlabelsize $\catvariableof{A}$};
+                \end{scope}
+
+                \draw[->-] (2,4.5) -- (2,6) node[midway,left] {\colorlabelsize $\headvariableof{\formulaof{0}}$};
+                \draw (-1,2.5) rectangle (5,4.5);
+                \drawtextnode{2}{3.5}{\corelabelsize $\bencodingof{\Rightarrow}$}
+                \draw [->-] (0,-2.5) -- (0,2.5) node[midway,right] {\colorlabelsize $\catvariableof{A}$};
+
+                \draw[->-] (4,1) -- (4,2.5) node[midway,left] {\colorlabelsize $\headvariableof{B\lor E}$};
+                \draw (2,-1) rectangle (6,1);
+                \drawtextnode{4}{0}{\corelabelsize $\bencodingof{\lor}$}
+
+                \draw [->-] (3,-2.5) -- (3,-1) node[midway,left] {\colorlabelsize $\catvariableof{B}$};
+                \draw [->-] (5,-2.5) -- (5,-1) node[midway,left] {\colorlabelsize $\catvariableof{E}$};
+            }
+            \item $\formulaof{2}=\big(\lnot\catvariableof{J}\big)$
+            \stantikzpic{
+                \draw[->-] (2,4.5) -- (2,6) node[midway,left] {\colorlabelsize $\headvariableof{\formulaof{2}}$};
+                \draw (1,2.5) rectangle (3,4.5);
+                \drawtextnode{2}{3.5}{\corelabelsize $\bencodingof{\formulaof{2}}$}
+                \draw [->-] (2,1) -- (2,2.5) node[midway,left] {\colorlabelsize $\catvariableof{J}$};
+
+                \drawtextnode{5}{3.5}{${=}$}
+
+                \begin{scope}[shift={(8,0)}]
+
+                    \draw[->-] (2,4.5) -- (2,6) node[midway,left] {\colorlabelsize $\headvariableof{\formulaof{2}}$};
+                    \draw (1,2.5) rectangle (3,4.5);
+                    \drawtextnode{2}{3.5}{\corelabelsize $\bencodingof{\lnot}$}
+                    \draw [->-] (2,1) -- (2,2.5) node[midway,left] {\colorlabelsize $\catvariableof{J}$};
+                \end{scope}
+            }
+        \end{itemize}
+        The basis encodings of the three appearing connectives ($\lor,\Rightarrow,\lnot$) are described coordinatewise as:
+        \begin{itemize}
+            \item Binary connective $\Rightarrow$ ("logical implication"):
+            \begin{center}
+                \begin{tikzpicture}[scale=2]
+                \node[anchor=east] at (-1,0)  {$\bencodingofat{\Rightarrow}{\headvariableof{\Rightarrow},\catvariableof{0},\catvariableof{1}}\,\,{=}$};
+                \node (A) at (0,0) [scale=1] {
+                    $\begin{pmatrix}
+                         0 & 0  \\
+                         1 & 0
+                    \end{pmatrix}$
+                };
+                \node (A) at (0.8,0.3) [scale=1] {
+                    $\begin{pmatrix}
+                         1 & 1  \\
+                         0 & 1
+                    \end{pmatrix}$
+                };
+                \draw[->,dashed] (-0.15,0.5) node[below] {\tiny $0$} -- (0.15,0.5) node [midway, above] {\tiny $\catvariableof{1}$} node[below] {\tiny $1$};
+                \draw[<-,dashed] (-0.6,-0.15) node[right] {\tiny $1$} -- (-0.6,0.15) node [midway, left] {\tiny $\catvariableof{0}$} node[right] {\tiny $0$};
+                \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (0.8,-0.2) node [midway, below] {\tiny $\headvariableof{\Rightarrow}$} node[above] {\tiny $1$};
+                \end{tikzpicture}
+            \end{center}
+            \item Binary connective $\lor$ ("logical disjunction"):
+            \begin{center}
+                \begin{tikzpicture}[scale=2]
+                \node[anchor=east] at (-1,0)  {$\bencodingofat{\lor}{\headvariableof{\lnot},\catvariableof{0},\catvariableof{1}}\,\,{=}$};
+                \node (A) at (0,0) [scale=1] {
+                    $\begin{pmatrix}
+                         1 & 0  \\
+                         0 & 0
+                    \end{pmatrix}$
+                };
+                \node (A) at (0.8,0.3) [scale=1] {
+                    $\begin{pmatrix}
+                         0 & 1  \\
+                         1 & 1
+                    \end{pmatrix}$
+                };
+                \draw[->,dashed] (-0.15,0.5) node[below] {\tiny $0$} -- (0.15,0.5) node [midway, above] {\tiny $\catvariableof{1}$} node[below] {\tiny $1$};
+                \draw[<-,dashed] (-0.6,-0.15) node[right] {\tiny $1$} -- (-0.6,0.15) node [midway, left] {\tiny $\catvariableof{0}$} node[right] {\tiny $0$};
+                \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (0.8,-0.2) node [midway, below] {\tiny $\headvariableof{\lor}$} node[above] {\tiny $1$};
+                \end{tikzpicture}
+            \end{center}
+            \item Unary connective $\lnot$ ("logical negation"):
+            \begin{center}
+                \begin{tikzpicture}[scale=2]
+                \node[anchor=east] at (-1,0)  {$\bencodingofat{\lnot}{\headvariableof{\lnot},\catvariable}\,\,{=}$};
+                \node (A) at (0,0) [scale=1] {
+                    $\begin{pmatrix}
+                         0 & 1  \\
+                         1 & 0
+                    \end{pmatrix}$
+                };
+                \draw[->,dashed] (-0.15,0.5) node[below] {\tiny $0$} -- (0.15,0.5) node [midway, above] {\tiny $\headvariableof{\lnot}$} node[below] {\tiny $1$};
+                \draw[<-,dashed] (-0.6,-0.15) node[right] {\tiny $1$} -- (-0.6,0.15) node [midway, left] {\tiny $\catvariable$} node[right] {\tiny $0$};
+                \end{tikzpicture}
+            \end{center}
+        \end{itemize}
+%        \stantikzpic{
+%            \drawvariablenode{-5}{0}{$\catvariableof{B}$}{B}
+%            \drawvariablenode{0}{0}{$\catvariableof{E}$}{E}
+%            \drawvariablenode{5}{0}{$\catvariableof{A}$}{A}
+%        }
+    }
 \end{document}
