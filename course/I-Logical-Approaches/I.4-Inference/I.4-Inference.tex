@@ -149,6 +149,7 @@
 
 
     \begin{frame}{Clauses}
+        \par
         {\bf Recall:} Given $\hardlegset\subset[\catorder]$ and $\headindexof{\hardlegset}\in\bigtimes_{\catenumerator\in\hardlegset}[2]$ the corresponding clause is
         \begin{align*}
             \clauseofat{\hardparam}{\catvariableof{\hardlegset}}
@@ -198,7 +199,6 @@
         Iterate modus ponens until the premises of none of the remaining implications are known:
 
 
-
     \end{frame}
 
     \begin{frame}[fragile]{Forward Chaining Algorithm}
@@ -222,47 +222,7 @@
         \end{algorithm}
     \end{frame}
 
-    \begin{frame}{Forward chaining in a contraction perspective}
-        Underlying is the contraction
-        \stantikzpic{
-            \draw (-3,-1) rectangle (3,1);
-            \drawtextnode{0}{0}{$\clauseof{\hardparam}$}
-            \draw (-2.5,-1) -- (-2.5,-3);
-            \drawtextnode{-1.25}{-2}{\tiny $\cdots$}
-            \draw (0,-1) -- (0,-3);
-            \draw (2,-1) -- (2,-3);
-            \draw (0.5,-5) rectangle (3.5,-3);
-            \drawtextnode{2}{-4}{$\clauseof{\{\node\},\secheadindexof{\node}}$}
-            \drawtextnode{4}{0}{${=}$}
 
-            \begin{scope}[shift={(9,3)}]
-                \draw (-3,-1) rectangle (3,1);
-                \drawtextnode{0}{0}{\corelabelsize $\clauseof{(\hardlegset\backslash\{\node\},\headindexof{\hardlegset\backslash\{\node\}})}$}
-                \draw (-2.5,-1) -- (-2.5,-3);
-                \drawtextnode{0}{-2}{\tiny $\cdots$}
-                \draw (2.5,-1) -- (2.5,-3);
-
-                \drawtextnode{10}{0}{If $\secheadindexof{\node}\neq\headindexof{\node}$}
-            \end{scope}
-
-            \begin{scope}[shift={(9,-3)}]
-                \draw (-3,-1) rectangle (3,1);
-                \drawtextnode{0}{0}{\corelabelsize $\ones$}
-                \draw (-2.5,-1) -- (-2.5,-3);
-                \drawtextnode{0}{-2}{\tiny $\cdots$}
-                \draw (2.5,-1) -- (2.5,-3);
-
-                \drawtextnode{10}{0}{If $\secheadindexof{\node}=\headindexof{\node}$}
-            \end{scope}
-        }
-        %Note that $\onehotmapofat{\catindexof{\node}}{\catvariableof{\node}}=\clauseof{\{\node\},1-\catindexof{\node}}$.
-        Therefore:
-        \begin{itemize}
-            \item When clauses "disagreeing" on $\node$: Larger clause shrinks
-            \item When clauses "agreeing" on $\node$: Larger clause becomes trivial
-        \end{itemize}
-
-    \end{frame}
 
 
     \begin{frame}{Modus ponens as removing edges}
@@ -275,6 +235,39 @@
 
     \end{frame}
 
+
+    \begin{frame}{Forward chaining as disentangling the network}
+
+        "Disentangling": Hyperedges connecting many edges are replaced by single node edges
+
+        Single node edges are then iteratively contracted
+        \begin{minipage}{0.45\textwidth}
+            {\bf Example:}
+        \begin{itemize}
+            \item \only<2->{Inference using $\catvariableof{0}\land\catvariableof{1}\Rightarrow\catvariableof{2}$}
+            \item \only<4->{Inference using $\catvariableof{2}\land\catvariableof{3}\Rightarrow\catvariableof{4}$}
+            \item \only<6->{Inference using $\catvariableof{4}\land\catvariableof{5}\Rightarrow\catvariableof{6}$}
+        \end{itemize}
+        \end{minipage}
+        \begin{minipage}{0.45\textwidth}
+
+            \input{tikz/fc-example}
+        \end{minipage}
+
+    \end{frame}
+
+
+    \begin{frame}{Contraction of clauses}
+        Underlying is the contraction
+        \input{tikz/clause-contraction-property}
+        %Note that $\onehotmapofat{\catindexof{\node}}{\catvariableof{\node}}=\clauseof{\{\node\},1-\catindexof{\node}}$.
+        Therefore:
+        \begin{itemize}
+            \item When clauses "disagreeing" on $\node$: Larger clause shrinks
+            \item When clauses "agreeing" on $\node$: Larger clause becomes trivial
+        \end{itemize}
+
+    \end{frame}
 
     \begin{frame}{More general: Contraction of clauses}
         When contracting a clause (where $\catenumerator\in\hardlegset$) with a basis vector $\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}$ we have two possible situations:

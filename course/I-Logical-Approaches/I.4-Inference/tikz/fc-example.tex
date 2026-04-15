@@ -1,0 +1,114 @@
+\stantikzpic{
+
+    \only<1,2>{
+
+    \only<2>{
+    \begin{scope}[blue]
+    }
+        \draw (-3,-1) rectangle (3,1);
+        \drawtextnode{0}{0}{\colorlabelsize $\catvariableof{0}\land\catvariableof{1}\rightarrow\catvariableof{2}$}
+
+        \draw (-2.25,1) -- (-2.25,2.5);
+        \drawvariabledot{-2.25}{1.75}
+        \draw (-2.25,1.75) -- (-1.75,1.75) node [right=-2pt] {\colorlabelsize $\catvariableof{0}$};
+        \drawsmalltensor{-2.25}{3.5}{$\tbasis$}
+
+        \draw (0,1) -- (0,2.5);
+        \drawvariabledot{0}{1.75}
+        \draw (0,1.75) -- (0.5,1.75) node [right=-2pt] {\colorlabelsize $\catvariableof{1}$};
+        \drawsmalltensor{0}{3.5}{$\tbasis$}
+
+        \only<2>{
+    \end{scope}
+    }
+
+    }
+
+    \only<3->{
+        \draw (-2.25,1) -- (-2.25,2.5) node [midway,right] {\colorlabelsize $\catvariableof{0}$};
+        \drawsmalltensor{-2.25}{0}{$\tbasis$}
+        \draw (0,1) -- (0,2.5) node [midway,right] {\colorlabelsize $\catvariableof{1}$};
+        \drawsmalltensor{0}{0}{$\tbasis$}
+
+            \only<4>{
+    \begin{scope}[blue]
+   }
+
+        \drawsmalltensor{2.25}{0}{$\tbasis$}
+            \only<4>{
+    \end{scope}
+    }
+    }
+
+
+    \only<1-4>{
+        \only<4>{
+    \begin{scope}[blue]
+    }
+        \draw (2.25,1) -- (2.25,2.5);
+        \drawvariabledot{2.25}{1.75}
+        \draw (2.25,1.75) -- (2.75,1.75) node [right=-2pt] {\colorlabelsize $\catvariableof{2}$};
+
+        \draw (1.5,2.5) rectangle (7.5,4.5);
+        \drawtextnode{4.5}{3.5}{\colorlabelsize $\catvariableof{2}\land\catvariableof{3}\rightarrow\catvariableof{4}$}
+
+        \draw (4.5,1) -- (4.5,2.5);
+        \drawvariabledot{4.5}{1.75}
+        \draw (4.5,1.75) -- (5,1.75) node [right=-2pt] {\colorlabelsize $\catvariableof{3}$};
+        \drawsmalltensor{4.5}{0}{$\tbasis$}
+        \only<4>{
+   \end{scope}
+    }
+
+    }
+
+    \only<5->{
+        \draw (2.25,1) -- (2.25,2.5) node [midway,right] {\colorlabelsize $\catvariableof{2}$};
+        \drawsmalltensor{2.25}{0}{$\tbasis$}
+        \draw (4.5,1) -- (4.5,2.5) node [midway,right] {\colorlabelsize $\catvariableof{3}$};
+        \drawsmalltensor{4.5}{0}{$\tbasis$}
+
+
+    }
+
+    \only<5>{
+        \drawsmalltensor{6.75}{3.5}{$\tbasis$}
+    }
+    \only<6>{
+        \begin{scope}[blue]
+            \drawsmalltensor{6.75}{3.5}{$\tbasis$}
+        \end{scope}
+    }
+
+    \only<1-6>{
+        \only<6>{
+    \begin{scope}[blue]
+    }
+
+        \draw (6.75,1) -- (6.75,2.5);
+        \drawvariabledot{6.75}{1.75}
+        \draw (6.75,1.75) -- (7.25,1.75) node [right=-2pt] {\colorlabelsize $\catvariableof{4}$};
+
+        \drawsmalltensor{9}{3.5}{$\tbasis$}
+        \draw (9,1) -- (9,2.5);
+        \drawvariabledot{9}{1.75}
+        \draw (9,1.75) -- (9.5,1.75) node [right=-2pt] {\colorlabelsize $\catvariableof{5}$};
+        \draw (11.25,1) -- (11.25,2.5) node [midway,right] {\colorlabelsize $\catvariableof{6}$};
+
+        \draw (6,-1) rectangle (12,1);
+        \drawtextnode{9}{0}{\colorlabelsize $\catvariableof{4}\land\catvariableof{5}\rightarrow\catvariableof{6}$}
+
+            \only<6>{
+    \end{scope}
+    }
+    }
+
+    \only<7>{
+        \draw (6.75,1) -- (6.75,2.5) node [midway,right] {\colorlabelsize $\catvariableof{4}$};
+        \drawsmalltensor{6.75}{0}{$\tbasis$}
+        \draw (9,1) -- (9,2.5) node [midway,right] {\colorlabelsize $\catvariableof{5}$};
+        \drawsmalltensor{9}{0}{$\tbasis$}
+        \draw (11.25,1) -- (11.25,2.5) node [midway,right] {\colorlabelsize $\catvariableof{6}$};
+        \drawsmalltensor{11.25}{0}{$\tbasis$}
+    }
+}
