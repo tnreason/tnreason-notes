@@ -4,9 +4,9 @@
 \input{../../spec_files/course_macros.tex}
 
 \setslidetitledate{
-    Logical Inference and Message Passing Algorithms
+    Logical Inference and Efficient Contractions
 }{
-    April 13, 2026
+    April 20, 2026
 }
 
 
@@ -15,12 +15,100 @@
     \showoutlineatsection
 
 
+    \begin{frame}{Motivation: How to avoid the curse of dimensionality in reasoning?}
+
+        Tensor network decompositions for \emph{efficient representation}:
+        \begin{itemize}
+            \item Knowledge bases as tensor networks of formulas
+            \item Formulas decomposed based on their syntax
+        \end{itemize}
+        \medskip
+        Tensor network contractions for \emph{reasoning}:
+        \begin{itemize}
+            \item Deciding entailment requires contractions
+            \item Naive contraction approaches instantiate large tensors
+            \item Curse of dimensionality prevents efficient and generic reasoning
+        \end{itemize}
+        \medskip
+        \begin{block}{Efficient reasoning with tensor networks}
+            We investigate means to overcome the curse of dimensionality and find classes of efficient reasoning tasks. % and tradeoff efficiency and generality.
+        \end{block}
+    \end{frame}
+
+
+    \section{Feasibility of contractions}
+
+
+    \begin{frame}{Contraction by sub-contractions}
+
+        Tensor network contractions can be performed by orchestrations of sub-contractions:
+
+        \input{tikz/contraction-by-subcontraction}
+
+        \only<3->{
+                {\bf Efficiency advantage:}
+            \begin{itemize}
+                \item Processing of tensors with all four variables $\catvariableof{0},\catvariableof{1},\catvariableof{2},\catvariableof{3}$ can be avoided
+                \item Sub-contractions $\contractionof{\hypercoreof{0},\hypercoreof{2}}{\catvariableof{1},\catvariableof{2}}$, $\contractionof{\hypercoreof{1},\hypercoreof{3}}{\catvariableof{1},\catvariableof{2}}$ are tensors of smaller orders
+                \item For larger tensor networks with low connectivity this efficiency advantage is critical
+            \end{itemize}
+        }
+
+    \end{frame}
+
+
+    \begin{frame}{The diagrammatic notation pays off}
+
+        Tensor network diagrams avoid notation overload by sum and product symbols:
+        \begin{align*}
+            &\contraction{
+                \hypercoreofat{0}{\catvariableof{0},\catvariableof{1}},
+                \hypercoreofat{1}{\catvariableof{1},\catvariableof{2},\catvariableof{3}},
+                \hypercoreofat{2}{\catvariableof{0},\catvariableof{1},\catvariableof{2}},
+                \hypercoreofat{3}{\catvariableof{2},\catvariableof{3}}
+            } \\
+            \only<1>{
+                &\quad= \sum_{\catindexofin{0}}\sum_{\catindexofin{1}}\sum_{\catindexofin{2}}\sum_{\catindexofin{3}} \\
+                & \quad\quad\quad
+                \hypercoreofat{0}{\indexedcatvariableof{0},\indexedcatvariableof{1}} \cdot
+                \hypercoreofat{1}{\indexedcatvariableof{1},\indexedcatvariableof{2},\indexedcatvariableof{3}} \cdot \\
+                & \quad\quad\quad
+                \hypercoreofat{2}{\indexedcatvariableof{0},\indexedcatvariableof{1},\indexedcatvariableof{2}} \cdot
+                \hypercoreofat{3}{\indexedcatvariableof{2},\indexedcatvariableof{3}}
+            }
+            \only<2>{
+                &\quad= \sum_{\catindexofin{1}}\sum_{\catindexofin{2}} \\
+                & \quad\quad\quad
+                \Big(\sum_{\catindexofin{0}}
+                \hypercoreofat{0}{\indexedcatvariableof{0},\indexedcatvariableof{1}} \cdot
+                \hypercoreofat{2}{\indexedcatvariableof{0},\indexedcatvariableof{1},\indexedcatvariableof{2}}\Big)\cdot \\
+                & \quad\quad\quad
+                \Big(\sum_{\catindexofin{3}}
+                \hypercoreofat{1}{\indexedcatvariableof{1},\indexedcatvariableof{2},\indexedcatvariableof{3}}
+                \cdot
+                \hypercoreofat{3}{\indexedcatvariableof{2},\indexedcatvariableof{3}}
+                \Big)
+            }
+        \end{align*}
+        \begin{center}
+            \bf These transforms are visualized by cuts of the tensor network diagrams!
+        \end{center}
+    \end{frame}
+
+%
+%    \begin{frame}{Which tensor network contractions are efficient?}
+%        Typical: Low connectivity
+%
+%        Logic:
+%    \end{frame}
+
+
     \section{Monotonicity of Entailment}
 
     \begin{frame}{Motivation}
         Contractions of large knowledge bases get infeasible.
         \begin{center}
-            \bf Is it really necessary to perform large contractions?
+            \bf Is it always necessary to perform large contractions?
         \end{center}
 
         \begin{block}{Example: Entailment in the toy accounting system}
@@ -30,6 +118,410 @@
     \end{frame}
 
 
+
+    \begin{frame}{The efficiency-generality tradeoff}
+
+        \begin{center}
+            {A fundamental tradeoff underlies all reasoning schemes:}
+        \end{center}
+        \begin{columns}[t] % [t] aligns content to the top
+
+            \begin{column}{0.5\textwidth}
+                \centering \textbf{Generality}
+                \begin{itemize}
+                    \item Which reasoning tasks can be answered by a specific scheme?
+                    \item Most general: Entailment given any knowledge bases
+                    \item Here: Generic reasoning by {\bf global} contractions
+                \end{itemize}
+            \end{column}
+
+            \begin{column}{0.5\textwidth}
+                \centering \textbf{Efficiency}
+                \begin{itemize}
+                    \item Which computational resources are necessary for a reasoning scheme?
+                    \item Here: Efficient contractions by orchestration of {\bf local} contractions
+                \end{itemize}
+            \end{column}
+
+        \end{columns}
+        \par \medskip
+        \vspace{0.5cm}
+        {\bf Example:} Entailment in Horn logics can be decided efficiently.
+
+%        In logics we use two tricks to reason by sub-contractions:
+%        \begin{itemize}
+%            \item If a sub-contract
+%        \end{itemize}
+%
+%        \begin{center}
+%            \bf Can we use feasible sub-contractions for reasoning tasks?
+%        \end{center}
+    \end{frame}
+
+
+
+
+    \begin{frame}{Monotonicity of Entailment}
+
+        \begin{theorem}[Monotonicity of Entailment]
+            Given a knowledge base $\kb$ of formulas, let $\seckb\subset\kb$ be a subset and let $\formula$ be another propositional formula.
+            If $\seckb\models\formula$ then also $\kb\models\formula$.
+        \end{theorem}
+
+            {\bf Proof sketch:} If $\seckb\models\formula$ then
+        \begin{align*}
+            \contractionof{\seckb[\shortcatvariables],\lnot\formulawith}{\shortcatvariables} = \zerosat{\shortcatvariables}
+        \end{align*}
+        and since this is a sub-contraction of $\contraction{\kbwith,\formulawith}$ also
+        \begin{align*}
+            \contractionof{\kbwith,\lnot\formulawith}{\shortcatvariables} = \zerosat{\shortcatvariables}
+        \end{align*}
+        and therefore $\kb\models\formula$.
+
+        Notice that the back direction does not hold:
+        When $\kb\models\formula$, then $\seckb\models\formula$ does not always hold.
+    \end{frame}
+
+
+
+
+    \begin{frame}{Invariance of adding entailled formulas}
+
+
+        If $\kb\models\formula$, then for any $\shortcatindices\in[2]^\seldim$
+        \begin{align*}
+            &\kbat{\indexedshortcatvariables}
+            = \begin{cases}
+                  1 & \text{if $\shortcatindices$ is a model of $\kb$} \\
+                  0 & \text{else}
+            \end{cases} \\
+            &\quad\quad = \begin{cases}
+                              \kbat{\indexedshortcatvariables} \cdot \formulaat{\indexedshortcatvariables} &
+                              \text{(since $\kb\models\formula$)} \\
+                              \kbat{\indexedshortcatvariables} \cdot \formulaat{\indexedshortcatvariables} &
+                              \text{(since $\kbat{\indexedshortcatvariables}=0$)}
+            \end{cases} \, .
+        \end{align*}
+            {\bf Consequence:} When $\kb\models\formula$, then
+        \begin{align*}
+            \kbwith
+            = \contractionof{\kbwith,\formulawith}{\shortcatvariables} \, .
+        \end{align*}
+
+        \begin{block}{Interpretation: Memory of entailed formulas}
+            We can add entailed formulas to a knowledge base.
+        \end{block}
+
+    \end{frame}
+
+
+    \begin{frame}{Usage for efficient reasoning}
+        \par
+        {\bf Efficiency:} If $\seckb$ is a small subset, $\seckb\models\formula$ can be decided efficiently.
+
+            {\bf Reuse:} Entailed formulas $\formula$ can be added to the knowledge base and used in further $\seckb$ choices.
+
+        \begin{itemize}
+            \item \emph{Messages:} Entailed formulas $\formula$ "summarize" subsets and are added to knowledge bases
+            \item \emph{Propagation:} Entailed formulas are propagated throughout the knowledge base and
+        \end{itemize}
+
+
+        \begin{block}{Design of inference algorithms}
+            Logical inference algorithms are designed based on the monotonicity and memory properties:
+            \begin{itemize}
+                \item Choice of pairs $\seckb,\formula$ such that $\seckb\models\formula$: Often syntactical rules are applied
+                \item Priority of adding $\formula$ to $\kb$: Need to apply restrictions to avoid overloads
+            \end{itemize}
+        \end{block}
+
+
+    \end{frame}
+
+
+    \section{Modus ponens and forward chaining}
+
+    \begin{frame}{Inference using Syntax}
+
+        {\bf So far:} Inference and entailment is formulated by semantics (with tensor interpretations). \\
+
+    {\bf Now:}
+        Syntactical Inference Rules find entailed formulas using syntactical representations only. \\
+
+
+        {\bf Notation:} When $\seckb\models\formula$ we denote
+        \begin{align*}
+            \frac{
+                \overbrace{\seckb}^{\text{has to be known for the rule to apply}}
+            }{
+                \underbrace{\exformula}_{\text{is added to the knowledge base}}
+            }
+        \end{align*}
+    \end{frame}
+
+
+
+
+    \begin{frame}{Modus Ponens}
+
+
+        \begin{block}{Modus Ponens Inference Rule}
+            {\bf Modus Ponens} is the simplest inference rule: When an implication holds and the premise is true, then the head follows.
+            \begin{align*}
+                \frac{
+                    (\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1})\rightarrow\catvariableof{\catorder} \,,\,\, (\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1})
+                }{
+                    \catvariableof{\catorder}
+                }
+            \end{align*}
+        \end{block}
+        Modus ponens corresponds with the contraction equation:
+        \begin{center}
+            \input{tikz/modus-ponens-contraction}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}{Clauses}
+        \par
+        {\bf Recall:} Given $\hardlegset\subset[\catorder]$ and $\headindexof{\hardlegset}\in\bigtimes_{\catenumerator\in\hardlegset}[2]$ the corresponding clause is
+        \begin{align*}
+            \clauseofat{\hardparam}{\catvariableof{\hardlegset}}
+            = \onesat{\catvariableof{\hardlegset}} - \onehotmapofat{\headindexof{\hardlegset}}{\catvariableof{\hardlegset}}
+        \end{align*}
+
+        Special types:
+        \begin{itemize}
+            \item \emph{Horn clause:} There is at most one $\catenumerator\in\hardlegset$ with $\headindexof{\catenumerator}=1$
+            \item \emph{Definite clause:} There is at exactly one $\catenumerator\in\hardlegset$ with $\headindexof{\catenumerator}=1$
+        \end{itemize}
+
+        Interpretation of definite clauses: Implications \\
+
+        {\bf Example:} If in addition to $F$ being present on an invoice, an invoice came from buisness partner $BP1$, then its booked using account $A1$.
+        \begin{align*}
+            \Big(\catvariableof{F} \land \catvariableof{BP1} \rightarrow \catvariableof{A1}\Big)
+            &\Leftrightarrow
+            \lnot \Big((\catvariableof{F} \land \catvariableof{BP1}) \lor \catvariableof{A1} \Big) \\
+            &\Leftrightarrow
+            \Big(\lnot\catvariableof{F} \lor \lnot \catvariableof{BP1} \lor \catvariableof{A1} \Big)
+        \end{align*}
+
+    \end{frame}
+
+    \begin{frame}{Iteration of modus ponens inference rule}
+        \par
+        {\bf Given:} A knowledge base of implications (definite clauses) in the form
+        \begin{align*}
+            \Big(\bigwedge_{\catenumerator\in\mathcal{M}}\catvariableof{\catenumerator}\Big)\rightarrow\catvariableof{\seccatenumerator}
+        \end{align*}
+        which are clauses
+        \begin{align*}
+            \Big(\bigvee_{\catenumerator\in\mathcal{M}}\lnot\catvariableof{\catenumerator}\Big) \lor \catvariableof{\seccatenumerator}
+            \quad \text{parametrized by} \quad \hardparam =\big(\mathcal{M}\cup\{\seccatenumerator\},(\onetuple{\mathcal{M}},0)\big)
+            \, .
+        \end{align*}
+        \medskip
+        We iterate:
+        \begin{itemize}
+            \item Computation of {\bf messages}: The formula $\catvariableof{\catorder}$ is entailed by the local knowledge base
+            \begin{align*}
+                \seckb = \Big\{\Big(\bigwedge_{\catenumerator\in\mathcal{M}}\catvariableof{\catenumerator}\Big)\rightarrow\catvariableof{\seccatenumerator}\Big\}
+                \cup \Big\{\catvariableof{\catenumerator} \wcols \catenumerator\in\mathcal{M} \}
+            \end{align*}
+            \item The message $\catvariableof{\seccatenumerator}$ is {\bf propagated} and used for further local inferences.
+        \end{itemize}
+
+%        Iterate modus ponens until the premises of none of the remaining implications are known:
+
+
+    \end{frame}
+
+
+    \begin{frame}{More general: Contraction of clauses}
+        For generic clauses we have
+        \input{tikz/clause-contraction-property}
+        Therefore:
+        \begin{itemize}
+            \item When clauses "disagreeing" on $\node$: Larger clause shrinks
+            \item When clauses "agreeing" on $\node$: Larger clause becomes trivial
+        \end{itemize}
+
+        \begin{block}{Forward Chaining}
+            We can iteratively simplify clauses $\clauseofat{\hardparam}{\catvariableof{\hardlegset}}$ using the unit clauses $\onehotmapofat{\secheadindexof{\node}}{\catvariableof{\node}}$.
+        \end{block}
+    \end{frame}
+
+    \begin{frame}[fragile]{Forward Chaining Algorithm}
+        \begin{algorithm}[H]
+            \begin{algorithmic}
+                \Require Set of clauses $\mathcal{C}$ (each parameterized by $\hardparam$)
+                \Ensure Entailed literals $\mathcal{L}$, remaining set of clauses
+                \iosepline
+                \State Initialize $\mathcal{L}=\varnothing$
+                \While{exists a clause $(\{\node\},\secheadindexof{\node})$ of length 1 in $\mathcal{C}$}
+                    \For{all clauses $\hardparam$ with $\node\in\hardlegset$}
+                        \If{$\headindexof{\node}\neq\secheadindexof{\node}$}
+                            \hfill \textcolor{blue}{(then the clause shrinks)}
+                            %\hfill \textcolor{blue}{(then the literal is satisfied)}
+                            \State $\hardparam\algdefsymbol(\hardlegset\backslash\{\node\},\headindexof{\hardlegset\backslash\{\node\}})$
+                        \Else
+                            \hfill \textcolor{blue}{(then the clause becomes trivial)}
+                            \State $\mathcal{C}.\mathrm{drop(}\hardparam\mathrm{)}$ %\hfill \textcolor{blue}{(then the contracted clause is trivial)}
+                        \EndIf
+                    \EndFor
+                    \State $\mathcal{L}.\mathrm{append(}\{\node\},\secheadindexof{\node}\mathrm{)}$ \hfill \textcolor{blue}{(the literal is entailed and added to solution)}
+                \EndWhile
+            \end{algorithmic}
+        \end{algorithm}
+    \end{frame}
+
+    \begin{frame}{Knowledge base of clauses}
+
+        The knowledge base is a tensor network
+        \begin{align*}
+            \kbat{\nodevariables}
+            = \contractionof{
+                \clauseofat{\hardparam}{\catvariableof{\hardlegset}} \wcols \hardparam \in \mathcal{C}
+            }{\nodevariables} \, .
+        \end{align*}
+
+            {\bf Notice:} We have $\kb\models\clauseof{\{\node\},\headindexof{\node}}$ if
+        \begin{align*}
+            \kbat{\nodevariables}
+            &= \contractionof{\kbat{\nodevariables},\onehotmapofat{\headindexof{\node}}{\catvariableof{\node}}}{\nodevariables} \\
+            &= \onehotmapofat{\headindexof{\node}}{\catvariableof{\node}}
+            \otimes \contractionof{\kbat{\nodevariables},\onehotmapofat{\headindexof{\node}}{\catvariableof{\node}}}{\catvariableof{\nodes\backslash\{\node\}}} \, .
+        \end{align*}
+
+        To decide entailment of a literal we are searching for decompositions as
+        \input{tikz/literal-decomposion}
+
+    \end{frame}
+
+
+    \begin{frame}{Literal entailment in knowledge bases}
+        \begin{block}{Reasoning task}
+            We want to decide, which literals $\clauseof{\{\node\},\headindexof{\node}}$ are entailed by a knowledge base.
+        \end{block}
+
+        We are searching for a maximal set $\thirdnodes$ such that for a tuple $\headindexof{\thirdnodes}$ and some tensor $\hypercoreat{\catvariableof{\nodes\backslash\thirdnodes}}$
+        \begin{align*}
+            \kbat{\nodevariables}
+            = \left(\bigtimes_{\node\in\thirdnodes} \onehotmapofat{\headindexof{\node}}{\catvariableof{\node}}\right)
+            \otimes \hypercoreat{\catvariableof{\nodes\backslash\thirdnodes}} \, .
+        \end{align*}
+
+        This is a decomposition (when enumerating $\thirdnodes$ by $[\catorder]$)
+        \input{tikz/max-literal-decomposion}
+    \end{frame}
+
+
+    \begin{frame}{Modus ponens as a sub-contraction}
+
+
+        Modus ponens is \emph{disentangling} the tensor network:
+        \input{tikz/modus-ponens-disentangling}
+        Understand modus ponens as a sub-contraction:
+        \begin{itemize}
+            \item Separate from the knowledge base $\kb$ the clauses
+            \begin{align*}
+                \clauseof{\Big([\catorder],\zerotuple{[\catorder-1]}\times 1\Big)}
+                \quad \text{and for $\catenumerator\in[\catorder-1]$ the literals} \quad \clauseof{\Big(\{\catenumerator\},0\Big)}
+            \end{align*}
+            \item Contract the separated clauses
+            \item Split the contraction into a tensor product of $\tbasis$ vectors
+        \end{itemize}
+        %       Thus we understand modus ponens as a method to turn tensors to elementary tensors.
+
+    \end{frame}
+
+
+    \begin{frame}{Forward chaining: \\ Disentangling the network}
+
+        \begin{block}{Forward chaining as iterative sub-contractions}
+            Each clause simplification is a sub-contraction disentangling the tensor network.
+        \end{block}
+
+        \par \medskip
+        %       "Disentangling": Hyperedges connecting many edges are replaced by single node edges
+        %Single node edges are then iteratively contracted
+        \begin{minipage}{0.45\textwidth}
+            {\bf Example for definite clauses:}
+        \begin{itemize}
+            \item \only<2->{Modus ponens on $\catvariableof{0}\land\catvariableof{1}\Rightarrow\catvariableof{2}$}
+            \item \only<4->{Modus ponens on $\catvariableof{2}\land\catvariableof{3}\Rightarrow\catvariableof{4}$}
+            \item \only<6->{Modus ponens on $\catvariableof{4}\land\catvariableof{5}\Rightarrow\catvariableof{6}$}
+        \end{itemize}
+        \end{minipage}
+        \begin{minipage}{0.45\textwidth}
+            \input{tikz/fc-example}
+        \end{minipage}
+    \end{frame}
+
+    \begin{frame}{Completeness of forward chaining}
+
+        Forward chaining is {\bf sound}, that is for any clause $\big(\{\node\},\headindexof{\node}\big)\in\mathcal{L}$ in the solution we have
+        \begin{align*}
+            \kb \models\clauseof{\big(\{\node\},\headindexof{\node}\big)} \, .
+        \end{align*}
+        \medskip
+        {\bf But:} Forward chaining is not always {\bf complete}, that is there might be literals which are entailed by $\kb$ but are not in $\mathcal{L}$.
+
+        \medskip
+        \begin{block}{Completeness of forward chaining}
+            If the knowledge base consists of definite clauses (i.e. exactly one $1$ in each $\headindexof{\hardlegset}$), completeness of forward chaining can be shown.
+        \end{block}
+
+%        \begin{center}
+%            \bf For definite clauses forward chaining is complete: \\
+%            Any entailed literal is found.
+%        \end{center}
+    \end{frame}
+
+
+
+
+
+
+    \begin{frame}{Definite Clauses}
+
+        To show completeness, we need the following property of definite clauses:
+
+        \begin{lemma}
+            A knowledge base of definite clauses of length at least $2$ always has the states $\onetuple{\nodes}$ and $\zerotuple{\nodes}$ as models.
+        \end{lemma}
+            {\bf Proof sketch:} By using the contraction of clauses properties we know that:
+        \begin{itemize}
+            \item When contracting with $\bigtimes_{\nodein}\tbasisat{\catvariableof{\node}}$, all clauses become trivial.
+            \item When contracting with $\bigtimes_{\nodein}\fbasisat{\catvariableof{\node}}$, all clauses become trivial.
+        \end{itemize}
+        Thus, $\catindexof{\nodes}=\onetuple{\nodes}$ and $\catindexof{\nodes}=\zerotuple{\nodes}$ are models of the knowledge base.
+
+
+%        Each knowledge base of definite clause has $\catindexof{\nodes}=\onetuple{\nodes}$ as a model.
+
+%        If in addition the length of each clause is at least 2, then also $\zerotuple{\nodes}$ as a model.
+
+    \end{frame}
+
+
+    \begin{frame}{Forward chaining is complete on definite clauses}
+        \begin{theorem}
+            When $\kb$ is a knowledge base of definite clauses, then $\mathcal{L}$ contains all entailed literals.
+        \end{theorem}
+        \medskip
+
+        \textbf{Sketch of the proof:}
+        \begin{itemize}
+            \item Forward chaining on definite clauses terminates with a knowledge base of definite clauses of length at least $2$
+            \item The final knowledge base has $\onetuple{\nodes}$ and $\zerotuple{\nodes}$ as a model
+            \item The final knowledge base does therefore not entail for any $\node\in\nodes$ the literals $\catvariableof{\node}$ or $\lnot\catvariableof{\node}$
+        \end{itemize}
+    \end{frame}
+
+
+    \section{Constructing inference algorithms}
+
     \begin{frame}{Outlook: Inference algorithms}
         Inference algorithms focus on subsets of knowledge bases.
 
@@ -38,44 +530,6 @@
             \item {\bf Soundness:} "Every by a sub knowledge base entailed formula is entailed by the knowledge base itself."
             \item {\bf Memory:} "Every entailed formula can be added to the knowledge base."
         \end{itemize}
-
-    \end{frame}
-
-    \begin{frame}{Monotonicity of Entailment}
-
-        \begin{theorem}[Monotonicity of Entailment]
-            Given a knowledge base $\kb$ of formulas, let $\seckb\subset\kb$ be a subset and let $\formula$ be another propositional formula.
-            If
-            \begin{align*}
-                \seckb\models\formula
-            \end{align*}
-            then also
-            \begin{align*}
-                \kb\models\formula
-            \end{align*}
-        \end{theorem}
-
-    \end{frame}
-
-
-    \begin{frame}{Soundness but no Completeness}
-        Notice that the back direction does not hold:
-        When $\kb\models\formula$, then $\seckb\models\formula$ does not always hold.
-
-
-    \end{frame}
-
-    \begin{frame}{Invariance of adding entailled formulas}
-
-        When $\kb\models\formula$, then
-        \begin{align*}
-            \kbwith
-            = \contractionof{\kbwith,\formulawith}{\shortcatvariables}
-        \end{align*}
-
-        \begin{block}{Interpretation}
-            We can add memory formulas to a knowledge base.
-        \end{block}
 
     \end{frame}
 
@@ -127,193 +581,6 @@
     \end{frame}
 
 
-    \section{Syntactical Inference Rules}
-
-    \begin{frame}{Inference using Syntax}
-
-        So far: Inference and Entailment is formulated by semantics (with tensor interpretations).
-
-        Syntactical Inference Rules find entailed formulas using syntactical representations only.
-
-%        We here derive them as instances of sub-contractions support adding.
-
-        Notation: When $\formula$ is entailed by $\seckb$ we denote
-        \begin{align*}
-            \frac{
-                \overbrace{\seckb}^{\text{has to be known for the rule to apply}}
-            }{
-                \underbrace{\exformula}_{\text{is added to the knowledge base}}
-            }
-        \end{align*}
-    \end{frame}
-
-
-    \begin{frame}{Clauses}
-        \par
-        {\bf Recall:} Given $\hardlegset\subset[\catorder]$ and $\headindexof{\hardlegset}\in\bigtimes_{\catenumerator\in\hardlegset}[2]$ the corresponding clause is
-        \begin{align*}
-            \clauseofat{\hardparam}{\catvariableof{\hardlegset}}
-            = \onesat{\catvariableof{\hardlegset}} - \onehotmapofat{\headindexof{\hardlegset}}{\catvariableof{\hardlegset}}
-        \end{align*}
-
-        Special types:
-        \begin{itemize}
-            \item Horn clause: There is at most one $\catenumerator\in\hardlegset$ with $\headindexof{\catenumerator}=1$
-            \item Definite clause: There is at exactly one $\catenumerator\in\hardlegset$ with $\headindexof{\catenumerator}=1$
-        \end{itemize}
-
-        Interpretation of definite clauses: Implications
-        Example:
-        \begin{align*}
-            \Big(\catvariableof{F} \land \catvariableof{GP1} \rightarrow \catvariableof{MAT}\Big)
-            &\Leftrightarrow
-            \lnot \Big((\catvariableof{F} \land \catvariableof{GP1}) \lor \catvariableof{MAT} \Big) \\
-            &\Leftrightarrow
-            \Big(\lnot\catvariableof{F} \lor \lnot \catvariableof{GP1} \lor \catvariableof{MAT} \Big)
-        \end{align*}
-
-    \end{frame}
-
-    \begin{frame}{Modus Ponens}
-
-
-        \begin{block}{Modus Ponens Inference Rule}
-            {\bf Modus Ponens} is the simplest inference rule: When an implication holds and the premise is true, then the head follows.
-            \begin{align*}
-                \frac{
-                    (\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1})\rightarrow\catvariableof{\catorder} \,,\,\, (\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1})
-                }{
-                    \catvariableof{\catorder}
-                }
-            \end{align*}
-        \end{block}
-        Modus ponens corresponds with the contraction equation:
-        \begin{center}
-            \input{tikz/modus-ponens-contraction}
-        \end{center}
-    \end{frame}
-
-
-    \begin{frame}{Forward Chaining}
-
-        Iterate modus ponens until the premises of none of the remaining implications are known:
-
-
-    \end{frame}
-
-    \begin{frame}[fragile]{Forward Chaining Algorithm}
-        \begin{algorithm}[H] % Force 'Here' to disable floating
-            \begin{algorithmic}
-                \Require Set of clauses $\mathcal{C}$
-                \Ensure Entailed literals $\mathcal{L}$, remaining set of clauses
-                \iosepline
-                \State Initialize $\mathcal{L}=\varnothing$
-                \While{exists a clause $(\{\node,\secheadindexof{\node}\})$ of length 1 in $\mathcal{C}$}
-                    \For{all clauses $\hardparam$ with $\node\in\hardlegset$}
-                        \If{$\headindexof{\node}\neq\secheadindexof{\node}$}
-                            \State $\hardparam\algdefsymbol(\hardlegset\backslash\{\node\},\headindexof{\hardlegset\backslash\{\node\}})$
-                        \Else
-                            \State $\mathcal{C}.\mathrm{drop(}\hardparam\mathrm{)}$
-                        \EndIf
-                    \EndFor
-                    \State $\mathcal{L}.\mathrm{append(}\{\node,\secheadindexof{\node}\}\mathrm{)}$
-                \EndWhile
-            \end{algorithmic}
-        \end{algorithm}
-    \end{frame}
-
-
-
-
-    \begin{frame}{Modus ponens as removing edges}
-
-        We now keep also the colors to the premises open:
-
-        \input{tikz/modus-ponens-disentangling}
-
-        Thus we understand modus ponens as a method to turn tensors to elementary tensors.
-
-    \end{frame}
-
-
-    \begin{frame}{Forward chaining as disentangling the network}
-
-        "Disentangling": Hyperedges connecting many edges are replaced by single node edges
-
-        Single node edges are then iteratively contracted
-        \begin{minipage}{0.45\textwidth}
-            {\bf Example:}
-        \begin{itemize}
-            \item \only<2->{Inference using $\catvariableof{0}\land\catvariableof{1}\Rightarrow\catvariableof{2}$}
-            \item \only<4->{Inference using $\catvariableof{2}\land\catvariableof{3}\Rightarrow\catvariableof{4}$}
-            \item \only<6->{Inference using $\catvariableof{4}\land\catvariableof{5}\Rightarrow\catvariableof{6}$}
-        \end{itemize}
-        \end{minipage}
-        \begin{minipage}{0.45\textwidth}
-
-            \input{tikz/fc-example}
-        \end{minipage}
-
-    \end{frame}
-
-
-    \begin{frame}{Contraction of clauses}
-        Underlying is the contraction
-        \input{tikz/clause-contraction-property}
-        %Note that $\onehotmapofat{\catindexof{\node}}{\catvariableof{\node}}=\clauseof{\{\node\},1-\catindexof{\node}}$.
-        Therefore:
-        \begin{itemize}
-            \item When clauses "disagreeing" on $\node$: Larger clause shrinks
-            \item When clauses "agreeing" on $\node$: Larger clause becomes trivial
-        \end{itemize}
-
-    \end{frame}
-
-    \begin{frame}{More general: Contraction of clauses}
-        When contracting a clause (where $\catenumerator\in\hardlegset$) with a basis vector $\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}$ we have two possible situations:
-        \begin{itemize}
-            \item The clause becomes trivial, if $\catindexof{\catenumerator}\neq\headindexof{\catenumerator}$
-            \item The clause shrinks, if $\catindexof{\catenumerator}=\headindexof{\catenumerator}$
-        \end{itemize}
-
-
-    \end{frame}
-
-    \begin{frame}{Definite Clauses}
-
-        \begin{lemma}
-            A knowledge base of definite clauses of length at least $2$ always has the states $\onetuple{\nodes}$ and $\zerotuple{\nodes}$ as models.
-        \end{lemma}
-            {\bf Proof sketch:} By using the contraction of clauses properties we know that:
-        \begin{itemize}
-            \item When contracting with $\bigtimes_{\nodein}\tbasisat{\catvariableof{\node}}$, all clauses become trivial.
-            \item When contracting with $\bigtimes_{\nodein}\fbasisat{\catvariableof{\node}}$, all clauses become trivial.
-        \end{itemize}
-        Thus, $\catindexof{\nodes}=\onetuple{\nodes}$ and $\catindexof{\nodes}=\zerotuple{\nodes}$ are models of the knowledge base.
-
-
-%        Each knowledge base of definite clause has $\catindexof{\nodes}=\onetuple{\nodes}$ as a model.
-
-%        If in addition the length of each clause is at least 2, then also $\zerotuple{\nodes}$ as a model.
-
-    \end{frame}
-
-
-    \begin{frame}{Forward chaining is complete on definite clauses}
-        \begin{theorem}
-            When $\kb$ is all clauses in are definite, i.e. have exactly one positive literal, then $\mathcal{L}$ contains all entailed literals
-        \end{theorem}
-        \medskip
-
-        \textbf{Sketch of the proof:}
-        \begin{itemize}
-            \item Forward chaining on definite clauses terminates with a knowledge base of definite clauses of length at least $2$
-            \item The final knowledge base has $\onetuple{\nodes}$ and $\zerotuple{\nodes}$ as a model
-            \item The final knowledge base does therefore not entail for any $\node\in\nodes$ the literals $\catvariableof{\node}$ or $\lnot\catvariableof{\node}$
-        \end{itemize}
-    \end{frame}
-
-
 
     \begin{frame}{Generalization: Contraction perspective}
 
@@ -325,7 +592,7 @@
             \Big(\lnot\catvariableof{A1}\lor\lnot\catvariableof{A2} \Big) \land \Big(\catvariableof{A1}\lor\catvariableof{A2} \Big)
         \end{align*}
 
-        But: We can still do contractions to simplify.
+       % But: We can still do contractions to simplify.
 
             {\bf Example:} When knowing that $\catvariableof{A2}$ is true, we get with this accounting that $\catvariableof{A1}$ is false:
         \stantikzpic{
@@ -365,6 +632,9 @@
                 }
             \end{align*}
         \end{block}
+
+        Underlying is the contraction equation:
+        \input{tikz/resolution-contraction-equation}
 
 %        Compare with modus ponens: ! WOULD NEED MULTIPLE USAGES, for each premise clause
 %        \begin{align*}

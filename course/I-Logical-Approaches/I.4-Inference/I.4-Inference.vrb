@@ -1,19 +1,22 @@
 \frametitle{Forward Chaining Algorithm}
-\begin{algorithm}[H] % Force 'Here' to disable floating
+\begin{algorithm}[H]
             \begin{algorithmic}
-                \Require Set of clauses $\mathcal{C}$
+                \Require Set of clauses $\mathcal{C}$ (each parameterized by $\hardparam$)
                 \Ensure Entailed literals $\mathcal{L}$, remaining set of clauses
                 \iosepline
                 \State Initialize $\mathcal{L}=\varnothing$
-                \While{exists a clause $(\{\node,\secheadindexof{\node}\})$ of length 1 in $\mathcal{C}$}
+                \While{exists a clause $(\{\node\},\secheadindexof{\node})$ of length 1 in $\mathcal{C}$}
                     \For{all clauses $\hardparam$ with $\node\in\hardlegset$}
                         \If{$\headindexof{\node}\neq\secheadindexof{\node}$}
+                            \hfill \textcolor{blue}{(then the clause shrinks)}
+                            %\hfill \textcolor{blue}{(then the literal is satisfied)}
                             \State $\hardparam\algdefsymbol(\hardlegset\backslash\{\node\},\headindexof{\hardlegset\backslash\{\node\}})$
                         \Else
-                            \State $\mathcal{C}.\mathrm{drop(}\hardparam\mathrm{)}$
+                            \hfill \textcolor{blue}{(then the clause becomes trivial)}
+                            \State $\mathcal{C}.\mathrm{drop(}\hardparam\mathrm{)}$ %\hfill \textcolor{blue}{(then the contracted clause is trivial)}
                         \EndIf
                     \EndFor
-                    \State $\mathcal{L}.\mathrm{append(}\{\node,\secheadindexof{\node}\}\mathrm{)}$
+                    \State $\mathcal{L}.\mathrm{append(}\{\node\},\secheadindexof{\node}\mathrm{)}$ \hfill \textcolor{blue}{(the literal is entailed and added to solution)}
                 \EndWhile
             \end{algorithmic}
         \end{algorithm}

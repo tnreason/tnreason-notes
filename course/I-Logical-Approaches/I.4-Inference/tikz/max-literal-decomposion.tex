@@ -1,0 +1,29 @@
+\stantikzpic{
+    \draw (-3,-1) rectangle (3,1);
+    \drawtextnode{0}{0}{\corelabelsize $\kb$}
+    \draw (-2.5,-1) -- (-2.5,-2.5);
+    \drawtextnode{-0.25}{-1.5}{\tiny $\cdots$}
+    \drawtextnode{-0.25}{-2.25}{\colorlabelsize $\nodevariables$}
+
+    \draw (2,-1) -- (2,-2.5);
+
+    \drawtextnode{4}{0}{${=}$}
+
+    \begin{scope}[shift={(10,0)}]
+        \drawsmalltensor{-4}{0}{$\onehotmapof{\headindexof{0}}$}
+        \draw (-4,-1) -- (-4,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+        \drawtextnode{-2}{0}{$\cdots$}
+        \drawsmalltensor{0}{0}{$\onehotmapof{\headindexof{d-1}}$}
+        \draw (0,-1) -- (0,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{d-1}$};
+    \end{scope}
+
+    \begin{scope}[shift={(14,0)}]
+        \draw (-2,-1) rectangle (3,1);
+        \drawtextnode{0.5}{0}{\corelabelsize $\hypercore$}
+        \draw (-1.5,-1) -- (-1.5,-2.5);
+        \drawtextnode{0.25}{-1.5}{\tiny $\cdots$}
+        \drawtextnode{0.25}{-2.25}{\colorlabelsize $\catvariableof{\nodes\backslash\{\node\}}$}
+        \draw (2,-1) -- (2,-2.5);
+
+    \end{scope}
+}
