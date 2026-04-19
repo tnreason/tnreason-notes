@@ -239,7 +239,7 @@
     \end{frame}
 
 
-    \section{Modus ponens and forward chaining}
+    \section{Modus ponens and unit propagation}
 
     \begin{frame}{Inference using Syntax}
 
@@ -346,12 +346,12 @@
             \item When clauses "agreeing" on $\node$: Larger clause becomes trivial
         \end{itemize}
 
-        \begin{block}{Forward Chaining}
+        \begin{block}{Unit propagation}
             We can iteratively simplify clauses $\clauseofat{\hardparam}{\catvariableof{\hardlegset}}$ using the unit clauses $\onehotmapofat{\secheadindexof{\node}}{\catvariableof{\node}}$.
         \end{block}
     \end{frame}
 
-    \begin{frame}[fragile]{Forward Chaining Algorithm}
+    \begin{frame}[fragile]{Unit propagation Algorithm}
         \begin{algorithm}[H]
             \begin{algorithmic}
                 \Require Set of clauses $\mathcal{C}$ (each parameterized by $\hardparam$)
@@ -436,9 +436,9 @@
     \end{frame}
 
 
-    \begin{frame}{Forward chaining: \\ Disentangling the network}
+    \begin{frame}{Unit propagation: \\ Disentangling the network}
 
-        \begin{block}{Forward chaining as iterative sub-contractions}
+        \begin{block}{Unit propagation as iterative sub-contractions}
             Each clause simplification is a sub-contraction disentangling the tensor network.
         \end{block}
 
@@ -458,17 +458,17 @@
         \end{minipage}
     \end{frame}
 
-    \begin{frame}{Completeness of forward chaining}
+    \begin{frame}{Completeness of unit propagation}
 
-        Forward chaining is {\bf sound}, that is for any clause $\big(\{\node\},\headindexof{\node}\big)\in\mathcal{L}$ in the solution we have
+        Unit propagation is {\bf sound}, that is for any clause $\big(\{\node\},\headindexof{\node}\big)\in\mathcal{L}$ in the solution we have
         \begin{align*}
             \kb \models\clauseof{\big(\{\node\},\headindexof{\node}\big)} \, .
         \end{align*}
         \medskip
-        {\bf But:} Forward chaining is not always {\bf complete}, that is there might be literals which are entailed by $\kb$ but are not in $\mathcal{L}$.
+        {\bf But:} Unit propagation is not always {\bf complete}, that is there might be literals which are entailed by $\kb$ but are not in $\mathcal{L}$.
 
         \medskip
-        \begin{block}{Completeness of forward chaining}
+        \begin{block}{Completeness of unit propagation}
             If the knowledge base consists of definite clauses (i.e. exactly one $1$ in each $\headindexof{\hardlegset}$), completeness of forward chaining can be shown.
         \end{block}
 
@@ -505,7 +505,7 @@
     \end{frame}
 
 
-    \begin{frame}{Forward chaining is complete on definite clauses}
+    \begin{frame}{Unit propagation is complete on definite clauses}
         \begin{theorem}
             When $\kb$ is a knowledge base of definite clauses, then $\mathcal{L}$ contains all entailed literals.
         \end{theorem}
@@ -513,7 +513,7 @@
 
         \textbf{Sketch of the proof:}
         \begin{itemize}
-            \item Forward chaining on definite clauses terminates with a knowledge base of definite clauses of length at least $2$
+            \item Unit propagation on definite clauses terminates with a knowledge base of definite clauses of length at least $2$
             \item The final knowledge base has $\onetuple{\nodes}$ and $\zerotuple{\nodes}$ as a model
             \item The final knowledge base does therefore not entail for any $\node\in\nodes$ the literals $\catvariableof{\node}$ or $\lnot\catvariableof{\node}$
         \end{itemize}
@@ -522,45 +522,108 @@
 
     \section{Constructing inference algorithms}
 
-    \begin{frame}{Outlook: Inference algorithms}
-        Inference algorithms focus on subsets of knowledge bases.
+    \begin{frame}{Generalization: Contraction perspective}
 
-        We now show that:
-        \begin{itemize}
-            \item {\bf Soundness:} "Every by a sub knowledge base entailed formula is entailed by the knowledge base itself."
-            \item {\bf Memory:} "Every entailed formula can be added to the knowledge base."
-        \end{itemize}
+        The first toy accounting rule $\catvariableof{A1}\oplus\catvariableof{A2}$ does not have a CNF of definite clauses!
 
+        \begin{align*}
+            \catvariableof{A1}\oplus\catvariableof{A2}
+            \equiv
+            \Big(\lnot\catvariableof{A1}\lor\lnot\catvariableof{A2} \Big) \land \Big(\catvariableof{A1}\lor\catvariableof{A2} \Big)
+        \end{align*}
+
+        % But: We can still do contractions to simplify.
+
+            {\bf Example:} When knowing that $\catvariableof{A2}$ is true, we get with this accounting that $\catvariableof{A1}$ is false:
+        \stantikzpic{
+            \draw (-3,-1) rectangle (3,1);
+            \drawtextnode{0}{0}{$\catvariableof{A1}\oplus\catvariableof{A1}$}
+            \draw (-2,-2.5) -- (-2,-1) node[midway,left] {\colorlabelsize $\catvariableof{A1}$};;
+            \draw (2,-2.5) -- (2,-1);
+            \drawvariabledot{2}{-1.75}
+            \draw (2,-1.75) -- (4,-1.75) node[anchor=west] {\colorlabelsize $\catvariableof{A2}$};
+            \drawsmalltensor{2}{-3.5}{$\tbasis$}
+            \drawtextnode{7.5}{-1.75}{${=}$}
+            \begin{scope}[shift={(13,0)}]
+                \drawsmalltensor{-2}{-3.5}{$\fbasis$}
+                \draw (-2,-2.5) -- (-2,-1) node[midway,left] {\colorlabelsize $\catvariableof{A1}$};;
+                \draw (2,-2.5) -- (2,-1) node[midway, right] {\colorlabelsize $\catvariableof{A2}$};
+                \drawsmalltensor{2}{-3.5}{$\tbasis$}
+            \end{scope}
+        }
+
+        \begin{center}
+            \bf What are the most generic reasoning steps we could perform with these schemes?
+        \end{center}
     \end{frame}
 
-    \begin{frame}{Support tensors}
 
-        Support tensor to a tensor $\hypercorewith$: $\nonzeroof{\hypercorewith}$ with coordinates
+
+
+    \begin{frame}{Sub-contractions}
+
+            {\bf Problem:} When keeping not all variables open, contractions may fail to be propositional formulas.
+    For example:
+        \begin{align*}
+            \contractionof{\catvariableof{0}\Rightarrow\catvariableof{1}}{\catvariableof{0}}
+            = \contractionof{\coloredmatrixof{1 & 1 \\ 0 & 1}{\catvariableof{0},\catvariableof{1}}}{\catvariableof{0}}
+            = \coloredmatrixof{2 \\ 1 }{\catvariableof{0}}
+        \end{align*}
+\medskip
+            {\bf Solution:} Build the support of the contracted tensor.
+        We define the \emph{support $\nonzeroof{\hypercorewith}$} of a tensor $\hypercorewith$, as a tensor with coordinates
         \begin{align*}
             \nonzeroof{\hypercoreat{\indexedshortcatvariables}}
             = \begin{cases}
-                  1 & \ifspace \hypercoreat{\indexedcatvariables}\neq 0 \\
-                  0 & \text{else}
-            \end{cases}
+                  1 & \ifspace \hypercoreat{\indexedshortcatvariables}\neq 0 \\
+                  0 & \ifspace \hypercoreat{\indexedshortcatvariables} = 0
+            \end{cases} \, .
+        \end{align*}
+        The support therefore marks the non-vanishing coordinates by a $1$.
+    \end{frame}
+
+
+    \begin{frame}{Support of sub-contractions}
+
+        The support of the sub-contraction $\seckb\subset\kb$ leaving $\secnodes\subset\nodes$ open is a formula
+        \begin{align*}
+            \formulaofat{(\seckb,\secnodes)}{\catvariableof{\secnodes}}
+            := \nonzeroof{\contractionof{\seckb}{\catvariableof{\secnodes}}} \, .
         \end{align*}
 
-        \begin{block}{Invariance under adding support tensor to sub-contractions}
-            Any support tensor of a sub-contraction can be added to a tensor network: When $\secgraph$ a sub-hypergraph of $\graph$, then
-            \begin{align*}
-                \contractionof{\extnetwith}{\nodevariables}
-                = \contractionof{\extnetwith,
-                    \nonzeroof{\contractionof{\tnetofat{\secgraph}{\nodevariables}}{\catvariableof{\secnodes}}}
-                }{\nodevariables}
-            \end{align*}
+        The support of a sub-contraction is the \emph{minimal} formula $\formula$ containing the atomic variables $\catvariableof{\secnodes}$ such that $\seckb \models \formula$.
+        That is:
+        \begin{align*}
+            \formulaofat{(\seckb,\secnodes)}{\catvariableof{\secnodes}}
+            = \argmin_{\formulaof{\catvariableof{\secnodes}} \wcols \seckb \models \formula} \contraction{\formulaof{\catvariableof{\secnodes}}} \, .
+        \end{align*}
+
+        \begin{block}{Interpretation}
+            The support of a sub-contraction is the \emph{best summary} of the knowledge about $\seckb$ using only the variables $\catvariableof{\secnodes}$.
         \end{block}
 
-        In propositional logics, this means:
-        \begin{align*}
-            \nonzeroof{\contractionof{\extnetwith}{\nodevariables}}
-            \models \nonzeroof{\contractionof{\tnetofat{\secgraph}{\nodevariables}}{\catvariableof{\secnodes}}}
-        \end{align*}
+    \end{frame}
 
 
+    \begin{frame}{More generic inference algorithms}
+%        Inference algorithms focus on subsets of knowledge bases.
+%
+%        We have shown that:
+%        \begin{itemize}
+%            \item {\bf Soundness:} "Every by a sub knowledge base entailed formula is entailed by the knowledge base itself."
+%            \item {\bf Memory:} "Every entailed formula can be added to the knowledge base."
+%        \end{itemize}
+
+        In a most generic reasoning step, we
+        \begin{itemize}
+            \item Choose a subset $\seckb$ of $\kb$
+            \item Choose a set of open variables $\secnodes$
+            \item Add the support of the contraction of $\seckb$ with open variables $\secnodes$
+        \end{itemize}
+
+        \begin{block}{Design of inference algorithms}
+            Propositional inference algorithms differ in the choices and scheduling of $(\seckb,\secnodes)$ pairs.
+        \end{block}
     \end{frame}
 
 
@@ -581,49 +644,11 @@
     \end{frame}
 
 
-
-    \begin{frame}{Generalization: Contraction perspective}
-
-        First toy accounting rule $\catvariableof{A1}\oplus\catvariableof{A2}$ does not have a CNF of definite clauses!
-
-        \begin{align*}
-            \catvariableof{A1}\oplus\catvariableof{A2}
-            \equiv
-            \Big(\lnot\catvariableof{A1}\lor\lnot\catvariableof{A2} \Big) \land \Big(\catvariableof{A1}\lor\catvariableof{A2} \Big)
-        \end{align*}
-
-       % But: We can still do contractions to simplify.
-
-            {\bf Example:} When knowing that $\catvariableof{A2}$ is true, we get with this accounting that $\catvariableof{A1}$ is false:
-        \stantikzpic{
-            \draw (-3,-1) rectangle (3,1);
-            \drawtextnode{0}{0}{$\catvariableof{A1}\oplus\catvariableof{A1}$}
-            \draw (-2,-2.5) -- (-2,-1) node[midway,left] {\colorlabelsize $\catvariableof{A1}$};;
-            \draw (2,-2.5) -- (2,-1);
-            \drawvariabledot{2}{-1.75}
-            \draw (2,-1.75) -- (4,-1.75) node[anchor=west] {\colorlabelsize $\catvariableof{A2}$};
-            \drawsmalltensor{2}{-3.5}{$\tbasis$}
-            \drawtextnode{7.5}{-1.75}{${=}$}
-            \begin{scope}[shift={(13,0)}]
-                \drawsmalltensor{-2}{-3.5}{$\fbasis$}
-                \draw (-2,-2.5) -- (-2,-1) node[midway,left] {\colorlabelsize $\catvariableof{A1}$};;
-                \draw (2,-2.5) -- (2,-1) node[midway, right] {\colorlabelsize $\catvariableof{A2}$};
-                \drawsmalltensor{2}{-3.5}{$\tbasis$}
-            \end{scope}
-        }
-
-    \end{frame}
-
-    %\section{Resolution}
-
     \begin{frame}{Generalization: Resolution}
-
-%        When $\catvariableof{0}\rightarrow\catvariableof{1}$ and $\catvariableof{0}$ is true then also $\catvariableof{1}$.
-
-%        Let us now generalize modus ponens to resolution.
 
 
         \begin{block}{Resolution Inference Rule}
+            For any propositional formulas $\formulaof{0},\formulaof{1}$ and an atomic variable $\catvariable$ the resolution inference rule is sound:
             \begin{align*}
                 \frac{
                     \formulaof{0} \lor \catvariable \,,\,\, \formulaof{1} \lor \lnot\catvariable
@@ -645,16 +670,42 @@
 %            }
 %        \end{align*}
 
+    \end{frame}
 
-
+    \begin{frame}{Efficient implementation of resolution}
+        Resolution can be understood as adding a \textcolor{blue}{summary tensor} in the knowledge base:
+        \input{tikz/resolution-adding-perspective}
     \end{frame}
 
 
-    \begin{frame}{Scheduling is key}
+    \begin{frame}{Completeness of resolution}
+        \par
+        {\bf Deciding satisfiability:}
+        \begin{itemize}
+            \item Entailment $\kb\models\formula$ is equal to the unsatisfiability of $\kb\land\lnot\formula$.
+            \item Can we detect an unsatisfiable ("inconsistent") knowledge base?
+        \end{itemize}
+
+        Detecting unsatisfiability:
+        \begin{itemize}
+            \item Suppose $\catvariableof{\node}$ and $\lnot\catvariableof{\node}$ are in the knowledge base (e.g. added by resolution)
+            \item Understand them as $\zerosat{\catvariableof{\node}}\lor\catvariableof{\node}, \, \zerosat{\catvariableof{\node}}\lor\lnot\catvariableof{\node},$
+            \item Resolution then includes an unsatisfiable $\zerosat{\catvariableof{\node}}$ and detects therefore the inconsistency.
+        \end{itemize}
+
+        \begin{theorem}
+            When a knowledge base in $CNF$ is unsatisfiable, then the unsatisfiability is detected by iterative resolution.
+        \end{theorem}
+    \end{frame}
+
+    \begin{frame}{Scheduling inference steps}
 
         \begin{block}{Number of large contractions}
             The number of possible sub-contractions grows fast with the number $k$ of the subcontraction: $\binom{\cardof{\edges}}{k}$
         \end{block}
+        \begin{center}
+            \bf The choice and scheduling of inference steps is of central importance for efficient algorithms!
+        \end{center}
 
         Resolution:
         \begin{itemize}
@@ -664,7 +715,7 @@
 
         Selection of contractions to be performed is central to algorithm design
         \begin{itemize}
-            \item Forward chaining
+            \item Forward chaining: Unit propagation with positive literals only
             \item SLD resolution (e.g. in ProLog)
         \end{itemize}
 

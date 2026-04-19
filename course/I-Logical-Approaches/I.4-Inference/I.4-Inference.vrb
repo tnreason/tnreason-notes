@@ -1,4 +1,4 @@
-\frametitle{Forward Chaining Algorithm}
+\frametitle{Unit propagation Algorithm}
 \begin{algorithm}[H]
             \begin{algorithmic}
                 \Require Set of clauses $\mathcal{C}$ (each parameterized by $\hardparam$)

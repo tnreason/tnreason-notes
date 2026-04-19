@@ -16,7 +16,7 @@
     \showoutlineatsection
 
 
-    \section{Graph Coloring}
+    \section{Examples}
 
     \begin{frame}{Graph Coloring}
 
@@ -37,57 +37,53 @@
     \end{frame}
 
     \begin{frame}{Representation of Graph Coloring}
-        Each node color is a variable.
-
+        We model the problem:
+        \begin{itemize}
+            \item Enumerate the colors by the state set $[\catdim]=\{0,\ldots,\catdim-1\}$
+            \item For each node $\node\in\nodes$ we define a variable $\catvariableof{\node}$
+        \end{itemize}
         To each edge $\edge=\{\node_{0},\node_{1}\}$ the "different" constraint matrix
         \begin{align*}
             \hypercoreofat{\mathrm{diff},\{\node_0,\node_1\}}{\catvariableof{\node_{0}},\catvariableof{\node_{1}}}
             = \onesat{\catvariableof{\node_{0}},\catvariableof{\node_{1}}} - \identityat{\catvariableof{\node_{0}},\catvariableof{\node_{1}}} \, .
         \end{align*}
         with off-diagonal support enforces different color constraint.
+        \begin{align*}
+            \hypercoreofat{\{\nodeof{0},\nodeof{1}\}}{\catvariableof{\nodeof{0}},\catvariableof{\nodeof{1}}}
+            =\coloredmatrixof{
+                0 & 1 & \cdots & 1  \\
+                1 & \ddots & \ddots & \vdots \\
+                \vdots & \ddots & \ddots & 1 \\
+                1 & \cdots & 1 & 0
+            }{\catvariableof{\nodeof{0}},\catvariableof{\nodeof{1}}}
+        \end{align*}
+    \end{frame}
 
-            {\bf Example:} Painting the states of australia with $\catdim$ colors
-        \begin{minipage}{0.45\textwidth}
-            \begin{itemize}
-                \item Model the color of each state by a $\catdim$ dimensional variable
-                \item Each edge between neighbored states is decorated by the "different" constraint matrix
-            \end{itemize}
+    \begin{frame}{Example: Painting states of australia}
+        Let us paint the states of australia with $3$ colors:
+        \begin{itemize}
+            \item $7$ color variables $\catvariableof{\cdot}$ of leg dimension $\catdim=3$
+            \item $9$ edges between neighbored states $\nodeof{0}$ and $\nodeof{1}$, which are decorated by the $3x3$ constraint matrix
+        \end{itemize}
+        \begin{minipage}{0.54\textwidth}
+            \begin{align*}
+                &\hypercoreofat{\{\nodeof{0},\nodeof{1}\}}{\catvariableof{\nodeof{0}},\catvariableof{\nodeof{1}}} \\
+                &\quad=
+                \coloredmatrixof{
+                    0 & 1 & 1 \\
+                    1 & 0 & 1 \\
+                    1 & 1 & 0
+                }{\catvariableof{\nodeof{0}},\catvariableof{\nodeof{1}}}
+            \end{align*}
         \end{minipage}
         \begin{minipage}{0.45\textwidth}
-
             \input{tikz/australia-states}
         \end{minipage}
-
-    \end{frame}
-
-    \begin{frame}{Contraction properties of the "different" constraint}
-
-        If one node is known (i.e. encoded as a basis vector), then constraint disentangles.
-        (This holds for any constraint!)
-
-        If multiple possibilities, then entanglement remains.
-
     \end{frame}
 
 
-    \begin{frame}{Edge inference scheme}
 
-        Each node color gets assigned a vector of possibilities.
-        \begin{align*}
-            \vectorofat{\node_0}{\catvariableof{\node_0}}
-            = \nonzeroof{
-                \contractionof{
-                    \vectorofat{\node_0}{\catvariableof{\node_0}},
-                    \hypercoreofat{\edge}{\catvariableof{\node_{0}},\catvariableof{\node_{1}}},
-                    \vectorofat{\node_0}{\catvariableof{\node_1}}
-                }{\catvariableof{\node_0}}
-            }
-        \end{align*}
-
-    \end{frame}
-
-
-    \section{Sudoku}
+    %\section{Sudoku}
 
     \begin{frame}{Representation of Sudoku}
 
@@ -105,24 +101,226 @@
     \end{frame}
 
 
-    \section{Solution by forward chaining}
 
-    \begin{frame}{Solution by forward chaining like method}
+    \section{Generalized unit propagation}
 
-        Here: AC-3 a generalization of forward chaining to leg dimensions $\catdim>2$!
+    \begin{frame}{Disentangling the constraint network}
 
-        Can show:
-        AC-3 and forward chaining do the most basic inference scheme, i.e. keeping track of possible assignments based on single constraint matrices.
+        Example for graph coloring: When a color is known, the corresponding edges can be dropped.
+
+        Goal of inference: Disentangling the constraint network
+        \begin{itemize}
+            \item Satisfiability when all local vectors non-vanishing
+            \item Read off the solutions as a cartesian product of local conditions
+        \end{itemize}
+
+    \end{frame}
+
+
+    \begin{frame}{Generalized unit propagation}
+
+        Comparison with unit propagation so far:
+        \begin{itemize}
+            \item Works with arbitrary constraints (shape, values), while so far on unit clauses
+            \item
+        \end{itemize}
+
+        Known as AC-3: Enforcing arc-consistency.
+
+    \end{frame}
+
+    \begin{frame}{Generalized unit propagation algorithm}
+
+        \begin{algorithm}[H]
+            \begin{algorithmic}
+                \Require Constraint network $\extnet$
+                \Ensure Equivalent constraint network $\extnet$, with potentially less connectivity in $\graph$
+                \iosepline
+                \State Initialize a queue $Q$ of unary edges in $\graph$
+                \While{$Q$ not empty}
+                    \State $\{\node\}=Q.pop()$
+                    \For{$\edge\in\edges\wcols \node\in\edge$}
+                        \State $\hypercoreofat{\edge}{\catvariableof{\edge}}
+                        \algdefsymbol \contractionof{\hypercoreofat{\edge}{\catvariableof{\edge}},\hypercoreofat{\{\node\}}{\catvariableof{\node}}}{\catvariableof{\edge}}$
+                    \State Try to split $\hypercoreofat{\edge}{\catvariableof{\edge}}$ into a vector $\node$ and a tensor $\edge\backslash\{\node\}$
+                    \If{Split successful and $\cardof{\edge\backslash\{\node\}}=1$}
+                        \State $Q.push(\edge\backslash\{\node\})$
+                    \EndIf
+                    \EndFor
+                \EndWhile
+                \State \Return $\extnet$
+            \end{algorithmic}
+        \end{algorithm}
+
+    \end{frame}
+
+
+    %\section{Solution by forward chaining}
+
+%    \begin{frame}{Solution by forward chaining like method}
+%
+%        Here: AC-3 a generalization of forward chaining to leg dimensions $\catdim>2$!
+%
+%        Can show:
+%        AC-3 and forward chaining do the most basic inference scheme, i.e. keeping track of possible assignments based on single constraint matrices.
+%
+%    \end{frame}
+%
+%    \begin{frame}{Arc consistency}
+%
+%        More generic inference rules: Generating locally consistent assignments.
+%    \end{frame}
+
+%    \begin{frame}{Edge inference scheme}
+%
+%        Each node color gets assigned a vector of possibilities.
+%        \begin{align*}
+%            \vectorofat{\node_0}{\catvariableof{\node_0}}
+%            = \nonzeroof{
+%                \contractionof{
+%                    \vectorofat{\node_0}{\catvariableof{\node_0}},
+%                    \hypercoreofat{\edge}{\catvariableof{\node_{0}},\catvariableof{\node_{1}}},
+%                    \vectorofat{\node_0}{\catvariableof{\node_1}}
+%                }{\catvariableof{\node_0}}
+%            }
+%        \end{align*}
+%
+%    \end{frame}
+
+
+    \section{Backtracking search}
+
+    \begin{frame}{Contraction properties of the "different" constraint}
+
+        If one node is known (i.e. encoded as a basis vector), then constraint disentangles.
+        (This holds for any constraint!)
+
+        If multiple possibilities, then entanglement remains.
+
+        Unit propagation helps only, when the color of one node $\nodeof{0}$ is known:
+        \begin{align*}
+            &\nzcontractionof{
+                \vectorat{\catvariableof{\nodeof{0}}},
+                \hypercoreofat{\{\nodeof{0},\nodeof{1}\}}{\catvariableof{\nodeof{0}},\catvariableof{\nodeof{1}}}
+            }{\catvariableof{\nodeof{1}}} \\
+            & \quad =
+            \begin{cases}
+                \onesat{\catvariableof{\nodeof{1}}} - \onehotmapofat{\headindex}{\catvariableof{\nodeof{1}}} & \text{if $\vectorat{\catvariableof{\nodeof{0}}}$ only at $\headindex$ supported} \\
+                \onesat{\catvariableof{\nodeof{1}}} & \text{else}
+            \end{cases}
+            %% WRONG!
+%            \underbrace{\onesat{\catvariableof{\nodeof{1}}}}_{\text{everywhere supported}}
+%            -
+%            \underbrace{
+%%                \contractionof{
+%%                \identityat{\catvariableof{\nodeof{0}},\catvariableof{\nodeof{1}}},
+%%                \nonzeroof{\vectorat{\catvariableof{\nodeof{0}}}}
+%%                }{\catvariableof{\nodeof{1}}}
+%            }_{\text{except for the support of $\vectorat{\catvariableof{\nodeof{0}}}$}}
+        \end{align*}
+
+        \begin{block}{Inference by matrix-vector contractions}
+            Known colors are communicated along edges.
+        \end{block}
+
+        \begin{center}
+            \bf But where to find the basis vectors necessary for disentangling the color constraints?
+        \end{center}
+    \end{frame}
+
+
+
+    \begin{frame}{Idea of backtracking}
+
+
+        Guess an assignment to disentangle a node.
+        When running into an inconsistency, guess an alternative assignment.
+
+
+    \end{frame}
+
+    \begin{frame}{Combination with constraint simplification}
+
+        Do generic unit propagation in an inner loop to simplify constraints before guessing.
+
+
+    \end{frame}
+
+    \begin{frame}{Example: Painting australias states}
+
+        Take three colors: red, blue, green
+
+        \input{tikz/australia-states-backtracking}
+        \begin{itemize}
+            \item \only<2->{
+                Guess $\catvariableof{WA}$ to be red.
+            }
+            \item \only<3->{
+                Consequences for $\catvariableof{NT}$ and $\catvariableof{SA}$: red or green
+            }
+            \item \only<4->{
+                Guess $\catvariableof{NT}$ to be green.
+            }
+            \item \only<5->{
+                As a consequence, $\catvariableof{SA}$ has to be blue.
+            }
+            \item \only<6->{
+                The colors $\catvariableof{Q}$, $\catvariableof{NSW}$, $\catvariableof{V}$ also follow.
+            }
+            \item \only<7>{
+                The variable $\catvariableof{T}$ is disconnected and can be chosen arbitrarly.
+            }
+        \end{itemize}
+
 
     \end{frame}
 
 
 
+    \section{Generic inference algorithms}
 
-    \begin{frame}{Arc consistency}
+    \begin{frame}{So far}
 
-        More generic inference rules: Generating locally consistent assignments.
+        Generalized unit propagation choices subsets $\secgraph$ as:
+        \begin{itemize}
+            \item Two constraint tensors
+            \item One constraint tensor is of order $1$ (i.e. a vector)
+        \end{itemize}
+
+        More complex reasoning steps: Contraction of multiple constraint tensors with larger order, keeping only a subset open.
+
     \end{frame}
+
+    \begin{frame}{Recall: Support tensors}
+
+        Support tensor to a tensor $\hypercorewith$: $\nonzeroof{\hypercorewith}$ with coordinates
+        \begin{align*}
+            \nonzeroof{\hypercoreat{\indexedshortcatvariables}}
+            = \begin{cases}
+                  1 & \ifspace \hypercoreat{\indexedcatvariables}\neq 0 \\
+                  0 & \text{else}
+            \end{cases}
+        \end{align*}
+
+        \begin{block}{Invariance under adding support tensor to sub-contractions}
+            Any support tensor of a sub-contraction can be added to a tensor network: When $\secgraph$ a sub-hypergraph of $\graph$, then
+            \begin{align*}
+                \contractionof{\extnetwith}{\nodevariables}
+                = \contractionof{\extnetwith,
+                    \nonzeroof{\contractionof{\tnetofat{\secgraph}{\nodevariables}}{\catvariableof{\secnodes}}}
+                }{\nodevariables}
+            \end{align*}
+        \end{block}
+
+        In propositional logics, this means:
+        \begin{align*}
+            \nonzeroof{\contractionof{\extnetwith}{\nodevariables}}
+            \models \nonzeroof{\contractionof{\tnetofat{\secgraph}{\nodevariables}}{\catvariableof{\secnodes}}}
+        \end{align*}
+
+    \end{frame}
+
+
 
 
     \begin{frame}{Outlook}
@@ -138,63 +336,17 @@
             \item Efficiency: Number of possible sub-contractions, computational demand to perform a sub-contraction
             \item Generality: Larger contractions can perform more complex reasoning steps
         \end{itemize}
-
-        Scheduling is a central challenge for efficient inference.
-        Examples:
-        \begin{itemize}
-            \item Forward Chaining
-            \item SLD Resolution
-        \end{itemize}
-
-
-    \end{frame}
-
-
-    \section{Solution by backtracking search}
-
-    \begin{frame}{Idea of backtracking}
-
-        Guess an assignment to disentangle a node.
-        When running into an inconsistency, guess an alternative assignment.
+%
+%        Scheduling is a central challenge for efficient inference.
+%        Examples:
+%        \begin{itemize}
+%            \item Forward Chaining
+%            \item SLD Resolution
+%        \end{itemize}
 
 
     \end{frame}
 
-    \begin{frame}{Combination with constraint simplification}
-
-        Do generic forward chaining or constraint propagation to simplify constraints before guessing.
-
-
-    \end{frame}
-
-    \begin{frame}{Example: Painting australias states}
-
-        Take three colors: red, blue, green
-
-        \input{tikz/australia-states-backtracking}
-        \begin{itemize}
-            \item \only<2->{
-            Guess $\catvariableof{WA}$ to be red.
-        }
-            \item \only<3->{
-            Consequences for $\catvariableof{NT}$ and $\catvariableof{SA}$: red or green
-        }
-            \item \only<4->{
-            Guess $\catvariableof{NT}$ to be green.
-            }
-            \item \only<5->{
-            As a consequence, $\catvariableof{SA}$ has to be blue.
-            }
-            \item \only<6->{
-            The colors $\catvariableof{Q}$, $\catvariableof{NSW}$, $\catvariableof{V}$ also follow.
-            }
-            \item \only<7>{
-                The variable $\catvariableof{T}$ is disconnected and can be chosen arbitrarly.
-            }
-        \end{itemize}
-
-
-    \end{frame}
 
 \end{document}
 
