@@ -9,7 +9,6 @@
     April 20, 2026
 }
 
-
 \begin{document}
     {\frame[plain]{\titlepage}}
     \showoutlineatsection
@@ -95,15 +94,13 @@
         \end{center}
     \end{frame}
 
-%
 %    \begin{frame}{Which tensor network contractions are efficient?}
 %        Typical: Low connectivity
-%
-%        Logic:
+%        Logic: Focus on structure of clauses (e.g. definite), interest in support only
 %    \end{frame}
 
 
-    \section{Monotonicity of Entailment}
+    \section{Monotonicity of entailment}
 
     \begin{frame}{Motivation}
         Contractions of large knowledge bases get infeasible.
@@ -161,9 +158,9 @@
 
 
 
-    \begin{frame}{Monotonicity of Entailment}
+    \begin{frame}{Monotonicity of entailment}
 
-        \begin{theorem}[Monotonicity of Entailment]
+        \begin{theorem}[Monotonicity of entailment]
             Given a knowledge base $\kb$ of formulas, let $\seckb\subset\kb$ be a subset and let $\formula$ be another propositional formula.
             If $\seckb\models\formula$ then also $\kb\models\formula$.
         \end{theorem}
@@ -209,7 +206,7 @@
         \end{align*}
 
         \begin{block}{Interpretation: Memory of entailed formulas}
-            We can add entailed formulas to a knowledge base.
+            We can add entailed formulas to a knowledge base, as summaries of specific parts of it.
         \end{block}
 
     \end{frame}
@@ -217,25 +214,19 @@
 
     \begin{frame}{Usage for efficient reasoning}
         \par
-        {\bf Efficiency:} If $\seckb$ is a small subset, $\seckb\models\formula$ can be decided efficiently.
-
-            {\bf Reuse:} Entailed formulas $\formula$ can be added to the knowledge base and used in further $\seckb$ choices.
-
+        {\bf Efficiency:} If $\seckb$ is a small subset, $\seckb\models\formula$ can be decided efficiently. \\
+        {\bf Reuse:} Entailed formulas $\formula$ can be added to the knowledge base and used in further $\seckb$ choices.
         \begin{itemize}
             \item \emph{Messages:} Entailed formulas $\formula$ "summarize" subsets and are added to knowledge bases
-            \item \emph{Propagation:} Entailed formulas are propagated throughout the knowledge base and
+            \item \emph{Propagation:} Entailed formulas are propagated throughout the knowledge base
         \end{itemize}
-
-
         \begin{block}{Design of inference algorithms}
             Logical inference algorithms are designed based on the monotonicity and memory properties:
             \begin{itemize}
-                \item Choice of pairs $\seckb,\formula$ such that $\seckb\models\formula$: Often syntactical rules are applied
+                \item Choice of pairs $(\seckb,\formula)$ such that $\seckb\models\formula$: Often syntactical rules are applied
                 \item Priority of adding $\formula$ to $\kb$: Need to apply restrictions to avoid overloads
             \end{itemize}
         \end{block}
-
-
     \end{frame}
 
 
@@ -291,15 +282,19 @@
 
         Special types:
         \begin{itemize}
-            \item \emph{Horn clause:} There is at most one $\catenumerator\in\hardlegset$ with $\headindexof{\catenumerator}=1$
-            \item \emph{Definite clause:} There is at exactly one $\catenumerator\in\hardlegset$ with $\headindexof{\catenumerator}=1$
+            \item \emph{Horn clause:} There is at most one $\catenumerator\in\hardlegset$ with $\headindexof{\catenumerator}=0$
+            \item \emph{Definite clause:} There is at exactly one $\catenumerator\in\hardlegset$ with $\headindexof{\catenumerator}=0$
         \end{itemize}
 
-        Interpretation of definite clauses: Implications \\
-
-        {\bf Example:} If in addition to $F$ being present on an invoice, an invoice came from buisness partner $BP1$, then its booked using account $A1$.
+        Interpretation of definite clauses: Implications with
+        \begin{itemize}
+            \item \emph{Premises} by the negative literals
+            \item \emph{Head} by the positive literal
+        \end{itemize}
+        \medskip
+        {\bf Example:} If in addition to $F$ being present on an invoice, an invoice came from buisness partner $BP1$, then it is booked using account $A1$.
         \begin{align*}
-            \Big(\catvariableof{F} \land \catvariableof{BP1} \rightarrow \catvariableof{A1}\Big)
+            \Big(\underbrace{\catvariableof{F} \land \catvariableof{BP1}}_{\text{premises}} \Rightarrow \underbrace{\catvariableof{A1}}_{\text{head}}\Big)
             &\Leftrightarrow
             \lnot \Big((\catvariableof{F} \land \catvariableof{BP1}) \lor \catvariableof{A1} \Big) \\
             &\Leftrightarrow
@@ -355,10 +350,10 @@
         \begin{algorithm}[H]
             \begin{algorithmic}
                 \Require Set of clauses $\mathcal{C}$ (each parameterized by $\hardparam$)
-                \Ensure Entailed literals $\mathcal{L}$, remaining set of clauses
+                \Ensure Entailed literals $\mathcal{L}$
                 \iosepline
                 \State Initialize $\mathcal{L}=\varnothing$
-                \While{exists a clause $(\{\node\},\secheadindexof{\node})$ of length 1 in $\mathcal{C}$}
+                \While{exists a clause $(\{\node\},\secheadindexof{\node})$ of length 1 in $\mathcal{C}\backslash\mathcal{L}$}
                     \For{all clauses $\hardparam$ with $\node\in\hardlegset$}
                         \If{$\headindexof{\node}\neq\secheadindexof{\node}$}
                             \hfill \textcolor{blue}{(then the clause shrinks)}
@@ -369,7 +364,7 @@
                             \State $\mathcal{C}.\mathrm{drop(}\hardparam\mathrm{)}$ %\hfill \textcolor{blue}{(then the contracted clause is trivial)}
                         \EndIf
                     \EndFor
-                    \State $\mathcal{L}.\mathrm{append(}\{\node\},\secheadindexof{\node}\mathrm{)}$ \hfill \textcolor{blue}{(the literal is entailed and added to solution)}
+                    \State $\mathcal{L}.\mathrm{append\big((}\{\node\},\secheadindexof{\node}\mathrm{)\big)}$ \hfill \textcolor{blue}{(the literal is entailed and added to solution)}
                 \EndWhile
             \end{algorithmic}
         \end{algorithm}
@@ -562,15 +557,15 @@
 
     \begin{frame}{Sub-contractions}
 
-            {\bf Problem:} When keeping not all variables open, contractions may fail to be propositional formulas.
-    For example:
+        {\bf Problem:} When keeping not all variables open, contractions may fail to be propositional formulas.
+        For example:
         \begin{align*}
             \contractionof{\catvariableof{0}\Rightarrow\catvariableof{1}}{\catvariableof{0}}
             = \contractionof{\coloredmatrixof{1 & 1 \\ 0 & 1}{\catvariableof{0},\catvariableof{1}}}{\catvariableof{0}}
             = \coloredmatrixof{2 \\ 1 }{\catvariableof{0}}
         \end{align*}
-\medskip
-            {\bf Solution:} Build the support of the contracted tensor.
+        \medskip
+        {\bf Solution:} Build the support of the contracted tensor.
         We define the \emph{support $\nonzeroof{\hypercorewith}$} of a tensor $\hypercorewith$, as a tensor with coordinates
         \begin{align*}
             \nonzeroof{\hypercoreat{\indexedshortcatvariables}}

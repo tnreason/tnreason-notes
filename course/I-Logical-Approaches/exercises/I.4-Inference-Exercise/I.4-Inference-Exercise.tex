@@ -1,0 +1,36 @@
+\documentclass{scrartcl}
+\input{../../../spec_files/exercise_preamble}
+
+\begin{document}
+    \exercisehead{2}{Inference in Propositional Logics}{April 20, 2026}
+    \usecasebox{Example knowledge base}{
+     % Figure 7.16 in Russell, Norvig
+        Consider the propositional knowledge base consisting in the formulas (see Figure 7.16 in [Russell, Norvig: Artificial Intelligence]):
+        \begin{itemize}
+            \item[(0)] When $P$ then $Q$ follows.
+            \item[(1)] When $L$ and $M$ then $P$ follows.
+            \item[(2)] When $B$ and $L$ then $M$ follows.
+            \item[(3)] When $A$ and $P$ then $L$ follows.
+            \item[(4)] When $A$ and $B$ then $L$ follows.
+            \item[(5)] $A$ holds.
+            \item[(6)] $B$ holds.
+        \end{itemize}
+    }
+    \addtask{1 (after lecture I.3-Syntax)}{
+        Represent the formulas by propositional syntax and find the $CNF$ of the knowledge base.
+    }
+    \addtask{2 (after lecture I.4-Inference)}{
+        Consider the unit propagation algorithm on the knowledge base and
+        \begin{itemize}
+            \item determine the changes in the clauses $\mathcal{C}$ during each iteration of the $\mathrm{while}$ loop.
+            \item find the result $\mathcal{L}$.
+        \end{itemize}
+    }
+    \addtask{3 (after lecture I.4-Inference)}{
+        Which literals are entailed
+    \begin{itemize}
+        \item[(i)] by the knowledge base?
+        \item[(ii)] by the knowledge base of the formulas $(0),(1),(2),(3),(4)$?
+    \end{itemize}
+    }
+\end{document}

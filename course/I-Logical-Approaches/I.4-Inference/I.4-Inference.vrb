@@ -2,10 +2,10 @@
 \begin{algorithm}[H]
             \begin{algorithmic}
                 \Require Set of clauses $\mathcal{C}$ (each parameterized by $\hardparam$)
-                \Ensure Entailed literals $\mathcal{L}$, remaining set of clauses
+                \Ensure Entailed literals $\mathcal{L}$
                 \iosepline
                 \State Initialize $\mathcal{L}=\varnothing$
-                \While{exists a clause $(\{\node\},\secheadindexof{\node})$ of length 1 in $\mathcal{C}$}
+                \While{exists a clause $(\{\node\},\secheadindexof{\node})$ of length 1 in $\mathcal{C}\backslash\mathcal{L}$}
                     \For{all clauses $\hardparam$ with $\node\in\hardlegset$}
                         \If{$\headindexof{\node}\neq\secheadindexof{\node}$}
                             \hfill \textcolor{blue}{(then the clause shrinks)}
@@ -16,7 +16,7 @@
                             \State $\mathcal{C}.\mathrm{drop(}\hardparam\mathrm{)}$ %\hfill \textcolor{blue}{(then the contracted clause is trivial)}
                         \EndIf
                     \EndFor
-                    \State $\mathcal{L}.\mathrm{append(}\{\node\},\secheadindexof{\node}\mathrm{)}$ \hfill \textcolor{blue}{(the literal is entailed and added to solution)}
+                    \State $\mathcal{L}.\mathrm{append\big((}\{\node\},\secheadindexof{\node}\mathrm{)\big)}$ \hfill \textcolor{blue}{(the literal is entailed and added to solution)}
                 \EndWhile
             \end{algorithmic}
         \end{algorithm}
