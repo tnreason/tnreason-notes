@@ -1,4 +1,4 @@
-\frametitle{Unit propagation Algorithm}
+\frametitle{Unit propagation algorithm}
 \begin{algorithm}[H]
             \begin{algorithmic}
                 \Require Set of clauses $\mathcal{C}$ (each parameterized by $\hardparam$)

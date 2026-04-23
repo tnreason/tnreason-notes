@@ -14,18 +14,18 @@
         \end{itemize}
         The knowledge base is represented by the formulas:
         \begin{itemize}
-            \item $\formulaof{0} = \big((\catvariableof{B} \lor \catvariableof{E}) \Rightarrow \catvariableof{A}\big)$:
+            \item $\formulaof{0} \equiv \big((\catvariableof{B} \lor \catvariableof{E}) \Rightarrow \catvariableof{A}\big)$:
             When a Burglary or an Earthquake occurs, the Alarm rings.
-            \item $\formulaof{1} = \big(\catvariableof{A} \Rightarrow (\catvariableof{J} \lor \catvariableof{M})\big)$:
+            \item $\formulaof{1} \equiv \big(\catvariableof{A} \Rightarrow (\catvariableof{J} \lor \catvariableof{M})\big)$:
             When the Alarm rings then we receive a call from at least one of the neighbors John and Mary.
-            \item $\formulaof{2} = \big(\neg \catvariableof{J}\big)$:
+            \item $\formulaof{2} \equiv \big(\neg \catvariableof{J}\big)$:
             The neighbor John never calls.
         \end{itemize}
     }
     \addtask{2}{
         The truth table representation of the formulas is given by:
         \begin{itemize}
-            \item $\formulaof{0} = \big((\catvariableof{B} \lor \catvariableof{E}) \Rightarrow \catvariableof{A}\big)$:
+            \item $\formulaof{0} \equiv \big((\catvariableof{B} \lor \catvariableof{E}) \Rightarrow \catvariableof{A}\big)$:
             \begin{center}
                 \begin{tikzpicture}[scale=2]
                     \node (tab) at (-3,0) {
@@ -60,7 +60,7 @@
                     \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (0.8,-0.2) node [midway, below] {\tiny $\catvariableof{A}$} node[above] {\tiny $1$};
                 \end{tikzpicture}
             \end{center}
-            \item $\formulaof{1} = \big(\catvariableof{A} \Rightarrow (\catvariableof{M}\lor\catvariableof{J})\big)$:
+            \item $\formulaof{1} \equiv \big(\catvariableof{A} \Rightarrow (\catvariableof{M}\lor\catvariableof{J})\big)$:
             \begin{center}
                 \begin{tikzpicture}[scale=2]
                     \node (tab) at (-3,0) {
@@ -95,7 +95,7 @@
                     \draw[->,dashed] (0,-0.5) node[above] {\tiny $0$} -- (0.8,-0.2) node [midway, below] {\tiny $\catvariableof{A}$} node[above] {\tiny $1$};
                 \end{tikzpicture}
             \end{center}
-            \item $\formulaof{2} = \lnot\catvariableof{J}$:
+            \item $\formulaof{2} \equiv \lnot\catvariableof{J}$:
             \begin{center}
                 \begin{tikzpicture}[scale=2]
                     \node (tab) at (-3,0) {
@@ -125,7 +125,7 @@
             Test formula:
             \begin{align*}
                 \formulaofat{3}{\catvariableof{A},\catvariableof{B},\catvariableof{E}}
-                =\big(\catvariableof{A}\Rightarrow(\catvariableof{B}\lor\catvariableof{E})\big)
+                \equiv\big(\catvariableof{A}\Rightarrow(\catvariableof{B}\lor\catvariableof{E})\big)
             \end{align*}
             We construct an example state where $\kb$ is satisfied, but $\formulaof{4}$ is not satisfied:
             \begin{align*}
@@ -150,7 +150,7 @@
             Test formula:
             \begin{align*}
                 \formulaofat{4}{\catvariableof{A},\catvariableof{M}}
-                =\big(\catvariableof{A}\Rightarrow\catvariableof{M}\big)
+                \equiv\big(\catvariableof{A}\Rightarrow\catvariableof{M}\big)
             \end{align*}
             We have
             \vspace{-1cm}
@@ -224,7 +224,7 @@
             Test formula:
             \begin{align*}
                 \formulaofat{5}{\catvariableof{B},\catvariableof{E},\catvariableof{A},\catvariableof{M},\catvariableof{J}}
-                = \big((\lnot\catvariableof{M}\land\lnot\catvariableof{J})\Rightarrow(\lnot\catvariableof{A}\lor\lnot\catvariableof{B}\lor\lnot\catvariableof{E})\big)
+                \equiv \big((\lnot\catvariableof{M}\land\lnot\catvariableof{J})\Rightarrow(\lnot\catvariableof{A}\lor\lnot\catvariableof{B}\lor\lnot\catvariableof{E})\big)
             \end{align*}
             Trick: There is a single $0$ coordinate to $\formulaof{5}$, namely at the state
             \begin{align*}
@@ -247,7 +247,7 @@
     \addtask{4}{
         The decompositions of the basis encodings to $\formulaof{0},\formulaof{1},\formulaof{2}$ based on the syntactical representations above are:
         \begin{itemize}
-            \item $\formulaof{0} = \big((\catvariableof{B} \lor \catvariableof{E}) \Rightarrow \catvariableof{A}\big)$:
+            \item $\formulaof{0} \equiv \big((\catvariableof{B} \lor \catvariableof{E}) \Rightarrow \catvariableof{A}\big)$:
             \stantikzpic{
                 \begin{scope}[shift={(-12,-2)}]
                     \drawtextnode{7}{3.5}{${=}$}
@@ -272,7 +272,7 @@
                 \draw [->-] (-1.5,-2.5) -- (-1.5,-1) node[midway,left] {\colorlabelsize $\catvariableof{B}$};
                 \draw [->-] (1.5,-2.5) -- (1.5,-1) node[midway,left] {\colorlabelsize $\catvariableof{E}$};
             }
-            \item $\formulaof{1} = \big(\catvariableof{A}  \Rightarrow (\catvariableof{J}\lor\catvariableof{M})\big)$:
+            \item $\formulaof{1} \equiv \big(\catvariableof{A}  \Rightarrow (\catvariableof{J}\lor\catvariableof{M})\big)$:
             \stantikzpic{
                 \begin{scope}[shift={(-12,-2)}]
                     \drawtextnode{7}{3.5}{${=}$}
@@ -297,7 +297,7 @@
                 \draw [->-] (3,-2.5) -- (3,-1) node[midway,left] {\colorlabelsize $\catvariableof{B}$};
                 \draw [->-] (5,-2.5) -- (5,-1) node[midway,left] {\colorlabelsize $\catvariableof{E}$};
             }
-            \item $\formulaof{2}=\big(\lnot\catvariableof{J}\big)$
+            \item $\formulaof{2}\equiv\big(\lnot\catvariableof{J}\big)$
             \stantikzpic{
                 \draw[->-] (2,4.5) -- (2,6) node[midway,left] {\colorlabelsize $\headvariableof{\formulaof{2}}$};
                 \draw (1,2.5) rectangle (3,4.5);
@@ -379,5 +379,38 @@
 %            \drawvariablenode{0}{0}{$\catvariableof{E}$}{E}
 %            \drawvariablenode{5}{0}{$\catvariableof{A}$}{A}
 %        }
+    }
+    \addtask{5}{
+        We turn each formula into its $CNF$:
+        \begin{itemize}
+            \item $\formulaof{0}:$
+            \begin{align*}
+                \formulaof{0}
+                &\equiv \big((\catvariableof{B} \lor \catvariableof{E}) \Rightarrow \catvariableof{A}\big) &\\
+                &\equiv \big(\lnot(\catvariableof{B} \lor \catvariableof{E}) \lor \catvariableof{A}\big) & \text{(elimination of implication)}\\
+                &\equiv \big((\lnot\catvariableof{B} \land \lnot\catvariableof{E}) \lor \catvariableof{A}\big) & \text{(de Morgan rule)}\\
+                &\equiv \big((\lnot\catvariableof{B} \lor \catvariableof{A}) \land (\lnot\catvariableof{E} \lor \catvariableof{A})\big) & \text{(distributive rule)}
+            \end{align*}
+            \item $\formulaof{1}:$
+            \begin{align*}
+                \formulaof{1}
+                &\equiv \big(\catvariableof{A} \Rightarrow (\catvariableof{J}\lor\catvariableof{M})\big) &\\
+                &\equiv \big(\lnot\catvariableof{A} \lor (\catvariableof{J}\lor\catvariableof{M})\big) & \text{(elimination of implication)}\\
+                &\equiv \big(\lnot\catvariableof{A} \lor \catvariableof{J} \lor \catvariableof{M}\big) & \text{(associative rule)}
+            \end{align*}
+            \item $\formulaof{2}:$
+            \begin{align*}
+                \formulaof{2}
+                &\equiv \big(\lnot\catvariableof{J}\big) 
+            \end{align*}
+        \end{itemize}
+    The $CNF$ of the knowledge base is the disjunction of the $CNF$ of each formula:
+    \begin{align*}
+        \kb \equiv \big(
+        (\lnot\catvariableof{B} \lor \catvariableof{A}) \land (\lnot\catvariableof{E} \lor \catvariableof{A})
+        \land (\lnot\catvariableof{A} \lor \catvariableof{J} \lor \catvariableof{M})
+        \land (\lnot\catvariableof{J})
+        \big)
+    \end{align*}
     }
 \end{document}

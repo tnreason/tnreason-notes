@@ -3,6 +3,8 @@
 \input{../../spec_files/course_preamble.tex}
 \input{../../spec_files/course_macros.tex}
 
+\usepackage{cancel}
+
 \setslidetitledate{
     Constraint Satisfaction Problems
 }{
@@ -13,12 +15,268 @@
 
     {\frame[plain]{\titlepage}}
 
+
+    \begin{frame}{Constraint Satisfaction Problems}
+
+        Sets of variables and constraint tensors
+
+        E.g. Satisfiability of a knowledge base is a CSP
+
+        \begin{block}{Contraction criterion}
+            A CSP is satisfiable if and only if its contraction does not vanish, that is
+            \begin{align*}
+                \contraction{\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols \edgein\}} \neq 0 \, .
+            \end{align*}
+        \end{block}
+
+        \begin{center}
+            \bf While global contraction is a generic solver, it cannot be an efficient one.
+        \end{center}
+
+    \end{frame}
+
     \showoutlineatsection
 
 
-    \section{Examples}
+    \section{Sudoku}
 
-    \begin{frame}{Graph Coloring}
+    \begin{frame}{Example: Sudoku}
+
+        Consider grids of $\sudokunum^2 \times \sudokunum^2$ cells assigned by numbers in $[\sudokunum^2]$, where usually $\sudokunum=3$ but for visualization purposes we will take $\sudokunum=2$.
+        \medskip \\
+        {\bf Constraints:}
+        \begin{itemize}
+            \item Each cell contains exactly one digit
+            \item Each digit appears exactly once in each row, column and square
+        \end{itemize}
+        \medskip
+        {\bf Example} of a $2^2 \times 2^2$ Sudoku with initial clues and unique solution:
+        \input{tikz/sudoku-start-example}
+    \end{frame}
+
+
+    \begin{frame}{Representation of Sudoku}
+        We enumerate each cell by tuples $r_0r_1c_0c_1\in[\sudokunum]^4$, where $(r_0,r_1)$ select the $r_0\cdot\sudokunum+r_1$th row and $(c_0c_1)$ the $c_0\cdot\sudokunum+c_1$th column:
+        \begin{align*}
+            \begin{matrix}
+                0000 & 0001 & 0010 & 0011 \\
+                0100 & 0101 & 0110 & 0111 \\
+                1000 & 1001 & 1010 & 1011 \\
+                1100 & 1101 & 1110 & 1111 \\
+            \end{matrix}
+        \end{align*}
+        For each possible assignment $i$ to each cell $r_0r_1c_0c_1$ we define a hidden variable $\catvariableof{r_0r_1c_0c_1i}$, which is $1$ if the cell $r_0r_1c_0c_1$ is assigned by $i$ and $0$ else.
+        \begin{align*}
+            \{\catvariableof{r_0r_1c_0c_1i} \wcols r_0r_1c_0c_1 \in [\sudokunum]  \ncond i \in [\sudokunum^2]\}
+        \end{align*}
+
+
+    \end{frame}
+
+    \begin{frame}{Sudoku constraint tensors}
+        Sudoku constraints enforce "exactly-one" condition by tensors $\hypercoreat{\catvariableof{\arbset}}$ with indices
+        \begin{align*}
+            \hypercoreat{\indexedcatvariableof{\arbset}}
+            = \begin{cases}
+                  1 & \ifspace \sum_{\arbelement\in\arbset}\catindexof{\arbelement}=1 \\
+                  0 & \text{else}
+            \end{cases}
+        \end{align*}
+
+        We choose $\arbset$ differently for each constraint:
+        \begin{itemize}
+            \item {\bf Position constraints:} $\arbset=\{(r_0r_1c_0c_1i) \wcols i\in[\sudokunum^2]\}$ for each cell $r_0r_1c_0c_1$
+            \item {\bf Row constraints:} $\arbset=\{(r_0r_1c_0c_1i) \wcols c_0,c_1\in[\sudokunum]\}$ for each row $r_0r_1$ and each digit $i$
+            \item {\bf Column constraints:} $\arbset=\{(r_0r_1c_0c_1i) \wcols r_0,r_1\in[\sudokunum]\}$ for each column $c_0c_1$ and each digit $i$
+            \item {\bf Square constraints:} $\arbset=\{(r_0r_1c_0c_1i) \wcols r_1,c_1\in[\sudokunum]\}$ for each square $r_0c_0$ and each digit $i$
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Decomposition of Sudoku constraints}
+
+        The constraints are decomposed using a decomposition variable $\decvariable\in[\sudokunum^2]$ corresponding to the nonvanishing digit.
+        This is enforce for each $i\in[\sudokunum^2]$ by constraint matrices
+        \begin{align*}
+            \hypercoreofat{i}{\catvariableof{i},\decvariable}
+            = \tbasisat{\catvariable} \otimes \onehotmapofat{i}{\decvariable}
+            + \fbasisat{\catvariable} \otimes \left(\onesat{\decvariable} - \onehotmapofat{i}{\decvariable}\right) \, .
+        \end{align*}
+
+        For example:
+        \begin{align*}
+            \hypercoreofat{2}{\catvariable,\decvariable}
+            = \coloredmatrixof{1 & 1 & 0 & 1 \\ 0 & 0 & 1 & 0}{\catvariable,\decvariable}
+        \end{align*}
+
+        In total we have a decomposition (in the so-called $\cpformat$-format):
+        % \vspace{-1cm}
+        \input{tikz/sudoku-constraint-decomposition}
+    \end{frame}
+
+%    \begin{frame}{Adjusting possible variable assignments}
+%
+%        Easiest inference scheme: Adjusting possible variable assignments
+%
+%    \end{frame}
+
+    %Computation perspective: Hidden variables computing the atomic variables.
+    %Speciality of Sudoku constraint: Can disentangle to basis vector $\fbasis$ when position variable
+
+
+    \section{Generalized unit propagation}
+
+    \begin{frame}{Disentangling the constraint network}
+
+        {\bf Idea:} When a CSP has a unique solution $\catindexof{\nodes}$, then the contracted tensor is elementary:
+        \begin{align*}
+            \contractionof{\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edgein\}}{\nodevariables}
+            = \bigotimes_{\nodein} \onehotmapofat{\catindexof{\node}}{\catvariableof{\node}}
+        \end{align*}
+
+        \medskip
+        {\bf Aim:} Perform manipulation operations to \emph{disentangle} the constraints.
+        \begin{itemize}
+            \item Perform a sub-contraction replacing tensors
+            \item Try to split the resulting tensor into a tensor product
+        \end{itemize}
+%        Example for graph coloring: When a color is known, the corresponding edges can be dropped.
+%        Goal of inference: Disentangling the constraint network
+%        \begin{itemize}
+%            \item Satisfiability when all local vectors non-vanishing
+%            \item Read off the solutions as a cartesian product of local conditions
+%        \end{itemize}
+
+    \end{frame}
+
+    \begin{frame}{Disentangling a known position in Sudoku}
+        \par
+        {\bf Example:} When $0$ at position $0000$, then no other number is at that position true.
+        \input{tikz/sudoku-position-known-example}
+        \begin{center}
+            \bf We disentangle each atomic variable corresponding with a known position.
+        \end{center}
+    \end{frame}
+
+    \begin{frame}{Generalized unit propagation}
+
+        Generalized unit propagation:
+        Do until convergence
+        \begin{itemize}
+            \item Contract a vector to each neighboring tensor
+            \item Try to split the resulting tensor into a vector and a tensor
+            \item If success and the remaining tensor is a vector: Repeat for the remaining vector
+        \end{itemize}
+
+        Comparison with unit propagation so far:
+        \begin{itemize}
+            \item Works with arbitrary constraints (shape, values), while so far on unit clauses
+            \item Performs sub-contraction and tries to split the resulting tensor
+        \end{itemize}
+
+%        Known as AC-3: Enforcing arc-consistency.
+
+    \end{frame}
+
+    \begin{frame}{Generalized unit propagation algorithm}
+
+        \begin{algorithm}[H]
+            \begin{algorithmic}
+                \Require Constraint network $\extnet$
+                \Ensure Equivalent constraint network $\extnet$, with potentially less connectivity in $\graph$
+                \iosepline
+                \State Initialize a queue $Q$ of unary edges in $\graph$
+                \While{$Q$ not empty}
+                    \State $\{\node\}=Q.pop()$
+                    \For{$\edge\in\edges\wcols \node\in\edge$}
+                        \State $\hypercoreofat{\edge}{\catvariableof{\edge}}
+                        \algdefsymbol \contractionof{\hypercoreofat{\edge}{\catvariableof{\edge}},\hypercoreofat{\{\node\}}{\catvariableof{\node}}}{\catvariableof{\edge}}$
+                        \State Try to split $\hypercoreofat{\edge}{\catvariableof{\edge}}$ into a vector $\node$ and a tensor $\edge\backslash\{\node\}$
+                        \If{Split successful and $\cardof{\edge\backslash\{\node\}}=1$}
+                            \State $Q.push(\edge\backslash\{\node\})$
+                        \EndIf
+                    \EndFor
+                \EndWhile
+                \State \Return $\extnet$
+            \end{algorithmic}
+        \end{algorithm}
+
+    \end{frame}
+
+    \begin{frame}{Matrix-vector example}
+        Find the $2$ in the first row:
+        \input{tikz/sudoku-easy-example}
+
+        \only<7>{
+            With these matrix-vector contraction schemes, the example Sudoku can be solved:
+            \input{tikz/sudoku-start-example}
+        }
+
+    \end{frame}
+
+    \begin{frame}{Generalized unit propagation}
+        Same behaviour as classical Sudoku solvers:
+        \begin{itemize}
+            \item Dancing Links [Knuth: Art of Computer Programming, Vol. 4b]
+            \item AC-3 [Mackworth: Consistency in Networks of Relations]
+        \end{itemize}
+
+        But: Often convergence without solution.
+        On the Nicoli100 benchmark: 49\% solved by generalized unit propagation.
+    \end{frame}
+
+
+    \begin{frame}{Limitations}
+        \par  {\bf Example:} Which cells cannot get a $2$ assigned?
+        \vspace{-0.5cm}
+        \input{tikz/sudoku-complex-example}
+        \only<3>{
+            \begin{center}
+                \bf We need a contraction of four constraint matrices, to continue!
+            \end{center}
+        }
+        \only<5->{
+            \medskip
+            {\bf Result:} Two cells can be excluded for $2$.
+        }
+    \end{frame}
+
+
+    %\section{Solution by forward chaining}
+
+%    \begin{frame}{Solution by forward chaining like method}
+%
+%        Here: AC-3 a generalization of forward chaining to leg dimensions $\catdim>2$!
+%
+%        Can show:
+%        AC-3 and forward chaining do the most basic inference scheme, i.e. keeping track of possible assignments based on single constraint matrices.
+%
+%    \end{frame}
+%
+%    \begin{frame}{Arc consistency}
+%
+%        More generic inference rules: Generating locally consistent assignments.
+%    \end{frame}
+
+%    \begin{frame}{Edge inference scheme}
+%
+%        Each node color gets assigned a vector of possibilities.
+%        \begin{align*}
+%            \vectorofat{\node_0}{\catvariableof{\node_0}}
+%            = \nonzeroof{
+%                \contractionof{
+%                    \vectorofat{\node_0}{\catvariableof{\node_0}},
+%                    \hypercoreofat{\edge}{\catvariableof{\node_{0}},\catvariableof{\node_{1}}},
+%                    \vectorofat{\node_0}{\catvariableof{\node_1}}
+%                }{\catvariableof{\node_0}}
+%            }
+%        \end{align*}
+%
+%    \end{frame}
+
+
+    \section{Graph Coloring}
+
+    \begin{frame}{Example: Graph Coloring}
 
         \begin{block}{Graph Coloring Problem}
             Given a graph $\graph=(\nodes,\edges)$ and $\catdim$ colors, find a coloring of the nodes, such that adjacent nodes have different colors.
@@ -82,110 +340,51 @@
     \end{frame}
 
 
+    \begin{frame}{Example: Cycle of three nodes}
 
-    %\section{Sudoku}
+        Is a cycle of three nodes colorable by two colors?
+        \stantikzpic{
+            \drawvariablenode{0}{0}{$\catvariableof{0}$}{0}
+            \drawvariablenode{5}{3}{$\catvariableof{1}$}{1}
+            \drawvariablenode{5}{-2}{$\catvariableof{2}$}{2}
+            \draw (0) -- (1);
+            \draw (1) -- (2);
+            \draw (2) -- (0);
+        }
+        Cannot detect the unsatisfiability by contractions of two matrices.
 
-    \begin{frame}{Representation of Sudoku}
-
-        By hidden variables storing digit at a field, digit positions in rows, columns and squares.
-
-        Computation perspective: Hidden variables computing the atomic variables.
-        Speciality of Sudoku constraint: Can disentangle to basis vector $\fbasis$ when position variable
-
+        In general: Cycles with odd numbers need three colors, of two need two colors.
     \end{frame}
 
-    \begin{frame}{Adjusting possible variable assignments}
+    \begin{frame}{Example: Cycle of three nodes}
 
-        Easiest inference scheme: Adjusting possible variable assignments
-
-    \end{frame}
-
-
-
-    \section{Generalized unit propagation}
-
-    \begin{frame}{Disentangling the constraint network}
-
-        Example for graph coloring: When a color is known, the corresponding edges can be dropped.
-
-        Goal of inference: Disentangling the constraint network
-        \begin{itemize}
-            \item Satisfiability when all local vectors non-vanishing
-            \item Read off the solutions as a cartesian product of local conditions
-        \end{itemize}
-
-    \end{frame}
-
-
-    \begin{frame}{Generalized unit propagation}
-
-        Comparison with unit propagation so far:
-        \begin{itemize}
-            \item Works with arbitrary constraints (shape, values), while so far on unit clauses
-            \item
-        \end{itemize}
-
-        Known as AC-3: Enforcing arc-consistency.
+        By three variables colorable:
+        The contracted tensor has $6$ non-vanishing entries, which correspond to the $6$ possible colorings of the three nodes by three colors.
+        \stantikzpic{
+            \drawtextnode{0}{0}{
+                $\begin{pmatrix}
+                     0 & 0 & 0 \\
+                     0 & 0 & 1 \\
+                     0 & 1 & 0
+                \end{pmatrix}$
+            }
+            \drawtextnode{5}{2}{
+                $\begin{pmatrix}
+                     0 & 0 & 1 \\
+                     0 & 0 & 0 \\
+                     1 & 0 & 0
+                \end{pmatrix}$
+            }
+            \drawtextnode{10}{4}{
+                $\begin{pmatrix}
+                     0 & 1 & 0 \\
+                     1 & 0 & 0 \\
+                     0 & 0 & 0
+                \end{pmatrix}$
+            }
+        }
 
     \end{frame}
-
-    \begin{frame}{Generalized unit propagation algorithm}
-
-        \begin{algorithm}[H]
-            \begin{algorithmic}
-                \Require Constraint network $\extnet$
-                \Ensure Equivalent constraint network $\extnet$, with potentially less connectivity in $\graph$
-                \iosepline
-                \State Initialize a queue $Q$ of unary edges in $\graph$
-                \While{$Q$ not empty}
-                    \State $\{\node\}=Q.pop()$
-                    \For{$\edge\in\edges\wcols \node\in\edge$}
-                        \State $\hypercoreofat{\edge}{\catvariableof{\edge}}
-                        \algdefsymbol \contractionof{\hypercoreofat{\edge}{\catvariableof{\edge}},\hypercoreofat{\{\node\}}{\catvariableof{\node}}}{\catvariableof{\edge}}$
-                    \State Try to split $\hypercoreofat{\edge}{\catvariableof{\edge}}$ into a vector $\node$ and a tensor $\edge\backslash\{\node\}$
-                    \If{Split successful and $\cardof{\edge\backslash\{\node\}}=1$}
-                        \State $Q.push(\edge\backslash\{\node\})$
-                    \EndIf
-                    \EndFor
-                \EndWhile
-                \State \Return $\extnet$
-            \end{algorithmic}
-        \end{algorithm}
-
-    \end{frame}
-
-
-    %\section{Solution by forward chaining}
-
-%    \begin{frame}{Solution by forward chaining like method}
-%
-%        Here: AC-3 a generalization of forward chaining to leg dimensions $\catdim>2$!
-%
-%        Can show:
-%        AC-3 and forward chaining do the most basic inference scheme, i.e. keeping track of possible assignments based on single constraint matrices.
-%
-%    \end{frame}
-%
-%    \begin{frame}{Arc consistency}
-%
-%        More generic inference rules: Generating locally consistent assignments.
-%    \end{frame}
-
-%    \begin{frame}{Edge inference scheme}
-%
-%        Each node color gets assigned a vector of possibilities.
-%        \begin{align*}
-%            \vectorofat{\node_0}{\catvariableof{\node_0}}
-%            = \nonzeroof{
-%                \contractionof{
-%                    \vectorofat{\node_0}{\catvariableof{\node_0}},
-%                    \hypercoreofat{\edge}{\catvariableof{\node_{0}},\catvariableof{\node_{1}}},
-%                    \vectorofat{\node_0}{\catvariableof{\node_1}}
-%                }{\catvariableof{\node_0}}
-%            }
-%        \end{align*}
-%
-%    \end{frame}
 
 
     \section{Backtracking search}
@@ -236,13 +435,40 @@
         Guess an assignment to disentangle a node.
         When running into an inconsistency, guess an alternative assignment.
 
+        We do this until a non-vanishing elementary constraint network is reached.
+        From this (possibly multiple) solutions can be constructed by local solutions.
 
     \end{frame}
+
+    \begin{frame}{Backtracking algorithm}
+
+        \begin{algorithm}[H]
+            \begin{algorithmic}
+                \Require Constraint network $\extnet$
+                \Ensure Elementary constraint network
+                \iosepline
+                \State Choose a node $\node$ in a non-unitary edge $\edge$
+                \For{$\catindexofin{\node}$}
+                    \State $\tilde{\extnet}\algdefsymbol\extnet\cup\{\onehotmapofat{\catindexof{\node}}{\catvariableof{\node}}\}$
+                    \State $\tilde{\extnet}\algdefsymbol\mathrm{Simplify}(\tilde{\extnet})$ \hfill \textcolor{\concolor}{(different implementation)}
+                    \If{$\tilde{\extnet}$ vanishing}
+                        \State \Return $False$
+                    \EndIf
+                    \State $\tilde{\extnet}\algdefsymbol\mathrm{Backtrack}(\extnet\cup\{\onehotmapofat{\catindexof{\node}}{\catvariableof{\node}}\})$
+                    \If{$\extnet$ not $False$}
+                        \State \Return $\extnet$
+                    \EndIf
+                \EndFor
+                \State \Return $False$
+            \end{algorithmic}
+        \end{algorithm}
+
+    \end{frame}
+
 
     \begin{frame}{Combination with constraint simplification}
 
         Do generic unit propagation in an inner loop to simplify constraints before guessing.
-
 
     \end{frame}
 
@@ -274,7 +500,6 @@
 
 
     \end{frame}
-
 
 
     \section{Generic inference algorithms}

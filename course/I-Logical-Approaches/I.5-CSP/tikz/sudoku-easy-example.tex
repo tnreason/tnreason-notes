@@ -1,0 +1,127 @@
+\begin{center}
+    \begin{tikzpicture}[sudokuspec,scale=0.35]
+        \matrix[sudokumatrix] (M) at (-18,-2.5) {
+            \only<1,3->{0}\only<2>{\textcolor{\concolor}{0}} &  \only<1-2,4->{3}\only<3>{\textcolor{\concolor}{3}} & \ \only<6>{\textcolor{\probcolor}{2}} & \only<1-3,5->{1}\only<4>{\textcolor{\concolor}{1}} \\
+            \ & \ & \ & \  \\
+            \ & \ & \ & \ \\
+            \ & \ & \ & \ \\
+        };
+        \drawsudokutwolines{M}
+
+        \only<1>{
+            \drawsmalltensor{-9}{0}{\corelabelsize $\fbasis$}
+            \draw (-9,-1) -- (-9,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00002}$};
+            \drawvariabledot{-9}{-2.5}
+            \draw (-9,-2.5) -- (-8.5,-2.5);
+            \draw (-4.5,-8) to[bend right= -20] (-9,-6);
+            \drawsmalltensor{-9}{-5}{\corelabelsize $\hypercoreof{0}$}
+            \drawvariabledot{-4.5}{-8}
+            \draw (-4.5,-8) to[bend right= -20] (-9,-6);
+            \draw (-4.5,-8) -- (-4.5,-9) node[midway,right] {\colorlabelsize $\decvariableof{00::2}$};
+        }
+        \only<2>{
+%            \draw (-3,-9) rectangle (-6,-11);
+%            \drawtextnode{-4.5}{-10}{\corelabelsize $\ones$}
+            \begin{scope}[\concolor]
+                \drawsmalltensor{-9}{0}{\corelabelsize $\fbasis$}
+                \draw (-9,-1) -- (-9,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00002}$};
+                \drawvariabledot{-9}{-2.5}
+                \draw (-9,-2.5) -- (-8.5,-2.5);
+                \drawsmalltensor{-9}{-5}{\corelabelsize $\hypercoreof{0}$}
+                \drawvariabledot{-4.5}{-8}
+                \draw (-4.5,-8) to[bend right= -20] (-9,-6);
+                \draw (-4.5,-8) -- (-4.5,-9) node[midway,right] {\colorlabelsize $\decvariableof{00::2}$};
+            \end{scope}
+        }
+        \only<3->{
+            \drawsmalltensor{-9}{0}{\corelabelsize $\fbasis$}
+            \draw (-9,-1) -- (-9,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00002}$};
+        }
+        \only<3>{
+            \draw (-3,-9) rectangle (-6,-11);
+            \drawtextnode{-4.5}{-10}{\corelabelsize $\ones-\onehotmapof{0}$}
+            \drawvariabledot{-4.5}{-8}
+            \draw (-4.5,-8) -- (-4.5,-9) node[midway,right] {\colorlabelsize $\decvariableof{00::2}$};
+        }
+
+        \only<1-3>{
+
+            \drawsmalltensor{-6}{0}{\corelabelsize $\fbasis$}
+            \draw (-6,-1) -- (-6,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00012}$};
+            \drawvariabledot{-6}{-2.5}
+            \draw (-6,-2.5) -- (-5.5,-2.5);
+            \draw (-4.5,-8) to[bend right= -10] (-6,-6);
+            \drawsmalltensor{-6}{-5}{\corelabelsize $\hypercoreof{1}$}
+        }
+        \only<3>{
+            \begin{scope}[\concolor]
+                \drawsmalltensor{-6}{0}{\corelabelsize $\fbasis$}
+                \draw (-6,-1) -- (-6,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00012}$};
+                \drawvariabledot{-6}{-2.5}
+                \draw (-6,-2.5) -- (-5.5,-2.5);
+                \draw (-4.5,-8) to[bend right= -10] (-6,-6);
+                \drawsmalltensor{-6}{-5}{\corelabelsize $\hypercoreof{1}$}
+
+                \draw (-3,-9) rectangle (-6,-11);
+                \drawtextnode{-4.5}{-10}{\corelabelsize $\ones-\onehotmapof{0}$}
+
+                \drawvariabledot{-4.5}{-8}
+                \draw (-4.5,-8) -- (-4.5,-9) node[midway,right] {\colorlabelsize $\decvariableof{00::2}$};
+            \end{scope}
+        }
+        \only<4->{
+            \drawsmalltensor{-6}{0}{\corelabelsize $\fbasis$}
+            \draw (-6,-1) -- (-6,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00012}$};
+        }
+
+        \only<1-3>{
+            \drawsmalltensor{0}{0}{\corelabelsize $\fbasis$}
+            \draw (0,-1) -- (0,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00112}$};
+            \drawvariabledot{0}{-2.5}
+            \draw (0,-2.5) -- (0.5,-2.5);
+            \draw (-4.5,-8) to[bend right= 20] (0,-6);
+            \drawsmalltensor{0}{-5}{\corelabelsize $\hypercoreof{3}$}
+        }
+        \only<4>{
+            \begin{scope}[\concolor]
+                \drawsmalltensor{0}{0}{\corelabelsize $\fbasis$}
+                \draw (0,-1) -- (0,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00112}$};
+                \drawvariabledot{0}{-2.5}
+                \draw (0,-2.5) -- (0.5,-2.5);
+                \draw (-4.5,-8) to[bend right= 20] (0,-6);
+                \drawsmalltensor{0}{-5}{\corelabelsize $\hypercoreof{3}$}
+                \drawvariabledot{-4.5}{-8}
+                \draw (-4.5,-8) -- (-4.5,-9) node[midway,right] {\colorlabelsize $\decvariableof{00::2}$};
+                \draw (-2,-9) rectangle (-7,-11);
+                \drawtextnode{-4.5}{-10}{\corelabelsize $\ones-\onehotmapof{0}-\onehotmapof{1}$}
+            \end{scope}
+        }
+        \only<5->{
+            \drawsmalltensor{0}{0}{\corelabelsize $\fbasis$}
+            \draw (0,-1) -- (0,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00013}$};
+        }
+        \only<1-4>{
+            \draw (-4.5,-8) to[bend right= 10] (-3,-6);
+            \drawsmalltensor{-3}{-5}{\corelabelsize $\hypercoreof{2}$}
+            \draw (-3,-1) -- (-3,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00102}$};
+        }
+        \only<5>{
+            \begin{scope}[\concolor]
+                \draw (-4.5,-8) to[bend right= 10] (-3,-6);
+                \drawsmalltensor{-3}{-5}{\corelabelsize $\hypercoreof{2}$}
+                \draw (-3,-1) -- (-3,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00102}$};
+                \drawvariabledot{-4.5}{-8}
+                \draw (-4.5,-8) -- (-4.5,-9) node[midway,right] {\colorlabelsize $\decvariableof{00::2}$};
+                \drawsmalltensor{-4.5}{-10}{$\onehotmapof{2}$}
+            \end{scope}
+        }
+        \only<6->{
+            \begin{scope}[\probcolor]
+                \drawsmalltensor{-3}{0}{$\tbasis$}
+                \draw (-3,-1) -- (-3,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00102}$};
+            \end{scope}
+            \draw (-4.5,-7) -- (-4.5,-9) node[midway,right] {\colorlabelsize $\decvariableof{00::2}$};
+            \drawsmalltensor{-4.5}{-6}{$\onehotmapof{2}$}
+        }
+    \end{tikzpicture}
+\end{center}

@@ -1,0 +1,82 @@
+\begin{center}
+    \begin{tikzpicture}[sudokuspec,scale=0.35]
+        \matrix[sudokumatrix] (M) at (-18,-2.5) {
+            0 & \ & \ & \ \\
+            \ & \ & \ & \  \\
+            \ & \ & \ & \ \\
+            \ & \ & \ & \ \\
+        };
+        \drawsudokutwolines{M}
+
+        \only<1-5>{
+            \drawvariabledot{-4.5}{-8}
+            \draw (-4.5,-8) -- (-4.5,-9) node[midway,right] {\colorlabelsize $\decvariableof{00::2}$};
+        }
+        \only<6->{
+            \draw (-4.5,-7) -- (-4.5,-9) node[midway,right] {\colorlabelsize $\decvariableof{00::2}$};
+        }
+
+        \only<3->{
+            \drawsmalltensor{-4.5}{-10}{$\onehotmapof{0}$}
+        }
+
+        \only<1>{
+            \drawsmalltensor{-9}{0}{\corelabelsize $\tbasis$}
+            \draw (-9,-1) -- (-9,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00000}$};
+            \drawvariabledot{-9}{-2.5}
+            \draw (-9,-2.5) -- (-8.5,-2.5);
+            \drawsmalltensor{-9}{-5}{\corelabelsize $\hypercoreof{0}$}
+            \draw (-4.5,-8) to[bend right= -20] (-9,-6);
+        }
+        \only<2>{
+            \begin{scope}[\concolor]
+                \drawsmalltensor{-9}{0}{\corelabelsize $\tbasis$}
+                \draw (-9,-1) -- (-9,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00000}$};
+                \drawvariabledot{-9}{-2.5}
+                \draw (-9,-2.5) -- (-8.5,-2.5);
+                \drawsmalltensor{-9}{-5}{\corelabelsize $\hypercoreof{0}$}
+                \draw (-4.5,-8) to[bend right= -20] (-9,-6);
+            \end{scope}
+        }
+        \only<3->{
+            \drawsmalltensor{-9}{0}{\corelabelsize $\tbasis$}
+            \draw (-9,-1) -- (-9,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00000}$};
+        }
+
+        \only<1-3>{
+            \draw (-6,-1) -- (-6,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00001}$};
+            \drawsmalltensor{-6}{-5}{\corelabelsize $\hypercoreof{1}$}
+            \draw (-4.5,-8) to[bend right= -10] (-6,-6);
+        }
+        \only<4>{
+            \begin{scope}[\concolor]
+                \draw (-6,-1) -- (-6,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00001}$};
+                \drawsmalltensor{-6}{-5}{\corelabelsize $\hypercoreof{1}$}
+                \draw (-4.5,-8) to[bend right= -10] (-6,-6);
+                \draw (-4.5,-8) -- (-4.5,-9) node[midway,right] {\colorlabelsize $\decvariableof{00::2}$};
+                \drawsmalltensor{-4.5}{-10}{$\onehotmapof{0}$}
+            \end{scope}
+        }
+        \only<5->{
+            \drawsmalltensor{-6}{0}{$\fbasis$}
+            \draw (-6,-1) -- (-6,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00001}$};
+        }
+
+        \only<1-5>{
+            \draw (-3,-1) -- (-3,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00002}$};
+            \drawsmalltensor{-3}{-5}{\corelabelsize $\hypercoreof{2}$}
+            \draw (-4.5,-8) to[bend right= 10] (-3,-6);
+
+            \draw (0,-1) -- (0,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00003}$};
+            \drawsmalltensor{0}{-5}{\corelabelsize $\hypercoreof{3}$}
+            \draw (-4.5,-8) to[bend right= 20] (0,-6);
+        }
+        \only<6->{
+            \drawsmalltensor{-3}{0}{$\fbasis$}
+            \draw (-3,-1) -- (-3,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00002}$};
+            \drawsmalltensor{0}{0}{$\fbasis$}
+            \draw (0,-1) -- (0,-4) node[midway,left,xshift=2pt] {\colorlabelsize $\catvariableof{00003}$};
+        }
+
+    \end{tikzpicture}
+\end{center}

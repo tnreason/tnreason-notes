@@ -182,7 +182,7 @@
 
 
 
-    \begin{frame}{Invariance of adding entailled formulas}
+    \begin{frame}{Invariance of adding entailed formulas}
 
 
         If $\kb\models\formula$, then for any $\shortcatindices\in[2]^\seldim$
@@ -255,12 +255,11 @@
 
     \begin{frame}{Modus Ponens}
 
-
         \begin{block}{Modus Ponens Inference Rule}
             {\bf Modus Ponens} is the simplest inference rule: When an implication holds and the premise is true, then the head follows.
             \begin{align*}
                 \frac{
-                    (\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1})\rightarrow\catvariableof{\catorder} \,,\,\, (\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1})
+                    (\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1})\Rightarrow\catvariableof{\catorder} \,,\,\, (\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1})
                 }{
                     \catvariableof{\catorder}
                 }
@@ -295,9 +294,9 @@
         {\bf Example:} If in addition to $F$ being present on an invoice, an invoice came from buisness partner $BP1$, then it is booked using account $A1$.
         \begin{align*}
             \Big(\underbrace{\catvariableof{F} \land \catvariableof{BP1}}_{\text{premises}} \Rightarrow \underbrace{\catvariableof{A1}}_{\text{head}}\Big)
-            &\Leftrightarrow
-            \lnot \Big((\catvariableof{F} \land \catvariableof{BP1}) \lor \catvariableof{A1} \Big) \\
-            &\Leftrightarrow
+            &\equiv
+            \Big(\lnot (\catvariableof{F} \land \catvariableof{BP1}) \lor \catvariableof{A1} \Big) \\
+            &\equiv
             \Big(\lnot\catvariableof{F} \lor \lnot \catvariableof{BP1} \lor \catvariableof{A1} \Big)
         \end{align*}
 
@@ -307,7 +306,7 @@
         \par
         {\bf Given:} A knowledge base of implications (definite clauses) in the form
         \begin{align*}
-            \Big(\bigwedge_{\catenumerator\in\mathcal{M}}\catvariableof{\catenumerator}\Big)\rightarrow\catvariableof{\seccatenumerator}
+            \Big(\bigwedge_{\catenumerator\in\mathcal{M}}\catvariableof{\catenumerator}\Big)\Rightarrow\catvariableof{\seccatenumerator}
         \end{align*}
         which are clauses
         \begin{align*}
@@ -320,7 +319,7 @@
         \begin{itemize}
             \item Computation of {\bf messages}: The formula $\catvariableof{\catorder}$ is entailed by the local knowledge base
             \begin{align*}
-                \seckb = \Big\{\Big(\bigwedge_{\catenumerator\in\mathcal{M}}\catvariableof{\catenumerator}\Big)\rightarrow\catvariableof{\seccatenumerator}\Big\}
+                \seckb = \Big\{\Big(\bigwedge_{\catenumerator\in\mathcal{M}}\catvariableof{\catenumerator}\Big)\Rightarrow\catvariableof{\seccatenumerator}\Big\}
                 \cup \Big\{\catvariableof{\catenumerator} \wcols \catenumerator\in\mathcal{M} \}
             \end{align*}
             \item The message $\catvariableof{\seccatenumerator}$ is {\bf propagated} and used for further local inferences.
@@ -346,7 +345,7 @@
         \end{block}
     \end{frame}
 
-    \begin{frame}[fragile]{Unit propagation Algorithm}
+    \begin{frame}[fragile]{Unit propagation algorithm}
         \begin{algorithm}[H]
             \begin{algorithmic}
                 \Require Set of clauses $\mathcal{C}$ (each parameterized by $\hardparam$)
@@ -464,18 +463,9 @@
 
         \medskip
         \begin{block}{Completeness of unit propagation}
-            If the knowledge base consists of definite clauses (i.e. exactly one $1$ in each $\headindexof{\hardlegset}$), completeness of forward chaining can be shown.
+            If the knowledge base consists of definite clauses (i.e. exactly one $0$ in each $\headindexof{\hardlegset}$), completeness of forward chaining can be shown.
         \end{block}
-
-%        \begin{center}
-%            \bf For definite clauses forward chaining is complete: \\
-%            Any entailed literal is found.
-%        \end{center}
     \end{frame}
-
-
-
-
 
 
     \begin{frame}{Definite Clauses}
@@ -526,8 +516,6 @@
             \equiv
             \Big(\lnot\catvariableof{A1}\lor\lnot\catvariableof{A2} \Big) \land \Big(\catvariableof{A1}\lor\catvariableof{A2} \Big)
         \end{align*}
-
-        % But: We can still do contractions to simplify.
 
             {\bf Example:} When knowing that $\catvariableof{A2}$ is true, we get with this accounting that $\catvariableof{A1}$ is false:
         \stantikzpic{
@@ -655,16 +643,6 @@
 
         Underlying is the contraction equation:
         \input{tikz/resolution-contraction-equation}
-
-%        Compare with modus ponens: ! WOULD NEED MULTIPLE USAGES, for each premise clause
-%        \begin{align*}
-%            \frac{
-%            \lnot\catvariableof{0} \lor \ldots \lor \lnot\catvariableof{\catorder-1} \lor \catvariableof{\catorder} \,,\,\, \catvariableof{\catorder}
-%            }{
-%            \catvariableof{\catorder}
-%            }
-%        \end{align*}
-
     \end{frame}
 
     \begin{frame}{Efficient implementation of resolution}

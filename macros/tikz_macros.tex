@@ -139,9 +139,8 @@
 
 %% CSP
 
-\newenvironment{sudoku4x4}{%
-% Code executed when you start \begin{sudoku4x4}
-    \begin{tikzpicture}[
+\tikzset{
+    sudokuspec/.style={
         sudokucell/.style={
             minimum size=0.6cm,
             draw=gray!50,
@@ -156,8 +155,15 @@
             draw=black,
             very thick,
         }
-    ]
-}{%
-% Code executed when you finish \end{sudoku4x4}
+    }
+}
+
+\newenvironment{sudoku4x4}{
+    \begin{tikzpicture}[sudokuspec]
+}{
     \end{tikzpicture}
+}
+\newcommand{\drawsudokutwolines}[1]{
+    \draw[thick]([yshift=26.5pt,xshift=-1.8pt]#1-1-2.east) -- ([yshift=-26.5pt,xshift=-1.8pt]#1-4-2.east);
+    \draw[thick]([xshift=-26.5pt,yshift=1.8pt]#1-2-1.south) -- ([xshift=26.5pt,yshift=1.8pt]#1-2-4.south);
 }

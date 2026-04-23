@@ -6,7 +6,10 @@
     \draw (0,-1) -- (0,-2.5);
     \draw (2,-1) -- (2,-2.5);
 
-    \drawsmalltensor{2}{-3.5}{$\onehotmapof{\secheadindexof{\node}}$}
+    \drawvariabledot{2}{-1.75}
+    \draw (2,-1.75) -- (2.75,-1.75);
+
+    \drawsmalltensor{2}{-3.5}{$\onehotmapof{1-\secheadindexof{\node}}$}
 %    \draw (0.5,-5) rectangle (3.5,-3);
 %    \drawtextnode{2}{-4}{$\clauseof{\{\node\},\secheadindexof{\node}}$}
 
@@ -22,7 +25,7 @@
         \drawtextnode{0}{-2}{\tiny $\cdots$}
         \draw (2.5,-1) -- (2.5,-2.5);
 
-        \drawsmalltensor{5.5}{0}{$\onehotmapof{\secheadindexof{\node}}$}
+        \drawsmalltensor{5.5}{0}{$\onehotmapof{1-\secheadindexof{\node}}$}
         \draw (5.5,-1) -- (5.5,-2.5);
 
         \drawtextnode{10}{0}{If $\secheadindexof{\node}\neq\headindexof{\node}$}
