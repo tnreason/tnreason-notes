@@ -1,0 +1,67 @@
+        \stantikzpic{
+
+            \drawtextnode{7}{5}{\text{Contraction along $\decvariable$:}}
+            \draw (0,1) -- (0,2.5) node[midway,left] {\colorlabelsize $\catvariable$};
+            \drawsmalltensor{0}{0}{$\hypercoreof{i}$}
+            \draw (0,-1) -- (0,-3) node[midway,left] {\colorlabelsize $\decvariable$};
+            \drawvariabledot{0}{-2}
+            \draw (0,-2) -- (0.5,-2);
+            \drawsmalltensor{0}{-4}{$V$}
+
+
+            \drawtextnode{2}{-2}{${=}$}
+
+            \draw [decorate, decoration={brace, amplitude=10pt}] (4,-5) -- (4,1); % node [midway, below=10pt] {$\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1}$};
+
+            \begin{scope}[shift={(6,3)}]
+                \drawsmalltensor{0}{0}{$\fbasis$}
+                \draw (1,0) -- (2.5,0) node[midway,above] {\colorlabelsize $\catvariable$};
+                \drawsmalltensor{0}{-2.5}{$V$}
+                \draw (1,-2.5) -- (2.5,-2.5) node[midway,above] {\colorlabelsize $\decvariable$};
+                \drawtextnode{6}{-1.25}{\text{if $V[\decvariable=i]=0$}}
+            \end{scope}
+
+            \begin{scope}[shift={(6,-3)}]
+                \drawsmalltensor{0}{0}{$\fbasis$}
+                \draw (1,0) -- (2.5,0) node[midway,above] {\colorlabelsize $\catvariable$};
+                \drawsmalltensor{0}{-2.5}{$V$}
+                \draw (1,-2.5) -- (2.5,-2.5) node[midway,above] {\colorlabelsize $\decvariable$};
+                \drawtextnode{6}{-1.25}{\text{if $V[\decvariable]=\onehotmapofat{i}{\decvariable}$}}
+            \end{scope}
+
+
+            \begin{scope}[shift={(18,0)}]
+
+                \drawtextnode{7}{5}{\text{Contraction along $\catvariable$:}}
+
+                \begin{scope}[shift={(0,-1)}]
+
+                    \drawsmalltensor{0}{2}{$V$}
+                    \draw (0,1) -- (0,-1) node[midway,left] {\colorlabelsize $\catvariable$};
+                    \drawvariabledot{0}{0}
+                    \draw (0,0) -- (0.5,0);
+                    \drawsmalltensor{0}{-2}{$\hypercoreof{i}$}
+                    \draw (0,-3) -- (0,-4.5) node[midway,left] {\colorlabelsize $\decvariable$};
+                \end{scope}
+
+                \drawtextnode{2}{-2}{${=}$}
+
+                \draw [decorate, decoration={brace, amplitude=10pt}] (4,-5) -- (4,1); % node [midway, below=10pt] {$\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1}$};
+
+                \begin{scope}[shift={(6,3)}]
+                    \drawsmalltensor{0}{0}{$\tbasis$}
+                    \draw (1,0) -- (2.5,0) node[midway,above] {\colorlabelsize $\catvariable$};
+                    \drawsmalltensor{0}{-2.5}{$\onehotmapof{i}$}
+                    \draw (1,-2.5) -- (2.5,-2.5) node[midway,above] {\colorlabelsize $\decvariable$};
+                    \drawtextnode{6}{-1.25}{\text{if $V[\catvariable]=\tbasisat{\catvariable}$}}
+                \end{scope}
+
+                \begin{scope}[shift={(6,-3)}]
+                    \drawsmalltensor{0}{0}{$\fbasis$}
+                    \draw (1,0) -- (2.5,0) node[midway,above] {\colorlabelsize $\catvariable$};
+                    \drawsmalltensor{0}{-2.5}{$\ones\shortminus\onehotmapof{i}$}
+                    \draw (1,-2.5) -- (2.5,-2.5) node[midway,above] {\colorlabelsize $\decvariable$};
+                    \drawtextnode{6}{-1.25}{\text{if $V[\decvariable]=\fbasisat{\catvariable}$}}
+                \end{scope}
+            \end{scope}
+        }
