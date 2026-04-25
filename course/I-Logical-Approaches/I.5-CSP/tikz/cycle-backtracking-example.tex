@@ -1,0 +1,115 @@
+        \stantikzpic{
+            \begin{scope}[shift={(-10,-0.5)}]
+                \drawvariablenode{0}{0}{$\catvariableof{0}$}{0}
+                \drawvariablenode{5}{3}{$\catvariableof{1}$}{1}
+                \drawvariablenode{5}{-2}{$\catvariableof{2}$}{2}
+                \draw (0) -- (1);
+                \draw (1) -- (2);
+                \draw (2) -- (0);
+
+            \end{scope}
+
+            \only<1-3>{
+                \draw (3,0)  -- (1.5,0) node[midway, above] {\colorlabelsize $\catvariableof{0}$};
+                \drawsmalltensor{0.5}{0}{$\onehotmapof{0}$}
+            }
+            \only<1>{
+                \draw[rotate=30] (2,0) rectangle (6,2);
+                \drawtextnode{3.5}{3}{$\hypercoreof{0\neq1}$}
+
+                \draw (7,2) rectangle (9,-2);
+                \drawtextnode{8}{0}{$\hypercoreof{1\neq2}$}
+
+                \draw[rotate=-30] (2,0) rectangle (6,-2);
+                \drawtextnode{3.5}{-3}{$\hypercoreof{0\neq2}$}
+
+                \draw (3,1.75) -- (3,-1.75); % node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+                \drawvariabledot{3}{0}
+                \draw (3,0) -- (3.5,0);
+
+                \draw (7,1) -- (4,2.3) node[midway,below] {\colorlabelsize $\catvariableof{1}$};
+                \drawvariabledot{5.5}{1.65}
+                \draw (5.5,1.65) -- (5.75,2);
+                \draw (7,-1) -- (4,-2.3) node[midway,above] {\colorlabelsize $\catvariableof{2}$};
+                \drawvariabledot{5.5}{-1.65}
+                \draw (5.5,-1.65) -- (5.75,-2);
+            }
+            \only<2>{
+                \draw[rotate=30] (2,0) rectangle (6,2);
+                \drawtextnode{3.5}{3}{$\onehotmapof{1}$}
+
+                \draw (7,2) rectangle (9,-2);
+                \drawtextnode{8}{0}{$\hypercoreof{1\neq2}$}
+
+                \draw[rotate=-30] (2,0) rectangle (6,-2);
+                \drawtextnode{3.5}{-3}{$\onehotmapof{1}$}
+
+                %\draw (3,1.75) -- (3,-1.75); % node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+                %\drawvariabledot{3}{0}
+
+                \draw (7,1) -- (4,2.3) node[midway,below] {\colorlabelsize $\catvariableof{1}$};
+                \drawvariabledot{5.5}{1.65}
+                \draw (5.5,1.65) -- (5.75,2);
+                \draw (7,-1) -- (4,-2.3) node[midway,above] {\colorlabelsize $\catvariableof{2}$};
+                \drawvariabledot{5.5}{-1.65}
+                \draw (5.5,-1.65) -- (5.75,-2);
+            }
+            \only<3>{
+                \draw (7,2) rectangle (9,-2);
+                \drawtextnode{8}{0}{$\zeros$}
+                \draw (7,1) -- (4,2.3) node[midway,below] {\colorlabelsize $\catvariableof{1}$};
+                \draw (7,-1) -- (4,-2.3) node[midway,above] {\colorlabelsize $\catvariableof{2}$};
+            }
+
+            \only<4-6>{
+                \draw (3,0)  -- (1.5,0) node[midway, above] {\colorlabelsize $\catvariableof{0}$};
+                \drawsmalltensor{0.5}{0}{$\onehotmapof{1}$}
+            }
+            \only<4>{
+                \draw[rotate=30] (2,0) rectangle (6,2);
+                \drawtextnode{3.5}{3}{$\hypercoreof{0\neq1}$}
+
+                \draw (7,2) rectangle (9,-2);
+                \drawtextnode{8}{0}{$\hypercoreof{1\neq2}$}
+
+                \draw[rotate=-30] (2,0) rectangle (6,-2);
+                \drawtextnode{3.5}{-3}{$\hypercoreof{0\neq2}$}
+
+                \draw (3,1.75) -- (3,-1.75);
+                \drawvariabledot{3}{0}
+                \draw (3,0) -- (3.5,0);
+
+                \draw (7,1) -- (4,2.3) node[midway,below] {\colorlabelsize $\catvariableof{1}$};
+                \drawvariabledot{5.5}{1.65}
+                \draw (5.5,1.65) -- (5.75,2);
+                \draw (7,-1) -- (4,-2.3) node[midway,above] {\colorlabelsize $\catvariableof{2}$};
+                \drawvariabledot{5.5}{-1.65}
+                \draw (5.5,-1.65) -- (5.75,-2);
+            }
+            \only<5>{
+                \draw[rotate=30] (2,0) rectangle (6,2);
+                \drawtextnode{3.5}{3}{$\onehotmapof{0}$}
+
+                \draw (7,2) rectangle (9,-2);
+                \drawtextnode{8}{0}{$\hypercoreof{1\neq2}$}
+
+                \draw[rotate=-30] (2,0) rectangle (6,-2);
+                \drawtextnode{3.5}{-3}{$\onehotmapof{0}$}
+
+                %\draw (3,1.75) -- (3,-1.75); % node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+                %\drawvariabledot{3}{0}
+
+                \draw (7,1) -- (4,2.3) node[midway,below] {\colorlabelsize $\catvariableof{1}$};
+                \drawvariabledot{5.5}{1.65}
+                \draw (5.5,1.65) -- (5.75,2);
+                \draw (7,-1) -- (4,-2.3) node[midway,above] {\colorlabelsize $\catvariableof{2}$};
+                \drawvariabledot{5.5}{-1.65}
+                \draw (5.5,-1.65) -- (5.75,-2);
+            }
+            \only<6>{
+                \draw (7,2) rectangle (9,-2);
+                \drawtextnode{8}{0}{$\zeros$}
+                \draw (7,1) -- (4,2.3) node[midway,below] {\colorlabelsize $\catvariableof{1}$};
+                \draw (7,-1) -- (4,-2.3) node[midway,above] {\colorlabelsize $\catvariableof{2}$};
+            }
+        }

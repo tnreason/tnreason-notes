@@ -16,14 +16,36 @@
     {\frame[plain]{\titlepage}}
 
 
+    \section{Constraint Satisfaction Problems}
+
     \begin{frame}{Constraint Satisfaction Problems}
 
-        Sets of variables and constraint tensors
+        We call a hypergraph $\graph=(\nodes,\edges)$ a constraint network, if
+        \begin{itemize}
+            \item each node $\node\in\nodes$ is decorated by a variable $\catvariableof{\node}$ with leg dimension $\catdimof{\node}$.
+            \item each edge is decorated by a constraint tensor $\hypercoreofat{\edge}{\catvariableof{\edge}}$ to each edge $\edge\in\edges$ with leg dimensions $\catdimof{\edge}$.
+        \end{itemize}
+        Given an assignment $\catindexof{\edge}$ to the variables of a constraint tensor, we say that the constraint is not satisfied, if $\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\neq 0$.
 
-        E.g. Satisfiability of a knowledge base is a CSP
+        \begin{block}{Constraint Satisfaction Problem (CSP)}
+            Given such a decorated hypergraph $\graph$, decide whether there is a state $\catindexof{\nodes}$ such that all constraints are satisfied, that is $\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\neq0$ for all edges.
+        \end{block}
+
+            {\bf Example:} Satisfiability of a knowledge base
+        \begin{itemize}
+            \item Atomic formula correspond with variables $\catvariableof{\node}$ of dimension $\catdimof{\node}=2$
+            \item Formulas are the constraint tensors
+        \end{itemize}
+
+    \end{frame}
+
+    \begin{frame}{Contraction Criterion}
+
+        {\bf Recall:} Contractions $\contraction{\formula}$ count the number of satisfying assignments of the formula $\formula$.
+    This is also true for more generic constraint networks.
 
         \begin{block}{Contraction criterion}
-            A CSP is satisfiable if and only if its contraction does not vanish, that is
+            A CSP is satisfiable, if and only if its contraction does not vanish, that is
             \begin{align*}
                 \contraction{\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols \edgein\}} \neq 0 \, .
             \end{align*}
@@ -392,15 +414,43 @@
 
     \begin{frame}{Example: Cycle of three nodes}
 
-        Is a cycle of three nodes colorable by two colors?
+        {\bf Question:} Is a cycle of three nodes colorable by two colors?
         \stantikzpic{
-            \drawvariablenode{0}{0}{$\catvariableof{0}$}{0}
-            \drawvariablenode{5}{3}{$\catvariableof{1}$}{1}
-            \drawvariablenode{5}{-2}{$\catvariableof{2}$}{2}
-            \draw (0) -- (1);
-            \draw (1) -- (2);
-            \draw (2) -- (0);
+            \begin{scope}[shift={(-12,-0.5)}]
+
+                \drawtextnode{2.5}{6}{Consider a cycle of three nodes:}
+                \drawvariablenode{0}{0}{$\catvariableof{0}$}{0}
+                \drawvariablenode{5}{3}{$\catvariableof{1}$}{1}
+                \drawvariablenode{5}{-2}{$\catvariableof{2}$}{2}
+                \draw (0) -- (1);
+                \draw (1) -- (2);
+                \draw (2) -- (0);
+
+            \end{scope}
+
+            \drawtextnode{5.5}{5.5}{When colorable then the following holds:}
+
+            \draw[rotate=30] (2,0) rectangle (6,2);
+            \drawtextnode{3.5}{3}{$\hypercoreof{0\neq1}$}
+
+            \draw (7,2) rectangle (9,-2);
+            \drawtextnode{8}{0}{$\hypercoreof{1\neq2}$}
+
+            \draw[rotate=-30] (2,0) rectangle (6,-2);
+            \drawtextnode{3.5}{-3}{$\hypercoreof{0\neq2}$}
+
+            \draw (3,1.75) -- (3,-1.75) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+            \drawvariabledot{3}{0}
+
+            \draw (7,1) -- (4,2.3) node[midway,below] {\colorlabelsize $\catvariableof{1}$};
+            \drawvariabledot{5.5}{1.65}
+            \draw (7,-1) -- (4,-2.3) node[midway,above] {\colorlabelsize $\catvariableof{2}$};
+            \drawvariabledot{5.5}{-1.65}
+
+            \drawtextnode{12}{0}{$\neq \quad0$}
         }
+
+
         Cannot detect the unsatisfiability by contractions of two matrices.
 
         In general: Cycles with odd numbers need three colors, of two need two colors.
@@ -408,10 +458,16 @@
 
     \begin{frame}{Example: Cycle of three nodes}
 
-        By three variables colorable:
-        The contracted tensor has $6$ non-vanishing entries, which correspond to the $6$ possible colorings of the three nodes by three colors.
+        Let us allow for three colors (i.e. $\catdimof{0}=\catdimof{1}=\catdimof{2}=3$).
+        The contraction of the three "different" constraints is non-vanishing, and we can read off the solutions:
         \stantikzpic{
+            \drawtextnode{5}{7}{$\contractionof{
+                \hypercoreofat{0\neq1}{\catvariableof{0},\catvariableof{1}},
+                \hypercoreofat{0\neq2}{\catvariableof{0},\catvariableof{2}},
+                \hypercoreofat{1\neq2}{\catvariableof{1},\catvariableof{2}}
+            }{\catvariableof{0},\catvariableof{1},\catvariableof{2}} \quad =$}
             \drawtextnode{0}{0}{
+
                 $\begin{pmatrix}
                      0 & 0 & 0 \\
                      0 & 0 & 1 \\
@@ -432,8 +488,10 @@
                      0 & 0 & 0
                 \end{pmatrix}$
             }
+            \drawtextnode{15}{2}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]$}
         }
-
+        {\bf Interpretation:}
+        The contracted tensor has $6$ non-vanishing entries, which correspond to the $6$ possible colorings of the three nodes by three colors.
     \end{frame}
 
     \begin{frame}{Disentangling properties of the "different" constraint}
@@ -474,46 +532,67 @@
 
     \begin{frame}{Idea of backtracking}
 
+        {\bf Problem:} Some constraints do not disentangle.
+    This might be due to the fact, that multiple solutions are available (which do not build product sets).
+            \medskip
 
-        Guess an assignment to disentangle a node.
-        When running into an inconsistency, guess an alternative assignment.
+            {\bf Solution:} Backtracking search
+        \begin{itemize}
+            \item Guess an assignment to a variable, and add the one-hot encoding $\onehotmapofat{i}{\catvariableof{\node}}$.
+            \item Any constraint tensor to an edge $\edge$ with $\node\in\edge$ disentangles (maybe more by unit propagation).
+            \item If an inconsistency is detected (i.e. a vanishing constraint tensor), guess an alternative assignment.
+            \item Iterate until a non-vanishing elementary constraint network is reached, from which (possibly multiple) solutions can be constructed by local solutions.
+        \end{itemize}
 
-        We do this until a non-vanishing elementary constraint network is reached.
-        From this (possibly multiple) solutions can be constructed by local solutions.
 
+%        Guess an assignment to disentangle a node.
+%        When running into an inconsistency, guess an alternative assignment.
+%
+%        We do this until a non-vanishing elementary constraint network is reached.
+%        From this (possibly multiple) solutions can be constructed by local solutions.
+
+    \end{frame}
+
+    \begin{frame}{Example: Coloring a cycle of three nodes}
+        To show that a cycle of three nodes is not colorable by two colors, we can use backtracking:
+        \begin{itemize}
+            \item Guess $\catvariableof{0}$ to be $0$, and get an inconsistency.
+            \item \only<4->{Guess $\catvariableof{0}$ to be $1$, and get an inconsistency.}
+        \end{itemize}
+        \input{tikz/cycle-backtracking-example}
     \end{frame}
 
     \begin{frame}{Backtracking algorithm}
 
         \begin{algorithm}[H]
-            \begin{algorithmic}
-                \Require Constraint network $\extnet$
-                \Ensure Elementary constraint network
-                \iosepline
-                \State Choose a node $\node$ in a non-unitary edge $\edge$
-                \For{$\catindexofin{\node}$}
-                    \State $\tilde{\extnet}\algdefsymbol\extnet\cup\{\onehotmapofat{\catindexof{\node}}{\catvariableof{\node}}\}$
-                    \State $\tilde{\extnet}\algdefsymbol\mathrm{Simplify}(\tilde{\extnet})$ \hfill \textcolor{\concolor}{(differing realization)}
-                    \If{$\tilde{\extnet}$ vanishing}
-                        \State \Return $False$
-                    \EndIf
-                    \State $\tilde{\extnet}\algdefsymbol\mathrm{Backtrack}(\extnet\cup\{\onehotmapofat{\catindexof{\node}}{\catvariableof{\node}}\})$
-                    \If{$\extnet$ not $False$}
-                        \State \Return $\extnet$
-                    \EndIf
-                \EndFor
-                \State \Return $False$
-            \end{algorithmic}
+\begin{algorithmic}
+    \Require Constraint network $\extnet$
+    \Ensure Elementary constraint network
+    \iosepline
+    \State Choose a node $\node$ in a non-unitary edge $\edge$
+    \For{$\catindexofin{\node}$}
+        \State $\tilde{\extnet}\algdefsymbol\extnet\cup\{\onehotmapofat{\catindexof{\node}}{\catvariableof{\node}}\}$
+        \State $\tilde{\extnet}\algdefsymbol\mathrm{Simplify}(\tilde{\extnet})$ \hfill \textcolor{\concolor}{(differing realization)}
+        \If{$\tilde{\extnet}$ vanishing}
+            \State \Return $False$
+        \EndIf
+        \State $\tilde{\extnet}\algdefsymbol\mathrm{Backtrack}(\extnet\cup\{\onehotmapofat{\catindexof{\node}}{\catvariableof{\node}}\})$
+        \If{$\extnet$ not $False$}
+            \State \Return $\extnet$
+        \EndIf
+    \EndFor
+    \State \Return $False$
+\end{algorithmic}
         \end{algorithm}
 
     \end{frame}
 
 
-    \begin{frame}{Combination with constraint simplification}
-
-        Do generic unit propagation in an inner loop to simplify constraints before guessing.
-
-    \end{frame}
+%    \begin{frame}{Combination with constraint simplification}
+%
+%        Do generic unit propagation in an inner loop to simplify constraints before guessing.
+%
+%    \end{frame}
 
     \begin{frame}{Example: Painting australias states}
 
@@ -545,75 +624,75 @@
     \end{frame}
 
 
-    \section{Generic inference algorithms}
-
-    \begin{frame}{So far}
-
-        Generalized unit propagation choices subsets $\secgraph$ as:
-        \begin{itemize}
-            \item Two constraint tensors
-            \item One constraint tensor is of order $1$ (i.e. a vector)
-        \end{itemize}
-
-        More complex reasoning steps: Contraction of multiple constraint tensors with larger order, keeping only a subset open.
-
-    \end{frame}
-
-    \begin{frame}{Recall: Support tensors}
-
-        Support tensor to a tensor $\hypercorewith$: $\nonzeroof{\hypercorewith}$ with coordinates
-        \begin{align*}
-            \nonzeroof{\hypercoreat{\indexedshortcatvariables}}
-            = \begin{cases}
-                  1 & \ifspace \hypercoreat{\indexedcatvariables}\neq 0 \\
-                  0 & \text{else}
-            \end{cases}
-        \end{align*}
-
-        \begin{block}{Invariance under adding support tensor to sub-contractions}
-            Any support tensor of a sub-contraction can be added to a tensor network: When $\secgraph$ a sub-hypergraph of $\graph$, then
-            \begin{align*}
-                \contractionof{\extnetwith}{\nodevariables}
-                = \contractionof{\extnetwith,
-                    \nonzeroof{\contractionof{\tnetofat{\secgraph}{\nodevariables}}{\catvariableof{\secnodes}}}
-                }{\nodevariables}
-            \end{align*}
-        \end{block}
-
-        In propositional logics, this means:
-        \begin{align*}
-            \nonzeroof{\contractionof{\extnetwith}{\nodevariables}}
-            \models \nonzeroof{\contractionof{\tnetofat{\secgraph}{\nodevariables}}{\catvariableof{\secnodes}}}
-        \end{align*}
-
-    \end{frame}
-
-
-
-
-    \begin{frame}{Outlook}
-
-        Sub-contractions model inference rules
-        \begin{itemize}
-            \item Logics: Modus ponens, resolutions
-            \item CSPs: arc-consistency
-        \end{itemize}
-
-        Tradeoff in the sub-contraction size:
-        \begin{itemize}
-            \item Efficiency: Number of possible sub-contractions, computational demand to perform a sub-contraction
-            \item Generality: Larger contractions can perform more complex reasoning steps
-        \end{itemize}
+%    \section{Generic inference algorithms}
 %
-%        Scheduling is a central challenge for efficient inference.
-%        Examples:
+%    \begin{frame}{So far}
+%
+%        Generalized unit propagation choices subsets $\secgraph$ as:
 %        \begin{itemize}
-%            \item Forward Chaining
-%            \item SLD Resolution
+%            \item Two constraint tensors
+%            \item One constraint tensor is of order $1$ (i.e. a vector)
 %        \end{itemize}
-
-
-    \end{frame}
+%
+%        More complex reasoning steps: Contraction of multiple constraint tensors with larger order, keeping only a subset open.
+%
+%    \end{frame}
+%
+%    \begin{frame}{Recall: Support tensors}
+%
+%        Support tensor to a tensor $\hypercorewith$: $\nonzeroof{\hypercorewith}$ with coordinates
+%        \begin{align*}
+%            \nonzeroof{\hypercoreat{\indexedshortcatvariables}}
+%            = \begin{cases}
+%                  1 & \ifspace \hypercoreat{\indexedcatvariables}\neq 0 \\
+%                  0 & \text{else}
+%            \end{cases}
+%        \end{align*}
+%
+%        \begin{block}{Invariance under adding support tensor to sub-contractions}
+%            Any support tensor of a sub-contraction can be added to a tensor network: When $\secgraph$ a sub-hypergraph of $\graph$, then
+%            \begin{align*}
+%                \contractionof{\extnetwith}{\nodevariables}
+%                = \contractionof{\extnetwith,
+%                    \nonzeroof{\contractionof{\tnetofat{\secgraph}{\nodevariables}}{\catvariableof{\secnodes}}}
+%                }{\nodevariables}
+%            \end{align*}
+%        \end{block}
+%
+%        In propositional logics, this means:
+%        \begin{align*}
+%            \nonzeroof{\contractionof{\extnetwith}{\nodevariables}}
+%            \models \nonzeroof{\contractionof{\tnetofat{\secgraph}{\nodevariables}}{\catvariableof{\secnodes}}}
+%        \end{align*}
+%
+%    \end{frame}
+%
+%
+%
+%
+%    \begin{frame}{Outlook}
+%
+%        Sub-contractions model inference rules
+%        \begin{itemize}
+%            \item Logics: Modus ponens, resolutions
+%            \item CSPs: arc-consistency
+%        \end{itemize}
+%
+%        Tradeoff in the sub-contraction size:
+%        \begin{itemize}
+%            \item Efficiency: Number of possible sub-contractions, computational demand to perform a sub-contraction
+%            \item Generality: Larger contractions can perform more complex reasoning steps
+%        \end{itemize}
+%%
+%%        Scheduling is a central challenge for efficient inference.
+%%        Examples:
+%%        \begin{itemize}
+%%            \item Forward Chaining
+%%            \item SLD Resolution
+%%        \end{itemize}
+%
+%
+%    \end{frame}
 
 
 \end{document}
