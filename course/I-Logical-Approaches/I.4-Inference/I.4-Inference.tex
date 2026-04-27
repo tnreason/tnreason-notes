@@ -374,17 +374,18 @@
         The knowledge base is a tensor network
         \begin{align*}
             \kbat{\nodevariables}
-            = \contractionof{
+            = \contractionof{\left\{
                 \clauseofat{\hardparam}{\catvariableof{\hardlegset}} \wcols \hardparam \in \mathcal{C}
+            \right\}
             }{\nodevariables} \, .
         \end{align*}
 
             {\bf Notice:} We have $\kb\models\clauseof{\{\node\},\headindexof{\node}}$ if
         \begin{align*}
             \kbat{\nodevariables}
-            &= \contractionof{\kbat{\nodevariables},\onehotmapofat{\headindexof{\node}}{\catvariableof{\node}}}{\nodevariables} \\
-            &= \onehotmapofat{\headindexof{\node}}{\catvariableof{\node}}
-            \otimes \contractionof{\kbat{\nodevariables},\onehotmapofat{\headindexof{\node}}{\catvariableof{\node}}}{\catvariableof{\nodes\backslash\{\node\}}} \, .
+            &= \contractionof{\kbat{\nodevariables},\onehotmapofat{1-\headindexof{\node}}{\catvariableof{\node}}}{\nodevariables} \\
+            &= \onehotmapofat{1-\headindexof{\node}}{\catvariableof{\node}}
+            \otimes \contractionof{\kbat{\nodevariables},\onehotmapofat{1-\headindexof{\node}}{\catvariableof{\node}}}{\catvariableof{\nodes\backslash\{\node\}}} \, .
         \end{align*}
 
         To decide entailment of a literal we are searching for decompositions as
@@ -395,13 +396,13 @@
 
     \begin{frame}{Literal entailment in knowledge bases}
         \begin{block}{Reasoning task}
-            We want to decide, which literals $\clauseof{\{\node\},\headindexof{\node}}$ are entailed by a knowledge base.
+            Decide which literals $\clauseof{\big(\{\node\},\headindexof{\node}\big)}$ are entailed by a knowledge base.
         \end{block}
 
         We are searching for a maximal set $\thirdnodes$ such that for a tuple $\headindexof{\thirdnodes}$ and some tensor $\hypercoreat{\catvariableof{\nodes\backslash\thirdnodes}}$
         \begin{align*}
             \kbat{\nodevariables}
-            = \left(\bigtimes_{\node\in\thirdnodes} \onehotmapofat{\headindexof{\node}}{\catvariableof{\node}}\right)
+            = \left(\bigotimes_{\node\in\thirdnodes} \onehotmapofat{\headindexof{\node}}{\catvariableof{\node}}\right)
             \otimes \hypercoreat{\catvariableof{\nodes\backslash\thirdnodes}} \, .
         \end{align*}
 
@@ -411,21 +412,17 @@
 
 
     \begin{frame}{Modus ponens as a sub-contraction}
-
-
         Modus ponens is \emph{disentangling} the tensor network:
         \input{tikz/modus-ponens-disentangling}
         Understand modus ponens as a sub-contraction:
         \begin{itemize}
-            \item Separate from the knowledge base $\kb$ the clauses
+            \item Contract the clauses
             \begin{align*}
-                \clauseof{\Big([\catorder],\zerotuple{[\catorder-1]}\times 1\Big)}
-                \quad \text{and for $\catenumerator\in[\catorder-1]$ the literals} \quad \clauseof{\Big(\{\catenumerator\},0\Big)}
+                \clauseof{([\catorder+1],\onetuple{[\catorder]}\times 0)}
+                \quad \text{and for $\catenumerator\in[\catorder]$ the literals} \quad \clauseof{(\{\catenumerator\},0)}
             \end{align*}
-            \item Contract the separated clauses
-            \item Split the contraction into a tensor product of $\tbasis$ vectors
+            \item Split the contraction into a tensor product (here of $\tbasis$ vectors)
         \end{itemize}
-        %       Thus we understand modus ponens as a method to turn tensors to elementary tensors.
 
     \end{frame}
 
@@ -477,15 +474,11 @@
         \end{lemma}
             {\bf Proof sketch:} By using the contraction of clauses properties we know that:
         \begin{itemize}
-            \item When contracting with $\bigtimes_{\nodein}\tbasisat{\catvariableof{\node}}$, all clauses become trivial.
-            \item When contracting with $\bigtimes_{\nodein}\fbasisat{\catvariableof{\node}}$, all clauses become trivial.
+            \item When contracting with $\bigotimes_{\nodein}\tbasisat{\catvariableof{\node}}$, all clauses become trivial.
+            \item When contracting with $\bigotimes_{\nodein}\fbasisat{\catvariableof{\node}}$, all clauses become trivial.
         \end{itemize}
         Thus, $\catindexof{\nodes}=\onetuple{\nodes}$ and $\catindexof{\nodes}=\zerotuple{\nodes}$ are models of the knowledge base.
 
-
-%        Each knowledge base of definite clause has $\catindexof{\nodes}=\onetuple{\nodes}$ as a model.
-
-%        If in addition the length of each clause is at least 2, then also $\zerotuple{\nodes}$ as a model.
 
     \end{frame}
 
@@ -578,7 +571,7 @@
         That is:
         \begin{align*}
             \formulaofat{(\seckb,\secnodes)}{\catvariableof{\secnodes}}
-            = \argmin_{\formulaof{\catvariableof{\secnodes}} \wcols \seckb \models \formula} \contraction{\formulaof{\catvariableof{\secnodes}}} \, .
+            = \argmin_{\formula \wcols \seckb \models \formula} \contraction{\formula} \, .
         \end{align*}
 
         \begin{block}{Interpretation}
@@ -589,14 +582,6 @@
 
 
     \begin{frame}{More generic inference algorithms}
-%        Inference algorithms focus on subsets of knowledge bases.
-%
-%        We have shown that:
-%        \begin{itemize}
-%            \item {\bf Soundness:} "Every by a sub knowledge base entailed formula is entailed by the knowledge base itself."
-%            \item {\bf Memory:} "Every entailed formula can be added to the knowledge base."
-%        \end{itemize}
-
         In a most generic reasoning step, we
         \begin{itemize}
             \item Choose a subset $\seckb$ of $\kb$
@@ -628,8 +613,6 @@
 
 
     \begin{frame}{Generalization: Resolution}
-
-
         \begin{block}{Resolution Inference Rule}
             For any propositional formulas $\formulaof{0},\formulaof{1}$ and an atomic variable $\catvariable$ the resolution inference rule is sound:
             \begin{align*}
@@ -696,16 +679,3 @@
 
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-

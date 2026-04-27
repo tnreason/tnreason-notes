@@ -2,9 +2,9 @@
 \input{../../../spec_files/exercise_preamble}
 
 \begin{document}
-    \exercisehead{2}{Inference in Propositional Logics}{April 20, 2026}
+    \exercisehead{2}{Inference in Propositional Logic}{April 20, 2026}
     \usecasebox{Example knowledge base}{
-     % Figure 7.16 in Russell, Norvig
+    % Figure 7.16 in Russell, Norvig
         Consider the propositional knowledge base consisting in the formulas (see Figure 7.16 in [Russell, Norvig: Artificial Intelligence]):
         \begin{itemize}
             \item[(0)] When $P$ then $Q$ follows.
@@ -28,9 +28,24 @@
     }
     \addtask{3 (after lecture I.4-Inference)}{
         Which literals are entailed
-    \begin{itemize}
-        \item[(i)] by the knowledge base?
-        \item[(ii)] by the knowledge base of the formulas $(0),(1),(2),(3),(4)$?
-    \end{itemize}
+        \begin{itemize}
+            \item[(i)] by the knowledge base?
+            \item[(ii)] by the knowledge base of the formulas $(0),(1),(2),(3),(4)$?
+        \end{itemize}
+    }
+    \addtask{4 (after lecture I.4-Inference)}{
+        Draw a tensor network diagram representing
+        \begin{itemize}
+            \item[(i)] the initial knowledge base.
+            \item[(ii)] the clause sets $\mathcal{C}$ and $\mathcal{L}$ after the first iteration of the $\mathrm{while}$ loop in the unit propagation algorithm.
+        \end{itemize}
+    }
+    \addtask{5 (after lecture I.4-Inference)}{
+        Which of these statements are entailed by the knowledge base?
+        \begin{itemize}
+            \item Either $A$ or $Q$ do not hold.
+            \item When $B$ and $M$ hold, then also $A$.
+        \end{itemize}
+
     }
 \end{document}

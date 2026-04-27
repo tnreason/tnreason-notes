@@ -2,19 +2,34 @@
 \input{../../../spec_files/exercise_preamble}
 
 \begin{document}
-    \exercisehead{3}{Constraint Satisfaction Problems}{XXX}
-    \usecasebox{Queens assignment game}{
-        For arbitrary $n_0,n_1\in\nn$ we have a chess board of $n_0\times n_1$ positions with $n_0$ columns and $n_1$ rows.
-        We want to assign $r$ queens onto positions of the chess board, such that each column and each row contains at most one queen.
+    \exercisehead{3}{Constraint Satisfaction Problems}{April 27, 2026}
+    \usecasebox{$n$ queens problem}{
+        For arbitrary $n\in\nn$ we have a chess board of $n\times n$ positions with $n$ columns and $n$ rows.
+        We want to assign $r$ queens onto positions of the chess board, such that:
+        \begin{itemize}
+            \item Each column contains exactly one queen.
+            \item Each row contains at most one queen.
+        \end{itemize}
     }
     \addtask{1}{
-        Design the N-queens game as a Constraint Satisfaction Problem. What are the variables, their leg dimensions, and the contraints?\\
+        Design the $n$ queens problem as a Constraint Satisfaction Problem.
+        \begin{itemize}
+            \item[(i)] What are suitable variables, their leg dimensions, and the constraint tensors?
+            \item[(ii)] Which hidden variables could be introduced for a more sparse representation of the constraints?
+        \end{itemize}
+        \textit{Hint:} Compare the problem to the Sudoku game.
     }
     \addtask{2}{
-        Assume an assignment of all $r$ queens given.
-        Find an contraction-based method to verify whether the assignment respects the constraints.
+        Assume an assignment of all $n$ queens given.
+        Describe a contraction-based method to verify whether the assignment respects the constraints.
     }
     \addtask{3}{
-        Implement an algorithm using \texttt{tnreason} solving the queens assignment game.
+        Assume that we have a partial assignment of $r<n$ queens given, such that each pair of queens is assigned to different columns and different rows.
+        Would the generalized unit propagation algorithm be able to find a solution for the remaining $r-k$ queens?
+    }
+    \addtask{4}{
+        Assume again that we have a partial assignment of $r<n$ queens given.
+        How many assignments of the remaining $n-r$ queens are possible?
+        How to compute that number by a tensor network contraction?
     }
 \end{document}

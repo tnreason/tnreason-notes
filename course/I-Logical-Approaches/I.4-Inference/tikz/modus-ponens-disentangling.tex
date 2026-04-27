@@ -1,4 +1,6 @@
 \stantikzpic{
+    \draw [decorate, decoration={brace, amplitude=10pt}] (-1,1.5) -- (9,1.5) node [midway, above=10pt] {\colorlabelsize $\clauseof{([\catorder+1],\onetuple{[\catorder]}\times 0)}$};
+
     \draw (-1,-1) rectangle (9,1);
     \drawtextnode{4}{0}{\corelabelsize $(\catvariableof{0}\land \ldots \land \catvariableof{\catorder-1})\Rightarrow \catvariableof{\catorder}$}
     \draw (0,-3) -- (0,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
@@ -11,25 +13,25 @@
     \draw (5,-2) -- (6,-2);
     \drawsquaretensor{5}{-4}{$\tbasis$}
 
-    \draw [decorate, decoration={brace, amplitude=10pt}] (6,-5.5) -- (-1,-5.5) node [midway, below=10pt] {$\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1}$};
+    \draw [decorate, decoration={brace, amplitude=10pt}] (6,-5.5) -- (-1,-5.5) node [midway, below=10pt] {\colorlabelsize $\clauseof{(\{0\},0)}\land \ldots \land \clauseof{(\{\catorder-1\},0)}$};
 
     \draw (8,-3) -- (8,-1) node[midway,left] {\colorlabelsize $\catvariableof{\catorder}$};
 
     \drawtextnode{11}{0}{${=}$}
 
     \begin{scope}[shift={(14,0)}]
-        \draw (0,-3) -- (0,-1) node[midway,left] {\colorlabelsize $\catvariableof{\catorder}$};
+        \draw (0,-3) -- (0,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
         \drawsquaretensor{0}{0}{$\tbasis$}
 
         \drawtextnode{2.5}{0}{$\cdots$}
 
         \draw (5,-3) -- (5,-1) node[midway,left] {\colorlabelsize $\catvariableof{\catorder-1}$};
         \drawsquaretensor{5}{0}{$\tbasis$}
-        \draw [decorate, decoration={brace, amplitude=10pt}] (5.25,-3) -- (-1.25,-3) node [midway, below=10pt] {\corelabelsize $\catvariableof{0}\land\ldots\land\catvariableof{\catorder-1}$};
+        \draw [decorate, decoration={brace, amplitude=10pt}] (5.25,-3) -- (-1.25,-3) node [midway, below=10pt] {\colorlabelsize $\clauseof{(\{0\},0)}\land \ldots \land \clauseof{(\{\catorder-1\},0)}$};
 
         \draw (8,-3) -- (8,-1) node[midway,left] {\colorlabelsize $\catvariableof{\catorder}$};
         \drawsquaretensor{8}{0}{$\tbasis$}
-        \draw [decorate, decoration={brace, amplitude=10pt}] (9,-3) -- (7,-3) node [midway, below=10pt] {$\catvariableof{\catorder}$};
+        \draw [decorate, decoration={brace, amplitude=10pt}] (9,-3) -- (7,-3) node [midway, below=10pt] {\colorlabelsize $\clauseof{(\{\catorder\},0)}$};
 
     \end{scope}
 }
