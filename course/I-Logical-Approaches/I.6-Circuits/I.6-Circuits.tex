@@ -3,6 +3,8 @@
 \input{../../spec_files/course_preamble.tex}
 \input{../../spec_files/course_macros.tex}
 
+\usetikzlibrary{arrows.meta}
+
 \title[Circuits]{
     \coursechapterone \\
     {\huge Circuits}
@@ -15,7 +17,7 @@
     \showoutlineatsection
 
 
-    \section{Motivation}
+    \section{Circuit computation model}
 
     \begin{frame}{Propositional Syntax}
 
@@ -37,34 +39,16 @@
 
         Circuits are a fundamental computational model, which is used in many areas of computer science, e.g., in complexity theory, logic, and machine learning.
 
-    \end{frame}
+        Other models:
+        \begin{itemize}
+            \item Turing machines
+        \end{itemize}
 
-
-    \section{Example: $\catdim$-adic sums}
-
-    \begin{frame}{$\catdim$-adic representation of integers}
-
-        Tensor: Each coordinate is the integer to the $\catdim$-adic representation given by the indices.
-
-        How to decompose the sum tensors, which are tensors with legs to both variables?
-
-    \end{frame}
-
-    \begin{frame}{Decomposition into half-adders}
-
-        Summation can be done by concatenation of half-adders, which are circuits with two input legs and two output legs, one for the sum and one for the carry.
-
-    \end{frame}
-
-    \begin{frame}{Extension to multiplications}
-        Do the multiplication for each digit of the right number separately, then add the results.
-
-        In this way: Generalize to
 
     \end{frame}
 
 
-    \section{General circuits}
+    \section{Tensor representation}
 
     \begin{frame}{Set enumerating variables}
 
@@ -72,15 +56,115 @@
 
     \end{frame}
 
-    \begin{frame}{Circuit}
+    \begin{frame}{Computation hypergraph}
 
-        A circuit is a decorated hypergraph.
+        \begin{itemize}
+            \item Nodes represent inputs, preliminary results, and outputs
+            \item Edges are directed and represent
+        \end{itemize}
+
+        Formally: A circuit is a decorated hypergraph.
 
     \end{frame}
 
     \begin{frame}{Decomposition into tensor networks}
 
         The basis encoding to a function of a circuit is decomposed into basis encodings of the node functions.
+
+    \end{frame}
+
+
+    \section{Example: $\catdim$-adic sums}
+
+    \begin{frame}{$\catdim$-adic representation of integers}
+
+%        Tensor: Each coordinate is the integer to the $\catdim$-adic representation given by the indices.
+%        How to decompose the sum tensors, which are tensors with legs to both variables?
+
+
+        We develop a tensor network representation of integer summations on the set $[\catdim^{\catorder}]=\{0,\ldots,\catdim^{\catorder}-1\}$, where $\catdim,\catorder\in\nn$,
+        \begin{align*}
+            + \defcols [\catdim^\catorder] \times [\catdim^\catorder] \rightarrow [\catdim^{\catorder+1}]
+            \quad,\quad
+            +(i,\tilde{i}) = i+\tilde{i} \,,
+        \end{align*}
+        which have a $\catdim$-adic representation of length $\catorder$.
+        We define an index interpretation map
+        \begin{align*}
+            \indexinterpretation \defcols \bigtimes_{\catenumeratorin}[\catdim] \rightarrow [\catdim^{\catorder}]
+            \quad,\quad
+            \indexinterpretationat{\shortcatindices}
+            = \sum_{\catenumeratorin} \catindexof{\catenumerator} \cdot \catdim^{\catenumerator} \, ,
+        \end{align*}
+        which enables the parameterization of $[\catdim^{\catorder}]$ as the states of $\catorder$ categorical variables $\shortcatvariables$ of dimension $\catdim$.
+    \end{frame}
+
+
+    \begin{frame}{Basis encoding}
+        The basis encoding of the sum is then
+        \begin{align*}
+            & \bencodingofat{+}{\headvariableof{[\catorder+1]},\shortcatvariables,\seccatvariableof{[\catorder]}} \\
+            &\quad = \sum_{\shortcatindices,\tildecatindexof{[\catorder]}} \onehotmapofat{\invindexinterpretationat{
+                \indexinterpretationat{\shortcatindices} + \indexinterpretationat{\tildecatindexof{[\catorder]}}
+            }}{\headvariableof{[\catorder+1]}}
+            \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables}
+            \otimes \onehotmapofat{\tildecatindexof{[\catorder]}}{\tildecatvariableof{[\catorder]}} \, .
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{Decomposition into half-adders}
+
+        The targeted function to be decomposed is the representation of the integer sum by
+        \begin{align*}
+            \marysumsymbol \defcols \left(\bigtimes_{\catenumeratorin}[\catdim]\right) \times \left(\bigtimes_{\catenumeratorin}[\catdim]\right) \rightarrow \bigtimes_{\catenumerator\in[\catorder+1]}[\catdim]
+            \quad,\quad
+            \marysumsymbol(\shortcatindices,\tildecatindexof{[\catorder]}) =
+            \invindexinterpretationat{\indexinterpretationat{\shortcatindices}+\indexinterpretationat{\tildecatindexof{[\catorder]}}} \, .
+        \end{align*}
+        We build a decomposition hypergraph $\graph=(\nodes,\edges)$ (see \defref{def:decompositionHypergraph}) consisting of $4\cdot \catorder$ nodes (see \figref{fig:decompositionMarySum}a) .
+        The nodes carry the $(3\cdot\catorder +1)$ variables $\shortcatvariables,\seccatvariableof{[\catorder]},\headvariableof{[\catorder+1]}$ of dimension $\catdim$ constructed above and $\catorder-1$ auxiliary variables $\thirdcatvariableof{[\catorder-1]}$ of dimension $2$ representing carry bits.
+        The directed hyperedges of $\graph$ are
+        \begin{align*}
+            \edges
+            =&\left\{(\{\catvariableof{0},\tildecatvariableof{0}\},\{\headvariableof{0},\thirdcatvariableof{0}\})\right\}
+            \cup \left\{(\{\thirdcatvariableof{\catenumerator-1},\catvariableof{\catenumerator},\tildecatvariableof{\catenumerator}\},\{\headvariableof{\catenumerator},\thirdcatvariableof{\catenumerator}\})
+                     \wcols \catenumerator\in\{1,\ldots,\catorder-2\}\right\} \\
+            &\cup \left\{(\{\thirdcatvariableof{\catorder-2},\catvariableof{\catorder-1},\tildecatvariableof{\catorder-1}\},\{\headvariableof{\catorder-1},\headvariableof{\catorder}\})\right\}
+        \end{align*}
+        and are decorated by local summation functions
+        \begin{align*}
+            \modsumsymbol \defcols [2] \times [\catdim] \times [\catdim] \rightarrow [\catdim] \times [2]
+            \quad,\quad
+            \modsumsymbol(\thirdcatindex,\catindex,\tildecatindex)
+            = \left((\thirdcatindex + \catindex + \tildecatindex) \modspace\catdim,
+                  \left\lfloor\frac{\thirdcatindex + \catindex + \tildecatindex}{\catdim}\right\rfloor\right) \, .
+        \end{align*}
+        Since to the first hyperedge we do not have a carry bit, the decorating function is the restriction of the first argument to $0$.
+    \end{frame}
+
+    \begin{frame}{Tensor Network representation}
+
+        \input{tikz/m-adic-sum}
+
+        By \theref{the:functionDecompositionRep} we have a decomposition of the basis encoding to $\exfunctionof{\graph}$ (see \figref{fig:decompositionMarySum}b) as
+        \begin{align*}
+            \bencodingofat{\marysumsymbol}{\headvariableof{[\catorder+1]},\shortcatvariables,\tildecatvariableof{[\catorder]}}
+            = \breakablecontractionof{
+                &\{\bencodingofat{\modsumsymbol,0}{\headvariableof{0},\thirdcatvariableof{0},\catvariableof{0},\tildecatvariableof{0}}\} \cup \\
+                &\{\bencodingofat{\modsumsymbol,\catenumerator}{
+                    \headvariableof{\catenumerator},\thirdcatvariableof{\catenumerator},\catvariableof{\catenumerator},\tildecatvariableof{\catenumerator},\thirdcatvariableof{\catenumerator-1}
+                }\wcols \catenumerator\in\{1,\ldots,\catorder-2\}\} \cup \\
+                &\{\bencodingofat{\modsumsymbol,\catorder-2}{\headvariableof{\catorder-1},\headvariableof{\catorder},\catvariableof{\catorder-1},\tildecatvariableof{\catorder-1},\thirdcatvariableof{\catorder-2}}\}
+            }{\headvariableof{[\catorder+1]},\shortcatvariables,\tildecatvariableof{[\catorder]}} \, .
+        \end{align*}
+
+
+    \end{frame}
+
+    \begin{frame}{Extension to multiplications}
+        Do the multiplication for each digit of the right number separately, then add the results.
+
+        In this way: Generalize to
 
     \end{frame}
 
