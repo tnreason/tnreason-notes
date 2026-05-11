@@ -2,9 +2,9 @@
 \input{../../../spec_files/exercise_preamble}
 
 \begin{document}
-    \exercisehead{3}{Constraint Satisfaction Problems}{April 27, 2026}
+    \exercisehead{3}{Constraint Satisfaction Problems}{May 11, 2026}
     \usecasebox{$n$ queens problem}{
-        For arbitrary $n\in\nn$ we have a chess board of $n\times n$ positions with $n$ columns and $n$ rows.
+        For arbitrary $n\in\nn$ let there be a grid of $n\times n$ positions with $n$ columns and $n$ rows.
         We want to assign $r$ queens onto positions of the chess board, such that:
         \begin{itemize}
             \item Each column contains exactly one queen.
@@ -15,21 +15,27 @@
         Design the $n$ queens problem as a Constraint Satisfaction Problem.
         \begin{itemize}
             \item[(i)] What are suitable variables, their leg dimensions, and the constraint tensors?
-            \item[(ii)] Which hidden variables could be introduced for a more sparse representation of the constraints?
+            \item[(ii)] Which hidden variables could be introduced for a sparser representation of the constraints?
         \end{itemize}
         \textit{Hint:} Compare the problem to the Sudoku game.
     }
     \addtask{2}{
-        Assume an assignment of all $n$ queens given.
-        Describe a contraction-based method to verify whether the assignment respects the constraints.
-    }
-    \addtask{3}{
-        Assume that we have a partial assignment of $r<n$ queens given, such that each pair of queens is assigned to different columns and different rows.
-        Would the generalized unit propagation algorithm be able to find a solution for the remaining $r-k$ queens?
-    }
-    \addtask{4}{
-        Assume again that we have a partial assignment of $r<n$ queens given.
-        How many assignments of the remaining $n-r$ queens are possible?
+        Assume again that we have a partial assignment of $r\leq n$ queens given.
+        How many assignments of the remaining $n-r$ queens satisfy the constraints?
         How to compute that number by a tensor network contraction?
     }
+    \addtask{3 (Generalized unit propagation)}{
+        Assume that we have a partial assignment of $r<n$ queens given. %, such that each pair of queens is assigned to different columns and different rows.
+        Would the generalized unit propagation algorithm be able to find a solution for the remaining $r-k$ queens?
+    }
+    \addtask{4 (Backtracking)}{
+        Assume that we have a partial assignment of $r<n$ queens given. %, such that each pair of queens is assigned to different columns and different rows.
+        How would the backtracking algorithm with generalized unit propagation as a simplifier find a solution for the remaining $r-k$ queens?
+    }
+%    \addtask{4}{
+%
+%        Assume an assignment of all $n$ queens given.
+%        Describe a contraction-based method to verify whether the assignment respects the constraints.
+%    }
+
 \end{document}

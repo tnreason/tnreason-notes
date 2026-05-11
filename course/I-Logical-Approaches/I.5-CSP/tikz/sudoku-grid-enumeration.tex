@@ -1,0 +1,33 @@
+\begin{center}
+    \begin{tikzpicture}[sudokuspec,scale=0.35]
+
+        \drawtextnode{-8}{1.75}{$r_0=0$}
+        \drawtextnode{-8}{-1.75}{$r_0=1$}
+
+        \drawtextnode{-5}{2.7}{$r_1=0$}
+        \drawtextnode{-5}{0.8}{$r_1=1$}
+
+        \drawtextnode{-5}{-2.7}{$r_1=1$}
+        \drawtextnode{-5}{-0.8}{$r_1=0$}
+
+        \matrix[sudokumatrix] (M) at (0,0) {
+            \ & \ & \ & \ \\
+            \ & \ & \ & \ \\
+            \ & \ & \ & \ \\
+            \ & \ & \ & \ \\
+        };
+        \drawsudokutwolines{M}
+
+        %\drawtextnode{5}{0}{$\rightarrow$}
+        \draw [->] (5,0) -- (8,0);
+        \drawtextnode{15}{0}{
+            $\begin{matrix}
+                 0000 & 0001 & 0010 & 0011 \\
+                 0100 & 0101 & 0110 & 0111 \\
+                 1000 & 1001 & 1010 & 1011 \\
+                 1100 & 1101 & 1110 & 1111 \\
+            \end{matrix}$
+        }
+
+    \end{tikzpicture}
+\end{center}

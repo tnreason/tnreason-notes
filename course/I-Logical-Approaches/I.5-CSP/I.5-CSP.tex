@@ -8,7 +8,7 @@
 \setslidetitledate{
     Constraint Satisfaction Problems
 }{
-    April 27, 2026
+    May 11, 2026
 }
 
 \begin{document}
@@ -20,15 +20,16 @@
 
     \begin{frame}{Constraint Satisfaction Problems}
 
-        We call a hypergraph $\graph=(\nodes,\edges)$ a constraint network, if
+%        We call a hypergraph $\graph=(\nodes,\edges)$ a constraint network, if
+        We now understand tensor networks $\extnet$ on hypergraphs $\graph=(\nodes,\edges)$ as constraint networks:
         \begin{itemize}
-            \item each node $\node\in\nodes$ is decorated by a variable $\catvariableof{\node}$ with leg dimension $\catdimof{\node}$.
-            \item each edge is decorated by a constraint tensor $\hypercoreofat{\edge}{\catvariableof{\edge}}$ to each edge $\edge\in\edges$ with leg dimensions $\catdimof{\edge}$.
+            \item each node $\node\in\nodes$ decorated by a variable $\catvariableof{\node}$ with leg dimension $\catdimof{\node}$
+            \item each edge $\edge\in\edges$ decorated by a constraint tensor $\hypercoreofat{\edge}{\catvariableof{\edge}}$ with leg dimensions $\catdimof{\edge}$
         \end{itemize}
-        Given an assignment $\catindexof{\edge}$ to the variables of a constraint tensor, we say that the constraint is not satisfied, if $\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\neq 0$.
+        Given an assignment $\catindexof{\edge}$ to the variables of a constraint tensor, we say that the \textbf{constraint is satisfied}, if $\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\neq 0$.
 
         \begin{block}{Constraint Satisfaction Problem (CSP)}
-            Given such a decorated hypergraph $\graph$, decide whether there is a state $\catindexof{\nodes}$ such that all constraints are satisfied, that is $\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\neq0$ for all edges.
+            Given a constraint network $\extnet$ decide whether there is an assignment $\catindexof{\nodes}$ such that all constraints are satisfied, that is $\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\neq0$ for all edges.
         \end{block}
 
             {\bf Example:} Satisfiability of a knowledge base
@@ -39,10 +40,40 @@
 
     \end{frame}
 
+    \begin{frame}{Toy accounting example as a CSP}
+
+        The toy accounting example consists of two constraint tensors:
+        \begin{itemize}
+            \item "Exactly one of $\var{Account 1}$ and $\var{Account 2}$ is booked.", enforced by the constraint tensor
+            \begin{align*}
+                \coloredmatrixof{0 & 1 \\1 & 0}{\catvariableof{A1},\catvariableof{A2}}
+            \end{align*}
+            \item "If the $\var{Feature}$ is present, then $\var{Account 1}$ is booked.", enforced by the constraint tensor
+            \begin{align*}
+                \coloredmatrixof{1 & 1 \\0 & 1}{\catvariableof{F},\catvariableof{A1}}
+            \end{align*}
+        \end{itemize}
+
+        The toy accounting example is satisfiable, since the assignments satisfy all constraints:
+        \begin{itemize}
+            \item $(\catvariableof{A1},\catvariableof{A2},\catvariableof{F})=(0,1,0)$
+            \item $(\catvariableof{A1},\catvariableof{A2},\catvariableof{F})=(1,0,0)$
+            \item $(\catvariableof{A1},\catvariableof{A2},\catvariableof{F})=(1,0,0)$
+        \end{itemize}
+
+
+    \end{frame}
+
     \begin{frame}{Contraction Criterion}
 
-        {\bf Recall:} Contractions $\contraction{\formula}$ count the number of satisfying assignments of the formula $\formula$.
-    This is also true for more generic constraint networks.
+        {\bf Recall:} The contraction $\contraction{\formula}$ counts the number of satisfying assignments of the formula $\formula$. \\
+    {\bf More general:}
+        \begin{itemize}
+            \item The contraction $\contraction{\hypercoreofat{\edge}{\catvariableof{\edge}}}$ counts the number of assignments to the variables $\catvariableof{\edge}$ satisfying the constraint.
+            \item The contraction $\contraction{\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols \edgein\}}$ counts the number of assignments to all variables satisfying all constraints.
+        \end{itemize}
+
+%    This is also true for more generic constraint networks.
 
         \begin{block}{Contraction criterion}
             A CSP is satisfiable, if and only if its contraction does not vanish, that is
@@ -72,31 +103,27 @@
             \item Each digit appears exactly once in each row, column and square
         \end{itemize}
         \medskip
-        {\bf Example} of a $2^2 \times 2^2$ Sudoku with initial clues and unique solution:
+        {\bf Example} of a $\sudokunum=2$ Sudoku with initial clues and unique solution:
         \input{tikz/sudoku-start-example}
     \end{frame}
 
 
     \begin{frame}{Representation of Sudoku}
-        We enumerate each cell by tuples $r_0r_1c_0c_1\in[\sudokunum]^4$, where $(r_0,r_1)$ select the $r_0\cdot\sudokunum+r_1$th row and $(c_0c_1)$ the $c_0\cdot\sudokunum+c_1$th column:
+        We enumerate each cell by tuples $r_0r_1c_0c_1\in[\sudokunum]^4$, where $(r_0,r_1)$ select the $r_0\cdot\sudokunum+r_1$th row and $(c_0c_1)$ the $c_0\cdot\sudokunum+c_1$th column.\\
+        {\bf Example of a $\sudokunum=2$ grid:}
+        \input{tikz/sudoku-grid-enumeration}
+        For each possible assignment $i$ to each cell $r_0r_1c_0c_1$ we define a hidden variable $\catvariableof{r_0r_1c_0c_1i}$, which is $1$ if the cell $r_0r_1c_0c_1$ is assigned by $i$ and $0$ else. \\
+
+        In total the set of atomic variables is:
         \begin{align*}
-            \begin{matrix}
-                0000 & 0001 & 0010 & 0011 \\
-                0100 & 0101 & 0110 & 0111 \\
-                1000 & 1001 & 1010 & 1011 \\
-                1100 & 1101 & 1110 & 1111 \\
-            \end{matrix}
-        \end{align*}
-        For each possible assignment $i$ to each cell $r_0r_1c_0c_1$ we define a hidden variable $\catvariableof{r_0r_1c_0c_1i}$, which is $1$ if the cell $r_0r_1c_0c_1$ is assigned by $i$ and $0$ else.
-        \begin{align*}
-            \{\catvariableof{r_0r_1c_0c_1i} \wcols r_0r_1c_0c_1 \in [\sudokunum]  \ncond i \in [\sudokunum^2]\}
+            \{\catvariableof{r_0r_1c_0c_1i} \wcols r_0,r_1,c_0,c_1 \in [\sudokunum]  \ncond i \in [\sudokunum^2]\}
         \end{align*}
 
 
     \end{frame}
 
     \begin{frame}{Sudoku constraint tensors}
-        Sudoku constraints enforce "exactly-one" condition by tensors $\hypercoreat{\catvariableof{\arbset}}$ with indices
+        Sudoku constraints enforce the "exactly-one" condition by tensors $\hypercoreat{\catvariableof{\arbset}}$ with indices
         \begin{align*}
             \hypercoreat{\indexedcatvariableof{\arbset}}
             = \begin{cases}
@@ -107,17 +134,19 @@
 
         We choose $\arbset$ differently for each constraint:
         \begin{itemize}
-            \item {\bf Position constraints:} $\arbset=\{(r_0r_1c_0c_1i) \wcols i\in[\sudokunum^2]\}$ for each cell $r_0r_1c_0c_1$
-            \item {\bf Row constraints:} $\arbset=\{(r_0r_1c_0c_1i) \wcols c_0,c_1\in[\sudokunum]\}$ for each row $r_0r_1$ and each digit $i$
-            \item {\bf Column constraints:} $\arbset=\{(r_0r_1c_0c_1i) \wcols r_0,r_1\in[\sudokunum]\}$ for each column $c_0c_1$ and each digit $i$
-            \item {\bf Square constraints:} $\arbset=\{(r_0r_1c_0c_1i) \wcols r_1,c_1\in[\sudokunum]\}$ for each square $r_0c_0$ and each digit $i$
+            \item {\bf Position constraints:} $\arbset=\{(r_0r_1c_0c_1i) \wcols i\in[\sudokunum^2]\}$ for each cell $(r_0r_1c_0c_1)$
+            \item {\bf Row constraints:} $\arbset=\{(r_0r_1c_0c_1i) \wcols c_0,c_1\in[\sudokunum]\}$ for each row $(r_0r_1)$ and each digit $i$
+            \item {\bf Column constraints:} $\arbset=\{(r_0r_1c_0c_1i) \wcols r_0,r_1\in[\sudokunum]\}$ for each column $(c_0c_1)$ and each digit $i$
+            \item {\bf Square constraints:} $\arbset=\{(r_0r_1c_0c_1i) \wcols r_1,c_1\in[\sudokunum]\}$ for each square $(r_0c_0)$ and each digit $i$
         \end{itemize}
     \end{frame}
 
     \begin{frame}{Decomposition of Sudoku constraints}
 
-        The constraints are decomposed using a decomposition variable $\decvariable\in[\sudokunum^2]$ corresponding to the nonvanishing digit.
-        This is enforce for each $i\in[\sudokunum^2]$ by constraint matrices
+        {\bf Idea:} Introduce for each constraint a decomposition variable $\decvariable\in[\sudokunum^2]$ indicating which of the $\sudokunum^2$ atomic variables $\catvariableof{\cdot}$ in the constraint gets the $1$ assignment.
+
+        %The constraints are decomposed using a decomposition variable $\decvariable\in[\sudokunum^2]$ corresponding to the nonvanishing digit.
+        This is enforced for each $i\in[\sudokunum^2]$ by constraint matrices
         \begin{align*}
             \hypercoreofat{i}{\catvariableof{i},\decvariable}
             = \tbasisat{\catvariable} \otimes \onehotmapofat{i}{\decvariable}
@@ -157,7 +186,7 @@
                 \end{align*}
 
                 \medskip
-                {\bf Aim:} Perform manipulation operations to \emph{disentangle} the constraints.
+                {\bf Aim:} Manipulate the network to \emph{disentangle} the constraints.
 %                \begin{itemize}
 %                    \item Perform a sub-contraction replacing tensors
 %                    \item Try to split the resulting tensor into a tensor product
@@ -211,7 +240,7 @@
 
     \end{frame}
 
-    \begin{frame}{Disentangling properties of Sudoku matrices}
+    \begin{frame}{Disentangling properties of Sudoku constraint matrices}
         \input{tikz/exactly-one-disentangling}
         \begin{center}
             \bf These disentangling matrix-vector contractions are exploited to solve (simple) Sudoku puzzles.
@@ -220,7 +249,7 @@
 
     \begin{frame}{Disentangling a known position in Sudoku}
         \par
-        {\bf Example:} When $0$ at position $0000$, then no further digit can be assigned to that position.
+        {\bf Example:} When $0$ is assigned at position $0000$, then no further digit can be assigned to that position.
         \input{tikz/sudoku-position-known-example}
         \begin{center}
             \bf We disentangle each atomic variable corresponding with a known position.
@@ -231,14 +260,14 @@
 
     \begin{frame}{Generalized unit propagation}
 
-        Generalized unit propagation:
-        Do until convergence
+        %Generalized unit propagation:
+        Until convergence, we
         \begin{itemize}
-            \item Contract a vector to each neighboring tensor
-            \item Try to split the resulting tensor into a vector and a tensor
-            \item If success and the remaining tensor is a vector: Repeat for the remaining vector
+            \item Contract a vector to each neighboring tensor.
+            \item Try to split the resulting tensor into a vector and a tensor.
+            \item If success and the remaining tensor is a vector: Repeat for the remaining vector.
         \end{itemize}
-
+        \medskip
         Comparison with unit propagation so far:
         \begin{itemize}
             \item Works with arbitrary constraints (shape, values), while so far on unit clauses
@@ -285,16 +314,18 @@
 
     \end{frame}
 
-    \begin{frame}{Generalized unit propagation}
-        Same behaviour as classical Sudoku solvers:
-        \begin{itemize}
-            \item Dancing Links [Knuth: Art of Computer Programming, Vol. 4b]
-            \item AC-3 [Mackworth: Consistency in Networks of Relations]
-        \end{itemize}
-
-        But: Often convergence without solution.
-        On the Nicoli100 benchmark: 49\% solved by generalized unit propagation.
-    \end{frame}
+%    \begin{frame}{Generalized unit propagation}
+%        Same behaviour as classical Sudoku solvers:
+%        \begin{itemize}
+%            \item Dancing Links [Knuth: Art of Computer Programming, Vol. 4b]
+%            \item AC-3 [Mackworth: Consistency in Networks of Relations]
+%        \end{itemize}
+%        \par
+%        \medskip
+%
+%            {\bf But:} Often convergence without solution. \\
+%            {\bf On the Nicoli100 benchmark:} 49\% solved by generalized unit propagation.
+%    \end{frame}
 
 
     \begin{frame}{Limitations}
@@ -302,9 +333,11 @@
         \vspace{-0.5cm}
         \input{tikz/sudoku-complex-example}
         \only<3>{
+
             \begin{center}
                 \bf We need a contraction of four constraint matrices, to continue!
             \end{center}
+                            {\bf On the Nicoli100 benchmark:} Only 49\% solved by generalized unit propagation.
         }
         \only<5->{
             \medskip
@@ -346,11 +379,11 @@
 %    \end{frame}
 
 
-    \section{Graph Coloring}
+    \section{Graph coloring}
 
-    \begin{frame}{Example: Graph Coloring}
+    \begin{frame}{Example: Graph coloring}
 
-        \begin{block}{Graph Coloring Problem}
+        \begin{block}{Graph coloring problem}
             Given a graph $\graph=(\nodes,\edges)$ and $\catdim$ colors, find a coloring of the nodes, such that adjacent nodes have different colors.
         \end{block}
 
@@ -366,7 +399,7 @@
         \end{minipage}
     \end{frame}
 
-    \begin{frame}{Representation of Graph Coloring}
+    \begin{frame}{Representation of the graph coloring problem}
         We model the problem:
         \begin{itemize}
             \item Enumerate the colors by the state set $[\catdim]=\{0,\ldots,\catdim-1\}$
@@ -374,12 +407,12 @@
         \end{itemize}
         To each edge $\edge=\{\node_{0},\node_{1}\}$ the "different" constraint matrix
         \begin{align*}
-            \hypercoreofat{\mathrm{diff},\{\node_0,\node_1\}}{\catvariableof{\node_{0}},\catvariableof{\node_{1}}}
+            \hypercoreofat{\node_0\neq\node_1}{\catvariableof{\node_{0}},\catvariableof{\node_{1}}}
             = \onesat{\catvariableof{\node_{0}},\catvariableof{\node_{1}}} - \identityat{\catvariableof{\node_{0}},\catvariableof{\node_{1}}} \, .
         \end{align*}
         with off-diagonal support enforces different color constraint.
         \begin{align*}
-            \hypercoreofat{\{\nodeof{0},\nodeof{1}\}}{\catvariableof{\nodeof{0}},\catvariableof{\nodeof{1}}}
+            \hypercoreofat{\nodeof{0}\neq\nodeof{1}}{\catvariableof{\nodeof{0}},\catvariableof{\nodeof{1}}}
             =\coloredmatrixof{
                 0 & 1 & \cdots & 1  \\
                 1 & \ddots & \ddots & \vdots \\
@@ -392,12 +425,13 @@
     \begin{frame}{Example: Painting states of australia}
         Let us paint the states of australia with $3$ colors:
         \begin{itemize}
-            \item $7$ color variables $\catvariableof{\cdot}$ of leg dimension $\catdim=3$
+            \item $7$ color variables $\catvariableof{\node}$ of leg dimension $\catdim=3$
             \item $9$ edges between neighbored states $\nodeof{0}$ and $\nodeof{1}$, which are decorated by the $3x3$ constraint matrix
         \end{itemize}
         \begin{minipage}{0.54\textwidth}
+            For each edge $\{\nodeof{0},\nodeof{1}\}\in \edges$ we have a constraint matrix:
             \begin{align*}
-                &\hypercoreofat{\{\nodeof{0},\nodeof{1}\}}{\catvariableof{\nodeof{0}},\catvariableof{\nodeof{1}}} \\
+                &\hypercoreofat{\nodeof{0}\neq\nodeof{1}}{\catvariableof{\nodeof{0}},\catvariableof{\nodeof{1}}} \\
                 &\quad=
                 \coloredmatrixof{
                     0 & 1 & 1 \\
@@ -450,10 +484,8 @@
             \drawtextnode{12}{0}{$\neq \quad0$}
         }
 
-
-        Cannot detect the unsatisfiability by contractions of two matrices.
-
-        In general: Cycles with odd numbers need three colors, of two need two colors.
+        {\bf However:} We cannot detect the unsatisfiability by contractions of two matrices. \\
+        {\bf In general:} Cycles with odd numbers need three colors, and of even need two colors.
     \end{frame}
 
     \begin{frame}{Example: Cycle of three nodes}
@@ -499,7 +531,7 @@
         \begin{align*}
             &\nzcontractionof{
                 \vectorat{\catvariableof{\nodeof{0}}},
-                \hypercoreofat{\{\nodeof{0},\nodeof{1}\}}{\catvariableof{\nodeof{0}},\catvariableof{\nodeof{1}}}
+                \hypercoreofat{\nodeof{0}\neq\nodeof{1}}{\catvariableof{\nodeof{0}},\catvariableof{\nodeof{1}}}
             }{\catvariableof{\nodeof{1}}} \\
             & \quad =
             \begin{cases}
@@ -533,10 +565,10 @@
     \begin{frame}{Idea of backtracking}
 
         {\bf Problem:} Some constraints do not disentangle.
-    This might be due to the fact, that multiple solutions are available (which do not build product sets).
-            \medskip
+        This might be due to the fact, that multiple solutions are available (which do not build product sets).
+        \medskip
 
-            {\bf Solution:} Backtracking search
+        {\bf Solution:} Backtracking search
         \begin{itemize}
             \item Guess an assignment to a variable, and add the one-hot encoding $\onehotmapofat{i}{\catvariableof{\node}}$.
             \item Any constraint tensor to an edge $\edge$ with $\node\in\edge$ disentangles (maybe more by unit propagation).
@@ -567,7 +599,7 @@
         \begin{algorithm}[H]
 \begin{algorithmic}
     \Require Constraint network $\extnet$
-    \Ensure Elementary constraint network
+    \Ensure One-hot encoding of a solution, or $False$ if not satisfiable
     \iosepline
     \State Choose a node $\node$ in a non-unitary edge $\edge$
     \For{$\catindexofin{\node}$}
@@ -577,8 +609,8 @@
             \State \Return $False$
         \EndIf
         \State $\tilde{\extnet}\algdefsymbol\mathrm{Backtrack}(\extnet\cup\{\onehotmapofat{\catindexof{\node}}{\catvariableof{\node}}\})$
-        \If{$\extnet$ not $False$}
-            \State \Return $\extnet$
+        \If{$\tilde{\extnet}$ not $False$}
+            \State \Return $\tilde{\extnet}$
         \EndIf
     \EndFor
     \State \Return $False$
