@@ -17,138 +17,400 @@
     \showoutlineatsection
 
 
+    %\section{Basis calculus}
+
+
     \section{Circuit computation model}
 
-    \begin{frame}{Propositional Syntax}
+    \begin{frame}{Recall: Basis calculus in propositional logic}
+        \par
 
-        Propositional syntax decomposes formulas into connectives applied on sub-formulas.
-
-        When understanding formulas as functions, we get a decomposition into circuits of connectives.
-
-        This decomposition is reflected in the tensor network decomposition of basis encodings.
-
+        Evaluation of propositional formulas at states in basis calculus:
+        \begin{itemize}
+            \item Start with the one-hot encoding state to be evaluated
+            \item Evaluate iteratively sub-formulas, pass the result to the more complex sub-formulas
+        \end{itemize}
+            {\bf Example:} The formula $(\catvariableof{0}\land\catvariableof{1})\lor \lnot \catvariableof{2}$ is evaluated at a state $(\catindexof{0},\catindexof{1},\catindexof{2})\in[2]^3$ by
         \begin{center}
-            \bf Can we generalize to arbitrary functions and find tensor network decompositions based on circuits?
+            \input{../I.3-Syntax/tikz/basis-calculus}
         \end{center}
 
-        Example: Neural networks are circuits of neurons.
-
+        \only<6>{
+            \begin{center}
+                \bf Can we generalize to arbitrary functions and find tensor network decompositions based on circuits?
+            \end{center}
+        }
     \end{frame}
 
-    \begin{frame}{Circuits as a computational model}
 
-        Circuits are a fundamental computational model, which is used in many areas of computer science, e.g., in complexity theory, logic, and machine learning.
 
-        Other models:
+
+    \begin{frame}{Generalization to circuits}
+
+
+        A generic tensor has arbitary leg dimensions and represents a function
+        \begin{align*}
+            \exfunction \defcols \shortcatindices \rightarrow \hypercoreat{\indexedshortcatvariables}
+        \end{align*}
+%
+        \begin{center}
+            \bf How to find a decomposition of a tensor into smaller tensors, based on a syntactical description of the function represented by the tensor?
+        \end{center}
+
+        Generalizations required:
         \begin{itemize}
-            \item Turing machines
+            \item Arbitrary state numbers to variables: Leaving the interpretation of the states $[2]$ as $\{\mathrm{False},\mathrm{True}\}$, use instead state sets $[\catdim]$
+            \item Arbitrary functions applied on states
         \end{itemize}
 
+    \end{frame}
+
+    \begin{frame}{Circuits}
+
+        \begin{definition}[Circuit]
+            A circuit is a decorated hypergraph $\graph=(\nodes,\edges)$, where:
+            \begin{itemize}
+                \item Each node $\node\in\nodes$ is decorated by a dimension $\catdimof{\node}\in\nn$
+                \item Each edge $\edge\in\edges$ is a tuple of incoming nodes $\incomingnodes$ and outgoing nodes $\outgoingnodes$
+                \item Each edge $\edge\in\edges$ is decorated by a function
+                \begin{align*}
+                    \exfunctionof{\edge}
+                    \defcols \bigtimes_{\node\in\incomingnodes}[\catdimof{\node}] \rightarrow \bigtimes_{\node\in\outgoingnodes}[\catdimof{\node}]
+                \end{align*}
+            \end{itemize}
+
+            We assume that:
+            \begin{itemize}
+                \item The hypergraph is acyclic
+                \item Each node appears at most once as an outgoing node
+            \end{itemize}
+
+
+        \end{definition}
+
+        %Propositional syntax decomposes formulas into connectives applied on sub-formulas.
+
+%        When understanding formulas as functions, we get a decomposition into circuits of connectives.
+
+        %  This decomposition is reflected in the tensor network decomposition of basis encodings.
+
 
     \end{frame}
+
+
+    \begin{frame}{Functions represented by circuits}
+
+        We denote by
+        \begin{itemize}
+            \item $\innodes$ the nodes appearing never as outgoing nodes.
+            \item $\outnodes$ the nodes appearing never as incoming nodes.
+        \end{itemize}
+
+        Now we can iteratively define a function
+        \begin{align*}
+            \secexfunctionof{\node} \defcols \bigtimes_{\secnode\in\incomingnodes}[\catdimof{\secnode}] \rightarrow [\catdimof{\node}]
+        \end{align*}
+        as the composition of the functions decorating the edges, mapping the states of $\innodes$ to the states of $\outnodes$, by
+        \begin{align*}
+            \secexfunctionof{\node}  = \exfunctionof{\edge}|_{\node} \circ (\bigtimes_{\secnode\in\incomingnodes} \secexfunctionof{\secnode}) \, .
+        \end{align*}
+
+
+        The circuit represents the function
+        \begin{align*}
+            \secexfunctionof{\graph}
+            = \bigtimes_{\node\in\outnodes} \secexfunctionof{\node} \, .
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{Example: Propositional syntax}
+
+        Consider the formula $(\catvariableof{B}\lor\catvariableof{E})\Rightarrow (\catvariableof{J}\lor\catvariableof{M})$
+        \begin{itemize}
+            \item The nodes are the variables $\catvariableof{B},\catvariableof{E},\catvariableof{J},\catvariableof{M}$, the sub-formulas $\headvariableof{B\lor E},\headvariableof{J\lor M}$, and the formula $\headvariableof{\formula}$
+            \item The nodes $\innodes=\{\catvariableof{B},\catvariableof{E},\catvariableof{J},\catvariableof{M}\}$ do not appear as outgoing nodes
+            \item The node $\headvariableof{\formula}$ is the only one not appearing as incoming nodes, thus $\outnodes=\{\headvariableof{\formula}\}$
+        \end{itemize}
+        \input{../I.3-Syntax/tikz/syntactical-circuit-example}
+    \end{frame}
+
+
+%    \begin{frame}{Examples}
+%
+%        Propositional formulas are circuits, where
+%        \begin{itemize}
+%            \item Each node is a Boolean variable
+%            \item Each edge is decorated by a Boolean connective
+%        \end{itemize}
+%        Neural networks are circuits, where
+%        \begin{itemize}
+%            \item Each neuron is a gate, represented by a node
+%            \item Neurons align in layers, with edges between nodes of adjacent layers
+%        \end{itemize}
+%    \end{frame}
 
 
     \section{Tensor representation}
 
-    \begin{frame}{Set enumerating variables}
 
-        Generic basis encodings of functions contain set enumerating variables to the input and target sets.
+    \begin{frame}{General basis encodings}
+
+
+        Consider an arbitrary function
+        \begin{align*}
+            \secexfunction \defcols \bigtimes_{\node\in\innodes}[\catdimof{\node}] \rightarrow \bigtimes_{\node\in\outnodes}[\catdimof{\node}] \, .
+        \end{align*}
+        We define its \emph{basis encoding} as the tensor
+        \begin{align*}
+            \bencodingofat{\secexfunction}{
+                \catvariableof{\outnodes},\catvariableof{\innodes}
+            }
+            = \sum_{\catindexof{\innodes}\in\bigtimes_{\node\in\innodes}[\catdimof{\node}]}
+            \onehotmapofat{\secexfunction(\catindexof{\innodes})}{\catvariableof{\outnodes}}
+            \otimes
+            \onehotmapofat{\catindexof{\innodes}}{\catvariableof{\innodes}} \, .
+        \end{align*}
+
+
+        \stantikzpic{
+            \draw (-3,1) rectangle (3, 3);
+
+            \draw[->-] (-2,3)--(-2,5);
+            \drawtextnode{0}{0}{$\cdots$}
+            \draw[->-] (2,3)--(2,5);
+            \node[anchor=center] (text) at (0,2) {\corelabelsize $\bencodingof{\secexfunction}$};
+
+            \draw[->-] (-2,-1)--(-2,1);
+            \drawtextnode{0}{0}{$\cdots$}
+            \draw[->-] (2,-1)--(2,1);
+        }
 
     \end{frame}
 
-    \begin{frame}{Computation hypergraph}
 
-        \begin{itemize}
-            \item Nodes represent inputs, preliminary results, and outputs
-            \item Edges are directed and represent
-        \end{itemize}
 
-        Formally: A circuit is a decorated hypergraph.
-
-    \end{frame}
 
     \begin{frame}{Decomposition into tensor networks}
+        To each edge $\edge$ we choose a basis encoding
+        \begin{align*}
+            \bencodingofat{\exfunctionof{\edge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}}
+            = \sum_{\catindexof{\incomingnodes}\in \bigtimes_{\node\in\incomingnodes}[\catdimof{\node}]}
+            \onehotmapofat{\exfunctionof{\edge}(\catindexof{\incomingnodes})}{\catvariableof{\outgoingnodes}}
+            \otimes \onehotmapofat{\catindexof{\incomingnodes}}{\catvariableof{\incomingnodes}}
+        \end{align*}
+        The basis encoding to a function of a circuit is decomposed into basis encodings of the node functions:
+        \begin{align*}
+            \bencodingofat{\exfunctionof{\graph}}{
+                \catvariableof{\outnodes},\catvariableof{\innodes}
+            }
+            = \contractionof{
+                \{\bencodingofat{\exfunctionof{\edge}}{\catvariableof{\outgoingnodes},\catvariableof{\incomingnodes}} \wcols \edge\in\edges\}
+            }{\catvariableof{\outnodes},\catvariableof{\innodes}}
+        \end{align*}
 
-        The basis encoding to a function of a circuit is decomposed into basis encodings of the node functions.
+
+            {\bf Example:} The basis encoding of the formula $\exformula=(\catvariableof{0}\land\catvariableof{1})\lor \lnot \catvariableof{2}$ is decomposed into the basis encodings of the connectives $\land,\lor,\lnot$ as
+        \stantikzpic{
+
+            \begin{scope}[shift={(-12,0)}]
+                \draw (-3,1) rectangle (3, 3);
+                \draw[->-] (0,3)--(0,5) node[midway,left] {\colorlabelsize ${\headvariableof{(0\land1)\lor \lnot2}}$};
+                \node[anchor=center] (text) at (0,2) {\corelabelsize $\bencodingof{\exformula}$};
+
+                \draw[->-] (-2,-1)--(-2,1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+                \draw[->-] (0,-1)--(0,1) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+                \draw[->-] (2,-1)--(2,1) node[midway,right] {\colorlabelsize $\catvariableof{2}$};
+                \drawtextnode{6}{2}{${=}$}
+            \end{scope}
+
+        %\drawsmalltensor{0}{-2}{\corelabelsize $\onehotmapof{\catindexof{0}}$}
+        %\drawsmalltensor{3}{-2}{\corelabelsize $\onehotmapof{\catindexof{1}}$}
+        %\drawsmalltensor{6}{-2}{\corelabelsize $\onehotmapof{\catindexof{2}}$}
+
+            \draw[->-] (0,-1)--(0,1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \draw[->-] (3,-1)--(3,1) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+            \draw[->-] (6,-1)--(6,1) node[midway,right] {\colorlabelsize $\catvariableof{2}$};
+
+            \draw (-1,1) rectangle (4, 3);
+            \node[anchor=center] (text) at (1.5,2) {\corelabelsize $\bencodingof{\land}$};
+
+            \draw (5,1) rectangle (7, 3);
+            \node[anchor=center] (text) at (6,2) {\corelabelsize $\bencodingof{\lnot}$};
+
+            \draw[->-] (1.5,3) --(1.5,5) node[midway,right]{\colorlabelsize ${\headvariableof{0\land1}}$};
+            \draw[->-] (6,3) --(6,5) node[midway,right]{\colorlabelsize $\headvariableof{\lnot 2}$};
+
+            \draw (0.5,5) rectangle (7,7);
+            \node[anchor=center] (text) at (3.75,6) {\corelabelsize $\bencodingof{\lor}$};
+
+            \draw[->-] (3.75,7) -- (3.75,9) node[midway,right] {\colorlabelsize ${\headvariableof{(0\land1)\lor \lnot2}}$};
+        }
 
     \end{frame}
+
+%    \begin{frame}{Circuits as a computational model}
+%
+%        Circuits are a fundamental computational model, which is used in many areas of computer science.
+%
+%        Other models:
+%        \begin{itemize}
+%            \item Turing machines
+%        \end{itemize}
+%
+%
+%    \end{frame}
+
+
+%
+%    \begin{frame}{Circuit graphs to tensor networks}
+%
+%        We build to each node $\node$ a directed hyperedge
+%        \begin{itemize}
+%            \item Single outgoing node $\node$
+%            \item Any adjacent node as an incoming node
+%        \end{itemize}
+%
+%    \end{frame}
+
+%    \begin{frame}{Set enumerating variables}
+%
+%        Generic basis encodings of functions contain set enumerating variables to the input and target sets.
+%
+%    \end{frame}
+%
+%    \begin{frame}{Computation hypergraph}
+%
+%        \begin{itemize}
+%            \item Nodes represent inputs, preliminary results, and outputs
+%            \item Edges are directed and represent
+%        \end{itemize}
+%
+%        Formally: A circuit is a decorated hypergraph.
+%
+%    \end{frame}
 
 
     \section{Example: $\catdim$-adic sums}
 
+
     \begin{frame}{$\catdim$-adic representation of integers}
-
-%        Tensor: Each coordinate is the integer to the $\catdim$-adic representation given by the indices.
-%        How to decompose the sum tensors, which are tensors with legs to both variables?
-
-
-        We develop a tensor network representation of integer summations on the set $[\catdim^{\catorder}]=\{0,\ldots,\catdim^{\catorder}-1\}$, where $\catdim,\catorder\in\nn$,
+        Let $\catdim,\catorder$ be arbitrary natural numbers.
+        Any number $n\in[\catdim^{\catorder}]$ has a unique $\catdim$-adic representation
         \begin{align*}
-            + \defcols [\catdim^\catorder] \times [\catdim^\catorder] \rightarrow [\catdim^{\catorder+1}]
-            \quad,\quad
-            +(i,\tilde{i}) = i+\tilde{i} \,,
+            \sum_{\catenumeratorin} \catindexof{\catenumerator} \cdot \catdim^{\catenumerator}
         \end{align*}
-        which have a $\catdim$-adic representation of length $\catorder$.
-        We define an index interpretation map
+        where for each $\catenumeratorin$
         \begin{align*}
-            \indexinterpretation \defcols \bigtimes_{\catenumeratorin}[\catdim] \rightarrow [\catdim^{\catorder}]
-            \quad,\quad
-            \indexinterpretationat{\shortcatindices}
-            = \sum_{\catenumeratorin} \catindexof{\catenumerator} \cdot \catdim^{\catenumerator} \, ,
+            \catindexof{\catenumerator} \in [\catdim] \, .
         \end{align*}
-        which enables the parameterization of $[\catdim^{\catorder}]$ as the states of $\catorder$ categorical variables $\shortcatvariables$ of dimension $\catdim$.
+
+            {\bf Example:} For $\catdim=3$ and $\catorder=2$, the number $5\in[9]$ has the $3$-adic representation
+        \begin{align*}
+            (\catindexof{0},\catindexof{1}) = (2,1)
+        \end{align*}
+        since
+        \begin{align*}
+            5 = 2\cdot 3^0 + 1\cdot 3^1 \, .
+        \end{align*}
+
     \end{frame}
 
 
-    \begin{frame}{Basis encoding}
-        The basis encoding of the sum is then
+    \begin{frame}{Summation function}
+        We want to find a circuit decomposing the summation function
         \begin{align*}
-            & \bencodingofat{+}{\headvariableof{[\catorder+1]},\shortcatvariables,\seccatvariableof{[\catorder]}} \\
+            \marysumsymbol
+            \defcols [\catdim^{\catorder}] \times [\catdim^{\catorder}] \rightarrow [\catdim^{\catorder+1}]
+        \end{align*}
+        defined for tuples $(\shortcatindices,\tildecatindexof{[\catorder]})\in[\catdim]^{\catorder}$ with $\marysumsymbol(\shortcatindices,\tildecatindexof{[\catorder]})=\headindexof{[\catorder+1]}$ as
+        \begin{align*}
+            \sum_{\catenumerator\in[\catorder+1]} \headindexof{\catenumerator} \cdot \catdim^{\catenumerator}
+            =             \sum_{\catenumeratorin} (\catindexof{\catenumerator} + \tildecatindexof{\catenumerator}) \cdot \catdim^{\catenumerator}\, .
+        \end{align*}
+        % \end{frame}
+
+        % \begin{frame}{Basis encoding}
+        The basis encoding of the sum is the tensor
+        \begin{align*}
+            & \bencodingofat{\marysumsymbol}{\headvariableof{[\catorder+1]},\shortcatvariables,\tildecatvariableof{[\catorder]}} \\
             &\quad = \sum_{\shortcatindices,\tildecatindexof{[\catorder]}} \onehotmapofat{\invindexinterpretationat{
                 \indexinterpretationat{\shortcatindices} + \indexinterpretationat{\tildecatindexof{[\catorder]}}
             }}{\headvariableof{[\catorder+1]}}
             \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables}
             \otimes \onehotmapofat{\tildecatindexof{[\catorder]}}{\tildecatvariableof{[\catorder]}} \, .
         \end{align*}
+
+        \stantikzpic{
+            \draw (-2,-1) rectangle (4,1);
+            \draw[->-] (-1.25,1)--(-1.25,2.5) node[midway,left] {\colorlabelsize $\headvariableof{0}$};
+            \draw[->-] (3.25,1)--(3.25,2.5) node[midway,right] {\colorlabelsize $\headvariableof{\catorder}$};
+            \node[anchor=center] (A) at (1,2.5) {\corelabelsize $\cdots$};
+            \node[anchor=center] (A) at (1,0) {\corelabelsize $\bencodingof{\marysumsymbol}$};
+            \draw[->-] (-1.5,-2.5)--(-1.5,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \draw[->-] (-1,-2.5)--(-1,-1) node[midway,right] {\colorlabelsize $\tildecatvariableof{0}$};
+            \draw[->-] (3,-2.5)--(3,-1) node[midway,left] {\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
+            \draw[->-] (3.5,-2.5)--(3.5,-1) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catorder\shortminus1}$};
+            \node[anchor=center] (A) at (1,-2.5) {\corelabelsize $\cdots$};
+        }
     \end{frame}
 
-    \begin{frame}{Decomposition into half-adders}
+    \begin{frame}{Circuit of half-adders}
 
-        The targeted function to be decomposed is the representation of the integer sum by
+        Nodes representing the bits to numbers:
+        \begin{itemize}
+            \item $\shortcatvariables$ representing the first number to be summed
+            \item $\tildecatvariableof{[\catorder]}$ representing the second number to be summed
+            \item $\headvariableof{[\catorder+1]}$ representing the sum
+            \item $\thirdcatvariableof{[\catorder-1]}$ representing carry bits
+        \end{itemize}
+
+        Edges are enumerated by $[\catorder-1]=\{0,\ldots,\catorder-2\}$ representing half-adders:
         \begin{align*}
-            \marysumsymbol \defcols \left(\bigtimes_{\catenumeratorin}[\catdim]\right) \times \left(\bigtimes_{\catenumeratorin}[\catdim]\right) \rightarrow \bigtimes_{\catenumerator\in[\catorder+1]}[\catdim]
-            \quad,\quad
-            \marysumsymbol(\shortcatindices,\tildecatindexof{[\catorder]}) =
-            \invindexinterpretationat{\indexinterpretationat{\shortcatindices}+\indexinterpretationat{\tildecatindexof{[\catorder]}}} \, .
+            \exfunctionof{\edgeof{\catenumerator}}(\thirdcatindexof{\catenumerator-1},\catindexof{\catenumerator},\tildecatindexof{\catenumerator})
+            = \left(
+                  (\thirdcatindexof{\catenumerator-1} + \catindexof{\catenumerator} + \tildecatindexof{\catenumerator}) \modspace\catdim,
+                  \left\lfloor\frac{\thirdcatindexof{\catenumerator-1} + \catindexof{\catenumerator} + \tildecatindexof{\catenumerator}}{\catdim}\right\rfloor
+            \right)
         \end{align*}
-        We build a decomposition hypergraph $\graph=(\nodes,\edges)$ (see \defref{def:decompositionHypergraph}) consisting of $4\cdot \catorder$ nodes (see \figref{fig:decompositionMarySum}a) .
-        The nodes carry the $(3\cdot\catorder +1)$ variables $\shortcatvariables,\seccatvariableof{[\catorder]},\headvariableof{[\catorder+1]}$ of dimension $\catdim$ constructed above and $\catorder-1$ auxiliary variables $\thirdcatvariableof{[\catorder-1]}$ of dimension $2$ representing carry bits.
-        The directed hyperedges of $\graph$ are
-        \begin{align*}
-            \edges
-            =&\left\{(\{\catvariableof{0},\tildecatvariableof{0}\},\{\headvariableof{0},\thirdcatvariableof{0}\})\right\}
-            \cup \left\{(\{\thirdcatvariableof{\catenumerator-1},\catvariableof{\catenumerator},\tildecatvariableof{\catenumerator}\},\{\headvariableof{\catenumerator},\thirdcatvariableof{\catenumerator}\})
-                     \wcols \catenumerator\in\{1,\ldots,\catorder-2\}\right\} \\
-            &\cup \left\{(\{\thirdcatvariableof{\catorder-2},\catvariableof{\catorder-1},\tildecatvariableof{\catorder-1}\},\{\headvariableof{\catorder-1},\headvariableof{\catorder}\})\right\}
-        \end{align*}
-        and are decorated by local summation functions
-        \begin{align*}
-            \modsumsymbol \defcols [2] \times [\catdim] \times [\catdim] \rightarrow [\catdim] \times [2]
-            \quad,\quad
-            \modsumsymbol(\thirdcatindex,\catindex,\tildecatindex)
-            = \left((\thirdcatindex + \catindex + \tildecatindex) \modspace\catdim,
-                  \left\lfloor\frac{\thirdcatindex + \catindex + \tildecatindex}{\catdim}\right\rfloor\right) \, .
-        \end{align*}
-        Since to the first hyperedge we do not have a carry bit, the decorating function is the restriction of the first argument to $0$.
+
+        \input{tikz/m-adic-graph}
+
     \end{frame}
 
-    \begin{frame}{Tensor Network representation}
+%    \begin{frame}{Decomposition into half-adders}
+%
+%        The targeted function to be decomposed is the representation of the integer sum by
+%        \begin{align*}
+%            \marysumsymbol \defcols \left(\bigtimes_{\catenumeratorin}[\catdim]\right) \times \left(\bigtimes_{\catenumeratorin}[\catdim]\right) \rightarrow \bigtimes_{\catenumerator\in[\catorder+1]}[\catdim]
+%            \quad,\quad
+%            \marysumsymbol(\shortcatindices,\tildecatindexof{[\catorder]}) =
+%            \invindexinterpretationat{\indexinterpretationat{\shortcatindices}+\indexinterpretationat{\tildecatindexof{[\catorder]}}} \, .
+%        \end{align*}
+%        We build a decomposition hypergraph $\graph=(\nodes,\edges)$ (see \defref{def:decompositionHypergraph}) consisting of $4\cdot \catorder$ nodes (see \figref{fig:decompositionMarySum}a) .
+%        The nodes carry the $(3\cdot\catorder +1)$ variables $\shortcatvariables,\tildecatvariableof{[\catorder]},\headvariableof{[\catorder+1]}$ of dimension $\catdim$ constructed above and $\catorder-1$ auxiliary variables $\thirdcatvariableof{[\catorder-1]}$ of dimension $2$ representing carry bits.
+%        The directed hyperedges of $\graph$ are
+%        \begin{align*}
+%            \edges
+%            =&\left\{(\{\catvariableof{0},\tildecatvariableof{0}\},\{\headvariableof{0},\thirdcatvariableof{0}\})\right\}
+%            \cup \left\{(\{\thirdcatvariableof{\catenumerator-1},\catvariableof{\catenumerator},\tildecatvariableof{\catenumerator}\},\{\headvariableof{\catenumerator},\thirdcatvariableof{\catenumerator}\})
+%                     \wcols \catenumerator\in\{1,\ldots,\catorder-2\}\right\} \\
+%            &\cup \left\{(\{\thirdcatvariableof{\catorder-2},\catvariableof{\catorder-1},\tildecatvariableof{\catorder-1}\},\{\headvariableof{\catorder-1},\headvariableof{\catorder}\})\right\}
+%        \end{align*}
+%        and are decorated by local summation functions
+%        \begin{align*}
+%            \modsumsymbol \defcols [2] \times [\catdim] \times [\catdim] \rightarrow [\catdim] \times [2]
+%            \quad,\quad
+%            \modsumsymbol(\thirdcatindex,\catindex,\tildecatindex)
+%            = \left((\thirdcatindex + \catindex + \tildecatindex) \modspace\catdim,
+%                  \left\lfloor\frac{\thirdcatindex + \catindex + \tildecatindex}{\catdim}\right\rfloor\right) \, .
+%        \end{align*}
+%        Since to the first hyperedge we do not have a carry bit, the decorating function is the restriction of the first argument to $0$.
+%    \end{frame}
 
-        \input{tikz/m-adic-sum}
-
-        By \theref{the:functionDecompositionRep} we have a decomposition of the basis encoding to $\exfunctionof{\graph}$ (see \figref{fig:decompositionMarySum}b) as
+    \begin{frame}{Decomposition of the basis encoding}
+        We have a decomposition of the basis encoding of the sum as
         \begin{align*}
-            \bencodingofat{\marysumsymbol}{\headvariableof{[\catorder+1]},\shortcatvariables,\tildecatvariableof{[\catorder]}}
+            &\bencodingofat{\marysumsymbol}{\headvariableof{[\catorder+1]},\shortcatvariables,\tildecatvariableof{[\catorder]}} \\
             = \breakablecontractionof{
                 &\{\bencodingofat{\modsumsymbol,0}{\headvariableof{0},\thirdcatvariableof{0},\catvariableof{0},\tildecatvariableof{0}}\} \cup \\
                 &\{\bencodingofat{\modsumsymbol,\catenumerator}{
@@ -161,12 +423,19 @@
 
     \end{frame}
 
-    \begin{frame}{Extension to multiplications}
-        Do the multiplication for each digit of the right number separately, then add the results.
+    \begin{frame}{Tensor Network representation}
 
-        In this way: Generalize to
+        \input{tikz/m-adic-sum}
 
     \end{frame}
+
+
+%    \begin{frame}{Extension to multiplications}
+%        Do the multiplication for each digit of the right number separately, then add the results.
+%
+%        In this way: Generalize to
+%
+%    \end{frame}
 
 
 \end{document}
