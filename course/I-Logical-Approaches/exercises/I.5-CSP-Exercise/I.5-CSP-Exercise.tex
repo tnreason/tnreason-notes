@@ -3,16 +3,16 @@
 
 \begin{document}
     \exercisehead{3}{Constraint Satisfaction Problems}{May 11, 2026}
-    \usecasebox{$n$ queens problem}{
+    \usecasebox{$n$ rooks problem}{
         For arbitrary $n\in\nn$ let there be a grid of $n\times n$ positions with $n$ columns and $n$ rows.
-        We want to assign $r$ queens onto positions of the chess board, such that:
+        We want to assign $r$ rooks onto positions of the chess board, such that:
         \begin{itemize}
-            \item Each column contains exactly one queen.
-            \item Each row contains at most one queen.
+            \item Each column contains at most one rook.
+            \item Each row contains at most one rook.
         \end{itemize}
     }
     \addtask{1}{
-        Design the $n$ queens problem as a Constraint Satisfaction Problem.
+        Design the $n$ rooks problem as a Constraint Satisfaction Problem.
         \begin{itemize}
             \item[(i)] What are suitable variables, their leg dimensions, and the constraint tensors?
             \item[(ii)] Which hidden variables could be introduced for a sparser representation of the constraints?
@@ -20,21 +20,21 @@
         \textit{Hint:} Compare the problem to the Sudoku game.
     }
     \addtask{2}{
-        Assume again that we have a partial assignment of $r\leq n$ queens given.
-        How many assignments of the remaining $n-r$ queens satisfy the constraints?
+        Assume again that we have a partial assignment of $r\leq n$ rooks given.
+        How many assignments of the remaining $n-r$ rooks satisfy the constraints?
         How to compute that number by a tensor network contraction?
     }
     \addtask{3 (Generalized unit propagation)}{
-        Assume that we have a partial assignment of $r<n$ queens given. %, such that each pair of queens is assigned to different columns and different rows.
-        Would the generalized unit propagation algorithm be able to find a solution for the remaining $r-k$ queens?
+        Assume that we have a partial assignment of $r<n$ rooks given. %, such that each pair of rooks is assigned to different columns and different rows.
+        Would the generalized unit propagation algorithm be able to find a solution for the remaining $r-k$ rooks?
     }
     \addtask{4 (Backtracking)}{
-        Assume that we have a partial assignment of $r<n$ queens given. %, such that each pair of queens is assigned to different columns and different rows.
-        How would the backtracking algorithm with generalized unit propagation as a simplifier find a solution for the remaining $r-k$ queens?
+        Assume that we have a partial assignment of $r<n$ rooks given. %, such that each pair of rooks is assigned to different columns and different rows.
+        How would the backtracking algorithm with generalized unit propagation as a simplifier find a solution for the remaining $r-k$ rooks?
     }
 %    \addtask{4}{
 %
-%        Assume an assignment of all $n$ queens given.
+%        Assume an assignment of all $n$ rooks given.
 %        Describe a contraction-based method to verify whether the assignment respects the constraints.
 %    }
 

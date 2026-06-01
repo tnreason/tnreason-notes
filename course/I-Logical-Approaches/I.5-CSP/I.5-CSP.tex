@@ -148,7 +148,7 @@
         %The constraints are decomposed using a decomposition variable $\decvariable\in[\sudokunum^2]$ corresponding to the nonvanishing digit.
         This is enforced for each $i\in[\sudokunum^2]$ by constraint matrices
         \begin{align*}
-            \hypercoreofat{i}{\catvariableof{i},\decvariable}
+            \hypercoreofat{i}{\catvariable,\decvariable}
             = \tbasisat{\catvariable} \otimes \onehotmapofat{i}{\decvariable}
             + \fbasisat{\catvariable} \otimes \left(\onesat{\decvariable} - \onehotmapofat{i}{\decvariable}\right) \, .
         \end{align*}
@@ -310,6 +310,7 @@
         \only<7>{
             With these matrix-vector contraction schemes, the example Sudoku can be solved:
             \input{tikz/sudoku-start-example}
+       % {\bf But on the Nicoli100 benchmark:} Only 49\% solved by generalized unit propagation.
         }
 
     \end{frame}
@@ -337,7 +338,7 @@
             \begin{center}
                 \bf We need a contraction of four constraint matrices, to continue!
             \end{center}
-                            {\bf On the Nicoli100 benchmark:} Only 49\% solved by generalized unit propagation.
+
         }
         \only<5->{
             \medskip

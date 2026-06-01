@@ -1,0 +1,157 @@
+\documentclass{scrartcl}
+\input{../../../spec_files/exercise_preamble}
+
+\begin{document}
+    \solutionhead{3}{Constraint Satisfaction Problems}{May 11, 2026}
+    \addtask{1}{
+        \begin{itemize}
+            \item[(i)] We enumerate each row by an index $r\in[n]$ and each cell by an index $c\in[n]$.
+            We then define for each cell representing tuple $(r,c)$ a variable $\catvariableof{rc}$ with $\catdimof{rc}=2$, indicating whether the cell contains a rook.
+            For each row $r\in[n]$ we build a constraint tensor $\hypercoreofat{row,r}{\catvariableof{r\times[n]}}$, where we denote by $\catvariableof{r\times[n]}=\{\catvariableof{rc} \wcols c\in[n]\}$ the variables to a row.
+            The constraint tensor is defined for each coordinate $\catindexof{r\times[n]}\in[2]^n$ by
+            \begin{align*}
+                \hypercoreofat{row,r}{\indexedcatvariableof{r\times[n]}} =
+                \begin{cases}
+                    1 & \ifspace \sum_{c\in[n]}\catindexof{rc}\leq 1\\
+                    0 & \text{else}
+                \end{cases} \, .
+            \end{align*}
+            Vise versa, for each column $c\in[n]$ a constraint tensor
+            \begin{align*}
+                \hypercoreofat{col,c}{\indexedcatvariableof{[n]\times c}} =
+                \begin{cases}
+                    1 & \ifspace \sum_{r\in[n]}\catindexof{rc}\leq 1\\
+                    0 & \text{else}
+                \end{cases} \, .
+            \end{align*}
+            \item[(ii)] We introduce for each constraint a decomposition variable $\decvariable$ of dimension $n+1$
+            \begin{itemize}
+                \item For $i\in[n]$ the assignment $\decvariable=i$ shall represent that the $i$th atomic variable has a $1$ assigned.
+                \item The state $\decvariable=n$ shall represent that none of the atomic variables has a $1$ assigned.
+            \end{itemize}
+
+            For row constraints this decomposition variable is enforced for each $c\in[n]$ by the matrices
+            \begin{align*}
+                \hypercoreofat{row,r,c}{\catvariableof{rc},\decvariableof{r}^{row}}
+                = \tbasisat{\catvariableof{rc}} \otimes \onehotmapofat{c}{\decvariableof{r}^{row}}
+                + \fbasisat{\catvariableof{rc}} \otimes \big(\onesat{\decvariableof{r}^{row}}-\onehotmapofat{c}{\decvariableof{r}^{row}}\big) \, .
+            \end{align*}
+            We then have
+            \begin{align*}
+                \hypercoreofat{row,r}{\catvariableof{r\times[n]}}
+                = \contractionof{
+                    \{\hypercoreofat{row,r,c}{\catvariableof{rc},\decvariableof{r}^{row}} \wcols c \in [n]\}
+                }{\catvariableof{r\times[n]}} \, .
+            \end{align*}
+            For column constraints we find analogous decomposition variables, by interchanging the $r$ and $c$ indices.
+            In total we have a constraint network sketched as:
+            \stantikzpic{
+
+            % Column constraints above
+
+                \drawvariabledot{12}{6}
+                \drawtextnode{12}{7}{\colorlabelsize $\decvariableof{0}^{row}$}
+
+                \draw (12,6) to [bend right=20] (6,4);
+                \draw (12,6) to [bend right=-20] (18,4);
+
+                \draw (3,2) rectangle (9,4);
+                \drawtextnode{6}{3}{$\hypercoreof{row,0,0}$}
+                \draw (6,2) -- (6,-1) ;
+                \drawvariabledot{6}{0}
+                \drawtextnode{7}{0}{\colorlabelsize $\catvariableof{00}$}
+
+                \drawtextnode{12}{3}{$\cdots$}
+                \drawtextnode{12}{0}{$\cdots$}
+
+                \draw (15,2) rectangle (21,4);
+                \drawtextnode{18}{3}{$\hypercoreof{row,0,n-1}$}
+                \draw (18,2) -- (18,-1) ;
+                \drawvariabledot{18}{0}
+                \drawtextnode{16.5}{0}{\colorlabelsize $\catvariableof{0n\shortminus1}$}
+
+
+                \drawvariabledot{12}{-12}
+                \drawtextnode{12}{-13}{\colorlabelsize $\decvariableof{n\shortminus1}^{row}$}
+
+                \draw (12,-12) to [bend right=-20] (6,-10);
+                \draw (12,-12) to [bend right=20] (18,-10);
+
+                \draw (3,-8) rectangle (9,-10);
+                \drawtextnode{6}{-9}{$\hypercoreof{row,n\shortminus1,0}$}
+                \draw (6,-8) -- (6,-5) ;
+                \drawvariabledot{6}{-6}
+                \drawtextnode{7.5}{-6}{\colorlabelsize $\catvariableof{n\shortminus 1 0}$}
+
+                \drawtextnode{12}{-6}{$\cdots$}
+                \drawtextnode{12}{-9}{$\cdots$}
+
+                \draw (15,-8) rectangle (21,-10);
+                \drawtextnode{18}{-9}{$\hypercoreof{row,n-1,n-1}$}
+                \draw (18,-8) -- (18,-5) ;
+                \drawvariabledot{18}{-6}
+                \drawtextnode{16.5}{-6}{\colorlabelsize $\catvariableof{n\shortminus 1 n\shortminus1}$}
+
+
+                % Column constraints left
+
+                \drawtextnode{-6}{-3}{\colorlabelsize $\decvariableof{0}^{col}$}
+                \drawvariabledot{-5}{-3}
+                \draw (-5,-3) to [bend right=-30] (-3,0);
+                \draw (-5,-3) to [bend right=30] (-3,-6);
+
+                \draw (-3,-1) rectangle (3,1);
+                \drawtextnode{0}{0}{$\hypercoreof{col,0,0}$}
+
+                \draw (3,0) -- (6,0);
+
+                \drawtextnode{6}{-3}{$\vdots$}
+                \drawtextnode{0}{-3}{$\vdots$}
+                \draw (-3,-5) rectangle (3,-7);
+                \drawtextnode{0}{-6}{$\hypercoreof{col,0,n-1}$}
+
+                \draw (3,-6) -- (6,-6);
+
+                % Column constraints right
+
+                \drawtextnode{30}{-3}{\colorlabelsize $\decvariableof{n\shortminus 1}^{col}$}
+                \drawvariabledot{29}{-3}
+                \draw (29,-3) to [bend right=30] (27,0);
+                \draw (29,-3) to [bend right=-30] (27,-6);
+
+                \draw (21,-1) rectangle (27,1);
+                \drawtextnode{24}{0}{$\hypercoreof{col,n-1,0}$}
+
+                \draw (21,0) -- (18,0);
+
+                                \drawtextnode{18}{-3}{$\vdots$}
+                \drawtextnode{24}{-3}{$\vdots$}
+                \draw (21,-5) rectangle (27,-7);
+                \drawtextnode{24}{-6}{$\hypercoreof{col,n-1,n-1}$}
+
+                \draw (21,-6) -- (18,-6);
+
+            }
+        \end{itemize}
+
+    }
+    \addtask{2}{
+        If there is a row or column with two rooks assigned, then there is no assignment satisfying all constraints.
+        If not, then there are
+        \begin{align*}
+            (n-r)! = 1 \cdot 2 \cdot \ldots \cdot (n-r)
+        \end{align*}
+        possible assignments.
+        Lets denote by $E$ the set of the $r$ cell tuples with a rook assigned.
+        The total number of assignments respecting all constraints is the contraction
+        \begin{align*}
+            \contraction{
+                \left(\bigcup_{(r,c)\in E} \tbasisat{\catvariableof{rc}} \right)
+                \cup
+                \left(\bigcup_{r,c\in[n]}
+                    \{\hypercoreofat{row,r,c}{\catvariableof{rc},\decvariableof{r}^{row}},\hypercoreofat{col,c,r}{\catvariableof{rc},\decvariableof{c}^{col}}\}
+                \right)
+            } \, .
+        \end{align*}
+    }
+\end{document}
