@@ -3,9 +3,10 @@
 \input{../../spec_files/course_preamble.tex}
 \input{../../spec_files/course_macros.tex}
 
-\title[One-hot encodings]{
-    \coursechaptertwo \\
-    {\huge General Tensors, Factored Systems and One-hot encodings}
+\setchatwotitledate{
+    Probability, Marginal and Conditional Distributions
+}{
+    June 8, 2026
 }
 
 \begin{document}
@@ -16,7 +17,57 @@
 
     \section{Uncertainties}
 
-    \begin{frame}{Brittleness of Logical Reasoning}
+
+
+    \begin{frame}{Toy accounting example}
+
+        Let us imagine that each possible assignment to is of equal frequency.
+
+        \stantikzpic{
+            \drawtextnode{0}{0}{$\begin{pmatrix}
+                                     0 & 1 \\ 1 & 0
+            \end{pmatrix}$}
+            \drawtextnode{3.5}{1}{$\begin{pmatrix}
+                                       0 & 0 \\ 1 & 0
+            \end{pmatrix}$}
+            \drawtextnode{8.5}{0.5}{$[\catvariableof{A1},\catvariableof{A2},\catvariableof{F}]$}
+        }
+
+        We can ask the following questions:
+        Is the account $\var{Account 1}$ or the account $\var{Account 2}$ more likely to be booked?
+
+        \begin{center}
+            \bf Since logic can only handle certainty, it cannot answer this question.
+        \end{center}
+
+        However, we can intuitively assign probabilities to the states:
+        \stantikzpic{
+            \drawtextnode{-2}{0}{$\begin{pmatrix}
+                                      0 & \frac{1}{3} \\ \frac{1}{3} & 0
+            \end{pmatrix}$}
+            \drawtextnode{3}{1}{$\begin{pmatrix}
+                                     0 & 0 \\ \frac{1}{3} & 0
+            \end{pmatrix}$}
+            \drawtextnode{8.5}{0.5}{$[\catvariableof{A1},\catvariableof{A2},\catvariableof{F}]$}
+        }
+
+        There are two worlds where $\var{Account 1}$ is booked, and one world where $\var{Account 2}$ is booked, thus
+        \begin{align*}
+            \probat{\catvariableof{A1}=1} = \frac{2}{3} \quad > \quad   \probat{\catvariableof{A2}=1} = \frac{1}{3} \, .
+        \end{align*}
+
+
+    \end{frame}
+
+    \begin{frame}{Uncertainty: Summarizing the unknown}
+
+        Uncertainties need to be handled:
+        \begin{itemize}
+            \item Not all variables are measured. \\
+            Example: When we do not know the value of $\var{Feature}$, then we do not know whether $\var{Account 1}$ or $\var{Account 2}$ have to be booked.
+            \item Parts of the models are not known. \\
+            Example: Even if $\var{Feature}$ is known to be $\falsesymbol$, then we do not know whether $\var{Account 1}$ or $\var{Account 2}$ have to be booked.
+        \end{itemize}
 
         Logics cannot handle uncertainties.
 
@@ -25,30 +76,21 @@
 
     \end{frame}
 
-
-    \begin{frame}{Uncertainty: Summarizing the unknown}
-
-        Model of uncertainties: Not all variables are measureable.
-
-        Example: Weather.
-
-    \end{frame}
-
-    \begin{frame}{Example}
-
-        Three variables: \emph{Cloud seen}, \emph{Rain today} and \emph{Rain tomorrow}.
-        Let us think of a deterministic relation:
-        \begin{itemize}
-            \item If we see a cloud, it will rain today and tomorrow.
-            \item If we do not see a cloud, it will not rain today and tomorrow.
-        \end{itemize}
-
-        Now, cloud is not observable, but we want to reason about the probability of rain today and tomorrow.
-
-        Logics: Fails, since no entailment of rain today and tomorrow.
-        Probability theory: Works, since we can assign probabilities to the states of rain today and tomorrow, resulting from averages of cloud and not cloud.
-
-    \end{frame}
+%    \begin{frame}{Example}
+%
+%        Three variables: \emph{Cloud seen}, \emph{Rain today} and \emph{Rain tomorrow}.
+%        Let us think of a deterministic relation:
+%        \begin{itemize}
+%            \item If we see a cloud, it will rain today and tomorrow.
+%            \item If we do not see a cloud, it will not rain today and tomorrow.
+%        \end{itemize}
+%
+%        Now, cloud is not observable, but we want to reason about the probability of rain today and tomorrow.
+%
+%        Logics: Fails, since no entailment of rain today and tomorrow.
+%        Probability theory: Works, since we can assign probabilities to the states of rain today and tomorrow, resulting from averages of cloud and not cloud.
+%
+%    \end{frame}
 
 
     \begin{frame}{Comparing logics and probability theory}
@@ -71,44 +113,6 @@
         \emph{Tensors} with efficient representations by \emph{Tensor Networks}.
 
     \end{frame}
-
-    %% OLD
-
-%    \section{Motivation: Reasoning, its mechanization and computations}
-%
-%
-%    \begin{frame}{How to approach Artificial Intelligence?}
-%
-%
-%        \begin{block}{Learning: Inductive Reasoning}
-%            Use training data to identify models representing the knowledge about a system.
-%            %\begin{itemize}
-%            %\item Model represents \emph{knowledge} about the system
-%            %\item Inductive: Modelling assumptions and priors are important
-%            %\end{itemize}
-%        \end{block}
-%
-%        \begin{center}
-%            \begin{tikzpicture}
-%                \node [anchor=center] at (0,0) {Training Data};
-%                \draw[->] (1,0) -- (2,0);
-%                \node [anchor=center] at (3.5,0) {\emph{Inductive Reasoning}};
-%                \draw[->] (5,0) -- (6,0);
-%                \node [anchor=center] at (6.5,0) {Model};
-%                \draw[->] (6.5,-0.25) -- (6.5,-0.75);
-%                \node [anchor=center] at (3.5,-1) {Query};
-%                \draw[->] (4,-1) -- (5,-1);
-%                \node [anchor=center] at (6.5,-1) {\emph{Deductive Reasoning}};
-%                \draw[->] (8,-1) -- (9,-1);
-%                \node [anchor=center] at (9.75,-1) {Answer};
-%            \end{tikzpicture}
-%        \end{center}
-%
-%        \begin{block}{Inference: Deductive Reasoning}
-%            Retrieve specific parts of the knowledge based on a query containing evidence.
-%        \end{block}
-%
-%    \end{frame}
 
 
     \section{Probability Distributions}
@@ -134,19 +138,336 @@
 
         Instead of storing 0/1 for possibilities, we can store probabilities (in the interval $[0,1]$) in the coordinates of a tensor.
 
+        The total probability of all states must be $1$ and can be calculated by contracting all legs of the tensor since
+        \begin{align*}
+            \sum_{\shortcatindices} \probat{\indexedshortcatvariables}
+            = \contraction{\probwith} \, .
+        \end{align*}
+
+        \begin{definition}[Probability Tensor]
+        	Let there be a factored system $\facsystem$ defined by variables $\catvariableof{\atomenumerator}$ taking values in $[\catdimof{\atomenumerator}]$.
+            A probability distribution over the states of $\facsystem$ is a tensor $\probwith$ with coordinates in the interval $[0,1]$ such that
+            \begin{align*}
+                \contraction{\probwith} = 1 \, .
+            \end{align*}
+        \end{definition}
+
     \end{frame}
 
 
 
-    \begin{frame}{Normalization constraint}
+    \begin{frame}{Normalization constraint by directionality}
 
         Probability distributions sum to $1$.
 
-        We depict this by outgoing legs.
+        We depict this by outgoing legs:
+
+
+        \stantikzpic{
+            \draw (-3,-1) rectangle (3,1);
+            \drawtextnode{0}{0}{$\probtensor$}
+            \draw[->-] (-2,-1) -- (-2,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \drawtextnode{0}{-1.75}{$\cdots$}
+            \draw[->-] (2,-1) -- (2,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+        }
+    \end{frame}
+
+
+    \section{Marginal Distributions}
+
+%\begin{frame}{Average of the Observation}
+%
+%The \emph{empirical distribution} is the average of the one-hot encoded observed states:
+%\begin{align*}
+%	\empdistribution \coloneqq \frac{1}{\datanum}\sum_{\datindexin} \onehotmapof{\catindicesof{\datindex}}
+%\end{align*}
+%
+%In a contraction diagram we denote the average by % Already the decomposition!
+%\begin{center}
+%	\input{./tikz_pics/empirical_distribution.tex}
+%\end{center}
+%
+%\end{frame}
+
+
+    \begin{frame}{Example: Being at a dentist}
+
+        We are reasoning about a factored system with three variables:
+        \begin{itemize}
+            \item \emph{Toothache} $\catindexof{0}\in[2]$, whether your tooth hurts
+            \item \emph{Cavity} $\catindexof{1}\in[2]$, whether there is a cavity in your tooth
+            \item \emph{Catch} $\catindexof{2}\in[2]$, whether the dentist catches in your tooth
+        \end{itemize}
+
+
+    \end{frame}
+
+    \begin{frame}{Example: Being at a dentist}
+        Let us take the following probability distribution over the states of the system:
+        \begin{tabular}{c|c|c|c}
+            $\var{Toothache} \quad \catindexof{0}$ & $\var{Cavity} \quad \catindexof{1}$ & $\var{Catch} \quad \catindexof{2}$   & $\probat{\indexedcatvariableof{0},\indexedcatvariableof{1},\indexedcatvariableof{2}}$ \\ \hline
+            0                                      & 0                                   & 0                                  & 0.576                                                                                 \\
+            0                                      & 0                                   & 1                                  & 0.144                                                                                 \\
+            0                                      & 1                                   & 0                                  & 0.008                                                                                 \\
+            0                                      & 1                                   & 1                                  & 0.072                                                                                 \\
+            1                                      & 0                                   & 0                                  & 0.064                                                                                 \\
+            1                                      & 0                                   & 1                                  & 0.016                                                                                 \\
+            1                                      & 1                                   & 0                                  & 0.012                                                                                 \\
+            1                                      & 1                                   & 1                                  & 0.108                                                                                 \\
+        \end{tabular}
+        \par \medskip
+        We align the probability values in the coordinates of an order-3 tensor:
+        \stantikzpic{
+            \drawtextnode{-2}{0}{$\begin{pmatrix}
+                                      0.576 &  0.008 \\ 0.064 & 0.012
+            \end{pmatrix}$}
+            \drawtextnode{5.5}{1}{$\begin{pmatrix}
+                                       0.144 & 0.072 \\ 0.016 & 0.108
+            \end{pmatrix}$}
+            \drawtextnode{12}{0.5}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]$}
+        }
+
 
     \end{frame}
 
 
 
+    \begin{frame}{Marginal Distributions}
+
+        {\bf Example:} What is the probability that there is a cavity (or not) when having toothache (or not)?
+        \begin{itemize}
+            \item The variable $\var{Catch}$ is not relevant for this question, thus we want to \emph{marginalize} over it.
+            \item To this end, we sum the probability of states differing in the value of $\var{Catch}$ only.
+        \end{itemize}
+
+        This amounts to a contraction of the probability distribution tensor closing the variable $\catvariableof{2}$:
+        \input{tikz/toothache-marginalization}
+
+    \end{frame}
+
+    \begin{frame}{Marginal Distributions}
+
+        Summation of probabilities of states are done by contractions of the probability distribution tensor.
+
+        \begin{definition}[Marginal Distribution]
+        Given a probability distribution $\probwith$ and a subset $\arbset\subset[\catorder]$, the marginal distribution of the variables $\catvariableof{\arbset}$ is the distribution
+        \begin{align*}
+            \probat{\catvariableof{\arbset}}
+            = \contractionof{\probwith}{\catvariableof{\arbset}} \, .
+        \end{align*}
+        \end{definition}
+    \end{frame}
+
+
+%    \begin{frame}{Directed Tensors}
+%
+%        We depict the condition, that coordinate sums are one, by directions on the legs.
+%
+%        \begin{definition}[Directed Tensor]
+%	A tensor
+%    \[ \hypercore \in \bigotimes_{\nodein}\rr^{\catdimof{\node}} \]
+%    is said to be directed with incoming variables $\innodes$ and outgoing variables $\outnodes$, where $\nodes=\innodes\dot{\cup}\outnodes$, when
+%    \[ \contractionof{\{\hypercore\}}{\innodes} =  \onesof{\innodes} \]
+%    where $\onesof{\innodes}$ denoted the trivial tensor in  $\bigotimes_{\node\in\innodes}\rr^{\catdimof{\node}}$ which coordinates are all $1$.
+%        \end{definition}
+%
+%    \end{frame}
+
+
+%
+%    \begin{frame}{Formal Definition of Marginal Distributions}
+%
+%        \begin{definition}[Marginal Probability]\label{def:marginalProbability}
+%            Given a distribution $\probtensor$ of the categorical variables $\exrandom$ and $\secexrandom$ the marginal distribution of the categorical variable $\exrandom$ is defined for each $\catindexof{\exrandom}$ as
+%            \[
+%                \margprobof{\exrandom=\catindexof{\exrandom}}{\exrandom}
+%                = \sum_{\catindexof{\secexrandom}\in[\catdimof{\secexrandom}]} \probof{\exrandom=\catindexof{\exrandom},\secexrandom=\catindexof{\secexrandom}} \, . \]
+%        \end{definition}
+%
+%        Marginal probabilities are contractions
+%        \begin{align*}
+%            \probof{\exrandom} = \contractionof{\probtensor}{\exrandom}
+%        \end{align*}
+%        depicted by
+%        \begin{center}
+%            \input{./tikz_pics/marginalized_probability.tex}
+%        \end{center}
+%
+%    \end{frame}
+
+
+
+
+
+
+    \begin{frame}{Marginal Distributions in Contraction Formalism}
+
+        Contractions are useful to
+        \begin{itemize}
+            \item Specify the Probability Tensor, or a decomposition of it
+            \item Specify the variables to marginalize over as the ones left open
+        \end{itemize}
+
+        \begin{center}
+            \input{./tikz/marginalized-probability}
+        \end{center}
+
+
+    \end{frame}
+
+
+    \section{Conditional Distributions}
+
+
+    \begin{frame}{Example: Conditional Distributions}
+
+        What is the probability of having a cavity when having a toothache?
+        We separately normalize the probabilities of states
+
+        \input{tikz/toothache-conditionalization}
+
+        \medskip
+
+        This is called a \emph{conditional} distribution.
+
+
+    \end{frame}
+
+
+
+
+
+
+    \begin{frame}{Normations}
+
+        More general, conditionalization amounts to normalization of probability tensors.
+
+        \begin{definition}[Normalization]
+            The \emph{normalization} of a tensor $\hypercorewith$ with respect to disjoint subsets $\outnodes,\innodes\subset[\catorder]$ is the tensor
+            \begin{align*}
+                \normalizationofwrt{\hypercorewith}{\catvariableof{\outnodes}}{\catvariableof{\innodes}}
+            \end{align*}
+            defined by the coordinates
+            \begin{align*}
+                &\normalizationofwrt{\hypercorewith}{\indexedcatvariableof{\outnodes}}{\indexedcatvariableof{\innodes}} \\
+                &\quad = \begin{cases}
+                             \frac{
+                                 \contractionof{\hypercorewith}{\indexedcatvariableof{\outnodes},\indexedcatvariableof{\innodes}}
+                             }{
+                                 \contractionof{\hypercorewith}{\indexedcatvariableof{\innodes}}
+                             } & \ifspace \contractionof{\hypercorewith}{\indexedcatvariableof{\innodes}}\neq 0 \\
+                             \frac{1}{\prod_{\node\in\outnodes}\catdimof{\node}} &  \text{else}
+                \end{cases}
+            \end{align*}
+        \end{definition}
+
+    \end{frame}
+
+
+    \begin{frame}{Formal Definition of Conditional Distributions}
+
+        \begin{definition}[Conditional Probability]
+	Given a distribution $\probwith$ and disjoint subsets $\outnodes,\innodes\subset[\catorder]$, the distribution of $\catvariableof{\outnodes}$ conditioned on $\catvariableof{\innodes}$ is the normalization
+    \begin{align*}
+        \condprobof{\catvariableof{\outnodes}}{\catvariableof{\innodes}}
+        = \normalizationofwrt{\probwith}{\catvariableof{\outnodes}}{\catvariableof{\innodes}}
+    \end{align*}
+        \end{definition}
+
+        \begin{center}
+            \input{./tikz/conditional-probability}
+        \end{center}
+
+    \end{frame}
+
+    \begin{frame}{Directed notation}
+
+        Directed tensors represent normations:
+
+        Each slice of the incoming variables is a normalized tensor, i.e. coordinates summing to $1$.
+
+    \end{frame}
+
+
+%    \begin{frame}{Conditional Distributions by Normations}
+%
+%        Conditioning is the normation
+%        \[ \condprobof{\exrandom}{\secexrandom} = \normalizationofwrt{\probtensor}{\exrandom}{\secexrandom} \]
+%
+%
+%        The directed notation highlights \emph{Conditions} by incoming legs and \emph{Distributions} by outgoing legs.
+%
+%
+%    \end{frame}
+
+
+    \section{Bayes Theorem}
+
+    \begin{frame}{The Bayes Theorem}
+
+        The Bayes Theorem relates conditional probabilities:
+
+        \begin{theorem}[Bayes Theorem]
+            For any joint distribution of two categorical variables $\exrandom$ and $\secexrandom$ it holds that
+            \[ \condprobof{\exrandom}{\secexrandom} = \frac{\probof{\exrandom,\secexrandom}}{\probof{\secexrandom}}
+            = \frac{\condprobof{\secexrandom}{\exrandom}\probof{\exrandom}}{\probof{\secexrandom}}  \, . \]
+        \end{theorem}
+
+    \end{frame}
+
+
+    \begin{frame}{Bayes Theorem in the Dentist Example}
+
+        Directions of Reasoning
+        \begin{itemize}
+            \item \emph{Causal direction}: Toothache is caused by cavity
+            \item \emph{Diagnostic direction}: Cavity is probable because of toothache
+        \end{itemize}
+
+        \medskip
+
+        Bayes Theorem allows us to reason in diagnostic direction, given an underlying causal influence:
+        \begin{align*}
+            & \probtensor[\mathrm{Cavity}|\mathrm{Toothache}] \\
+            & \quad\quad\quad =
+            \probtensor[\mathrm{Toothache}|\mathrm{Cavity}]
+            \frac{\probtensor[\mathrm{Cavity}] }{\probtensor[\mathrm{Toothache}]}
+        \end{align*}
+
+    \end{frame}
+
+
+
+
+
+    \begin{frame}{Contraction Calculus for Probability Tensors}
+
+        Probabilistic queries can be answered by contractions
+        \begin{itemize}
+            \item Marginal probabilities
+            \[ \probof{\exrandom} = \contractionof{\probtensor}{\exrandom} \]
+            \item Conditional probabilities
+            \[ \condprobof{\exrandom}{\secexrandom} = \normalizationofwrt{\probtensor}{\exrandom}{\secexrandom} \]
+        \end{itemize}
+
+        \medskip
+
+        Outlook: \emph{Tensor network decompositions of $\probtensor$} increase the execution efficiency!
+
+    \end{frame}
+
+
+    \section{Connections with logics}
+
+    \begin{frame}{Probabilistic Queries}
+
+        The probability of a formula $\formula$ to hold
+        \begin{align*}
+            \sum_{\shortcatindices\wcols\formulaat{\indexedshortcatvariables}=1} \probat{\indexedshortcatvariables}
+            = \contraction{\probwith,\formulawith}
+        \end{align*}
+
+        Generalization of entailment: A formula is entailed if the probability is $1$.
+    \end{frame}
 
 \end{document}
