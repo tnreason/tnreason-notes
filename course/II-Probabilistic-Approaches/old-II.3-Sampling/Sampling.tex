@@ -40,7 +40,7 @@
 
 
 Draw State for atom $\atomenumerator$ a state $\atomlegindexof{\atomenumerator}$ from marginalized distribution 
-	\[ \probof{\catvariableof{\atomenumerator}} = \frac{\contractionof{\probtensor}{\catvariableof{\atomenumerator}}
+	\[ \probat{\catvariableof{\atomenumerator}} = \frac{\contractionof{\probtensor}{\catvariableof{\atomenumerator}}
 		}{
 		\contractionof{\{\probtensor\}}{\varnothing}
 		} \]
@@ -84,10 +84,10 @@ The subpackage \spreasoning{} implements algorithms such as Gibbs Sampling.
 \node [anchor=center,blue] at (6,6) {\spreasoning{}};
 \draw[->,blue] (6,4) -- (6,2);
 
-\draw[->] (-6,10) -- (-6,8);
+\draw[->-] (-6,10) -- (-6,8);
 \draw[] (-10,4) rectangle (-2,8); 
 \node [anchor=center] at (-6,6) {\sprepresentation{}};
-\draw[->] (-6,4) -- (-6,2);
+\draw[->-] (-6,4) -- (-6,2);
 
 \draw[dashed] (-30,3) -- (12,3);
 \node [anchor=center] at (-20,0) {\layeronespec};

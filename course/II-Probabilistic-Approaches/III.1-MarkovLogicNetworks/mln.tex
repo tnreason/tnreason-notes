@@ -62,7 +62,7 @@ Judea Pearl in Probabilistic Reasoning in Intelligent Systems (1988):
 	Tensor Networks by conditional independencies\\
 	\medskip
 	Contractions answer probabilistic queries
-		\[ \probof{\catvariable} = \contractionof{\probtensor}{\catvariable} \]
+		\[ \probat{\catvariable} = \contractionof{\probtensor}{\catvariable} \]
 \end{columns}
 
 \end{frame}
@@ -238,12 +238,12 @@ The subpackage \spapplication{} implements generalizations of Markov Logic Netwo
 \draw[blue,->] (6,10) -- (6,8);
 \draw[] (2,4) rectangle (10,8); 
 \node [anchor=center] at (6,6) {\spreasoning{}};
-\draw[->] (6,4) -- (6,2);
+\draw[->-] (6,4) -- (6,2);
 
 \draw[blue,->] (-6,10) -- (-6,8);
 \draw[] (-10,4) rectangle (-2,8); 
 \node [anchor=center] at (-6,6) {\sprepresentation{}};
-\draw[->] (-6,4) -- (-6,2);
+\draw[->-] (-6,4) -- (-6,2);
 
 \draw[dashed] (-30,3) -- (12,3);
 \node [anchor=center] at (-20,0) {\layeronespec};

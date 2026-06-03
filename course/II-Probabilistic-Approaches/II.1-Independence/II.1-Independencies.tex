@@ -15,6 +15,8 @@
     \showoutlineatsection
 
 
+    \section{Independence of variables}
+
 
     \begin{frame}{How to beat the curse of dimensions?}
 
@@ -53,25 +55,25 @@
     \begin{frame}{Formal definition of Independencies}
 
         \begin{definition}[Independence]
-	Given a joint distribution of variables $\exrandom$ and $\secexrandom$, we say that $\exrandom$ is independent from $\secexrandom$ if for any values $\catindexof{\exrandom},\catindexof{\secexrandom}$ we have
-    \[ \probof{\exrandom=\catindexof{\exrandom},\secexrandom=\catindexof{\secexrandom}}
-    = \margprobof{\exrandom=\catindexof{\exrandom}}{\exrandom}
-    \cdot
-    \margprobof{\secexrandom=\catindexof{\secexrandom}}{\secexrandom} \, . \]
+    	Given a joint distribution of variables $\catvariableof{0}$ and $\catvariableof{1}$, we say that $\catvariableof{0}$ is independent from $\catvariableof{1}$ if for any values $\catindexof{\catvariableof{0}},\catindexof{\catvariableof{1}}$ we have
+        \begin{align*}
+            \probat{\indexedcatvariableof{0},\indexedcatvariableof{1}}
+            = \probat{\indexedcatvariableof{0}}
+            \cdot
+            \probat{\indexedcatvariableof{1}} \, .
+        \end{align*}
         \end{definition}
-        In the tensor network decomposition we depict this by
-        \begin{center}
-            \input{./tikz_pics/independent_def.tex}
-        \end{center}
+
     \end{frame}
 
 
     \begin{frame}{Contraction criterion for independence}
 
         \begin{theorem}\label{the:independenceProductCriterion}
-            Given a probability distribution $\probtensor$, $\exrandom$ is independent from $\secexrandom$, if and only if
+            Given a probability distribution $\probtensor$, $\catvariableof{0}$ is independent from $\catvariableof{1}$, if and only if
             \begin{align*}
-                \probtensor = \contractionof{\probtensor}{\exrandom} \otimes  \contractionof{\probtensor}{\secexrandom} \, .
+                \probat{\catvariableof{0},\catvariableof{1}}
+                = \contractionof{\probtensor}{\catvariableof{0}} \otimes  \contractionof{\probtensor}{\catvariableof{1}} \, .
             \end{align*}
         \end{theorem}
 
@@ -79,29 +81,39 @@
 
 
 
-    \begin{frame}{Decomposition into Marginal Probability Tensors}
+    \begin{frame}{Decomposition into Marginal Probabilities}
         Independence allows the decomposition into
         \begin{center}
-            \input{./tikz_pics/independent_marg.tex}
+            \input{./tikz/independent-decomposition.tex}
         \end{center}
 
         \begin{block}{Exponential to linear storage demand}
-            Instead of storing $\catdimof{\exrandom}\cdot\catdimof{\secexrandom}$ coordindates, we can store $\probtensor$ with $\catdimof{\exrandom}+\catdimof{\secexrandom}$ demand.
+            Instead of storing $\catdimof{\catvariableof{0}}\cdot\catdimof{\catvariableof{1}}$ coordindates, we can store $\probtensor$ with $\catdimof{\catvariableof{0}}+\catdimof{\catvariableof{1}}$ demand.
         \end{block}
     \end{frame}
 
 
+    \section{Conditional independence}
 
+    \begin{frame}{Assumption of independence}
 
+        Indpendence is a very restrictive assumption, corresponding with tensor products being the most "extreme" tensor decomposition.
+
+            {\bf Example:} In the dentist example, no variables are independent from each other.
+
+        Are there more common properties corresponding to more generic tensor decompositions?
+    \end{frame}
 
 
     \begin{frame}{Formal definition of Conditional Independencies}
 
         \begin{definition}[Conditional Independence]
-	Given a joint distribution of variables $\exrandom$, $\secexrandom$ and $\thirdexrandom$, we say $\exrandom$ is independent from $\secexrandom$ conditioned on $\thirdexrandom$ if
-    \[ \condprobof{\exrandom,\secexrandom}{\thirdexrandom}
-    = \condprobof{\exrandom}{\thirdexrandom}
-    \cdot \condprobof{\secexrandom}{\thirdexrandom}   \, . \]
+	        Given a joint distribution of variables $\catvariableof{0}$, $\catvariableof{1}$ and $\catvariableof{2}$, we say $\catvariableof{0}$ is independent from $\catvariableof{1}$ conditioned on $\catvariableof{2}$ if for any index tuple $(\catindexof{0},\catindexof{1},\catindexof{2})$
+            \begin{align*}
+                \condprobof{\indexedcatvariableof{0},\indexedcatvariableof{1}}{\indexedcatvariableof{2}}
+                =  \, & \condprobof{\indexedcatvariableof{0}}{\indexedcatvariableof{2}}\\
+                & \cdot \condprobof{\indexedcatvariableof{1}}{\indexedcatvariableof{2}}   \, .
+            \end{align*}
         \end{definition}
 
 
@@ -113,7 +125,7 @@
         We depict conditional independence by tensor network decompositions:
 
         \begin{center}
-            \input{./tikz_pics/cond_independence_decomposition.tex}
+            \input{./tikz/cond-independence-decomposition.tex}
         \end{center}
 
     \end{frame}
@@ -125,94 +137,152 @@
     \end{frame}
 
 
-    \section{Probability Decomposition}
+    \section{Decompositions given independence}
 
     \begin{frame}{Chain Rule: Decomposing Probabilities}
 
         \begin{theorem}[Chain Rule]\label{the:chainRule}
-            For any joint probability distribution $\probtensor$ of the variables $\probof{\catvariableof{0},\ldots,\catvariableof{\atomorder-1}}$ we have
+            For any joint probability distribution $\probwith$ we have
             \begin{align*}
-                \probtensor = \contractionof{\{\condprobof{\catvariableof{\atomenumerator}}{\catvariableof{0},\ldots,\catvariableof{\atomenumerator-1}}\, : \, \atomenumeratorin \}}{\{\enumeratedatoms\}}
+                \probwith
+                = \contractionof{\{
+                    \condprobat{\catvariableof{\atomenumerator}}{\catvariableof{[\catenumerator]}} \wcols \catenumeratorin
+                    \}
+                }{\shortcatvariables} \, .
             \end{align*}
-            where for $\atomenumerator=1$ we denote by $ \condprobof{\catvariableof{0}}{\catvariableof{0},\ldots,\catvariableof{-1}}$ the marginal distribution $\probof{\catvariableof{0}}$.
+%where we denote for $\catenumerator=0$ $\probat{\catvariableof{0}}=\condprobat{\catvariableof{[}}{}$.
         \end{theorem}
-
+            {\bf Proof sketch:} We apply the Bayes theorem to get
+        \begin{align*}
+            \probwith
+            =\contractionof{\probat{\catvariableof{0}},\condprobat{\catvariableof{1},\cdots,\catvariableof{\catorder-1}}{\catvariableof{0}}}{\shortcatvariables} \, .
+        \end{align*}
+        and further apply the Bayes theorem iteratively on the conditioned distribution.
     \end{frame}
 
 
     \begin{frame}{Markov Chains}
 
         \begin{theorem}[Markov Chain]\label{the:MarkovChain}
-            Let there be a set of variables $\catvariableof{\tenumerator}$ where $\tenumeratorin$.
-            When $\catvariableof{\tenumerator}$ is independent of $\catvariableof{0:{\tenumerator-2}}$ conditioned on $\catvariableof{\tenumerator-1}$ (the Markov Property), then
+            Let there be a set of variables $\catvariableof{\catenumerator}$ where $\catenumeratorin$.
+            When $\catvariableof{\catenumerator}$ is independent of $\catvariableof{[\catenumerator-1]}$ conditioned on $\catvariableof{\catenumerator-1}$ (the Markov Property), then
             \begin{align*}
-                \probtensor = \contractionof{\condprobof{\catvariableof{\tenumerator}}{\catvariableof{\tenumerator-1}}\, : \, \tenumeratorin}{
-                    \catvariableof{0},\ldots,\catvariableof{\tdim-1}
+                \probwith
+                = \contractionof{\condprobof{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1}}\wcols \catenumeratorin}{
+                    \shortcatvariables
                 } \, .
             \end{align*}
         \end{theorem}
-
-        We depict this by
-        \begin{center}
-            \input{./tikz_pics/markov_chain.tex}
-        \end{center}
-
-
-    \end{frame}
-
-
-    \section{Hidden Markov Models}
-
-
-    \begin{frame}{Hidden Markov Models}
-
-        Hidden Markov Models extend Markov Chains by limited observation $\randomeof{\tenumerator}$ of the variables $\catvariableof{\tenumerator}$. \\
-        \medskip
-        The independence assumptions are
-        \begin{itemize}
-            \item $\catvariableof{\tenumerator+1}$ is independent of $\catvariableof{0:\tenumerator-1}$ and $\randomeof{0:\tenumerator}$ conditioned on $\catvariableof{\tenumerator}$
-            \item $\randomeof{\tenumerator}$ is independent of all other variables conditioned on $\catvariableof{\tenumerator}$
-        \end{itemize}
-        \medskip
-        The independence assumptions are exploited in the decomposition
-        \begin{center}
-            \input{./tikz_pics/hidden_markov_model.tex}
-        \end{center}
-
-    \end{frame}
-
-
-
-    \begin{frame}{Directed Graphical Models: Bayesian Networks}
-
-        \begin{definition}[Bayesian Networks]
-	Let $\graph=(\nodes,\edges)$ be a directed acyclic graph and for each node $\node\in\nodes$ a random variable $\catvariableof{\node}$.
-    Further let there be for each node $\node\in\nodes$ with parents $\parentsof{\node}$ a conditional probability distribution
-    \[ \condprobof{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \, . \]
-    Then the \emph{Bayesian Network} with respect to $\graph$ and the conditional probability terms is the distribution
-    \begin{align*}
-        \probtensor = \contractionof{\condprobof{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \, : \, \nodein}{\catvariableof{\node} \, : \, \nodein} \, .
-    \end{align*}
-        \end{definition}
-
-    \end{frame}
-
-
-
-    \begin{frame}{Directed Graphical Models:\\
-    Bayesian Networks}
-
-        For each variable we build the conditional probability tensor
-        \begin{center}
-            \input{./tikz_pics/bayesian_factor.tex}
-        \end{center}
-        The \emph{Bayesian Network} is then the contraction
+            {\bf Proof sketch:} We use the chain decomposition and exploit the independence assumptions to get
         \begin{align*}
-            \probtensor = \contractionof{\condprobof{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \, : \, \nodein}{\catvariableof{\node} \, : \, \nodein} \, .
+            \condprobat{\catvariableof{\catenumerator}}{\catvariableof{[\catenumerator]}}
+            = \condprobat{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1}} \otimes \onesat{\catvariableof{[\catenumerator-1]}} \, .
         \end{align*}
 
     \end{frame}
 
+    \begin{frame}{Tensor network decompositions of markov chains}
+        We depict this by
+        \begin{center}
+            \input{tikz/markov-chain}
+        \end{center}
+
+        \begin{center}
+            \bf Can we find a more generic correspondence between probability decompositions and conditional independence statements?
+        \end{center}
+    \end{frame}
+
+
+    \section{Bayesian networks}
+
+    \begin{frame}{Independence assumptions of Bayesian networks}
+
+        \begin{itemize}
+            \item We enumerate the variables by $[\catorder]$.
+            \item To each $\catenumeratorin$ we choose a set $\parentsof{\catenumerator}$ of \emph{parent nodes} in $[\catenumerator]=\{0,\cdots,\catenumerator-1\}$ such that
+            \begin{align*}
+                \condindependent{\catvariableof{\catenumerator}}{\catvariableof{[\catenumerator]\backslash\parentsof{\catenumerator}}}{\catvariableof{\parentsof{\catenumerator}}}
+            \end{align*}
+        \end{itemize}
+
+            {\bf Example:} Markov chains are the special case of $\parentsof{\catenumerator}=\{\catenumerator-1\}$.
+    \end{frame}
+
+
+    \begin{frame}{Factorization into Bayesian networks}
+
+        \begin{theorem}
+            When for each $\catenumeratorin$
+            \begin{align*}
+                \condindependent{\catvariableof{\catenumerator}}{\catvariableof{[\catenumerator]\backslash\parentsof{\catenumerator}}}{\catvariableof{\parentsof{\catenumerator}}}
+            \end{align*}
+            then
+            \begin{align*}
+                \probwith =
+                \contractionof{\{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \wcols \catenumeratorin\}}{
+                    \shortcatvariables
+                } \, .
+            \end{align*}
+        \end{theorem}
+            {\bf Proof sketch:} As in the proof of the Markov chain factorization theorem, we use the chain factorization and exploit the conditional independences to show that
+        \begin{align*}
+            \condprobat{\catvariableof{\catenumerator}}{\catvariableof{[\catenumerator]}}
+            = \condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \otimes \onesat{\catvariableof{[\catenumerator]\backslash\parentsof{\catenumerator}}} \, .
+        \end{align*}
+
+    \end{frame}
+
+    \begin{frame}{Example: Hidden Markov Models}
+
+        Hidden Markov Models extend Markov Chains by limited observation $\randomeof{\catenumerator}$ of the variables $\catvariableof{\catenumerator}$. \\
+        \medskip
+        The independence assumptions are
+        \begin{itemize}
+            \item $\catvariableof{\catenumerator+1}$ is independent of $\catvariableof{0:\catenumerator-1}$ and $\randomeof{0:\catenumerator}$ conditioned on $\catvariableof{\catenumerator}$
+            \item $\randomeof{\catenumerator}$ is independent of all other variables conditioned on $\catvariableof{\catenumerator}$
+        \end{itemize}
+        \medskip
+        The independence assumptions are exploited in the decomposition
+        \begin{center}
+            \input{tikz/hidden-markov-model}
+        \end{center}
+
+    \end{frame}
+
+
+
+%    \begin{frame}{Directed Graphical Models: Bayesian Networks}
+%
+%        \begin{definition}[Bayesian Networks]
+%	Let $\graph=(\nodes,\edges)$ be a directed acyclic graph and for each node $\node\in\nodes$ a random variable $\catvariableof{\node}$.
+%    Further let there be for each node $\node\in\nodes$ with parents $\parentsof{\node}$ a conditional probability distribution
+%    \[ \condprobof{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \, . \]
+%    Then the \emph{Bayesian Network} with respect to $\graph$ and the conditional probability terms is the distribution
+%    \begin{align*}
+%        \probtensor = \contractionof{\condprobof{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \, : \, \nodein}{\catvariableof{\node} \, : \, \nodein} \, .
+%    \end{align*}
+%        \end{definition}
+%
+%    \end{frame}
+
+
+
+%    \begin{frame}{Directed Graphical Models:\\
+%    Bayesian Networks}
+%
+%        For each variable we build the conditional probability tensor
+%        \begin{center}
+%            \input{./tikz_pics/bayesian_factor.tex}
+%        \end{center}
+%        The \emph{Bayesian Network} is then the contraction
+%        \begin{align*}
+%            \probtensor = \contractionof{\condprobof{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \, : \, \nodein}{\catvariableof{\node} \, : \, \nodein} \, .
+%        \end{align*}
+%
+%    \end{frame}
+
+
+    \section{Markov networks}
 
 
     \begin{frame}{Undirected Graphical Models:\\
@@ -220,27 +290,33 @@
 
 
         \begin{definition}[Markov Networks]
-	Let $\tnetof{\graph}$ be a Tensor Network on a hypergraph $\graph$.
+	Let $\{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edgein\}$ be a Tensor Network on a hypergraph $\graph$.
     The associated Markov Network is the probability distribution of $\{\catvariableof{\node}\,:\,\nodein\}$ defined by
-    \[ \probtensorof{\graph} = \frac{
-        \contractionof{\{\hypercoreof{\edge} : \edge \in \edges\}}{\nodes}
+    \[ \probat{\nodevariables} = \frac{
+        \contractionof{\{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edgein\}}{\nodevariables}
     }{
-        \contractionof{\{\hypercoreof{\edge} : \edge \in \edges\}}{\varnothing}
-    } = \normalizationofwrt{\{\hypercoreof{\edge} : \edge \in \edges\}}{\nodes}{\varnothing} \, . \]
+        \contractionof{\{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edgein\}}{\varnothing}
+    } = \normalizationofwrt{\{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edgein\}}{\nodevariables}{\varnothing} \, . \]
     We call the denominator
-    \[\partitionfunctionof{\graph} = \contractionof{\{\hypercoreof{\edge} : \edge \in \edges\}}{\varnothing} \]
+    \[\partitionfunctionof{\graph} = \contractionof{\{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edgein\}}{\varnothing} \]
     the \emph{partition function} of the Markov Network.
         \end{definition}
 
     \end{frame}
 
 
+    \begin{frame}{Markov network indepencencies}
+        
+        \begin{theorem}
+            A distribution $\probat{\nodevariables}$ has a representation as a Markov network on a hypergraph $\graph$, if and only if for any disjoint subsets $\secnodes,\thirdnodes,\mathcal{I}\subset\nodes$ for which $\mathcal{I}$ separates $\secnodes$ from $\thirdnodes$
+            \begin{align*}
+                \condindependent{\catvariableof{\secnodes}}{\catvariableof{\thirdnodes}}{\catvariableof{\mathcal{I}}} \, .
+            \end{align*}
+        \end{theorem}
+            {\bf Proof sketch:} This is the Hammersley Clifford factorization theorem, which proof is out of scope in this course.
+    \end{frame}
+    
 \end{document}
-
-
-
-
-
 
 
 
@@ -249,11 +325,3 @@
     Causes and effects: Independence of causes conditioned on effect.
 
 \end{frame}
-
-
-\begin{frame}{Markov Chain}
-
-    Independence of history conditioned on previous state.
-
-\end{frame}
-

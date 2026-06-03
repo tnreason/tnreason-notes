@@ -278,15 +278,15 @@
 %    \begin{frame}{Formal Definition of Marginal Distributions}
 %
 %        \begin{definition}[Marginal Probability]\label{def:marginalProbability}
-%            Given a distribution $\probtensor$ of the categorical variables $\exrandom$ and $\secexrandom$ the marginal distribution of the categorical variable $\exrandom$ is defined for each $\catindexof{\exrandom}$ as
+%            Given a distribution $\probtensor$ of the categorical variables $\catvariableof{0}$ and $\catvariableof{1}$ the marginal distribution of the categorical variable $\catvariableof{0}$ is defined for each $\catindexof{\catvariableof{0}}$ as
 %            \[
-%                \margprobof{\exrandom=\catindexof{\exrandom}}{\exrandom}
-%                = \sum_{\catindexof{\secexrandom}\in[\catdimof{\secexrandom}]} \probof{\exrandom=\catindexof{\exrandom},\secexrandom=\catindexof{\secexrandom}} \, . \]
+%                \margprobof{\catvariableof{0}=\catindexof{\catvariableof{0}}}{\catvariableof{0}}
+%                = \sum_{\catindexof{\catvariableof{1}}\in[\catdimof{\catvariableof{1}}]} \probat{\catvariableof{0}=\catindexof{\catvariableof{0}},\catvariableof{1}=\catindexof{\catvariableof{1}}} \, . \]
 %        \end{definition}
 %
 %        Marginal probabilities are contractions
 %        \begin{align*}
-%            \probof{\exrandom} = \contractionof{\probtensor}{\exrandom}
+%            \probat{\catvariableof{0}} = \contractionof{\probtensor}{\catvariableof{0}}
 %        \end{align*}
 %        depicted by
 %        \begin{center}
@@ -392,7 +392,7 @@
 %    \begin{frame}{Conditional Distributions by Normations}
 %
 %        Conditioning is the normation
-%        \[ \condprobof{\exrandom}{\secexrandom} = \normalizationofwrt{\probtensor}{\exrandom}{\secexrandom} \]
+%        \[ \condprobof{\catvariableof{0}}{\catvariableof{1}} = \normalizationofwrt{\probtensor}{\catvariableof{0}}{\catvariableof{1}} \]
 %
 %
 %        The directed notation highlights \emph{Conditions} by incoming legs and \emph{Distributions} by outgoing legs.
@@ -408,9 +408,9 @@
         The Bayes Theorem relates conditional probabilities:
 
         \begin{theorem}[Bayes Theorem]
-            For any joint distribution of two categorical variables $\exrandom$ and $\secexrandom$ it holds that
-            \[ \condprobof{\exrandom}{\secexrandom} = \frac{\probof{\exrandom,\secexrandom}}{\probof{\secexrandom}}
-            = \frac{\condprobof{\secexrandom}{\exrandom}\probof{\exrandom}}{\probof{\secexrandom}}  \, . \]
+            For any joint distribution of two categorical variables $\catvariableof{0}$ and $\catvariableof{1}$ it holds that
+            \[ \condprobof{\catvariableof{0}}{\catvariableof{1}} = \frac{\probat{\catvariableof{0},\catvariableof{1}}}{\probat{\catvariableof{1}}}
+            = \frac{\condprobof{\catvariableof{1}}{\catvariableof{0}}\probat{\catvariableof{0}}}{\probat{\catvariableof{1}}}  \, . \]
         \end{theorem}
 
     \end{frame}
@@ -445,9 +445,9 @@
         Probabilistic queries can be answered by contractions
         \begin{itemize}
             \item Marginal probabilities
-            \[ \probof{\exrandom} = \contractionof{\probtensor}{\exrandom} \]
+            \[ \probat{\catvariableof{0}} = \contractionof{\probtensor}{\catvariableof{0}} \]
             \item Conditional probabilities
-            \[ \condprobof{\exrandom}{\secexrandom} = \normalizationofwrt{\probtensor}{\exrandom}{\secexrandom} \]
+            \[ \condprobof{\catvariableof{0}}{\catvariableof{1}} = \normalizationofwrt{\probtensor}{\catvariableof{0}}{\catvariableof{1}} \]
         \end{itemize}
 
         \medskip

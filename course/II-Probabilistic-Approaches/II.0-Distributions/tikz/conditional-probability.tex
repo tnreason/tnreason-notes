@@ -1,12 +1,12 @@
 \begin{tikzpicture}[scale=0.3, thick] % , baseline = -3.5pt
 
     \draw (-21,-1) rectangle (-15,-3);
-    \node[anchor=center] (text) at (-18,-2) {\small $\condprobof{\exrandom}{\secexrandom}$};
-    \draw[->-]  (-20,-3)--(-20,-5) node[midway,left] {\tiny $\exrandom$};
+    \node[anchor=center] (text) at (-18,-2) {\corelabelsize $\condprobof{\catvariableof{0}}{\catvariableof{1}}$};
+    \draw[->-]  (-20,-3)--(-20,-5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
 
-    \draw[->-]  (-16,-5)--(-16,-3) node[midway,left] {\tiny $\secexrandom$};
+    \draw[->-]  (-16,-5)--(-16,-3) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
     \draw[] (-15,-5) rectangle (-17,-7);
-    \node[anchor=center] (text) at (-16,-6) {\small $\onehotmapof{\catindexof{\secexrandom}}$};
+    \node[anchor=center] (text) at (-16,-6) {\corelabelsize $\onehotmapof{\catindexof{\catvariableof{1}}}$};
 
     \node[anchor=center] (text) at (-13,-2) {${=}$};
 
@@ -14,11 +14,11 @@
     \begin{scope}[shift={(0,6)}]
 
         \draw (-11,-1) rectangle (-5,-3);
-        \node[anchor=center] (text) at (-8,-2) {\small $\probtensor$};
-        \draw[->-]  (-10,-3)--(-10,-5) node[midway,left] {\tiny $\exrandom$};
-        \draw[->-]  (-6,-3)--(-6,-5) node[midway,left] {\tiny $\secexrandom$};
+        \node[anchor=center] (text) at (-8,-2) {\corelabelsize $\probtensor$};
+        \draw[->-]  (-10,-3)--(-10,-5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+        \draw[->-]  (-6,-3)--(-6,-5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
         \draw[] (-7,-5) rectangle (-5,-7);
-        \node[anchor=center] (text) at (-6,-6) {\small $\onehotmapof{\catindexof{\secexrandom}}$};
+        \node[anchor=center] (text) at (-6,-6) {\corelabelsize $\onehotmapof{\catindexof{\catvariableof{1}}}$};
 
     \end{scope}
 
@@ -27,14 +27,14 @@
     \begin{scope}[shift={(0,-2)}]
 
         \draw (-11,-1) rectangle (-5,-3);
-        \node[anchor=center] (text) at (-8,-2) {\small $\probtensor$};
-        \draw[->-]  (-10,-3)--(-10,-5) node[midway,left] {\tiny $\exrandom$};
+        \node[anchor=center] (text) at (-8,-2) {\corelabelsize $\probtensor$};
+        \draw[->-]  (-10,-3)--(-10,-5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
         \drawvariabledot{-10}{-5}
         %\draw (-11,-5) rectangle (-9,-7);
         %\node[anchor=center] (text) at (-10,-6) {$\ones$};
-        \draw[->-]  (-6,-3)--(-6,-5) node[midway,left] {\tiny $\secexrandom$};
+        \draw[->-]  (-6,-3)--(-6,-5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
         \draw[] (-7,-5) rectangle (-5,-7);
-        \node[anchor=center] (text) at (-6,-6) {\small $\onehotmapof{\catindexof{\secexrandom}}$};
+        \node[anchor=center] (text) at (-6,-6) {\corelabelsize $\onehotmapof{\catindexof{\catvariableof{1}}}$};
 
     \end{scope}
 
