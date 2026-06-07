@@ -88,7 +88,7 @@
         \end{center}
 
         \begin{block}{Exponential to linear storage demand}
-            Instead of storing $\catdimof{\catvariableof{0}}\cdot\catdimof{\catvariableof{1}}$ coordindates, we can store $\probtensor$ with $\catdimof{\catvariableof{0}}+\catdimof{\catvariableof{1}}$ demand.
+            Instead of storing $\catdimof{0}\cdot\catdimof{1}$ coordinates, we can store $\probtensor$ in the case of independency with $\catdimof{0}+\catdimof{1}$ demand.
         \end{block}
     \end{frame}
 
@@ -308,7 +308,7 @@
     \begin{frame}{Markov network indepencencies}
         
         \begin{theorem}
-            A distribution $\probat{\nodevariables}$ has a representation as a Markov network on a hypergraph $\graph$, if and only if for any disjoint subsets $\secnodes,\thirdnodes,\mathcal{I}\subset\nodes$ for which $\mathcal{I}$ separates $\secnodes$ from $\thirdnodes$
+            A positive distribution $\probat{\nodevariables}$ has a representation as a Markov network on a hypergraph $\graph$, if and only if for any disjoint subsets $\secnodes,\thirdnodes,\mathcal{I}\subset\nodes$ for which $\mathcal{I}$ separates $\secnodes$ from $\thirdnodes$
             \begin{align*}
                 \condindependent{\catvariableof{\secnodes}}{\catvariableof{\thirdnodes}}{\catvariableof{\mathcal{I}}} \, .
             \end{align*}

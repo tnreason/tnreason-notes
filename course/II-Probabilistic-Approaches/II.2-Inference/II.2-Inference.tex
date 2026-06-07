@@ -3,8 +3,6 @@
 \input{../../spec_files/course_preamble.tex}
 \input{../../spec_files/course_macros.tex}
 
-%\usetikzlibrary{arrows.meta}
-
 \setchatwotitledate{
     Inference
 }{
@@ -19,9 +17,20 @@
     \section{Variable Elimination}
 
     \begin{frame}{Contraction by sub-contractions}
+        \par
         {\bf Idea:} Close one variable after another in a contraction.
 
     \end{frame}
 
+
+    \begin{frame}{Tree width}
+        Size of the largest cluster is the "bottleneck".
+    \end{frame}
+
+    \begin{frame}{Hardness of contractions}
+        Finding the best order of the variables to be contracted is $\mathrm{NP}$-hard, since related to the triangulation problem of a graph.
+    \end{frame}
+
+    \section{Approximative inference}
 
 \end{document}

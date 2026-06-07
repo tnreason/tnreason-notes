@@ -115,7 +115,7 @@
         \[ \datacore = \sum_{\datindexin} \onehotmapof{\datindex} \otimes \onehotmapof{\catindicesof{\datindex}} \,  \]
         depicted as
         \begin{center}
-           % \input{./tikz_pics/data_tensor.tex}
+            % \input{./tikz_pics/data_tensor.tex}
         \end{center}
 
         \begin{block}{Representation of Data}
@@ -138,7 +138,7 @@
 
         In a contraction diagram we denote the average by % Already the decomposition!
         \begin{center}
-           % \input{./tikz_pics/empirical_distribution.tex}
+            % \input{./tikz_pics/empirical_distribution.tex}
         \end{center}
 
     \end{frame}
@@ -173,7 +173,7 @@
         \contractionof{\datacoreof{0},\ldots,\datacoreof{\atomorder-1}}{\catvariableof{0},\ldots,\catvariableof{\atomorder-1},\datvariable} \]
         depicted as
         \begin{center}
-           % \input{./tikz_pics/data_decomposition_cp.tex}
+            % \input{./tikz_pics/data_decomposition_cp.tex}
         \end{center}
         This is called a \emph{CP Tensor Decomposition}.
 
@@ -183,5 +183,37 @@
 
     \end{frame}
 
+
+    \section{Log-likelihood}
+
+    \begin{frame}{Log-likelihood}
+        Likelihood of a dataset drawing data indepdently factorizes:
+        \begin{align*}
+            \prod_{\datindexin} \probat{\shortcatindices^{\datindex}}
+        \end{align*}
+
+        Taking the log and averaging:
+
+        This is the \emph{cross-entropy} between the empirical distribution and the candidate distribution $\probwith$.
+
+
+    \end{frame}
+
+
+    \section{Learning Bayesian networks}
+
+    \begin{frame}{Two learning tasks}
+        \begin{itemize}
+            \item Structure learning: Find the hypergraph $\graph$
+            \item Parameter estimation: Find the best decorations by conditional probability distributions
+        \end{itemize}
+
+    \end{frame}
+
+    \begin{frame}{Parameter estimation}
+
+        Best log-likelihood maximizers are the conditional probability distributions.
+
+    \end{frame}
 
 \end{document}

@@ -1,0 +1,129 @@
+\documentclass{scrartcl}
+\input{../../../spec_files/exercise_preamble}
+
+\begin{document}
+    \solutionhead{4}{Tensors in probability theory}{June 8, 2026}
+    \addtask{1}{
+        The probability distribution $\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}$ is a tensor of order $3$:
+        \stantikzpic{
+            \drawtextnode{-2}{0}{$\begin{pmatrix}
+                                      0.648 &  0.015 \\ 0.072 & 0.005
+            \end{pmatrix}$}
+            \drawtextnode{5.5}{1}{$\begin{pmatrix}
+                                       0.072 & 0.135 \\ 0.008 & 0.045
+            \end{pmatrix}$}
+            \drawtextnode{12}{0.5}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]$}
+        }
+        \begin{itemize}
+            \item[(i)] The marginal distribution of $\var{Traffic}$ ($\catvariableof{0}$) and $\var{Crash}$  ($\catvariableof{1}$) is the contraction
+            \begin{align*}
+                \probat{\catvariableof{0},\catvariableof{1}}
+                = \contractionof{\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}}{\catvariableof{0},\catvariableof{1}}
+                = \coloredmatrixof{
+                    0.72 & 0.15 \\
+                    0.08 & 0.05
+                }{\catvariableof{0},\catvariableof{1}} \, .
+            \end{align*}
+            \item[(ii)] The distribution of $\var{Crash}$ ($\catvariableof{1}$) conditioned on $\var{Traffic}$  ($\catvariableof{0}$) is the normalization
+            \begin{align*}
+                \normalizationofwrt{\probat{\catvariableof{0},\catvariableof{1}}}{\catvariableof{1}}{\catvariableof{0}}
+                &= \coloredmatrixof{
+                    \frac{72}{72+15} & \frac{15}{72+15} \\
+                    \frac{8}{8+5} & \frac{8}{8+5}
+                }{\catvariableof{0},\catvariableof{1}}
+                = \coloredmatrixof{
+                    \frac{24}{29} & \frac{5}{29} \\
+                    \frac{8}{13} & \frac{8}{13}
+                }{\catvariableof{0},\catvariableof{1}} \\
+                &\approx
+                \coloredmatrixof{
+                    0.828 & 0.172 \\
+                    0.615 & 0.385
+                }{\catvariableof{0},\catvariableof{1}} \, .
+            \end{align*}
+        \end{itemize}
+    }
+    \addtask{2}{
+        The event corresponds with the propositional formula
+        \begin{align*}
+            \formulaat{\catvariableof{0},\catvariableof{1}}
+            = \coloredmatrixof{
+                1 & 1 \\ 0 & 1
+            }{\catvariableof{0},\catvariableof{1}} \, .
+        \end{align*}
+        To compute the probability that this event holds we perform the contraction
+        \begin{align*}
+            \contraction{\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2}},\formulaat{\catvariableof{0},\catvariableof{1}}}
+            &= \contraction{\probat{\catvariableof{0},\catvariableof{1}},\formulaat{\catvariableof{0},\catvariableof{1}}} \\
+            &= 0.72 + 0.15 + 0.05 \\
+            &= 0.92 \, .
+        \end{align*}
+    }
+    \addtask{3}{
+        \begin{itemize}
+            \item[(i)] The variable $\catvariableof{1}$ is not independent of $\catvariableof{0}$ since
+            \begin{align*}
+                \probat{\catvariableof{0}=0} = 0.97 \quad, \quad \probat{\catvariableof{1}=0} = 0.8
+            \end{align*}
+            but
+            \begin{align*}
+                \probat{\catvariableof{0}=0,\catvariableof{1}=0} = 0.72 \neq 0.8 \cdot 0.97 = 0.776 \, .
+            \end{align*}
+            \item[(ii)] We need to investigate, whether $\catvariableof{0}$ is independent of $\catvariableof{2}$ with respect to the distributions $\condprobat{\catvariableof{0},\catvariableof{2}}{\catvariableof{1}=0}$ and $\condprobat{\catvariableof{0},\catvariableof{2}}{\catvariableof{1}=1}$.
+            \begin{itemize}
+                \item[a)] We compute
+                \begin{align*}
+                    \condprobat{\catvariableof{0},\catvariableof{2}}{\catvariableof{1}=0}
+                    = \frac{1}{648+72+72+8} \coloredmatrixof{
+                        648 & 72 \\ 72 & 8
+                    }{\catvariableof{0},\catvariableof{2}}
+                    = \coloredmatrixof{
+                        0.81 & 0.09 \\ 0.09 & 0.01
+                    }{\catvariableof{0},\catvariableof{2}}
+                \end{align*}
+                We notice that matrix coincides with the tensor product
+                \begin{align*}
+                    \begin{pmatrix}
+                        0.9 \\ 0.1
+                    \end{pmatrix}[\catvariableof{0}]
+                    \otimes
+                    \begin{pmatrix}
+                        0.9 \\ 0.1
+                    \end{pmatrix}[\catvariableof{2}]
+                    = \condprobat{\catvariableof{0}}{\catvariableof{1}=0} \otimes \condprobat{\catvariableof{2}}{\catvariableof{1}=0}
+                \end{align*}
+                and thus, $\catvariableof{0}$ is independent of $\catvariableof{2}$ with respect to the distributions $\condprobat{\catvariableof{0},\catvariableof{2}}{\catvariableof{1}=0}$.
+                \item[b)] Conversely we have
+                \begin{align*}
+                    \condprobat{\catvariableof{0},\catvariableof{2}}{\catvariableof{1}=1}
+                    = \frac{1}{15+5+135+45} \coloredmatrixof{
+                        15 & 135 \\ 5 & 45
+                    }{\catvariableof{0},\catvariableof{2}}
+                    = \coloredmatrixof{
+                        0.075 & 0.675 \\ 0.025 & 0.225
+                    }{\catvariableof{0},\catvariableof{2}}
+                \end{align*}
+                We compare with the tensor product
+                \begin{align*}
+                    \condprobat{\catvariableof{0}}{\catvariableof{1}=1}
+                    \otimes
+                    \condprobat{\catvariableof{2}}{\catvariableof{1}=1}
+                    =               \begin{pmatrix}
+                        0.75 \\ 0.25
+                    \end{pmatrix}[\catvariableof{0}]
+                    \otimes
+                    \begin{pmatrix}
+                        0.1 \\ 0.9
+                    \end{pmatrix}[\catvariableof{2}]
+                    = \coloredmatrixof{
+                        0.075 & 0.675 \\ 0.025 & 0.225
+                    }{\catvariableof{0},\catvariableof{2}}
+                \end{align*}
+                and notice that both are equal.
+                Thus, $\catvariableof{0}$ is also independent of $\catvariableof{2}$ with respect to the distributions $\condprobat{\catvariableof{0},\catvariableof{2}}{\catvariableof{1}=1}$.
+            \end{itemize}
+            In total this shows that $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$, thus the server traffic and the alert are independent on each other conditioned on whether the server crashes.
+        \end{itemize}
+    }
+
+\end{document}

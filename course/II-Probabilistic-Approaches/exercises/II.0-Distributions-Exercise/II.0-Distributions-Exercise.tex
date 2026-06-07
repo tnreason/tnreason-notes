@@ -18,8 +18,8 @@
                 0                                    & 0                                  & 1                                  & 0.072                                                                                 \\
                 0                                    & 1                                  & 0                                  & 0.015                                                                                 \\
                 0                                    & 1                                  & 1                                  & 0.135                                                                                 \\
-                1                                    & 0                                  & 0                                  & 0.064                                                                                 \\
-                1                                    & 0                                  & 1                                  & 0.016                                                                                 \\
+                1                                    & 0                                  & 0                                  & 0.072                                                                                 \\%0.064
+                1                                    & 0                                  & 1                                  & 0.008                                                                                 \\%0.016
                 1                                    & 1                                  & 0                                  & 0.005                                                                                 \\
                 1                                    & 1                                  & 1                                  & 0.045                                                                                 \\
             \end{tabular}
@@ -31,17 +31,24 @@
         Compute the contractions and normalizations providing:
         \begin{itemize}
             \item[(i)] The marginal distribution of the variables $\catvariableof{0}$ and $\catvariableof{1}$, describing the joint distribution of $\var{Traffic}$ and $\var{Crash}$.
-            \item[(ii)] The conditional distribution of $\catvariableof{1}$ conditioned on $\catvariableof{1}$.
+            \item[(ii)] The conditional distribution of $\catvariableof{1}$ conditioned on $\catvariableof{0}$, describing the distribution of $\var{Crash}$ conditioned on $\var{Traffic}$.
         \end{itemize}
     }
-    \addtask{2 (after lecture II.1-Independence)}{
+    \addtask{2 (after lecture II.0-Distributions)}{
+        Compute the probability of the event, that the server crashes whenever the traffic is high.
+        \begin{itemize}
+            \item[(i)] Find the propositional formula corresponding with the event.
+            \item[(ii)] Contract the formula with the distribution to compute the events probability.
+        \end{itemize}
+    }
+    \addtask{3 (after lecture II.1-Independence)}{
         Decide based on contractions of $\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}$:
         \begin{itemize}
             \item[(i)] The server crashes independently of the traffic.
             \item[(ii)]  The server traffic and the crash alert are independent conditioned on the server crash.
         \end{itemize}
     }
-    \addtask{3 (after lecture II.1-Independence)}{
+    \addtask{4 (after lecture II.1-Independence)}{
         Represent the distribution as a Bayesian Network.
         Draw the underlying hypergraph and find the decorating conditional probability tensors.
     }

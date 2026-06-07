@@ -15,8 +15,7 @@
     \showoutlineatsection
 
 
-    \section{Uncertainties}
-
+    \section{Handling uncertainties}
 
 
     \begin{frame}{Toy accounting example}
@@ -69,9 +68,8 @@
             Example: Even if $\var{Feature}$ is known to be $\falsesymbol$, then we do not know whether $\var{Account 1}$ or $\var{Account 2}$ have to be booked.
         \end{itemize}
 
-        Logics cannot handle uncertainties.
-
-        But: They are already built in model counts.
+%        Logics cannot handle uncertainties.
+%        But: They are already built in model counts.
 
 
     \end{frame}
@@ -93,45 +91,19 @@
 %    \end{frame}
 
 
-    \begin{frame}{Comparing logics and probability theory}
-
-        \begin{block}{Modelling assumptions}
-            \begin{itemize}
-                \item \textbf{Ontological}: What properties does a system have? \\
-                \hspace{0.5cm} $\rightarrow$ We assume \emph{fixed sets of categorical properties}.
-                \item \textbf{Epistemological}: What can we tell about these properties? \\
-                \hspace{0.5cm} $\rightarrow$ We associate \emph{possibilities or probabilities} with states.
-            \end{itemize}
-        \end{block}
-
-        Two main frameworks differing in the \emph{empistemological} assumptions:
-        \begin{itemize}
-            \item Logics (\emph{Possibilities}): The traditional mathematical model of intelligence.
-            \item Probability Theory (\emph{Probabilities}): Handling uncertainties about the systems state.
-        \end{itemize}
-        In both cases, we encode our knowledge in an arrangement of numbers:
-        \emph{Tensors} with efficient representations by \emph{Tensor Networks}.
-
-    \end{frame}
+    \section{Probability distributions}
 
 
-    \section{Probability Distributions}
-
-
-    \begin{frame}{Recap: Tensors as Propositional Formulas}
-
-%        \begin{tabular}[c|c]
-%            Tensor & Propositional Formula
-%        \end{tabular}
-
-        So far: Tensors with Boolean coordinates and leg dimension $2$
-
-        Generalize to
-        \begin{itemize}
-            \item arbitrary leg dimensions
-            \item real valued coordinates instead of Booleans $\{0,1\}$
-        \end{itemize}
-    \end{frame}
+%    \begin{frame}{Recap: Tensors as Propositional Formulas}
+%
+%            {\bf So far:} Propositional formulas are Tensors with Boolean coordinates and leg dimension $2$.
+%
+%        Generalize to
+%        \begin{itemize}
+%            \item arbitrary leg dimensions
+%            \item real valued coordinates instead of Booleans $\{0,1\}$
+%        \end{itemize}
+%    \end{frame}
 
 
     \begin{frame}{Probability distributions}
@@ -155,25 +127,26 @@
     \end{frame}
 
 
+    \begin{frame}{Directed hyperedges}
 
-    \begin{frame}{Normalization constraint by directionality}
-
-        Probability distributions sum to $1$.
-
-        We depict this by outgoing legs:
-
-
+        Let us introduce \emph{directed hyperedges}:
+        Instead of just being subsets of the variables, directed hyperedges are pairs of incoming variables $\incomingnodes\subset\nodes$ and outgoing variables $\outgoingnodes\subset\nodes$.
+        \medskip \\
+        To highlight the normalization constraint we understand probability distributions as tensors on directed hyperedges, where all variables are outgoing:
         \stantikzpic{
             \draw (-3,-1) rectangle (3,1);
-            \drawtextnode{0}{0}{$\probtensor$}
-            \draw[->-] (-2,-1) -- (-2,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \drawtextnode{0}{0}{\corelabelsize $\probtensor$}
+            \draw[->-] (-2,-1) -- (-2,-2.5); % node[midway,left] {\colorlabelsize $\catvariableof{0}$};
             \drawtextnode{0}{-1.75}{$\cdots$}
-            \draw[->-] (2,-1) -- (2,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+            \drawtextnode{0}{-3}{\colorlabelsize $\catvariableof{\incomingnodes}$}
+            \draw[->-] (2,-1) -- (2,-2.5); % node[midway,right] ; %{\colorlabelsize $\catvariableof{\catorder-1}$};
         }
+        Incoming variables will be used later to highlight conditioning.
+
     \end{frame}
 
 
-    \section{Marginal Distributions}
+    \section{Marginal distributions}
 
 %\begin{frame}{Average of the Observation}
 %
@@ -232,9 +205,9 @@
 
 
 
-    \begin{frame}{Marginal Distributions}
+    \begin{frame}{Marginal distributions}
 
-        {\bf Example:} What is the probability that there is a cavity (or not) when having toothache (or not)?
+        {\bf Example:} What is the relation between $\var{Toothache}$ and $\var{Cavity}$?
         \begin{itemize}
             \item The variable $\var{Catch}$ is not relevant for this question, thus we want to \emph{marginalize} over it.
             \item To this end, we sum the probability of states differing in the value of $\var{Catch}$ only.
@@ -245,17 +218,23 @@
 
     \end{frame}
 
-    \begin{frame}{Marginal Distributions}
+    \begin{frame}{Marginal distributions}
 
         Summation of probabilities of states are done by contractions of the probability distribution tensor.
 
-        \begin{definition}[Marginal Distribution]
+        \begin{definition}[Marginal distribution]
         Given a probability distribution $\probwith$ and a subset $\arbset\subset[\catorder]$, the marginal distribution of the variables $\catvariableof{\arbset}$ is the distribution
         \begin{align*}
             \probat{\catvariableof{\arbset}}
             = \contractionof{\probwith}{\catvariableof{\arbset}} \, .
         \end{align*}
         \end{definition}
+
+            {\bf Example:} The marginal distribution of $\arbset=\{\catvariableof{0}\}$ given a joint distribution of two variables $\catvariableof{0}$ and $\catvariableof{1}$ is the contraction
+        \begin{center}
+            \input{./tikz/marginalized-probability}
+        \end{center}
+
     \end{frame}
 
 
@@ -296,30 +275,23 @@
 %    \end{frame}
 
 
+%    \begin{frame}{Marginal Distributions in Contraction Formalism}
+%
+%        Contractions are useful to
+%        \begin{itemize}
+%            \item Specify the Probability Tensor, or a decomposition of it
+%            \item Specify the variables to marginalize over as the ones left open
+%        \end{itemize}
+%
+%
+%
+%    \end{frame}
 
 
+    \section{Conditional distributions}
 
 
-    \begin{frame}{Marginal Distributions in Contraction Formalism}
-
-        Contractions are useful to
-        \begin{itemize}
-            \item Specify the Probability Tensor, or a decomposition of it
-            \item Specify the variables to marginalize over as the ones left open
-        \end{itemize}
-
-        \begin{center}
-            \input{./tikz/marginalized-probability}
-        \end{center}
-
-
-    \end{frame}
-
-
-    \section{Conditional Distributions}
-
-
-    \begin{frame}{Example: Conditional Distributions}
+    \begin{frame}{Example: Conditional distributions}
 
         What is the probability of having a cavity when having a toothache?
         We separately normalize the probabilities of states
@@ -336,9 +308,7 @@
 
 
 
-
-
-    \begin{frame}{Normations}
+    \begin{frame}{Normalizations}
 
         More general, conditionalization amounts to normalization of probability tensors.
 
@@ -364,6 +334,40 @@
     \end{frame}
 
 
+    \begin{frame}{Normalized tensors and directed notation}
+
+        Directed tensors represent normalizations: Each slice of the incoming variables is a normalized tensor, i.e. coordinates summing to $1$.
+
+        For example a probability distribution is normalized without incoming variables since
+        \begin{align*}
+            \normalizationof{\probwith}{\shortcatvariables}
+            = \probwith
+        \end{align*}
+        This is denoted by
+        \stantikzpic{
+            \draw (-3,-1) rectangle (3,1);
+            \drawtextnode{0}{0}{\corelabelsize $\probwith$}
+            \draw[->-] (-2,-1) -- (-2,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \drawtextnode{0}{-1.75}{$\cdots$}
+            \draw[->-] (2,-1) -- (2,-2.5) node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+        }
+        A conditional distribution is invariant under further normalizations (with the same incoming variables) and is thus denoted by
+        \stantikzpic{
+            \draw (-3,-1) rectangle (3,1);
+            \drawtextnode{0}{0}{\corelabelsize $\condprobat{\catvariableof{\outgoingnodes}}{\catvariableof{\incomingnodes}}$}
+            \draw[->-] (-2,-1) -- (-2,-2.5); % node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \drawtextnode{0}{-1.5}{\colorlabelsize $\cdots$}
+            \drawtextnode{0}{-2.5}{\colorlabelsize $\catvariableof{\outgoingnodes}$}
+            \draw[->-] (2,-1) -- (2,-2.5); % node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+
+            \draw[->-] (-2,2.5) -- (-2,1); % node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \drawtextnode{0}{1.5}{\colorlabelsize $\cdots$}
+            \drawtextnode{0}{2.5}{\colorlabelsize $\catvariableof{\incomingnodes}$}
+            \draw[->-] (2,2.5) -- (2,1); % node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+        }
+    \end{frame}
+
+
     \begin{frame}{Formal Definition of Conditional Distributions}
 
         \begin{definition}[Conditional Probability]
@@ -380,14 +384,6 @@
 
     \end{frame}
 
-    \begin{frame}{Directed notation}
-
-        Directed tensors represent normations:
-
-        Each slice of the incoming variables is a normalized tensor, i.e. coordinates summing to $1$.
-
-    \end{frame}
-
 
 %    \begin{frame}{Conditional Distributions by Normations}
 %
@@ -401,73 +397,181 @@
 %    \end{frame}
 
 
-    \section{Bayes Theorem}
-
-    \begin{frame}{The Bayes Theorem}
-
-        The Bayes Theorem relates conditional probabilities:
-
-        \begin{theorem}[Bayes Theorem]
-            For any joint distribution of two categorical variables $\catvariableof{0}$ and $\catvariableof{1}$ it holds that
-            \[ \condprobof{\catvariableof{0}}{\catvariableof{1}} = \frac{\probat{\catvariableof{0},\catvariableof{1}}}{\probat{\catvariableof{1}}}
-            = \frac{\condprobof{\catvariableof{1}}{\catvariableof{0}}\probat{\catvariableof{0}}}{\probat{\catvariableof{1}}}  \, . \]
-        \end{theorem}
-
-    \end{frame}
-
-
-    \begin{frame}{Bayes Theorem in the Dentist Example}
-
-        Directions of Reasoning
-        \begin{itemize}
-            \item \emph{Causal direction}: Toothache is caused by cavity
-            \item \emph{Diagnostic direction}: Cavity is probable because of toothache
-        \end{itemize}
-
-        \medskip
-
-        Bayes Theorem allows us to reason in diagnostic direction, given an underlying causal influence:
-        \begin{align*}
-            & \probtensor[\mathrm{Cavity}|\mathrm{Toothache}] \\
-            & \quad\quad\quad =
-            \probtensor[\mathrm{Toothache}|\mathrm{Cavity}]
-            \frac{\probtensor[\mathrm{Cavity}] }{\probtensor[\mathrm{Toothache}]}
-        \end{align*}
-
-    \end{frame}
-
-
-
-
-
-    \begin{frame}{Contraction Calculus for Probability Tensors}
-
-        Probabilistic queries can be answered by contractions
-        \begin{itemize}
-            \item Marginal probabilities
-            \[ \probat{\catvariableof{0}} = \contractionof{\probtensor}{\catvariableof{0}} \]
-            \item Conditional probabilities
-            \[ \condprobof{\catvariableof{0}}{\catvariableof{1}} = \normalizationofwrt{\probtensor}{\catvariableof{0}}{\catvariableof{1}} \]
-        \end{itemize}
-
-        \medskip
-
-        Outlook: \emph{Tensor network decompositions of $\probtensor$} increase the execution efficiency!
-
-    \end{frame}
+%    \section{Bayes Theorem}
+%
+%    \begin{frame}{The Bayes Theorem}
+%
+%        The Bayes Theorem relates conditional probabilities:
+%
+%        \begin{theorem}[Bayes Theorem]
+%            For any joint distribution of two categorical variables $\catvariableof{0}$ and $\catvariableof{1}$ it holds that
+%            \[ \condprobof{\catvariableof{0}}{\catvariableof{1}} = \frac{\probat{\catvariableof{0},\catvariableof{1}}}{\probat{\catvariableof{1}}}
+%            = \frac{\condprobof{\catvariableof{1}}{\catvariableof{0}}\probat{\catvariableof{0}}}{\probat{\catvariableof{1}}}  \, . \]
+%        \end{theorem}
+%
+%    \end{frame}
+%
+%
+%    \begin{frame}{Bayes Theorem in the Dentist Example}
+%
+%        Directions of Reasoning
+%        \begin{itemize}
+%            \item \emph{Causal direction}: Toothache is caused by cavity
+%            \item \emph{Diagnostic direction}: Cavity is probable because of toothache
+%        \end{itemize}
+%
+%        \medskip
+%
+%        Bayes Theorem allows us to reason in diagnostic direction, given an underlying causal influence:
+%        \begin{align*}
+%            & \probtensor[\mathrm{Cavity}|\mathrm{Toothache}] \\
+%            & \quad\quad\quad =
+%            \probtensor[\mathrm{Toothache}|\mathrm{Cavity}]
+%            \frac{\probtensor[\mathrm{Cavity}] }{\probtensor[\mathrm{Toothache}]}
+%        \end{align*}
+%
+%    \end{frame}
+%
+%
+%
+%
+%
+%    \begin{frame}{Contraction Calculus for Probability Tensors}
+%
+%        Probabilistic queries can be answered by contractions
+%        \begin{itemize}
+%            \item Marginal probabilities
+%            \[ \probat{\catvariableof{0}} = \contractionof{\probtensor}{\catvariableof{0}} \]
+%            \item Conditional probabilities
+%            \[ \condprobof{\catvariableof{0}}{\catvariableof{1}} = \normalizationofwrt{\probtensor}{\catvariableof{0}}{\catvariableof{1}} \]
+%        \end{itemize}
+%
+%        \medskip
+%
+%        Outlook: \emph{Tensor network decompositions of $\probtensor$} increase the execution efficiency!
+%
+%    \end{frame}
 
 
     \section{Connections with logics}
 
-    \begin{frame}{Probabilistic Queries}
+%    \begin{frame}{Probabilistic Queries}
+%
+%        The probability of a formula $\formula$ to hold
+%        \begin{align*}
+%            \sum_{\shortcatindices\wcols\formulaat{\indexedshortcatvariables}=1} \probat{\indexedshortcatvariables}
+%            = \contraction{\probwith,\formulawith}
+%        \end{align*}
+%
+%        Generalization of entailment: A formula is entailed if the probability is $1$.
+%    \end{frame}
 
-        The probability of a formula $\formula$ to hold
+    \begin{frame}{Events and their probability}
+        \par
+        \emph{Events} are subsets
+        \begin{align*}
+            \arbset \subset \bigtimes_{\catenumeratorin} [\catdimof{\catenumerator}]
+        \end{align*}
+        of the possible samples.
+        When the leg dimensions are $2$ we build the formula
+        \begin{align*}
+            \formulawith
+            = \sum_{\shortcatindices\in\arbset} \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
+        \end{align*}
+        Probability of the event is then the contraction
         \begin{align*}
             \sum_{\shortcatindices\wcols\formulaat{\indexedshortcatvariables}=1} \probat{\indexedshortcatvariables}
-            = \contraction{\probwith,\formulawith}
+            = \contraction{\probwith,\formulawith} \, .
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{Toothache example}
+        \par
+        {\bf Example:} What is the probability that there is a cavity whenever having toothache?
+
+        \medskip
+        This is the event corresponding with the formula
+        \begin{align*}
+            \formulaat{\catvariableof{0},\catvariableof{1}}
+            = \coloredmatrixof{1 & 1 \\ 0 & 1}{\catvariableof{0},\catvariableof{1}}
         \end{align*}
 
-        Generalization of entailment: A formula is entailed if the probability is $1$.
+        Since only two variables are affected by this, the probability of the event can be answered by the marginal distribution:
+
+        \stantikzpic{
+            \draw (-3,-1) rectangle (3,1);
+            \drawtextnode{0}{0}{\corelabelsize $\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}$}
+            \draw [->-] (-2,-1) -- (-2,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \draw [->-] (0,-1) -- (0,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
+            \draw [->-] (2,-1) -- (2,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{2}$};
+            \drawvariabledot{2}{-2.5}
+            \drawvariabledot{0}{-2.5}
+            \drawvariabledot{-2}{-2.5}
+            \draw (-2,-2.5) -- (-2,-3.5);
+            \draw (0,-2.5) -- (0,-3.5);
+            \draw (-3,-3.5) rectangle (1,-5.5);
+            \drawtextnode{-1}{-4.5}{\corelabelsize $\formula$}
+
+            \drawtextnode{5}{-2.75}{${=}$}
+
+            \begin{scope}[shift={(10,0)}]
+                \draw (-3,-1) rectangle (1,1);
+                \drawtextnode{-1}{0}{\corelabelsize $\probat{\catvariableof{0},\catvariableof{1}}$}
+                \draw [->-] (-2,-1) -- (-2,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+                \draw [->-] (0,-1) -- (0,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
+                \drawvariabledot{0}{-2.5}
+                \drawvariabledot{-2}{-2.5}
+                \draw (-2,-2.5) -- (-2,-3.5);
+                \draw (0,-2.5) -- (0,-3.5);
+                \draw (-3,-3.5) rectangle (1,-5.5);
+                \drawtextnode{-1}{-4.5}{\corelabelsize $\formula$}
+
+            \end{scope}
+
+            \drawtextnode{14}{-2.75}{${=}$}
+
+            \begin{scope}[shift={(20,0)}]
+                \draw (-4.5,-1) rectangle (2.5,3);
+                \drawtextnode{-1}{1}{\corelabelsize $\begin{pmatrix}
+                                                         0.72 &  0.08 \\ 0.08 & 0.12
+                \end{pmatrix}$}
+                \draw [->-] (-2,-1) -- (-2,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+                \draw [->-] (0,-1) -- (0,-2.5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
+                \drawvariabledot{0}{-2.5}
+                \drawvariabledot{-2}{-2.5}
+                \draw (-2,-2.5) -- (-2,-3.5);
+                \draw (0,-2.5) -- (0,-3.5);
+                \draw (-4.5,-3.5) rectangle (2.5,-7.5);
+                \drawtextnode{-1}{-5.5}{\corelabelsize $\begin{pmatrix}
+                                                            1 &  1 \\ 0 & 1
+                \end{pmatrix}$}
+
+            \end{scope}
+            \drawtextnode{25}{-2.75}{${=}\quad 0.92$}
+        }
+
     \end{frame}
+
+    \begin{frame}{Comparing logics and probability theory}
+
+        \begin{block}{Modelling assumptions}
+            \begin{itemize}
+                \item \textbf{Ontological}: What properties does a system have? \\
+                \hspace{0.5cm} $\rightarrow$ We assume \emph{fixed sets of categorical properties}.
+                \item \textbf{Epistemological}: What can we tell about these properties? \\
+                \hspace{0.5cm} $\rightarrow$ We associate \emph{possibilities or probabilities} with states.
+            \end{itemize}
+        \end{block}
+
+        Two main frameworks differing in the \emph{empistemological} assumptions:
+        \begin{itemize}
+            \item Logics (\emph{Possibilities}): The traditional mathematical model of intelligence.
+            \item Probability Theory (\emph{Probabilities}): Handling uncertainties about the systems state.
+        \end{itemize}
+        In both cases, we encode our knowledge in an arrangement of numbers:
+        \emph{Tensors} with efficient representations by \emph{Tensor Networks}.
+
+    \end{frame}
+
 
 \end{document}
