@@ -138,7 +138,7 @@
             \drawtextnode{0}{0}{\corelabelsize $\probtensor$}
             \draw[->-] (-2,-1) -- (-2,-2.5); % node[midway,left] {\colorlabelsize $\catvariableof{0}$};
             \drawtextnode{0}{-1.75}{$\cdots$}
-            \drawtextnode{0}{-3}{\colorlabelsize $\catvariableof{\incomingnodes}$}
+            \drawtextnode{0}{-3}{\colorlabelsize $\catvariableof{\outgoingnodes}$}
             \draw[->-] (2,-1) -- (2,-2.5); % node[midway,right] ; %{\colorlabelsize $\catvariableof{\catorder-1}$};
         }
         Incoming variables will be used later to highlight conditioning.
@@ -148,19 +148,6 @@
 
     \section{Marginal distributions}
 
-%\begin{frame}{Average of the Observation}
-%
-%The \emph{empirical distribution} is the average of the one-hot encoded observed states:
-%\begin{align*}
-%	\empdistribution \coloneqq \frac{1}{\datanum}\sum_{\datindexin} \onehotmapof{\catindicesof{\datindex}}
-%\end{align*}
-%
-%In a contraction diagram we denote the average by % Already the decomposition!
-%\begin{center}
-%	\input{./tikz_pics/empirical_distribution.tex}
-%\end{center}
-%
-%\end{frame}
 
 
     \begin{frame}{Example: Being at a dentist}
@@ -238,55 +225,6 @@
     \end{frame}
 
 
-%    \begin{frame}{Directed Tensors}
-%
-%        We depict the condition, that coordinate sums are one, by directions on the legs.
-%
-%        \begin{definition}[Directed Tensor]
-%	A tensor
-%    \[ \hypercore \in \bigotimes_{\nodein}\rr^{\catdimof{\node}} \]
-%    is said to be directed with incoming variables $\innodes$ and outgoing variables $\outnodes$, where $\nodes=\innodes\dot{\cup}\outnodes$, when
-%    \[ \contractionof{\{\hypercore\}}{\innodes} =  \onesof{\innodes} \]
-%    where $\onesof{\innodes}$ denoted the trivial tensor in  $\bigotimes_{\node\in\innodes}\rr^{\catdimof{\node}}$ which coordinates are all $1$.
-%        \end{definition}
-%
-%    \end{frame}
-
-
-%
-%    \begin{frame}{Formal Definition of Marginal Distributions}
-%
-%        \begin{definition}[Marginal Probability]\label{def:marginalProbability}
-%            Given a distribution $\probtensor$ of the categorical variables $\catvariableof{0}$ and $\catvariableof{1}$ the marginal distribution of the categorical variable $\catvariableof{0}$ is defined for each $\catindexof{\catvariableof{0}}$ as
-%            \[
-%                \margprobof{\catvariableof{0}=\catindexof{\catvariableof{0}}}{\catvariableof{0}}
-%                = \sum_{\catindexof{\catvariableof{1}}\in[\catdimof{\catvariableof{1}}]} \probat{\catvariableof{0}=\catindexof{\catvariableof{0}},\catvariableof{1}=\catindexof{\catvariableof{1}}} \, . \]
-%        \end{definition}
-%
-%        Marginal probabilities are contractions
-%        \begin{align*}
-%            \probat{\catvariableof{0}} = \contractionof{\probtensor}{\catvariableof{0}}
-%        \end{align*}
-%        depicted by
-%        \begin{center}
-%            \input{./tikz_pics/marginalized_probability.tex}
-%        \end{center}
-%
-%    \end{frame}
-
-
-%    \begin{frame}{Marginal Distributions in Contraction Formalism}
-%
-%        Contractions are useful to
-%        \begin{itemize}
-%            \item Specify the Probability Tensor, or a decomposition of it
-%            \item Specify the variables to marginalize over as the ones left open
-%        \end{itemize}
-%
-%
-%
-%    \end{frame}
-
 
     \section{Conditional distributions}
 
@@ -294,7 +232,7 @@
     \begin{frame}{Example: Conditional distributions}
 
         What is the probability of having a cavity when having a toothache?
-        We separately normalize the probabilities of states
+        We separately normalize the probabilities of states:
 
         \input{tikz/toothache-conditionalization}
 
@@ -385,86 +323,9 @@
     \end{frame}
 
 
-%    \begin{frame}{Conditional Distributions by Normations}
-%
-%        Conditioning is the normation
-%        \[ \condprobof{\catvariableof{0}}{\catvariableof{1}} = \normalizationofwrt{\probtensor}{\catvariableof{0}}{\catvariableof{1}} \]
-%
-%
-%        The directed notation highlights \emph{Conditions} by incoming legs and \emph{Distributions} by outgoing legs.
-%
-%
-%    \end{frame}
-
-
-%    \section{Bayes Theorem}
-%
-%    \begin{frame}{The Bayes Theorem}
-%
-%        The Bayes Theorem relates conditional probabilities:
-%
-%        \begin{theorem}[Bayes Theorem]
-%            For any joint distribution of two categorical variables $\catvariableof{0}$ and $\catvariableof{1}$ it holds that
-%            \[ \condprobof{\catvariableof{0}}{\catvariableof{1}} = \frac{\probat{\catvariableof{0},\catvariableof{1}}}{\probat{\catvariableof{1}}}
-%            = \frac{\condprobof{\catvariableof{1}}{\catvariableof{0}}\probat{\catvariableof{0}}}{\probat{\catvariableof{1}}}  \, . \]
-%        \end{theorem}
-%
-%    \end{frame}
-%
-%
-%    \begin{frame}{Bayes Theorem in the Dentist Example}
-%
-%        Directions of Reasoning
-%        \begin{itemize}
-%            \item \emph{Causal direction}: Toothache is caused by cavity
-%            \item \emph{Diagnostic direction}: Cavity is probable because of toothache
-%        \end{itemize}
-%
-%        \medskip
-%
-%        Bayes Theorem allows us to reason in diagnostic direction, given an underlying causal influence:
-%        \begin{align*}
-%            & \probtensor[\mathrm{Cavity}|\mathrm{Toothache}] \\
-%            & \quad\quad\quad =
-%            \probtensor[\mathrm{Toothache}|\mathrm{Cavity}]
-%            \frac{\probtensor[\mathrm{Cavity}] }{\probtensor[\mathrm{Toothache}]}
-%        \end{align*}
-%
-%    \end{frame}
-%
-%
-%
-%
-%
-%    \begin{frame}{Contraction Calculus for Probability Tensors}
-%
-%        Probabilistic queries can be answered by contractions
-%        \begin{itemize}
-%            \item Marginal probabilities
-%            \[ \probat{\catvariableof{0}} = \contractionof{\probtensor}{\catvariableof{0}} \]
-%            \item Conditional probabilities
-%            \[ \condprobof{\catvariableof{0}}{\catvariableof{1}} = \normalizationofwrt{\probtensor}{\catvariableof{0}}{\catvariableof{1}} \]
-%        \end{itemize}
-%
-%        \medskip
-%
-%        Outlook: \emph{Tensor network decompositions of $\probtensor$} increase the execution efficiency!
-%
-%    \end{frame}
-
 
     \section{Connections with logics}
 
-%    \begin{frame}{Probabilistic Queries}
-%
-%        The probability of a formula $\formula$ to hold
-%        \begin{align*}
-%            \sum_{\shortcatindices\wcols\formulaat{\indexedshortcatvariables}=1} \probat{\indexedshortcatvariables}
-%            = \contraction{\probwith,\formulawith}
-%        \end{align*}
-%
-%        Generalization of entailment: A formula is entailed if the probability is $1$.
-%    \end{frame}
 
     \begin{frame}{Events and their probability}
         \par
