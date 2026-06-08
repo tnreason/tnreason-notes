@@ -18,9 +18,6 @@
     \showoutlineatsection
 
 
-    %\section{Basis calculus}
-
-
     \section{Circuit computation model}
 
     \begin{frame}{Recall: Basis calculus in propositional logic}
@@ -44,12 +41,10 @@
     \end{frame}
 
 
-
-
     \begin{frame}{Generalization to circuits}
 
 
-        A generic tensor has arbitary leg dimensions and represents a function
+        A generic tensor has arbitrary leg dimensions and represents a function
         \begin{align*}
             \exfunction \defcols \shortcatindices \rightarrow \hypercoreat{\indexedshortcatvariables}
         \end{align*}
@@ -177,12 +172,14 @@
             \draw (-3,1) rectangle (3, 3);
 
             \draw[->-] (-2,3)--(-2,5);
-            \drawtextnode{0}{0}{$\cdots$}
+            \drawtextnode{0}{4.5}{\colorlabelsize $\catvariableof{\outnodes}$}
+            \drawtextnode{0}{3.5}{$\cdots$}
             \draw[->-] (2,3)--(2,5);
             \node[anchor=center] (text) at (0,2) {\corelabelsize $\bencodingof{\secexfunction}$};
 
             \draw[->-] (-2,-1)--(-2,1);
-            \drawtextnode{0}{0}{$\cdots$}
+            \drawtextnode{0}{0.5}{$\cdots$}
+            \drawtextnode{0}{-0.5}{\colorlabelsize $\catvariableof{\outnodes}$}
             \draw[->-] (2,-1)--(2,1);
         }
 
@@ -307,7 +304,8 @@
 
             {\bf Example:} For $\catdim=3$ and $\catorder=2$, the number $5\in[9]$ has the $3$-adic representation
         \begin{align*}
-            (\catindexof{0},\catindexof{1}) = (2,1)
+            (\catindexof{0},\catindexof{1})
+                    = (2,1)
         \end{align*}
         since
         \begin{align*}
@@ -334,24 +332,102 @@
         The basis encoding of the sum is the tensor
         \begin{align*}
             & \bencodingofat{\marysumsymbol}{\headvariableof{[\catorder+1]},\shortcatvariables,\tildecatvariableof{[\catorder]}} \\
-            &\quad = \sum_{\shortcatindices,\tildecatindexof{[\catorder]}} \onehotmapofat{\invindexinterpretationat{
-                \indexinterpretationat{\shortcatindices} + \indexinterpretationat{\tildecatindexof{[\catorder]}}
-            }}{\headvariableof{[\catorder+1]}}
+            &\quad = \sum_{\shortcatindices,\tildecatindexof{[\catorder]}} \onehotmapofat{
+                \marysumsymbol(\shortcatindices,\tildecatindexof{[\catorder]})
+            }{\headvariableof{[\catorder+1]}}
             \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables}
             \otimes \onehotmapofat{\tildecatindexof{[\catorder]}}{\tildecatvariableof{[\catorder]}} \, .
         \end{align*}
 
+
         \stantikzpic{
-            \draw (-2,-1) rectangle (4,1);
-            \draw[->-] (-1.25,1)--(-1.25,2.5) node[midway,left] {\colorlabelsize $\headvariableof{0}$};
-            \draw[->-] (3.25,1)--(3.25,2.5) node[midway,right] {\colorlabelsize $\headvariableof{\catorder}$};
-            \node[anchor=center] (A) at (1,2.5) {\corelabelsize $\cdots$};
-            \node[anchor=center] (A) at (1,0) {\corelabelsize $\bencodingof{\marysumsymbol}$};
-            \draw[->-] (-1.5,-2.5)--(-1.5,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
-            \draw[->-] (-1,-2.5)--(-1,-1) node[midway,right] {\colorlabelsize $\tildecatvariableof{0}$};
-            \draw[->-] (3,-2.5)--(3,-1) node[midway,left] {\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
-            \draw[->-] (3.5,-2.5)--(3.5,-1) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catorder\shortminus1}$};
-            \node[anchor=center] (A) at (1,-2.5) {\corelabelsize $\cdots$};
+            \draw (-6,-1) rectangle (8,1);
+            \drawtextnode{1}{0}{\corelabelsize $\bencodingof{\marysumsymbol}$}
+            \draw[->-] (-4,1)--(-4,2.5) node[midway,left] {\colorlabelsize $\headvariableof{0}$};
+            \draw[->-] (6,1)--(6,2.5) node[midway,right] {\colorlabelsize $\headvariableof{\catorder}$};
+            \node[anchor=center] (A) at (1,1.75) {\corelabelsize $\cdots$};
+
+            \draw[->-] (-5,-2.5)--(-5,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \draw[->-] (-3,-2.5)--(-3,-1) node[midway,right] {\colorlabelsize $\tildecatvariableof{0}$};
+            \draw[->-] (5,-2.5)--(5,-1) node[midway,left] {\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
+            \draw[->-] (7,-2.5)--(7,-1) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catorder\shortminus1}$};
+            \node[anchor=center] (A) at (1,-1.75) {\corelabelsize $\cdots$};
+        }
+
+    \end{frame}
+
+
+    \begin{frame}{Integer summation in basis calculus}
+        \par
+        {\bf Basis calculus:} Contraction of the basis encoding with the one-hot encoded input computes the one-hot encoding of the summation
+        \input{tikz/m-adic-calculus}
+        We therefore compute by contraction the unique $\headindexof{[\catorder+1]}$ such that
+        \begin{align*}
+            \sum_{\catenumeratorin} (\catindexof{\catenumerator}+\tildecatindexof{\catenumerator}) \cdot \catdim^{\catenumerator}
+            = \sum_{\catenumerator\in[\catorder+1]} \headindexof{\catenumerator} \cdot \catdim^{\catenumerator}
+        \end{align*}
+
+        \begin{center}
+            \bf How to perform this contraction more efficiently?
+        \end{center}
+    \end{frame}
+
+    \begin{frame}{Bitwise computation of $\catdim$-adic sums}
+
+        {\bf Example:} Summation of $14$ and $15$ using the basis $\catdim=3$. \\
+        We have a representation by $\catindexof{[3]}=(2,1,1)$ and  $\tildecatindexof{[3]}=(0,2,1)$ since
+        \begin{align*}
+            14 = & 1 \cdot 3^2 + 1 \cdot 3^1 + 2 \cdot 3^0 \\
+            15 = & 1 \cdot 3^2 + 2 \cdot 3^1 + 0 \cdot 3^0
+        \end{align*}
+
+        The summation can be performed locally using carry bits:
+
+        \stantikzpic{
+
+            \drawtextnode{-4}{2}{$1$}
+            \drawtextnode{-2}{2}{$1$}
+            \drawtextnode{0}{2}{$2$}
+
+            \drawtextnode{-4}{0}{$1$}
+            \drawtextnode{-2}{0}{$2$}
+            \drawtextnode{0}{0}{$0$}
+
+            \draw (-6,-1) -- (1,-1);
+
+            \only<-1>{
+                \drawtextnode{0}{-2}{$*$}
+            }
+            \only<2->{
+                \drawtextnode{0}{-2}{$2$}
+                \drawtextnode{-1.5}{-0.5}{\tiny $0$}
+            }
+            \only<-2>{
+                \drawtextnode{-2}{-2}{$*$}
+            }
+            \only<3->{
+                \drawtextnode{-2}{-2}{$0$}
+                \drawtextnode{-3.5}{-0.5}{\tiny $1$}
+            }
+            \only<-3>{
+                \drawtextnode{-4}{-2}{$*$}
+            }
+            \only<4->{
+                \drawtextnode{-4}{-2}{$0$}
+                \drawtextnode{-5.5}{-0.5}{\tiny $1$}
+            }
+            \only<-4>{
+                \drawtextnode{-6}{-2}{$*$}
+            }
+            \only<5->{
+                \drawtextnode{-6}{-2}{$1$}
+            }
+        }
+        \only<6>{
+            We computed the result
+            \begin{align*}
+                1 \cdot 3^3 + 0 \cdot 3^2 + 0 \cdot 3^1 + 2 \cdot 3^0 = 29 \, .
+            \end{align*}
         }
     \end{frame}
 
@@ -420,11 +496,11 @@
                 &\{\bencodingofat{\modsumsymbol,\catorder-2}{\headvariableof{\catorder-1},\headvariableof{\catorder},\catvariableof{\catorder-1},\tildecatvariableof{\catorder-1},\thirdcatvariableof{\catorder-2}}\}
             }{\headvariableof{[\catorder+1]},\shortcatvariables,\tildecatvariableof{[\catorder]}} \, .
         \end{align*}
-
-
+        As a tensor network diagram this is visualized by:
+        \input{tikz/m-adic-decomposition}
     \end{frame}
 
-    \begin{frame}{Tensor Network representation}
+    \begin{frame}{Summary: Decomposition of the basis encoding based on a circuit}
 
         \input{tikz/m-adic-sum}
 

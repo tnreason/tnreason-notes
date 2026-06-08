@@ -1,0 +1,28 @@
+        \stantikzpic{
+            \draw (-6,-1) rectangle (8,1);
+            \drawtextnode{1}{0}{\corelabelsize $\bencodingof{\marysumsymbol}$}
+            \draw[->-] (-4,1)--(-4,2.5) node[midway,left] {\colorlabelsize $\headvariableof{0}$};
+            \draw[->-] (6,1)--(6,2.5) node[midway,right] {\colorlabelsize $\headvariableof{\catorder}$};
+            \node[anchor=center] (A) at (1,1.75) {\corelabelsize $\cdots$};
+
+            \draw[->-] (-5,-2.5)--(-5,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \draw[->-] (-2.5,-2.5)--(-2.5,-1) node[midway,right] {\colorlabelsize $\tildecatvariableof{0}$};
+            \draw[->-] (4.5,-2.5)--(4.5,-1) node[midway,left] {\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
+            \draw[->-] (7,-2.5)--(7,-1) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catorder\shortminus1}$};
+            \node[anchor=center] (A) at (1,-1.75) {\corelabelsize $\cdots$};
+
+            \drawsmalltensor{-5}{-3.5}{$\onehotmapof{\catindexof{0}}$}
+            \drawsmalltensor{-2.5}{-3.5}{$\onehotmapof{\tildecatindexof{0}}$}
+            \drawsmalltensor{4.5}{-3.5}{$\onehotmapof{\catindexof{\catorder\shortminus 1}}$}
+            \drawsmalltensor{7}{-3.5}{$\onehotmapof{\tildecatindexof{\catorder\shortminus 1}}$}
+
+            \begin{scope}[shift={(17,0)}]
+
+                \drawtextnode{-6.5}{0}{${=}$}
+                \drawsmalltensor{-4}{0}{$\onehotmapof{\headindexof{0}}$}
+                \draw[->-] (-4,1)--(-4,2.5) node[midway,left] {\colorlabelsize $\headvariableof{0}$};
+                \drawsmalltensor{2}{0}{$\onehotmapof{\headindexof{\catorder}}$}
+                \draw[->-] (2,1)--(2,2.5) node[midway,right] {\colorlabelsize $\headvariableof{\catorder}$};
+                \node[anchor=center] (A) at (-1,0) {\corelabelsize $\cdots$};
+            \end{scope}
+        }
