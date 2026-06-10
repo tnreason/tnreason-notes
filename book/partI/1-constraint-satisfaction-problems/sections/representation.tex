@@ -1,4 +1,4 @@
-\section{Constraint Satisfaction Problems}
+\section{Representation}
 
 Let us now explore a more general class of logical inference problems and discuss probabilistic entailment within that class.
 We then provide further examples based on categorical constraints.
@@ -30,7 +30,7 @@ Following Chapter~5 in \cite{russell_artificial_2021}, we now define Constraint 
 
 We study basic manipulations of constraint tensor networks, which are leaving the contracted network invariant and which are leading to monotonically decreasing solution sets.
 
-\subsubsection{Invariant}
+\subsubsection{Invariances}
 
 \todo{Decide whether tensor networks should be denoted hyperedge-based and not graph based.}
 
@@ -91,33 +91,7 @@ We study basic manipulations of constraint tensor networks, which are leaving th
 
 %Show the grand resolution theorem based on the increase method.
 
-\subsection{Solution Approaches}
 
-Let us now use the manipulation approaches to derive solution approaches to CSPs.
-
-\subsubsection{Elementarization}
-
-We notice that finding a solution assignment to a constraint network $\extnet$ is finding a one-hot encoding with
-\begin{align*}
-    \onehotmapofat{\catindexof{\nodes}}{\nodevariables}
-    \prec
-    \contractionof{\extnet}{\nodevariables} \, .
-\end{align*}
-
-One-hot encodings are in particular non-vanishing elementary tensors.
-
-Let us generalize this approach to solving CSPs by elementarization:
-\begin{itemize}
-    \item Find a non-vanishing elementary tensor network, which entails the
-\end{itemize}
-
-Modus ponens is an elementarization approach: The implication edges are split into elementary vectors.
-
-\subsubsection{Vanishing sub-contraction}
-
-When a sub-contraction of the constraint network is vanishing, we know that the CSP has no solution.
-
-This is a typical approach in logics, e.g. the aim of resolution.
 
 
 
@@ -223,11 +197,10 @@ We further derive a contraction property of arbitrary clauses with negated liter
     Call the categorical variable the constraint decomposition variable?
 }
 
-We further investigate Sudoku and the N-Queens problem as examples of constraint networks, which are constructed using "exactly-one" constraint.
+We further investigate Sudoku and the $\sudokunum$-queens problem as examples of constraint networks, which are constructed using "exactly-one" constraint.
 
 %\subsubsection{Categorical Constraints}\label{sec:categoricalTN}
-
-\red{These are the exactly one constraints, used in Sudoku.}
+%\red{These are the exactly one constraints, used in Sudoku.}
 
 %% Categorical selection map
 \begin{definition}[Categorical Constraint and Atomization Variables]\label{def:catConAtomVar}
@@ -295,7 +268,7 @@ We thus have (see \figref{fig:categoricalDecomposition}) %by \theref{the:functio
 
 \begin{figure}[t]
     \begin{center}
-        \input{tikz/constraint-satisfaction-problems/categorical-decomposition.tex}
+        \input{tikz/constraint-satisfaction-problems/categorical-decomposition}
     \end{center}
     \caption{Representation of a categorical constraint in a $\cpformat$ Format tensor network.
     a) Representation of the dependency of the graphical model.
