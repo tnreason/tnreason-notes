@@ -34,6 +34,8 @@ We study basic manipulations of constraint tensor networks, which are leaving th
 
 \todo{Decide whether tensor networks should be denoted hyperedge-based and not graph based.}
 
+The monotonicity of logic is generalized in the following theorem.
+
 \begin{theorem}[Invariance under adding subcontractions, Rule $(i)$]
     Let there be a constraint network $\tnetof{\edges}$ on the hypergraph $\graph=(\nodes,\edges)$ and choose an arbitrary subset $\secedges\subset\edges$ and $\secnodes\subset\nodes$.
     We further choose a reduced subset $\edgesof{\mathrm{reduced}}\subset\edges$ with $\edges\backslash\secedges \subset\edgesof{\mathrm{reduced}}$ and for any $\edge\in\edges\backslash\edgesof{\mathrm{reduced}}$ we have $\edge\subset\secnodes$.
@@ -47,6 +49,12 @@ We study basic manipulations of constraint tensor networks, which are leaving th
         }{\nodevariables} \, .
     \end{align*}
 \end{theorem}
+\begin{proof}
+    The theorem can be shown coordinatewise:
+    When the coordinate to a index tuple $\nodeindices$ does not vanish, then also not in the sub-contraction $\contractionof{\tnetof{\secedges}}{\secnodes}$ and the coordinate stays invariant.
+    If it vanishes, then the coordinate of the augmented network also vanishes, independently of the sub-contraction.
+\end{proof}
+
 
 \begin{theorem}[Invariance under splitting disentangled edges, Rule $(ii)$]
     Let there be a constraint network $\tnetof{\edges}$ and let for some $\edgein$ with $\edge=\edgeof{0}\dot{\cup}\edgeof{1}$ exist tensors $\hypercoreofat{\edgeof{0}}{\catvariableof{\edgeof{0}}}$ and $\hypercoreofat{\edgeof{1}}{\catvariableof{\edgeof{1}}}$ obeying
@@ -61,11 +69,9 @@ We study basic manipulations of constraint tensor networks, which are leaving th
     \end{align*}
 
 \end{theorem}
-
-
-\subsubsection{Monotonicity}
-
-\todo{Monotonicity of logic generalized here.}
+\begin{proof}
+    Trivial.
+\end{proof}
 
 %\todo{Reformulate inference algorithms based on the following operations:}
 %Leaving the contraction invariant:
@@ -204,9 +210,10 @@ We further investigate Sudoku and the $\sudokunum$-queens problem as examples of
 
 %% Categorical selection map
 \begin{definition}[Categorical Constraint and Atomization Variables]\label{def:catConAtomVar}
-    Given a list $\catvariableof{0},\ldots,\catvariableof{\catdim-1}$ of boolean variables and a categorical variable $\catvariable$ with dimension $\catdim$ a categorical constraint is a tensor $\categoricalcoreat{\catvariableof{[\catdim]},\catvariable}$ with coordinates
+    Given a list $\catvariableof{0},\ldots,\catvariableof{\catdim-1}$ of boolean variables and a categorical variable $\catvariable$ with dimension $\catdim$ the exactly-one constraint is the tensor $\exactlyoneconat{\catvariableof{[\catdim]},\catvariable}$ with coordinates
     \begin{align*}
-        \categoricalcoreat{\indexedcatvariableof{[\catdim]},\indexedcatvariable}
+        \exactlyoneconat{\indexedcatvariableof{[\catdim]},\indexedcatvariable}
+%        \categoricalcoreat{}
 %		 \categoricalmap(\catindex,\catindexof{\variableset})
         = \begin{cases}
               1 & \ifspace \shortcatindices = \onehotmapof{\catindex} \quad \Big(\text{i.e. }\forall \catenumerator\in[\catdim]: \big(\catindex=\catenumerator\big) \Leftrightarrow \big(\catindexof{\catenumerator}=1\big) \Big)\\
@@ -216,75 +223,51 @@ We further investigate Sudoku and the $\sudokunum$-queens problem as examples of
     We then call the variables  $\catvariableof{0},\ldots,\catvariableof{\catdim-1}$ the atomization variables to the categorical variable $\catvariable$.
 \end{definition}
 
+
+% Basis encoding
 We notice that the categorical constraint tensor is the basis encoding of the one-hot map on $[\catdim]$.
 The restriction to the image coordinate $\catenumerator$ of the one-hot map is the function
 \begin{align*}
-    \categoricalmapofat{\catenumerator}{\seccatenumerator}
+    \onehotmapofat{\catenumerator}{\seccatenumerator}
     = \begin{cases}
           1 & \ifspace \seccatenumerator=\catenumerator \\
           0 & \text{else} \, .
     \end{cases}
 \end{align*}
-The basis encoding of the one-hot map is decomposed as
-\begin{align}
-    \categoricalcoreofat{\catenumerator}{\catvariableof{\catenumerator},\catvariable}
-    = \tbasisat{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\catenumerator}{\catvariable}
-    + \onehotmapofat{0}{\catvariableof{\catenumerator}} \otimes \big(\onesat{\catvariable}- \onehotmapofat{\catenumerator}{\catvariable}\big) \, .
-\end{align}
-We thus have (see \figref{fig:categoricalDecomposition}) %by \theref{the:functionDecompositionBasisCP} NEED NEW REFERENCE?
+
+%% Decompositions
+To find a decomposition of the exactly-one constraint we define cores
 \begin{align*}
-    \bencodingofat{\categoricalmap}{\catvariableof{[\catdim]},\catvariable}
-    = \contractionof{\left\{\categoricalcoreofat{\catenumerator}{\catvariableof{\catenumerator},\catvariable} \wcols \catindex\in[\catdim]\right\}}{\catvariable, \catvariableof{0}, \ldots, \catvariableof{\catdim-1}} \, .
+    \exactlyoneconofat{\catenumerator}{\catvariableof{\catenumerator},\catvariable}
+    = \tbasisat{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\catenumerator}{\catvariable}
+    + \onehotmapofat{0}{\catvariableof{\catenumerator}} \otimes \big(\onesat{\catvariable}- \onehotmapofat{\catenumerator}{\catvariable}\big) \, ,
 \end{align*}
+which are the basis encodings to the coordinate restrictions of the one-hot encoding map, that is
+\begin{align*}
+    \exactlyoneconofat{\catenumerator}{\catvariableof{\catenumerator},\catvariable}
+    = \bencodingofat{\restrictionofto{\onehotmap}{\catenumerator}}{\catvariableof{\catenumerator},\catvariable} \, .
+\end{align*}
+We then have (see \figref{fig:eoconDecomposition}) %by \theref{the:functionDecompositionBasisCP} NEED NEW REFERENCE?
+\begin{align*}
+    \exactlyoneconat{\catvariableof{[\catdim]},\catvariable}
+    = \contractionof{\left\{\exactlyoneconofat{\catenumerator}{\catvariableof{\catenumerator},\catvariable}
+                         \wcols \catindex\in[\catdim]\right\}}{\catvariable, \catvariableof{0}, \ldots, \catvariableof{\catdim-1}} \, .
+\end{align*}
+This follows from the property of basis encodings of maps with multiple target coordinates, which are the contraction of the basis encodings to the target restriction maps (see Theorem XXX).
 
-
-
-
-%% Not necessary
-%In the next theorem we show how a categorical constraint can be enforced in a tensor network by adding the tensor $\categoricalmap$ to a contraction.
-%\begin{theorem}
-%    For any tensor $\hypercoreat{\shortcatvariables}$ and a categorical constraint defined by an ordered subset $\catvariableof{\variableset}\subset\shortcatvariables$, a variable $\catvariable\in\shortcatvariables$ we have
-%    \begin{align*}
-%        &\contractionof{\hypercoreat{\shortcatvariables},\categoricalcoreat{\catvariableof{\variableset},\catvariable}}{\indexedcatvariables} \\
-%        & \quad  = \begin{cases}
-%                       \hypercoreat{\indexedcatvariables} & \ifspace \exists \catindex : \catindexof{\variableset} = \onehotmapof{\catindex} \\
-%                       0 & \text{else} \, .
-%        \end{cases}
-%    \end{align*}
-%    Here by $\catindexof{\variableset}$ we denote the restriction of $\shortcatindices$ on the set $\variableset$.
-%\end{theorem}
-%\begin{proof}
-%    For any $\catindexof{[\atomorder]}$ we have
-%    \[ \contractionof{\{\hypercoreat{\shortcatvariables},\categoricalcoreat{\catvariableof{\variableset},\catvariable}\}}{\indexedcatvariables}  =
-%    \hypercoreat{\shortcatindices} \cdot \categoricalcoreat{\indexedcatvariableof{\variableset},\indexedcatvariable} \, .
-%    \]
-%    If $\catindexof{\variableset} = \onehotmapof{\catindex}$ we have $\categoricalmap[\indexedcatvariableof{\variableset},\indexedcatvariable] = 1$ and thus
-%    \[ \contractionof{\hypercoreat{\shortcatvariables},\categoricalcoreat{\catvariableof{\variableset},\catvariable}}{\indexedcatvariables}  =  \hypercoreat{\shortcatindices}  \, . \]
-%    If this is not the case then $\categoricalcoreat{\indexedcatvariableof{\variableset},\indexedcatvariable} = 0$ and
-%    \begin{align*}
-%        \contractionof{\hypercoreat{\shortcatvariables},\categoricalcoreat{\catvariableof{\variableset},\catvariable}}{\indexedcatvariables}  = 0 \, . & \qedhere
-%    \end{align*}
-%\end{proof}
 
 \begin{figure}[t]
     \begin{center}
-        \input{tikz/constraint-satisfaction-problems/categorical-decomposition}
+        \input{tikz/representation/categorical-decomposition}
     \end{center}
-    \caption{Representation of a categorical constraint in a $\cpformat$ Format tensor network.
-    a) Representation of the dependency of the graphical model.
-    b) Tensor Representation with further network decomposition.
+    \caption{Representation of an exactly-one constraint in a $\cpformat$ Format tensor network.
+%    a) Representation of the dependency of the graphical model.
+%    b) Tensor Representation with further network decomposition.
     }
-    \label{fig:categoricalDecomposition}
+    \label{fig:eoconDecomposition}
 \end{figure}
 
 
-
-
-
-
-\todo{
-    Add Sudoku from the NeSy paper, call the boolean variables atomization variables.
-}
 
 \input{examples/constraint-satisfaction-problems/sudoku-representation}
 \input{examples/constraint-satisfaction-problems/queens-assignment}

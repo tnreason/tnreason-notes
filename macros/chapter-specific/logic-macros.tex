@@ -1,0 +1,226 @@
+\newcommand{\placeholder}{Z} %% When not used in formulas, take the set for it
+\newcommand{\placeholderof}[1]{\placeholder^{#1}}
+
+\newcommand{\atomicformula}{\exformula}%{\catvariable}
+\newcommand{\atomicformulaof}[1]{\atomicformula^{#1}}
+\newcommand{\atomicformulaofat}[2]{\atomicformulaof{#1}\left[#2\right]}
+
+\newcommand{\atomicformulas}{\catvariableof{[\atomorder]}} %{\{\atomicformulaof{\atomenumerator} :  \atomenumeratorin \}}
+\newcommand{\enumeratedatoms}{\atomicformulaof{0},\ldots,\atomicformulaof{\atomorder-1}}
+\newcommand{\atomformulaset}{\formulasetof{\mlnatomsymbol}}
+
+\newcommand{\termsymbol}{Z^{\land}}
+\newcommand{\termof}[1]{\termsymbol_{#1}}
+\newcommand{\termofat}[2]{\termsymbol_{#1}\left[#2\right]}
+
+\newcommand{\clausesymbol}{Z^{\lor}}
+\newcommand{\clauseof}[1]{\clausesymbol_{#1}}
+\newcommand{\clauseofat}[2]{\clausesymbol_{#1}\left[#2\right]}
+
+\newcommand{\maxtermof}[1]{\clauseof{#1}}
+
+\newcommand{\mintermof}[1]{\termof{#1}}
+\newcommand{\mintermofat}[2]{\mintermof{#1}\left[#2\right]}
+
+
+\newcommand{\indexedplaceholderof}[1]{\placeholderof{#1}_{\atomlegindexof{#1}}}
+\newcommand{\indexedplaceholders}{\indexedplaceholderof{1},\ldots,\indexedplaceholderof{\atomorder}}
+
+\newcommand{\atomorder}{d}
+\newcommand{\secatomorder}{r}
+\newcommand{\atomenumerator}{k}
+\newcommand{\secatomenumerator}{l}
+
+\newcommand{\atomenumeratorin}{\atomenumerator\in[\atomorder]}
+\newcommand{\secatomenumeratorin}{\secatomenumerator\in[\secatomorder]}
+\newcommand{\atomlegindex}{\catindex}
+\newcommand{\tatomlegindex}{\tilde{\atomlegindex}}
+\newcommand{\atomlegindexof}[1]{\atomlegindex_{#1}}
+\newcommand{\tatomlegindexof}[1]{\tatomlegindex_{#1}}
+\newcommand{\atomindices}{{\atomlegindexof{0},\ldots,\atomlegindexof{\atomorder-1}}}
+\newcommand{\atomindicesin}{\atomindices\in\atomstates}
+
+
+\newcommand{\variableindex}{\indindex}
+\newcommand{\variableindexof}[1]{\indindexof{#1}}
+\newcommand{\variableenumerator}{\indenumerator}
+\newcommand{\variableorder}{\indorder}
+\newcommand{\variableenumeratorin}{\indenumeratorin}
+\newcommand{\variableindices}{\indindexof{0}\ldots\indindexof{\indorder-1}}
+
+\newcommand{\exconnective}{\circ}
+\newcommand{\connectiveof}[1]{\exconnective_{#1}}
+\newcommand{\connectiveofat}[2]{\connectiveof{#1}\left[#2\right]}
+
+\newcommand{\folworldsymbol}{W}
+
+
+
+%% CONFUSING: DO NOT USE!
+\newcommand{\dataworldat}[1]{\worldindices[#1]}
+\newcommand{\dataworldwith}{\dataworldat{\selvariable,\shortindvariables}}
+
+\newcommand{\worldvariables}{\catvariableof{\folworldsymbol}}
+\newcommand{\worldindices}{\catindexof{\folworldsymbol}}
+\newcommand{\indexedworldvariables}{\indexedcatvariableof{\folworldsymbol}}
+\newcommand{\worldindexset}{\left(\bigtimes_{\seccatenumeratorin}\bigtimes_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}}[2]\right)
+\times\left(\bigtimes_{\atomenumeratorin}\bigtimes_{\indindexof{\atomenumerator}\in[\inddim]^{\indorderof{\atomenumerator}}}[2]\right)
+}
+\newcommand{\worldtensorspace}{\left(\bigotimes_{\seccatenumeratorin}\bigotimes_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}}\rr^2\right)
+\otimes\left(\bigotimes_{\atomenumeratorin}\bigotimes_{\indindexof{\atomenumerator}\in[\inddim]^{\indorderof{\atomenumerator}}}\rr^2\right)
+}
+
+\newcommand{\groundingofatwrt}[3]{{#1}|_{#3} \left[#2\right]}
+\newcommand{\groundingofwrt}[2]{{#1}|_{#2}}
+\newcommand{\groundingofat}[2]{{#1}|_{\worldindices} \left[#2\right]}
+\newcommand{\groundingof}[1]{{#1}|_{\worldindices}}
+\newcommand{\kggroundingof}[1]{{#1}|_{\worldindices}}
+\newcommand{\kggroundingofat}[2]{\kggroundingof{#1}\left[#2\right]}
+
+%% For the TCalculus Theorem
+\newcommand{\coordinatetrafo}{\chainingfunction}
+\newcommand{\gentensor}{T}
+\newcommand{\basisslices}{U}
+
+% Parameters
+\newcommand{\candidatelist}{\mathcal{M}}
+\newcommand{\candidatelistof}[1]{\candidatelist^{#1}}
+
+% Data Extraction Spec
+\newcommand{\impformula}{p}
+\newcommand{\fixedimpformula}{\underline{\impformula}}
+\newcommand{\fixedimpformulaat}[1]{\fixedimpformula\left[#1\right]}
+\newcommand{\fixedimpformulawith}{\fixedimpformulaat{\indvariableof{\impformula}}}
+\newcommand{\fixedimpbm}{\basemeasureofat{\fixedimpformula}{\worldvariables}}
+\newcommand{\supportedworlds}{\worldindices \wcols \groundingofat{\impformula}{\shortindvariables} = \fixedimpformulawith}
+\newcommand{\impformulaat}[1]{\impformula\left[#1\right]}
+
+\newcommand{\sampleind}{\indindexof{[\indorder]}^\datindex}
+%\newcommand{\decgroundedimpformula}{\groundingof{\impformula}^{\mathrm{enum}}}
+
+
+\newcommand{\extformula}{g}
+\newcommand{\extformulaof}[1]{\extformula_{#1}}
+\newcommand{\extformulaofat}[2]{\extformulaof{#1}\left[#2\right]}
+\newcommand{\extformulas}{\extformulaof{0},\ldots,\extformulaof{\atomorder-1}}
+\newcommand{\shortextformulas}{\extformulaof{[\atomorder]}}
+
+
+
+% Propositional Logics: New square bracket notation
+\newcommand{\formula}{f}
+\newcommand{\formulaof}[1]{\formula_{#1}}
+\newcommand{\formulaat}[1]{\formula\left[#1\right]}
+\newcommand{\formulaev}[1]{\formula(#1)}
+\newcommand{\formulaofat}[2]{\formulaof{#1}\left[#2\right]}
+\newcommand{\formulain}{\formula\in\formulaset}
+\newcommand{\formulawith}{\formulaat{\shortcatvariables}}
+
+\newcommand{\secformula}{\tilde{\formula}}
+\newcommand{\secformulaat}[1]{\secformula\left[#1\right]}
+\newcommand{\secformulawith}{\secformulaat{\shortcatvariables}}
+
+\newcommand{\hlnformulaof}[1]{\formula^{\hlnstat,(#1)}}
+\newcommand{\hlnformulaparams}{\hardlegset,\headindexof{\hardlegset}}
+\newcommand{\sechlnformulaparams}{\tilde{\hardlegset},\secheadindex_{\tilde{\hardlegset}}}
+\newcommand{\hlnformula}{\hlnformulaof{\hlnformulaparams}} % mean parameter formula
+\newcommand{\hlnformulaat}[1]{\hlnformula\left[#1\right]}
+\newcommand{\hlnformulawith}{\hlnformulaat{\shortcatvariables}}
+\newcommand{\vertexformula}{\hlnformulaof{[\seldim],\meanparam}}
+\newcommand{\vertexformulaat}[1]{\vertexformula\left[#1\right]}
+
+\newcommand{\hlnformulato}[1]{\hlnformulaof{\hardparamto{#1}}} % closest HLN to mean param
+
+
+\newcommand{\formulavar}{\headvariableof{\formula}}
+\newcommand{\formulacc}{\bencodingof{\formula}} % computation core
+\newcommand{\formulaccwith}{\bencodingofat{\formula}{\formulavar,\shortcatvariables}}
+
+\newcommand{\enumformula}{\formulaof{\selindex}}
+\newcommand{\enumformulaat}[1]{\enumformula\left[#1\right]}
+\newcommand{\enumformulawith}{\enumformulaat{\shortcatvariables}}
+
+\newcommand{\enumformulacc}{\bencodingof{\enumformula}} % computation core
+\newcommand{\enumformulaccwith}{\bencodingofat{\enumformula}{\headvariableof{\selindex},\shortcatvariables}}
+
+\newcommand{\exformula}{\formula}
+\newcommand{\exformulavar}{\headvariableof{\exformula}}
+\newcommand{\exformulaat}[1]{\exformula\left[#1\right]}
+
+\newcommand{\clausedim}{n}
+\newcommand{\clausedimof}[1]{\clausedim_{#1}}
+\newcommand{\clauseenumerator}{l}
+\newcommand{\clauseenumeratorin}{\clauseenumerator\in[\clausedim]}
+
+\newcommand{\formulazerocoordinates}{\shortcatindices\wcols\formulaat{\shortcatindices}=0}
+\newcommand{\formulaonecoordinates}{\shortcatindices\wcols\formulaat{\shortcatindices}=1}
+
+\newcommand{\secexformula}{h} % Since g is atom
+\newcommand{\secexformulavar}{\headvariableof{\secexformula}}
+\newcommand{\secexformulaat}[1]{\secexformula\left[#1\right]}
+
+\newcommand{\exformulain}{\exformula\in\formulaset}
+\newcommand{\exformulaof}[1]{\exformula\left(#1\right)}
+
+\newcommand{\formulasuperset}{\mathcal{H}}
+
+% First order Logics
+\newcommand{\folexformula}{q}
+\newcommand{\folexformulaat}[1]{\folexformula\left[#1\right]}
+\newcommand{\folexformulawith}{\folexformulaat{\indvariableof{\folexformula},\worldvariables}}
+
+ % When representing \folexformula as \importancequery \rightarrow \headfolexformula
+\newcommand{\folformulaset}{\mathcal{Q}}
+\newcommand{\folexformulain}{\folexformula\in\folformulaset}
+\newcommand{\folexformulaof}[1]{\folexformula_{#1}}
+
+\newcommand{\folformulastat}{\countquantifier\folformulaset}
+\newcommand{\restfolformulaset}{\restrictionofto{\folformulaset}{\worlddomain}}
+
+\newcommand{\enumfolformula}{\folexformulaof{\selindex}}
+\newcommand{\enumfolformulaat}[1]{\enumfolformula\left[#1\right]}
+
+\newcommand{\countquantifier}{\#}
+
+\newcommand{\headfolformula}{h}
+\newcommand{\headfolexformula}{\headfolformula}
+\newcommand{\headfolformulaof}[1]{\headfolformula_{#1}}
+\newcommand{\headfolformulaofat}[2]{\headfolformulaof{#1}\left[#2\right]}
+
+\newcommand{\folpredicate}{g}
+\newcommand{\folpredicateof}[1]{\folpredicate_{#1}}
+\newcommand{\folpredicates}{\folpredicateof{0},\ldots,\folpredicateof{\folpredicateorder-1}}
+\newcommand{\folpredicateenumerator}{\atomenumerator} % Due to PL being a special case
+\newcommand{\folpredicateorder}{\atomorder}
+\newcommand{\folpredicateofat}[2]{\folpredicateof{#1}\left[#2\right]}
+
+\newcommand{\folfunction}{v}
+\newcommand{\folfunctionof}[1]{\folfunction_{#1}}
+
+\newcommand{\folterm}{v}
+
+\newcommand{\worlddomain}{\arbset} % Snce enumerated
+\newcommand{\exindividual}{a}
+\newcommand{\secindividual}{b}
+\newcommand{\exindividualof}[1]{\exindividual_{#1}}
+
+\newcommand{\atombasemeasure}{\nu}
+
+\newcommand{\individuals}{\exindividualof{\indindexof{0}},\ldots,\exindividualof{\indindexof{\individualorder-1}}}
+\newcommand{\individualsof}[1]{\exindividualof{0}^{#1},\ldots,\exindividualof{\individualorder-1}^{#1}} % Do not use, index already in individuals
+
+
+%% Constraints
+
+\newcommand{\exactlyonecon}{\hypercore^{\mathrm{eo}}}
+\newcommand{\exactlyoneconof}[1]{\hypercore^{\mathrm{eo},#1}}
+\newcommand{\exactlyoneconat}[1]{\exactlyonecon[#1]}
+\newcommand{\exactlyoneconofat}[2]{\exactlyoneconof{#1}[#2]}
+
+
+
+\newcommand{\atmostonecon}{\hypercore^{\mathrm{ao}}}
+\newcommand{\atmostoneconat}[1]{\atmostonecon[#1]}
+
+\newcommand{\difcon}{\hypercore^{\mathrm{dif}}}
+\newcommand{\difconat}[1]{\difcon[#1]}

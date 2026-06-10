@@ -1,0 +1,169 @@
+
+%% Further tensors
+\newcommand{\softactsymbol}{\alpha}
+\newcommand{\softactsymbolof}[1]{\softactsymbol^{#1}}
+\newcommand{\softactsymbolofat}[2]{\softactsymbol^{#1}\left[#2\right]}
+\newcommand{\softacttensor}{\softactsymbol^\canparam}
+\newcommand{\softacttensorat}[1]{\softacttensor\left[#1\right]}
+\newcommand{\softacttensorwith}{\softacttensorat{\headvariables}}
+\newcommand{\softactleg}{\softactsymbolof{\selindex,\canparam}}
+\newcommand{\softactlegat}[1]{\softactleg\left[#1\right]}
+\newcommand{\softactlegwith}{\softactsymbolofat{\selindex,\canparam}{\headvariableof{\selindex}}}
+%% TO BE DROPPED!
+\newcommand{\actcore}{\alpha} % activation of a formula, typical exp
+\newcommand{\actcoreof}[1]{\actcore^{#1}}
+\newcommand{\actcoreat}[1]{\actcore\left[#1\right]}
+\newcommand{\actcoreofat}[2]{\actcore^{#1}[#2]}
+\newcommand{\actcorewith}{\softactlegwith}
+
+% \beta -> basis encoding, \gamma -> coordiante encoding
+
+\newcommand{\dirdelta}{\delta}
+\newcommand{\dirdeltaof}[1]{\dirdelta^{#1}}
+\newcommand{\dirdeltaofat}[2]{\dirdeltaof{#1}\left[#2\right]}
+\newcommand{\dirdeltawith}{\dirdeltaofat{[\catorder],\catdim}{\shortcatvariables}}
+
+% Missing: \epsilon, \zeta (check for usage in recovery guarantees)
+
+\newcommand{\onehotmap}{\epsilon}
+\newcommand{\onehotmapof}[1]{\onehotmap_{#1}}
+\newcommand{\onehotmapofat}[2]{\onehotmap_{#1}\left[#2\right]}
+\newcommand{\onehotmapto}[1]{\onehotmapof{#1}} % For encoding of sets, relations
+\newcommand{\onehotmapwith}{\onehotmapofat{\shortcatindices}{\shortcatvariables}}
+\newcommand{\invonehotmapof}[1]{\onehotmap^{-1}(#1)}
+\newcommand{\tbasis}{\onehotmapof{1}}
+\newcommand{\tbasisat}[1]{\tbasis\left[#1\right]}
+\newcommand{\fbasis}{\onehotmapof{0}}
+\newcommand{\fbasisat}[1]{\fbasis\left[#1\right]}
+
+\newcommand{\noisetensor}{\eta}
+\newcommand{\noiseat}[1]{\noisetensor\left[#1\right]}
+\newcommand{\noiseof}[1]{\noisetensor^{#1,\gendistribution,\datanum}}
+\newcommand{\sstatnoise}{\noiseof{\sstat}}
+\newcommand{\sstatnoisewith}{\noiseof{\sstat}[\selvariable]}
+
+\newcommand{\canparam}{\theta}
+\newcommand{\canparamof}[1]{\canparam_{#1}}
+\newcommand{\canparamat}[1]{\canparam\left[#1\right]}
+\newcommand{\canparamofat}[2]{\canparamof{#1}\left[#2\right]}
+\newcommand{\canparamwith}{\canparamat{\selvariable}}
+\newcommand{\indexedcanparam}{\canparamat{\indexedselvariable}}
+\newcommand{\canparamwithin}{\canparamwith\in\parspace}
+
+% Missing: \iota
+
+\newcommand{\hardactsymbol}{\kappa}
+\newcommand{\hardactsymbolof}[1]{\hardactsymbol^{#1}}
+\newcommand{\hardactsymbolofat}[2]{\hardactsymbol^{#1}\left[#2\right]}
+\newcommand{\hardacttensor}{\hardactsymbolof{\hardparam}}
+\newcommand{\hardacttensorwith}{\hardacttensor\left[\headvariables\right]}
+\newcommand{\hardactleg}{\hardactsymbolof{\selindex,\hardparam}}
+\newcommand{\hardactlegwith}{\hardactsymbolofat{\selindex,\hardparam}{\headvariableof{\selindex}}}
+%% TO BE DROPPED
+\newcommand{\kcore}{\hardactsymbol}
+\newcommand{\kcoreof}[1]{\hardactsymbolof{#1}}
+\newcommand{\kcoreat}[1]{\kcore\left[#1\right]}
+\newcommand{\kcoreofat}[2]{\hardactsymbolofat{#1}{#2}}
+\newcommand{\kcorewith}{\hardactsymbolofat{\edge}{\catvariableof{\edge}}}
+
+\newcommand{\scalarcore}{\lambda} % Scalar core in CP decompositons
+\newcommand{\scalarcoreof}[1]{\scalarcore[#1]}
+\newcommand{\scalarcoreat}[1]{\scalarcore[#1]}
+\newcommand{\scalarcoreofat}[2]{\scalarcore^{#1}[#2]}
+\newcommand{\scalarcorewith}{\scalarcoreat{\decvariable}}
+
+\newcommand{\meanparam}{\mu}
+\newcommand{\meanparamof}[1]{\meanparam_{#1}}
+\newcommand{\meanparamat}[1]{\meanparam\left[#1\right]}
+\newcommand{\meanparamofat}[2]{\meanparamof{#1}\left[#2\right]}
+\newcommand{\indexedmeanparam}{\meanparamat{\indexedselvariable}}
+\newcommand{\meanparamwith}{\meanparamat{\selvariable}}
+
+\newcommand{\basemeasure}{\nu}
+\newcommand{\basemeasureof}[1]{\basemeasure^{#1}}
+\newcommand{\basemeasureofat}[2]{\basemeasure^{#1}\left[#2\right]}
+\newcommand{\basemeasureat}[1]{\basemeasure\left[#1\right]}
+\newcommand{\basemeasurewith}{\basemeasureat{\shortcatvariables}}
+
+\newcommand{\acttensor}{\xi} % Generic activation tensor
+\newcommand{\acttensorof}[1]{\acttensor^{#1}}
+\newcommand{\acttensorofat}[2]{\acttensor^{#1}\left[#2\right]}
+\newcommand{\acttensorat}[1]{\acttensor\left[#1\right]}
+\newcommand{\acttensorwith}{\acttensorat{\headvariables}}
+\newcommand{\acttensorleg}{\acttensorof{\selindex}}
+\newcommand{\acttensorlegat}[1]{\acttensorleg\left[#1\right]}
+\newcommand{\acttensorlegwith}{\acttensorleg\left[\headvariableof{\selindex}\right]}
+\newcommand{\paracttensor}{\acttensorof{\hybridparam}}
+\newcommand{\paracttensorwith}{\acttensorofat{\hybridparam}{\headvariables}}
+
+% Missing: \omicron, \pi
+
+\newcommand{\legcore}{\rho} % Leg core in CP decompositions
+\newcommand{\legcoreof}[1]{\legcore^{#1}}
+\newcommand{\legcoreofat}[2]{\legcoreof{#1}\left[#2\right]}
+\newcommand{\legcorewith}{\legcoreofat{\atomenumerator}{\catvariableof{\atomenumerator},\decvariable}}
+
+% \sigma -> selection encoding
+
+\newcommand{\tnet}{\tau}
+\newcommand{\tnetof}[1]{\tnet^{#1}}
+\newcommand{\tnetofat}[2]{\tnetof{#1}\left[#2\right]}
+\newcommand{\sectnetofat}[2]{\tilde{\tnet}^{#1}\left[#2\right]}
+
+\newcommand{\extnet}{\tnetof{\graph}}
+\newcommand{\secextnet}{\tnetof{\tilde{\graph}}}
+\newcommand{\extnetat}[1]{\extnet\left[#1\right]}
+\newcommand{\extnetwith}{\tnetofat{\graph}{\shortcatvariables}}
+
+\newcommand{\graphtnetwith}{\tnetofat{\graph}{\nodevariables}}
+
+% Missing: \upsilon
+
+\newcommand{\energytensor}{\phi}
+\newcommand{\energytensorofat}[2]{\energytensor^{#1}[#2]}
+\newcommand{\energytensorof}[1]{\energytensor^{#1}}
+\newcommand{\energytensorat}[1]{\energytensor\left[#1\right]}
+\newcommand{\expenergy}{\energytensorofat{(\sstat,\canparam,\basemeasure)}{\shortcatvariables}}
+\newcommand{\expenergyat}[1]{\energytensorofat{(\sstat,\canparam,\basemeasure)}{#1}}
+\newcommand{\energytensorwith}{\energytensorat{\shortcatvariables}}
+
+\newcommand{\phasecore}{\phi} % ! ALSO ENERGY SYMBOL
+\newcommand{\phasecoreat}[1]{\phasecore\left[#1\right]}
+\newcommand{\phasecorewith}{\phasecoreat{\shortcatvariables}}
+\newcommand{\phasecoreof}[1]{\phasecore^{#1}}
+\newcommand{\phasecoreofat}[2]{\phasecore^{#1}\left[#2\right]}
+
+\newcommand{\messagesymbol}{\chi}
+\newcommand{\mesfromto}[2]{\messagesymbol_{#1 \rightarrow #2}}
+\newcommand{\mesfromtowith}[2]{\messagesymbol_{#1 \rightarrow #2}\left[\catvariableof{#1 \cap #2}\right]}
+\newcommand{\mesfromtoat}[3]{\mesfromto{#1}{#2}\left[#3\right]}
+\newcommand{\messagewith}{\mesfromtowith{\sedge}{\redge}}
+
+\newcommand{\qstate}{\psi}
+\newcommand{\qstateof}[1]{\qstate^{#1}}
+\newcommand{\qstateat}[1]{\qstate\left[#1\right]}
+\newcommand{\qstateofat}[2]{\qstate^{#1}\left[#2\right]}
+\newcommand{\qstatewith}{\qstateat{\shortcatvariables}}
+\newcommand{\comconqstate}{\qstateof{*}} % complex conjugate
+\newcommand{\comconqstateat}[1]{\qstateof{*}\left[#1\right]} % complex conjugate
+\newcommand{\comconqstatewith}{\comconqstateat{\shortcatvariables}}
+
+
+%% From general-macros
+
+\newcommand{\hypercore}{\tau}
+\newcommand{\hypercoreat}[1]{\hypercore\left[#1\right]}
+\newcommand{\hypercorewith}{\hypercoreat{\shortcatvariables}}
+\newcommand{\hypercorewithnodes}{\hypercoreat{\nodevariables}}
+\newcommand{\hypercorewithin}{\hypercoreat{\shortcatvariables}\in\facspace}
+\newcommand{\hyperonecoordinates}{\shortcatindices\wcols\hypercoreat{\indexedshortcatvariables} = 1}
+\newcommand{\hyperzerocoordinates}{\shortcatindices\wcols\hypercoreat{\indexedshortcatvariables} = 0}
+
+\newcommand{\edgehypercorewith}{\hypercoreofat{\edge}{\catvariableof{\edge}}}
+
+\newcommand{\hypercoreof}[1]{\hypercore^{#1}}
+\newcommand{\hypercoreofat}[2]{\hypercoreof{#1}\left[#2\right]}
+\newcommand{\sechypercore}{\tilde{\hypercore}}
+\newcommand{\sechypercoreof}[1]{\sechypercore^{#1}}
+\newcommand{\sechypercoreofat}[2]{\sechypercore^{#1}\left[#2\right]}
+\newcommand{\sechypercoreat}[1]{\sechypercore\left[#1\right]}

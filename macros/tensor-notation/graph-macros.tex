@@ -1,0 +1,84 @@
+
+
+
+\newcommand{\graph}{\mathcal{G}}
+\newcommand{\graphof}[1]{\graph^{#1}}
+\newcommand{\secgraph}{\tilde{\graph}}
+\newcommand{\nodes}{\mathcal{V}}
+\newcommand{\nodesof}[1]{\nodes^{#1}}
+\newcommand{\innodes}{\nodesof{\mathrm{in}}}
+\newcommand{\outnodes}{\nodesof{\mathrm{out}}}
+
+\newcommand{\domainsymbol}{k}
+\newcommand{\domainedges}{\edgesof{\domainsymbol}}
+
+\newcommand{\graphqueue}{\mathcal{Q}}
+
+
+
+\newcommand{\prenodes}{\{\secnode \wcols \secnode \prec \node, \secnode\neq\node\}}
+\newcommand{\afternodes}{\{\secnode \wcols \node \prec \secnode, \secnode\neq\node\}}
+
+\newcommand{\incomingnodes}{\edge^{\mathrm{in}}}
+\newcommand{\outgoingnodes}{\edge^{\mathrm{out}}}
+
+\newcommand{\nodesa}{A}
+\newcommand{\nodesb}{B}
+\newcommand{\nodesc}{C}
+
+\newcommand{\nodea}{a}
+\newcommand{\nodeb}{b}
+
+\newcommand{\nodesone}{\nodesof{1}}
+\newcommand{\nodestwo}{\nodesof{2}}
+\newcommand{\nodesthree}{\nodesof{3}}
+
+\newcommand{\secnodes}{\mathcal{U}}%{\tilde{\nodes}}
+\newcommand{\secnodesof}[1]{\tilde{\nodes}^{#1}}
+\newcommand{\thirdnodes}{\mathcal{W}}%{\bar{\nodes}}
+
+\newcommand{\node}{v}
+\newcommand{\nodeof}[1]{\node_{#1}}
+\newcommand{\nodein}{\node\in\nodes}
+\newcommand{\secnode}{\tilde{\node}}
+\newcommand{\thirdnode}{\bar{\node}}
+
+\newcommand{\edges}{\mathcal{E}}
+\newcommand{\edgesof}[1]{\edges^{#1}}
+\newcommand{\secedges}{\tilde{\edges}}
+
+\newcommand{\edge}{e}
+\newcommand{\edgeof}[1]{\edge_{#1}}
+\newcommand{\secedge}{\tilde{\edge}}
+\newcommand{\thirdedge}{\hat{\edge}}
+\newcommand{\edgein}{\edge\in\edges}
+
+\newcommand{\parentsof}[1]{\mathrm{Pa}(#1)}
+\newcommand{\nondescendantsof}[1]{\mathrm{NonDes}(#1)}
+
+\newcommand{\neighborsof}[1]{\mathrm{N}(#1)}
+
+\newcommand{\bnnodecore}{\hypercoreof{(\parentsof{\node},\{\node\})}}
+\newcommand{\bnedges}{\{(\parentsof{\node},\{\node\}) \wcols \nodein\}}
+
+
+% TN
+
+%% Tensor Network Formats
+\newcommand{\elformat}{\mathrm{EL}}
+\newcommand{\cpformat}{\mathrm{CP}}
+\newcommand{\htformat}{\mathrm{HT}}
+\newcommand{\ttformat}{\mathrm{TT}}
+\newcommand{\maxformat}{\mathrm{MAX}}
+
+\newcommand{\elgraph}{\elformat}%{\graphof{\elformat}}
+\newcommand{\maxgraph}{\maxformat}%{\graphof{\maxformat}}
+
+\newcommand{\tnset}{\mathcal{T}}
+\newcommand{\tnsetof}[1]{\tnset^{#1}} % of hypergraph
+\newcommand{\eltnset}{\tnsetof{\elgraph}}
+
+\newcommand{\objof}[1]{O\left(#1\right)} % Objective of optimization
+
+
+\newcommand{\extnetdist}{\normalizationof{\extnet}{\nodevariables}}

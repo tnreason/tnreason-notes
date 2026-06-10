@@ -255,182 +255,8 @@
 \newcommand{\hlnwith}{\hlnat{\shortcatvariables}}
  % Hard leg set to a given dimension
 
-% Propositional Logics: New square bracket notation
-\newcommand{\formula}{f}
-\newcommand{\formulaof}[1]{\formula_{#1}}
-\newcommand{\formulaat}[1]{\formula\left[#1\right]}
-\newcommand{\formulaev}[1]{\formula(#1)}
-\newcommand{\formulaofat}[2]{\formulaof{#1}\left[#2\right]}
-\newcommand{\formulain}{\formula\in\formulaset}
-\newcommand{\formulawith}{\formulaat{\shortcatvariables}}
-
-\newcommand{\secformula}{\tilde{\formula}}
-\newcommand{\secformulaat}[1]{\secformula\left[#1\right]}
-\newcommand{\secformulawith}{\secformulaat{\shortcatvariables}}
-
-\newcommand{\hlnformulaof}[1]{\formula^{\hlnstat,(#1)}}
-\newcommand{\hlnformulaparams}{\hardlegset,\headindexof{\hardlegset}}
-\newcommand{\sechlnformulaparams}{\tilde{\hardlegset},\secheadindex_{\tilde{\hardlegset}}}
-\newcommand{\hlnformula}{\hlnformulaof{\hlnformulaparams}} % mean parameter formula
-\newcommand{\hlnformulaat}[1]{\hlnformula\left[#1\right]}
-\newcommand{\hlnformulawith}{\hlnformulaat{\shortcatvariables}}
-\newcommand{\vertexformula}{\hlnformulaof{[\seldim],\meanparam}}
-\newcommand{\vertexformulaat}[1]{\vertexformula\left[#1\right]}
-
-\newcommand{\hlnformulato}[1]{\hlnformulaof{\hardparamto{#1}}} % closest HLN to mean param
 
 
-\newcommand{\formulavar}{\headvariableof{\formula}}
-\newcommand{\formulacc}{\bencodingof{\formula}} % computation core
-\newcommand{\formulaccwith}{\bencodingofat{\formula}{\formulavar,\shortcatvariables}}
-
-\newcommand{\enumformula}{\formulaof{\selindex}}
-\newcommand{\enumformulaat}[1]{\enumformula\left[#1\right]}
-\newcommand{\enumformulawith}{\enumformulaat{\shortcatvariables}}
-
-\newcommand{\enumformulacc}{\bencodingof{\enumformula}} % computation core
-\newcommand{\enumformulaccwith}{\bencodingofat{\enumformula}{\headvariableof{\selindex},\shortcatvariables}}
-
-\newcommand{\exformula}{\formula}
-\newcommand{\exformulavar}{\headvariableof{\exformula}}
-\newcommand{\exformulaat}[1]{\exformula\left[#1\right]}
-
-\newcommand{\clausedim}{n}
-\newcommand{\clausedimof}[1]{\clausedim_{#1}}
-\newcommand{\clauseenumerator}{l}
-\newcommand{\clauseenumeratorin}{\clauseenumerator\in[\clausedim]}
-
-\newcommand{\formulazerocoordinates}{\shortcatindices\wcols\formulaat{\shortcatindices}=0}
-\newcommand{\formulaonecoordinates}{\shortcatindices\wcols\formulaat{\shortcatindices}=1}
-
-\newcommand{\secexformula}{h} % Since g is atom
-\newcommand{\secexformulavar}{\headvariableof{\secexformula}}
-\newcommand{\secexformulaat}[1]{\secexformula\left[#1\right]}
-
-\newcommand{\exformulain}{\exformula\in\formulaset}
-\newcommand{\exformulaof}[1]{\exformula\left(#1\right)}
-
-\newcommand{\formulasuperset}{\mathcal{H}}
-
-% First order Logics
-\newcommand{\folexformula}{q}
-\newcommand{\folexformulaat}[1]{\folexformula\left[#1\right]}
-\newcommand{\folexformulawith}{\folexformulaat{\indvariableof{\folexformula},\worldvariables}}
-
-
- % When representing \folexformula as \importancequery \rightarrow \headfolexformula
-\newcommand{\folformulaset}{\mathcal{Q}}
-\newcommand{\folexformulain}{\folexformula\in\folformulaset}
-\newcommand{\folexformulaof}[1]{\folexformula_{#1}}
-
-\newcommand{\folformulastat}{\countquantifier\folformulaset}
-\newcommand{\restfolformulaset}{\restrictionofto{\folformulaset}{\worlddomain}}
-
-\newcommand{\enumfolformula}{\folexformulaof{\selindex}}
-\newcommand{\enumfolformulaat}[1]{\enumfolformula\left[#1\right]}
-
-\newcommand{\countquantifier}{\#}
-
-\newcommand{\headfolformula}{h}
-\newcommand{\headfolexformula}{\headfolformula}
-\newcommand{\headfolformulaof}[1]{\headfolformula_{#1}}
-\newcommand{\headfolformulaofat}[2]{\headfolformulaof{#1}\left[#2\right]}
-
-\newcommand{\folpredicate}{g}
-\newcommand{\folpredicateof}[1]{\folpredicate_{#1}}
-\newcommand{\folpredicates}{\folpredicateof{0},\ldots,\folpredicateof{\folpredicateorder-1}}
-\newcommand{\folpredicateenumerator}{\atomenumerator} % Due to PL being a special case
-\newcommand{\folpredicateorder}{\atomorder}
-\newcommand{\folpredicateofat}[2]{\folpredicateof{#1}\left[#2\right]}
-
-\newcommand{\folfunction}{v}
-\newcommand{\folfunctionof}[1]{\folfunction_{#1}}
-
-\newcommand{\folterm}{v}
-
-\newcommand{\worlddomain}{\arbset} % Snce enumerated
-\newcommand{\exindividual}{a}
-\newcommand{\secindividual}{b}
-\newcommand{\exindividualof}[1]{\exindividual_{#1}}
-
-\newcommand{\atombasemeasure}{\nu}
-
-\newcommand{\individuals}{\exindividualof{\indindexof{0}},\ldots,\exindividualof{\indindexof{\individualorder-1}}}
-\newcommand{\individualsof}[1]{\exindividualof{0}^{#1},\ldots,\exindividualof{\individualorder-1}^{#1}} % Do not use, index already in individuals
-
-
-%% Redundant to individual variables
-%\newcommand{\individualvariable}{\indvariable}
-%\newcommand{\individualvariableof}[1]{\indvariableof{#1}}
-%\newcommand{\individualvariables}{\indvariablelist}
-
-%\newcommand{\individualorder}{\indorder}
-%\newcommand{\individualenumerator}{\indenumerator}
-%\newcommand{\individualenumeratorin}{\indenumeratorin}
-
-\newcommand{\variableindex}{\indindex}
-\newcommand{\variableindexof}[1]{\indindexof{#1}}
-\newcommand{\variableenumerator}{\indenumerator}
-\newcommand{\variableorder}{\indorder}
-\newcommand{\variableenumeratorin}{\indenumeratorin}
-\newcommand{\variableindices}{\indindexof{0}\ldots\indindexof{\indorder-1}}
-
-\newcommand{\exconnective}{\circ}
-\newcommand{\connectiveof}[1]{\exconnective_{#1}}
-\newcommand{\connectiveofat}[2]{\connectiveof{#1}\left[#2\right]}
-
-\newcommand{\folworldsymbol}{W}
-
-
-
-%% CONFUSING: DO NOT USE!
-\newcommand{\dataworldat}[1]{\worldindices[#1]}
-\newcommand{\dataworldwith}{\dataworldat{\selvariable,\shortindvariables}}
-
-\newcommand{\worldvariables}{\catvariableof{\folworldsymbol}}
-\newcommand{\worldindices}{\catindexof{\folworldsymbol}}
-\newcommand{\indexedworldvariables}{\indexedcatvariableof{\folworldsymbol}}
-\newcommand{\worldindexset}{\left(\bigtimes_{\seccatenumeratorin}\bigtimes_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}}[2]\right)
-\times\left(\bigtimes_{\atomenumeratorin}\bigtimes_{\indindexof{\atomenumerator}\in[\inddim]^{\indorderof{\atomenumerator}}}[2]\right)
-}
-\newcommand{\worldtensorspace}{\left(\bigotimes_{\seccatenumeratorin}\bigotimes_{\indindexof{\seccatenumerator}\in[\inddim]^{\indorderof{\seccatenumerator}+1}}\rr^2\right)
-\otimes\left(\bigotimes_{\atomenumeratorin}\bigotimes_{\indindexof{\atomenumerator}\in[\inddim]^{\indorderof{\atomenumerator}}}\rr^2\right)
-}
-
-\newcommand{\groundingofatwrt}[3]{{#1}|_{#3} \left[#2\right]}
-\newcommand{\groundingofwrt}[2]{{#1}|_{#2}}
-\newcommand{\groundingofat}[2]{{#1}|_{\worldindices} \left[#2\right]}
-\newcommand{\groundingof}[1]{{#1}|_{\worldindices}}
-\newcommand{\kggroundingof}[1]{{#1}|_{\worldindices}}
-\newcommand{\kggroundingofat}[2]{\kggroundingof{#1}\left[#2\right]}
-
-%% For the TCalculus Theorem
-\newcommand{\coordinatetrafo}{\chainingfunction}
-\newcommand{\gentensor}{T}
-\newcommand{\basisslices}{U}
-
-% Parameters 
-\newcommand{\candidatelist}{\mathcal{M}}
-\newcommand{\candidatelistof}[1]{\candidatelist^{#1}}
-
-% Data Extraction Spec
-\newcommand{\impformula}{p}
-\newcommand{\fixedimpformula}{\underline{\impformula}}
-\newcommand{\fixedimpformulaat}[1]{\fixedimpformula\left[#1\right]}
-\newcommand{\fixedimpformulawith}{\fixedimpformulaat{\indvariableof{\impformula}}}
-\newcommand{\fixedimpbm}{\basemeasureofat{\fixedimpformula}{\worldvariables}}
-\newcommand{\supportedworlds}{\worldindices \wcols \groundingofat{\impformula}{\shortindvariables} = \fixedimpformulawith}
-\newcommand{\impformulaat}[1]{\impformula\left[#1\right]}
-
-\newcommand{\sampleind}{\indindexof{[\indorder]}^\datindex}
-%\newcommand{\decgroundedimpformula}{\groundingof{\impformula}^{\mathrm{enum}}}
-
-
-\newcommand{\extformula}{g}
-\newcommand{\extformulaof}[1]{\extformula_{#1}}
-\newcommand{\extformulaofat}[2]{\extformulaof{#1}\left[#2\right]}
-\newcommand{\extformulas}{\extformulaof{0},\ldots,\extformulaof{\atomorder-1}}
-\newcommand{\shortextformulas}{\extformulaof{[\atomorder]}}
 
 \newcommand{\extractionrelation}{\exrelation}
 
@@ -536,51 +362,7 @@
 \newcommand{\unitvectoratof}[2]{e^{(#1)}_{#2}}
 \newcommand{\parametrizingunittensor}{e_{\atomindices}} % Not required?
 
-\newcommand{\placeholder}{Z} %% When not used in formulas, take the set for it
-\newcommand{\placeholderof}[1]{\placeholder^{#1}}
 
-\newcommand{\atomicformula}{\exformula}%{\catvariable}
-\newcommand{\atomicformulaof}[1]{\atomicformula^{#1}}
-\newcommand{\atomicformulaofat}[2]{\atomicformulaof{#1}\left[#2\right]}
-
-\newcommand{\atomicformulas}{\catvariableof{[\atomorder]}} %{\{\atomicformulaof{\atomenumerator} :  \atomenumeratorin \}}
-\newcommand{\enumeratedatoms}{\atomicformulaof{0},\ldots,\atomicformulaof{\atomorder-1}}
-\newcommand{\atomformulaset}{\formulasetof{\mlnatomsymbol}}
-
-\newcommand{\termsymbol}{Z^{\land}}
-\newcommand{\termof}[1]{\termsymbol_{#1}}
-\newcommand{\termofat}[2]{\termsymbol_{#1}\left[#2\right]}
-
-\newcommand{\clausesymbol}{Z^{\lor}}
-\newcommand{\clauseof}[1]{\clausesymbol_{#1}}
-\newcommand{\clauseofat}[2]{\clausesymbol_{#1}\left[#2\right]}
-
-\newcommand{\maxtermof}[1]{\clauseof{#1}}
-
-\newcommand{\mintermof}[1]{\termof{#1}}
-\newcommand{\mintermofat}[2]{\mintermof{#1}\left[#2\right]}
-
-
-
-
-
-
-\newcommand{\indexedplaceholderof}[1]{\placeholderof{#1}_{\atomlegindexof{#1}}}
-\newcommand{\indexedplaceholders}{\indexedplaceholderof{1},\ldots,\indexedplaceholderof{\atomorder}}
-
-\newcommand{\atomorder}{d}
-\newcommand{\secatomorder}{r}
-\newcommand{\atomenumerator}{k}
-\newcommand{\secatomenumerator}{l}
-
-\newcommand{\atomenumeratorin}{\atomenumerator\in[\atomorder]}
-\newcommand{\secatomenumeratorin}{\secatomenumerator\in[\secatomorder]}
-\newcommand{\atomlegindex}{\catindex}
-\newcommand{\tatomlegindex}{\tilde{\atomlegindex}}
-\newcommand{\atomlegindexof}[1]{\atomlegindex_{#1}}
-\newcommand{\tatomlegindexof}[1]{\tatomlegindex_{#1}}
-\newcommand{\atomindices}{{\atomlegindexof{0},\ldots,\atomlegindexof{\atomorder-1}}}
-\newcommand{\atomindicesin}{\atomindices\in\atomstates}
 
 %% OPTIMIZATION
 \newcommand{\targettensor}{\energytensor}
@@ -644,67 +426,13 @@
 %% CONTRACTION 
 \newcommand{\invtemp}{\beta}
 
-%% Hard Logic
-\newcommand{\kb}{\mathcal{KB}}
-\newcommand{\kbvar}{\headvariableof{\kb}}
-\newcommand{\kbat}[1]{\kb\left[#1\right]}
-\newcommand{\kbwith}{\kbat{\shortcatvariables}}
 
-\newcommand{\seckb}{\tilde{\kb}}
-
-%% Tensor Network Formats
-\newcommand{\elformat}{\mathrm{EL}}
-\newcommand{\cpformat}{\mathrm{CP}}
-\newcommand{\htformat}{\mathrm{HT}}
-\newcommand{\ttformat}{\mathrm{TT}}
-\newcommand{\maxformat}{\mathrm{MAX}}
-
-\newcommand{\elgraph}{\elformat}%{\graphof{\elformat}}
-\newcommand{\maxgraph}{\maxformat}%{\graphof{\maxformat}}
-
-\newcommand{\tnset}{\mathcal{T}}
-\newcommand{\tnsetof}[1]{\tnset^{#1}} % of hypergraph
-\newcommand{\eltnset}{\tnsetof{\elgraph}}
-
-\newcommand{\objof}[1]{O\left(#1\right)} % Objective of optimization
-
-\newcommand{\nodevariables}{\catvariableof{\nodes}}
-\newcommand{\nodevariablesof}[1]{\catvariableof{\nodesof{#1}}}
-\newcommand{\indexednodevariables}{\indexedcatvariableof{\nodes}}
-\newcommand{\edgevariables}{\catvariableof{\edge}}
-\newcommand{\extnetdist}{\normalizationof{\extnet}{\nodevariables}}
-
-\newcommand{\secnodevariables}{\catvariableof{\secnodes}}
 
 \newcommand{\extnetasset}{\left\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edgein\right\}}
 
-%% Probability Representation
-\newcommand{\exrandom}{\catvariableof{0}}
-\newcommand{\secexrandom}{\catvariableof{1}}
-\newcommand{\thirdexrandom}{\catvariableof{2}}
 
-\newcommand{\indexedexrandom}{\indexedcatvariableof{0}}
-\newcommand{\indexedsecexrandom}{\indexedcatvariableof{1}}
-\newcommand{\indexedthirdexrandom}{\thirdexrandom=\thirdexrandind}
 
-\newcommand{\exrandind}{\catindexof{0}}
-\newcommand{\exranddim}{\catdimof{0}}
-\newcommand{\exrandindin}{\exrandind\in[\exranddim]}
 
-\newcommand{\secexrandind}{\catindexof{1}}
-\newcommand{\secexranddim}{\catdimof{1}}
-\newcommand{\secexrandindin}{\secexrandind\in[\secexranddim]}
-
-\newcommand{\thirdexrandind}{\catindexof{2}}
-\newcommand{\thirdexranddim}{\catdimof{2}}
-\newcommand{\thirdexrandindin}{\thirdexrandind\in[\thirdexranddim]}
-
-% Hidden Markov Models
-\newcommand{\randome}{E}
-\newcommand{\randomeof}[1]{\randome_{#1}}
-\newcommand{\tenumerator}{t}
-\newcommand{\tdim}{T}
-\newcommand{\tenumeratorin}{\tenumerator\in[\tdim]}
 
 %% Exponential families
 \newcommand{\expdistof}[1]{\probtensorof{#1}}
@@ -912,82 +640,8 @@
 \newcommand{\energyhypothesis}{\Theta}
 \newcommand{\energyhypothesisof}[1]{\energyhypothesis^{#1}}
 
-\newcommand{\graph}{\mathcal{G}}
-\newcommand{\graphof}[1]{\graph^{#1}}
-\newcommand{\secgraph}{\tilde{\graph}}
-\newcommand{\nodes}{\mathcal{V}}
-\newcommand{\nodesof}[1]{\nodes^{#1}}
-\newcommand{\innodes}{\nodesof{\mathrm{in}}}
-\newcommand{\outnodes}{\nodesof{\mathrm{out}}}
-
-\newcommand{\domainsymbol}{k}
-\newcommand{\domainedges}{\edgesof{\domainsymbol}}
-
-\newcommand{\graphqueue}{\mathcal{Q}}
 
 
-
-\newcommand{\prenodes}{\{\secnode \wcols \secnode \prec \node, \secnode\neq\node\}}
-\newcommand{\afternodes}{\{\secnode \wcols \node \prec \secnode, \secnode\neq\node\}}
-
-\newcommand{\incomingnodes}{\edge^{\mathrm{in}}}
-\newcommand{\outgoingnodes}{\edge^{\mathrm{out}}}
-
-\newcommand{\nodesa}{A}
-\newcommand{\nodesb}{B}
-\newcommand{\nodesc}{C}
-
-\newcommand{\nodea}{a}
-\newcommand{\nodeb}{b}
-
-\newcommand{\nodesone}{\nodesof{1}}
-\newcommand{\nodestwo}{\nodesof{2}}
-\newcommand{\nodesthree}{\nodesof{3}}
-
-\newcommand{\secnodes}{\mathcal{U}}%{\tilde{\nodes}}
-\newcommand{\secnodesof}[1]{\tilde{\nodes}^{#1}}
-\newcommand{\thirdnodes}{\mathcal{W}}%{\bar{\nodes}}
-
-\newcommand{\node}{v}
-\newcommand{\nodeof}[1]{\node_{#1}}
-\newcommand{\nodein}{\node\in\nodes}
-\newcommand{\secnode}{\tilde{\node}}
-\newcommand{\thirdnode}{\bar{\node}}
-
-\newcommand{\edges}{\mathcal{E}}
-\newcommand{\edgesof}[1]{\edges^{#1}}
-\newcommand{\secedges}{\tilde{\edges}}
-
-\newcommand{\edge}{e}
-\newcommand{\edgeof}[1]{\edge_{#1}}
-\newcommand{\secedge}{\tilde{\edge}}
-\newcommand{\thirdedge}{\hat{\edge}}
-\newcommand{\edgein}{\edge\in\edges}
-
-\newcommand{\parentsof}[1]{\mathrm{Pa}(#1)}
-\newcommand{\nondescendantsof}[1]{\mathrm{NonDes}(#1)}
-
-\newcommand{\neighborsof}[1]{\mathrm{N}(#1)}
-
-\newcommand{\bnnodecore}{\hypercoreof{(\parentsof{\node},\{\node\})}}
-\newcommand{\bnedges}{\{(\parentsof{\node},\{\node\}) \wcols \nodein\}}
-
-\newcommand{\hypercore}{\tau}
-\newcommand{\hypercoreat}[1]{\hypercore\left[#1\right]}
-\newcommand{\hypercorewith}{\hypercoreat{\shortcatvariables}}
-\newcommand{\hypercorewithnodes}{\hypercoreat{\nodevariables}}
-\newcommand{\hypercorewithin}{\hypercoreat{\shortcatvariables}\in\facspace}
-\newcommand{\hyperonecoordinates}{\shortcatindices\wcols\hypercoreat{\indexedshortcatvariables} = 1}
-\newcommand{\hyperzerocoordinates}{\shortcatindices\wcols\hypercoreat{\indexedshortcatvariables} = 0}
-
-\newcommand{\edgehypercorewith}{\hypercoreofat{\edge}{\catvariableof{\edge}}}
-
-\newcommand{\hypercoreof}[1]{\hypercore^{#1}}
-\newcommand{\hypercoreofat}[2]{\hypercoreof{#1}\left[#2\right]}
-\newcommand{\sechypercore}{\tilde{\hypercore}}
-\newcommand{\sechypercoreof}[1]{\sechypercore^{#1}}
-\newcommand{\sechypercoreofat}[2]{\sechypercore^{#1}\left[#2\right]}
-\newcommand{\sechypercoreat}[1]{\sechypercore\left[#1\right]}
 
 %% Factored System
 
@@ -1157,57 +811,6 @@
 
 \newcommand{\acceptanceprob}{\lambda}
 \newcommand{\acceptanceprobof}[1]{\lambda^{#1}}
-
-%% Amplitude amplification
-\newcommand{\groversymbol}{G}
-\newcommand{\groverof}[1]{\groversymbol^{#1}}
-\newcommand{\groverat}[1]{\groversymbol\left[#1\right]}
-\newcommand{\groverofat}[2]{\groverof{#1}\left[#2\right]}
-
-\newcommand{\goodstatesymbol}{\parallel}
-\newcommand{\badstatesymbol}{\perp}
-
-\newcommand{\reflectionsymbol}{\mathcal{S}}
-\newcommand{\reflectionof}[1]{\reflectionsymbol^{#1}}
-\newcommand{\reflectionofat}[2]{\reflectionof{#1}\left[#2\right]}
-
-\newcommand{\rotanglesymbol}{\alpha} % Notation clash with canparam
-\newcommand{\rotangleof}[1]{\rotanglesymbol^{#1}}
-
-\newcommand{\repnum}{j}
-\newcommand{\repnumof}[1]{j^{#1}}
-
-\newcommand{\ccatvariable}[1]{\catvariable^{#1}}
-\newcommand{\ccatvariableof}[2]{\catvariableof{#1}^{#2}}
-\newcommand{\cheadvariable}[1]{\headvariable^{#1}}
-\newcommand{\cheadvariableof}[2]{\headvariableof{#1}^{#2}}
-\newcommand{\cavariable}[1]{\avariable^{#1}}
-\newcommand{\cavariableof}[2]{\avariableof{#1}^{#2}}
-\newcommand{\cselvariable}[1]{\selvariable^{#1}}
-
-\newcommand{\inshortcatvariables}{\ccatvariableof{[\catorder]}{\insymbol}}
-\newcommand{\outshortcatvariables}{\ccatvariableof{[\catorder]}{\outsymbol}}
-
-\newcommand{\ccatindex}[1]{\catindex^{#1}}
-\newcommand{\ccatindexof}[2]{\catindexof{#1}^{#2}}
-
-\newcommand{\optsymbol}{\mathrm{opt}}
-
-
-
-% Causality
-
-\newcommand{\doof}[1]{\mathrm{do}\left(#1\right)}
-\newcommand{\dovariable}{D}
-\newcommand{\dovariableof}[1]{\dovariable_{#1}}
-
-\newcommand{\doindex}{d} % Notation clash with \catorder!
-\newcommand{\doindexof}[1]{\doindex_{#1}}
-
-\newcommand{\indexeddovariableof}[1]{\dovariableof{#1}=\doindexof{#1}}
-
-\newcommand{\causalsymbol}{c}
-\newcommand{\responsesymbol}{f}
 
 %% Book
 
