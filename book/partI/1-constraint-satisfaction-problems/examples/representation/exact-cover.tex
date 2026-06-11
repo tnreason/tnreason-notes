@@ -1,0 +1,14 @@
+\begin{example}[Exact cover]
+
+    In general, constraint networks of the \eoconword on boolean variables are interpreted as exact cover problems.
+
+    Here each constraint is understood as an element of a set, and each boolean variable is understood as the subset of constraints, which affect the variable.
+
+    Satisfying the exactly one constraints then amounts to choosing a collection of the subsets being an exact cover of all elements (i.e. their disjoint union is the set of constraints).
+
+    This generalizes the Sudoku problem \exaref{exa:sudokuRepresentation}, where we have in the boolean parametrization $4\cdot \sudokunum**4$ elements (constraints) and $\sudokunum**6$ sets (variables).
+    Further examples are visualizable by polyominoe tilings.
+    
+    The dancing links algorithm is a well-established way to solve them \cite{knuth_art_2022}.
+
+\end{example}

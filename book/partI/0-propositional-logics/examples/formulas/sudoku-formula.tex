@@ -1,6 +1,7 @@
-\begin{example}[Sudoku representation]
-We index the rows and the columns by tuples $(r0,r1)$ and $(co,c1)$, where $r0,r1,c0,c1\in[\sudokunum]$. The first index indicates the block and the second counts the row or column inside that block.
-    For each $r0,r1,c0,c1\in[\sudokunum]$ and $i\in[\sudokunum^2]$ we then define an atomic variable $\catvariableof{r0,r1,c0,c1,i}\in\{0,1\}$ indicating whether in the row $(r0,r1)$ and column $(co,c1)$ the number $i$ is written.
+\begin{example}[Sudoku knowledge base]\label{exa:sudokuFormula}
+We index the rows and the columns of an $\sudokunum\times\sudokunum$ grid by tuples $(r0,r1)$ and $(co,c1)$, where $r0,r1,c0,c1\in[\sudokunum]$.
+The first index indicates the block and the second counts the row or column inside that block.
+    For each $r0,r1,c0,c1\in[\sudokunum]$ and $i\in[\sudokunum^2]$ we then define an atomic variable $\catvariableof{r0,r1,c0,c1,i}\in\{0,1\}$ indicating whether in the row $(r0,r1)$ and column $(co,c1)$ the number $i$ is assigned.
     The Sudoku rules then amount to the formula
     \begin{align*}
         \sudokukbof{\sudokunum}  \coloneqq

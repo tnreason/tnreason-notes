@@ -1,13 +1,13 @@
 \begin{tikzpicture}[scale=0.35, thick] % , baseline = -3.5pt
 
-    \begin{scope}[shift={(-15,2)}]
+    \begin{scope}[shift={(-15,-7)}]
 
         \node[anchor=center] (text) at (-1,3) {${a)}$};
 
         \drawvariablenode{0}{0}{$\catvariableof{0}$}{T1}
         \drawvariablenode{3}{0}{$\catvariableof{1}$}{T2}
         \drawvariablenode{9}{0}{$\catvariableof{\atomorder-1}$}{T3}
-        \drawvariablenode{4.5}{-5}{$\catvariable$}{C}
+        \drawvariablenode{4.5}{-5}{$\decvariable$}{C}
 
         \drawtextnode{6}{0}{\corelabelsize $\cdots$}
 
@@ -23,7 +23,6 @@
     \drawatomindices{0}{2}
     \draw (-1,1) rectangle (5,-1);
     \node[anchor=center] (text) at (2,0) {\corelabelsize $\exactlyonecon$};
-    \draw[->-] (2,-3) -- (2,-1) node[midway,left] {\colorlabelsize $\catvariable$};
 
     \node[anchor=center] (text) at (7,0) {${=}$};
 
@@ -32,9 +31,8 @@
 
 
         \newcommand{\conposseldec}{4.5,-5.5}
-
-        \draw[fill] (\conposseldec) circle (\dotsize);
-        \draw (\conposseldec) -- (4.5,-7.5) node[midway, right] {\colorlabelsize $\catvariable$};
+        \drawvariabledot{4.5}{-5.5}
+        \drawtextnode{4.5}{-6.25}{\colorlabelsize $\decvariable$}
 
         \draw[-<-] (0,1) -- (0,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
         \draw (-1,-1) rectangle (1, -3);
@@ -63,20 +61,20 @@
 
 
 
-    \begin{scope}[shift={(0,-10)}]
+    \begin{scope}[shift={(0,-9)}]
         \drawatomindices{0}{2}
         \draw (-1,1) rectangle (5,-1);
         \node[anchor=center] (text) at (2,0) {\corelabelsize $\bencodingof{\onehotmap}$};
-        \draw[->-] (2,-3) -- (2,-1) node[midway,left] {\colorlabelsize $\catvariable$};
+        \draw[->-] (2,-3) -- (2,-1) node[midway,left] {\colorlabelsize $\decvariable$};
+        \drawvariabledot{2}{-3}
 
         \node[anchor=center] (text) at (7,0) {${=}$};
 
         \begin{scope}[shift={(10,2)}]
 
             \newcommand{\conposseldec}{4.5,-5.5}
-
-            \draw[fill] (\conposseldec) circle (\dotsize);
-            \draw (\conposseldec) -- (4.5,-7.5) node[midway, right] {\colorlabelsize $\catvariable$};
+            \drawvariabledot{4.5}{-5.5}
+            \drawtextnode{4.5}{-6.25}{\colorlabelsize $\decvariable$}
 
             \draw[-<-] (0,1) -- (0,-1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
             \draw (-1,-1) rectangle (1, -3);

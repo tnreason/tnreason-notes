@@ -211,16 +211,19 @@
 
 
 %% Constraints
+\newcommand{\eoconword}{exactly-one constraint}
 
-\newcommand{\exactlyonecon}{\hypercore^{\mathrm{eo}}}
-\newcommand{\exactlyoneconof}[1]{\hypercore^{\mathrm{eo},#1}}
+\newcommand{\exactlyonecon}{\hypercore^{=1}}
+\newcommand{\exactlyoneconof}[1]{\hypercore^{=1,#1}}
 \newcommand{\exactlyoneconat}[1]{\exactlyonecon[#1]}
 \newcommand{\exactlyoneconofat}[2]{\exactlyoneconof{#1}[#2]}
 
 
 
-\newcommand{\atmostonecon}{\hypercore^{\mathrm{ao}}}
+\newcommand{\atmostonecon}{\hypercore^{\leq 1}}
+\newcommand{\atmostoneconof}[1]{\hypercore^{\leq 1, #1}}
 \newcommand{\atmostoneconat}[1]{\atmostonecon[#1]}
+\newcommand{\atmostoneconofat}[2]{\atmostoneconof{#1}[#2]}
 
 \newcommand{\difcon}{\hypercore^{\mathrm{dif}}}
 \newcommand{\difconat}[1]{\difcon[#1]}

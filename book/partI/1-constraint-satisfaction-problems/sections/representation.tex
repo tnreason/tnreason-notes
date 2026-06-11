@@ -24,8 +24,6 @@ Following Chapter~5 in \cite{russell_artificial_2021}, we now define Constraint 
 
 \input{examples/constraint-satisfaction-problems/kb-as-csp}
 
-
-
 \subsection{Manipulation of constraint tensor networks}
 
 We study basic manipulations of constraint tensor networks, which are leaving the contracted network invariant and which are leading to monotonically decreasing solution sets.
@@ -96,11 +94,6 @@ The monotonicity of logic is generalized in the following theorem.
 
 
 %Show the grand resolution theorem based on the increase method.
-
-
-
-
-
 
 \subsection{Knowledge bases as constraint networks}
 
@@ -192,36 +185,41 @@ We further derive a contraction property of arbitrary clauses with negated liter
     This is different to the modus ponens inference rule.
 \end{example}
 
+\subsection{Exactly-one and almost-one constraint}
 
 
-
-
-\subsection{Further Examples}
-
-\todo{
-    Instead of categorical constraints, say exactly-one constraint.
-    Call the categorical variable the constraint decomposition variable?
-}
-
-We further investigate Sudoku and the $\sudokunum$-queens problem as examples of constraint networks, which are constructed using "exactly-one" constraint.
+We further investigate Sudoku and the $\sudokunum$-queens problem as examples of constraint networks, which are constructed using \eoconword.
 
 %\subsubsection{Categorical Constraints}\label{sec:categoricalTN}
 %\red{These are the exactly one constraints, used in Sudoku.}
 
+\todo{Generalize to arbitrary summation constraints?}
+
 %% Categorical selection map
-\begin{definition}[Categorical Constraint and Atomization Variables]\label{def:catConAtomVar}
-    Given a list $\catvariableof{0},\ldots,\catvariableof{\catdim-1}$ of boolean variables and a categorical variable $\catvariable$ with dimension $\catdim$ the exactly-one constraint is the tensor $\exactlyoneconat{\catvariableof{[\catdim]},\catvariable}$ with coordinates
+\begin{definition}\label{def:exactlyAlmostOneConstraint}
+    Given a list $\shortcatvariables$ of boolean variables and a categorical variable $\catvariable$ with dimension $\catorder$ the \eoconword is the tensor $\exactlyoneconat{\catvariableof{[\catdim]},\catvariable}$ with coordinates
     \begin{align*}
-        \exactlyoneconat{\indexedcatvariableof{[\catdim]},\indexedcatvariable}
+        \exactlyoneconat{\indexedshortcatvariables}
 %        \categoricalcoreat{}
 %		 \categoricalmap(\catindex,\catindexof{\variableset})
         = \begin{cases}
-              1 & \ifspace \shortcatindices = \onehotmapof{\catindex} \quad \Big(\text{i.e. }\forall \catenumerator\in[\catdim]: \big(\catindex=\catenumerator\big) \Leftrightarrow \big(\catindexof{\catenumerator}=1\big) \Big)\\
+              1 & \ifspace \sum_{\catenumeratorin} \catindexof{\catenumerator} = 1 \\
               0 & \text{else} \, .
         \end{cases}
     \end{align*}
-    We then call the variables  $\catvariableof{0},\ldots,\catvariableof{\catdim-1}$ the atomization variables to the categorical variable $\catvariable$.
+    The almost one constraint is the tensor $\atmostoneconat{\shortcatvariables}$
+    \begin{align*}
+        \atmostoneconat{\indexedshortcatvariables}
+        = \begin{cases}
+              1 & \ifspace \sum_{\catenumeratorin} \catindexof{\catenumerator} \leq 1 \\
+              0 & \text{else} \, .
+        \end{cases}
+    \end{align*}
+%    We then call the variables  $\catvariableof{0},\ldots,\catvariableof{\catdim-1}$ the atomization variables to the categorical variable $\catvariable$.
 \end{definition}
+
+
+We extend the \eoconword by a decomposition variable $\decvariable$ of dimension $\catdim$, which indicates which of the boolean variables is in the $1$ state.
 
 
 % Basis encoding
@@ -236,38 +234,71 @@ The restriction to the image coordinate $\catenumerator$ of the one-hot map is t
 \end{align*}
 
 %% Decompositions
-To find a decomposition of the exactly-one constraint we define cores
+To find a decomposition of the \eoconword we define cores
 \begin{align*}
-    \exactlyoneconofat{\catenumerator}{\catvariableof{\catenumerator},\catvariable}
-    = \tbasisat{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\catenumerator}{\catvariable}
-    + \onehotmapofat{0}{\catvariableof{\catenumerator}} \otimes \big(\onesat{\catvariable}- \onehotmapofat{\catenumerator}{\catvariable}\big) \, ,
+    \exactlyoneconofat{\catenumerator}{\catvariableof{\catenumerator},\decvariable}
+    = \tbasisat{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\catenumerator}{\decvariable}
+    + \onehotmapofat{0}{\catvariableof{\catenumerator}} \otimes \big(\onesat{\decvariable}- \onehotmapofat{\catenumerator}{\decvariable}\big) \, ,
 \end{align*}
 which are the basis encodings to the coordinate restrictions of the one-hot encoding map, that is
 \begin{align*}
-    \exactlyoneconofat{\catenumerator}{\catvariableof{\catenumerator},\catvariable}
-    = \bencodingofat{\restrictionofto{\onehotmap}{\catenumerator}}{\catvariableof{\catenumerator},\catvariable} \, .
+    \exactlyoneconofat{\catenumerator}{\catvariableof{\catenumerator},\decvariable}
+    = \bencodingofat{\restrictionofto{\onehotmap}{\catenumerator}}{\catvariableof{\catenumerator},\decvariable} \, .
 \end{align*}
-We then have (see \figref{fig:eoconDecomposition}) %by \theref{the:functionDecompositionBasisCP} NEED NEW REFERENCE?
+We then have (see \figref{fig:eoconDecomposition})
 \begin{align*}
-    \exactlyoneconat{\catvariableof{[\catdim]},\catvariable}
-    = \contractionof{\left\{\exactlyoneconofat{\catenumerator}{\catvariableof{\catenumerator},\catvariable}
-                         \wcols \catindex\in[\catdim]\right\}}{\catvariable, \catvariableof{0}, \ldots, \catvariableof{\catdim-1}} \, .
+    \exactlyoneconat{\shortcatvariables}
+    = \contractionof{\left\{\exactlyoneconofat{\catenumerator}{\catvariableof{\catenumerator},\decvariable}
+                         \wcols \catenumeratorin \right\}}{\shortcatvariables} \, .
 \end{align*}
 This follows from the property of basis encodings of maps with multiple target coordinates, which are the contraction of the basis encodings to the target restriction maps (see Theorem XXX).
 
 
 \begin{figure}[t]
     \begin{center}
-        \input{tikz/representation/categorical-decomposition}
+        \input{tikz/representation/exactly-one-decomposition}
     \end{center}
-    \caption{Representation of an exactly-one constraint in a $\cpformat$ Format tensor network.
-%    a) Representation of the dependency of the graphical model.
-%    b) Tensor Representation with further network decomposition.
+    \caption{Representation of an \eoconword in a $\cpformat$ Format tensor network.
     }
     \label{fig:eoconDecomposition}
 \end{figure}
 
+\input{examples/representation/sudoku-representation}
+\input{examples/representation/exact-cover}
+
+%
+By extending the dimension of the decomposition variable $\decvariable$ to $\catdim+1$ we get a decomposition of the at-most one constraint.
+That is for the matrices
+\begin{align*}
+    \atmostoneconofat{\catenumerator}{\catvariableof{\catenumerator},\decvariable}
+    = \tbasisat{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\catenumerator}{\decvariable}
+    + \fbasisat{\catvariableof{\catenumerator}} \otimes \left(\onesat{\decvariable}-\onehotmapofat{\catenumerator}{\decvariable}\right)
+\end{align*}
+where $\catenumeratorin$ we have
+\begin{align*}
+    \atmostoneconat{\shortcatvariables}
+    = \contractionof{
+        \{\atmostoneconofat{\catenumerator}{\catvariableof{\catenumerator},\decvariable}
+        \wcols \catenumeratorin\}
+    }{\shortcatvariables} \, .
+\end{align*}
+
+\input{examples/representation/queens-assignment}
+
+\subsubsection{All-different constraint}
+
+The all-different constraint of order $\catorder$ and dimenstions $\catdimof{[\catorder]}$ is the tensor with coordinates
+\begin{align*}
+    \difconat{\indexedshortcatvariables}
+    = \begin{cases}
+          1 & \ifspace \uniquantwrtof{\catenumerator,\seccatenumerator\in[\catorder]}{(\catenumerator=\seccatenumerator) \lor (\catindexof{\catenumerator}\neq\catindexof{\seccatenumerator})} \\
+          0 & \text{else} \, .
+    \end{cases}
+\end{align*}
 
 
-\input{examples/constraint-satisfaction-problems/sudoku-representation}
-\input{examples/constraint-satisfaction-problems/queens-assignment}
+
+The all-different constraint in case of $\catorder=2$ is a matrix of rank $\catdim$ and has therefore no tensor network decomposition with a variable of dimension less than $\catdim$.
+
+
+\input{examples/representation/graph-coloring}
