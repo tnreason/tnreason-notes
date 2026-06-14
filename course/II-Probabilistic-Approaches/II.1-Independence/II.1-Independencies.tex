@@ -26,27 +26,34 @@
 
         \medskip
 
-        Mitigation: \emph{Tensor Network Decompositions}
+        {\bf Mitigation:} \emph{Tensor network decompositions}
 
-        \begin{block}{Independencies of Random Variables}
-            Decompositions of Probability Tensors correspond with independencies of (hidden) random variables.
+        \begin{block}{Idea}
+            Exploit the "dependence" structure of variables to find decompositions of probability distributions.
         \end{block}
 
     \end{frame}
 
 
 
-    \begin{frame}{Example: Being at a dentist}
+    \begin{frame}{Example: At the dentist}
 
-        Add a variable \emph{Cloud}, denoting the weather outside the dentists lab.
+        Consider the joint distribution of the variables $\catvariableof{0}$ (\emph{Toothache}), $\catvariableof{1}$ (\emph{Cavity}), $\catvariableof{0}$ (\emph{Catch}),  with a variable $\catvariableof{3}$, denoting whether there is a \emph{Cloud} outside the dentists lab.
         \begin{itemize}
-            \item This adds an additional axis to $\probtensor$, thus the number of coordinates increases by a factor of $2$.
-            \item But: Intuitively, knowing \emph{Cloud} should not affect the probability of having a cavity, so why shall we care?
+            \item We now have an order-$4$ probability tensor $\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2},\catvariableof{3}}$
+            \item Intuitively, knowing \emph{Cloud} should not affect the probability of having a cavity, so why shall we care?
         \end{itemize}
 
-        \begin{block}{Independence of Cloud to the other Variables}
-            After showing that cavity, catch and toothache are independent of cloud, we do not have to consider cloud any more.
-        \end{block}
+        To be more precise let us consider the distribution:
+        \input{tikz/toothache-with-cloud}
+
+        \begin{center}
+            \bf Such redundancies are captured by the concept of independence.
+        \end{center}
+
+%        \begin{block}{Independence of Cloud to the other Variables}
+%            After showing that cavity, catch and toothache are independent of cloud, we do not have to consider cloud any more.
+%        \end{block}
 
     \end{frame}
 
@@ -55,14 +62,17 @@
     \begin{frame}{Formal definition of Independencies}
 
         \begin{definition}[Independence]
-    	Given a joint distribution of variables $\catvariableof{0}$ and $\catvariableof{1}$, we say that $\catvariableof{0}$ is independent from $\catvariableof{1}$ if for any values $\catindexof{\catvariableof{0}},\catindexof{\catvariableof{1}}$ we have
+    	Given a joint distribution $\probat{\nodevariables}$ and two disjoint subsets $\nodesa,\nodesb\subset\nodes$, we say that the variables $\catvariableof{\nodesa}$ are independent from the variables $\catvariableof{\nodesb}$ if the marginal distributions $\probat{\catvariableof{\nodesa\cup\nodesb}}$, $\probat{\catvariableof{\nodesa}}$ and $\probat{\catvariableof{\nodesb}}$ satisfy for any index tuples $\catindexof{\nodesa},\catindexof{\nodesb}$
         \begin{align*}
-            \probat{\indexedcatvariableof{0},\indexedcatvariableof{1}}
-            = \probat{\indexedcatvariableof{0}}
+            \probat{\indexedcatvariableof{\nodesa},\indexedcatvariableof{\nodesb}}
+            = \probat{\indexedcatvariableof{\nodesa}}
             \cdot
-            \probat{\indexedcatvariableof{1}} \, .
+            \probat{\indexedcatvariableof{\nodesb}} \, .
         \end{align*}
+        We denote in this case $\independent{\catvariableof{\nodesa}}{\catvariableof{\nodesb}}$
         \end{definition}
+
+            {\bf Interpretation:} Knowing the value of variables $\nodesb$ (and conditioning on them) does not change the distribution of variables $\nodesa$.
 
     \end{frame}
 
@@ -70,19 +80,61 @@
     \begin{frame}{Contraction criterion for independence}
 
         \begin{theorem}\label{the:independenceProductCriterion}
-            Given a probability distribution $\probtensor$, $\catvariableof{0}$ is independent from $\catvariableof{1}$, if and only if
+            If and only if the $\catvariableof{\nodesa}$ are independent from the variables $\catvariableof{\nodesb}$  with respect to a distribution $\probat{\nodevariables}$ then0
             \begin{align*}
-                \probat{\catvariableof{0},\catvariableof{1}}
-                = \contractionof{\probtensor}{\catvariableof{0}} \otimes  \contractionof{\probtensor}{\catvariableof{1}} \, .
+                \contractionof{\probwith}{\catvariableof{\nodesa},\catvariableof{\nodesb}}
+%                \probat{\catvariableof{\nodesa},\catvariableof{\nodesb}}
+                = %\probat{\catvariableof{\nodesa}} \otimes \probat{\catvariableof{\nodesb}}
+                \contractionof{\probwith}{\catvariableof{\nodesa}}
+                \otimes
+                \contractionof{\probwith}{\catvariableof{\nodesb}}
+                \, .
             \end{align*}
+%            Given a probability distribution $\probtensor$, $\catvariableof{0}$ is independent from $\catvariableof{1}$, if and only if
+%            \begin{align*}
+%                \probat{\catvariableof{0},\catvariableof{1}}
+%                = \contractionof{\probtensor}{\catvariableof{0}} \otimes  \contractionof{\probtensor}{\catvariableof{1}} \, .
+%            \end{align*}
         \end{theorem}
+
+        In a tensor network diagram this is the decomposition:
+        \stantikzpic{
+
+            \draw (0,1) rectangle (7,-1);
+            \node[anchor=center] (text) at (3.5,0) {\corelabelsize $\contractionof{\probwith}{\catvariableof{\nodesa},\catvariableof{\nodesb}}$};
+            \draw[->-] (0.5,-1) -- (0.5,-3);
+            \drawtextnode{1.75}{-2}{\colorlabelsize $\catvariableof{\nodesa}$}
+            \draw[->-] (3,-1) -- (3,-3);
+            \draw[->-] (4,-1) -- (4,-3);
+            \drawtextnode{5.25}{-2}{\colorlabelsize $\catvariableof{\nodesb}$}
+            \draw[->-] (6.5,-1) -- (6.5,-3);
+
+            \drawtextnode{9}{0}{${=}$}
+
+            \begin{scope}[shift={(11,0)}]
+
+                \draw (-1,1) rectangle (5,-1);
+                \node[anchor=center] (text) at (2,0) {\corelabelsize $\contractionof{\probwith}{\catvariableof{\nodesa}}$};
+                \draw[->-] (0.5,-1) -- (0.5,-3);
+                \drawtextnode{1.75}{-2}{\colorlabelsize $\catvariableof{\nodesa}$}
+                \draw[->-] (3,-1) -- (3,-3);
+
+                \draw (6,1) rectangle (12,-1);
+                \node[anchor=center] (text) at (9,0) {\corelabelsize $\contractionof{\probwith}{\catvariableof{\nodesb}}$};
+
+                \draw[->-] (7.5,-1) -- (7.5,-3);
+                \drawtextnode{9.5}{-2}{\colorlabelsize $\catvariableof{\nodesb}$}
+                \draw[->-] (11.5,-1) -- (11.5,-3);
+
+            \end{scope}
+        }
 
     \end{frame}
 
 
 
-    \begin{frame}{Decomposition into Marginal Probabilities}
-        Independence allows the decomposition into
+    \begin{frame}{Storage of distributions by marginal distributions}
+        Independence allows the decomposition into tensor products
         \begin{center}
             \input{./tikz/independent-decomposition.tex}
         \end{center}
@@ -92,38 +144,97 @@
         \end{block}
     \end{frame}
 
+    \begin{frame}{Decomposition of pairwise independent variables}
+        Imagine now that we have a distribution $\probwith$, such that for any $\catenumerator,\seccatenumerator\in[\catorder]$
+        \begin{align*}
+            \independent{\catvariableof{\catenumerator}}{\catvariableof{\seccatenumerator}}
+        \end{align*}
+
+        We then have the decomposition:
+        \begin{align*}
+            \probwith = \bigotimes_{\catenumeratorin} \probat{\catvariableof{\catenumerator}}
+        \end{align*}
+
+
+        \stantikzpic{
+
+            \draw (0,1) rectangle (7,-1);
+            \node[anchor=center] (text) at (3.5,0) {\corelabelsize $\probtensor$};
+            \draw[->-] (1,-1) -- (1,-3) node[midway, left] {\colorlabelsize $\catvariableof{0}$};
+            \drawtextnode{2}{-2}{\colorlabelsize $\cdots$}
+            \draw[->-] (6,-1) -- (6,-3) node[midway, left] {\colorlabelsize $\catvariableof{\catorder\shortminus 1}$};
+
+            \drawtextnode{9}{0}{${=}$}
+
+            \begin{scope}[shift={(10,0)}]
+
+                \drawsmalltensor{2}{0}{$\probtensor$}
+                \draw[->-](2,-1) -- (2,-3) node[midway, left] {\colorlabelsize $\catvariableof{0}$};
+                \drawtextnode{5}{0}{$\cdots$}
+                \drawsmalltensor{8}{0}{$\probtensor$}
+
+                \draw[->-](8,-1) -- (8,-3) node[midway, left] {\colorlabelsize $\catvariableof{\catorder\shortminus 1}$};
+            \end{scope}
+        }
+
+        \begin{block}{Exponential to linear storage demand}
+            Instead of storing $\prod_{\catenumeratorin}\catdimof{\catenumerator}$ coordinates, we can store $\probtensor$ using $\sum_{\catenumeratorin}\catdimof{\catenumerator}$ coordinates of the marginal distributions.
+        \end{block}
+
+    \end{frame}
+
 
     \section{Conditional independence}
 
+
+
+
     \begin{frame}{Assumption of independence}
 
-        Indpendence is a very restrictive assumption, corresponding with tensor products being the most "extreme" tensor decomposition.
-
-            {\bf Example:} In the dentist example, no variables are independent from each other.
-
-        Are there more common properties corresponding to more generic tensor decompositions?
+        Independence is a very restrictive assumption:
+        \begin{itemize}
+            \item We need dependence of effects on causes for machine learning to work.
+            \item Independence covers only the most extreme form of tensor network decompositions.
+        \end{itemize}
+        \medskip
+        {\bf Example:} In the dentist example (without the \emph{Cloud} variable), no variables are independent from each other.
+        \begin{center}
+            \bf Are there more common properties corresponding to more generic tensor decompositions?
+        \end{center}
     \end{frame}
 
 
     \begin{frame}{Formal definition of Conditional Independencies}
 
         \begin{definition}[Conditional Independence]
-	        Given a joint distribution of variables $\catvariableof{0}$, $\catvariableof{1}$ and $\catvariableof{2}$, we say $\catvariableof{0}$ is independent from $\catvariableof{1}$ conditioned on $\catvariableof{2}$ if for any index tuple $(\catindexof{0},\catindexof{1},\catindexof{2})$
+	        Given a joint distribution of variables $\catvariableof{\nodesa}$, $\catvariableof{\nodesb}$ and $\catvariableof{\nodesc}$, we say that $\catvariableof{\nodesa}$ and $\catvariableof{\nodesb}$ are independent given $\catvariableof{\nodesc}$ if for any index tuple $(\catindexof{\nodesa},\catindexof{\nodesb},\catindexof{\nodesc})$
             \begin{align*}
-                \condprobof{\indexedcatvariableof{0},\indexedcatvariableof{1}}{\indexedcatvariableof{2}}
-                =  \, & \condprobof{\indexedcatvariableof{0}}{\indexedcatvariableof{2}}\\
-                & \cdot \condprobof{\indexedcatvariableof{1}}{\indexedcatvariableof{2}}   \, .
+                \condprobof{\indexedcatvariableof{\nodesa},\indexedcatvariableof{\nodesb}}{\indexedcatvariableof{\nodesc}}
+                =  \, & \condprobof{\indexedcatvariableof{\nodesa}}{\indexedcatvariableof{\nodesc}}\\
+                & \cdot \condprobof{\indexedcatvariableof{\nodesb}}{\indexedcatvariableof{\nodesc}}   \, ,
+            \end{align*}
+            We denote this situation by
+            \begin{align*}
+                \condindependent{\catvariableof{\nodesa}}{\catvariableof{\nodesb}}{\catvariableof{\nodesc}} \, .
             \end{align*}
         \end{definition}
 
+            {\bf Interpretation:} Conditional independence means that $\catvariableof{\nodesa}$ and $\catvariableof{\nodesb}$ are independent with respect to any slice $\condprobat{\catvariableof{\nodesa},\catvariableof{\nodesb}}{\indexedcatvariableof{\nodesc}}$.
 
     \end{frame}
 
 
-    \begin{frame}{Decomposition given conditional independence}
+    \begin{frame}{Conditional independence as a contraction equation}
 
+        We have $ \condindependent{\catvariableof{\nodesa}}{\catvariableof{\nodesb}}{\catvariableof{\nodesc}} $ if and only if
+        \begin{align*}
+            \condprobat{\catvariableof{\nodesa},\catvariableof{\nodesb}}{\catvariableof{\nodesc}}
+            = \contractionof{
+                \condprobat{\catvariableof{\nodesa}}{\catvariableof{\nodesc}},
+                \condprobat{\catvariableof{\nodesb}}{\catvariableof{\nodesc}}
+            }{\catvariableof{\nodesa},\catvariableof{\nodesb},\catvariableof{\nodesc}} \, .
+        \end{align*}
         We depict conditional independence by tensor network decompositions:
-
         \begin{center}
             \input{./tikz/cond-independence-decomposition.tex}
         \end{center}
@@ -132,7 +243,57 @@
 
 
     \begin{frame}{Example: Being at a dentist}
-        The toothache variable and the cavity variable are independent conditioned on the catch variable.
+        \par
+        {\bf Task:} Let us investigate, whether $\var{Toothache}$ ($\catvariableof{0}$) and $\var{Catch}$ ($\catvariableof{2}$) are independent given $\var{Cavity}$ ($\catvariableof{1}$), with respect to the distribution:
+        \stantikzpic{
+            \drawtextnode{-10}{0}{$\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}\,\,=$}
+
+            \only<1,3->{
+                \drawtextnode{-2}{0}{$\begin{pmatrix}
+                                          0.576 &  0.008 \\ 0.064 & 0.012
+                \end{pmatrix}$}
+                \drawtextnode{5.5}{1}{$\begin{pmatrix}
+                                           0.144 & 0.072 \\ 0.016 & 0.108
+                \end{pmatrix}$}
+                \drawtextnode{12}{0.5}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]$}
+            }
+
+            \only<2>{
+                \drawtextnode{-2}{0}{$\begin{pmatrix}
+                                          \textcolor{\concolor}{0.576} &  0.008 \\ \textcolor{\concolor}{0.064} & 0.012
+                \end{pmatrix}$}
+                \drawtextnode{5.5}{1}{$\begin{pmatrix}
+                                           \textcolor{\concolor}{0.144} & 0.072 \\ \textcolor{\concolor}{0.016} & 0.108
+                \end{pmatrix}$}
+                \drawtextnode{12}{0.5}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]$}
+            }
+        }
+        For $\catvariableof{1}=0$: \only<3->{\textcolor{\concolor}{Independent $\checkmark$}}
+        \stantikzpic{
+            \only<2->{
+                \drawtextnode{-11.5}{0}{$\condprobat{\catvariableof{0},\catvariableof{2}}{\catvariableof{1}=0}\,\,=$}
+                \drawtextnode{-2}{0}{$
+                \coloredmatrixof{0.72 &  0.08 \\ 0.18  &  0.02}{\catvariableof{0},\catvariableof{2}}$}
+            }
+            \only<3->{
+                \drawtextnode{9}{0}{${=}\,\coloredmatrixof{0.8 \\ 0.2}{\catvariableof{0}} \otimes \coloredmatrixof{0.9 \\ 0.1}{\catvariableof{2}} $}
+            }
+        }
+        For $\catvariableof{1}=1$:  \only<4->{\textcolor{\concolor}{Independent $\checkmark$}}
+        \stantikzpic{
+            \only<4->{
+                \drawtextnode{-11.5}{0}{$\condprobat{\catvariableof{0},\catvariableof{2}}{\catvariableof{1}=1}\,\,=$}
+
+                \drawtextnode{-2}{0}{$
+                \coloredmatrixof{0.04 &  0.36 \\ 0.06  &  0.54}{\catvariableof{0},\catvariableof{2}}$}
+            }
+            \only<5->{
+                \drawtextnode{9}{0}{${=}\,\coloredmatrixof{0.4 \\ 0.6}{\catvariableof{0}} \otimes \coloredmatrixof{0.1 \\ 0.9}{\catvariableof{2}} $}
+            }
+        }
+        \only<6>{
+                {\bf Conclusion:} The conditional independence holds, that is $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$.
+        }
 
     \end{frame}
 
@@ -146,11 +307,10 @@
             \begin{align*}
                 \probwith
                 = \contractionof{\{
-                    \condprobat{\catvariableof{\atomenumerator}}{\catvariableof{[\catenumerator]}} \wcols \catenumeratorin
+                    \condprobat{\catvariableof{\catenumerator}}{\catvariableof{[\catenumerator]}} \wcols \catenumeratorin
                     \}
                 }{\shortcatvariables} \, .
             \end{align*}
-%where we denote for $\catenumerator=0$ $\probat{\catvariableof{0}}=\condprobat{\catvariableof{[}}{}$.
         \end{theorem}
             {\bf Proof sketch:} We apply the Bayes theorem to get
         \begin{align*}
@@ -158,14 +318,77 @@
             =\contractionof{\probat{\catvariableof{0}},\condprobat{\catvariableof{1},\cdots,\catvariableof{\catorder-1}}{\catvariableof{0}}}{\shortcatvariables} \, .
         \end{align*}
         and further apply the Bayes theorem iteratively on the conditioned distribution.
+        \par
+        {\bf Problem:}
+        The tensors $\condprobat{\catvariableof{\catenumerator}}{\catvariableof{[\catenumerator]}}$ are of order $\catorder+1$!
+        \begin{center}
+            \bf Can we smallen the order based on independence assumptions?
+        \end{center}
+
     \end{frame}
 
 
-    \begin{frame}{Markov Chains}
+    \begin{frame}{Simplification of conditional distributions}
+
+        \begin{theorem}
+            When $\condindependent{\catvariableof{\nodesa}}{\catvariableof{\nodesb}}{\catvariableof{\nodesc}}$ then % more precise: need to demand that the cond distributions exist!
+            \begin{align*}
+                \condprobat{\catvariableof{\nodesa}}{\catvariableof{\nodesc},\catvariableof{\nodesb}}
+                = \condprobat{\catvariableof{\nodesa}}{\catvariableof{\nodesc}} \otimes \onesat{\catvariableof{\nodesb}} \, .
+            \end{align*}
+        \end{theorem}
+
+            {\bf Proof sketch:} We have by Bayes theorem
+        \begin{align*}
+            \condprobat{\catvariableof{\nodesa},\catvariableof{\nodesb}}{\catvariableof{\nodesc}}
+            = \contractionof{
+                \condprobat{\catvariableof{\nodesa}}{\catvariableof{\nodesc},\catvariableof{\nodesb}},
+                \condprobat{\catvariableof{\nodesb}}{\catvariableof{\nodesc}}
+            }{\catvariableof{\nodesa},\catvariableof{\nodesb},\catvariableof{\nodesc}}
+        \end{align*}
+        and compare with the conditional independence equation
+        \begin{align*}
+            \condprobat{\catvariableof{\nodesa},\catvariableof{\nodesb}}{\catvariableof{\nodesc}}
+            = \contractionof{
+                \condprobat{\catvariableof{\nodesa}}{\catvariableof{\nodesc}},
+                \condprobat{\catvariableof{\nodesb}}{\catvariableof{\nodesc}}
+            }{\catvariableof{\nodesa},\catvariableof{\nodesb},\catvariableof{\nodesc}} \, .
+        \end{align*}
+        \par
+        {\bf Usage for decompositions:} We can drop some conditioned variables and effecively smallen the tensor order in the tensors $\condprobat{\catvariableof{\catenumerator}}{\catvariableof{[\catenumerator]}}$.
+    \end{frame}
+
+
+    \begin{frame}{Example: Markov Chains}
+
+        Let us model the weather in a town on all days of a year by variables $\catvariableof{[365]}$ and assume that for each $\catenumerator\in[365]$
+        \begin{itemize}
+            \item Three states $\catindexof{\catenumerator}=0$ (sunny), $\catindexof{\catenumerator}=1$ (cloudy), $\catindexof{\catenumerator}=2$ (rainy)
+            \item The weather on the day $\catenumerator+1$ conditioned on the weather on the day $\catenumerator$ is
+            \begin{align*}
+                \condprobat{\catvariableof{\catenumerator+1}}{\catvariableof{\catenumerator}}
+                = \coloredmatrixof{    0.70 & 0.25 & 0.05 \\
+                0.35 & 0.40 & 0.25 \\
+                0.10 & 0.40 & 0.50 }{\catvariableof{\catenumerator+1},\catvariableof{\catenumerator}}
+            \end{align*}
+            \item The weather on the day $\catenumerator+1$ does not depend on the weather before day $\catenumerator$ given the weather before day $\catenumerator$:
+            \begin{align*}
+                \condindependent{\catvariableof{\catenumerator+1}}{\catvariableof{[\catenumerator]}}{\catvariableof{\catenumerator}}
+            \end{align*}
+        \end{itemize}
+        \only<3->{
+            \begin{center}
+                \bf This is an example of a Markov chain: Variables depend only on their precessors.
+            \end{center}
+        }
+    \end{frame}
+
+
+    \begin{frame}{Example: Markov Chains}
 
         \begin{theorem}[Markov Chain]\label{the:MarkovChain}
             Let there be a set of variables $\catvariableof{\catenumerator}$ where $\catenumeratorin$.
-            When $\catvariableof{\catenumerator}$ is independent of $\catvariableof{[\catenumerator-1]}$ conditioned on $\catvariableof{\catenumerator-1}$ (the Markov Property), then
+            When $\catvariableof{\catenumerator}$ is independent of $\catvariableof{[\catenumerator-1]}$ given $\catvariableof{\catenumerator-1}$ (the Markov Property), then
             \begin{align*}
                 \probwith
                 = \contractionof{\condprobof{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1}}\wcols \catenumeratorin}{
@@ -197,8 +420,10 @@
 
     \begin{frame}{Independence assumptions of Bayesian networks}
 
+
+        Towards decomposing a distribution in a more generic way take the steps:
         \begin{itemize}
-            \item We enumerate the variables by $[\catorder]$.
+            \item We choose an order and enumerate the variables by $[\catorder]$.
             \item To each $\catenumeratorin$ we choose a set $\parentsof{\catenumerator}$ of \emph{parent nodes} in $[\catenumerator]=\{0,\cdots,\catenumerator-1\}$ such that
             \begin{align*}
                 \condindependent{\catvariableof{\catenumerator}}{\catvariableof{[\catenumerator]\backslash\parentsof{\catenumerator}}}{\catvariableof{\parentsof{\catenumerator}}}
@@ -232,14 +457,57 @@
 
     \end{frame}
 
+    \begin{frame}{Example: At the Dentist}
+
+        \begin{itemize}
+            \item Choose the order $\catvariableof{1},\catvariableof{0},\catvariableof{2}$
+            \item For both $\catvariableof{0}$ and $\catvariableof{2}$ we take $\catvariableof{1}$ as single parent, that is
+            \begin{align*}
+                \parentsof{0} = \{1\} \quad \text{and} \quad \parentsof{2} = \{1\}
+            \end{align*}
+            and have the for the Bayesian network necessary conditional independencies (shown before)
+            \begin{align*}
+                \condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}
+                \quad \text{and} \quad \condindependent{\catvariableof{2}}{\catvariableof{0}}{\catvariableof{1}}
+            \end{align*}
+        \end{itemize}
+        The Toothache
+        \input{tikz/toothache-bayesian}
+
+    \end{frame}
+
+
+    \begin{frame}{Example: Hidden Markov Models}
+        Extend the weather example: We observe the weather $\randomeof{\catenumerator}$, but not the hidden driving variable:
+        \begin{itemize}
+            \item Atmospheric pressure $\catvariableof{\catenumerator}$ taking states $\catindexof{\catenumerator}=0$ (high pressure) or $\catindexof{\catenumerator}=1$ (low pressure)
+        \end{itemize}
+        \par \medskip
+        Transition of the pressure variable:
+        \begin{align*}
+            \coloredmatrixof{0.80 & 0.20 \\
+            0.30 & 0.70}{\catvariableof{\catenumerator+1},\catvariableof{\catenumerator}}
+        \end{align*}
+        Probability of whether given the
+        \begin{align*}
+            \coloredmatrixof{0.70 & 0.25 & 0.05 \\
+            0.10 & 0.40 & 0.50}{\randomeof{\catenumerator},\catvariableof{\catenumerator}}
+        \end{align*}
+        \begin{center}
+            \bf
+            This is an example of Hidden Markov Models extending Markov Chains by limited observation $\randomeof{\catenumerator}$ of the variables $\catvariableof{\catenumerator}$.
+
+        \end{center}
+    \end{frame}
+
+
     \begin{frame}{Example: Hidden Markov Models}
 
-        Hidden Markov Models extend Markov Chains by limited observation $\randomeof{\catenumerator}$ of the variables $\catvariableof{\catenumerator}$. \\
         \medskip
-        The independence assumptions are
+        The independence assumptions of a Hidden Markov Model are for any $\catenumeratorin$
         \begin{itemize}
-            \item $\catvariableof{\catenumerator+1}$ is independent of $\catvariableof{0:\catenumerator-1}$ and $\randomeof{0:\catenumerator}$ conditioned on $\catvariableof{\catenumerator}$
-            \item $\randomeof{\catenumerator}$ is independent of all other variables conditioned on $\catvariableof{\catenumerator}$
+            \item $\catvariableof{\catenumerator+1}$ is independent of $\catvariableof{[\catenumerator]}$ and $\randomeof{[\catenumerator]}$ given $\catvariableof{\catenumerator}$
+            \item $\randomeof{\catenumerator}$ is independent of all other variables given $\catvariableof{\catenumerator}$
         \end{itemize}
         \medskip
         The independence assumptions are exploited in the decomposition
@@ -248,7 +516,6 @@
         \end{center}
 
     \end{frame}
-
 
 
 %    \begin{frame}{Directed Graphical Models: Bayesian Networks}
@@ -264,7 +531,6 @@
 %        \end{definition}
 %
 %    \end{frame}
-
 
 
 %    \begin{frame}{Directed Graphical Models:\\
@@ -306,7 +572,7 @@
 
 
     \begin{frame}{Markov network indepencencies}
-        
+
         \begin{theorem}
             A positive distribution $\probat{\nodevariables}$ has a representation as a Markov network on a hypergraph $\graph$, if and only if for any disjoint subsets $\secnodes,\thirdnodes,\mathcal{I}\subset\nodes$ for which $\mathcal{I}$ separates $\secnodes$ from $\thirdnodes$
             \begin{align*}
@@ -315,13 +581,5 @@
         \end{theorem}
             {\bf Proof sketch:} This is the Hammersley Clifford factorization theorem, which proof is out of scope in this course.
     \end{frame}
-    
+
 \end{document}
-
-
-
-\begin{frame}{Naive Bayes Classifier}
-
-    Causes and effects: Independence of causes conditioned on effect.
-
-\end{frame}
