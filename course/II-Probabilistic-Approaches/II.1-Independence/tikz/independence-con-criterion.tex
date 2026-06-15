@@ -1,0 +1,30 @@
+\stantikzpic{
+
+    \draw (0,1) rectangle (7,-1);
+    \node[anchor=center] (text) at (3.5,0) {\corelabelsize $\contractionof{\probwith}{\catvariableof{\nodesa},\catvariableof{\nodesb}}$};
+    \draw[->-] (0.5,-1) -- (0.5,-3);
+    \drawtextnode{1.75}{-2}{\colorlabelsize $\catvariableof{\nodesa}$}
+    \draw[->-] (3,-1) -- (3,-3);
+    \draw[->-] (4,-1) -- (4,-3);
+    \drawtextnode{5.25}{-2}{\colorlabelsize $\catvariableof{\nodesb}$}
+    \draw[->-] (6.5,-1) -- (6.5,-3);
+
+    \drawtextnode{9}{0}{${=}$}
+
+    \begin{scope}[shift={(11,0)}]
+
+        \draw (-1,1) rectangle (5,-1);
+        \node[anchor=center] (text) at (2,0) {\corelabelsize $\contractionof{\probwith}{\catvariableof{\nodesa}}$};
+        \draw[->-] (0.5,-1) -- (0.5,-3);
+        \drawtextnode{1.75}{-2}{\colorlabelsize $\catvariableof{\nodesa}$}
+        \draw[->-] (3,-1) -- (3,-3);
+
+        \draw (6,1) rectangle (12,-1);
+        \node[anchor=center] (text) at (9,0) {\corelabelsize $\contractionof{\probwith}{\catvariableof{\nodesb}}$};
+
+        \draw[->-] (7.5,-1) -- (7.5,-3);
+        \drawtextnode{9.5}{-2}{\colorlabelsize $\catvariableof{\nodesb}$}
+        \draw[->-] (11.5,-1) -- (11.5,-3);
+
+    \end{scope}
+}

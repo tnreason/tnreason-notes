@@ -1,0 +1,66 @@
+\stantikzpic{
+
+    \draw (0,1) rectangle (3.5,-1);
+    \node[anchor=center] (text) at (1.75,0) {\corelabelsize $\hypercoreof{0}$};
+    \draw[] (0.5,-1) -- (0.5,-3);
+    \drawtextnode{1.75}{-2}{\colorlabelsize $\catvariableof{\nodesa}$}
+    \draw[] (3,-1) -- (3,-3);
+
+    \drawvariabledot{4}{0.5}
+    \draw (3.5,0.5) -- (5.5,0.5);
+    \drawvariabledot{5}{-0.5}
+    \draw (3.5,-0.5) -- (5.5,-0.5);
+
+    \draw (4,0.5) -- (4,-3);
+    \drawtextnode{4.5}{-2}{\colorlabelsize $\catvariableof{\nodesc}$}
+    \draw (5,-0.5) -- (5,-3);
+
+
+
+    \draw (5.5,1) rectangle (9,-1);
+    \node[anchor=center] (text) at (7.25,0) {\corelabelsize $\hypercoreof{1}$};
+    \draw[] (6,-1) -- (6,-3);
+    \drawtextnode{7.25}{-2}{\colorlabelsize $\catvariableof{\nodesb}$}
+    \draw[] (8.5,-1) -- (8.5,-3);
+
+    \only<2->{
+        \drawsmalltensor{4.5}{-4}{$\onehotmapof{\catindexof{\nodesc}}$}
+        \drawtextnode{11}{0}{${=}$}
+    }
+
+    \only<3->{
+        \begin{scope}[shift={(13,0)}]
+            \draw (0,1) rectangle (3.5,-1);
+            \node[anchor=center] (text) at (1.75,0) {\corelabelsize $\hypercoreof{0}$};
+            \draw[] (0.5,-1) -- (0.5,-3);
+            \drawtextnode{1.75}{-2}{\colorlabelsize $\catvariableof{\nodesa}$}
+            \draw[] (3,-1) -- (3,-3);
+
+            \draw (3.5,0.5) -- (4.5,0.5);
+            \draw (3.5,-0.5) -- (4.5,-0.5);
+            \drawsmalltensor{5.5}{0}{$\onehotmapof{\catindexof{\nodesc}}$}
+
+
+
+            \drawsmalltensor{8}{0}{$\onehotmapof{\catindexof{\nodesc}}$}
+            \draw (9,0.5) -- (10,0.5);
+            \draw (9,-0.5) -- (10,-0.5);
+
+
+
+            \begin{scope}[shift={(4.5,0)}]
+                \draw (5.5,1) rectangle (9,-1);
+                \node[anchor=center] (text) at (7.25,0) {\corelabelsize $\hypercoreof{1}$};
+                \draw[] (6,-1) -- (6,-3);
+                \drawtextnode{7.25}{-2}{\colorlabelsize $\catvariableof{\nodesb}$}
+                \draw[] (8.5,-1) -- (8.5,-3);
+            \end{scope}
+
+            \only<4->{
+                \draw [\concolor,dashed,thick] (6.75,2) -- (6.75,-4);
+            }
+        \end{scope}
+
+    }
+
+}

@@ -41,7 +41,7 @@
         Consider the joint distribution of the variables $\catvariableof{0}$ (\emph{Toothache}), $\catvariableof{1}$ (\emph{Cavity}), $\catvariableof{0}$ (\emph{Catch}),  with a variable $\catvariableof{3}$, denoting whether there is a \emph{Cloud} outside the dentists lab.
         \begin{itemize}
             \item We now have an order-$4$ probability tensor $\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2},\catvariableof{3}}$
-            \item Intuitively, knowing \emph{Cloud} should not affect the probability of having a cavity, so why shall we care?
+            \item Intuitively, knowing \emph{Cloud} should not affect the probability of having a cavity, so why should we care?
         \end{itemize}
 
         To be more precise let us consider the distribution:
@@ -59,7 +59,7 @@
 
 
 
-    \begin{frame}{Formal definition of Independencies}
+    \begin{frame}{Formal definition of independence}
 
         \begin{definition}[Independence]
     	Given a joint distribution $\probat{\nodevariables}$ and two disjoint subsets $\nodesa,\nodesb\subset\nodes$, we say that the variables $\catvariableof{\nodesa}$ are independent from the variables $\catvariableof{\nodesb}$ if the marginal distributions $\probat{\catvariableof{\nodesa\cup\nodesb}}$, $\probat{\catvariableof{\nodesa}}$ and $\probat{\catvariableof{\nodesb}}$ satisfy for any index tuples $\catindexof{\nodesa},\catindexof{\nodesb}$
@@ -69,7 +69,7 @@
             \cdot
             \probat{\indexedcatvariableof{\nodesb}} \, .
         \end{align*}
-        We denote in this case $\independent{\catvariableof{\nodesa}}{\catvariableof{\nodesb}}$
+        We denote in this case $\independent{\catvariableof{\nodesa}}{\catvariableof{\nodesb}}$.
         \end{definition}
 
             {\bf Interpretation:} Knowing the value of variables $\nodesb$ (and conditioning on them) does not change the distribution of variables $\nodesa$.
@@ -80,7 +80,7 @@
     \begin{frame}{Contraction criterion for independence}
 
         \begin{theorem}\label{the:independenceProductCriterion}
-            If and only if the $\catvariableof{\nodesa}$ are independent from the variables $\catvariableof{\nodesb}$  with respect to a distribution $\probat{\nodevariables}$ then0
+            If and only if the $\catvariableof{\nodesa}$ are independent from the variables $\catvariableof{\nodesb}$  with respect to a distribution $\probat{\nodevariables}$ then:
             \begin{align*}
                 \contractionof{\probwith}{\catvariableof{\nodesa},\catvariableof{\nodesb}}
 %                \probat{\catvariableof{\nodesa},\catvariableof{\nodesb}}
@@ -98,56 +98,28 @@
         \end{theorem}
 
         In a tensor network diagram this is the decomposition:
-        \stantikzpic{
-
-            \draw (0,1) rectangle (7,-1);
-            \node[anchor=center] (text) at (3.5,0) {\corelabelsize $\contractionof{\probwith}{\catvariableof{\nodesa},\catvariableof{\nodesb}}$};
-            \draw[->-] (0.5,-1) -- (0.5,-3);
-            \drawtextnode{1.75}{-2}{\colorlabelsize $\catvariableof{\nodesa}$}
-            \draw[->-] (3,-1) -- (3,-3);
-            \draw[->-] (4,-1) -- (4,-3);
-            \drawtextnode{5.25}{-2}{\colorlabelsize $\catvariableof{\nodesb}$}
-            \draw[->-] (6.5,-1) -- (6.5,-3);
-
-            \drawtextnode{9}{0}{${=}$}
-
-            \begin{scope}[shift={(11,0)}]
-
-                \draw (-1,1) rectangle (5,-1);
-                \node[anchor=center] (text) at (2,0) {\corelabelsize $\contractionof{\probwith}{\catvariableof{\nodesa}}$};
-                \draw[->-] (0.5,-1) -- (0.5,-3);
-                \drawtextnode{1.75}{-2}{\colorlabelsize $\catvariableof{\nodesa}$}
-                \draw[->-] (3,-1) -- (3,-3);
-
-                \draw (6,1) rectangle (12,-1);
-                \node[anchor=center] (text) at (9,0) {\corelabelsize $\contractionof{\probwith}{\catvariableof{\nodesb}}$};
-
-                \draw[->-] (7.5,-1) -- (7.5,-3);
-                \drawtextnode{9.5}{-2}{\colorlabelsize $\catvariableof{\nodesb}$}
-                \draw[->-] (11.5,-1) -- (11.5,-3);
-
-            \end{scope}
-        }
-
+        \input{tikz/independence-con-criterion}
     \end{frame}
 
 
 
-    \begin{frame}{Storage of distributions by marginal distributions}
-        Independence allows the decomposition into tensor products
+    \begin{frame}{Decomposition into marginal distributions}
+        Independence allows the decomposition of proability tensors into tensor products.
+    \par
+            {\bf Example:} The distribution of two independent variables decomposes as:
         \begin{center}
             \input{./tikz/independent-decomposition.tex}
         \end{center}
 
-        \begin{block}{Exponential to linear storage demand}
-            Instead of storing $\catdimof{0}\cdot\catdimof{1}$ coordinates, we can store $\probtensor$ in the case of independency with $\catdimof{0}+\catdimof{1}$ demand.
+        \begin{block}{Storage advantage}
+            Instead of storing $\catdimof{0}\cdot\catdimof{1}$ coordinates, we can store $\probtensor$ in the case of independence with $\catdimof{0}+\catdimof{1}$ demand.
         \end{block}
     \end{frame}
 
     \begin{frame}{Decomposition of pairwise independent variables}
         Imagine now that we have a distribution $\probwith$, such that for any $\catenumerator,\seccatenumerator\in[\catorder]$
         \begin{align*}
-            \independent{\catvariableof{\catenumerator}}{\catvariableof{\seccatenumerator}}
+            \independent{\catvariableof{\catenumerator}}{\catvariableof{\seccatenumerator}} \, .
         \end{align*}
 
         We then have the decomposition:
@@ -279,7 +251,7 @@
                 \drawtextnode{9}{0}{${=}\,\coloredmatrixof{0.8 \\ 0.2}{\catvariableof{0}} \otimes \coloredmatrixof{0.9 \\ 0.1}{\catvariableof{2}} $}
             }
         }
-        For $\catvariableof{1}=1$:  \only<4->{\textcolor{\concolor}{Independent $\checkmark$}}
+        \only<4->{For $\catvariableof{1}=1$:}  \only<5->{\textcolor{\concolor}{Independent $\checkmark$}}
         \stantikzpic{
             \only<4->{
                 \drawtextnode{-11.5}{0}{$\condprobat{\catvariableof{0},\catvariableof{2}}{\catvariableof{1}=1}\,\,=$}
@@ -298,7 +270,7 @@
     \end{frame}
 
 
-    \section{Decompositions given independence}
+    \section{Decomposition schemes}
 
     \begin{frame}{Chain Rule: Decomposing Probabilities}
 
@@ -322,7 +294,7 @@
         {\bf Problem:}
         The tensors $\condprobat{\catvariableof{\catenumerator}}{\catvariableof{[\catenumerator]}}$ are of order $\catorder+1$!
         \begin{center}
-            \bf Can we smallen the order based on independence assumptions?
+            \bf Can we reduce the order based on independence assumptions?
         \end{center}
 
     \end{frame}
@@ -355,7 +327,7 @@
             }{\catvariableof{\nodesa},\catvariableof{\nodesb},\catvariableof{\nodesc}} \, .
         \end{align*}
         \par
-        {\bf Usage for decompositions:} We can drop some conditioned variables and effecively smallen the tensor order in the tensors $\condprobat{\catvariableof{\catenumerator}}{\catvariableof{[\catenumerator]}}$.
+        {\bf Usage for decompositions:} We can drop some conditioned variables and effectively reduce the tensor order in the tensors $\condprobat{\catvariableof{\catenumerator}}{\catvariableof{[\catenumerator]}}$.
     \end{frame}
 
 
@@ -378,7 +350,7 @@
         \end{itemize}
         \only<3->{
             \begin{center}
-                \bf This is an example of a Markov chain: Variables depend only on their precessors.
+                \bf This is an example of a Markov chain: Variables depend only on their predecessors.
             \end{center}
         }
     \end{frame}
@@ -478,24 +450,32 @@
 
 
     \begin{frame}{Example: Hidden Markov Models}
-        Extend the weather example: We observe the weather $\randomeof{\catenumerator}$, but not the hidden driving variable:
+        Extend the weather example: We observe the weather $\catvariableof{\catenumerator}$, but not the hidden driving variable:
         \begin{itemize}
-            \item Atmospheric pressure $\catvariableof{\catenumerator}$ taking states $\catindexof{\catenumerator}=0$ (high pressure) or $\catindexof{\catenumerator}=1$ (low pressure)
+            \item Atmospheric pressure $\headvariableof{\catenumerator}$ taking states $\headindexof{\catenumerator}=0$ (high pressure) or $\headindexof{\catenumerator}=1$ (low pressure)
+            \item The pressure at a day $\catenumerator+1$ is independent of the pressure at days $[\catenumerator]$ given the pressure at day $\catenumerator$:
+            \begin{align*}
+                \condindependent{\headvariableof{\catenumerator+1}}{\headvariableof{[\catenumerator]}}{\headvariableof{\catenumerator}}
+            \end{align*}
+            \item The weather at day $\catenumerator$ depends only on the pressure:
+            \begin{align*}
+                \condindependent{\catvariableof{\catenumerator}}{\headvariableof{[\catenumerator]},\catvariableof{[\catenumerator]}}{\headvariableof{\catenumerator}}
+            \end{align*}
         \end{itemize}
         \par \medskip
-        Transition of the pressure variable:
-        \begin{align*}
-            \coloredmatrixof{0.80 & 0.20 \\
-            0.30 & 0.70}{\catvariableof{\catenumerator+1},\catvariableof{\catenumerator}}
-        \end{align*}
-        Probability of whether given the
-        \begin{align*}
-            \coloredmatrixof{0.70 & 0.25 & 0.05 \\
-            0.10 & 0.40 & 0.50}{\randomeof{\catenumerator},\catvariableof{\catenumerator}}
-        \end{align*}
+%        Transition of the pressure variable:
+%        \begin{align*}
+%            \coloredmatrixof{0.80 & 0.20 \\
+%            0.30 & 0.70}{\catvariableof{\catenumerator+1},\catvariableof{\catenumerator}}
+%        \end{align*}
+%        Probability of whether given the
+%        \begin{align*}
+%            \coloredmatrixof{0.70 & 0.25 & 0.05 \\
+%            0.10 & 0.40 & 0.50}{\catvariableof{\catenumerator},\catvariableof{\catenumerator}}
+%        \end{align*}
         \begin{center}
             \bf
-            This is an example of Hidden Markov Models extending Markov Chains by limited observation $\randomeof{\catenumerator}$ of the variables $\catvariableof{\catenumerator}$.
+            This is an example of Hidden Markov Models extending Markov Chains by limited observation $\catvariableof{\catenumerator}$ of the variables $\headvariableof{\catenumerator}$.
 
         \end{center}
     \end{frame}
@@ -506,8 +486,8 @@
         \medskip
         The independence assumptions of a Hidden Markov Model are for any $\catenumeratorin$
         \begin{itemize}
-            \item $\catvariableof{\catenumerator+1}$ is independent of $\catvariableof{[\catenumerator]}$ and $\randomeof{[\catenumerator]}$ given $\catvariableof{\catenumerator}$
-            \item $\randomeof{\catenumerator}$ is independent of all other variables given $\catvariableof{\catenumerator}$
+            \item $\headvariableof{\catenumerator+1}$ is independent of $\headvariableof{[\catenumerator]}$ and $\catvariableof{[\catenumerator]}$ given $\headvariableof{\catenumerator}$
+            \item $\catvariableof{\catenumerator}$ is independent of all other variables given $\headvariableof{\catenumerator}$
         \end{itemize}
         \medskip
         The independence assumptions are exploited in the decomposition
@@ -518,38 +498,15 @@
     \end{frame}
 
 
-%    \begin{frame}{Directed Graphical Models: Bayesian Networks}
-%
-%        \begin{definition}[Bayesian Networks]
-%	Let $\graph=(\nodes,\edges)$ be a directed acyclic graph and for each node $\node\in\nodes$ a random variable $\catvariableof{\node}$.
-%    Further let there be for each node $\node\in\nodes$ with parents $\parentsof{\node}$ a conditional probability distribution
-%    \[ \condprobof{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \, . \]
-%    Then the \emph{Bayesian Network} with respect to $\graph$ and the conditional probability terms is the distribution
-%    \begin{align*}
-%        \probtensor = \contractionof{\condprobof{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \, : \, \nodein}{\catvariableof{\node} \, : \, \nodein} \, .
-%    \end{align*}
-%        \end{definition}
-%
-%    \end{frame}
-
-
-%    \begin{frame}{Directed Graphical Models:\\
-%    Bayesian Networks}
-%
-%        For each variable we build the conditional probability tensor
-%        \begin{center}
-%            \input{./tikz_pics/bayesian_factor.tex}
-%        \end{center}
-%        The \emph{Bayesian Network} is then the contraction
-%        \begin{align*}
-%            \probtensor = \contractionof{\condprobof{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \, : \, \nodein}{\catvariableof{\node} \, : \, \nodein} \, .
-%        \end{align*}
-%
-%    \end{frame}
-
-
     \section{Markov networks}
 
+
+%    \begin{frame}{Problems with directed graphical models}
+%
+%        Enforcing the acyclicity of directed hypergraphs comes with problems:
+%
+%
+%    \end{frame}
 
     \begin{frame}{Undirected Graphical Models:\\
     Markov Networks}
@@ -571,15 +528,161 @@
     \end{frame}
 
 
+    \begin{frame}{Markov network independencies}
+
+        Which conditional independencies hold in a Markov network on a hypergraph $\graph$?
+
+        \begin{definition}
+            For any hypergraph $\graph=(\edges,\nodes)$ we define:
+            \begin{itemize}
+                \item A \emph{path} through $\graph$ is a selection of nodes $[\catorder]\subset\nodes$ such that for any $\catenumerator\in[\catorder-1]$ we find a hyperedge $\edgein$ with $\catenumerator,\catenumerator+1\in\edge$.
+                \item Given disjoint subsets $\nodesa,\nodesb,\nodesc\subset\nodes$ we say that $\nodesc$ \emph{separates} $\nodesa$ from $\nodesb$ if any path starting at a node in $\nodesa$ and ending at a node in $\nodesb$ goes through $\nodesc$.
+            \end{itemize}
+        \end{definition}
+
+            {\bf Example:} In a Markov chain graph, for any $\catenumeratorin$ any subset $\nodesa\subset[\catenumerator]$ and subset $\nodesb\subset[\catorder]\backslash[\catenumerator+1]$ is separated by $\nodesc=\{\catenumerator\}$.
+        \only<2>{\textcolor{\concolor}{For $\catenumerator=2$:}}
+        \stantikzpic{
+            \drawvariablenode{1}{0}{$\catvariableof{0}$}{X0}
+            \drawvariablenode{8}{0}{$\catvariableof{1}$}{X1}
+            \drawvariablenode{15}{0}{$\catvariableof{2}$}{X2}
+
+            \only<2>{
+                \draw[\concolor,line width=3pt] (15,2) -- (15,-2);
+            }
+
+            \drawvariablenode{22}{0}{$\catvariableof{3}$}{X3}
+
+            \draw[] (X0) -- (X1);
+            \draw[] (X1) -- (X2);
+            \draw[] (X2) -- (X3);
+            \draw[] (X3) -- (25,0);
+            \drawtextnode{26}{0}{$\cdots$}
+        }
+    \end{frame}
+
+    \begin{frame}{Markov network independencies}
+
+        {\bf Correspondence of separation and independence:}
+        When subsets $\nodesc$ separates $\nodesa$ from $\nodesb$, then we have
+        \begin{align*}
+            \condindependent{\catvariableof{\nodesa}}{\catvariableof{\nodesb}}{\catvariableof{\nodesc}} \, .
+        \end{align*}
+
+        This can be shown based on the disentanglement of networks (see lecture on CSPs):
+        \input{tikz/disentangling-mn}
+
+        \only<4->{
+                {\bf Conclusion:} Given an assignment to $\catvariableof{\nodesc}$, the variables $\catvariableof{\nodesa}$ must be independent of $\catvariableof{\nodesb}$.
+        }
+
+    \end{frame}
+
+
     \begin{frame}{Markov network indepencencies}
 
-        \begin{theorem}
-            A positive distribution $\probat{\nodevariables}$ has a representation as a Markov network on a hypergraph $\graph$, if and only if for any disjoint subsets $\secnodes,\thirdnodes,\mathcal{I}\subset\nodes$ for which $\mathcal{I}$ separates $\secnodes$ from $\thirdnodes$
+        The other direction is true for positive distributions: We need to assume for any $\shortcatindices$
+        \begin{align*}
+            \probat{\indexedshortcatvariables}\neq 0 \, .
+        \end{align*}
+
+        \begin{theorem}{Hammersley Clifford}
+            A positive distribution $\probat{\nodevariables}$ has a representation as a Markov network on a hypergraph $\graph$, if and only if for any disjoint subsets $\nodesa,\nodesb,\nodesc\subset\nodes$ for which $\nodesc$ separates $\nodesa$ from $\nodesb$
             \begin{align*}
-                \condindependent{\catvariableof{\secnodes}}{\catvariableof{\thirdnodes}}{\catvariableof{\mathcal{I}}} \, .
+                \condindependent{\catvariableof{\nodesa}}{\catvariableof{\nodesb}}{\catvariableof{\nodesc}} \, .
             \end{align*}
         \end{theorem}
-            {\bf Proof sketch:} This is the Hammersley Clifford factorization theorem, which proof is out of scope in this course.
+            {\bf Proof:} Very technical, see the book [Koller, Friedman: Probabilistic Graphical Models 2009] and alternatively using the contraction formalism the paper [Goessmann et al: A tensor network formalism for neuro-symbolic AI].
+    \end{frame}
+
+    \begin{frame}{Example: Recommending a student}
+        Consider a distribution of the variables:
+        \begin{itemize}
+            \item Intelligence of a student: $\catvariableof{I}$
+            \item SAT score of the student: $\catvariableof{S}$
+            \item Difficulty of a test: $\catvariableof{D}$
+            \item Grade of the test: $\catvariableof{G}$
+            \item Recommendation by the teacher: $\catvariableof{L}$
+        \end{itemize}
+%        A student of  and SAT score ($\catvariableof{S}$) is assigned a test of difficulty ($\catvariableof{D}$), for which he gets a grade ($\catvariableof{G}$) depending on which he gets a recommendation letter ($\catvariableof{L}$) by its teacher.
+%        We make the following modelling assumptions:
+        \begin{minipage}{0.5\linewidth}
+            Let us assume the independencies:
+            \begin{itemize}
+                \item "The SAT score depends only on the student's intelligence":
+                \begin{align*}
+                    \condindependent{\catvariableof{S}}{\catvariableof{\{D,G,L\}}}{\catvariableof{I}}
+                \end{align*}
+                \item "The recommendation letter depends only on the grade":
+                \begin{align*}
+                    \condindependent{\catvariableof{L}}{\catvariableof{\{D,I,S\}}}{\catvariableof{G}}
+                \end{align*}
+            \end{itemize}
+        \end{minipage}
+        \begin{minipage}{0.45\linewidth}
+            The corresponding hypergraph:
+            \begin{center}
+                \begin{tikzpicture}
+                    \node[anchor=center] (A) at (1,0.4) {$\edgeof{0}$};
+                    \draw[thick] (0,0) -- (1,2/3);
+                    \draw[thick] (2,0) -- (1,2/3);
+                    \draw[thick] (1,2) -- (1,2/3);
+
+                    \draw[thick] (2,0) -- (3,2) node[midway,right] {$\edgeof{1}$};
+                    \draw[thick] (1,2) -- (-1,2) node[midway,above] {$\edgeof{2}$};
+
+                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (0,0) {};
+                    \node[anchor=center] (A) at (0,0) {\corelabelsize $\catvariableof{D}$};
+
+                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (2,0) {};
+                    \node[anchor=center] (A) at (2,0) {\corelabelsize $\catvariableof{I}$};
+
+                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (1,2) {};
+                    \node[anchor=center] (A) at (1,2) {\corelabelsize $\catvariableof{G}$};
+
+                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (3,2) {};
+                    \node[anchor=center] (A) at (3,2) {\corelabelsize $\catvariableof{S}$};
+
+                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (-1,2) {};
+                    \node[anchor=center] (A) at (-1,2) {\corelabelsize $\catvariableof{L}$};
+
+%                \begin{scope}[shift={(7,0)}]
+%                    \node[anchor=center] (A) at (-2,2.2) {$b)$};
+%
+%                    %\node[anchor=center] (A) at (1,0.4); % {$\edgeof{0}$};
+%                    \draw[thick] (0,0) -- (2,0);
+%                    \draw[thick] (0,0) -- (1,2);
+%                    \draw[thick] (2,0) -- (1,2);
+%
+%                    \draw[thick, dashed, rounded corners=15pt] (1,3) -- (-0.8,-0.5) -- (2.8,-0.5) -- cycle;
+%
+%                    \node (of) at (0.5,-0.25) {};
+%                    \draw[thick, dashed, rounded corners=10pt]  ($(3.25,2.5)+(of)$) -- ($(3.25,2.5)-(of)$)  -- ($(1.75,-0.5)-(of)$) -- ($(1.75,-0.5)+(of)$) -- cycle;
+%                    \draw[thick] (2,0) -- (3,2); % node[midway,right] {$\edgeof{1}$};
+%
+%                    \node (of) at (0,0.5) {};
+%                    \draw[thick, dashed, rounded corners=10pt]  ($(1.5,2)+(of)$) -- ($(1.5,2)-(of)$)  -- ($(-1.5,2)-(of)$) -- ($(-1.5,2)+(of)$) -- cycle;
+%                    \draw[thick] (1,2) -- (-1,2); % node[midway,above] {$\edgeof{2}$};
+%
+%                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (0,0) {};
+%                    \node[anchor=center] (D) at (0,0) {\corelabelsize $\catvariableof{D}$};
+%
+%                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (2,0) {};
+%                    \node[anchor=center] (I) at (2,0) {\corelabelsize $\catvariableof{I}$};
+%
+%                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (1,2) {};
+%                    \node[anchor=center] (G) at (1,2) {\corelabelsize $\catvariableof{G}$};
+%
+%                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (3,2) {};
+%                    \node[anchor=center] (S) at (3,2) {\corelabelsize $\catvariableof{S}$};
+%
+%                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (-1,2) {};
+%                    \node[anchor=center] (L) at (-1,2) {\corelabelsize $\catvariableof{L}$};
+%
+%                \end{scope}
+                \end{tikzpicture}
+            \end{center}
+        \end{minipage}
     \end{frame}
 
 \end{document}
