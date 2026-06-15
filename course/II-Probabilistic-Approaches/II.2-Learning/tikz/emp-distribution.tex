@@ -1,0 +1,22 @@
+\stantikzpic{
+    \draw (-3,1) rectangle (3,-1);
+    \drawtextnode{0}{0}{$\empdistribution$}
+    \draw[->-] (-2,-1) -- (-2,-3) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+    \drawtextnode{0}{-2}{$\cdots$}
+    \draw[->-] (2,-1) -- (2,-3) node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+
+    \drawtextnode{5}{0}{${=}$}
+
+    \drawsmalltensor{8}{0}{$\probof{0}$}
+        \draw[->-] (8,-1) -- (8,-3) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+    \drawtextnode{11}{0}{$\cdots$}
+    \drawsmalltensor{14}{0}{$\probof{\catorder\shortminus1}$}
+    \draw[->-] (14,-1) -- (14,-3) node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+
+    \drawvariabledot{11}{3}
+    \drawtextnode{11}{2}{\colorlabelsize $\datvariable$}
+    \draw[->-] (11,3) to[bend right= 30] (8,1);
+    \draw[->-] (11,3) to[bend right= -30] (14,1);
+    \draw[->-] (11,4) -- (11,3);
+    \drawsmalltensor{11}{5}{$\frac{1}{\datdim}\ones$}
+}

@@ -3,199 +3,133 @@
 \input{../../spec_files/course_preamble.tex}
 \input{../../spec_files/course_macros.tex}
 
-%\usetikzlibrary{arrows.meta}
-
-\title[Empirical Distributions]{
-    \coursechaptertwo \\
-    {\huge Empirical Distributions: Representation of Samples}
+\setchatwotitledate{
+    Likelihoods, empirical distributions and learning
+}{
+    June 22, 2026
 }
+
 
 \begin{document}
 
     {\frame[plain]{\titlepage}}
-
-
-%
-%\begin{frame}{Observations of a Factored System}
-%
-%\begin{example}[Students and their semester]
-%	We ask (pairs of) students about their semester and want to capture the statistics.
-%\end{example}
-%
-%\begin{block}{Task: Representation of Observations}
-%	Let there be observations of the system by a set of states
-%		\[ \{(\catindicesof{\datindex}) \, : \, \datindexin \} \, . \]
-%	How to capture them by tensors?
-%\end{block}
-%
-%Aim: 
-%\begin{itemize}
-%	\item Represent the observations for querying
-%	\item Find models making sense out of the observations
-%\end{itemize}
-%
-%\end{frame}
-%
-%
-%\begin{frame}{Formalization with a sample selector map}
-%
-%Given a dataset $\{(\catindicesof{\datindex}) \, : \, \datindexin \}$ of samples of the factored system we define the sample selector map
-%	\[ \datamap : [\datanum] \rightarrow \facstates \]
-%
-%\medskip
-%
-%\begin{block}{Idea}
-%	Enrich the factored system with variables $\catvariables$ by a data selection variable $\datvariable$ and encode $\datacore$ using the one-hot encoding of the larger system.
-%\end{block}
-%
-%
-%\end{frame}
-
-
-    \section{Empirical Distributions}
-
-
-    \begin{frame}{Observations of a Factored System}
-
-        \begin{example}[Students and their semester]
-	We ask students about their semester and want to capture the statistics.
-        \end{example}
-
-        \begin{block}{Task: Representation of Observations}
-            Let there be observations of the system by a set of states
-            \[ \{(\catindicesof{\datindex}) \, : \, \datindexin \} \, . \]
-            How to capture them by tensors?
-        \end{block}
-
-        Aim:
-        \begin{itemize}
-            \item Represent the observations for querying
-            \item Find models making sense out of the observations
-        \end{itemize}
-
-    \end{frame}
-
-
-    \begin{frame}{Formalization with a sample selector map}
-
-        Given a dataset $\{(\catindicesof{\datindex}) \, : \, \datindexin \}$ of samples of the factored system we define the sample selector map
-        \[ \datacore : [\datanum] \rightarrow \facstates \]
-
-        \medskip
-
-        \begin{block}{Idea}
-            Enrich the factored system with variables $\catvariables$ by a data selection variable $\aselectionvariable$ and encode $\datacore$ using the one-hot encoding of the larger system.
-        \end{block}
-
-
-    \end{frame}
-
-
-    \begin{frame}{More general: Encoding of maps between Factored Systems}
-
-        \begin{definition}
-            Let $\exfunction$ be a function
-            \[ \exfunction : \facstates \rightarrow  \secfacstates \]
-            which maps the states of a factored system to variables $\catvariables$ to the states of another factored system with variables $\seccatvariables$.
-            Then the tensor representation of $\exfunction$ is a tensor
-            \[ \bencodingof{\exformula} \in \left(\exfunctiontargetspace\right)  \otimes \left(\facspace\right) \]
-            defined by
-            \[ \bencodingof{\exformula} = \sum_{\catindexofin{0}} \cdots  \sum_{\catindexofin{\atomenumerator-1}}  \onehotmapof{\exfunction(\catindices)} \otimes \onehotmapof{\catindices} \, . \]
-        \end{definition}
-
-    \end{frame}
-
-
-
-    \begin{frame}{Data tensor}
-
-        In the case of the sample selection map
-        \[ \datamap : [\datanum] \rightarrow \facstates \]
-        we have a representation tensor called the \emph{data tensor}
-        \[ \datacore = \sum_{\datindexin} \onehotmapof{\datindex} \otimes \onehotmapof{\catindicesof{\datindex}} \,  \]
-        depicted as
-        \begin{center}
-            % \input{./tikz_pics/data_tensor.tex}
-        \end{center}
-
-        \begin{block}{Representation of Data}
-            The one-hot encoding of each observation is stored on a slice of the data tensor.
-        \end{block}
-
-    \end{frame}
-
-
-%\begin{frame}{}
-%\end{frame}
-
-
-    \begin{frame}{Average of the Observation}
-
-        The \emph{empirical distribution} is the average of the one-hot encoded observed states:
-        \begin{align*}
-            \empdistribution \coloneqq \frac{1}{\datanum}\sum_{\datindexin} \onehotmapof{\catindicesof{\datindex}}
-        \end{align*}
-
-        In a contraction diagram we denote the average by % Already the decomposition!
-        \begin{center}
-            % \input{./tikz_pics/empirical_distribution.tex}
-        \end{center}
-
-    \end{frame}
-
-
-    \begin{frame}{More efficient data representation}
-
-        The storage demand of $\datacore$ \emph{increases exponentially }
-        \[ \mathrm{dim}\left[\datacore\right] = \left( \facdim \right) \cdot \datanum \, . \]
-
-        \begin{block}{Store the values $\catvariableof{\atomenumerator}$ separately for each $\atomenumeratorin$!}
-
-            \medskip
-
-            The collection of encoding tensors
-            \[ \datacoreof{\atomenumerator} \in \rr^{\catdimof{\atomenumerator}\times\datanum} \]
-            to the maps
-            \[ \datamap_{\atomenumerator} :[\datanum] \rightarrow [\catdimof{\atomenumerator}] \quad , \quad  \datamap_{\atomenumerator}(\datindex) =  \catindex^{\datindex}_{\atomenumerator}\]
-%defined by
-%	\[ \datacoreof{\atomenumerator}_{: \datindex} =\onehotmapof{\catindexof{\atomenumerator}^\datindex} \]
-            has a \emph{linearly increasing} storage demand of
-            \[ \sum_{\atomenumeratorin} \mathrm{dim}\left[\datacoreof{\atomenumerator}\right] = \sum_{\atomenumeratorin} \catdimof{\atomenumerator}\cdot \datanum \, .  \]
-
-        \end{block}
-    \end{frame}
-
-
-    \begin{frame}{Representation of the Empirical in a CP Format}
-
-        The data tensor can be stored by the contraction
-        \[ \contractionof{\bencodingof{\datamap}}{\catvariableof{0},\ldots,\catvariableof{\atomenumerator-1},\datvariable} =
-        \contractionof{\datacoreof{0},\ldots,\datacoreof{\atomorder-1}}{\catvariableof{0},\ldots,\catvariableof{\atomorder-1},\datvariable} \]
-        depicted as
-        \begin{center}
-            % \input{./tikz_pics/data_decomposition_cp.tex}
-        \end{center}
-        This is called a \emph{CP Tensor Decomposition}.
-
-        \begin{block}{CP Decomposition of Empirical Distributions}
-            Instead of storing the datacore $\datacore$, store the encodings $\datacoreof{\atomenumerator}$.
-        \end{block}
-
-    \end{frame}
+    \showoutlineatsection
 
 
     \section{Log-likelihood}
 
-    \begin{frame}{Log-likelihood}
-        Likelihood of a dataset drawing data indepdently factorizes:
+
+    \begin{frame}{How to select a model given data?}
+        Let us consider the typical \emph{learning problem}:
+        \begin{itemize}
+            \item The distribution $\probwith$ of variables $\shortcatvariables$ is unknown
+            \item We observe $\datdim$ samples
+            \begin{align*}
+                \shortcatindices^{\datindex} = (\catindexof{0}^{\datindex},\ldots,\catindexof{\catorder-1}^{\datindex})
+            \end{align*}
+            enumerated by $\datindexin$.
+        \end{itemize}
+
+        We assume that each sample $\shortcatindices^{\datindex}$ is drawn
+        \begin{itemize}
+            \item \emph{i}ndependently from each other and
+            \item \emph{i}dentically \emph{d}istributed by a distribution $\probwith$.
+        \end{itemize}
+        This assumption is abbreviated by \emph{i.i.d.}.
+        \\
+        The probability of drawing a dataset $\shortcatvariables^{[\datdim]}$ from a distribution $\probwith$ is then
         \begin{align*}
-            \prod_{\datindexin} \probat{\shortcatindices^{\datindex}}
+            \prod_{\datindexin} \probat{\shortcatvariables=\shortcatindices^{\datindex}} \, .
+        \end{align*}
+        This is the \emph{likelihood} of $\probwith$.
+    \end{frame}
+
+
+    \begin{frame}{The likelihood principle}
+
+        We make the hypothesis that the distribution is from a set $\Gamma$ of possible distributions.
+        A natural choice would be to choose the distribution maximizing the likelihood
+        \begin{align*}
+            \argmax_{\probwith\in\Gamma}\left(\prod_{\datindexin} \probat{\shortcatvariables=\shortcatindices^{\datindex}}\right) \, .
+        \end{align*}
+        Sometimes we \emph{regularize}, that is prefer simple distributions over more complex ones.
+
+        \begin{block}{Likelihood principle}
+            The selection of a distribution should depend on the data $\shortcatvariables^{[\datdim]}$ only through the likelihood
+            \begin{align*}
+                \prod_{\datindexin} \probat{\shortcatvariables=\shortcatindices^{\datindex}} \, .
+            \end{align*}
+        \end{block}
+    \end{frame}
+
+    \begin{frame}{Negative log-likelihood}
+        We simplifiy the likelihood by taking the log and averaging.
+        This is the \emph{log-likelihood}
+        \begin{align*}
+            \frac{1}{\datdim} \lnof{\prod_{\datindexin} \probat{\shortcatindices^{\datindex}}}
+            = \frac{1}{\datdim} \sum_{\datindexin} \lnof{\probat{\shortcatindices^{\datindex}}} \, .
         \end{align*}
 
-        Taking the log and averaging:
+        The maximum likelihood method corresponds then with the minimization of the \emph{negative log-likelihood (NLL)}
+        \begin{align*}
+            \argmin_{\probwith\in\Gamma}\sum_{\datindexin}
+            -\lnof{\probat{\shortcatvariables=\shortcatindices^{\datindex}}} \, .
+        \end{align*}
 
-        This is the \emph{cross-entropy} between the empirical distribution and the candidate distribution $\probwith$.
+    \end{frame}
 
+    \begin{frame}{Empirical distributions}
+
+        Let us understand the uniform choice of a sample from $\shortcatindices^{[\datdim]}$ as a distribution
+        \begin{align*}
+            \empdistributionat{\shortcatvariables}
+            = \frac{1}{\datdim} \sum_{\datindexin} \onehotmapofat{\shortcatindices^{\datindex}}{\shortcatvariables}
+        \end{align*}
+        which we call \emph{empirical distribution}.
+
+        We have the $\cpformat$ decomposition of the empirical distribution
+        \input{tikz/emp-distribution}
+        where
+        \begin{align*}
+            \probofat{\catenumerator}{\catvariableof{\catenumerator}|\datvariable}
+            = \sum_{\datindexin}
+            \onehotmapofat{\catindexof{\catenumerator}^{\datindex}}{\catvariableof{\catenumerator}} \otimes
+\onehotmapofat{\datindex}{\datvariable} \, .
+        \end{align*}
+
+    \end{frame}
+
+    \begin{frame}{Perspective of basis calculus}
+
+        We understand the empirical distribution to samples $\shortcatindices^{[\datdim]}$ as the basis encoding of the sample selecting map
+        \begin{align*}
+            \datamap \defcols [\datdim] \rightarrow \bigtimes_{\catenumeratorin} [\catdimof{\catenumerator}]
+        \end{align*}
+        defined for $\datindexin$ by $\datamap(\datindex) = \shortcatindices^{\datindex}$.
+        To be more precise we have
+        \begin{align*}
+            \empdistributionat{\shortcatvariables} =
+            \contractionof{\bencodingofat{\datamap}{\shortcatvariables,\datvariable},\frac{1}{\datdim}\onesat{\datvariable}}{\shortcatvariables} \, .
+        \end{align*}
+
+        The $\cpformat$ decomposition of the empirical distribution is then based on the decomposition of the basis encoding into the basis encodings of its coordinate restrictions:
+
+        \input{tikz/emp-distribution-bc}
+
+    \end{frame}
+
+
+    \begin{frame}{Cross-entropy}
+
+        The \emph{cross-entropy} between two distributions $\secprobat{\shortcatvariables}$ and $\probwith$ is
+        \begin{align*}
+            \centropyof{\secprobtensor}{\probtensor}
+            = \contraction{\secprobat{\shortcatvariables},-\lnof{\probwith}} \, .
+        \end{align*}
+
+
+
+        The negative log-likelihood is the cross-entropy between the empirical distribution and the candidate $\probwith$.
 
     \end{frame}
 
@@ -216,4 +150,145 @@
 
     \end{frame}
 
+
+    \section{Empirical Distributions}
+
+
 \end{document}
+
+
+
+
+
+
+
+
+
+
+\begin{frame}{Observations of a Factored System}
+
+    \begin{example}[Students and their semester]
+	We ask students about their semester and want to capture the statistics.
+    \end{example}
+
+    \begin{block}{Task: Representation of Observations}
+        Let there be observations of the system by a set of states
+        \[ \{(\catindicesof{\datindex}) \, : \, \datindexin \} \, . \]
+        How to capture them by tensors?
+    \end{block}
+
+    Aim:
+    \begin{itemize}
+        \item Represent the observations for querying
+        \item Find models making sense out of the observations
+    \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Formalization with a sample selector map}
+
+    Given a dataset $\{(\catindicesof{\datindex}) \, : \, \datindexin \}$ of samples of the factored system we define the sample selector map
+    \[ \datacore : [\datanum] \rightarrow \facstates \]
+
+    \medskip
+
+    \begin{block}{Idea}
+        Enrich the factored system with variables $\catvariables$ by a data selection variable $\aselectionvariable$ and encode $\datacore$ using the one-hot encoding of the larger system.
+    \end{block}
+
+
+\end{frame}
+
+
+\begin{frame}{More general: Encoding of maps between Factored Systems}
+
+    \begin{definition}
+        Let $\exfunction$ be a function
+        \[ \exfunction : \facstates \rightarrow  \secfacstates \]
+        which maps the states of a factored system to variables $\catvariables$ to the states of another factored system with variables $\seccatvariables$.
+        Then the tensor representation of $\exfunction$ is a tensor
+        \[ \bencodingof{\exformula} \in \left(\exfunctiontargetspace\right)  \otimes \left(\facspace\right) \]
+        defined by
+        \[ \bencodingof{\exformula} = \sum_{\catindexofin{0}} \cdots  \sum_{\catindexofin{\atomenumerator-1}}  \onehotmapof{\exfunction(\catindices)} \otimes \onehotmapof{\catindices} \, . \]
+    \end{definition}
+
+\end{frame}
+
+
+
+\begin{frame}{Data tensor}
+
+    In the case of the sample selection map
+    \[ \datamap : [\datanum] \rightarrow \facstates \]
+    we have a representation tensor called the \emph{data tensor}
+    \[ \datacore = \sum_{\datindexin} \onehotmapof{\datindex} \otimes \onehotmapof{\catindicesof{\datindex}} \,  \]
+    depicted as
+    \begin{center}
+        % \input{./tikz_pics/data_tensor.tex}
+    \end{center}
+
+    \begin{block}{Representation of Data}
+        The one-hot encoding of each observation is stored on a slice of the data tensor.
+    \end{block}
+
+\end{frame}
+
+
+%\begin{frame}{}
+%\end{frame}
+
+
+\begin{frame}{Average of the Observation}
+
+    The \emph{empirical distribution} is the average of the one-hot encoded observed states:
+    \begin{align*}
+        \empdistribution \coloneqq \frac{1}{\datanum}\sum_{\datindexin} \onehotmapof{\catindicesof{\datindex}}
+    \end{align*}
+
+    In a contraction diagram we denote the average by % Already the decomposition!
+    \begin{center}
+        % \input{./tikz_pics/empirical_distribution.tex}
+    \end{center}
+
+\end{frame}
+
+
+\begin{frame}{More efficient data representation}
+
+    The storage demand of $\datacore$ \emph{increases exponentially }
+    \[ \mathrm{dim}\left[\datacore\right] = \left( \facdim \right) \cdot \datanum \, . \]
+
+    \begin{block}{Store the values $\catvariableof{\atomenumerator}$ separately for each $\atomenumeratorin$!}
+
+        \medskip
+
+        The collection of encoding tensors
+        \[ \datacoreof{\atomenumerator} \in \rr^{\catdimof{\atomenumerator}\times\datanum} \]
+        to the maps
+        \[ \datamap_{\atomenumerator} :[\datanum] \rightarrow [\catdimof{\atomenumerator}] \quad , \quad  \datamap_{\atomenumerator}(\datindex) =  \catindex^{\datindex}_{\atomenumerator}\]
+%defined by
+%	\[ \datacoreof{\atomenumerator}_{: \datindex} =\onehotmapof{\catindexof{\atomenumerator}^\datindex} \]
+        has a \emph{linearly increasing} storage demand of
+        \[ \sum_{\atomenumeratorin} \mathrm{dim}\left[\datacoreof{\atomenumerator}\right] = \sum_{\atomenumeratorin} \catdimof{\atomenumerator}\cdot \datanum \, .  \]
+
+    \end{block}
+\end{frame}
+
+
+\begin{frame}{Representation of the Empirical in a CP Format}
+
+    The data tensor can be stored by the contraction
+    \[ \contractionof{\bencodingof{\datamap}}{\catvariableof{0},\ldots,\catvariableof{\atomenumerator-1},\datvariable} =
+    \contractionof{\datacoreof{0},\ldots,\datacoreof{\atomorder-1}}{\catvariableof{0},\ldots,\catvariableof{\atomorder-1},\datvariable} \]
+    depicted as
+    \begin{center}
+        % \input{./tikz_pics/data_decomposition_cp.tex}
+    \end{center}
+    This is called a \emph{CP Tensor Decomposition}.
+
+    \begin{block}{CP Decomposition of Empirical Distributions}
+        Instead of storing the datacore $\datacore$, store the encodings $\datacoreof{\atomenumerator}$.
+    \end{block}
+
+\end{frame}
