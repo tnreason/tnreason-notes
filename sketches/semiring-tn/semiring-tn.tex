@@ -61,40 +61,71 @@
         \begin{align*}
             \srcontractionofwrt{
                 \extnetasset
-            }{}{\gensemiring}
+            }{\catvariableof{\arbset}}{\gensemiring}
+        \end{align*}
+        with coordinates at indices $\catindexof{\arbset}$ by
+        \begin{align*}
+            \srcontractionofwrt{
+                \extnetasset
+            }{\catvariableof{\arbset}}{\gensemiring}
+            = \bigoplus_{\catindexof{\nodes\backslash\arbset}} \bigotimes_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
         \end{align*}
     \end{definition}
 
     The distributive property $(iii)$ of the semiring ensures, that we can compute contractions by sub-contractions.
 
+    \begin{theorem}
+        Given a disjoint partition of $\edges$ into $\edgesof{0},\edgesof{1}$, and a subset $\arbset\subset\nodes$, we define the sets $\nodesof{0}$, $\nodesof{1}$ and $\nodesof{0\cup1}$ as the nodes appearing in $\edgesof{0}$, respectively $\edgesof{1}$ and in $\edgesof{0}$ and $\edgesof{1}$.
+        We then have
+        \begin{align*}
+            \srcontractionofwrt{
+                \extnetasset
+            }{\catvariableof{\arbset}}{\gensemiring}
+            =
+            \srcontractionofwrt{
+                \srcontractionofwrt{
+                    \{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edgesof{0}\}
+                }{\catvariableof{\nodesof{0}\cap\arbset},\catvariableof{\nodesof{0\cup1}}}{\gensemiring},
+                \srcontractionofwrt{
+                    \{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edgesof{1}\}
+                }{\catvariableof{\nodesof{1}\cap\arbset},\catvariableof{\nodesof{0\cup1}}}{\gensemiring}
+            }{\catvariableof{\arbset}}{\gensemiring} \, .
+        \end{align*}
+    \end{theorem}
+    \begin{proof}
+        We use the commutative properties to split the summations and the distributive property to move the $\bigoplus$ to closed variables only in $\nodesof{0}$ respectively $\nodesof{1}$ to the first respectively second sub-contraction.
+    \end{proof}
+
     \section{Examples}
 
-    \subsubsection{Standard TN}
+    \subsection{Standard TN}
 
-    Numerical TN use the semiring
+    Standard TN use the semiring
     \begin{align*}
         (\rr,+,\cdot,0,1) \, .
     \end{align*}
 
-    \subsection{CSP}
+    \subsection{Constraint Satisfaction}
 
     We take $S=\{0,1\}$ and interpret $0$ as $\falsesymbol$, $1$ as $\truesymbol$.
-    The
+    We define the disjunction and conjunction operations by
     \begin{align*}
         \lor \left[\catvariableof{0},\catvariableof{1}\right]
         = \coloredmatrixof{0 & 1 \\ 1 & 1}{\catvariableof{0},\catvariableof{1}}
     \end{align*}
-
+    and
     \begin{align*}
         \land \left[\catvariableof{0},\catvariableof{1}\right]
-        = \coloredmatrixof{0 & 1 \\ 1 & 1}{\catvariableof{0},\catvariableof{1}}
+        = \coloredmatrixof{0 & 0 \\ 0 & 1}{\catvariableof{0},\catvariableof{1}} \, .
     \end{align*}
+
+    Tensors over $\{0,1\}$ are interpreted as constraints, and their tensor networks as constraint networks.
 
     The satisfiability of a constraint network $\extnetasset$ is the contraction
     \begin{align*}
         \bigvee_{\catindexof{\nodes}} \bigwedge_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
         = \srcontractionofwrt{
-        \extnetasset
+            \extnetasset
         }{\varnothing}{\satsemiring} \, .
     \end{align*}
 
@@ -119,6 +150,8 @@
     When searching for the maximal/minimal coordiante of a contraction with some variables closed, we need to first coarse grain the tensor network.
 
     These contractions are used in encoding-decoding schemes \cite{mezard_information_2009,mackay_information_2003}.
+
+
 
     \bibliographystyle{plainnat}
     \bibliography{../../references.bib}
