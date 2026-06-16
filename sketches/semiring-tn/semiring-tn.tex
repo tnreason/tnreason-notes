@@ -9,9 +9,12 @@
 \usepackage{minted}
 
 \newcommand{\satsemiring}{(\{0,1\},\lor,\land,0,1)}
-\newcommand{\gensemiring}{(S,\oplus,\otimes,0,1)}
+\newcommand{\gensemiring}{(S,\srplus,\srmul,0,1)}
 \newcommand{\srcontractionwrt}[2]{\langle#1\rangle^{#2}}
-\newcommand{\srcontractionofwrt}[3]{\langle#1\rangle^{#3}_{#2}}
+\newcommand{\srcontractionofwrt}[3]{\langle#1\rangle^{#3}_{[#2]}}
+\newcommand{\srplus}{\oplus}
+\newcommand{\srmul}{\otimes} % Clash with tensor product!
+
 
 \begin{document}
     \title{Semiring Tensor Networks}
@@ -19,26 +22,28 @@
     \maketitle
     \date{\today}
 
+    See \cite{liu_computing_2023,liu_tropical_2021}.
+
 
     \section{Semiring}
 
     \begin{definition}
         A semiring is a tuple $\gensemiring$, where $S$ is a set, $0,1\in S$, and
         \begin{align*}
-            \oplus \defcols S \times S \rightarrow S \quad, \quad \otimes \defcols S \times S \rightarrow S \, ,
+            \srplus \defcols S \times S \rightarrow S \quad, \quad \srmul \defcols S \times S \rightarrow S \, ,
         \end{align*}
         such that the following properties hold:
         \begin{itemize}
-            \item[(i)] $(S,\oplus,0)$ is a commutative monoid.
-            \item[(ii)] $(S,\otimes,1)$ is a commutative monoid.
-            \item[(iii)] $\otimes$ distributes over $\oplus$, that is for any $s_0,s_1,s_2\in S$
+            \item[(i)] $(S,\srplus,0)$ is a commutative monoid\footnote{That is associativity, commutativitiy of $\srplus$ and identity of $s\srplus 0=s$ for all $s\in S$.}.
+            \item[(ii)] $(S,\srmul,1)$ is a commutative monoid.
+            \item[(iii)] $\srmul$ distributes over $\srplus$, that is for any $s_0,s_1,s_2\in S$
             \begin{align*}
-                s_0 \otimes (s_1 \oplus s_2)
-                = (s_0 \otimes s_1) \oplus (s_0 \otimes s_2) \, .
+                s_0 \srmul (s_1 \srplus s_2)
+                = (s_0 \srmul s_1) \srplus (s_0 \srmul s_2) \, .
             \end{align*}
-            \item[(iv)] $0$ annihilates $\otimes$, that is (check!)
+            \item[(iv)] $0$ annihilates $\srmul$, that is for any $s_0\in S$
             \begin{align*}
-                0 \otimes (s_0\otimes s_1) = 0 \, .
+                0 \srmul s_0 = 0 \, .
             \end{align*}
         \end{itemize}
     \end{definition}
@@ -50,7 +55,7 @@
         \begin{align*}
             \hypercore \defcols \facstates \rightarrow S \, .
         \end{align*}
-        A tensor network with coordinates in $S$ is a hypergraph $\graph=(\nodes,\edges)$, where each node is decorated by a dimension $\catdimof{\node}$ and each edge by a tensor of .
+        A tensor network with coordinates in $S$ is a hypergraph $\graph=(\nodes,\edges)$, where each node is decorated by a dimension $\catdimof{\node}$ and each edge by a tensor of order $\cardof{\edge}$ and leg dimensions $\catdimof{\edge}$.
     \end{definition}
 
 
@@ -75,7 +80,7 @@
     The distributive property $(iii)$ of the semiring ensures, that we can compute contractions by sub-contractions.
 
     \begin{theorem}
-        Given a disjoint partition of $\edges$ into $\edgesof{0},\edgesof{1}$, and a subset $\arbset\subset\nodes$, we define the sets $\nodesof{0}$, $\nodesof{1}$ and $\nodesof{0\cup1}$ as the nodes appearing in $\edgesof{0}$, respectively $\edgesof{1}$ and in $\edgesof{0}$ and $\edgesof{1}$.
+        Given a disjoint partition of $\edges$ into $\edgesof{0},\edgesof{1}$, and a subset $\arbset\subset\nodes$, we define the sets $\nodesof{0}$ and $\nodesof{1}$ as the nodes appearing in $\edgesof{0}$, respectively $\edgesof{1}$.
         We then have
         \begin{align*}
             \srcontractionofwrt{
@@ -85,16 +90,53 @@
             \srcontractionofwrt{
                 \srcontractionofwrt{
                     \{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edgesof{0}\}
-                }{\catvariableof{\nodesof{0}\cap\arbset},\catvariableof{\nodesof{0\cup1}}}{\gensemiring},
+                }{\catvariableof{\nodesof{0}\cap(\arbset\cup\nodesof{1})}}{\gensemiring},
                 \srcontractionofwrt{
                     \{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edgesof{1}\}
-                }{\catvariableof{\nodesof{1}\cap\arbset},\catvariableof{\nodesof{0\cup1}}}{\gensemiring}
+                }{\catvariableof{\nodesof{1}\cap(\arbset\cup\nodesof{0})}}{\gensemiring}
             }{\catvariableof{\arbset}}{\gensemiring} \, .
         \end{align*}
     \end{theorem}
     \begin{proof}
-        We use the commutative properties to split the summations and the distributive property to move the $\bigoplus$ to closed variables only in $\nodesof{0}$ respectively $\nodesof{1}$ to the first respectively second sub-contraction.
+%        We use the commutative properties to split the summations and the distributive property to move the $\bigoplus$ to closed variables only in $\nodesof{0}$ respectively $\nodesof{1}$ to the first respectively second sub-contraction.
+        We use the associativity and commutativity of $\srmul$ to get for any index $\catindexof{\nodes}$
+        \begin{align*}
+            \bigotimes_{\edgein}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+            = \left(\bigotimes_{\edge\in\edgesof{0}}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right)
+            \srmul \left(\bigotimes_{\edge\in\edgesof{1}}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}\right) \, .
+        \end{align*}
+        Let us now keep $\catindexof{\arbset}$ fixed and investigate the $\srplus$ operation over the indices $\catindexof{\nodes\backslash\arbset}$.
+        Distributivity of $\srmul$ over $\srplus$ implies
+        \begin{align*}
+            \sum_{\catindexof{\nodes\backslash\arbset}} \bigotimes_{\edgein}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+            = \sum_{\catindexof{(\nodesof{0}\cap\nodesof{1})\backslash \arbset}}
+            \left(
+                \sum_{\catindexof{\nodesof{0}\backslash(\arbset\cup\nodesof{1})}}\bigotimes_{\edge\in\edgesof{0}}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+            \right) \srmul
+            \left(
+                \sum_{\catindexof{\nodesof{1}\backslash(\arbset\cup\nodesof{0})}}\bigotimes_{\edge\in\edgesof{1}}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+            \right)
+        \end{align*}
+        which is equivalent to
+        \begin{align*}
+            \srcontractionofwrt{
+                \extnetasset
+            }{\indexedcatvariableof{\arbset}}{\gensemiring}
+            =
+            \srcontractionofwrt{
+                \srcontractionofwrt{
+                    \{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edgesof{0}\}
+                }{\catvariableof{\nodesof{0}\cap(\arbset\cup\nodesof{1})}}{\gensemiring},
+                \srcontractionofwrt{
+                    \{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edgesof{1}\}
+                }{\catvariableof{\nodesof{1}\cap(\arbset\cup\nodesof{0})}}{\gensemiring}
+            }{\indexedcatvariableof{\arbset}}{\gensemiring} \, .
+        \end{align*}
+        Since therefore both tensors of the claimed contraction equation coincide on all coordinates, they are equal.
     \end{proof}
+
+    As a consequence, message passing schemes such as variable elimination generalize to semiring tensor network contractions.
+
 
     \section{Examples}
 
@@ -129,10 +171,8 @@
         }{\varnothing}{\satsemiring} \, .
     \end{align*}
 
-%    This is the contraction
-%    \begin{align*}
-%        \langle \extnetasset\rangle^{(\{0,1\},\lor,\land,0,1)}
-%    \end{align*}
+    As an additional property, we have invariance of adding subcontractions to the network.
+    In general tensor networks, this holds only for the support of subcontractions (being the operator mapping $0$ to $0$ and any other $s\in S$ to $1$).
 
     \subsection{Maximum calculus}
 
@@ -146,12 +186,16 @@
         (\rr,\mathrm{min},\cdot,0,1) \, .
     \end{align*}
 
+
     These schemes only work, when taking the minimal coordiante keeping all variables open.
     When searching for the maximal/minimal coordiante of a contraction with some variables closed, we need to first coarse grain the tensor network.
 
     These contractions are used in encoding-decoding schemes \cite{mezard_information_2009,mackay_information_2003}.
+    Message passing schemes involving the maximum semiring are known as max-product algorithms \cite{koller_probabilistic_2009}.
 
+    \subsection{Tropical semiring}
 
+    The tropical semiring \cite{liu_tropical_2021} is $(\rr\cup\{\infty\},\mathrm{min},+,\infty,0)$.
 
     \bibliographystyle{plainnat}
     \bibliography{../../references.bib}
