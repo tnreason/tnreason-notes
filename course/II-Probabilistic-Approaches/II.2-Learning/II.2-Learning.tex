@@ -78,6 +78,9 @@
 
     \end{frame}
 
+
+    \section{Empirical Distributions}
+
     \begin{frame}{Empirical distributions}
 
         Let us understand the uniform choice of a sample from $\shortcatindices^{[\datdim]}$ as a distribution
@@ -94,7 +97,7 @@
             \probofat{\catenumerator}{\catvariableof{\catenumerator}|\datvariable}
             = \sum_{\datindexin}
             \onehotmapofat{\catindexof{\catenumerator}^{\datindex}}{\catvariableof{\catenumerator}} \otimes
-\onehotmapofat{\datindex}{\datvariable} \, .
+            \onehotmapofat{\datindex}{\datvariable} \, .
         \end{align*}
 
     \end{frame}
@@ -127,8 +130,6 @@
             = \contraction{\secprobat{\shortcatvariables},-\lnof{\probwith}} \, .
         \end{align*}
 
-
-
         The negative log-likelihood is the cross-entropy between the empirical distribution and the candidate $\probwith$.
 
     \end{frame}
@@ -144,14 +145,53 @@
 
     \end{frame}
 
-    \begin{frame}{Parameter estimation}
+    \begin{frame}{Decomposing the negative log-likelihood}
+        For a Bayesian network we have for any index tuple $\shortcatindices$
+        \begin{align*}
+            \lnof{\probat{\shortcatvariables=\shortcatindices}}
+            = \sum_{\catenumeratorin}\lnof{\condprobat{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}} \, .
+        \end{align*}
+        The NLL thus decomposes into local terms
+%        \begin{align*}
+%            &\frac{1}{\datdim}\sum_{\datindexin} -\lnof{\probat{\shortcatvariables=\shortcatindices^{\datindex}}} \\
+%            &\quad= \frac{1}{\datdim}\sum_{\datindexin}\sum_{\catenumeratorin} -\lnof{\condprobat{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}} \\
+%            &\quad= \sum_{\catenumeratorin}\left(\frac{1}{\datdim}\sum_{\datindexin}-\lnof{\condprobat{\indexedcatvariableof{\catenumerator}^{\datindex}}{\indexedcatvariableof{\parentsof{\catenumerator}}^{\datindex}}}\right)
+%        \end{align*}
+        \begin{align*}
+            &\contraction{\empdistributionwith,-\lnof{\probat{\shortcatvariables}}} \\
+            &\quad= \contraction{\empdistributionwith,\sum_{\catenumeratorin} -\lnof{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}}} \\
+            &\quad= \sum_{\catenumeratorin}\left(\contraction{\empdistributionwith,-\lnof{\condprobat{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}}}\right)
+        \end{align*}
 
-        Best log-likelihood maximizers are the conditional probability distributions.
+        The minimum can found separately for each $\catenumerator$ by the minimization problem
+        \begin{align*}
+            \argmin_{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}}
+            \frac{1}{\datdim}\sum_{\datindexin}-\lnof{\condprobat{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}} \, .
+        \end{align*}
+    \end{frame}
 
+    \begin{frame}{Optimum by normalization of the empirical distribution}
+        The optima for each conditional distribution is taken at
+        \begin{align*}
+            &\argmin_{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}}
+            \contraction{\empdistribution,-\lnof{\condprobat{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}}} \\
+            &\quad= \normalizationofwrt{\empdistributionwith}{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}
+        \end{align*}
+        This can be verified by the first order criterion (vanishing gradients).
     \end{frame}
 
 
-    \section{Empirical Distributions}
+    \begin{frame}{Parameter estimation}
+
+
+        \begin{block}{Parameter estimation for Bayesian networks}
+            \begin{itemize}
+                \item The likelihood of Bayesian networks decomposes into local terms.
+                \item Best log-likelihood maximizers are the conditional probability distributions.
+            \end{itemize}
+        \end{block}
+
+    \end{frame}
 
 
 \end{document}
