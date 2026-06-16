@@ -1,0 +1,127 @@
+\documentclass[aps,onecolumn,nofootinbib,pra]{article}
+
+\usepackage{../../spec_files/arxiv}
+\input{../../spec_files/standard_preamble.tex}
+
+\usepackage{import}
+\subimport{../../macros/}{all-macros}
+
+\usepackage{minted}
+
+\newcommand{\satsemiring}{(\{0,1\},\lor,\land,0,1)}
+\newcommand{\gensemiring}{(S,\oplus,\otimes,0,1)}
+\newcommand{\srcontractionwrt}[2]{\langle#1\rangle^{#2}}
+\newcommand{\srcontractionofwrt}[3]{\langle#1\rangle^{#3}_{#2}}
+
+\begin{document}
+    \title{Semiring Tensor Networks}
+
+    \maketitle
+    \date{\today}
+
+
+    \section{Semiring}
+
+    \begin{definition}
+        A semiring is a tuple $\gensemiring$, where $S$ is a set, $0,1\in S$, and
+        \begin{align*}
+            \oplus \defcols S \times S \rightarrow S \quad, \quad \otimes \defcols S \times S \rightarrow S \, ,
+        \end{align*}
+        such that the following properties hold:
+        \begin{itemize}
+            \item[(i)] $(S,\oplus,0)$ is a commutative monoid.
+            \item[(ii)] $(S,\otimes,1)$ is a commutative monoid.
+            \item[(iii)] $\otimes$ distributes over $\oplus$, that is for any $s_0,s_1,s_2\in S$
+            \begin{align*}
+                s_0 \otimes (s_1 \oplus s_2)
+                = (s_0 \otimes s_1) \oplus (s_0 \otimes s_2) \, .
+            \end{align*}
+            \item[(iv)] $0$ annihilates $\otimes$, that is (check!)
+            \begin{align*}
+                0 \otimes (s_0\otimes s_1) = 0 \, .
+            \end{align*}
+        \end{itemize}
+    \end{definition}
+
+    We understand $S$ as the set of coordinates in a tensor.
+
+    \begin{definition}
+        A tensor with coordinates in $S$ of order $\catorder\in\nn$ and leg dimensions $\catdimof{[\catorder]}=(\catdimof{0},\ldots,\catdimof{\catorder-1})$, where $\catdimof{\catenumerator}\in\nn$ for $\catenumeratorin$, is a map
+        \begin{align*}
+            \hypercore \defcols \facstates \rightarrow S \, .
+        \end{align*}
+        A tensor network with coordinates in $S$ is a hypergraph $\graph=(\nodes,\edges)$, where each node is decorated by a dimension $\catdimof{\node}$ and each edge by a tensor of .
+    \end{definition}
+
+
+    \section{Contractions}
+
+    \begin{definition}
+        Given a semiring $\gensemiring$ and a tensor network $\extnetasset$ with coordinates in $S$, the contraction of the tensor network keeping the variables to a subset $\arbset\subset\nodes$ open is the tensor
+        \begin{align*}
+            \srcontractionofwrt{
+                \extnetasset
+            }{}{\gensemiring}
+        \end{align*}
+    \end{definition}
+
+    The distributive property $(iii)$ of the semiring ensures, that we can compute contractions by sub-contractions.
+
+    \section{Examples}
+
+    \subsubsection{Standard TN}
+
+    Numerical TN use the semiring
+    \begin{align*}
+        (\rr,+,\cdot,0,1) \, .
+    \end{align*}
+
+    \subsection{CSP}
+
+    We take $S=\{0,1\}$ and interpret $0$ as $\falsesymbol$, $1$ as $\truesymbol$.
+    The
+    \begin{align*}
+        \lor \left[\catvariableof{0},\catvariableof{1}\right]
+        = \coloredmatrixof{0 & 1 \\ 1 & 1}{\catvariableof{0},\catvariableof{1}}
+    \end{align*}
+
+    \begin{align*}
+        \land \left[\catvariableof{0},\catvariableof{1}\right]
+        = \coloredmatrixof{0 & 1 \\ 1 & 1}{\catvariableof{0},\catvariableof{1}}
+    \end{align*}
+
+    The satisfiability of a constraint network $\extnetasset$ is the contraction
+    \begin{align*}
+        \bigvee_{\catindexof{\nodes}} \bigwedge_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+        = \srcontractionofwrt{
+        \extnetasset
+        }{\varnothing}{\satsemiring} \, .
+    \end{align*}
+
+%    This is the contraction
+%    \begin{align*}
+%        \langle \extnetasset\rangle^{(\{0,1\},\lor,\land,0,1)}
+%    \end{align*}
+
+    \subsection{Maximum calculus}
+
+    The maximal coordinate of a standard TN is the contraction wrt the semiring
+    \begin{align*}
+        (\rr,\mathrm{max},\cdot,0,1) \, .
+    \end{align*}
+
+    Analogously the minimal coordinate by
+    \begin{align*}
+        (\rr,\mathrm{min},\cdot,0,1) \, .
+    \end{align*}
+
+    These schemes only work, when taking the minimal coordiante keeping all variables open.
+    When searching for the maximal/minimal coordiante of a contraction with some variables closed, we need to first coarse grain the tensor network.
+
+    These contractions are used in encoding-decoding schemes \cite{mezard_information_2009,mackay_information_2003}.
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
+
+
+\end{document}
