@@ -1,0 +1,49 @@
+\stantikzpic{
+    \drawvariablenode{6}{2}{$\dovariableof{\catenumerator}$}{DK}
+    \drawvariablenode{-3}{0}{$\catvariableof{\catenumerator}$}{XK}
+    \drawvariablenode{0}{2}{$\selvariableof{\catenumerator}$}{LK}
+    \drawvariablenode{3}{0}{$\tildecatvariableof{\catenumerator}$}{TXK}
+
+    \drawvariablenode{-3}{4}{$\catvariableof{\catenumerator-1}$}{XKmin}
+    \drawvariablenode{3}{4}{$\tildecatvariableof{\catenumerator-1}$}{TXKmin}
+
+    \drawtextnode{-2.5}{7}{\small Observed world}
+    \draw[dashed] (1.5,8) -- (1.5,-2);
+    \drawtextnode{7}{7}{\small Counterfactual world}
+
+    \draw[->] (XKmin) -- (XK);
+    \draw[->] (TXKmin) -- (TXK);
+    \draw[->] (DK) -- (TXK);
+    \draw[->] (LK) -- (XK);
+    \draw[->] (LK) -- (TXK);
+
+
+    \begin{scope}[shift={(10,0)}]
+
+        \draw (0,1) rectangle (6,3);
+        \node[anchor=center] at (3,2) {\corelabelsize $\bencodingof{\exfunctionof{\atomenumerator}}$};
+        \draw[->-] (3,1) -- (3,-1) node[midway,right] {\colorlabelsize $\catvariableof{\catenumerator}$};
+        \draw[->-] (3,5) -- (3,3) node[midway,right] {\colorlabelsize $\catvariableof{\catenumerator-1}$};
+
+        \draw[->-] (8,2) -- (6,2);
+        \drawvariabledot{8}{2}
+        \draw (6.5,3.5) rectangle (9.5,6.5);
+        \drawtextnode{8}{5}{
+            \tiny $\begin{pmatrix}
+                       0.25 \\ 0.50 \\ 0.25
+            \end{pmatrix}$}
+        \draw [->-] (8,3.5) -- (8,2) node[midway,right] {\colorlabelsize $\selvariableof{\catenumerator}$};
+        \draw[->-] (8,2) -- (10,2);
+
+
+        \begin{scope}[shift={(10,0)}]
+            \draw (0,1) rectangle (6,3);
+            \node[anchor=center] at (3,2) {\corelabelsize $\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator}}$};
+            \draw[->-] (3,1) -- (3,-1) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catenumerator}$};
+            \draw[->-] (3,5) -- (3,3) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catenumerator-1}$};
+            \draw[->-] (8,2) -- (6,2) node[midway,above] {\colorlabelsize $\dovariableof{\catenumerator}$};
+        \end{scope}
+
+
+    \end{scope}
+}

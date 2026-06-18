@@ -103,15 +103,28 @@
 
     \section{Intervention}
 
-    \begin{frame}{Do-calculus}
 
-        Add further variables $\dovariable{\catenumerator}$ representing interventions.
+    \begin{frame}{Interventions}
+
+        This appears in important situation:
+        \begin{itemize}
+            \item Will product sales increase if we lower the price?
+            \item Will I pass the exam tomorrow if I study today?
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Do calculus: Modelling interventions}
+
+        Add further variables $\dovariableof{\catenumerator}$ representing interventions:
+
+        Ignore the state of a variables parents.
+
+        This resolves the ambiguity in Bayesian network representation!
 
     \end{frame}
 
     \begin{frame}{Example: Random walk}
 
-        {\bf Effect in random walk:} Restart the random walk.
 
         Random walk example with $\catdim=3$:
         \stantikzpic{
@@ -147,7 +160,35 @@
     \end{frame}
 
 
+    \begin{frame}{Causally augmented Markov chain}
+
+        \input{tikz/do-variables-random-walk}
+
+    \end{frame}
+
+
+    \begin{frame}{Intervening on a position}
+        \input{tikz/intervention-on-random-walk}
+
+        {\bf Interpretation:} Restart of the random walk at time $\catenumerator$ in intervention state $\catindexof{\catenumerator}$.
+    \end{frame}
+
+
     \section{Counterfactuals}
+
+    \begin{frame}{Counterfactual worlds}
+
+        \begin{itemize}
+            \item A particular state has been observed.
+            \item We reason about a hypothetical world.
+        \end{itemize}
+
+        This appears in important situation:
+        \begin{itemize}
+            \item Would the accident have happened had the safety protocol been respected?
+            \item Would the person have developed cancer had he stopped smoking earlier?
+        \end{itemize}
+    \end{frame}
 
 
     \begin{frame}{Response variables}
@@ -171,7 +212,7 @@
         \end{itemize}
 
         \stantikzpic{
-                    \drawtextnode{-7}{0}{$\probat{\catvariableof{\catenumerator}|\catvariableof{\catenumerator-1},\selvariableof{\catenumerator}}\, = $}
+            \drawtextnode{-7}{0}{$\probat{\catvariableof{\catenumerator}|\catvariableof{\catenumerator-1},\selvariableof{\catenumerator}}\, = $}
             \drawtextnode{0}{0}{
                 \tiny
                 $\begin{pmatrix}
@@ -181,13 +222,13 @@
             \drawtextnode{4}{1}{
                 \tiny
                 $\begin{pmatrix}
-                    1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1
+                     1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1
                 \end{pmatrix}$
             }
             \drawtextnode{8}{2}{
                 \tiny
                 $\begin{pmatrix}
-                    0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & 0 & 0
+                     0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & 0 & 0
                 \end{pmatrix}$
             }
 
@@ -198,4 +239,27 @@
         {\bf Effect in random walk:} Shift of the random walk.
     \end{frame}
 
+    \begin{frame}{Counterfactual random walk}
+        \begin{center}
+            \bf What will be the outcome of the walk, when we do an intervention on $\catvariableof{\catenumerator}$?
+        \end{center}
+
+        \input{tikz/counterfactual-random-walk}
+
+    \end{frame}
+
+
+    \begin{frame}{Counterfactual query}
+
+        \begin{center}
+            \bf What would be the outcome of the walk, would we have done the intervention on $\catvariableof{\catenumerator}$?
+        \end{center}
+
+        \input{tikz/counterfactual-query-random-walk}
+
+        \only<3>{
+                {\bf Answer:} The walk would be shifted by the intervention. Different to the intervention query, we have a deterministic outcome!
+        }
+
+    \end{frame}
 \end{document}

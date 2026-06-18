@@ -1,0 +1,119 @@
+\stantikzpic{
+
+    \begin{scope}[shift={(0,4)}]
+
+        \only<1>{
+
+            \draw (0,1) rectangle (6,3);
+            \node[anchor=center] at (3,2) {\corelabelsize $\bencodingof{\exfunctionof{\atomenumerator}}$};
+
+            \draw[->-] (3,5) -- (3,3) node[midway,right] {\colorlabelsize $\catvariableof{\catenumerator-1}$};
+            \drawtextnode{3}{6}{$\vdots$}
+
+            \draw[->-] (8,2) -- (6,2);
+            \drawvariabledot{8}{2}
+            \draw (6.5,3.5) rectangle (9.5,6.5);
+            \drawtextnode{8}{5}{
+                \tiny $\begin{pmatrix}
+                           0.25 \\ 0.50 \\ 0.25
+                \end{pmatrix}$}
+            \draw [->-] (8,3.5) -- (8,2) node[midway,right] {\colorlabelsize $\selvariableof{\catenumerator}$};
+            \draw[->-] (8,2) -- (10,2);
+
+        }
+
+
+        \begin{scope}[shift={(10,0)}]
+            \only<-2>{
+                \draw (0,1) rectangle (6,3);
+                \node[anchor=center] at (3,2) {\corelabelsize $\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator}}$};
+                %\draw[->-] (3,1) -- (3,-1) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catenumerator}$};
+                \draw[->-] (3,5) -- (3,3) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catenumerator-1}$};
+                \drawtextnode{3}{6}{$\vdots$}
+                \draw[->-] (8,2) -- (6,2) node[midway,above] {\colorlabelsize $\dovariableof{\catenumerator}$};
+            }
+
+        \end{scope}
+
+    \end{scope}
+
+    \only<1>{
+        \draw (0,1) rectangle (6,3);
+        \node[anchor=center] at (3,2) {\corelabelsize $\bencodingof{\exfunctionof{\atomenumerator+1}}$};
+
+        \draw[->-] (3,1) -- (3,-1) node[midway,right] {\colorlabelsize $\catvariableof{\catenumerator+1}$};
+        \drawtextnode{3}{-1.5}{$\vdots$}
+        \draw[->-] (3,5) -- (3,3) node[midway,right] {\colorlabelsize $\catvariableof{\catenumerator}$};
+
+
+        \draw[->-] (8,2) -- (6,2);
+        \drawvariabledot{8}{2}
+        \draw (6.5,0.5) rectangle (9.5,-2.5);
+        \drawtextnode{8}{-1}{
+            \tiny $\begin{pmatrix}
+                       0.25 \\ 0.50 \\ 0.25
+            \end{pmatrix}$}
+        \draw [->-] (8,0.5) -- (8,2) node[midway,right] {\colorlabelsize $\selvariableof{\catenumerator+1}$};
+        \draw[->-] (8,2) -- (10,2);
+    }
+
+
+
+
+    \begin{scope}[shift={(10,0)}]
+        \only<-2>{
+            \draw (0,1) rectangle (6,3);
+            \node[anchor=center] at (3,2) {\corelabelsize $\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator}}$};
+            \draw[->-] (3,1) -- (3,-1) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catenumerator+1}$};
+            \drawtextnode{3}{-1.5}{$\vdots$}
+            \draw[->-] (3,5) -- (3,3) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catenumerator}$};
+            \draw[->-] (8,2) -- (6,2) node[midway,above] {\colorlabelsize $\dovariableof{\catenumerator+1}$};
+        }
+    \end{scope}
+
+
+    \drawsquaretensor{-2}{8.5}{$\onehotmapof{\catindexof{\catenumerator-1}}$}
+    \drawsquaretensor{-2}{4.5}{$\onehotmapof{\catindexof{\catenumerator}}$}
+    \drawsquaretensor{-2}{0.5}{$\onehotmapof{\catindexof{\catenumerator+1}}$}
+
+    \drawsquaretensor{19}{6}{$\onehotmapof{\tildecatindexof{\catenumerator}}$}
+
+
+    \only<1>{
+        \draw[->-] (-1,8.5) -- (3,8.5);
+        \drawvariabledot{3}{8.5}
+
+        \draw[->-] (-1,4.5) -- (3,4.5);
+        \drawvariabledot{3}{4.5}
+
+        \draw[->-] (-1,0.5) -- (3,0.5);
+        \drawvariabledot{3}{0.5}
+    }
+
+    \only<2->{
+        \draw[->-] (-1,8.5) -- (1,8.5);
+
+        \draw[->-] (-1,4.5) -- (1,4.5);
+
+        \draw[->-] (-1,0.5) -- (1,0.5);
+    }
+
+    \only<2->{
+        \drawtensorblock{5.75}{6}{2.25}{$\onehotmapof{\catindexof{\catenumerator}-\catindexof{\catenumerator-1}+1}$}
+        \draw[->-] (8,6) -- (10,6) node[midway,above]{\colorlabelsize $\selvariableof{\catenumerator}$};
+
+        \drawtensorblock{5.75}{2}{2.25}{$\onehotmapof{\catindexof{\catenumerator+1}-\catindexof{\catenumerator}+1}$}
+        \draw[->-] (8,2) -- (10,2) node[midway,above]{\colorlabelsize $\selvariableof{\catenumerator+1}$};
+    }
+
+    \only<3>{
+        \draw[->-] (18,6) -- (16,6) node[midway,above]{\colorlabelsize $\dovariableof{\catenumerator}$};
+        \begin{scope}[blue]
+            \drawtensorblock{15}{2}{3}{$\onehotmapof{\tildecatindexof{\catenumerator}+ (\catindexof{\catenumerator+1}-\catindexof{\catenumerator})}$}
+            \draw[->-] (15,1) -- (15,-1) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator+1}$};
+        \end{scope}
+
+    }
+
+
+}

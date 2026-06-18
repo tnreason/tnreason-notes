@@ -1,0 +1,38 @@
+\stantikzpic{
+
+    \draw[->-] (-2,10) -- (-2,7) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-2}$};
+    \draw[->-] (2,8.5) -- (2,7) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator-1}$};
+    \drawtensorblock{0}{6}{4.25}{$\condprobat{\catvariableof{\catenumerator-1}}{\catvariableof{\catenumerator-2},\dovariableof{\catenumerator-1}}$}
+
+
+    \only<1>{
+        \draw[->-] (-2,5) -- (-2,2) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-1}$};
+        \draw[->-] (2,3.5) -- (2,2) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator}$};
+        \drawtensorblock{0}{1}{4.25}{$\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1},\dovariableof{\catenumerator}}$}
+
+
+        \drawvariabledot{2}{3.5}
+        \draw[->-] (5,3.5) -- (2,3.5);
+        \drawsquaretensor{6}{3.5}{$\onehotmapof{\catindexof{\catenumerator}}$}
+
+        \draw[->-] (-2,0) -- (-2,-3) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator}$};
+    }
+
+    \only<2>{
+
+        \draw[->-] (5,3.5) -- (3.5,3.5) node[midway,above] {\colorlabelsize $\dovariableof{\catenumerator}$};
+        \drawsquaretensor{6}{3.5}{$\onehotmapof{\catindexof{\catenumerator}}$}
+
+        \draw[->-] (-2,5) -- (-2,3.5) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-1}$};
+        \drawsquaretensor{-2}{-0.5}{$\onehotmapof{\catindexof{\catenumerator}}$}
+        \draw[->-] (-2,-1.5) -- (-2,-3) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator}$};
+    }
+
+
+
+    \draw[->-] (2,-1.5) -- (2,-3) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator+1}$};
+    \drawtensorblock{0}{-4}{4.25}{$\condprobat{\catvariableof{\catenumerator+1}}{\catvariableof{\catenumerator},\dovariableof{\catenumerator+1}}$}
+
+    \draw[->-] (-2,-5) -- (-2,-8) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator+1}$};
+
+}

@@ -57,6 +57,11 @@
     \drawtextnode{#1}{#2}{\variablenodelabelsize #3}
 }
 
+\newcommand{\drawtensorblock}[4]{
+    \draw (#1-#3,#2-1) rectangle (#1+#3,#2+1);
+    \drawtextnode{#1}{#2}{\corelabelsize #4}
+}
+
 \newcommand{\drawsquaretensor}[3]{
     \draw (#1-1,#2-1) rectangle (#1+1,#2+1);
 %    \node[anchor=center,align=center] at (#1,#2) {#3};

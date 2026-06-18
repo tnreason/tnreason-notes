@@ -1,19 +1,12 @@
 \begin{tikzpicture}[scale=0.35, thick]
     \node[anchor=center] at (-10,7) {$a)$};
 
-    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (DK) at (-10,0) {};
-    \node[anchor=center] (A) at (-10,0) {\corelabelsize $\dovariableof{\catenumerator}$};
+    \drawvariablenode{10}{0}{$\dovariableof{\catenumerator}$}{DK}
+    \drawvariablenode{-5}{0}{$\catvariableof{\catenumerator}$}{XK}
+    \drawvariablenode{0}{3}{$\selvariableof{\catenumerator}$}{LK}
+    \drawvariablenode{5}{0}{$\tildecatvariableof{\catenumerator}$}{TXK}
 
-    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (XK) at (-5,0) {};
-    \node[anchor=center] (A) at (-5,0) {\corelabelsize $\catvariableof{\catenumerator}$};
-
-    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (LK) at (0,3) {};
-    \node[anchor=center] (A) at (0,3) {\corelabelsize $\selvariableof{\catenumerator}$};
-
-    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (TXK) at (5,0) {};
-    \node[anchor=center] (A) at (5,0) {\corelabelsize $\tildecatvariableof{\catenumerator}$};
-
-    \draw[->] (DK) -- (XK);
+    \draw[->] (DK) -- (TXK);
     \draw[->] (LK) -- (XK);
     \draw[->] (LK) -- (TXK);
 
@@ -40,13 +33,13 @@
     \begin{scope}[shift={(15,0)}]
 
         \draw (0,1) rectangle (6,3);
-        \node[anchor=center] at (3,2) {\corelabelsize $\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator}}$};
+        \node[anchor=center] at (3,2) {\corelabelsize $\bencodingof{\exfunctionof{\atomenumerator}}$};
         \draw[->-] (3,1) -- (3,-1) node[midway,right] {\colorlabelsize $\catvariableof{\catenumerator}$};
         \draw[-<-] (1,3) -- (1,5);
         \node[anchor=center] at (3,4) {\colorlabelsize $\parentsof{\catvariableof{\catenumerator}}$};
         \draw[-<-] (5,3) -- (5,5);
 
-        \draw[-<-] (0,2) -- (-2,2) node[midway,above] {\colorlabelsize $\dovariableof{\catenumerator}$};;
+
 
         \draw[-<-] (6,2) -- (8,2);
         \drawvariabledot{8}{2}
@@ -61,11 +54,13 @@
 
         \begin{scope}[shift={(10,0)}]
             \draw (0,1) rectangle (6,3);
-            \node[anchor=center] at (3,2) {\corelabelsize $\bencodingof{\exfunctionof{\atomenumerator}}$};
+            \node[anchor=center] at (3,2) {\corelabelsize $\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator}}$};
             \draw[->-] (3,1) -- (3,-1) node[midway,right] {\colorlabelsize $\tildecatvariableof{\catenumerator}$};
             \draw[-<-] (1,3) -- (1,5);
             \node[anchor=center] at (3,4) {\colorlabelsize $\parentsof{\tildecatvariableof{\catenumerator}}$};
             \draw[-<-] (5,3) -- (5,5);
+
+            \draw[-<-] (6,2) -- (8,2) node[midway,above] {\colorlabelsize $\dovariableof{\catenumerator}$};;
         \end{scope}
 
 
