@@ -13,27 +13,189 @@
     {\frame[plain]{\titlepage}}
     \showoutlineatsection
 
-\section{Bayesian network hypergraphs}
 
-    \begin{frame}{}
-        
-        Imagine a Bayesian network.
-        
-        We can manipulate the hypergraph by changing the direction, and still find a Bayesian network representation of a distribution.
-        
+    \section{Bayesian network hypergraphs}
+
+    \begin{frame}{Example: Random walk}
+        \begin{minipage}{0.6\linewidth}
+            Imagine a random walk through circular cells:
+            \begin{itemize}
+                \item $\catvariableof{\catenumerator}$ describes at timestep $\catenumeratorin$ the position
+                \item With probability $0.5$ we stay at a cell, and to each neighboring cell with $0.25$
+            \end{itemize}
+        \end{minipage}
+        \begin{minipage}{0.35\linewidth}
+            \stantikzpic{
+
+                \draw (0,0) circle (2);
+                \draw (0,0) circle (4);
+
+                \foreach \angle in {0, 45, ..., 315} {
+                    \draw (\angle:2) -- (\angle:4);
+                }
+            }
+        \end{minipage}
+
+
+        This is a Markov chain with the transition matrix:
+        \begin{align*}
+            \condprobat{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1}} =
+            \begingroup
+            \tiny
+            \coloredmatrixof{
+                0.50 & 0.25 & 0 & 0 & 0 & 0 & 0 & 0.25 \\
+                0.25 & 0.50 & 0.25 & 0 & 0 & 0 & 0 & 0 \\
+                0 & 0.25 & 0.50 & 0.25 & 0 & 0 & 0 & 0 \\
+                0 & 0 & 0.25 & 0.50 & 0.25 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0.25 & 0.50 & 0.25 & 0 & 0 \\
+                0 & 0 & 0 & 0 & 0.25 & 0.50 & 0.25 & 0 \\
+                0 & 0 & 0 & 0 & 0 & 0.25 & 0.50 & 0.25 \\
+                0.25 & 0 & 0 & 0 & 0 & 0 & 0.25 & 0.50
+            }{\catvariableof{\catenumerator},\catvariableof{\catenumerator-1}}
+            \endgroup
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{How to distinguish the past from the present?}
+
+        We have two decomposition schemes as Bayesian networks, both decorated with the same transition matrices:
+
+        \input{tikz/markov-chain}
+
+    \end{frame}
+
+
+    \begin{frame}{The BN hypergraph is not unique}
+
+%        Imagine a Markov chain.
+%            {\bf Example:} Markov chain. Does the past cause the future or the future the past?
+
+        We can manipulate the hypergraph, and still find a Bayesian network representation of a distribution.
+
         Causation is not (always) represented in the directionality!
-        
+
+            {\bf Idea:} Distinguish by interventions.
+
+
     \end{frame}
-    
-    
+
+
     \begin{frame}{The rungs of causation}
-        
-        
+        \stantikzpic{
+            \drawtextnode{0}{0}{\includegraphics[width=6cm]{img/rungs}}
+
+            \draw [->] (9,6) -- (11,6);
+            \node[anchor=west] at (11,6)    {{\bf Response variables}};
+            \draw [->] (9,0.5) -- (11,0.5);
+            \node[anchor=west] at (11,0.5)  {{\bf Do variables}};
+            \draw [->] (9,-5) -- (11,-5);
+            \node[anchor=west] at (11,-5)   {{\bf Bayesian Networks}};
+        }
+
     \end{frame}
-    
-    
-    \section{Interventions}
-    
-    
+
+
+    \begin{frame}{Bayesian networks capture associations}
+
+        {\bf Limitation:} Do not model causations.
+    \end{frame}
+
+
+    \section{Intervention}
+
+    \begin{frame}{Do-calculus}
+
+        Add further variables $\dovariable{\catenumerator}$ representing interventions.
+
+    \end{frame}
+
+    \begin{frame}{Example: Random walk}
+
+        {\bf Effect in random walk:} Restart the random walk.
+
+        Random walk example with $\catdim=3$:
+        \stantikzpic{
+            \drawtextnode{-7}{0}{$\probat{\catvariableof{\catenumerator}|\catvariableof{\catenumerator-1},\dovariableof{\catenumerator}}\, = $}
+            \drawtextnode{0}{0}{
+                \tiny
+                $\begin{pmatrix}
+                     1 & 1 & 1 \\ 0 & 0 & 0 \\ 0 & 0 & 0
+                \end{pmatrix}$
+            }
+            \drawtextnode{4}{1}{
+                \tiny
+                $\begin{pmatrix}
+                     0 & 0 & 0 \\ 1 & 1 & 1 \\ 0 & 0 & 0
+                \end{pmatrix}$
+            }
+            \drawtextnode{8}{2}{
+                \tiny
+                $\begin{pmatrix}
+                     0 & 0 & 0 \\ 0 & 0 & 0 \\ 1 & 1 & 1
+                \end{pmatrix}$
+            }
+            \drawtextnode{13.5}{3}{
+                \tiny
+                $\begin{pmatrix}
+                     0.50 & 0.25 & 0.25 \\ 0.25 & 0.50 & 0.25 \\ 0.25 & 0.25 & 0.50
+                \end{pmatrix}$
+            }
+
+            \drawtextnode{16}{0}{$[\catvariableof{\catenumerator},\catvariableof{\catenumerator-1},\dovariableof{\catenumerator}]$}
+        }
+
+    \end{frame}
+
+
     \section{Counterfactuals}
+
+
+    \begin{frame}{Response variables}
+
+        Model each conditioned probability as a basis encoding of a function on the parent variables, the do-variable and the response variable
+        \begin{align*}
+            \selvariableof{\catenumerator}
+        \end{align*}
+
+        The response variables are shared with the counterfactual world variables.
+    \end{frame}
+
+
+    \begin{frame}{Random walk example}
+
+        We model a response variable
+        \begin{itemize}
+            \item $\selindexof{\catenumerator}=0$ : going to the left cell
+            \item $\selindexof{\catenumerator}=0$ : staying at the current cell
+            \item $\selindexof{\catenumerator}=2$ : going to the right cell
+        \end{itemize}
+
+        \stantikzpic{
+                    \drawtextnode{-7}{0}{$\probat{\catvariableof{\catenumerator}|\catvariableof{\catenumerator-1},\selvariableof{\catenumerator}}\, = $}
+            \drawtextnode{0}{0}{
+                \tiny
+                $\begin{pmatrix}
+                     0 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0
+                \end{pmatrix}$
+            }
+            \drawtextnode{4}{1}{
+                \tiny
+                $\begin{pmatrix}
+                    1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1
+                \end{pmatrix}$
+            }
+            \drawtextnode{8}{2}{
+                \tiny
+                $\begin{pmatrix}
+                    0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & 0 & 0
+                \end{pmatrix}$
+            }
+
+            \drawtextnode{12}{0}{$[\catvariableof{\catenumerator},\catvariableof{\catenumerator-1},\selvariableof{\catenumerator}]$}
+
+        }
+
+        {\bf Effect in random walk:} Shift of the random walk.
+    \end{frame}
+
 \end{document}
