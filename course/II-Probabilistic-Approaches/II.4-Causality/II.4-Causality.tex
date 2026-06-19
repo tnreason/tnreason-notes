@@ -95,7 +95,16 @@
     \end{frame}
 
 
-    \begin{frame}{Bayesian networks capture associations}
+    \begin{frame}{Probability distributions: Associations}
+
+        Contractions of distributions capture associations in the data:
+        \begin{itemize}
+            \item Marginal distributions
+            \item Conditional distributions
+        \end{itemize}
+%        \begin{align*}
+%            \probat{}
+%        \end{align*}
 
         {\bf Limitation:} Do not model causations.
     \end{frame}
@@ -111,13 +120,30 @@
             \item Will product sales increase if we lower the price?
             \item Will I pass the exam tomorrow if I study today?
         \end{itemize}
+
+                \begin{center}
+            \bf Associations are not enough for these questions!
+        \end{center}
     \end{frame}
 
     \begin{frame}{Do calculus: Modelling interventions}
 
         Add further variables $\dovariableof{\catenumerator}$ representing interventions:
 
-        Ignore the state of a variables parents.
+        \begin{itemize}
+            \item Intervention on the variable $\catvariableof{\catenumerator}$ when $\doindexof{\catenumerator}\in[\catdimof{\catenumerator}]$
+            \item No intervention on the variable when $\doindexof{\catenumerator}=\catdimof{\catenumerator}$
+        \end{itemize}
+
+        This is realized by a tensor
+        \begin{align*}
+            \condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}},\dovariableof{\catenumerator}}
+            &= \sum_{\catindexofin{\catenumerator}} \onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}
+            \otimes \onesat{\catvariableof{\parentsof{\catenumerator}}}
+            \otimes  \onehotmapofat{\catindexof{\catenumerator}}{\dovariableof{\catenumerator}} \quad \text{(intervention)} \\
+            & \quad + \condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}
+            \otimes \onehotmapofat{\catdimof{\catenumerator}}{\dovariableof{\catenumerator}} \quad \text{(no intervention)}
+        \end{align*}
 
         This resolves the ambiguity in Bayesian network representation!
 
@@ -188,6 +214,10 @@
             \item Would the accident have happened had the safety protocol been respected?
             \item Would the person have developed cancer had he stopped smoking earlier?
         \end{itemize}
+
+        \begin{center}
+            \bf Interventions are not enough for these questions!
+        \end{center}
     \end{frame}
 
 
