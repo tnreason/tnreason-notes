@@ -7,18 +7,20 @@
 
     \begin{scope}[shift={(13,0)}]
 
-        \drawtextnode{-4}{3}{$\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}\, =$}
+        \drawtextnode{-4}{3}{\corelabelsize  $\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}\, =$}
 
         \draw[->-] (2.5,4) -- (2.5,6) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
         \draw (0,2) rectangle (5,4);
-        \drawtextnode{2.5}{3}{$\condprobat{\catvariableof{0}}{\catvariableof{1}}$}
+        \drawtextnode{2.5}{3}{\corelabelsize  $\condprobat{\catvariableof{0}}{\catvariableof{1}}$}
 
         \draw[->-] (9.5,4) -- (9.5,6) node[midway,right] {\colorlabelsize $\catvariableof{2}$};
         \draw (7,2) rectangle (12,4);
-        \drawtextnode{9.5}{3}{$\condprobat{\catvariableof{2}}{\catvariableof{1}}$}
+        \drawtextnode{9.5}{3}{\corelabelsize $\condprobat{\catvariableof{2}}{\catvariableof{1}}$}
 
+        \draw[->-] (6,0) -- (6,6);
         \drawvariabledot{6}{0}
-        \draw[->-] (6,-2) -- (6,0) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+        \draw[->-] (6,-1.5) -- (6,0) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+        \drawtensorblock{6}{-2.5}{1.5}{\corelabelsize $\probat{\catvariableof{1}}$}
         \draw[->-] (6,0) to [bend right=-30] (2.5,2);
         \draw[->-] (6,0) to [bend right= 30] (9.5,2);
 

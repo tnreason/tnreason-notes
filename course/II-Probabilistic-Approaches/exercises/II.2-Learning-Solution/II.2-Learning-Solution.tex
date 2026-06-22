@@ -28,7 +28,7 @@
                 \condprobat{\catvariableof{2}}{\decvariable} = & \coloredmatrixof{
                     1 & 0 & 1 & 0 & 1 & 0 & 1 & 1 & 0 & 0 \\
                     0 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 1
-                }{\catvariableof{1},\decvariable} %\\
+                }{\catvariableof{1},\decvariable} \, .  %\\
                 %\probat{\decvariable} = & \frac{1}{10} \cdot \coloredmatrixof{
                 %    1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1
                 %}{\decvariable}
@@ -52,12 +52,13 @@
             \begin{align*}
                 \frac{1}{10} \cdot
                 \contraction{
-                    \condprobat{\catvariableof{1}}{\decvariable}, \condprobat{\catvariableof{1}}{\decvariable},\formulaat{\catvariableof{1},\catvariableof{2}}
+                    \condprobat{\catvariableof{1}}{\decvariable}, \condprobat{\catvariableof{2}}{\decvariable},\formulaat{\catvariableof{1},\catvariableof{2}}
                 }
                 = \frac{5}{10} = \frac{1}{2} \, .
             \end{align*}
         \end{itemize}
     }
+    \end{document}
     \addtask{2}{
         We investigate whether the three conditional independencies hold:
         \begin{itemize}

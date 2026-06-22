@@ -547,14 +547,9 @@
                     2 & 1 \\ 1 & 2
                 }{\catvariableof{0},\catvariableof{1}}
             \end{align*}
-            \item         We then model the distribution by a tensor network:
+            \item We then model the distribution by a tensor network:
             \input{tikz/neighbor-example}
         \end{itemize}
-%        world where two neighbors either both know the solution or both not is by a factor $2$ more likely than a world where this is not the case.
-
-
-
-
 
             {\bf Different to Bayesian networks:} Need to \emph{normalize} the distribution
         \begin{align*}
@@ -566,11 +561,6 @@
                 \hypercoreof{\{0,3\}}%{\catvariableof{0},\catvariableof{3}}
             }{\catvariableof{[4]}}
         \end{align*}
-%        \begin{itemize}
-%            \item
-%        \end{itemize}
-
-
     \end{frame}
 
     \begin{frame}{Undirected Graphical Models:\\
@@ -651,7 +641,7 @@
             \probat{\indexedshortcatvariables}\neq 0 \, .
         \end{align*}
 
-        \begin{theorem}{Hammersley Clifford}
+        \begin{theorem}[Hammersley Clifford]
             A positive distribution $\probat{\nodevariables}$ has a representation as a Markov network on a hypergraph $\graph$, if and only if for any disjoint subsets $\nodesa,\nodesb,\nodesc\subset\nodes$ for which $\nodesc$ separates $\nodesa$ from $\nodesb$
             \begin{align*}
                 \condindependent{\catvariableof{\nodesa}}{\catvariableof{\nodesb}}{\catvariableof{\nodesc}} \, .
