@@ -4,7 +4,7 @@
 \input{../../spec_files/course_macros.tex}
 
 \setchatwotitledate{
-    Likelihoods, empirical distributions and learning
+    Likelihood, empirical distributions and learning
 }{
     June 22, 2026
 }
@@ -72,18 +72,60 @@
 
         The maximum likelihood method corresponds then with the minimization of the \emph{negative log-likelihood (NLL)}
         \begin{align*}
-            \argmin_{\probwith\in\Gamma}\sum_{\datindexin}
+            \argmin_{\probwith\in\Gamma}\frac{1}{\datdim}\sum_{\datindexin}
             -\lnof{\probat{\shortcatvariables=\shortcatindices^{\datindex}}} \, .
         \end{align*}
 
     \end{frame}
 
+    \begin{frame}{Example: Thumbtack}
 
-    \section{Empirical Distributions}
+        \begin{minipage}{0.85\linewidth}
+            Let there be a variable $\catvariable$ describing whether a thumbtack lands on the head ($\catindex=1$) or the tail side ($\catindex=0$).
+            \begin{itemize}
+                \item We want to estimate the probability $p\in[0,1]$ of head, that is the distribution:
+                \stantikzpic{
+                    \drawtextnode{-5}{0}{
+                        $\probat{\catvariable}\,\,=$
+                    }
+                    \draw (-2,-1.5) rectangle (2,1.5);
+                    \draw [->-] (0,-1.5) -- (0,-3) node[midway,right] {\colorlabelsize $\catvariable$};
+                    \drawtextnode{0}{0}{
+                        $\begin{pmatrix}
+                             1-p \\ p
+                        \end{pmatrix}$
+                    }
+                }
+                \item We throw the thumbtack $\datdim$ times and observe $\datdim_{\mathrm{h}}$ heads.
+            \end{itemize}
+        \end{minipage}
+        \begin{minipage}{0.1\linewidth}
+            \includegraphics[width=2cm]{img/thumbtack}
+        \end{minipage}
+        The negative log likelihood score is then
+        \begin{align*}
+            -\lnof{1-p} \cdot \frac{(\datdim-\datdim_{\mathrm{h}})}{\datdim}
+            - \lnof{p} \cdot \frac{\datdim_{\mathrm{h}}}{\datdim} \, .
+        \end{align*}
+        We find the minimum by differentiating
+        \begin{align*}
+            0 &= \frac{\partial}{\partial p}
+            \left[
+                -\lnof{1-p} \cdot \frac{(\datdim-\datdim_{\mathrm{h}})}{\datdim}
+                - \lnof{p} \cdot \frac{\datdim_{\mathrm{h}}}{\datdim}
+            \right]
+            &= \frac{\datdim-\datdim_{\mathrm{h}}}{\datdim\cdot (1-p)} - \frac{\datdim_{\mathrm{h}}}{\datdim \cdot p} \, .
+        \end{align*}
+        Thus, the optimum is $p = \frac{\datdim_{\mathrm{h}}}{\datdim}$.
+
+    \end{frame}
+
+
+    \section{Empirical distributions}
 
     \begin{frame}{Empirical distributions}
 
-        Let us understand the uniform choice of a sample from $\shortcatindices^{[\datdim]}$ as a distribution
+        Let us understand the uniform choice of a sample from the dataset $\shortcatindices^{[\datdim]}$ as a distribution
         \begin{align*}
             \empdistributionat{\shortcatvariables}
             = \frac{1}{\datdim} \sum_{\datindexin} \onehotmapofat{\shortcatindices^{\datindex}}{\shortcatvariables}
@@ -130,7 +172,23 @@
             = \contraction{\secprobat{\shortcatvariables},-\lnof{\probwith}} \, .
         \end{align*}
 
-        The negative log-likelihood is the cross-entropy between the empirical distribution and the candidate $\probwith$.
+        The negative log-likelihood is the cross-entropy between the empirical distribution $\empdistributionwith$ and the candidate $\probwith$:
+        \begin{align*}
+            \frac{1}{\datdim}\sum_{\datindexin}
+            -\lnof{\probat{\shortcatvariables=\shortcatindices^{\datindex}}}
+            = \contraction{\empdistributionwith,-\lnof{\probwith}}
+        \end{align*}
+
+        This is the contraction:
+        \stantikzpic{
+            \drawtextnode{-7}{2}{$\centropyof{\empdistribution}{\probtensor}\,\,=$}
+            \drawtensorblock{0}{4}{3}{$-\lnof{\probtensor}$}
+            \draw (-2,1) -- (-2,3) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \drawtextnode{0}{2}{$\cdots$}
+            \draw (2,1) -- (2,3) node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+            \drawtensorblock{0}{0}{3}{$\empdistribution$}
+            \drawtextnode{12}{0}{$\leftarrow$ Exploit tensor network decompositions!}
+        }
 
     \end{frame}
 
@@ -138,10 +196,34 @@
     \section{Learning Bayesian networks}
 
     \begin{frame}{Two learning tasks}
+
+        Learning graphical models (Bayesian networks or Markov networks) typically consists in two tasks:
         \begin{itemize}
-            \item Structure learning: Find the hypergraph $\graph$
-            \item Parameter estimation: Find the best decorations by conditional probability distributions
+            \item {\bf Structure learning:} Choose a hypergraph $\graph$ for the graphical model.
+            \item {\bf Parameter estimation:} Find the optimal decorations by conditional probability distributions.
         \end{itemize}
+
+    \end{frame}
+
+    \begin{frame}{Outlook: Structure learning}
+
+        A hypergraph $\graph$ encodes some conditional independence statements about the distribution:
+        \begin{itemize}
+            \item Bayesian networks: Definition based on the parent sets%"Children are independent on non-descendants given the parents".
+            \item Markov networks: Definition based on separation of variable clusters %"Clusters of variables are independent given a separating set of variables".
+        \end{itemize}
+        \begin{block}{Learning by independence tests}
+            Learning $\graph$ means deciding which conditional independence statements hold and choosing a suitable graph capturing most of them.
+        \end{block}
+        The task is hard:
+        \begin{itemize}
+            \item {\bf Noise in the data:} Independencies in the generating distribution $\probwith$ are not inherited by the empirical distribution $\empdistributionwith$ \\
+            $\rightarrow$ Use robust hypothesis tests managing the noise
+            \item {\bf Superexponentially growing number of possible graphs:} There are $2^{\catorder\cdot(\catorder-1)}$ hypergraphs to $\catorder$ nodes \\
+            $\rightarrow$ Need to apply further sparsity principles: Structure cores
+        \end{itemize}
+
+        %For more details: Part~III in [Koller, Friedman: Probabilistic Graphical Models, 2009]
 
     \end{frame}
 
@@ -152,15 +234,10 @@
             = \sum_{\catenumeratorin}\lnof{\condprobat{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}} \, .
         \end{align*}
         The NLL thus decomposes into local terms
-%        \begin{align*}
-%            &\frac{1}{\datdim}\sum_{\datindexin} -\lnof{\probat{\shortcatvariables=\shortcatindices^{\datindex}}} \\
-%            &\quad= \frac{1}{\datdim}\sum_{\datindexin}\sum_{\catenumeratorin} -\lnof{\condprobat{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}} \\
-%            &\quad= \sum_{\catenumeratorin}\left(\frac{1}{\datdim}\sum_{\datindexin}-\lnof{\condprobat{\indexedcatvariableof{\catenumerator}^{\datindex}}{\indexedcatvariableof{\parentsof{\catenumerator}}^{\datindex}}}\right)
-%        \end{align*}
         \begin{align*}
             &\contraction{\empdistributionwith,-\lnof{\probat{\shortcatvariables}}} \\
             &\quad= \contraction{\empdistributionwith,\sum_{\catenumeratorin} -\lnof{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}}} \\
-            &\quad= \sum_{\catenumeratorin}\left(\contraction{\empdistributionwith,-\lnof{\condprobat{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}}}\right)
+            &\quad= \sum_{\catenumeratorin}\left(\contraction{\empdistributionwith,-\lnof{\condprobat{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}}}\right) \,.
         \end{align*}
 
         The minimum can found separately for each $\catenumerator$ by the minimization problem
@@ -177,21 +254,28 @@
             \contraction{\empdistribution,-\lnof{\condprobat{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}}} \\
             &\quad= \normalizationofwrt{\empdistributionwith}{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}
         \end{align*}
-        This can be verified by the first order criterion (vanishing gradients).
-    \end{frame}
+        This can be shown by the first order criterion (vanishing gradients).
 
-
-    \begin{frame}{Parameter estimation}
-
-
-        \begin{block}{Parameter estimation for Bayesian networks}
-            \begin{itemize}
-                \item The likelihood of Bayesian networks decomposes into local terms.
-                \item Best log-likelihood maximizers are the conditional probability distributions.
-            \end{itemize}
+        \begin{block}{Optimal parameters}
+            Given a directed hypergraph, the local likelihood maximizers are the conditional probability distributions of the empirical distribution
+            \begin{align*}
+                \normalizationofwrt{\empdistributionwith}{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \, .
+            \end{align*}
         \end{block}
-
     \end{frame}
+
+
+%    \begin{frame}{Parameter estimation}
+%
+%
+%        \begin{block}{Parameter estimation for Bayesian networks}
+%            \begin{itemize}
+%                \item The likelihood of Bayesian networks decomposes into local terms.
+%                \item Best log-likelihood maximizers are the conditional probability distributions.
+%            \end{itemize}
+%        \end{block}
+%
+%    \end{frame}
 
 
 \end{document}

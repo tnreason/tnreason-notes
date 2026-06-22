@@ -111,7 +111,7 @@
                     \otimes
                     \condprobat{\catvariableof{2}}{\catvariableof{1}=1}
                     =               \begin{pmatrix}
-                        0.75 \\ 0.25
+                                        0.75 \\ 0.25
                     \end{pmatrix}[\catvariableof{0}]
                     \otimes
                     \begin{pmatrix}
@@ -126,6 +126,30 @@
             \end{itemize}
             In total this shows that $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$, thus the server traffic and the alert are independent on each other conditioned on whether the server crashes.
         \end{itemize}
+    }
+    \addtask{4}{
+        The conditional independence $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$ is represented in the directed graph:
+        \stantikzpic{
+            \drawvariablenode{0}{0}{$\catvariableof{1}$}{X1}
+            \drawvariablenode{2}{-5}{$\catvariableof{2}$}{X2}
+            \drawvariablenode{-2}{-5}{$\catvariableof{0}$}{X0}
+            \draw[->-] (X1) -- (X0);
+            \draw[->-] (X1) -- (X2);
+        }
+        We get the Bayesian network by decoration of the directed hyperedges by
+        \begin{align*}
+            \probat{\catvariableof{1}}
+            &= \coloredmatrixof{0.2 \\ 0.8}{\catvariableof{1}} \\
+            \condprobat{\catvariableof{0}}{\catvariableof{1}}
+            & = \coloredmatrixof{
+                \frac{24}{29} & \frac{8}{13} \\
+                \frac{5}{29} & \frac{5}{13}
+            }{\catvariableof{0},\catvariableof{1}} \\
+            \condprobat{\catvariableof{2}}{\catvariableof{1}}
+            & = \coloredmatrixof{
+                0.9 & 0.1 \\ 0.1 & 0.9
+            }{\catvariableof{2},\catvariableof{1}} \, .
+        \end{align*}
     }
 
 \end{document}
