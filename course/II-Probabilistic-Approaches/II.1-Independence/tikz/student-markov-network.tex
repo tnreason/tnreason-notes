@@ -1,0 +1,18 @@
+\begin{tikzpicture}
+
+    \drawtextnode{1}{0.4}{$\edgeof{0}$};
+    \draw[thick] (0,0) -- (1,2/3);
+    \draw[thick] (2,0) -- (1,2/3);
+    \draw[thick] (1,2) -- (1,2/3);
+
+    \draw[thick] (2,0) -- (3,2) node[midway,right] {$\edgeof{1}$};
+    \draw[thick] (1,2) -- (-1,2) node[midway,above] {$\edgeof{2}$};
+
+    \drawvariablenode{0}{0}{$\catvariableof{D}$}{XD}
+    \drawvariablenode{2}{0}{$\catvariableof{I}$}{XI}
+    \drawvariablenode{1}{2}{$\catvariableof{G}$}{XG}
+    \drawvariablenode{3}{2}{$\catvariableof{S}$}{XS}
+    \drawvariablenode{-1}{2}{$\catvariableof{L}$}{XL}
+
+
+\end{tikzpicture}

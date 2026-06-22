@@ -1,0 +1,32 @@
+\begin{tikzpicture}
+
+    \drawtextnode{1}{0.4}{$\edgeof{0}$};
+    \draw[thick] (0,0) -- (1,2/3);
+    \draw[thick] (2,0) -- (1,2/3);
+    \draw[thick] (1,2) -- (1,2/3);
+
+    \draw[thick] (2,0) -- (3,2) node[midway,right] {$\edgeof{1}$};
+    \draw[thick] (1,2) -- (-1,2) node[midway,above] {$\edgeof{2}$};
+
+    \drawvariablenode{0}{0}{$\catvariableof{D}$}{XD}
+    \drawvariablenode{2}{0}{$\catvariableof{I}$}{XI}
+    \drawvariablenode{1}{2}{$\catvariableof{G}$}{XG}
+    \drawvariablenode{3}{2}{$\catvariableof{S}$}{XS}
+    \drawvariablenode{-1}{2}{$\catvariableof{L}$}{XL}
+
+
+    \begin{scope}[shift={(5,0)}]
+        \draw (3,2.5) ellipse (0.75 and 0.5);
+        \drawtextnode{3}{2.5}{$\{\edgeof{0}\}$}
+
+        \draw (3,2) -- (3,1.5) node[midway,right] {$\catvariableof{I},\catvariableof{G}$};
+        \draw (3,1) ellipse (0.75 and 0.5);
+        \drawtextnode{3}{1}{$\{\edgeof{1}\}$}
+
+        \draw (3,0.5) -- (3,0) node[midway,right] {$\catvariableof{G}$};
+        \draw (3,-0.5) ellipse (0.75 and 0.5);
+        \drawtextnode{3}{-0.5}{$\{\edgeof{2}\}$}
+
+    \end{scope}
+
+\end{tikzpicture}

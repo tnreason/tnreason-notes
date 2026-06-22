@@ -23,6 +23,13 @@
     \end{frame}
 
 
+    \begin{frame}{Example: Student Markov network}
+
+        \input{tikz/student-variable-elimination}
+
+    \end{frame}
+
+
     \begin{frame}{Tree width}
         Size of the largest cluster is the "bottleneck".
     \end{frame}
@@ -31,6 +38,45 @@
         Finding the best order of the variables to be contracted is $\mathrm{NP}$-hard, since related to the triangulation problem of a graph.
     \end{frame}
 
+
     \section{Approximative inference}
+
+    \begin{frame}{Approximation schemes}
+
+        Particle based:
+        \begin{itemize}
+            \item Draw samples from a distribution (or an approximation of it).
+            \item Estimate contractions based on contraction with the corresponding empirical distribution.
+        \end{itemize}
+
+        Message passing based:
+        \begin{itemize}
+            \item Ignore loops in the graph and do message-passing schemes circulating in the network.
+            \item Use converged messages as estimates of local means.
+        \end{itemize}
+
+
+    \end{frame}
+
+    \begin{frame}{Forward sampling}
+
+        Given a Bayesian network, sample iteratively the children given the parents.
+
+    \end{frame}
+
+    \begin{frame}{Markov chain monte carlo}
+
+        To sample from some hard distributions:
+        \begin{itemize}
+            \item Design a Markov chain converging to the desired distribution
+        \end{itemize}
+
+        \begin{block}{Metropolis Hastings algorithms}
+        \end{block}
+
+        Example: Gibbs sampling.
+
+    \end{frame}
+
 
 \end{document}

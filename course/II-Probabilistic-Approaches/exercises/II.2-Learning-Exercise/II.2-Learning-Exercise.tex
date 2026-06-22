@@ -1,0 +1,60 @@
+\documentclass{scrartcl}
+\input{../../../spec_files/exercise_preamble}
+
+\begin{document}
+    \exercisehead{5}{Empirical distributions and learning}{June 22, 2026}
+    \usecasebox{Umbrella}{
+        Let us observe on $10$ days states the variables
+        \begin{itemize}
+            \item Variable $\catvariableof{0}$: It rains
+            \item Variable $\catvariableof{1}$: Alice brings an umbrella
+            \item Variable $\catvariableof{2}$: Bob brings an umbrella
+        \end{itemize}
+        The observations are:
+        \begin{center}
+            \begin{tabular}{|c|ccc|}
+                \hline
+                \textbf{Day} & \textbf{Rain ($\catvariableof{0}$)} & \textbf{Alice ($\catvariableof{1}$)} & \textbf{Bob ($\catvariableof{2}$)} \\ \hline
+                0            & 0                                   & 0                                    & 0                                  \\
+                1            & 0                                   & 0                                    & 1                                  \\
+                2            & 0                                   & 1                                    & 0                                  \\
+                3            & 0                                   & 1                                    & 1                                  \\
+                4            & 1                                   & 0                                    & 0                                  \\
+                5            & 1                                   & 0                                    & 1                                  \\
+                6            & 1                                   & 1                                    & 0                                  \\
+                7            & 1                                   & 1                                    & 0                                  \\
+                8            & 1                                   & 1                                    & 1                                  \\
+                9            & 1                                   & 1                                    & 1                                  \\ \hline
+            \end{tabular}
+        \end{center}
+    }
+    \addtask{1}{
+        Consider the empirical distribution of the variables $\catvariableof{0},\catvariableof{1},\catvariableof{2}$, defined by this dataset.
+        \begin{itemize}
+            \item[(i)] Find a tensor network decomposition of the empirical distribution.
+            \item[(ii)] Describe the contraction computing the rate of the days, on which Alice brings an umbrella exactly when Bob brings an umbrella.
+            Simplify the contraction exploiting the directed notation and compute the rate.
+        \end{itemize}
+    }
+    \addtask{2}{
+        Find the conditional independencies, which hold for the variables $\catvariableof{0},\catvariableof{1},\catvariableof{2}$ with respect to the empirical distribution.
+    }
+    \addtask{3}{
+        Learn a Bayesian network by minimizing the unregularized Negative Log-Likelihood (NLL), given the empirical distribution.
+        \begin{itemize}
+            \item[(i)] Find the directed hypergraphs representing some of the conditional independencies with respect to the empirical distribution.
+            \item[(ii)] Choose one of those hypergraphs and determine the conditional probability distributions that decorate the directed hypergraph.
+        \end{itemize}
+    }
+    \addtask{4}{
+        Let us extend the dataset by day $10$, on which we observe:
+        \begin{center}
+            \begin{tabular}{|c|ccc|}
+                \hline
+                \textbf{Day} & \textbf{Rain ($\catvariableof{0}$)} & \textbf{Alice ($\catvariableof{1}$)} & \textbf{Bob ($\catvariableof{2}$)} \\ \hline
+                10            & 1                                   & 1                                    & 1                                  \\
+            \end{tabular}
+        \end{center}
+        What would be the result of task $2$ and $3$, when using the extended dataset?
+    }
+\end{document}

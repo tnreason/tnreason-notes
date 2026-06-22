@@ -105,8 +105,8 @@
 
     \begin{frame}{Decomposition into marginal distributions}
         Independence allows the decomposition of proability tensors into tensor products.
-    \par
-            {\bf Example:} The distribution of two independent variables decomposes as:
+        \par
+        {\bf Example:} The distribution of two independent variables decomposes as:
         \begin{center}
             \input{./tikz/independent-decomposition.tex}
         \end{center}
@@ -501,12 +501,77 @@
     \section{Markov networks}
 
 
-%    \begin{frame}{Problems with directed graphical models}
-%
-%        Enforcing the acyclicity of directed hypergraphs comes with problems:
-%
-%
-%    \end{frame}
+    \begin{frame}{Sometimes there is no clear order of the variables}%{Problems with directed graphical models}
+
+        \begin{minipage}{0.65\linewidth}
+            {\bf Example:}
+            Consider four students enumerated by $\catenumerator\in[4]$ and
+            \begin{itemize}
+                \item Boolean variables $\catvariableof{\catenumerator}$ whether they know the solution to a problem.
+                \item They sit next to each other in a circle and sometimes pass the solution to their neighbor.
+            \end{itemize}
+
+        \end{minipage}
+        \begin{minipage}{0.3\linewidth}
+            \stantikzpic{
+                \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+                \drawvariablenode{5}{0}{$\catvariableof{1}$}{X1}
+                \drawvariablenode{5}{-5}{$\catvariableof{2}$}{X2}
+                \drawvariablenode{0}{-5}{$\catvariableof{3}$}{X3}
+
+                \draw (X0) -- (X1) -- (X2) -- (X3) -- (X0);
+            }
+        \end{minipage}
+        \par
+        \medskip \noindent
+        We have the independencies:
+        \begin{align*}
+            \condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1},\catvariableof{3}}
+            \quad \text{and}   \quad \condindependent{\catvariableof{1}}{\catvariableof{3}}{\catvariableof{0},\catvariableof{2}}
+        \end{align*}
+        But: Ordering the students in a Bayesian network would at most capture one of these two independencies.
+
+    \end{frame}
+
+
+    \begin{frame}{Representation as a Markov network}
+
+        Let us make the neighboring students example more precise:
+        \begin{itemize}
+            \item For each pair of neighbors, we "increase" by a factor $2$ the probability that both either know or do not know the solution.
+            \item We define matrices:
+            \begin{align*}
+                \hypercoreofat{\{0,1\}}{\catvariableof{0},\catvariableof{1}}
+                =
+                \coloredmatrixof{
+                    2 & 1 \\ 1 & 2
+                }{\catvariableof{0},\catvariableof{1}}
+            \end{align*}
+            \item         We then model the distribution by a tensor network:
+            \input{tikz/neighbor-example}
+        \end{itemize}
+%        world where two neighbors either both know the solution or both not is by a factor $2$ more likely than a world where this is not the case.
+
+
+
+
+
+            {\bf Different to Bayesian networks:} Need to \emph{normalize} the distribution
+        \begin{align*}
+            \probat{\catvariableof{[4]}}
+            = \normalizationof{
+                \hypercoreof{\{0,1\}},%{\catvariableof{0},\catvariableof{1}},
+                \hypercoreof{\{1,2\}},%{\catvariableof{1},\catvariableof{2}},
+                \hypercoreof{\{2,3\}},%{\catvariableof{2},\catvariableof{3}},
+                \hypercoreof{\{0,3\}}%{\catvariableof{0},\catvariableof{3}}
+            }{\catvariableof{[4]}}
+        \end{align*}
+%        \begin{itemize}
+%            \item
+%        \end{itemize}
+
+
+    \end{frame}
 
     \begin{frame}{Undirected Graphical Models:\\
     Markov Networks}
@@ -622,65 +687,7 @@
         \begin{minipage}{0.45\linewidth}
             The corresponding hypergraph:
             \begin{center}
-                \begin{tikzpicture}
-                    \node[anchor=center] (A) at (1,0.4) {$\edgeof{0}$};
-                    \draw[thick] (0,0) -- (1,2/3);
-                    \draw[thick] (2,0) -- (1,2/3);
-                    \draw[thick] (1,2) -- (1,2/3);
-
-                    \draw[thick] (2,0) -- (3,2) node[midway,right] {$\edgeof{1}$};
-                    \draw[thick] (1,2) -- (-1,2) node[midway,above] {$\edgeof{2}$};
-
-                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (0,0) {};
-                    \node[anchor=center] (A) at (0,0) {\corelabelsize $\catvariableof{D}$};
-
-                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (2,0) {};
-                    \node[anchor=center] (A) at (2,0) {\corelabelsize $\catvariableof{I}$};
-
-                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (1,2) {};
-                    \node[anchor=center] (A) at (1,2) {\corelabelsize $\catvariableof{G}$};
-
-                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (3,2) {};
-                    \node[anchor=center] (A) at (3,2) {\corelabelsize $\catvariableof{S}$};
-
-                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (-1,2) {};
-                    \node[anchor=center] (A) at (-1,2) {\corelabelsize $\catvariableof{L}$};
-
-%                \begin{scope}[shift={(7,0)}]
-%                    \node[anchor=center] (A) at (-2,2.2) {$b)$};
-%
-%                    %\node[anchor=center] (A) at (1,0.4); % {$\edgeof{0}$};
-%                    \draw[thick] (0,0) -- (2,0);
-%                    \draw[thick] (0,0) -- (1,2);
-%                    \draw[thick] (2,0) -- (1,2);
-%
-%                    \draw[thick, dashed, rounded corners=15pt] (1,3) -- (-0.8,-0.5) -- (2.8,-0.5) -- cycle;
-%
-%                    \node (of) at (0.5,-0.25) {};
-%                    \draw[thick, dashed, rounded corners=10pt]  ($(3.25,2.5)+(of)$) -- ($(3.25,2.5)-(of)$)  -- ($(1.75,-0.5)-(of)$) -- ($(1.75,-0.5)+(of)$) -- cycle;
-%                    \draw[thick] (2,0) -- (3,2); % node[midway,right] {$\edgeof{1}$};
-%
-%                    \node (of) at (0,0.5) {};
-%                    \draw[thick, dashed, rounded corners=10pt]  ($(1.5,2)+(of)$) -- ($(1.5,2)-(of)$)  -- ($(-1.5,2)-(of)$) -- ($(-1.5,2)+(of)$) -- cycle;
-%                    \draw[thick] (1,2) -- (-1,2); % node[midway,above] {$\edgeof{2}$};
-%
-%                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (0,0) {};
-%                    \node[anchor=center] (D) at (0,0) {\corelabelsize $\catvariableof{D}$};
-%
-%                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (2,0) {};
-%                    \node[anchor=center] (I) at (2,0) {\corelabelsize $\catvariableof{I}$};
-%
-%                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (1,2) {};
-%                    \node[anchor=center] (G) at (1,2) {\corelabelsize $\catvariableof{G}$};
-%
-%                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (3,2) {};
-%                    \node[anchor=center] (S) at (3,2) {\corelabelsize $\catvariableof{S}$};
-%
-%                    \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A) at (-1,2) {};
-%                    \node[anchor=center] (L) at (-1,2) {\corelabelsize $\catvariableof{L}$};
-%
-%                \end{scope}
-                \end{tikzpicture}
+                \input{tikz/student-markov-network}
             \end{center}
         \end{minipage}
     \end{frame}

@@ -1,0 +1,52 @@
+\stantikzpic{
+
+%    \begin{scope}[shift={(-15,0)}]
+%        \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+%        \drawvariablenode{5}{0}{$\catvariableof{1}$}{X1}
+%        \drawvariablenode{5}{-5}{$\catvariableof{2}$}{X2}
+%        \drawvariablenode{0}{-5}{$\catvariableof{3}$}{X3}
+%
+%        \draw (X0) -- (X1) -- (X2) -- (X3) -- (X0);
+%    \end{scope}
+
+\drawtextnode{-15}{-2.5}{$\probat{\catvariableof{[4]}} \,\, = \,\, \frac{1}{\contraction{
+                \hypercoreof{\{0,1\}},%{\catvariableof{0},\catvariableof{1}},
+                \hypercoreof{\{1,2\}},%{\catvariableof{1},\catvariableof{2}},
+                \hypercoreof{\{2,3\}},%{\catvariableof{2},\catvariableof{3}},
+                \hypercoreof{\{0,3\}}%{\catvariableof{0},\catvariableof{3}}
+            }} \quad \cdot $}
+
+    \drawtensorblock{0}{0}{1.5}{$\hypercoreof{\{0,1\}}$}
+    \draw (1.5,0) -- (4,0);
+    \drawvariabledot{4}{0}
+    \draw (4,0) -- (5.5,0) node[midway,above] {\colorlabelsize $\catvariableof{1}$};
+    \draw (4,0) -- (4,-1.5);
+
+    \drawtensorblock{-4}{-2.5}{1.5}{$\hypercoreof{\{0,3\}}$}
+
+    \draw (-1.5,0) -- (-4,0);
+    \drawvariabledot{-4}{0}
+    \draw (-4,0) -- (-5.5,0) node[midway,above] {\colorlabelsize $\catvariableof{0}$};
+    \draw (-4,0) -- (-4,-1.5);
+
+    \drawtensorblock{4}{-2.5}{1.5}{$\hypercoreof{\{1,2\}}$}
+
+
+    \draw (-1.5,-5) -- (-4,-5);
+    \drawvariabledot{-4}{-5}
+    \draw (-4,-5) -- (-5.5,-5) node[midway,above] {\colorlabelsize $\catvariableof{3}$};
+    \draw (-4,-5) -- (-4,-3.5);
+
+
+    \drawtensorblock{0}{-5}{1.5}{$\hypercoreof{\{2,3\}}$}
+
+
+    \draw (1.5,-5) -- (4,-5);
+    \drawvariabledot{4}{-5}
+    \draw (4,-5) -- (5.5,-5) node[midway,above] {\colorlabelsize $\catvariableof{2}$};
+    \draw (4,-5) -- (4,-3.5);
+
+
+
+
+}
