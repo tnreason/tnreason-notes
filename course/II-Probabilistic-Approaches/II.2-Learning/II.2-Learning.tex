@@ -20,9 +20,9 @@
 
 
     \begin{frame}{How to select a model given data?}
-        Let us consider the typical \emph{learning problem}:
+        Let us consider a typical \emph{learning problem}:
         \begin{itemize}
-            \item The distribution $\probwith$ of variables $\shortcatvariables$ is unknown
+            \item The distribution $\probwith$ of variables $\shortcatvariables$ is unknown.
             \item We observe $\datdim$ samples
             \begin{align*}
                 \shortcatindices^{\datindex} = (\catindexof{0}^{\datindex},\ldots,\catindexof{\catorder-1}^{\datindex})
@@ -30,18 +30,15 @@
             enumerated by $\datindexin$.
         \end{itemize}
 
-        We assume that each sample $\shortcatindices^{\datindex}$ is drawn
+        We assume that each sample $\shortcatindices^{\datindex}$ is drawn \emph{i.i.d.}, which means
         \begin{itemize}
             \item \emph{i}ndependently from each other and
             \item \emph{i}dentically \emph{d}istributed by a distribution $\probwith$.
         \end{itemize}
-        This assumption is abbreviated by \emph{i.i.d.}.
-        \\
-        The probability of drawing a dataset $\shortcatvariables^{[\datdim]}$ from a distribution $\probwith$ is then
+        The probability of drawing a dataset $\shortcatvariables^{[\datdim]}$ from a distribution $\probwith$ is then the \emph{likelihood}
         \begin{align*}
             \prod_{\datindexin} \probat{\shortcatvariables=\shortcatindices^{\datindex}} \, .
         \end{align*}
-        This is the \emph{likelihood} of $\probwith$.
     \end{frame}
 
 
@@ -107,14 +104,14 @@
             -\lnof{1-p} \cdot \frac{(\datdim-\datdim_{\mathrm{h}})}{\datdim}
             - \lnof{p} \cdot \frac{\datdim_{\mathrm{h}}}{\datdim} \, .
         \end{align*}
-        We find the minimum by differentiating
+        We find the optimum by differentiating
         \begin{align*}
             0 &= \frac{\partial}{\partial p}
             \left[
                 -\lnof{1-p} \cdot \frac{(\datdim-\datdim_{\mathrm{h}})}{\datdim}
                 - \lnof{p} \cdot \frac{\datdim_{\mathrm{h}}}{\datdim}
             \right]
-            &= \frac{\datdim-\datdim_{\mathrm{h}}}{\datdim\cdot (1-p)} - \frac{\datdim_{\mathrm{h}}}{\datdim \cdot p} \, .
+            &= \frac{(\datdim-\datdim_{\mathrm{h}})}{\datdim\cdot (1-p)} - \frac{\datdim_{\mathrm{h}}}{\datdim \cdot p} \, .
         \end{align*}
         Thus, the optimum is $p = \frac{\datdim_{\mathrm{h}}}{\datdim}$.
 
@@ -237,13 +234,14 @@
         \begin{align*}
             &\contraction{\empdistributionwith,-\lnof{\probat{\shortcatvariables}}} \\
             &\quad= \contraction{\empdistributionwith,\sum_{\catenumeratorin} -\lnof{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}}} \\
-            &\quad= \sum_{\catenumeratorin}\left(\contraction{\empdistributionwith,-\lnof{\condprobat{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}}}\right) \,.
+            &\quad= \sum_{\catenumeratorin}\left(\contraction{\empdistributionwith,-\lnof{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}}}\right) \,.
         \end{align*}
 
         The minimum can found separately for each $\catenumerator$ by the minimization problem
         \begin{align*}
             \argmin_{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}}
-            \frac{1}{\datdim}\sum_{\datindexin}-\lnof{\condprobat{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}} \, .
+            \contraction{\empdistributionwith,-\lnof{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}}} \, .
+            %\frac{1}{\datdim}\sum_{\datindexin}-\lnof{\condprobat{\indexedcatvariableof{\catenumerator}^{\datindex}}{\indexedcatvariableof{\parentsof{\catenumerator}}^{\datindex}}} \, .
         \end{align*}
     \end{frame}
 
@@ -251,15 +249,16 @@
         The optima for each conditional distribution is taken at
         \begin{align*}
             &\argmin_{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}}
-            \contraction{\empdistribution,-\lnof{\condprobat{\indexedcatvariableof{\catenumerator}}{\indexedcatvariableof{\parentsof{\catenumerator}}}}} \\
-            &\quad= \normalizationofwrt{\empdistributionwith}{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}
+            \contraction{\empdistributionwith,-\lnof{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}}} \\
+            &\quad=\empdistributionat{\catvariableof{\catenumerator}|\catvariableof{\parentsof{\catenumerator}}} \, .
         \end{align*}
         This can be shown by the first order criterion (vanishing gradients).
 
         \begin{block}{Optimal parameters}
             Given a directed hypergraph, the local likelihood maximizers are the conditional probability distributions of the empirical distribution
             \begin{align*}
-                \normalizationofwrt{\empdistributionwith}{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \, .
+                \empdistributionat{\catvariableof{\catenumerator}|\catvariableof{\parentsof{\catenumerator}}}
+%                \normalizationofwrt{\empdistributionwith}{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \, .
             \end{align*}
         \end{block}
     \end{frame}
