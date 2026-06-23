@@ -31,20 +31,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{tikz}
 
-\input{../../macros/general_macros.tex}
-\input{../../macros/tc_macros.tex}
-\input{../../macros/tikz_macros.tex}
-\input{../../macros/organization_macros.tex}
-\input{../../macros/implementation_macros.tex}
+
+
+%\input{../../macros/general_macros.tex}
+%\input{../../macros/tc_macros.tex}
+%\input{../../macros/tikz_macros.tex}
+%\input{../../macros/organization_macros.tex}
+%\input{../../macros/implementation_macros.tex}
 
 %% Adjustment for compilation
 \input{../style-files/book-adjustments}
+
+\subimport{../../macros/}{all-macros.tex}
+%\input{../../macros/}
 
 \begin{document}
     \frontmatter
     \tableofcontents
     \mainmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \subimport{../partI/2-first-order-logics/}{first-order-logics.tex}
+    \subimport{../partI/4-causality}{causality.tex}
     \bibliographystyle{plain}
     \bibliography{../../references.bib}
 \end{document}

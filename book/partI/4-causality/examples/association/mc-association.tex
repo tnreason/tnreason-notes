@@ -1,0 +1,89 @@
+\begin{example}[Markov chain]\label{exa:mcAssociation}
+
+    Markov chains can be parametrized in two directions:
+
+    \stantikzpic{
+
+        \drawtextnode{2}{3}{a) Past-to-future representation:}
+
+% Loop to draw the 4 nodes and their sequential connections
+        \foreach \i [
+            evaluate=\i as \lab using int(\i-2),
+            evaluate=\i as \x using int(\i*5 + 1),
+            evaluate=\i as \nextx using int((\i+1)*5 + 1),
+            evaluate=\i as \nextidx using int(\i+1)] in {0, 1, 2, 3,4} {
+
+            % Draw the current node
+            \ifnum
+                \i = 2
+                \drawvariablenode{\x}{0}{$\catvariableof{\catenumerator}$}{X\i}
+            \fi
+            \ifnum
+                \i < 2
+                \drawvariablenode{\x}{0}{$\catvariableof{\catenumerator\lab}$}{X\i}
+            \fi
+            \ifnum
+                \i > 2
+                \drawvariablenode{\x}{0}{$\catvariableof{\catenumerator+\lab}$}{X\i}
+            \fi
+
+            % Draw the connecting arrow to the next node / coordinate
+            \ifnum
+                \i = 0
+                \draw[->-] (-4,0) -- (X\i);
+            \fi
+            \ifnum
+                \i=4
+                \draw[->-] (X\i) -- (25,0);
+            \else
+                \draw[->-] (X\i) -- (\nextx,0); % Pre-calculates target x to avoid missing node errors
+            \fi
+        }
+
+% Draw the final ellipsis node
+        \drawtextnode{26}{0}{$\cdots$}
+        \drawtextnode{-5}{0}{$\cdots$}
+
+        \begin{scope}[shift={(0,-7)}]
+
+            \drawtextnode{2}{3}{a) Future-to-past representation:}
+
+            \foreach \i [
+                evaluate=\i as \lab using int(\i-2),
+                evaluate=\i as \x using int(\i*5 + 1),
+                evaluate=\i as \nextx using int((\i+1)*5 + 1),
+                evaluate=\i as \nextidx using int(\i+1)] in {0, 1, 2, 3,4} {
+
+                % Draw the current node
+                \ifnum
+                    \i = 2
+                    \drawvariablenode{\x}{0}{$\catvariableof{\catenumerator}$}{X\i}
+                \fi
+                \ifnum
+                    \i < 2
+                    \drawvariablenode{\x}{0}{$\catvariableof{\catenumerator\lab}$}{X\i}
+                \fi
+                \ifnum
+                    \i > 2
+                    \drawvariablenode{\x}{0}{$\catvariableof{\catenumerator+\lab}$}{X\i}
+                \fi
+
+                % Draw the connecting arrow to the next node / coordinate
+                \ifnum
+                    \i = 0
+                    \draw[->-] (X\i) -- (-4,0);
+                \fi
+                \ifnum
+                    \i=4
+                    \draw[->-] (25,0) -- (X\i);
+                \else
+                    \draw[->-] (\nextx,0) -- (X\i); % Pre-calculates target x to avoid missing node errors
+                \fi
+            }
+
+            \drawtextnode{26}{0}{$\cdots$}
+            \drawtextnode{-5}{0}{$\cdots$}
+        \end{scope}
+    }
+
+\end{example}

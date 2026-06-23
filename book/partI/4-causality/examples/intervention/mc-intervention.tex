@@ -1,0 +1,174 @@
+\begin{example}[Intervention on a Markov Chain]\label{exa:mcIntervention}
+
+    Let us recall the ambiguity of parameterizing a Markov Chain in \exaref{exa:mcAssociation}, where we observed that both past to future and future to past representations result in Bayesian Networks of similar sparsity.
+    Adding do variables to any of these parametrization will result in different interventions (see \figref{fig:mcDoVariableRep}) and thus resolves the ambiguity.
+
+    Intervening on a variable $\catvariableof{\catenumerator}$ and putting it into the state $\catindexof{\catenumerator}$ is done by contracting with
+    \begin{align*}
+        \onehotmapofat{\catindexof{\catenumerator}}{\dovariableof{\catenumerator}} \, .
+    \end{align*}
+    We use that since $\catindexof{\catenumerator}\in\catspaceof{\catenumerator}$
+    \begin{align*}
+        \contractionof{\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1},\dovariableof{\catenumerator}}, \onehotmapofat{\catindexof{\catenumerator}}{\dovariableof{\catenumerator}} }{
+            \catvariableof{\catenumerator},\catvariableof{\catenumerator-1}
+        }
+        = \onesat{\catvariableof{\catenumerator-1}}
+        \otimes  \onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}
+        %\otimes  \onehotmapofat{\catindexof{\catenumerator}}{\dovariableof{\catenumerator}}
+    \end{align*}
+    and have that the intervention effectively restarts the Markov Chain at the variable $\catvariableof{\catenumerator}$ (see \figref{fig:mcInterventionExample}a).
+    When we choose the causal augmentation of the future-to-past representation instead, the effect would be differently since the restart would be towards the past (see \figref{fig:mcInterventionExample}b).
+
+
+    \begin{figure}
+        \stantikzpic{
+            \drawvariablenode{0}{8}{$\dovariableof{\catenumerator-1}$}{DKmin1}
+            \drawvariablenode{-3}{5}{$\catvariableof{\catenumerator-1}$}{XKmin1}
+            \drawvariablenode{0}{3}{$\dovariableof{\catenumerator}$}{DK}
+            \drawvariablenode{-3}{0}{$\catvariableof{\catenumerator}$}{XK}
+            \drawvariablenode{0}{-2}{$\dovariableof{\catenumerator+1}$}{DKplus1}
+            \drawvariablenode{-3}{-5}{$\catvariableof{\catenumerator+1}$}{XKplus1}
+
+
+            \draw [->-] (DKmin1)-- (-3,7);
+            \draw [->-] (-3,7) -- (XKmin1);
+            \draw [->-] (DK)-- (-3,2);
+            \draw [->-] (-3,2) -- (XK);
+            \draw [->-] (DKplus1) -- (-3,-3);
+            \draw [->-] (-3,-3) -- (XKplus1);
+            \draw [->-] (XKmin1) -- (-3,2); % (XK);
+            \draw [->-] (XK)-- (XKplus1);
+
+
+            \drawtextnode{-3}{9}{\tiny $\vdots$}
+            \draw [-<-] (-3,7) -- ++ (0,1);
+            \draw [->-] (XKplus1) -- ++ (0,-3);
+
+            \drawtextnode{-3}{-8.5}{\tiny $\vdots$}
+
+
+            \begin{scope}[shift={(10,0)}]
+
+                \draw[->-] (-2,10) -- (-2,7) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-2}$};
+                \draw[->-] (2,8.5) -- (2,7) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator-1}$};
+                \drawtensorblock{0}{6}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator-1}}{\catvariableof{\catenumerator-2},\dovariableof{\catenumerator-1}}$}
+
+                \draw[->-] (-2,5) -- (-2,2) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-1}$};
+                \draw[->-] (2,3.5) -- (2,2) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator}$};
+                \drawtensorblock{0}{1}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1},\dovariableof{\catenumerator}}$}
+
+                \draw[->-] (-2,0) -- (-2,-3) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator}$};
+                \draw[->-] (2,-1.5) -- (2,-3) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator+1}$};
+                \drawtensorblock{0}{-4}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator+1}}{\catvariableof{\catenumerator},\dovariableof{\catenumerator+1}}$}
+
+                \draw[->-] (-2,-5) -- (-2,-8) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator+1}$};
+            \end{scope}
+        }
+        \caption{Extension of a Markov Chain in the past-to-future representation by do variables.}\label{fig:mcDoVariableRep}
+    \end{figure}
+
+
+    \begin{figure}[h]
+        \stantikzpic{
+            \drawtextnode{-4}{9}{$a)$}
+            \draw[->-] (-2,10) -- (-2,7) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-2}$};
+            \draw[->-] (2,8.5) -- (2,7) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator-1}$};
+            \drawtensorblock{0}{6}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator-1}}{\catvariableof{\catenumerator-2},\dovariableof{\catenumerator-1}}$}
+
+            \draw[->-] (-2,5) -- (-2,2) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-1}$};
+            \draw[->-] (2,3.5) -- (2,2) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator}$};
+            \drawtensorblock{0}{1}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1},\dovariableof{\catenumerator}}$}
+
+            \drawvariabledot{2}{3.5}
+            \draw[->-] (5,3.5) -- (2,3.5);
+            \drawsquaretensor{6}{3.5}{$\onehotmapof{\catindexof{\catenumerator}}$}
+
+            \draw[->-] (-2,0) -- (-2,-3) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator}$};
+
+            \draw[->-] (2,-1.5) -- (2,-3) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator+1}$};
+            \drawtensorblock{0}{-4}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator+1}}{\catvariableof{\catenumerator},\dovariableof{\catenumerator+1}}$}
+
+            \draw[->-] (-2,-5) -- (-2,-8) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator+1}$};
+
+            \drawtextnode{7.5}{1}{${=}$}
+
+            \begin{scope}[shift={(12,0)}]
+
+                \draw[->-] (-2,10) -- (-2,7) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-2}$};
+                \draw[->-] (2,8.5) -- (2,7) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator-1}$};
+
+
+                \drawtensorblock{0}{6}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator-1}}{\catvariableof{\catenumerator-2},\dovariableof{\catenumerator-1}}$}
+
+
+                \draw[->-] (-2,5) -- (-2,3.5) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-1}$};
+                \drawsquaretensor{-2}{2.5}{$\ones$}
+                \drawsquaretensor{-2}{-0.5}{$\onehotmapof{\catindexof{\catenumerator}}$}
+                \draw[->-] (-2,-1.5) -- (-2,-3) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator}$};
+
+                \draw[->-] (2,-1.5) -- (2,-3) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator+1}$};
+                \drawtensorblock{0}{-4}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator+1}}{\catvariableof{\catenumerator},\dovariableof{\catenumerator+1}}$}
+
+                \draw[->-] (-2,-5) -- (-2,-8) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator+1}$};
+
+            \end{scope}
+
+
+            \begin{scope}[shift={(25,0)}]
+
+
+                \drawtextnode{-4}{9}{$b)$}
+                \draw[-<-] (-2,10) -- (-2,7) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-2}$};
+                \draw[->-] (2,3.5) -- (2,5) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator-2}$};
+                \drawtensorblock{0}{6}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator-2}}{\catvariableof{\catenumerator-1},\dovariableof{\catenumerator-1}}$}
+
+                \draw[-<-] (-2,5) -- (-2,2) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-1}$};
+                \draw[->-] (2,-1.5) -- (2,0) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator-1}$};
+                \drawtensorblock{0}{1}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator-1}}{\catvariableof{\catenumerator},\dovariableof{\catenumerator}}$}
+
+                \draw[-<-] (-2,0) -- (-2,-3) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator}$};
+
+                \draw[->-] (2,-6.5) -- (2,-5) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator}$};
+                \drawvariabledot{2}{-6.5}
+                \draw[->-] (5,-6.5) -- (2,-6.5);
+                \drawsquaretensor{6}{-6.5}{$\onehotmapof{\catindexof{\catenumerator}}$}
+
+                \drawtensorblock{0}{-4}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator+1},\dovariableof{\catenumerator+1}}$}
+
+                \draw[-<-] (-2,-5) -- (-2,-8) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator+1}$};
+
+                \drawtextnode{6}{1}{${=}$}
+
+                \begin{scope}[shift={(12,0)}]
+
+                    \draw[-<-] (-2,10) -- (-2,7) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-2}$};
+                    \draw[->-] (2,3.5) -- (2,5) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator-2}$};
+                    \drawtensorblock{0}{6}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator-2}}{\catvariableof{\catenumerator-1},\dovariableof{\catenumerator-1}}$}
+
+                    \draw[-<-] (-2,5) -- (-2,2) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-1}$};
+                    \draw[->-] (2,-1.5) -- (2,0) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator-1}$};
+                    \drawtensorblock{0}{1}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator-1}}{\catvariableof{\catenumerator},\dovariableof{\catenumerator}}$}
+
+                    \draw[-<-] (-2,0) -- (-2,-1.5) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator}$};
+
+                    \drawsquaretensor{-2}{-2.5}{$\onehotmapof{\catindexof{\catenumerator}}$}
+
+                    \drawsquaretensor{-2}{-5.5}{$\ones$}
+
+                    %\drawtensorblock{0}{-4}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator+1},\dovariableof{\catenumerator+1}}$}
+
+                    \draw[-<-] (-2,-6.5) -- (-2,-8) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator+1}$};
+
+                \end{scope}
+
+            \end{scope}
+
+        }
+        \caption{Effect of intervention on a variable $\dovariableof{\catenumerator}$:
+        Restarting the Markov chain at the variable $\catvariableof{\catenumerator}$ in state $\catindexof{\catenumerator}$.
+        The effect differs between the past-to-future parameterization a) and the future-to-past parameterization b).
+        }
+    \end{figure}\label{fig:mcInterventionExample}
+
+
+\end{example}
