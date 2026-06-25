@@ -1,0 +1,58 @@
+\begin{example}[Response variables for a random walk]\label{exa:rwResponse}
+
+    Let investigate a specific example of a Markov chain, namely a random walk on the set $[\catdim]$.
+    With a probability $p\in[0,0.5]$ the
+
+    \begin{align*}
+        \condprobat{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1}}
+        =& p \cdot \sum_{\catindex\in[\catdim]} \onehotmapofat{\catindex-1}{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\catindex}{\catvariableof{\catenumerator-1}} \\
+        &+ (1-2p) \cdot \sum_{\catindex\in[\catdim]} \onehotmapofat{\catindex}{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\catindex}{\catvariableof{\catenumerator-1}} \\
+        &+ p \cdot \sum_{\catindex\in[\catdim]} \onehotmapofat{\catindex+1}{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\catindex}{\catvariableof{\catenumerator-1}}
+    \end{align*}
+    Here we use the summation modulo $\catdim$, that is $0-1=\catdim-1$ and $\catdim-1+1=0$.
+
+    We introduce to each $\catenumeratorin$ a response variable $\selvariableof{\catenumerator}$ with dimension $3$
+    \begin{align*}
+        \probat{\selvariableof{\catenumerator}}
+        = \coloredmatrixof{p \\ 1-2p \\ p}{\selvariableof{\catenumerator}}
+    \end{align*}
+    where the zeroth coordinate is interpreted as the move to the next lower state, the first as staying at the position and the second as moving to the next larger state.
+
+    This interpretation is encoded in the function
+    \begin{align*}
+        \exfunctionof{\atomenumerator}(\catindexof{\catenumerator-1},\selindexof{\catenumerator})
+        =
+        \begin{cases}
+            \catindexof{\catenumerator-1}-1 & \ifspace \selindexof{\catenumerator}=0 \\
+            \catindexof{\catenumerator-1} & \ifspace \selindexof{\catenumerator}=1 \\
+            \catindexof{\catenumerator-1}+1 & \ifspace \selindexof{\catenumerator}=2
+        \end{cases}
+    \end{align*}
+    which has the basis encoding
+    \begin{align*}
+        \bencodingofat{\exfunctionof{\atomenumerator}}{
+            \catvariableof{\catenumerator}
+        }[\catvariableof{\catenumerator-1},\selvariableof{\catenumerator}]
+        =& \left(\sum_{\catindex\in[\catdim]} \onehotmapofat{\catindex-1}{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\catindex}{\catvariableof{\catenumerator-1}}\right) \otimes \onehotmapofat{0}{\selvariableof{\catenumerator}} \\
+        &+ \left(\sum_{\catindex\in[\catdim]} \onehotmapofat{\catindex}{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\catindex}{\catvariableof{\catenumerator-1}}\right) \otimes \onehotmapofat{1}{\selvariableof{\catenumerator}} \\
+        &+ \left(\sum_{\catindex\in[\catdim]} \onehotmapofat{\catindex+1}{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\catindex}{\catvariableof{\catenumerator-1}} \right) \otimes \onehotmapofat{2}{\selvariableof{\catenumerator}} \, .
+    \end{align*}
+
+    By construction we have the decomposition
+    \stantikzpic{
+        \drawtdwire{0}{3}{$\catvariableof{\catenumerator}$}
+        \drawtensorblock{0}{0}{3}{$\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1}}$}
+        \drawtdwire{0}{-1}{$\catvariableof{\catenumerator-1}$}
+
+        \drawtextnode{5}{0}{${=}$}
+        \begin{scope}[shift={(10,0)}]
+            \drawtdwire{0}{3}{$\catvariableof{\catenumerator}$}
+            \drawtensorblock{0}{0}{3}{$\bencodingof{\exfunctionof{\atomenumerator}}$}
+            \drawtdwire{0}{-1}{$\catvariableof{\catenumerator-1}$}
+            \drawldwire{3}{0}{$\selvariableof{\catenumerator}$}
+            \drawtensorblock{7}{0}{2}{$\probat{\selvariableof{\catenumerator}}$}
+        \end{scope}
+        \drawtextnode{20}{-2}{${.}$}
+    }
+
+\end{example}

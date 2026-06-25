@@ -1,0 +1,22 @@
+\stantikzpic{
+        \drawvariablenode{-3}{-3}{$\dovariableof{0}$}{D0}
+
+        \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+        \coordinate (E0) at ($(X0) - (0,2)$);
+
+        \drawvariablenode{10}{4}{$\catvariableof{1}$}{X1}
+        \coordinate (E1) at ($(X1) - (1,2)$);
+
+        \drawvariablenode{5}{2}{$\catvariableof{M}$}{M}
+        \drawvariablenode{5}{-3}{$\catvariableof{U}$}{U}
+
+        \draw[->-] (D0) -- (E0);
+        \draw[->-] (U) -- (E0);
+        \draw[->-] (E0) -- (X0);
+
+        \draw[->-] (X0) -- (M);
+
+        \draw[->-] (M) -- (E1);
+        \draw[->-] (U) -- (E1);
+        \draw[->-] (E1) -- (X1);
+}

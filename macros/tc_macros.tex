@@ -6,15 +6,22 @@
 \end{pmatrix}}
 
 
-
 %% ENCODING SCHEMES: Coordinate, basis, selection
 \newcommand{\cencodingof}[1]{\chi^{#1}}
 \newcommand{\cencodingofat}[2]{\cencodingof{#1}\left[#2\right]}
 \newcommand{\cencodingwith}{\cencodingofat{\exfunction}{\shortcatvariables}}
 
 \newcommand{\bencodingof}[1]{\beta^{#1}}
-\newcommand{\bencodingofat}[2]{\bencodingof{#1}\left[#2\right]}
+%\newcommand{\bencodingofat}[2]{\bencodingof{#1}\left[#2\right]}
 \newcommand{\bencodingwith}{\bencodingofat{\exfunction}{\headvariableof{\exfunction},\shortcatvariables}}
+
+\NewDocumentCommand{\bencodingofat}{m m o}{
+    \IfValueTF{#3}{%
+        \bencodingof{#1}\left[#2\middle|#3\right]
+    }{%
+        \bencodingof{#1}\left[#2\right]
+    }%
+}
 
 \newcommand{\sencodingof}[1]{\sigma^{#1}}
 \newcommand{\sencodingofat}[2]{\sencodingof{#1}\left[#2\right]}
@@ -25,9 +32,6 @@
 
 \newcommand{\brepresentationof}[1]{\tau^{#1}}
 \newcommand{\brepresentationofat}[2]{\brepresentationof{#1}\left[#2\right]}
-
-
-
 
 
 % Missing: \omega (weights)
@@ -47,7 +51,6 @@
 \newcommand{\cansof}[1]{\Lambda^{#1}}
 \newcommand{\maxtrivcansof}[1]{\Lambda^{#1,\maxgraph,\trivbm}}
 \newcommand{\eltrivcansof}[1]{\Lambda^{#1,\elformat,\trivbm}}
-
 
 
 %% Cores

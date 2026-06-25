@@ -74,14 +74,24 @@
     \draw[fill] (#1,#2) circle (\dotsize);
 }
 
-% vertical directed wire
+% top directed wire
 \newcommand{\drawtdwire}[3]{
     \draw[->-] (#1,#2-2) -- (#1,#2) node[midway,right] {\colorlabelsize #3};
 }
+\newcommand{\drawddwire}[3]{
+    \draw[->-] (#1,#2+2) -- (#1,#2) node[midway,right] {\colorlabelsize #3};
+}
+\newcommand{\drawrdwire}[3]{
+    \draw[->-] (#1-2,#2) -- (#1,#2) node[midway,above] {\colorlabelsize #3};
+}
+\newcommand{\drawldwire}[3]{
+    \draw[->-] (#1+2,#2) -- (#1,#2) node[midway,above] {\colorlabelsize #3};
+}
+
+% use rdwire instead
 \newcommand{\drawhdwire}[3]{
     \draw[->-] (#1-2,#2) -- (#1,#2) node[midway,above] {\colorlabelsize #3};
 }
-
 
 \newcommand{\drawvectormark}[2]{
     \draw[black, line width=0.6pt] (#1,#2) ++(-0.24,0.24) -- ++(0.48,-0.48);

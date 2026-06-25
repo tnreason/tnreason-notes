@@ -111,11 +111,13 @@ An example for a simplification is given by the randomized controlled trial.
 More general than in the randomized controlled trial we have to deal with confounding variables.
 The Backdoor Criterion and the Frontdoor Criterion exploit mediator variables $\catvariableof{M}$, which are also observable and block certain causal paths to unobserved confounding variables $\catvariableof{U}$.
 
-\begin{definition}
+\begin{definition}\label{def:backdoorCriterion}
     Let there be a directed acyclic hypergraph, such that $\catvariableof{0}$ is topologically ordered before $\catvariableof{1}$.
     A backdoor path is a path through the hypergraph, such that the first and the second node in the path are in the outgoing and the incoming nodes of a hyperedge.
     If a variable from a set of variables $\catvariableof{M}$ is contained in every backdoor path from $\catvariableof{0}$ to $\catvariableof{1}$, then $\catvariableof{M}$ satisfies the backdoor criterion with respect to $\catvariableof{0}$ and $\catvariableof{1}$.
 \end{definition}
+
+See \figref{fig:backdoorCriterion} for a typical hypergraph where $\catvariableof{M}$ satisfies the backdoor criterion.
 
 \begin{lemma}\label{lem:bdCriterionMediatorCond}
     When $\catvariableof{M}$ satisfies the backdoor criterion for $\catvariableof{0}$ and $\catvariableof{1}$, and for some $\catindexofin{M},\catindexofin{0}$ we have $\probat{\indexedcatvariableof{0},\indexedcatvariableof{M}\neq 0}$ then
@@ -130,7 +132,7 @@ The Backdoor Criterion and the Frontdoor Criterion exploit mediator variables $\
 %    \end{align*}
 \end{lemma}
 \begin{proof}
-    %To show the first assertions,
+        %To show the first assertions,
     We compare the contractions $\probat{\catvariableof{1},\indexedcatvariableof{0},\indexedcatvariableof{M}}$ and  $\probofat{\causalsymbol}{\catvariableof{1},\dovariableof{0}=\catindexof{0},\indexedcatvariableof{M}}$, and notice that both differ only in a factor.
     Whenever $\probat{\indexedcatvariableof{0},\indexedcatvariableof{M}}\neq 0$ the factor does not vanish.
     After normalization with $\catvariableof{0}$ and $\catvariableof{M}$ incoming, the tensors are therefore equivalent.
@@ -186,10 +188,8 @@ The Backdoor Criterion and the Frontdoor Criterion exploit mediator variables $\
 \end{proof}
 
 \begin{figure}[t]
-    \begin{center}
-        \input{tikz_pics/backdoor_criterion}
-    \end{center}
-    \caption{Causal graph for the Backdoor Criterion.
+    \input{tikz/intervention/backdoor-criterion}
+    \caption{Causal graph for the Backdoor Criterion (see \defref{def:backdoorCriterion}).
     a) The mediator variable $\catvariableof{M}$ blocks any backdoor path from $\catvariableof{0}$ to $\catvariableof{1}$, potentially through a confounding variable $\catvariableof{U}$.
     b) The effect of the intervention on $\catvariableof{0}$ reduces the Bayesian network effectively to the shown subgraph.}
     \label{fig:backdoorCriterion}
@@ -242,9 +242,7 @@ The Backdoor Criterion and the Frontdoor Criterion exploit mediator variables $\
 
 
 \begin{figure}[t]
-    \begin{center}
-        \input{tikz_pics/frontdoor_criterion}
-    \end{center}
-    \caption{Causal graph for the Frontdoor Criterion.}
+    \input{tikz/intervention/frontdoor-criterion}
+    \caption{Typical hypergraph, where $\catvariableof{M}$ satisfies the frontdoor criterion with respect to $\catvariableof{0}$ and $\catvariableof{1}$.}
     \label{fig:frontdoorCriterion}
 \end{figure}
