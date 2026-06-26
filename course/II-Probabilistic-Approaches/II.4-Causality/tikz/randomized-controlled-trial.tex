@@ -1,0 +1,46 @@
+\stantikzpic{
+
+    %\drawtextnode{-9}{0}{$a)$}
+    \begin{scope}[shift={(-2,-2)}]
+
+        \drawvariablenode{0}{0}{$\catvariableof{O}$}{XO}
+        \drawvariablenode{-5}{-5}{$\dovariableof{T}$}{DT}
+        \drawvariablenode{-2}{-5}{$\catvariableof{T}$}{XT}
+        \drawvariablenode{2}{-5}{$\catvariableof{C}$}{XC}
+
+        \draw[->-] (DT) -- (XT);
+
+        \draw[->-] (XT) -- (0,-2);
+        \draw[->-] (0,-2) -- (XO);
+        \draw[->-] (XC) -- (0,-2);
+
+    \end{scope}
+
+
+   % \drawtextnode{10}{0}{$b)$}
+    \begin{scope}[shift={(13,0)}]
+        \drawtdwire{0}{0}{$\catvariableof{0}$}
+        \drawtensorblock{0}{-3}{3}{$\condprobat{\catvariableof{O}}{\catvariableof{T},\catvariableof{C}}$}
+
+        \drawtdwire{-2}{-4}{$\catvariableof{T}$}
+        \drawtensorblock{-2}{-7}{3}{$\condprobat{\catvariableof{T}}{\dovariableof{T}}$}
+        \drawhdwire{-5}{-7}{$\dovariableof{T}$}
+        \drawsquaretensor{-8}{-7}{$\onehotmapof{\catindexof{T}}$}
+
+        \drawtdwire{2.5}{-4}{$\catvariableof{C}$}
+        \drawtensorblock{3}{-7}{1.5}{$\probat{\catvariableof{C}}$}
+%                \drawvariabledot{2}{-6}
+    \end{scope}
+
+    \drawtextnode{18}{-5}{${=}$}
+
+    \begin{scope}[shift={(20,0)}]
+        \drawtdwire{0}{0}{$\catvariableof{0}$}
+        \drawtensorblock{0}{-3}{2.5}{$\condprobat{\catvariableof{O}}{\catvariableof{T}}$}
+        \drawtdwire{0}{-4}{$\catvariableof{T}$}
+        \drawsquaretensor{0}{-7}{$\onehotmapof{\catindexof{T}}$}
+        %\drawtdwire{2}{-4}{$\catvariableof{C}$}
+        %\drawvariabledot{2}{-6}
+    \end{scope}
+
+}

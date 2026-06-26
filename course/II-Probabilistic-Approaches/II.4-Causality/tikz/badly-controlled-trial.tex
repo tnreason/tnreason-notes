@@ -1,0 +1,60 @@
+\stantikzpic{
+%\drawtextnode{-9}{0}{$a)$}
+    \begin{scope}[shift={(2,-2)}]
+
+        \drawvariablenode{-1}{0}{$\catvariableof{O}$}{XO}
+        \drawvariablenode{-5}{-6}{$\dovariableof{T}$}{DT}
+        \drawvariablenode{-3}{-3}{$\catvariableof{T}$}{XT}
+        \drawvariablenode{-1}{-6}{$\catvariableof{C}$}{XC}
+
+        \draw[->-] (DT) -- (-3,-5);
+        \draw[->-] (-3,-5) -- (XT);
+        \draw[->-] (XC) -- (-3,-5);
+
+        \draw[->-] (XT) -- (-1,-2);
+        \draw[->-] (-1,-2) -- (XO);
+        \draw[->-] (XC) -- (-1,-2);
+
+    \end{scope}
+
+
+    \begin{scope}[shift={(13,0)}]
+        \drawtdwire{0}{0}{$\catvariableof{0}$}
+        \drawtensorblock{0}{-3}{3}{$\condprobat{\catvariableof{O}}{\catvariableof{T},\catvariableof{C}}$}
+
+        \drawtdwire{-2}{-4}{$\catvariableof{T}$}
+        \drawtensorblock{-2}{-7}{3}{$\condprobat{\catvariableof{T}}{\catvariableof{C},\dovariableof{T}}$}
+        \drawhdwire{-5}{-7}{$\dovariableof{T}$}
+        \drawsquaretensor{-8}{-7}{$\onehotmapof{\catindexof{T}}$}
+
+        \drawtdwire{2}{-4}{$\catvariableof{C}$}
+        \draw  (2,-10) -- (2,-6);
+        \drawvariabledot{2}{-10}
+        \draw [->-] (2,-11) -- (2,-10);
+        \draw [->-] (2,-10) to [bend right=-30] (-2,-8);
+        \drawtensorblock{2}{-12}{1.5}{$\probat{\catvariableof{C}}$}
+
+
+    \end{scope}
+
+    \drawtextnode{17}{-5}{${=}$}
+
+    \begin{scope}[shift={(20,0)}]
+        \drawtdwire{0}{0}{$\catvariableof{0}$}
+        \drawtensorblock{0}{-3}{3}{$\condprobat{\catvariableof{O}}{\catvariableof{T},\catvariableof{C}}$}
+        \drawtdwire{-2}{-4}{$\catvariableof{T}$}
+        \drawsquaretensor{-2}{-7}{$\onehotmapof{\catindexof{T}}$}
+        \drawtdwire{2}{-4}{$\catvariableof{C}$}
+        %\drawvariabledot{2}{-6}
+        %\drawtdwire{2.5}{-4}{$\catvariableof{C}$}
+        \drawtensorblock{2}{-7}{1.5}{$\probat{\catvariableof{C}}$}
+
+        \only<2>{
+            \draw [->] (2,-8.5) -- (2,-9.5);
+            \drawtextnode{2}{-10}{
+                    {\bf Confounders not accessible!}
+            }
+        }
+
+    \end{scope}
+}

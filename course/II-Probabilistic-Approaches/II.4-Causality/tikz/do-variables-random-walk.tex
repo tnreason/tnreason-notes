@@ -1,38 +1,39 @@
-\stantikzpic{
-    \drawvariablenode{0}{7}{$\dovariableof{\catenumerator-1}$}{DKmin1}
-    \drawvariablenode{-3}{5}{$\catvariableof{\catenumerator-1}$}{XKmin1}
-    \drawvariablenode{0}{2}{$\dovariableof{\catenumerator}$}{DK}
-    \drawvariablenode{-3}{0}{$\catvariableof{\catenumerator}$}{XK}
-    \drawvariablenode{0}{-3}{$\dovariableof{\catenumerator+1}$}{DKplus1}
-    \drawvariablenode{-3}{-5}{$\catvariableof{\catenumerator+1}$}{XKplus1}
-    \draw [->] (DKmin1)-- (XKmin1);
-    \draw [->] (DK)-- (XK);
-    \draw [->] (DKplus1)-- (XKplus1);
-    \draw [->] (XKmin1)-- (XK);
-    \draw [->] (XK)-- (XKplus1);
+        \stantikzpic{
+            \drawvariablenode{0}{8}{$\dovariableof{\catenumerator-1}$}{DKmin1}
+            \drawvariablenode{-3}{5}{$\catvariableof{\catenumerator-1}$}{XKmin1}
+            \drawvariablenode{0}{3}{$\dovariableof{\catenumerator}$}{DK}
+            \drawvariablenode{-3}{0}{$\catvariableof{\catenumerator}$}{XK}
+            \drawvariablenode{0}{-2}{$\dovariableof{\catenumerator+1}$}{DKplus1}
+            \drawvariablenode{-3}{-5}{$\catvariableof{\catenumerator+1}$}{XKplus1}
 
+            \draw [->-] (DKmin1)-- (-3,7);
+            \draw [->-] (-3,7) -- (XKmin1);
+            \draw [->-] (DK)-- (-3,2);
+            \draw [->-] (-3,2) -- (XK);
+            \draw [->-] (DKplus1) -- (-3,-3);
+            \draw [->-] (-3,-3) -- (XKplus1);
+            \draw [->-] (XKmin1) -- (-3,2); % (XK);
+            \draw [->-] (XK)-- (XKplus1);
 
-    \drawtextnode{-3}{9}{\tiny $\vdots$}
-    \draw [<-] (XKmin1) -- ++ (0,3);
-    \draw [->] (XKplus1) -- ++ (0,-3);
+            \drawtextnode{-3}{9}{\tiny $\vdots$}
+            \draw [->-] (-3,8) -- (-3,7);
+            \draw [->-] (XKplus1) -- ++ (0,-3);
 
-    \drawtextnode{-3}{-8.5}{\tiny $\vdots$}
+            \drawtextnode{-3}{-8.5}{\tiny $\vdots$}
 
+            \begin{scope}[shift={(10,0)}]
+                \draw[->-] (-2,10) -- (-2,7) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-2}$};
+                \draw[->-] (2,8.5) -- (2,7) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator-1}$};
+                \drawtensorblock{0}{6}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator-1}}{\catvariableof{\catenumerator-2},\dovariableof{\catenumerator-1}}$}
 
-    \begin{scope}[shift={(10,0)}]
+                \draw[->-] (-2,5) -- (-2,2) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-1}$};
+                \draw[->-] (2,3.5) -- (2,2) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator}$};
+                \drawtensorblock{0}{1}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1},\dovariableof{\catenumerator}}$}
 
-        \draw[->-] (-2,10) -- (-2,7) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-2}$};
-        \draw[->-] (2,8.5) -- (2,7) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator-1}$};
-        \drawtensorblock{0}{6}{4.25}{$\condprobat{\catvariableof{\catenumerator-1}}{\catvariableof{\catenumerator-2},\dovariableof{\catenumerator-1}}$}
+                \draw[->-] (-2,0) -- (-2,-3) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator}$};
+                \draw[->-] (2,-1.5) -- (2,-3) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator+1}$};
+                \drawtensorblock{0}{-4}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator+1}}{\catvariableof{\catenumerator},\dovariableof{\catenumerator+1}}$}
 
-        \draw[->-] (-2,5) -- (-2,2) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-1}$};
-        \draw[->-] (2,3.5) -- (2,2) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator}$};
-        \drawtensorblock{0}{1}{4.25}{$\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1},\dovariableof{\catenumerator}}$}
-
-        \draw[->-] (-2,0) -- (-2,-3) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator}$};
-        \draw[->-] (2,-1.5) -- (2,-3) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator+1}$};
-        \drawtensorblock{0}{-4}{4.25}{$\condprobat{\catvariableof{\catenumerator+1}}{\catvariableof{\catenumerator},\dovariableof{\catenumerator+1}}$}
-
-        \draw[->-] (-2,-5) -- (-2,-8) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator+1}$};
-    \end{scope}
-}
+                \draw[->-] (-2,-5) -- (-2,-8) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator+1}$};
+            \end{scope}
+        }

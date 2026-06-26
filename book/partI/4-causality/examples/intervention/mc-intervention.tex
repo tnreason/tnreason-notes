@@ -29,7 +29,6 @@
             \drawvariablenode{0}{-2}{$\dovariableof{\catenumerator+1}$}{DKplus1}
             \drawvariablenode{-3}{-5}{$\catvariableof{\catenumerator+1}$}{XKplus1}
 
-
             \draw [->-] (DKmin1)-- (-3,7);
             \draw [->-] (-3,7) -- (XKmin1);
             \draw [->-] (DK)-- (-3,2);
@@ -39,16 +38,13 @@
             \draw [->-] (XKmin1) -- (-3,2); % (XK);
             \draw [->-] (XK)-- (XKplus1);
 
-
             \drawtextnode{-3}{9}{\tiny $\vdots$}
-            \draw [-<-] (-3,7) -- ++ (0,1);
+            \draw [->-] (-3,8) -- (-3,7);
             \draw [->-] (XKplus1) -- ++ (0,-3);
 
             \drawtextnode{-3}{-8.5}{\tiny $\vdots$}
 
-
             \begin{scope}[shift={(10,0)}]
-
                 \draw[->-] (-2,10) -- (-2,7) node[midway,right]{\colorlabelsize $\catvariableof{\catenumerator-2}$};
                 \draw[->-] (2,8.5) -- (2,7) node[midway,right]{\colorlabelsize $\dovariableof{\catenumerator-1}$};
                 \drawtensorblock{0}{6}{4.25}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator-1}}{\catvariableof{\catenumerator-2},\dovariableof{\catenumerator-1}}$}

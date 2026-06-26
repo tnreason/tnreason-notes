@@ -11,11 +11,18 @@
     \draw[dashed] (1.5,8) -- (1.5,-2);
     \drawtextnode{7}{7}{\small Counterfactual world}
 
-    \draw[->] (XKmin) -- (XK);
-    \draw[->] (TXKmin) -- (TXK);
-    \draw[->] (DK) -- (TXK);
-    \draw[->] (LK) -- (XK);
-    \draw[->] (LK) -- (TXK);
+    \coordinate (EK) at ($(XK) + (1,2)$);
+    \coordinate (TEK) at ($(TXK) + (0,2)$);
+
+    \draw[->-] (XKmin) -- (EK);
+    \draw[->-] (LK) -- (EK);
+    \draw[->-] (EK) -- (XK);
+
+    \draw[->-] (TXKmin) -- (TEK);
+    \draw[->-] (DK) -- (TEK);
+    \draw[->-] (LK) -- (TEK);
+
+    \draw[->-] (TEK) -- (TXK);
 
 
     \begin{scope}[shift={(10,0)}]

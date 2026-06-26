@@ -3,139 +3,6 @@
     We build a counterfactual twinned network (see \figref{fig:rwCounterfactualNetwork}), by adding counterfactual variables $\tildecatvariableof{[\catorder]}$ linked to the same response variables.
     Further, we include do variables to the counterfactual world, to answer counterfactual queries.
 
-    Setup:
-    \begin{itemize}
-        \item The variables $\catvariableof{\catenumerator-1},\catvariableof{\catenumerator},\catvariableof{\catenumerator+1}$ have been observed.
-        \item The counterfactual variable $\catvariableof{\catenumerator}$ is intervened on.
-    \end{itemize}
-    This counterfactual query is answered by the contraction
-    \stantikzpic{
-        \begin{scope}[shift={(0,4)}]
-            \drawtensorblock{3}{2}{3}{$\bencodingof{\exfunctionof{\atomenumerator}}$}
-            \drawddwire{3}{3}{$\catvariableof{\catenumerator-1}$}
-            \drawtextnode{3}{6}{$\vdots$}
-
-            \drawldwire{6}{2}{}
-            \drawvariabledot{8}{2}
-            \draw (6.5,3.5) rectangle (9.5,6.5);
-            \drawtextnode{8}{5}{
-                \tiny $\begin{pmatrix}
-                           0.25 \\ 0.50 \\ 0.25
-                \end{pmatrix}$}
-            \draw [->-] (8,3.5) -- (8,2) node[midway,right] {\colorlabelsize $\selvariableof{\catenumerator}$};
-            \drawrdwire{10}{2}{}
-            \begin{scope}[shift={(10,0)}]
-                \drawtensorblock{3}{2}{3}{$\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator}}$}
-                \drawddwire{3}{3}{$\tildecatvariableof{\catenumerator-1}$}
-                \drawtextnode{3}{6}{$\vdots$}
-                \drawldwire{6}{2}{$\dovariableof{\catenumerator}$}
-            \end{scope}
-        \end{scope}
-
-        \drawtensorblock{3}{2}{3}{$\bencodingof{\exfunctionof{\atomenumerator+1}}$}
-        \drawddwire{3}{-1}{$\catvariableof{\catenumerator+1}$}
-        \drawtextnode{3}{-1.5}{$\vdots$}
-        \drawddwire{3}{3}{$\catvariableof{\catenumerator}$}
-
-        \drawldwire{6}{2}{}
-        \drawvariabledot{8}{2}
-        \draw (6.5,0.5) rectangle (9.5,-2.5);
-        \drawtextnode{8}{-1}{
-            \tiny $\begin{pmatrix}
-                       0.25 \\ 0.50 \\ 0.25
-            \end{pmatrix}$}
-        \draw [->-] (8,0.5) -- (8,2) node[midway,right] {\colorlabelsize $\selvariableof{\catenumerator+1}$};
-        \drawrdwire{10}{2}{}
-
-        \begin{scope}[shift={(10,0)}]
-            \drawtensorblock{3}{2}{3}{$\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator+1}}$}
-            \drawddwire{3}{-1}{$\tildecatvariableof{\catenumerator+1}$}
-            \drawtextnode{3}{-1.5}{$\vdots$}
-            \drawddwire{3}{3}{$\tildecatvariableof{\catenumerator}$}
-            \drawldwire{6}{2}{$\dovariableof{\catenumerator+1}$}
-            \drawsquaretensor{9}{2}{$\onehotmapof{\catdim}$}
-        \end{scope}
-
-        \drawsquaretensor{-2}{8.5}{$\onehotmapof{\catindexof{\catenumerator-1}}$}
-        \drawsquaretensor{-2}{4.5}{$\onehotmapof{\catindexof{\catenumerator}}$}
-        \drawsquaretensor{-2}{0.5}{$\onehotmapof{\catindexof{\catenumerator+1}}$}
-
-        \drawsquaretensor{19}{6}{$\onehotmapof{\tildecatindexof{\catenumerator}}$}
-
-        \draw[->-] (-1,8.5) -- (3,8.5);
-        \drawvariabledot{3}{8.5}
-
-        \draw[->-] (-1,4.5) -- (3,4.5);
-        \drawvariabledot{3}{4.5}
-
-        \draw[->-] (-1,0.5) -- (3,0.5);
-        \drawvariabledot{3}{0.5}
-
-        \drawtextnode{21}{4}{{${=}$}}
-
-        \begin{scope}[shift={(18,0)}]
-
-            \begin{scope}[shift={(0,4)}]
-
-                \begin{scope}[shift={(10,0)}]
-                    \drawtensorblock{3}{2}{3}{$\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator}}$}
-                    \drawddwire{3}{3}{$\tildecatvariableof{\catenumerator-1}$}
-                    \drawtextnode{3}{6}{$\vdots$}
-                    \drawldwire{6}{2}{$\dovariableof{\catenumerator}$}
-                \end{scope}
-
-            \end{scope}
-
-            \begin{scope}[shift={(10,0)}]
-
-                \drawtensorblock{3}{2}{3}{$\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator+1}}$}
-                \drawddwire{3}{-1}{$\tildecatvariableof{\catenumerator+1}$}
-                \drawtextnode{3}{-1.5}{$\vdots$}
-                \drawddwire{3}{3}{$\tildecatvariableof{\catenumerator}$}
-                \drawldwire{6}{2}{$\dovariableof{\catenumerator+1}$}
-                \drawsquaretensor{9}{2}{$\onehotmapof{\catdim}$}
-
-            \end{scope}
-
-            \drawsquaretensor{19}{6}{$\onehotmapof{\tildecatindexof{\catenumerator}}$}
-
-            \drawtensorblock{5.75}{6}{2.25}{$\onehotmapof{\catindexof{\catenumerator}-\catindexof{\catenumerator-1}+1}$}
-            \drawrdwire{10}{6}{$\selvariableof{\catenumerator}$}
-            \drawtensorblock{5.75}{2}{2.25}{$\onehotmapof{\catindexof{\catenumerator+1}-\catindexof{\catenumerator}+1}$}
-            \drawrdwire{10}{2}{$\selvariableof{\catenumerator+1}$}
-        \end{scope}
-
-        \drawtextnode{39}{4}{{${=}$}}
-
-        \begin{scope}[shift={(28,2)}]
-            \drawtensorblock{15}{2}{3}{$\onehotmapof{\tildecatindexof{\catenumerator}+ (\catindexof{\catenumerator+1}-\catindexof{\catenumerator})}$}
-            \drawddwire{15}{-1}{$\catvariableof{\catenumerator+1}$};
-        \end{scope}
-    }
-    %If not further interventions are done one the counterfactual world,
-
-    Let us consider an arbitrary set $\arbset\subset[\catorder]$ of variables intervened on.
-    For each $\seccatenumerator$ we denote $\catenumerator$ as the previous variable which has been intervened on.
-
-The counterfactual world is by the above contraction only supported at the indices
-    \begin{align*}
-        \tildecatindexof{\seccatenumerator}
-        = \tildecatindexof{\catenumerator} + \left(\catindexof{\seccatenumerator} - \catindexof{\catenumerator}\right) \, .
-    \end{align*}
-    If no intervention has been done before $\seccatenumerator$, we define $\tildecatindexof{\catenumerator}=\catindexof{\catenumerator}$ and have $\tildecatindexof{\seccatenumerator}=\catindexof{\seccatenumerator}$.
-
-    % Interpretation
-    Thus, the same steps (left, right neighbor or keeping positions) are done in the counterfactual world.
-    Given the observed world, the distribution of the counterfactual world variables is therefore deterministic.
-%    Notice, that the property
-
-% Comparison with intervention query
-
-
-
-
-
-
     \begin{figure}[t]
         \stantikzpic{
             \drawvariablenode{6}{2}{$\dovariableof{\catenumerator}$}{DK}
@@ -150,11 +17,18 @@ The counterfactual world is by the above contraction only supported at the indic
             \draw[dashed] (1.5,8) -- (1.5,-2);
             \drawtextnode{7}{7}{\small Counterfactual world}
 
-            \draw[->] (XKmin) -- (XK);
-            \draw[->] (TXKmin) -- (TXK);
-            \draw[->] (DK) -- (TXK);
-            \draw[->] (LK) -- (XK);
-            \draw[->] (LK) -- (TXK);
+            \coordinate (EK) at ($(XK) + (1,2)$);
+            \coordinate (TEK) at ($(TXK) + (0,2)$);
+
+            \draw[->-] (XKmin) -- (EK);
+            \draw[->-] (LK) -- (EK);
+            \draw[->-] (EK) -- (XK);
+
+            \draw[->-] (TXKmin) -- (TEK);
+            \draw[->-] (DK) -- (TEK);
+            \draw[->-] (LK) -- (TEK);
+
+           \draw[->-] (TEK) -- (TXK);
 
 
             \begin{scope}[shift={(10,0)}]
@@ -188,6 +62,147 @@ The counterfactual world is by the above contraction only supported at the indic
         }
         \caption{Part of the counterfactual twinned network for the random walk (see \exaref{exa:rwResponse} and \exaref{exa:rwCounterfactuals}).}\label{fig:rwCounterfactualNetwork}
     \end{figure}
+
+
+
+    Setup:
+    \begin{itemize}
+        \item The variables $\catvariableof{\catenumerator-1},\catvariableof{\catenumerator},\catvariableof{\catenumerator+1}$ have been observed.
+        \item The counterfactual variable $\catvariableof{\catenumerator}$ is intervened on.
+    \end{itemize}
+    This counterfactual query is answered by the contraction
+    \stantikzpic{
+        \begin{scope}[shift={(0,4)}]
+            \drawtensorblock{3}{2}{3}{$\bencodingof{\exfunctionof{\atomenumerator}}$}
+            \drawddwire{3}{3}{$\catvariableof{\catenumerator-1}$}
+            %          \drawtextnode{3}{6}{$\vdots$}
+
+            \drawldwire{6}{2}{}
+            \drawvariabledot{8}{2}
+            \draw (6.5,3.5) rectangle (9.5,6.5);
+            \drawtextnode{8}{5}{
+                \tiny $\begin{pmatrix}
+                           0.25 \\ 0.50 \\ 0.25
+                \end{pmatrix}$}
+            \draw [->-] (8,3.5) -- (8,2) node[midway,right] {\colorlabelsize $\selvariableof{\catenumerator}$};
+            \drawrdwire{10}{2}{}
+            \begin{scope}[shift={(10,0)}]
+                \drawtensorblock{3}{2}{3}{$\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator}}$}
+                \drawddwire{3}{3}{$\tildecatvariableof{\catenumerator-1}$}
+                \drawsquaretensor{3}{6}{$\probtensor$}
+%                \drawtextnode{3}{6}{$\vdots$}
+                \drawldwire{6}{2}{$\dovariableof{\catenumerator}$}
+            \end{scope}
+        \end{scope}
+
+        \drawtensorblock{3}{2}{3}{$\bencodingof{\exfunctionof{\atomenumerator+1}}$}
+        \drawddwire{3}{-1}{$\catvariableof{\catenumerator+1}$}
+        %\drawtextnode{3}{-1.5}{$\vdots$}
+        \drawddwire{3}{3}{$\catvariableof{\catenumerator}$}
+
+        \drawldwire{6}{2}{}
+        \drawvariabledot{8}{2}
+        \draw (6.5,0.5) rectangle (9.5,-2.5);
+        \drawtextnode{8}{-1}{
+            \tiny $\begin{pmatrix}
+                       0.25 \\ 0.50 \\ 0.25
+            \end{pmatrix}$}
+        \draw [->-] (8,0.5) -- (8,2) node[midway,right] {\colorlabelsize $\selvariableof{\catenumerator+1}$};
+        \drawrdwire{10}{2}{}
+
+        \begin{scope}[shift={(10,0)}]
+            \drawtensorblock{3}{2}{3}{$\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator+1}}$}
+            \drawddwire{3}{-1}{$\tildecatvariableof{\catenumerator+1}$}
+            %\drawtextnode{3}{-1.5}{$\vdots$}
+            \drawddwire{3}{3}{$\tildecatvariableof{\catenumerator}$}
+            \drawldwire{6}{2}{$\dovariableof{\catenumerator+1}$}
+            \drawsquaretensor{9}{2}{$\onehotmapof{\catdim}$}
+        \end{scope}
+
+        \drawsquaretensor{-2}{9}{$\onehotmapof{\catindexof{\catenumerator-1}}$}
+        \drawsquaretensor{-2}{4.5}{$\onehotmapof{\catindexof{\catenumerator}}$}
+        \drawsquaretensor{-2}{-1}{$\onehotmapof{\catindexof{\catenumerator+1}}$}
+
+        \drawsquaretensor{19}{6}{$\onehotmapof{\tildecatindexof{\catenumerator}}$}
+
+        \draw[->-] (-1,9) -- (3,9);
+        \drawvariabledot{3}{9}
+
+        \draw[->-] (-1,4.5) -- (3,4.5);
+        \drawvariabledot{3}{4.5}
+
+        \draw[->-] (-1,-1) -- (3,-1);
+        \drawvariabledot{3}{-1}
+
+        \drawtextnode{20.5}{4}{{${=}$}}
+
+        \begin{scope}[shift={(17.5,0)}]
+
+            \begin{scope}[shift={(0,4)}]
+
+                \begin{scope}[shift={(10,0)}]
+                    \drawtensorblock{3}{2}{3}{$\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator}}$}
+                    \drawddwire{3}{3}{$\tildecatvariableof{\catenumerator-1}$}
+                    %\drawtextnode{3}{6}{$\vdots$}
+                    \drawsquaretensor{3}{6}{$\probtensor$}
+                    \drawldwire{6}{2}{$\dovariableof{\catenumerator}$}
+                \end{scope}
+
+            \end{scope}
+
+            \begin{scope}[shift={(10,0)}]
+
+                \drawtensorblock{3}{2}{3}{$\bencodingof{\causalsymbol,\exfunctionof{\atomenumerator+1}}$}
+                \drawddwire{3}{-1}{$\tildecatvariableof{\catenumerator+1}$}
+                %\drawtextnode{3}{-1.5}{$\vdots$}
+                \drawddwire{3}{3}{$\tildecatvariableof{\catenumerator}$}
+                \drawldwire{6}{2}{$\dovariableof{\catenumerator+1}$}
+                \drawsquaretensor{9}{2}{$\onehotmapof{\catdim}$}
+
+            \end{scope}
+
+            \drawsquaretensor{19}{6}{$\onehotmapof{\tildecatindexof{\catenumerator}}$}
+
+            \drawtensorblock{6}{6}{2}{$\onehotmapof{\catindexof{\catenumerator}-\catindexof{\catenumerator-1}+1}$}
+            \drawrdwire{10}{6}{$\selvariableof{\catenumerator}$}
+            \drawtensorblock{6}{2}{2}{$\onehotmapof{\catindexof{\catenumerator+1}-\catindexof{\catenumerator}+1}$}
+            \drawrdwire{10}{2}{$\selvariableof{\catenumerator+1}$}
+        \end{scope}
+
+        \drawtextnode{38}{4}{{${=}$}}
+
+        \begin{scope}[shift={(26.5,2)}]
+            \drawtensorblock{15}{2}{3}{$\onehotmapof{\tildecatindexof{\catenumerator}+ (\catindexof{\catenumerator+1}-\catindexof{\catenumerator})}$}
+            \drawddwire{15}{-1}{$\catvariableof{\catenumerator+1}$};
+        \end{scope}
+    }
+    %If not further interventions are done one the counterfactual world,
+
+    Let us consider an arbitrary set $\arbset\subset[\catorder]$ of variables intervened on.
+    For each $\seccatenumerator$ we denote $\catenumerator$ as the previous variable which has been intervened on.
+
+    The counterfactual world is by the above contraction only supported at the indices
+    \begin{align*}
+        \tildecatindexof{\seccatenumerator}
+        = \tildecatindexof{\catenumerator} + \left(\catindexof{\seccatenumerator} - \catindexof{\catenumerator}\right) \, .
+    \end{align*}
+    If no intervention has been done before $\seccatenumerator$, we define $\tildecatindexof{\catenumerator}=\catindexof{\catenumerator}$ and have $\tildecatindexof{\seccatenumerator}=\catindexof{\seccatenumerator}$.
+
+    % Interpretation
+    Thus, the same steps (left, right neighbor or keeping positions) are done in the counterfactual world.
+    Given the observed world, the distribution of the counterfactual world variables is therefore deterministic.
+
+    % More general: Non-deterministic counterfactual
+    In more generality, we have a larger support of the response variables after contraction with the one-hot encoded observation.
+    In that case, we would have a non-deterministic behaviour of the counterfactual variables.
+%    \begin{align*}
+%        \contractionof{
+%            \onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}},
+%            \onehotmapofat{\catindexof{\catenumerator-1}}{\catvariableof{\catenumerator-1}},
+%            \bencodingofat{}{}
+%        }{\selvariableof{\catenumerator}}
+%    \end{align*}
+
 
 
 \end{example}

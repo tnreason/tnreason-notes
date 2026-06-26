@@ -1,0 +1,38 @@
+\stantikzpic{
+
+    \draw (0,0) circle (2);
+    \draw (0,0) circle (4);
+
+    \foreach \angle in {0, 45, ..., 315} {
+        \draw (\angle:2) -- (\angle:4);
+    }
+
+    \foreach \angle in {45, 90, ..., 315} {
+        \node at (\angle + 22.5:3) {0};
+    }
+    \node at (22.5:3) {1};
+    \drawtextnode{0}{-6}{$\probat{\catvariableof{\catenumerator}}=\onehotmapofat{1}{\catvariableof{\catenumerator}}$}
+
+    \draw[thick,->] (5,0) -- (10,0);
+
+    \begin{scope}[shift={(15,0)}]
+        \draw (0,0) circle (2);
+        \draw (0,0) circle (4);
+
+        \foreach \angle in {0, 45, ..., 315} {
+            \draw (\angle:2) -- (\angle:4);
+        }
+
+
+        \foreach \angle in {90, 135, ..., 270} {
+            \node at (\angle + 22.5:3) {0};
+        }
+        \node at (67.5:3) {0.25};
+        \node at (22.5:3) {0.5};
+        \node at (-22.5:3) {0.25};
+
+        \drawtextnode{0}{-6}{$\probat{\catvariableof{\catenumerator+1}}=$}
+        \drawtextnode{0}{-8}{$\coloredmatrixof{0.25 & 0.5 & 0.25 & 0 & 0 & 0 & 0 & 0 }{\catvariableof{\catenumerator+1}}$}
+    \end{scope}
+}
+

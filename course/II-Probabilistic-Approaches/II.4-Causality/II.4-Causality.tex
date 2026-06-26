@@ -14,7 +14,7 @@
     \showoutlineatsection
 
 
-    \section{Revisiting Bayesian networks}
+    \section{Ambiguity in Bayesian Networks}
 
     \begin{frame}{Example: Random walk}
         \begin{minipage}{0.6\linewidth}
@@ -33,28 +33,72 @@
                 \foreach \angle in {0, 45, ..., 315} {
                     \draw (\angle:2) -- (\angle:4);
                 }
+
+                \draw[->, bend left=-15] (22.5:3) to (67.5:3);
+                \draw[->, bend left=15] (22.5:3) to (-22.5:3);
+                \fill[blue] (22.5:3) circle (10pt);
+
             }
         \end{minipage}
+        \vspace{0.5cm}
 
+        \only<2>{
+                {\bf Example:} When observing the state $1$ for $\catvariableof{\catenumerator}$ we transit as
+            \input{tikz/random-walk-example}
+        }
+        \only<3->{
+            This is a Markov chain with the transition matrix:
+            \begin{align*}
+                \condprobat{\catvariableof{\catenumerator+1}}{\catvariableof{\catenumerator}} =
+                \begingroup
+                \tiny
+                \coloredmatrixof{
+                    0.50 & 0.25 & 0 & 0 & 0 & 0 & 0 & 0.25 \\
+                    0.25 & 0.50 & 0.25 & 0 & 0 & 0 & 0 & 0 \\
+                    0 & 0.25 & 0.50 & 0.25 & 0 & 0 & 0 & 0 \\
+                    0 & 0 & 0.25 & 0.50 & 0.25 & 0 & 0 & 0 \\
+                    0 & 0 & 0 & 0.25 & 0.50 & 0.25 & 0 & 0 \\
+                    0 & 0 & 0 & 0 & 0.25 & 0.50 & 0.25 & 0 \\
+                    0 & 0 & 0 & 0 & 0 & 0.25 & 0.50 & 0.25 \\
+                    0.25 & 0 & 0 & 0 & 0 & 0 & 0.25 & 0.50
+                }{\catvariableof{\catenumerator+1},\catvariableof{\catenumerator}}
+                \endgroup
+            \end{align*}
+        }
 
-        This is a Markov chain with the transition matrix:
-        \begin{align*}
-            \condprobat{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1}} =
-            \begingroup
-            \tiny
-            \coloredmatrixof{
-                0.50 & 0.25 & 0 & 0 & 0 & 0 & 0 & 0.25 \\
-                0.25 & 0.50 & 0.25 & 0 & 0 & 0 & 0 & 0 \\
-                0 & 0.25 & 0.50 & 0.25 & 0 & 0 & 0 & 0 \\
-                0 & 0 & 0.25 & 0.50 & 0.25 & 0 & 0 & 0 \\
-                0 & 0 & 0 & 0.25 & 0.50 & 0.25 & 0 & 0 \\
-                0 & 0 & 0 & 0 & 0.25 & 0.50 & 0.25 & 0 \\
-                0 & 0 & 0 & 0 & 0 & 0.25 & 0.50 & 0.25 \\
-                0.25 & 0 & 0 & 0 & 0 & 0 & 0.25 & 0.50
-            }{\catvariableof{\catenumerator},\catvariableof{\catenumerator-1}}
-            \endgroup
-        \end{align*}
     \end{frame}
+
+    \begin{frame}{Reasoning about the future and the past}
+
+        {\bf Intuitive:} Conditioning on the past we reason on the future:
+        \begin{align*}
+            \contractionof{\onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}},
+                \condprobat{\catvariableof{\catenumerator+1}}{\catvariableof{\catenumerator}}
+            }{\catvariableof{\catenumerator+1}}
+            =
+            &0.5 \cdot \onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator+1}} \\
+            &+ 0.25 \cdot \onehotmapofat{\catindexof{\catenumerator}-1}{\catvariableof{\catenumerator+1}}
+            + 0.25 \cdot \onehotmapofat{\catindexof{\catenumerator}+1}{\catvariableof{\catenumerator+1}}
+        \end{align*}
+
+            {\bf Counter-intuitive:} Conditioning on the future we can also reason on the past:
+
+        \begin{align*}
+            \contractionof{
+                \condprobat{\catvariableof{\catenumerator+1}}{\catvariableof{\catenumerator}},
+                \onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator+1}}
+            }{\catvariableof{\catenumerator}}
+            =
+            &0.5 \cdot \onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}} \\
+            &+ 0.25 \cdot \onehotmapofat{\catindexof{\catenumerator}-1}{\catvariableof{\catenumerator}}
+            + 0.25 \cdot \onehotmapofat{\catindexof{\catenumerator}+1}{\catvariableof{\catenumerator}}
+        \end{align*}
+        \begin{center}
+            \bf How to distinguish between these directions?
+        \end{center}
+
+    \end{frame}
+
 
     \begin{frame}{How to distinguish the past from the present?}
 
@@ -62,74 +106,114 @@
 
         \input{tikz/markov-chain}
 
-    \end{frame}
-
-
-    \begin{frame}{The BN hypergraph is not unique}
-
-%        Imagine a Markov chain.
-%            {\bf Example:} Markov chain. Does the past cause the future or the future the past?
-
-        We can manipulate the hypergraph, and still find a Bayesian network representation of a distribution.
-
-        Causation is not (always) represented in the directionality!
-
-            {\bf Idea:} Distinguish by interventions.
-
+        \begin{block}{Ambiguity in Bayesian Networks}
+            Causation is not (always) reflected in the directions.
+        \end{block}
 
     \end{frame}
 
 
-    \begin{frame}{The rungs of causation}
+%    \begin{frame}{Causation is not (always) reflected in the directions}
+%
+%%        Imagine a Markov chain.
+%%            {\bf Example:} Markov chain. Does the past cause the future or the future the past?
+%
+%        We can manipulate the hypergraph, and still find a Bayesian network representation of a distribution.
+%
+%        Causation is not (always) represented in the directionality!
+%
+%            {\bf Idea:} Distinguish by interventions.
+%
+%
+%    \end{frame}
+
+
+    \begin{frame}{The Ladder of Causality}
         \stantikzpic{
             \drawtextnode{0}{0}{\includegraphics[width=6cm]{img/rungs}}
+            \begin{scope}[opacity=0.3, text opacity=0.3]
+                \draw [->] (9,6) -- (11,6);
+                \drawtextnode{16}{6}{Model randomness by \\
+                {\bf response variables $\selvariableof{\catenumerator}$}  \\
+                and add \\
+                {\bf counterfactual variables $\catvariableof{\catenumerator}$}};
+                \draw [->] (9,0.5) -- (11,0.5);
+                \drawtextnode{16}{0.5}{Model interventions by \\
+                {\bf do variables $\dovariableof{\catenumerator}$}};
+            \end{scope}
 
-            \draw [->] (9,6) -- (11,6);
-            \node[anchor=west] at (11,6)    {{\bf Response variables}};
-            \draw [->] (9,0.5) -- (11,0.5);
-            \node[anchor=west] at (11,0.5)  {{\bf Do variables}};
             \draw [->] (9,-5) -- (11,-5);
-            \node[anchor=west] at (11,-5)   {{\bf Bayesian Networks}};
+            \drawtextnode{16}{-5}{Bayesian Networks \\
+            model the distribution of \\
+            {\bf observed variables $\catvariableof{\catenumerator}$}};
         }
+    \end{frame}
 
+    
+    \section{Modelling interventions}
+
+
+    \begin{frame}{The Ladder of Causality}
+        \stantikzpic{
+            \drawtextnode{0}{0}{\includegraphics[width=6cm]{img/rungs}}
+            \begin{scope}[opacity=0.3, text opacity=0.3]
+                \draw [->] (9,6) -- (11,6);
+                \drawtextnode{16}{6}{Model randomness by \\
+                {\bf response variables $\selvariableof{\catenumerator}$}  \\
+                and add \\
+                {\bf counterfactual variables $\catvariableof{\catenumerator}$}};
+            \end{scope}
+            \draw [->] (9,0.5) -- (11,0.5);
+            \drawtextnode{16}{0.5}{Model interventions by \\
+            {\bf do variables $\dovariableof{\catenumerator}$}};
+
+
+            \draw [->] (9,-5) -- (11,-5);
+            \drawtextnode{16}{-5}{Bayesian Networks \\
+            model the distribution of \\
+            {\bf observed variables $\catvariableof{\catenumerator}$}};
+        }
     \end{frame}
 
 
-    \begin{frame}{Probability distributions: Associations}
+    \begin{frame}{Correlation does not imply causation}
+        Consider two examples\footnote{generated data} of correlations:
+        \stantikzpic{
+            \drawtextnode{0}{0}{\includegraphics[width=5.5cm]{img/generated-drowning-ice-cream}}
+            \drawtextnode{17}{0}{\includegraphics[width=5.5cm]{img/generated-smoking-cancer}}
+        }
+        {\bf Question:} How to reduce casualties based on public laws and taxes?
 
-        Contractions of distributions capture associations in the data:
-        \begin{itemize}
-            \item Marginal distributions
-            \item Conditional distributions
-        \end{itemize}
-%        \begin{align*}
-%            \probat{}
-%        \end{align*}
-
-        {\bf Limitation:} Do not model causations.
     \end{frame}
-
-
-    \section{Intervention}
-
 
     \begin{frame}{Interventions}
 
-        This appears in important situation:
+        \begin{block}{Interventional reasoning}
+            AI is not only about modelling the observed, but reasoning about consequences:
+            When we intervene on a variable, what would be the effect on the further variables?
+        \end{block}
+
+        This appears in many realistic
         \begin{itemize}
             \item Will product sales increase if we lower the price?
             \item Will I pass the exam tomorrow if I study today?
         \end{itemize}
 
-                \begin{center}
-            \bf Associations are not enough for these questions!
+            {\bf Idea:}
+        \begin{itemize}
+            \item Understand the directed hyperedges to model causal consequences.
+            \item But: How to deal with the ambiguity?
+        \end{itemize}
+
+        \begin{center}
+            \bf Associations in Bayesian Networks can not model interventions!
         \end{center}
     \end{frame}
 
-    \begin{frame}{Do calculus: Modelling interventions}
 
-        Add further variables $\dovariableof{\catenumerator}$ representing interventions:
+    \begin{frame}{Do variables: Modelling interventions}
 
+        We add to each variable $\catvariableof{\catenumerator}$ a \emph{do variable $\dovariableof{\catenumerator}$} of dimension $[\catdimof{\catenumerator}+1]$ modelling the invervention on it:
         \begin{itemize}
             \item Intervention on the variable $\catvariableof{\catenumerator}$ when $\doindexof{\catenumerator}\in[\catdimof{\catenumerator}]$
             \item No intervention on the variable when $\doindexof{\catenumerator}=\catdimof{\catenumerator}$
@@ -137,7 +221,7 @@
 
         This is realized by a tensor
         \begin{align*}
-            \condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}},\dovariableof{\catenumerator}}
+            \condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}},\dovariableof{\catenumerator}}
             &= \sum_{\catindexofin{\catenumerator}} \onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}}
             \otimes \onesat{\catvariableof{\parentsof{\catenumerator}}}
             \otimes  \onehotmapofat{\catindexof{\catenumerator}}{\dovariableof{\catenumerator}} \quad \text{(intervention)} \\
@@ -149,12 +233,20 @@
 
     \end{frame}
 
-    \begin{frame}{Example: Random walk}
+
+    \begin{frame}{Causally augmented Markov chain}
+
+        For a Markov chain we get the causally augmented model:
+        \input{tikz/do-variables-random-walk}
+
+    \end{frame}
 
 
-        Random walk example with $\catdim=3$:
+    \begin{frame}{Example: Interventions on a random walk}
+
+        The causally augmented conditional distributions are for the random walk with $\catdim=3$:
         \stantikzpic{
-            \drawtextnode{-7}{0}{$\probat{\catvariableof{\catenumerator}|\catvariableof{\catenumerator-1},\dovariableof{\catenumerator}}\, = $}
+            \drawtextnode{-7}{0}{$\condprobwrtof{\causalsymbol}{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1},\dovariableof{\catenumerator}}\, = $}
             \drawtextnode{0}{0}{
                 \tiny
                 $\begin{pmatrix}
@@ -173,12 +265,17 @@
                      0 & 0 & 0 \\ 0 & 0 & 0 \\ 1 & 1 & 1
                 \end{pmatrix}$
             }
+            \draw [decorate, decoration={brace, amplitude=10pt}] (10,-2) -- (-2,-2);
+            \drawtextnode{4}{-4}{{\bf Intervention}}
+
             \drawtextnode{13.5}{3}{
                 \tiny
                 $\begin{pmatrix}
                      0.50 & 0.25 & 0.25 \\ 0.25 & 0.50 & 0.25 \\ 0.25 & 0.25 & 0.50
                 \end{pmatrix}$
             }
+            \draw [decorate, decoration={brace, amplitude=10pt}] (10,5) -- (17,5);
+            \drawtextnode{13.5}{7}{{\bf No intervention}}
 
             \drawtextnode{16}{0}{$[\catvariableof{\catenumerator},\catvariableof{\catenumerator-1},\dovariableof{\catenumerator}]$}
         }
@@ -186,28 +283,76 @@
     \end{frame}
 
 
-    \begin{frame}{Causally augmented Markov chain}
 
-        \input{tikz/do-variables-random-walk}
-
-    \end{frame}
 
 
     \begin{frame}{Intervening on a position}
+        \par{\bf Query:} What is the consequence of intervening at time $\catenumerator$ in state $\catindexof{\catenumerator}$?
+
         \input{tikz/intervention-on-random-walk}
 
-        {\bf Interpretation:} Restart of the random walk at time $\catenumerator$ in intervention state $\catindexof{\catenumerator}$.
+        {\bf Interpretation:} Restart of the random walk at time $\catenumerator$ in state $\catindexof{\catenumerator}$.
     \end{frame}
 
 
-    \section{Counterfactuals}
+    \begin{frame}{Randomized controlled trial}
 
-    \begin{frame}{Counterfactual worlds}
+        \begin{block}{Aim}
+            Model the causal effect of a treatment $\catvariableof{T}$ (e.g. a drug) on an observation $\catvariableof{O}$ (e.g. patients health).
+            \begin{itemize}
+                \item How to assign the treatment to the patients?
+                \item How to determine the causal effect?
+            \end{itemize}
+        \end{block}
 
-        \begin{itemize}
-            \item A particular state has been observed.
-            \item We reason about a hypothetical world.
-        \end{itemize}
+        \only<1-2>{
+                {\bf Naive approach:} Voluntarily treatment and observation of the effects.
+            \only<2>{ \vspace{-0.5cm}}
+            \input{tikz/badly-controlled-trial}
+        }
+        \only<3->{
+                {\bf Randomized controlled trial:} Assign treatment \emph{independently} to test group
+            \input{tikz/randomized-controlled-trial}
+            \begin{center}
+                {\bf Influence is identifiable by conditional queries!}
+            \end{center}
+        }
+
+
+    \end{frame}
+
+
+    \section{Reasoning about hypothetical worlds: Counterfactuals}
+
+    \begin{frame}{The Ladder of Causality}
+        \stantikzpic{
+            \drawtextnode{0}{0}{\includegraphics[width=6cm]{img/rungs}}
+            \draw [->] (9,6) -- (11,6);
+            \drawtextnode{16}{6}{Model randomness by \\
+            {\bf response variables $\selvariableof{\catenumerator}$}  \\
+            and add \\
+            {\bf counterfactual variables $\catvariableof{\catenumerator}$}};
+
+            \draw [->] (9,0.5) -- (11,0.5);
+            \drawtextnode{16}{0.5}{Model interventions by \\
+            {\bf do variables $\dovariableof{\catenumerator}$}};
+
+
+            \draw [->] (9,-5) -- (11,-5);
+            \drawtextnode{16}{-5}{Bayesian Networks \\
+            model the distribution of \\
+            {\bf observed variables $\catvariableof{\catenumerator}$}};
+        }
+    \end{frame}
+
+    \begin{frame}{Counterfactuals}
+
+        \begin{block}{Counterfactual reasoning}
+            \begin{itemize}
+                \item A particular state has been observed.
+                \item We reason about a hypothetical world.
+            \end{itemize}
+        \end{block}
 
         This appears in important situation:
         \begin{itemize}
@@ -223,16 +368,40 @@
 
     \begin{frame}{Response variables}
 
-        Model each conditioned probability as a basis encoding of a function on the parent variables, the do-variable and the response variable
-        \begin{align*}
-            \selvariableof{\catenumerator}
-        \end{align*}
+        \begin{block}{Interpretation of randomness}
+            Random behavior in observed variables is due to exogenous variables, which states are not observed.
+        \end{block}
 
-        The response variables are shared with the counterfactual world variables.
+        To decompose each conditional distribution we introduce:
+        \begin{itemize}
+            \item Response variables $\selvariableof{\catenumerator}$ summarize the exogenous variables
+            \item Function $\exfunctionof{\catenumerator}$ describing a deterministic dependence of $\catindexof{\catenumerator}$ on the parent states $\catindexof{\parentsof{\catenumerator}}$ and the state $\selindexof{\catenumerator}$ of the response variable
+        \end{itemize}
+        The conditional probabilities are then contracted basis encodings, that is
+        \stantikzpic{
+            \drawtdwire{0}{3}{$\catvariableof{\catenumerator}$}
+            \drawtensorblock{0}{0}{3}{$\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}$}
+            \drawtdwire{-2}{-1}{}
+            \drawtextnode{0}{-2}{\colorlabelsize $\catvariableof{\parentsof{\catenumerator}}$ }
+            \drawtdwire{2}{-1}{}
+
+            \drawtextnode{5}{0}{${=}$}
+            \begin{scope}[shift={(10,0)}]
+                \drawtdwire{0}{3}{$\catvariableof{\catenumerator}$}
+                \drawtensorblock{0}{0}{3}{$\bencodingof{\exfunctionof{\atomenumerator}}$}
+                \drawtdwire{-2}{-1}{}
+                \drawtextnode{0}{-2}{ \colorlabelsize $\catvariableof{\parentsof{\catenumerator}}$ }
+                \drawtdwire{2}{-1}{}
+
+                \drawldwire{3}{0}{$\selvariableof{\catenumerator}$}
+                \drawtensorblock{7}{0}{2}{$\probat{\selvariableof{\catenumerator}}$}
+            \end{scope}
+            \drawtextnode{20}{-2}{${.}$}
+        }
     \end{frame}
 
 
-    \begin{frame}{Random walk example}
+        \begin{frame}{Random walk example}
 
         We model a response variable
         \begin{itemize}
@@ -269,14 +438,25 @@
         {\bf Effect in random walk:} Shift of the random walk.
     \end{frame}
 
-    \begin{frame}{Counterfactual random walk}
-        \begin{center}
-            \bf What will be the outcome of the walk, when we do an intervention on $\catvariableof{\catenumerator}$?
-        \end{center}
 
+
+
+    \begin{frame}{Counterfactual variables}
+        Total setup to reason about interventions on a hypothetical world:
+        \begin{itemize}
+            \item Observed variables $\catvariableof{\catenumerator}$: describing the observed world
+            \item Response variables $\selvariableof{\catenumerator}$: summarizing exogenous variables
+            \item Counterfactual variables $\tildecatvariableof{\catenumerator}$: describing an hypothetic world
+            \item Do variables $\dovariableof{\catenumerator}$: interventions in the hypothetic world
+        \end{itemize}
+
+            In the random walk example:
+        \vspace{-0.5cm}
         \input{tikz/counterfactual-random-walk}
 
     \end{frame}
+
+
 
 
     \begin{frame}{Counterfactual query}
