@@ -246,7 +246,7 @@
     \end{frame}
 
     \begin{frame}{Optimum by normalization of the empirical distribution}
-        The optima for each conditional distribution is taken at
+        The optimum for each conditional distribution is taken at
         \begin{align*}
             &\argmin_{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}}
             \contraction{\empdistributionwith,-\lnof{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}}} \\
@@ -255,10 +255,9 @@
         This can be shown by the first order criterion (vanishing gradients).
 
         \begin{block}{Optimal parameters}
-            Given a directed hypergraph, the local likelihood maximizers are the conditional probability distributions of the empirical distribution
+            Given a directed hypergraph, the local likelihood optimizers are the conditional probability distributions of the empirical distribution
             \begin{align*}
-                \empdistributionat{\catvariableof{\catenumerator}|\catvariableof{\parentsof{\catenumerator}}}
-%                \normalizationofwrt{\empdistributionwith}{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \, .
+                \empdistributionat{\catvariableof{\catenumerator}|\catvariableof{\parentsof{\catenumerator}}} \, .
             \end{align*}
         \end{block}
     \end{frame}

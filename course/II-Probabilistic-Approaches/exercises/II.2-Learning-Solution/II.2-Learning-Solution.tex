@@ -58,52 +58,97 @@
             \end{align*}
         \end{itemize}
     }
-    \end{document}
     \addtask{2}{
-        We investigate whether the three conditional independencies hold:
+        The empiricial distribution is the order $3$ tensor
+        \stantikzpic{
+            \drawtextnode{-7.25}{0}{$\empdistributionat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}\,= \,\, \frac{1}{10}\cdot$}
+            \drawtextnode{0}{0}{$\begin{pmatrix}
+                                     1 & 1 \\ 1 & 2
+            \end{pmatrix}$}
+            \drawtextnode{4}{1}{$\begin{pmatrix}
+                                     1 & 1 \\ 1 & 2
+            \end{pmatrix}$}
+            \drawtextnode{9.5}{0}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]\,\,\, .$}
+        }
         \begin{itemize}
-            \item[(i)] $\condindependent{\catvariableof{1}}{\catvariableof{2}}{\catvariableof{0}}$:
-            We have
+            \item We notice that
             \begin{align*}
-                \empdistributionat{\catvariableof{1},\catvariableof{2}|\catvariableof{0}=0}
-                &= \frac{1}{4} \cdot \onesat{\catvariableof{1},\catvariableof{2}}
-                = \frac{1}{2}\onesat{\catvariableof{1}} \otimes \frac{1}{2} \onesat{\catvariableof{2}}
-                \quad \text{and} \quad \\
-                \empdistributionat{\catvariableof{1},\catvariableof{2}|\catvariableof{0}=1}
-                &= \frac{1}{6}  \coloredmatrixof{
-                    1 & 1 \\ 2 & 2
-                }{\catvariableof{1},\catvariableof{2}}
-                = \frac{1}{3} \coloredmatrixof{
-                    1 \\ 2
-                }{\catvariableof{1}} \otimes \frac{1}{2} \onesat{\catvariableof{2}}
+                \empdistributionat{\catvariableof{0},\catvariableof{1},\catvariableof{2}=0}
+                =\empdistributionat{\catvariableof{0},\catvariableof{1},\catvariableof{2}=1}
             \end{align*}
-            and thus
+            and therefore
             \begin{align*}
-                \condindependent{\catvariableof{1}}{\catvariableof{2}}{\catvariableof{0}} \, .
+                \empdistributionat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}
+                = \empdistributionat{\catvariableof{0},\catvariableof{1}} \otimes \coloredmatrixof{\frac{1}{2}\\ \frac{1}{2}}{\catvariableof{2}}
             \end{align*}
-            This means that Alice and Bob bring umbrella indenpendently from each other given whether it rains.
-            \item[(ii)] $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$:
-            We find the same conditional distributions as in $(i)$ (when interchanging variables):
+            which means $\independent{\catvariableof{2}}{\catvariableof{0},\catvariableof{1}}$.
+            \item We are left to check $\independent{\catvariableof{1}}{\catvariableof{0}}$. For this we compute the marginals
             \begin{align*}
-                \empdistributionat{\catvariableof{0},\catvariableof{2}|\catvariableof{1}=0}
-                &= \frac{1}{4} \cdot \onesat{\catvariableof{0},\catvariableof{2}}
-                \quad \text{and} \quad \\
-                \empdistributionat{\catvariableof{1},\catvariableof{2}|\catvariableof{1}=1}
-                &= \frac{1}{6}  \coloredmatrixof{
-                    1 & 1 \\ 2 & 2
-                }{\catvariableof{0},\catvariableof{2}} \, .
+                \empdistributionat{\catvariableof{0},\catvariableof{1}}
+                = \frac{1}{10}\cdot \coloredmatrixof{
+                    2 & 2 \\ 2 & 4
+                }{\catvariableof{0},\catvariableof{1}}
             \end{align*}
-            Therefore, also $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$ holds.
-            \item[(iii)] $\condindependent{\catvariableof{0}}{\catvariableof{1}}{\catvariableof{2}}$:
-            We have
+            and
             \begin{align*}
-                \empdistributionat{\catvariableof{0},\catvariableof{1}|\catvariableof{2}=0}
-                &= \frac{1}{5}  \coloredmatrixof{
-                    1 & 1 \\ 1 & 2
-                }{\catvariableof{0},\catvariableof{1}} \, .
+                \empdistributionat{\catvariableof{0}}
+                = \frac{1}{10}\cdot \coloredmatrixof{
+                    4 & 6
+                }{\catvariableof{0}}
+                \quad, \quad
+                \empdistributionat{\catvariableof{1}}
+                = \frac{1}{10}\cdot \coloredmatrixof{
+                    4 & 6
+                }{\catvariableof{0}} \, .
             \end{align*}
-            This is not the tensor product of two vectors, therefore $\condindependent{\catvariableof{0}}{\catvariableof{1}}{\catvariableof{2}}$ does not hold.
+            We have $\empdistributionat{\catvariableof{0},\catvariableof{1}}\neq \empdistributionat{\catvariableof{0}} \otimes \empdistributionat{\catvariableof{1}}$ and thus $\independent{\catvariableof{1}}{\catvariableof{0}}$ does not hold.
         \end{itemize}
+
+
+%        We investigate whether the three conditional independencies hold:
+%        \begin{itemize}
+%            \item[(i)] $\condindependent{\catvariableof{1}}{\catvariableof{2}}{\catvariableof{0}}$:
+%            We have
+%            \begin{align*}
+%                \empdistributionat{\catvariableof{1},\catvariableof{2}|\catvariableof{0}=0}
+%                &= \frac{1}{4} \cdot \onesat{\catvariableof{1},\catvariableof{2}}
+%                = \frac{1}{2}\onesat{\catvariableof{1}} \otimes \frac{1}{2} \onesat{\catvariableof{2}}
+%                \quad \text{and} \quad \\
+%                \empdistributionat{\catvariableof{1},\catvariableof{2}|\catvariableof{0}=1}
+%                &= \frac{1}{6}  \coloredmatrixof{
+%                    1 & 1 \\ 2 & 2
+%                }{\catvariableof{1},\catvariableof{2}}
+%                = \frac{1}{3} \coloredmatrixof{
+%                    1 \\ 2
+%                }{\catvariableof{1}} \otimes \frac{1}{2} \onesat{\catvariableof{2}}
+%            \end{align*}
+%            and thus
+%            \begin{align*}
+%                \condindependent{\catvariableof{1}}{\catvariableof{2}}{\catvariableof{0}} \, .
+%            \end{align*}
+%            This means that Alice and Bob bring umbrella indenpendently from each other given whether it rains.
+%            \item[(ii)] $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$:
+%            We find the same conditional distributions as in $(i)$ (when interchanging variables):
+%            \begin{align*}
+%                \empdistributionat{\catvariableof{0},\catvariableof{2}|\catvariableof{1}=0}
+%                &= \frac{1}{4} \cdot \onesat{\catvariableof{0},\catvariableof{2}}
+%                \quad \text{and} \quad \\
+%                \empdistributionat{\catvariableof{1},\catvariableof{2}|\catvariableof{1}=1}
+%                &= \frac{1}{6}  \coloredmatrixof{
+%                    1 & 1 \\ 2 & 2
+%                }{\catvariableof{0},\catvariableof{2}} \, .
+%            \end{align*}
+%            Therefore, also $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$ holds.
+%            \item[(iii)] $\condindependent{\catvariableof{0}}{\catvariableof{1}}{\catvariableof{2}}$:
+%            We have
+%            \begin{align*}
+%                \empdistributionat{\catvariableof{0},\catvariableof{1}|\catvariableof{2}=0}
+%                &= \frac{1}{5}  \coloredmatrixof{
+%                    1 & 1 \\ 1 & 2
+%                }{\catvariableof{0},\catvariableof{1}} \, .
+%            \end{align*}
+%            This is not the tensor product of two vectors, therefore $\condindependent{\catvariableof{0}}{\catvariableof{1}}{\catvariableof{2}}$ does not hold.
+%        \end{itemize}
 
 
 
@@ -111,14 +156,14 @@
     \addtask{3}{
         Notice, that in the unregularized learning setup, the solution is the empirical distribution itself represented as a Bayesian network.
         \begin{itemize}
-            \item[(i)] There are two directed hypergraphs capturing both exactly one of the two conditional independence statements:
+            \item[(i)] There are two directed hypergraphs capturing the independence statement $\independent{\catvariableof{2}}{\catvariableof{0},\catvariableof{1}}$
             \stantikzpic{
                 \drawtextnode{-3}{1}{a)}
                 \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
                 \drawvariablenode{2}{-5}{$\catvariableof{2}$}{X2}
                 \drawvariablenode{-2}{-5}{$\catvariableof{1}$}{X1}
                 \draw[->-] (X0) -- (X1);
-                \draw[->-] (X0) -- (X2);
+            %\draw[->-] (X0) -- (X2);
 
                 \begin{scope}[shift={(10,0)}]
 
@@ -126,12 +171,12 @@
                     \drawvariablenode{0}{0}{$\catvariableof{1}$}{X0}
                     \drawvariablenode{2}{-5}{$\catvariableof{2}$}{X1}
                     \drawvariablenode{-2}{-5}{$\catvariableof{0}$}{X2}
-                    \draw[->-] (X0) -- (X1);
+                    %\draw[->-] (X0) -- (X1);
                     \draw[->-] (X0) -- (X2);
                 \end{scope}
 
             }
-            To be more precise, hypergraph $a)$ captures $\condindependent{\catvariableof{1}}{\catvariableof{2}}{\catvariableof{0}}$ and hypergraph $b)$ captures $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$.
+            %To be more precise, hypergraph $a)$ captures $\condindependent{\catvariableof{1}}{\catvariableof{2}}{\catvariableof{0}}$ and hypergraph $b)$ captures $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$.
             \item[(ii)] Based on the calculations in task $2$ the optimal decorating conditional distributions are in the case $a)$
             \begin{align*}
                 \empdistributionat{\catvariableof{1}|\catvariableof{0}}
@@ -139,15 +184,15 @@
                     \frac{1}{2} & \frac{1}{3} \\
                     \frac{1}{2} & \frac{2}{3}
                 }{\catvariableof{1},\catvariableof{0}} \\
-                \empdistributionat{\catvariableof{2}|\catvariableof{0}}
+                \empdistributionat{\catvariableof{2}}
                 &= \coloredmatrixof{
-                    \frac{1}{2} & \frac{1}{2} \\
-                    \frac{1}{2} & \frac{1}{2}
-                }{\catvariableof{2},\catvariableof{0}} \\
+                    \frac{1}{2}  \\
+                    \frac{1}{2}
+                }{\catvariableof{2}} \\
                 \empdistributionat{\catvariableof{0}}
                 &= \coloredmatrixof{
-                    \frac{1}{3} \\
-                    \frac{2}{3}
+                    \frac{2}{5} \\
+                    \frac{3}{5}
                 }{\catvariableof{0}}
             \end{align*}
             In case $b)$ the optimal decorating conditional distributions would be
@@ -157,21 +202,94 @@
                     \frac{1}{2} & \frac{1}{3} \\
                     \frac{1}{2} & \frac{2}{3}
                 }{\catvariableof{0},\catvariableof{1}} \\
-                \empdistributionat{\catvariableof{2}|\catvariableof{1}}
+                \empdistributionat{\catvariableof{2}}
                 &= \coloredmatrixof{
-                    \frac{1}{2} & \frac{1}{2} \\
-                    \frac{1}{2} & \frac{1}{2}
-                }{\catvariableof{2},\catvariableof{1}} \\
+                    \frac{1}{2}  \\
+                    \frac{1}{2}
+                }{\catvariableof{2}} \\
                 \empdistributionat{\catvariableof{1}}
                 &= \coloredmatrixof{
-                    \frac{1}{3} \\
-                    \frac{2}{3}
+                    \frac{2}{5} \\
+                    \frac{3}{5}
                 }{\catvariableof{1}}
             \end{align*}
         \end{itemize}
     }
     \addtask{4}{
-        With respect to the empirical distribution with respect to the extended dataset no conditional independence assumption would hold.
-        The Bayesian networks in task $3$ would be the naive chain decompositions (see lecture II.1-Independence) of the empirical distributions.
+        With respect to the extended dataset the empirical distribution is then the tensor
+        \stantikzpic{
+            \drawtextnode{-7.25}{0}{$\empdistributionat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}\,= \,\, \frac{1}{11}\cdot$}
+            \drawtextnode{0}{0}{$\begin{pmatrix}
+                                     1 & 1 \\ 1 & 2
+            \end{pmatrix}$}
+            \drawtextnode{4}{1}{$\begin{pmatrix}
+                                     1 & 1 \\ 1 & 3
+            \end{pmatrix}$}
+            \drawtextnode{9.5}{0}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]\,\,\, .$}
+        }
+        The independence statement $\independent{\catvariableof{2}}{\catvariableof{0},\catvariableof{1}}$ does not hold any more, since
+        \begin{align*}
+            \empdistributionat{\catvariableof{0}=1,\catvariableof{1}=1,\catvariableof{2}=1}
+            = \frac{3}{11} \neq \frac{5}{11} \cdot \frac{6}{11}
+            = \empdistributionat{\catvariableof{0}=1,\catvariableof{1}=1}\cdot\empdistributionat{\catvariableof{2}=1} \, .
+        \end{align*}
+        Also no conditional independence statement holds:
+        \begin{itemize}
+            \item[(i)] $\condindependent{\catvariableof{0}}{\catvariableof{1}}{\catvariableof{2}}$ does not hold since
+            \begin{align*}
+                \empdistributionat{\catvariableof{0},\catvariableof{1}|\catvariableof{2}=1}
+                = \frac{1}{6}\cdot\coloredmatrixof{1 & 1 \\ 1 & 3}{\catvariableof{0},\catvariableof{1}}
+                \neq \frac{1}{6}\cdot\coloredmatrixof{2 \\ 4}{\catvariableof{0}} \otimes  \frac{1}{6}\cdot\coloredmatrixof{2 \\ 4}{\catvariableof{0}} \, .
+            \end{align*}
+            \item[(ii)] $\condindependent{\catvariableof{1}}{\catvariableof{2}}{\catvariableof{0}}$ does not hold since
+            \begin{align*}
+                \empdistributionat{\catvariableof{1},\catvariableof{2}|\catvariableof{0}=1}
+                = \frac{1}{7}\cdot\coloredmatrixof{1 & 2 \\ 1 & 3}{\catvariableof{1},\catvariableof{2}}
+                \neq \frac{1}{7}\cdot\coloredmatrixof{3 & 4}{\catvariableof{1}} \otimes  \frac{1}{7}\cdot\coloredmatrixof{2 & 5}{\catvariableof{2}} \, .
+            \end{align*}
+            \item[(iii)] $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$ does not hold since
+            \begin{align*}
+                \empdistributionat{\catvariableof{0},\catvariableof{2}|\catvariableof{1}=1}
+                = \frac{1}{7}\cdot\coloredmatrixof{1 & 1 \\ 2 & 3}{\catvariableof{0},\catvariableof{2}}
+                \neq \frac{1}{7}\cdot\coloredmatrixof{2 & 5}{\catvariableof{0}} \otimes  \frac{1}{7}\cdot\coloredmatrixof{3 & 4}{\catvariableof{2}} \, .
+            \end{align*}
+        \end{itemize}
+        The Bayesian networks in task $3$ would be the naive chain decompositions (see lecture II.1-Independence) of the empirical distributions, with respect to one of the $6$ possibilities to order the three variables.
+        When choosing the order $\catvariableof{0},\catvariableof{1},\catvariableof{2}$ this is the hypergraph
+        \stantikzpic{
+            \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+            \drawvariablenode{2}{-5}{$\catvariableof{1}$}{X1}
+            \drawvariablenode{-1}{-10}{$\catvariableof{2}$}{X2}
+            \draw[->-] (X0) -- (X1);
+            \coordinate (E2) at (0,-8);
+            \draw[->-] (X0) -- (E2);
+            \draw[->-] (X1) -- (E2);
+            \draw[->-] (E2) -- (X2);
+        }
+        which would be decorated by the conditional probability distributions
+        \begin{align*}
+            \empdistributionat{\catvariableof{0}}
+            &=\frac{1}{11} \cdot \coloredmatrixof{
+                4 \\
+                7
+            }{\catvariableof{0}}
+            \quad, \quad
+            \empdistributionat{\catvariableof{1}|\catvariableof{0}}
+            = \coloredmatrixof{
+                \frac{1}{2} & \frac{1}{2} \\
+                \frac{2}{7} & \frac{5}{7}
+            }{\catvariableof{1},\catvariableof{0}}
+        \end{align*}
+        and
+        \stantikzpic{
+            \drawtextnode{-7.25}{0}{$\empdistributionat{\catvariableof{2}|\catvariableof{0},\catvariableof{1}}\,= \,\,$}
+            \drawtextnode{0}{0}{$\begin{pmatrix}
+                                     \frac{1}{2} & \frac{1}{2} \\ \frac{1}{2} & \frac{2}{5}
+            \end{pmatrix}$}
+            \drawtextnode{4}{1}{$\begin{pmatrix}
+                                     \frac{1}{2} & \frac{1}{2} \\ \frac{1}{2} & \frac{3}{5}
+            \end{pmatrix}$}
+            \drawtextnode{9.5}{0}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]\,\,\, .$}
+        }
     }
 \end{document}
