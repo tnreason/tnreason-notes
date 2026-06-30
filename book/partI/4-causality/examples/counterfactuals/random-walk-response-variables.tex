@@ -1,8 +1,7 @@
 \begin{example}[Response variables for a random walk]\label{exa:rwResponse}
 
-    Let investigate a specific example of a Markov chain, namely a random walk on the set $[\catdim]$.
-    With a probability $p\in[0,0.5]$ the
-
+    Let us investigate a specific example of a Markov chain, namely a random walk on the set $[\catdim]$.
+    We assume that with a probability $p\in[0,0.5]$ we move to the right neighbor, also with $p$ to the left neighbor and with $(1-2p)$ stay at the current state.
     \begin{align*}
         \condprobat{\catvariableof{\catenumerator}}{\catvariableof{\catenumerator-1}}
         =& p \cdot \sum_{\catindex\in[\catdim]} \onehotmapofat{\catindex-1}{\catvariableof{\catenumerator}} \otimes \onehotmapofat{\catindex}{\catvariableof{\catenumerator-1}} \\

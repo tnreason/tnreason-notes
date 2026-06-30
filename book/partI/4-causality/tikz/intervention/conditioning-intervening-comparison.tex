@@ -1,0 +1,53 @@
+\stantikzpic{
+
+    \drawtextnode{-3}{5}{$a)$}
+
+    \drawtdwire{0}{5}{}
+    \drawvariabledot{0}{3}
+    \drawldwire{0}{3}{}
+    \drawsquaretensor{3}{3}{$\catindexof{\catenumerator}$}
+    \drawtdwire{0}{3}{$\catvariableof{\catenumerator}$}
+    \drawtensorblock{0}{0}{3}{$\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}$}
+    \drawtdwire{2}{-1}{}
+    \drawtextnode{0}{-2}{\colorlabelsize $\cdots$ \\ \colorlabelsize $\catvariableof{\parentsof{\catenumerator}}$}
+    \drawtdwire{-2}{-1}{}
+
+    \drawtextnode{5}{0}{${=}$}
+
+    \begin{scope}[shift={(10,0)}]
+        \drawtdwire{0}{6}{$\catvariableof{\catenumerator}$}
+        \drawsquaretensor{0}{3}{$\catindexof{\catenumerator}$}
+
+        \drawtensorblock{0}{0}{3.5}{$\condprobat{\indexedcatvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}}$}
+        \drawtdwire{2}{-1}{}
+        \drawtextnode{0}{-2}{\colorlabelsize $\cdots$ \\ \colorlabelsize $\catvariableof{\parentsof{\catenumerator}}$}
+        \drawtdwire{-2}{-1}{}
+    \end{scope}
+
+
+    \begin{scope}[shift={(20,0)}]
+        \drawtextnode{-3}{5}{$b)$}
+
+        \drawtdwire{0}{3}{$\catvariableof{\catenumerator}$}
+        \drawtensorblock{0}{0}{3.5}{$\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}},\dovariableof{\catenumerator}}$}
+        \drawtdwire{2}{-1}{}
+        \drawtextnode{0}{-2}{\colorlabelsize $\cdots$ \\ \colorlabelsize $\catvariableof{\parentsof{\catenumerator}}$}
+        \drawtdwire{-2}{-1}{}
+
+       \drawldwire{3.5}{0}{$\dovariableof{\catenumerator}$}
+        \drawsquaretensor{6.5}{0}{$\onehotmapof{\catindexof{\catenumerator}}$}
+        
+        \drawtextnode{9}{0}{${=}$}
+
+        \begin{scope}[shift={(13,0)}]
+            \drawtdwire{0}{6}{$\catvariableof{\catenumerator}$}
+            \drawsquaretensor{0}{3}{$\catindexof{\catenumerator}$}
+
+            \drawtensorblock{0}{0}{3}{$\ones$}
+            \drawtdwire{2}{-1}{}
+            \drawtextnode{0}{-2}{\colorlabelsize $\cdots$ \\ \colorlabelsize $\catvariableof{\parentsof{\catenumerator}}$}
+            \drawtdwire{-2}{-1}{}
+        \end{scope}
+    \end{scope}
+
+}

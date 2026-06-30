@@ -1,16 +1,16 @@
 \stantikzpic{
     \node[anchor=center] at (-7,3) {$a)$};
 
-    \drawvariablenode{-3}{-3}{$\dovariableof{0}$}{D0}
+    \drawvariablenode{-3}{-3}{$\dovariableof{\intervenedset}$}{D0}
 
-    \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+    \drawvariablenode{0}{0}{$\intervenedvar$}{X0}
     \coordinate (E0) at ($(X0) - (0,2)$);
 
-    \drawvariablenode{4}{3}{$\catvariableof{1}$}{X1}
+    \drawvariablenode{4}{3}{$\observedvar$}{X1}
     \coordinate (E1) at ($(X1) - (0,2)$);
 
-    \drawvariablenode{3}{-3}{$\catvariableof{M}$}{M}
-    \drawvariablenode{8}{0}{$\catvariableof{U}$}{U}
+    \drawvariablenode{3}{-3}{$\mediatorvar$}{M}
+    \drawvariablenode{8}{0}{$\confoundervar$}{U}
 
     \draw[->-] (D0) -- (E0);
     \draw[->-] (M) -- (E0);
@@ -26,14 +26,14 @@
 
         \node[anchor=center] at (-2,3) {$b)$};
 
-        \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+        \drawvariablenode{0}{0}{$\intervenedvar$}{X0}
         \coordinate (E0) at ($(X0) - (0,2)$);
 
-        \drawvariablenode{4}{3}{$\catvariableof{1}$}{X1}
+        \drawvariablenode{4}{3}{$\observedvar$}{X1}
         \coordinate (E1) at ($(X1) - (0,2)$);
 
-        \drawvariablenode{3}{-3}{$\catvariableof{M}$}{M}
-        \drawvariablenode{8}{0}{$\catvariableof{U}$}{U}
+        \drawvariablenode{3}{-3}{$\mediatorvar$}{M}
+        \drawvariablenode{8}{0}{$\confoundervar$}{U}
 
         \draw[->-] (X0) -- (E1);
         \draw[->-] (U) -- (E1);

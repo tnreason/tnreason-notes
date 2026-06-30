@@ -1,4 +1,4 @@
-\section{Rung 2: Intervention}
+\section{Intervention}
 
 So far, there are several hypergraphs to model a probability distributions by a Bayesian Network.
 We now want to understand the directed hyperedges as causal relationships between the variables, beyond encoding of conditional independencies (see \exaref{exa:patientTreatmentOutcome}).
@@ -91,7 +91,7 @@ Since $\frac{1}{\catdimof{\node}} \onesat{\catvariableof{\node},\catvariableof{\
 %
 %    \begin{align*}
 %        \hypercoreat{\catvariableof{\node},\catvariableof{\parentsof{\node}},\dovariableof{\node}}
-%        = \condprobat{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \otimes \onehotmapofat{0}{\dovariableof{\node}}
+%        = \condprobat{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}} \otimes \onehotmapofat{\intervenedset}{\dovariableof{\node}}
 %        + \onesat{\catvariableof{\node},\catvariableof{\parentsof{\node}}} \otimes \tbasisat{\dovariableof{\node}}
 %    \end{align*}
 
@@ -106,143 +106,235 @@ An example for a simplification is given by the randomized controlled trial.
 
 \input{examples/intervention/randomized_controlled_trial}
 
+Compared to the conditional queries studied in \secref{sec:causalityAssociation}, interventions create further simplification possibilities.
+\begin{figure}[t]
+    \input{tikz/intervention/conditioning-intervening-comparison}
+    \caption{Comparison of conditioning $a)$ and intervention $b)$ on a variable $\catvariableof{\catenumerator}$.
+    When intervening, a trivial tensor over the parent variables is left, which can be exploited for further query simplifications.}
+\end{figure}
+
 \subsubsection{Backdoor Criterion}
 
 More general than in the randomized controlled trial we have to deal with confounding variables.
-The Backdoor Criterion and the Frontdoor Criterion exploit mediator variables $\catvariableof{M}$, which are also observable and block certain causal paths to unobserved confounding variables $\catvariableof{U}$.
+The Backdoor Criterion and the Frontdoor Criterion exploit mediator variables $\mediatorvar$, which are also observable and block certain causal paths to unobserved confounding variables $\confoundervar$.
 
 \begin{definition}\label{def:backdoorCriterion}
-    Let there be a directed acyclic hypergraph, such that $\catvariableof{0}$ is topologically ordered before $\catvariableof{1}$.
+    Let there be a directed acyclic hypergraph, such that $\intervenedvar$ is topologically ordered before $\observedvar$.
     A backdoor path is a path through the hypergraph, such that the first and the second node in the path are in the outgoing and the incoming nodes of a hyperedge.
-    If a variable from a set of variables $\catvariableof{M}$ is contained in every backdoor path from $\catvariableof{0}$ to $\catvariableof{1}$, then $\catvariableof{M}$ satisfies the backdoor criterion with respect to $\catvariableof{0}$ and $\catvariableof{1}$.
+    %If a variable from a set of variables $\mediatorvar$ is contained in
+    If every backdoor path from $\intervenedvar$ to $\observedvar$ is blocked by a variable in $\mediatorvar$, and $\mediatorvar$ does not contain a descendant of $\intervenedvar$, then we say $\mediatorvar$ satisfies the backdoor criterion with respect to $\intervenedvar$ and $\observedvar$.
 \end{definition}
 
-See \figref{fig:backdoorCriterion} for a typical hypergraph where $\catvariableof{M}$ satisfies the backdoor criterion.
+See \figref{fig:backdoorCriterion} for a typical hypergraph where $\mediatorvar$ satisfies the backdoor criterion.
 
 \begin{lemma}\label{lem:bdCriterionMediatorCond}
-    When $\catvariableof{M}$ satisfies the backdoor criterion for $\catvariableof{0}$ and $\catvariableof{1}$, and for some $\catindexofin{M},\catindexofin{0}$ we have $\probat{\indexedcatvariableof{0},\indexedcatvariableof{M}\neq 0}$ then
+    When $\mediatorvar$ satisfies the backdoor criterion for $\intervenedvar$ and $\observedvar$, and for some $\catindexofin{M},\catindexofin{\intervenedset}$ we have $\probat{\indexedcatvariableof{\intervenedset},\indexedcatvariableof{\mediatorset}\neq 0}$ then
     \begin{align*}
-        \condprobat{\catvariableof{1}}{\indexedcatvariableof{0},\indexedcatvariableof{M}}
-        = \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\dovariableof{0}=\catindexof{0},\indexedcatvariableof{M}} \, .
+        \condprobat{\observedvar}{\indexedcatvariableof{\intervenedset},\indexedcatvariableof{\mediatorset}}
+        = \condprobwrtof{\causalsymbol}{\observedvar}{\dovariableof{\intervenedset}=\catindexof{\intervenedset},\indexedcatvariableof{\mediatorset}} \, .
     \end{align*}
-%    and
-%    \begin{align*}
-%        \condprobat{\catvariableof{M}}{\dovariableof{0}=\catindexof{0}}
-%        = \probat{\catvariableof{M}} \, .
-%    \end{align*}
 \end{lemma}
 \begin{proof}
-        %To show the first assertions,
-    We compare the contractions $\probat{\catvariableof{1},\indexedcatvariableof{0},\indexedcatvariableof{M}}$ and  $\probofat{\causalsymbol}{\catvariableof{1},\dovariableof{0}=\catindexof{0},\indexedcatvariableof{M}}$, and notice that both differ only in a factor.
-    Whenever $\probat{\indexedcatvariableof{0},\indexedcatvariableof{M}}\neq 0$ the factor does not vanish.
-    After normalization with $\catvariableof{0}$ and $\catvariableof{M}$ incoming, the tensors are therefore equivalent.
-        %We notice that adding $\onehotmapofat{\catindexof{M}}{\catvariableof{M}}$ decomposes the contraction into a contraction staying the same fo
-
-
+    We denote $\arbset$ as the set of nodes appearing in backdoor trails from $\intervenedvar$ to $\mediatorvar$ and those variables having a variable in $\intervenedvar$ as a descendant.
+    Since any backdoor path is blocked by $\mediatorvar$, we can isolate the contraction of the nodes in $\arbset$ by simplifying the contraction as
+    \begin{align*}
+        \probofat{\causalsymbol}{\observedvar,\dovariableof{\intervenedset}=\catindexof{\intervenedset},\indexedcatvariableof{\mediatorset}}
+        =
+        &\contraction{
+            \{\onehotmapofat{\catindexof{\mediatorset}}{\mediatorvar}\} \cup
+            \{\condprobat{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}}
+            \wcols \edge = (\{\node\},\incomingnodes) \ncond \node\in\arbset\ncond \node\notin \intervenedset \}
+        } \\
+        &\cdot \contractionof{
+            \{\onehotmapofat{\catindexof{\intervenedset}}{\intervenedvar},\onehotmapofat{\catindexof{\mediatorset}}{\mediatorvar}\} \cup
+            \{\condprobat{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}}
+            \wcols \edge = (\{\node\},\incomingnodes) \ncond \node\notin\arbset\ncond \node\notin \intervenedset \}
+        }{\observedvar} \, .
+    \end{align*}
+    We compare this contraction with the analogous decomposition
+    \begin{align*}
+        \probofat{\causalsymbol}{\observedvar,\dovariableof{\intervenedset}=\catindexof{\intervenedset},\indexedcatvariableof{\mediatorset}}
+        =
+        &\contraction{
+            \{\condprobat{\indexedcatvariableof{\intervenedset}}{\catvariableof{\parentsof{\intervenedset}}},\onehotmapofat{\catindexof{\mediatorset}}{\mediatorvar}\} \cup
+            \{\condprobat{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}}
+            \wcols \edge = (\{\node\},\incomingnodes) \ncond \node\in\arbset\ncond \node\notin \intervenedset \}
+        } \\
+        &\cdot \contractionof{
+            \{\onehotmapofat{\catindexof{\intervenedset}}{\intervenedvar},\onehotmapofat{\catindexof{\mediatorset}}{\mediatorvar}\} \cup
+            \{\condprobat{\catvariableof{\node}}{\catvariableof{\parentsof{\node}}}
+            \wcols \edge = (\{\node\},\incomingnodes) \ncond \node\notin\arbset\ncond \node\notin \intervenedset \}
+        }{\observedvar} \, .
+    \end{align*}
+    and notice that both differ only in a factor.
+    Whenever $\probat{\indexedcatvariableof{\intervenedset},\indexedcatvariableof{\mediatorset}}\neq 0$ this factor does not vanish.
+    After normalization with $\intervenedvar$ and $\mediatorvar$ incoming, the tensors are therefore equivalent.
 \end{proof}
 
 
-\begin{theorem}[Backdoor Criterion]
-    Let $\catvariableof{M}$ satisfy the backdoor criterion with respect to $\catvariableof{0}$ and $\catvariableof{1}$, no node in $\catvariableof{M}$ be a descendant of $\catvariableof{0}$, and let $\catindexofin{0}$ be such that for any $\catindexofin{M}$ we have $\probat{\indexedcatvariableof{0},\indexedcatvariableof{M}}\neq0$.
-    Then we have
-    %blocks any backdoor path from $\catvariableof{0}$ to $\catvariableof{1}$ and no node in $\catvariableof{M}$ is a descendant of $\catvariableof{0}$, then
+\begin{lemma}\label{lem:bdCriterionDoInfluence}
+    When $\mediatorvar$ does not contain a descendant of $\intervenedvar$ then
     \begin{align*}
-        \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\dovariableof{0}=\catindexof{0}}
+        \condprobwrtof{\causalsymbol}{\mediatorvar}{\dovariableof{\intervenedset}}
+        = \probat{\mediatorvar} \otimes \onesat{\dovariableof{\intervenedset}} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    We causally augment the Bayesian network by the do variable $\dovariableof{\intervenedset}$, and notice that also with respect to the causally augmented hypergraph, $\mediatorvar$ does not contain a descendant of $\intervenedvar$ nor $\dovariableof{\intervenedset}$. %by adding $\dovariableof{\intervenedset}$ to the incoming nodes at the hyperedge with $\intervenedvar$ outgoing, and a decorated
+    We then investigate for arbitrary $\doindexof{\intervenedset}\in[\catdimof{\intervenedset}+1]$ the contraction
+    \begin{align*}
+        \contractionof{
+            \{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \wcols \catenumeratorin\ncond\catenumerator\neq 0\}
+            \cup \{\condprobat{\intervenedvar}{\catvariableof{\parentsof{\intervenedset}}},\onehotmapofat{\doindexof{\intervenedset}}{\dovariableof{\intervenedset}}\}
+        }{\mediatorvar} \, .
+    \end{align*}
+    We enumerate the nodes by a topological order, such that any node having $\mediatorvar$ as a descendant is ordered before those nodes ot having  $\mediatorvar$ as a descendant.
+    For some $\catenumeratorin$ we then have that $\catvariableof{[\catenumerator]}$ are the variables having $\mediatorvar$ as a descendant and $\mediatorvar$ itself.
+    \lemref{lem:bnSubContractionAsCondProb} implies for $\seccatenumerator=0$ and $\arbset=\varnothing$ that
+    \begin{align*}
+        \contractionof{
+            \{\condprobat{\catvariableof{\catenumerator}}{\catvariableof{\parentsof{\catenumerator}}} \wcols \catenumeratorin\ncond\catenumerator\neq 0\}
+            \cup \{\condprobat{\intervenedvar}{\catvariableof{\parentsof{\intervenedset}}},\onehotmapofat{\doindexof{\intervenedset}}{\dovariableof{\intervenedset}}\}
+        }{\mediatorvar}
+        = \contractionof{\condprobat{\catvariableof{[\catenumerator]}}{\varnothing}}{\mediatorvar}
+        = \probat{\mediatorvar} \, .
+    \end{align*}
+\end{proof}
+
+
+\begin{theorem}[Backdoor Criterion]\label{the:backdoorCriterion}
+    Let $\mediatorvar$ satisfy the backdoor criterion with respect to $\intervenedvar$ and $\observedvar$, no node in $\mediatorvar$ be a descendant of $\intervenedvar$, and let $\catindexofin{\intervenedset}$ be such that for any $\catindexofin{M}$ we have $\probat{\indexedcatvariableof{\intervenedset},\indexedcatvariableof{\mediatorset}}\neq0$.
+    Then we have
+    %blocks any backdoor path from $\intervenedvar$ to $\observedvar$ and no node in $\mediatorvar$ is a descendant of $\intervenedvar$, then
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\observedvar}{\dovariableof{\intervenedset}=\catindexof{\intervenedset}}
         = \contractionof{
-            \condprobof{\catvariableof{1}}{\indexedcatvariableof{0},\catvariableof{M}},
-            \probat{\catvariableof{M}}
-        }{\catvariableof{1}} \, .
+            \condprobof{\observedvar}{\indexedcatvariableof{\intervenedset},\mediatorvar},
+            \probat{\mediatorvar}
+        }{\observedvar} \, .
     \end{align*}
 \end{theorem}
 \begin{proof}
     We have by the Bayes rule
     \begin{align*}
-        \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\dovariableof{0}=\catindexof{0}}
+        \condprobwrtof{\causalsymbol}{\observedvar}{\dovariableof{\intervenedset}=\catindexof{\intervenedset}}
         = \contractionof{
-            \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\catvariableof{M},\dovariableof{0}=\catindexof{0}},
-            \condprobwrtof{\causalsymbol}{\catvariableof{M}}{\dovariableof{0}=\catindexof{0}}
-        }{\catvariableof{1}} \, .
+            \condprobwrtof{\causalsymbol}{\observedvar}{\mediatorvar,\dovariableof{\intervenedset}=\catindexof{\intervenedset}},
+            \condprobwrtof{\causalsymbol}{\mediatorvar}{\dovariableof{\intervenedset}=\catindexof{\intervenedset}}
+        }{\observedvar} \, .
     \end{align*}
     We apply \lemref{lem:bdCriterionMediatorCond} for arbitrary $\catindexofin{M}$ and get
     \begin{align*}
-        \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\indexedcatvariableof{M},\dovariableof{0}=\catindexof{0}}
-        = \condprobat{\catvariableof{1}}{\indexedcatvariableof{M},\indexeddovariableof{0}} \, .
+        \condprobwrtof{\causalsymbol}{\observedvar}{\indexedcatvariableof{\mediatorset},\dovariableof{\intervenedset}=\catindexof{\intervenedset}}
+        = \condprobat{\observedvar}{\indexedcatvariableof{\mediatorset},\indexeddovariableof{\intervenedset}} \, .
     \end{align*}
-    Further, we notice that the contraction $\condprobwrtof{\causalsymbol}{\catvariableof{M}}{\dovariableof{0}=\catindexof{0}}$ simplifies to $\probat{\catvariableof{M}}$ given the assumptions (by exploiting the directed notation to iteratively trivialize the conditional probability tensors).
-
-
-%    By assumption, we can contract all variables beside $\catvariableof{[2]},\catvariableof{M}$ into cpds, and have a simplified causal model (see \figref{fig:backdoorCriterion}a).
-%    We have
-%    \begin{align*}
-%        \condprobwrtof{\causalsymbol}{\catvariableof{0}}{\dovariableof{0}=\catindexof{0},\catvariableof{M}}
-%        = \onehotmapofat{\catindexof{0}}{\catvariableof{0}} \otimes \onesat{\catvariableof{M}}
-%    \end{align*}
-%    and thus
-%    \begin{align*}
-%        \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\dovariableof{0}=\catindexof{0}}
-%        = \contractionof{
-%            \condprobof{\catvariableof{1}}{\indexedcatvariableof{0},\catvariableof{M}},
-%            \probat{\catvariableof{M}}
-%        }{\catvariableof{1}} \, .
-%    \end{align*}
+    By assumption of the backdoor criterion, $\mediatorvar$ is not a descendant of $\intervenedvar$.
+    \lemref{lem:bdCriterionDoInfluence} thus implies
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\mediatorvar}{\dovariableof{\intervenedset}=\catindexof{\intervenedset}}
+        = \probat{\mediatorvar} \, .
+    \end{align*}
+    We conclude that
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\observedvar}{\dovariableof{\intervenedset}=\catindexof{\intervenedset}}
+        = \contractionof{
+            \condprobof{\observedvar}{\indexedcatvariableof{\intervenedset},\mediatorvar},
+            \probat{\mediatorvar}
+        }{\observedvar} \, .
+    \end{align*}
 \end{proof}
 
 \begin{figure}[t]
     \input{tikz/intervention/backdoor-criterion}
     \caption{Causal graph for the Backdoor Criterion (see \defref{def:backdoorCriterion}).
-    a) The mediator variable $\catvariableof{M}$ blocks any backdoor path from $\catvariableof{0}$ to $\catvariableof{1}$, potentially through a confounding variable $\catvariableof{U}$.
-    b) The effect of the intervention on $\catvariableof{0}$ reduces the Bayesian network effectively to the shown subgraph.}
+    a) The mediator variable $\mediatorvar$ blocks any backdoor path from $\intervenedvar$ to $\observedvar$, potentially through a confounding variable $\confoundervar$.
+    b) The effect of the intervention on $\intervenedvar$ reduces the Bayesian network effectively to the shown subgraph.}
     \label{fig:backdoorCriterion}
 \end{figure}
 
 \subsubsection{Frontdoor Criterion}
 
+We now state the frontdoor criterion, see \cite{pearl_causal_2016}.
+
 \begin{definition}
-    A frontdoor path from $\catvariableof{0}$ to $\catvariableof{1}$ is any directed path from $\catvariableof{0}$ to $\catvariableof{1}$.
-    A set $\catvariableof{M}$ of variables satisfies the frontdoor criterion, if any frontdoor path from $\catvariableof{0}$ to $\catvariableof{1}$ contains a node in $\catvariableof{M}$.
+    A frontdoor path from $\intervenedvar$ to $\observedvar$ is any directed path from $\intervenedvar$ to $\observedvar$.
+    A set $\mediatorvar$ of variables satisfies the frontdoor criterion with respect to $\intervenedvar$ and $\observedvar$, if the following hold:
+    \begin{itemize}
+        \item Any frontdoor path from $\intervenedvar$ to $\observedvar$ contains a node in $\mediatorvar$.
+        \item There is no backdoor path from $\intervenedvar$ to $\mediatorvar$.
+        \item All backdoor paths from $\mediatorvar$ to $\observedvar$ are blocked by $\intervenedvar$.
+    \end{itemize}
 \end{definition}
 
 
 \begin{lemma}[Frontdoor Criterion]
-    When $\catvariableof{M}$ satisfies the frontdoor criterion with respect to $\catvariableof{0}$ and $\catvariableof{1}$, and there is no confounder between $\catvariableof{0}$ and $\catvariableof{M}$, as well as between $\catvariableof{M}$ and $\catvariableof{1}$, then
+    When $\mediatorvar$ satisfies the frontdoor criterion with respect to $\intervenedvar$ and $\observedvar$, %and there is no confounder between $\intervenedvar$ and $\mediatorvar$, as well as between $\mediatorvar$ and $\observedvar$, -> Definition
+    then
     \begin{align*}
-        \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\dovariableof{0}=\catindexof{0}}
+        \condprobwrtof{\causalsymbol}{\observedvar}{\dovariableof{\intervenedset}=\catindexof{\intervenedset}}
         = \contractionof{
-            \condprobof{\catvariableof{M}}{\indexedcatvariableof{0}},
-            \contractionof{\condprobof{\catvariableof{1}}{\catvariableof{M},\catvariableof{0}},\probat{\catvariableof{0}}}{\catvariableof{1},\catvariableof{M}}
-%            \condprobof{\catvariableof{1}}{\catvariableof{M},\tildecatvariableof{0}},
-%            \probat{\tildecatvariableof{0}}
-        }{\catvariableof{1}} \, .
+            \condprobof{\mediatorvar}{\indexedcatvariableof{\intervenedset}},
+            \contractionof{\condprobof{\observedvar}{\mediatorvar,\intervenedvar},\probat{\intervenedvar}}{\observedvar,\mediatorvar}
+%            \condprobof{\observedvar}{\mediatorvar,\tildecatvariableof{\intervenedset}},
+%            \probat{\tildecatvariableof{\intervenedset}}
+        }{\observedvar} \, .
     \end{align*}
-    Note that the inner contraction has $\catvariableof{0}$ as a closed variable.
+    Note that the inner contraction has $\intervenedvar$ as a closed variable.
 \end{lemma}
 \begin{proof}
-    We show the claim for the situation in \figref{fig:frontdoorCriterion}
+    We expand
     \begin{align*}
-        \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\dovariableof{0}=\catindexof{0}}
-        &= \contractionof{
-            \condprobof{\catvariableof{M}}{\indexedcatvariableof{0}},
-            \condprobof{\catvariableof{1}}{\catvariableof{M},\catvariableof{U}},
-            \probat{\catvariableof{U}}
-        }{\catvariableof{1}} \\
-        &= \contractionof{
-            \condprobof{\catvariableof{M}}{\indexedcatvariableof{0}},
-            \contractionof{\condprobof{\catvariableof{1}}{\catvariableof{M},\catvariableof{U}},\probat{\catvariableof{U}}}{\catvariableof{1},\catvariableof{M}}
-        }{\catvariableof{1}} \, .
+        \condprobwrtof{\causalsymbol}{\observedvar}{\dovariableof{\intervenedset}=\catindexof{\intervenedset}}
+        = \contractionof{
+            \condprobwrtof{\causalsymbol}{\mediatorvar}{\dovariableof{\intervenedset}=\catindexof{\intervenedset}},
+            \condprobwrtof{\causalsymbol}{\observedvar}{\mediatorvar,\dovariableof{\intervenedset}=\catindexof{\intervenedset}}
+        }{\observedvar}
     \end{align*}
-    We note that
+    Since there are no backdoor trails from $\intervenedvar$ to $\mediatorvar$, we apply the backdoor simplification by \theref{the:backdoorCriterion} to get
     \begin{align*}
-        \contractionof{\condprobof{\catvariableof{1}}{\catvariableof{M},\catvariableof{U}},\probat{\catvariableof{U}}}{\catvariableof{1},\indexedcatvariableof{M}}
-        &= \condprobwrtof{\causalsymbol}{\catvariableof{1}}{\dovariableof{M}=\catindexof{M}} \\
-        &= \contractionof{\condprobof{\catvariableof{1}}{\catvariableof{M},\catvariableof{0}},\probat{\catvariableof{0}}}{\catvariableof{1},\indexedcatvariableof{M}}
+        \condprobwrtof{\causalsymbol}{\mediatorvar}{\dovariableof{\intervenedset}=\catindexof{\intervenedset}}
+        = \condprobat{\mediatorvar}{\indexedcatvariableof{\intervenedset}} \, .
     \end{align*}
-    Here we used in the second equation that the variable $\catvariableof{0}$ blocks all backdoor paths from $\catvariableof{M}$ to $\catvariableof{1}$ (i.e. the backdoor criterion).
-    Combining both equations proves the claim.
+    Since $\mediatorvar$ blocks all directed paths from $\intervenedvar$ to $\observedvar$ we have for any $\catindexofin{\mediatorset}$
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\observedvar}{\mediatorvar=\catindexof{\mediatorset},\dovariableof{\intervenedset}=\catindexof{\intervenedset}}
+        = \condprobwrtof{\causalsymbol}{\observedvar}{\dovariableof{\mediatorset}=\catindexof{\mediatorset}} \, .
+    \end{align*}
+    By assumption, $\intervenedvar$ further satisfies the backdoor criterion with respect to $\mediatorvar$ and $\observedvar$.
+    We can therefore apply the backdoor simplification by \theref{the:backdoorCriterion} again and get
+    \begin{align*}
+        \condprobwrtof{\causalsymbol}{\observedvar}{\dovariableof{\mediatorset}=\catindexof{\mediatorset}}
+        = \contractionof{
+            \condprobat{\observedvar}{\mediatorvar,\intervenedvar},\probat{\intervenedvar}
+        }{\observedvar}\, .
+    \end{align*}
+    Combining these contraction identities, we arrive at the claim.
+%    We show the claim for the situation in \figref{fig:frontdoorCriterion}
+%    \begin{align*}
+%        \condprobwrtof{\causalsymbol}{\observedvar}{\dovariableof{\intervenedset}=\catindexof{\intervenedset}}
+%        &= \contractionof{
+%            \condprobof{\mediatorvar}{\indexedcatvariableof{\intervenedset}},
+%            \condprobof{\observedvar}{\mediatorvar,\confoundervar},
+%            \probat{\confoundervar}
+%        }{\observedvar} \\
+%        &= \contractionof{
+%            \condprobof{\mediatorvar}{\indexedcatvariableof{\intervenedset}},
+%            \contractionof{\condprobof{\observedvar}{\mediatorvar,\confoundervar},\probat{\confoundervar}}{\observedvar,\mediatorvar}
+%        }{\observedvar} \, .
+%    \end{align*}
+%    We note that
+%    \begin{align*}
+%        \contractionof{\condprobof{\observedvar}{\mediatorvar,\confoundervar},\probat{\confoundervar}}{\observedvar,\indexedcatvariableof{\mediatorset}}
+%        &= \condprobwrtof{\causalsymbol}{\observedvar}{\dovariableof{\mediatorset}=\catindexof{\mediatorset}} \\
+%        &= \contractionof{\condprobof{\observedvar}{\mediatorvar,\intervenedvar},\probat{\intervenedvar}}{\observedvar,\indexedcatvariableof{\mediatorset}}
+%    \end{align*}
+%    Here we used in the second equation that the variable $\intervenedvar$ blocks all backdoor paths from $\mediatorvar$ to $\observedvar$ (i.e. the backdoor criterion).
+%    Combining both equations proves the claim.
 \end{proof}
 
 
 \begin{figure}[t]
     \input{tikz/intervention/frontdoor-criterion}
-    \caption{Typical hypergraph, where $\catvariableof{M}$ satisfies the frontdoor criterion with respect to $\catvariableof{0}$ and $\catvariableof{1}$.}
+    \caption{Typical hypergraph, where $\mediatorvar$ satisfies the frontdoor criterion with respect to $\intervenedvar$ and $\observedvar$.}
     \label{fig:frontdoorCriterion}
 \end{figure}

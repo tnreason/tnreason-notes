@@ -1,5 +1,184 @@
-\section{Rung 1: Association}
+\section{Association}\label{sec:causalityAssociation}
 
-See main report: Bayesian Networks are tensor networks and probabilistic queries can be answered by their contractions.
+See \charef{cha:probabilityTheory}: Bayesian Networks are tensor networks and probabilistic queries can be answered by their contractions.
+We here provide more theory on query simplification and d-separation, to prepare for the study of intervention mechanisms.
+
 
 \input{examples/association/mc-association}
+
+\subsection{Simplification using directed contractions}
+
+\begin{lemma}\label{lem:bnSubContractionAsCondProb}
+    Let $\shortcatvariables$ be an enumeration of the variables respecting a topological order on the directed acyclic hypergraph $\graph$.
+    For any $\seccatenumerator<\catenumerator$ we build the sets $[\catenumerator]\backslash[\seccatenumerator] = \{\seccatenumerator,\seccatenumerator+1,\ldots,\catenumerator-1\}$ and $\arbset=\left(\bigcup_{l\in[\catenumerator]\backslash[\seccatenumerator]}\parentsof{l}\right)\cap[\seccatenumerator]$.
+    Then
+    \begin{align*}
+        \condprobat{\catvariableof{[\catenumerator]\backslash[\seccatenumerator]}}{\catvariableof{\arbset}}
+        = \contractionof{
+            \{\condprobat{\catvariableof{l}}{\catvariableof{\parentsof{l}}} \wcols l\in[\catenumerator]\backslash[\seccatenumerator]\}
+        }{
+            \catvariableof{[\catenumerator]\backslash[\seccatenumerator]},\catvariableof{\arbset}
+        }
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    By construction we have for $l\in[\catenumerator]\backslash[\seccatenumerator]$ the independencies
+    \begin{align*}
+        \condindependent{\catvariableof{l}}{\catvariableof{[l]\backslash([\seccatenumerator]\cup\parentsof{l})},\catvariableof{\arbset\backslash\parentsof{l}}}{\catvariableof{\parentsof{l}}}
+    \end{align*}
+    and therefore
+    \begin{align*}
+        \condprobat{\catvariableof{l}}{\catvariableof{\parentsof{l}}}
+        \otimes \onesat{\catvariableof{[l]\backslash([\seccatenumerator]\cup\parentsof{l})}}
+        \otimes \onesat{\catvariableof{\arbset\backslash\parentsof{l}}}
+        =  \condprobat{\catvariableof{l}}{\catvariableof{([l]\backslash[\seccatenumerator])\cup\arbsetof{l}}} \, .
+    \end{align*}
+    It follows that
+    \begin{align*}
+        &\contractionof{
+            \{\condprobat{\catvariableof{l}}{\catvariableof{\parentsof{l}}} \wcols l\in[\catenumerator]\backslash[\seccatenumerator]\}
+        }{
+            \catvariableof{[\catenumerator]\backslash[\seccatenumerator]},\catvariableof{\arbset}
+        }
+        %&\quad
+        =\contractionof{
+            \{\condprobat{\catvariableof{l}}{\catvariableof{([l]\backslash[\seccatenumerator])\cup\arbsetof{l}}} \wcols l\in[\catenumerator]\backslash[\seccatenumerator]\}
+        }{
+            \catvariableof{[\catenumerator]\backslash[\seccatenumerator]},\catvariableof{\arbset}
+        }
+        %&\quad
+        =\condprobat{\catvariableof{[\catenumerator]\backslash[\seccatenumerator]}}{\catvariableof{\arbset}}
+    \end{align*}
+    Here we used in the last equation the chain decomposition on the conditioned distribution $\condprobat{\catvariableof{[\catenumerator]\backslash[\seccatenumerator]}}{\catvariableof{\arbset}}$.
+\end{proof}
+
+\subsection{Statistical influence}
+
+Let us investigate, how the directionality in a Bayesian network hypergraph can be interpreted as statistical influence between variables.
+To be more precise, we study which cores need to be contracted to answer probabilistic queries, and in such way contribute a statistical influence to a query.
+
+% Simplification rules
+When conditioning on some variables, and marginalizing others, we can simplify the Bayesian network.
+There are two simplification mechanisms:
+\begin{itemize}
+    \item[(i)] When having a basis vector to a closed variable, we can remove the variable and replace all tensors affected by the variable with contractions with a copy of the basis vector.
+    That is, we apply the contraction identity:
+    \stantikzpic{
+        \drawsquaretensor{0}{1}{$\onehotmapof{\catindex}$}
+        \drawddwire{0}{-2}{$\catvariable$}
+        \drawvariabledot{0}{-2}
+        \draw[->-] (0,-2) to [bend right=20] (-3,-4);
+        \drawtextnode{0}{-3.5}{$\cdots$}
+        \draw[->-] (0,-2) to [bend right=-20] (3,-4);
+
+        \drawtextnode{5}{-1}{${=}$}
+
+        \drawsquaretensor{10}{-1}{$\onehotmapof{\catindex}$}
+        \drawddwire{10}{-4}{$\catvariable$}
+
+        \drawtextnode{13}{-2.5}{$\cdots$}
+        \drawsquaretensor{16}{-1}{$\onehotmapof{\catindex}$}
+        \drawddwire{16}{-4}{$\catvariable$}
+    }
+    \item[(ii)] When a closed variables appears only as an outgoing variable, we can replace the corresponding tensor with the trivial tensor.
+    This corresponds with the contraction identity:
+    \stantikzpic{
+        \drawvariabledot{0}{3}
+        \drawtdwire{0}{3}{$\catvariableof{\outsymbol}$}
+        \drawtensorblock{0}{0}{2.5}{$\condprobat{\catvariableof{\outsymbol}}{\catvariableof{\insymbol}}$}
+        \drawtdwire{-1.5}{-1}{}
+        \drawtextnode{0}{-2}{\colorlabelsize $\catvariableof{\insymbol}$}
+        \drawtdwire{1.5}{-1}{}
+
+        \drawtextnode{5}{0}{${=}$}
+
+        \drawtensorblock{10}{0}{2}{$\ones$}
+        \drawtdwire{8.5}{-1}{}
+        \drawtextnode{10}{-2}{\colorlabelsize $\catvariableof{\insymbol}$}
+        \drawtdwire{11.5}{-1}{}
+    }
+\end{itemize}
+
+When having a path through the directed hypergraph (which itself does not necessarily respect the directionality), we investigate whether it will be a path in the simplified hypergraph.
+Consiering a node $\catvariableof{1}$ and its neighbors $\catvariableof{0}$, $\catvariableof{1}$ in a path, there are three different situations \cite{pearl_causality_2009}:
+\begin{itemize}
+    \item {\bf Chains:} $\catvariableof{1}$ appears as outgoing and incoming variable.
+    \stantikzpic{
+        \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+        \drawvariablenode{5}{0}{$\catvariableof{1}$}{X1}
+        \drawvariablenode{10}{0}{$\catvariableof{2}$}{X2}
+        \draw[->-] (X0) -- (X1);
+        \draw[->-] (X1) -- (X2);
+    }
+    When conditioned on $\catvariableof{1}$, the path closes by rule $(i)$.
+    \item {\bf Forks:} $\catvariableof{1}$ appears only as outgoing variable.
+    \stantikzpic{
+        \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+        \drawvariablenode{5}{0}{$\catvariableof{1}$}{X1}
+        \drawvariablenode{10}{0}{$\catvariableof{2}$}{X2}
+        \draw[-<-] (X0) -- (X1);
+        \draw[->-] (X1) -- (X2);
+    }
+    When conditioned on $\catvariableof{1}$, the path also closes by rule $(i)$.
+    \item {\bf Colliders:} $\catvariableof{1}$ appears only as incoming variable. % Also (v-structure)
+    \stantikzpic{
+        \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+        \drawvariablenode{5}{0}{$\catvariableof{1}$}{X1}
+        \drawvariablenode{10}{0}{$\catvariableof{2}$}{X2}
+        \draw[->-] (X0) -- (X1);
+        \draw[-<-] (X1) -- (X2);
+    }
+    When $\catvariableof{1}$ is marginalized out and not conditioned on, simplification rule $(ii)$ disconnects the path.
+    When $\catvariableof{1}$ is conditioned on, the path is still active by the tensor $\condprobat{\indexedcatvariableof{1}}{\catvariableof{0},\catvariableof{2},\catvariableof{\parentsof{1}/\{0,2\}}}$
+\end{itemize}
+
+We use this intuition to define active trails and d-separation, oriented on \cite[Def.~3.6 and Def.~3.7]{koller_probabilistic_2009}.
+
+\begin{definition}[Active trails and d-separation]
+    A trail in a directed hypergraph $\graph=(\nodes,\edges)$ is a enumerated subset of variables $\catvariableof{[r]}$ such that for each $s\in[r-1]$ there is a hyperedge $\edge=(\incomingnodes,\outgoingnodes)$ with $\catvariableof{s}\in\incomingnodes$ and $\catvariableof{s}\in\outgoingnodes$ or $\catvariableof{s}\in\outgoingnodes$ and $\catvariableof{s}\in\incomingnodes$.
+    We say that a trail in $\graph$ is blocked giving a set $\nodesc$, if any collider has a node in $\nodesc$ or in $\mathrm{Desc}(\nodesc)$ in the middle, and no chain or fork has a node in $\nodesc$ in the middle.
+    Two subsets $\nodesa$ and $\nodesb$ are said to be d-separated given $\nodesc$, if any trail from $\nodesa$ to $\nodesb$ is blocked by $\nodesc$.
+    %   the trail contains a chain or fork with a variable in $\catvariableof{\arbsetof{\mathrm{cond}}}$ in the middle, or contains a collider with a variable in $\catvariableof{\arbsetof{\mathrm{cond}}}$ in the middle.
+\end{definition}
+
+To show the utility of this definition, let us consider two sets of variables $\nodesa,\nodesb$ d-separated by $~3.\nodesc$.
+
+\begin{theorem}\label{the:dSeparation}
+    If and only if $\nodesa,\nodesb$ d-separated by $\nodesc$ then for any Bayesian network on $\graph$
+    \begin{align*}
+        \condindependent{\catvariableof{\nodesa}}{\catvariableof{\nodesb}}{\catvariableof{\nodesc}} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Let us first show, that whenever we have $\nodesa,\nodesb$ which are d-separated by $\nodesc$ and a Bayesian network on $\graph$, then $\condindependent{\catvariableof{\nodesa}}{\catvariableof{\nodesb}}{\catvariableof{\nodesc}}$ with respect to that Bayesian network.
+    By performing the simplification rules iteratively on the contraction
+    \begin{align*}
+        \condprobat{\catvariableof{\nodesa\cup\nodesb}}{\indexedcatvariableof{\nodesc}}
+    \end{align*}
+    and observing that the tensor network decomposes into a tensor product
+    \begin{align*}
+        \condprobat{\catvariableof{\nodesa\cup\nodesb}}{\indexedcatvariableof{\nodesc}}
+        = \condprobat{\catvariableof{\nodesa}}{\indexedcatvariableof{\nodesc}}
+        \otimes \condprobat{\catvariableof{\nodesb}}{\indexedcatvariableof{\nodesc}} \, .
+    \end{align*}
+
+    To show the contrary, it is enough construct a Bayesian network not satisfying this independence statement once $\nodesa,\nodesb$ are not d-separated by $\nodesc$.
+    We refer to Thm.~3.4 in \cite{koller_probabilistic_2009} for such a construction.
+\end{proof}
+
+We already characterized in \charef{cha:probabilityTheory} Bayesian networks on a hypergraph as those distributions satisfying the independencies
+\begin{align*}
+    \condindependent{\catvariableof{\catenumerator}}{\catvariableof{[\catenumerator]\backslash\parentsof{\catenumerator}}}{\catvariableof{\parentsof{\catenumerator}}}
+\end{align*}
+with respect to a topological order on $\graph$.
+
+
+%such that a set $\catvariableof{\arbsetof{\mathrm{cond}}}$ blocks every trail from $\catvariableof{0}$ to $\catvariableof{1}$.
+%We then consider the distribution
+%\begin{align*}
+%    \condprobat{\catvariableof{0},\catvariableof{1}}{\catvariableof{\arbsetof{\mathrm{cond}}}} \, .
+%\end{align*}
+%In the tensor network perspective, after simplification, we observe that this is a contraction of $\condprobat{\catvariableof{0}}{\catvariableof{\arbsetof{\mathrm{cond}}}}$ and $\condprobat{\catvariableof{0}}{\catvariableof{\arbsetof{\mathrm{cond}}}}$, and therefore
+%\begin{align*}
+%    \condindependent{\catvariableof{0}}{\catvariableof{1}}{\catvariableof{\arbsetof{\mathrm{cond}}}} \, .
+%\end{align*}

@@ -1,14 +1,14 @@
 \stantikzpic{
-        \drawvariablenode{-3}{-3}{$\dovariableof{0}$}{D0}
+        \drawvariablenode{-3}{-3}{$\dovariableof{\intervenedset}$}{D0}
 
-        \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+        \drawvariablenode{0}{0}{$\intervenedvar$}{X0}
         \coordinate (E0) at ($(X0) - (0,2)$);
 
-        \drawvariablenode{10}{4}{$\catvariableof{1}$}{X1}
+        \drawvariablenode{10}{4}{$\observedvar$}{X1}
         \coordinate (E1) at ($(X1) - (1,2)$);
 
-        \drawvariablenode{5}{2}{$\catvariableof{M}$}{M}
-        \drawvariablenode{5}{-3}{$\catvariableof{U}$}{U}
+        \drawvariablenode{5}{2}{$\mediatorvar$}{M}
+        \drawvariablenode{5}{-3}{$\confoundervar$}{U}
 
         \draw[->-] (D0) -- (E0);
         \draw[->-] (U) -- (E0);

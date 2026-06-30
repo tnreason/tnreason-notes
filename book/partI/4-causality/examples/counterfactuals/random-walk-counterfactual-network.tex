@@ -1,4 +1,4 @@
-\begin{example}[Response variables for a random walk]\label{exa:rwCounterfactuals}
+\begin{example}[Counterfactual query for a random walk]\label{exa:rwCounterfactuals}
 
     We build a counterfactual twinned network (see \figref{fig:rwCounterfactualNetwork}), by adding counterfactual variables $\tildecatvariableof{[\catorder]}$ linked to the same response variables.
     Further, we include do variables to the counterfactual world, to answer counterfactual queries.
@@ -43,7 +43,7 @@
                 \draw (6.5,3.5) rectangle (9.5,6.5);
                 \drawtextnode{8}{5}{
                     \tiny $\begin{pmatrix}
-                               0.25 \\ 0.50 \\ 0.25
+                               p \\ 1-2p \\ p
                     \end{pmatrix}$}
                 \draw [->-] (8,3.5) -- (8,2) node[midway,right] {\colorlabelsize $\selvariableof{\catenumerator}$};
                 \draw[->-] (8,2) -- (10,2);
@@ -82,7 +82,7 @@
             \draw (6.5,3.5) rectangle (9.5,6.5);
             \drawtextnode{8}{5}{
                 \tiny $\begin{pmatrix}
-                           0.25 \\ 0.50 \\ 0.25
+                           p \\ 1-2p \\ p
                 \end{pmatrix}$}
             \draw [->-] (8,3.5) -- (8,2) node[midway,right] {\colorlabelsize $\selvariableof{\catenumerator}$};
             \drawrdwire{10}{2}{}
@@ -105,7 +105,7 @@
         \draw (6.5,0.5) rectangle (9.5,-2.5);
         \drawtextnode{8}{-1}{
             \tiny $\begin{pmatrix}
-                       0.25 \\ 0.50 \\ 0.25
+                       p \\ 1-2p \\ p
             \end{pmatrix}$}
         \draw [->-] (8,0.5) -- (8,2) node[midway,right] {\colorlabelsize $\selvariableof{\catenumerator+1}$};
         \drawrdwire{10}{2}{}
@@ -192,9 +192,10 @@
     Thus, the same steps (left, right neighbor or keeping positions) are done in the counterfactual world.
     Given the observed world, the distribution of the counterfactual world variables is therefore deterministic.
 
-    % More general: Non-deterministic counterfactual
-    In more generality, we have a larger support of the response variables after contraction with the one-hot encoded observation.
-    In that case, we would have a non-deterministic behaviour of the counterfactual variables.
+    % More general: Non-deterministic counterfactual - Unclear!
+%    In more generality, we have a larger support of the response variables after contraction with the one-hot encoded observation.
+%    In that case, we would have a non-deterministic behaviour of the counterfactual variables.
+
 %    \begin{align*}
 %        \contractionof{
 %            \onehotmapofat{\catindexof{\catenumerator}}{\catvariableof{\catenumerator}},
@@ -202,7 +203,5 @@
 %            \bencodingofat{}{}
 %        }{\selvariableof{\catenumerator}}
 %    \end{align*}
-
-
 
 \end{example}

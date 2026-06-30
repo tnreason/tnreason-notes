@@ -46,7 +46,7 @@
 
         \begin{scope}[shift={(0,-7)}]
 
-            \drawtextnode{2}{3}{a) Future-to-past representation:}
+            \drawtextnode{2}{3}{b) Future-to-past representation:}
 
             \foreach \i [
                 evaluate=\i as \lab using int(\i-2),
@@ -85,5 +85,10 @@
             \drawtextnode{-5}{0}{$\cdots$}
         \end{scope}
     }
+    Both parametrizations represent the same distribution, and encode the same conditional independence statements.
+    However, intuitively the future is influenced by the past, so we would prefer the parametrization $a)$.
+    We will observe in the following (see \exaref{exa:mcIntervention}) how expanding the model through intervention mechanisms will provide us a method to distinguish between both parametrizations.
+
+
 
 \end{example}
