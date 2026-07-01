@@ -12,9 +12,7 @@ This is exactly the case, when the face is an intersection of the mean polytope 
 
 \subsection{Characterization of elementary representable faces}
 
-We first show in the following example, that all faces of a hypercube are representable by elementary activation tensors.
 
-\input{examples/hypercube_faces}
 
 Orienting on \exaref{exa:hypercubeFaces} we define cube-likeness of faces and polytopes.
 
@@ -92,9 +90,15 @@ We now show that a face is cube-like if and only if it is representable by an el
     We conclude that $\facesymbol$ is cube-like.
 \end{proof}
 
-Let us now give with the standard simplices a class of convex polytopes, which are not hypercubes, but cube-like.
+%% Reference to simplices and hypercubes
+\theref{the:faceMeasureHardLogicNetworks} implices that hypercubes (see \exaref{exa:hypercubeFaces}) and simplices (see \exaref{exa:simplexFaces}) are cube-like polytopes, since their faces are intersections with faces of the hypercube.
 
-\input{examples/simplex_faces}
+
+%Let us now give with the standard simplices a class of convex polytopes, which are not hypercubes, but cube-like.
+
+%\input{examples/mean-polytope/simplex_faces}
+
+
 
 \subsection{Set of maximum entropy distributions}
 
@@ -125,13 +129,13 @@ which is equal with any of the entailment statements for $\variableset\subset[\s
 
 Along this interpretation we can easily construct examples of statistics, which polytopes are not cube-like.
 
-\input{examples/nonel_hlnstat_maxent.tex}
+\input{examples/boolean-stat/nonel_hlnstat_maxent}
 
-\input{examples/atomic_formulas.tex}
+\input{examples/boolean-stat/atomic_formulas}
 
-\input{examples/minterm_formulas.tex}
+\input{examples/boolean-stat/minterm_formulas}
 
-\input{examples/tt_diagonal_face}
+\input{examples/boolean-stat/tt_diagonal_face}
 
 \subsection{Construction of \HybridLogicNetworks{}}
 
@@ -200,6 +204,6 @@ We now constructively show, that any convex polytope with boolean vertices in $\
 
 \subsection{Further Examples of non-cubelike polytopes}
 
-\input{examples/ising_two}
+\input{examples/boolean-stat/ising_two}
 
-\input{examples/ldpc_one}
+\input{examples/boolean-stat/ldpc_one}

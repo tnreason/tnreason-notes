@@ -14,7 +14,7 @@ We define it as
 where we denote by $\bmrealprobof{\basemeasure}$ the set of all probability distributions representable with respect to $\basemeasure$.
 
 \begin{center}
-    \input{../../PartI/tikz_pics/probability_reasoning/meanset_sketch_generic.tex}
+    \input{tikz/mean-polytope/meanset_sketch_generic.tex}
 \end{center}
 
 \subsection{Convex hull}
@@ -58,66 +58,6 @@ Let us now continue with the investigation of the faces of the mean parameter po
 
 $\facelatticeof{\genmeanset}$ is called a lattice \cite{ziegler_lectures_2013}.
 
-%\subsection{Characterization of the Boundary by Faces}
-
-%,
-%\begin{definition}
-%    \label{def:meanPolytopeFaces}
-%    Given a mean parameter polytope $\genmeanset$ in the half space representation of \theref{the:meanPolytopeHalfspaces}, and any subset $\mathcal{I}\subset[n]$ we say that the set
-%    \begin{align*}
-%        \facesymbol
-%        = \left\{\meanparamwith\in\genmeanset \wcols \forall_{i\in\mathcal{I}} \, \contraction{\meanparamwith,\normalvecofat{i}{\selvariable}}=\normalboundof{i} \right\}
-%    \end{align*}
-%    is the face to the constraints $\mathcal{I}$.
-%\end{definition}
-%
-%While all inequalities in a half-space representation are satisfied for any element of the polytope, we defined faces by the additional sharp satisfaction of a subset of the half-space inequalities.
-%In this way, the faces build the boundary of $\genmeanset$.
-%This can be easily verified, since for any vector $\meanparamwith\in\genmeanset$, for which no halfspace inequalities hold sharply, also a neighborhood satisfies the halfspace inequalities.
-%If any halfspace inequality holds sharply, in the other case, the vector is a member of the corresponding face.
-%
-%% Trivial face containing the whole polytope in case of non-minimal statistics
-%If $\sstat$ is not minimal with respect to $\basemeasure$, we find a non-vanishing vector $\vectorat{\selvariable}$ and a scalar $\lambda\in\rr$ such that
-%\begin{align*}
-%    \contractionof{\sencsstatat{\shortcatvariables,\selvariable},\vectorat{\selvariable},\basemeasurewith}{\shortcatvariables} = \lambda\cdot\basemeasurewith \, .
-%\end{align*}
-%This implies, that any probability distribution $\probwith$ representable with $\basemeasure$ satisfies
-%\begin{align*}
-%    \contraction{\probwith,\sencsstatat{\shortcatvariables,\selvariable},\vectorat{\selvariable},\basemeasurewith} = \lambda\cdot \contraction{\probwith,\basemeasurewith} = \lambda \, .
-%\end{align*}
-%Any $\meanparamwith\in\genmeanset$ then satisfies
-%\begin{align*}
-%    \contraction{\meanparamwith,\vectorat{\selvariable}} = \lambda \, .
-%\end{align*}
-%Thus, the polytope $\genmeanset$ is contained in an affine linear subspace and has vanishing interior.
-%We can further understand this equation as two half-space inequalities
-%\begin{align*}
-%    \contraction{\meanparamwith,\vectorat{\selvariable}} \leq \lambda \andspace \contraction{\meanparamwith,\vectorat{\selvariable}} \geq \lambda \, ,
-%\end{align*}
-%which can be integrated into any half-space representation.
-%We conclude, that in the case of non-minimal statistics, the whole polytope $\genmeanset$ is a face itself, since it satisfies these half-space inequalities sharply.
-
-
-%\subsect{Base measures on faces}
-
-%\begin{lemma}
-%    \label{lem:faceConvHullPreimage}
-%    For each face $\facesymbol$ we have
-%    \begin{align*}
-%        \facesymbol
-%        = \convhullof{\sencsstatat{\indexedshortcatvariables,\selvariable}\wcols\shortcatindices\in(\sstatencoding)^{-1}(\facesymbol)\ncond\basemeasureat{\indexedshortcatvariables}=1} \, .
-%    \end{align*}
-%\end{lemma}
-%\begin{proof}
-%    This holds, since each face is the convex hull of the contained vertices (see Proposition~2.2 and 2.3 in \cite{ziegler_lectures_2013}).
-%    Since the vertices are contained in the image of the statistic encoding $\sstatencoding$, the vertices contained in $\facesymbol$ are contained in the set
-%    \begin{align*}
-%        \sencsstatat{\indexedshortcatvariables,\selvariable}\wcols\shortcatindices\in(\sstatencoding)^{-1}(\facesymbol) \, . & \qedhere
-%    \end{align*}
-%\end{proof}
-
-%\lemref{lem:faceConvHullPreimage} implies in particular, that faces are mean parameter polytopes with respect to refined base measures.
-%For reference in later chapters, we define these refined base measures next as face measures.
 
 We notice, that each face itself is a convex polytope.
 What is more, we can characterize these as mean parameter polytopes with respect to refined base measures to be defined next.
@@ -352,7 +292,8 @@ While vertices are the minimal non-vanishing faces in the face-lattice (see \cit
     The maximal face $\genfacesetof{\varnothing}=\genmeanset$ coincides with the mean polytope itself and is given by the choice $\canparamofat{\varnothing}{\selvariable}=\zerosat{\selvariable}$.
     In this case the corresponding activation tensor to the face measure is trivial, that is
     \begin{align*}
-        \kcoreofat{\varnothing}{\headvariables} = \onesat{\headvariables} \, .
+        \kcoreofat{\varnothing}{\headvariables}
+        = \onesat{\headvariables} \, .
     \end{align*}
     $\kcoreof{\varnothing}$ is elementary and the normalized face measure $\basemeasureof{\sstat,\varnothing}$ to the maximal face is in $\realizabledistsof{\sstat,\elgraph}$.
 \end{example}
@@ -400,6 +341,18 @@ Extending \exaref{exa:vertexMeasures}, we can provide a coarse estimation of the
     \end{align*}
     We have thus found a face activating tensor network for $\genfaceset$ in a $\cpformat$ format with hidden rank $r=\cardof{\genimset}-\cardof{\genfaceimset}+1$.
 \end{proof}
+
+
+\subsection{Examples of polytopes with elementary representable faces}
+
+We first show in the following example, that all faces of a hypercube are representable by elementary activation tensors.
+
+\input{examples/mean-polytope/hypercube_faces}
+
+\input{examples/mean-polytope/simplex_faces}
+
+
+
 
 \subsection{Partition into Relative Interiors of Faces}
 

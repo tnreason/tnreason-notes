@@ -1,51 +1,6 @@
-\section{Main results: Tensor network representation of maximum entropy distributions}
+\section{Generic maximum entropy distributions}
 
 Given the mean polytope discussion we now characterize the tensor network representation of maximum entropy distributions.
-
-
-
-\subsection{Maximum entropy on the interior}
-
-A classical result states, that the maximum entropy distribution is in the exponential family $\expfamilyof{\sstat,\basemeasure}$ (see e.g. \cite{koller_probabilistic_2009}).
-
-\begin{theorem}
-    \label{the:maxEntropyInterior}
-    %If the only face $\genfacesetof{\facecondset}$ of $\genmeanset$ with $\meanparam\in\genfacesetof{\facecondset}$ is $\genmeanset$ itself
-    If and only if $\genmean$ is in the relative interior of $\genmeanset$, then the unique solution of the maximum entropy problem is the distribution
-    \begin{align*}
-        \expdistofat{\sstat,\genmean,\basemeasure}{\shortcatvariables}\in\expfamilyof{\sstat,\basemeasure}
-    \end{align*}
-    with $\contractionof{\expdistofat{\sstat,\genmean,\basemeasure}{\shortcatvariables},\sencsstatwith}{\selvariable}=\genmeanat{\selvariable}$.
-\end{theorem}
-\begin{proof}
-    By \lemref{lem:interiorRepExpFamily}
-    \begin{align*}
-        \meanparamwith \in \sbinteriorof{\genmeanset}  \, ,
-    \end{align*}
-    there is a canonical parameter $\canparam$ with
-    \begin{align*}
-        \contractionof{\expdistofat{\sstat,\canparam,\basemeasure}{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}=\meanparamat{\selvariable} \, .
-    \end{align*}
-
-    For any other feasible distribution $\secprobat{\shortcatvariables}$ we also have $\contractionof{\secprobat{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}=\meanparamat{\selvariable}$ and thus
-    \begin{align*}
-        \centropyofwrt{\secprobtensor}{\expdistof{(\sstat,\canparam,\basemeasure)}}{\basemeasure}
-        &= -\contraction{\secprobtensor,\lnof{\expdistofat{(\sstat,\canparam,\basemeasure)}{\shortcatvariables}},\basemeasurewith} \\
-        &= -\contraction{\secprobtensor,\sencsstatwith,\canparamwith,\basemeasurewith} + \cumfunctionof{\canparam} \\
-        &= - \contraction{\canparamwith,\meanparamwith} + \cumfunctionof{\canparam} \\
-        &= \sentropyofwrt{\expdistof{(\sstat,\canparam,\basemeasure)}}{\basemeasure} \, .
-    \end{align*}
-    With the Gibbs inequality we have if $\secprobtensor\neq\expdistof{(\sstat,\canparam,\basemeasure)}$
-    \begin{align*}
-        \sentropyofwrt{\expdistof{(\sstat,\estcanparam,\basemeasure)}}{\basemeasure}  - \sentropyofwrt{\secprobtensor}{\basemeasure}
-        = \centropyofwrt{\secprobtensor}{\expdistof{(\sstat,\estcanparam,\basemeasure)}}{\basemeasure}  - \sentropyofwrt{\secprobtensor}{\basemeasure}  > 0 \,
-    \end{align*}
-    and thus $\sentropyofwrt{\secprobtensor}{\basemeasure}<\sentropyofwrt{\secprobtensor}{\basemeasure}$.
-    Therefore, if $\secprobtensor$ does not coincide with $\expdistof{(\sstat,\estcanparam,\basemeasure)}$, it is not a maximum entropy distribution.
-\end{proof}
-
-%Exponential families are in $\elrealizabledistsof{\sstat}$, if and only if $\normalizationof{\basemeasure}{\shortcatvariables}\in\elrealizabledistsof{\sstat}$.
-%If $\normalizationof{\basemeasure}{\shortcatvariables}\in\elrealizabledistsof{\sstat}$ and $\meanparamwith \in \sbinteriorof{\genmeanset} $ we therefore have a sparse representation of the maximum entropy distribution with elementary activation tensors.
 
 \subsection{Main result}
 
@@ -134,7 +89,7 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
 
 \begin{figure}[t]
     \begin{center}
-        \input{../../PartI/tikz_pics/probability_reasoning/max_entropy_actcore}
+        \input{tikz/main-result/max_entropy_actcore}
     \end{center}
     \caption{
         Tensor network decomposition of maximum entropy distributions to the constraint $\meanparamat{\selvariable}=\contractionof{\probtensor,\sencsstat}{\selvariable}$.
@@ -147,8 +102,16 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
 
 The family of maximum entropy distributions is the set
 \begin{align*}
-    \{\probof{\sstat,\meanparam,\basemeasure} \wcols \meanparam\in\genmeanset\ncond \probof{\sstat,\meanparam,\basemeasure} \quad\text{is a solution of }\quad \probref{prob:maxEntropy}\} \, .
+    \maxentfamilyof{\sstat}{\basemeasure} =
+    \{\probof{\sstat,\meanparam,\basemeasure} \wcols \meanparam\in\genmeanset\ncond \probof{\sstat,\meanparam,\basemeasure} \quad\text{is a solution of \probref{prob:maxEntropy}} \} \, .
 \end{align*}
 
-By \theref{the:expFamilyTensorRep} this is the union of exponential families to each face measure.
+By \theref{the:expFamilyTensorRep} this is the union of exponential families to each face measure, that is
+\begin{align*}
+    \maxentfamilyof{\sstat}{\basemeasure} =
+    \{\normalizationof{\softacttensorat{\headvariables},\kcoreofat{\facesymbol}{\headvariables},\bencsstatwith,\basemeasurewith}{\shortcatvariables}
+    \wcols \canparamwithin\ncond \facesymbol\in\facelatticeof{\genmeanset}\}
+\end{align*}
+
+
 Note that these families are disjoint, since each member of an exponential family has support by the support of the face measure.

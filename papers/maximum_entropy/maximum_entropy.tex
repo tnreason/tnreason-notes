@@ -3,10 +3,8 @@
 \usepackage{../../spec_files/arxiv}
 \input{../../spec_files/standard_preamble.tex}
 
-\input{../../macros/organization_macros.tex}
-\input{../../macros/general_macros.tex}
-\input{../../macros/tc_macros.tex}
-\input{../../macros/tikz_macros.tex}
+\usepackage{import}
+\subimport{../../macros/}{all-macros.tex}
 
 \usepackage{tikz-3dplot}
 \usetikzlibrary{calc}
@@ -29,13 +27,13 @@
 
     \input{./sections/introduction.tex}
 
-    \input{./sections/mean_polytope.tex}
+    \input{./sections/mean-polytope}
 
-    \input{./sections/exp_family_representation.tex}
+    \input{./sections/exp-family}
 
-    \input{./sections/main_results.tex}
+    \input{./sections/gen-rep}
 
-    \input{./sections/boolean_statistics.tex}
+    \input{./sections/boolean-stat}
 
     \input{./sections/mean_statistic.tex}
 

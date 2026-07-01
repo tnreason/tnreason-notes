@@ -2,18 +2,18 @@
 
     \node[anchor=center] at (-4,6) {$a)$};
 
-    \node[anchor=east] at (0,0) {$\begin{bmatrix}
+    \node[anchor=east] at (0,0) {$\begin{pmatrix}
                                       0 \\ 0
-    \end{bmatrix}$};
-    \node[anchor=west] at (5,0) {$\begin{bmatrix}
+    \end{pmatrix}$};
+    \node[anchor=west] at (5,0) {$\begin{pmatrix}
                                       1 \\ 0
-    \end{bmatrix}$};
-    \node[anchor=west] at (5,5) {$\begin{bmatrix}
+    \end{pmatrix}$};
+    \node[anchor=west] at (5,5) {$\begin{pmatrix}
                                       1 \\ 1
-    \end{bmatrix}$};
-    \node[anchor=east] at (0,5) {$\begin{bmatrix}
+    \end{pmatrix}$};
+    \node[anchor=east] at (0,5) {$\begin{pmatrix}
                                       0 \\ 1
-    \end{bmatrix}$};
+    \end{pmatrix}$};
 
     \drawvectormark{0}{0}
     \drawvectormark{0}{5}
@@ -43,10 +43,10 @@
         %\node[anchor=center,\concolor] (text) at (4,2) {\corelabelsize $\hardactsymbolof{1}$};
 
         \draw[\concolor] (-1,1) rectangle (5,4);
-        \node[anchor=center,\concolor] (A) at (2,2.5) {\corelabelsize $\begin{bmatrix}
+        \node[anchor=center,\concolor] (A) at (2,2.5) {\corelabelsize $\begin{pmatrix}
                                         1 & 0 \\
                                         0 & 1
-        \end{bmatrix}$};
+        \end{pmatrix}$};
 
 
         \draw[->-] (0,-1)--(0,0);
@@ -56,10 +56,10 @@
 
         \draw[\probcolor] (0,0) -- (-1.5,0);
         \draw[\probcolor] (-1.5,1.5) rectangle (-8.5,-1.5);
-        \node[anchor=center,\probcolor] (text) at (-5,0) {\corelabelsize $\begin{bmatrix}
+        \node[anchor=center,\probcolor] (text) at (-5,0) {\corelabelsize $\begin{pmatrix}
                                                                              1 \\
                                                                              \expof{\canparamat{\selvariable=0}}
-        \end{bmatrix}$};
+        \end{pmatrix}$};
 %       \node[anchor=center,\probcolor] (text) at (-3,0) {\corelabelsize $\softactsymbolof{0,\canparam}$};
 
         \draw[->-] (4,-1)--(4,0);
@@ -69,10 +69,10 @@
 
         \draw[\probcolor] (4,0) -- (5.5,0);
         \draw[\probcolor] (5.5,1.5) rectangle (12.5,-1.5);
-        \node[anchor=center,\probcolor] (text) at (9,0) {\corelabelsize $\begin{bmatrix}
+        \node[anchor=center,\probcolor] (text) at (9,0) {\corelabelsize $\begin{pmatrix}
                                                                              1 \\
                                                                              \expof{\canparamat{\selvariable=1}}
-        \end{bmatrix}$};
+        \end{pmatrix}$};
 
 %        \node[anchor=center,\probcolor] (text) at (7,0) {\corelabelsize $\softactsymbolof{1,\canparam}$};
 

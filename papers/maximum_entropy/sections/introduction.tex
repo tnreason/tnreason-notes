@@ -37,6 +37,33 @@ We here investigate the more generic case, where distributions have different su
 
 Introduce here tensors, variables, contractions.
 
+\subsection{\ComputationActivationNetworks{}}
+
+Given a statistic $\sstat:\facstates\rightarrow\selstates$ we build its basis encoding tensor
+\begin{align*}
+    \sstatccwith = \sum_{\shortcatindicesin} \onehotmapofat{\sstat(\shortcatindices)}{\headvariables} \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
+\end{align*}
+A computation network is any representation of $\sstatccwith$ as a tensor network.
+These can be constructed in the case statistics being a composition of connective functions.
+
+An activation tensor is $\hypercoreat{\headvariables}$ and the \ComputationActivationNetwork{} of $\sstat$ and $\hypercore$ the tensor
+\begin{align*}
+    \probwith = \normalizationof{\sstatccwith,\hypercoreat{\headvariables}}{\shortcatvariables} \, .
+\end{align*}
+
+We are interested in decomposition formats of $\hypercoreat{\headvariables}$, where we use sets of tensor networks $\tnsetof{\graph}$ on a hypergraph $\graph$.
+
+\begin{definition}
+    The family of by $\sstat$ and a $\graph$ computable distributions are
+    \begin{align*}
+        \realizabledistsof{\sstat,\graph,\basemeasure}
+        = \left\{
+              \frac{\contractionof{\hypercoreat{\headvariables},\bencsstatwith}{\shortcatvariables}}{\contraction{\hypercoreat{\headvariables},\bencsstatwith,\basemeasurewith}}
+              \wcols \hypercoreat{\headvariables} \in \tnsetof{\graph} \right\} \, .
+    \end{align*}
+\end{definition}
+
+
 \subsection{The Maximum Entropy Problem}
 
 Given a non-negative and non-vanishing base measure $\basemeasurewith$, a probability distribution is a non-negative tensor $\probwith$ such that
