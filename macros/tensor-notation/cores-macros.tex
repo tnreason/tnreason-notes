@@ -3,12 +3,12 @@
 \newcommand{\softactsymbol}{\alpha}
 \newcommand{\softactsymbolof}[1]{\softactsymbol^{#1}}
 \newcommand{\softactsymbolofat}[2]{\softactsymbol^{#1}\left[#2\right]}
-\newcommand{\softacttensor}{\softactsymbol^\canparam}
+\newcommand{\softacttensor}{\softactsymbol^\weightparam}
 \newcommand{\softacttensorat}[1]{\softacttensor\left[#1\right]}
 \newcommand{\softacttensorwith}{\softacttensorat{\headvariables}}
-\newcommand{\softactleg}{\softactsymbolof{\selindex,\canparam}}
+\newcommand{\softactleg}{\softactsymbolof{\selindex,\weightparam}}
 \newcommand{\softactlegat}[1]{\softactleg\left[#1\right]}
-\newcommand{\softactlegwith}{\softactsymbolofat{\selindex,\canparam}{\headvariableof{\selindex}}}
+\newcommand{\softactlegwith}{\softactsymbolofat{\selindex,\weightparam}{\headvariableof{\selindex}}}
 %% TO BE DROPPED!
 \newcommand{\actcore}{\alpha} % activation of a formula, typical exp
 \newcommand{\actcoreof}[1]{\actcore^{#1}}
@@ -23,8 +23,6 @@
 \newcommand{\dirdeltaofat}[2]{\dirdeltaof{#1}\left[#2\right]}
 \newcommand{\dirdeltawith}{\dirdeltaofat{[\catorder],\catdim}{\shortcatvariables}}
 
-% Missing: \epsilon, \zeta (check for usage in recovery guarantees)
-
 \newcommand{\onehotmap}{\epsilon}
 \newcommand{\onehotmapof}[1]{\onehotmap_{#1}}
 \newcommand{\onehotmapofat}[2]{\onehotmap_{#1}\left[#2\right]}
@@ -36,13 +34,15 @@
 \newcommand{\fbasis}{\onehotmapof{0}}
 \newcommand{\fbasisat}[1]{\fbasis\left[#1\right]}
 
+% Missing: \zeta (check for usage in recovery guarantees)
+
 \newcommand{\noisetensor}{\eta}
 \newcommand{\noiseat}[1]{\noisetensor\left[#1\right]}
 \newcommand{\noiseof}[1]{\noisetensor^{#1,\gendistribution,\datanum}}
 \newcommand{\sstatnoise}{\noiseof{\sstat}}
 \newcommand{\sstatnoisewith}{\noiseof{\sstat}[\selvariable]}
 
-\newcommand{\canparam}{\theta}
+\newcommand{\canparam}{\weightparam} % Canparam also includes the face!
 \newcommand{\canparamof}[1]{\canparam_{#1}}
 \newcommand{\canparamat}[1]{\canparam\left[#1\right]}
 \newcommand{\canparamofat}[2]{\canparamof{#1}\left[#2\right]}

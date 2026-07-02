@@ -1,0 +1,37 @@
+\section{Face estimation}
+
+Generic situation:
+Find the face in $\facelatticeof{\meansetof{\sstat}}$ which contains $\genmean$ in its relative interior.
+
+\begin{theorem}
+    Let $\gendistributionwith$ be a distribution with mean parameter $\genmeanwith$.
+    Then the face $\faceto{\genmean}$ is the minimal face in the lattice $\facelatticeof{\meansetof{\sstat}}$ such that
+    \begin{align*}
+        \contraction{\gendistributionwith,\bencsstatwith,\kcoreofat{\facesymbol}{\headvariables}}
+        = 1 \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    \begin{itemize}
+        \item $\genmeanwith\in\facesymbol$ is equivalent to $\contraction{\gendistributionwith,\bencsstatwith,\kcoreofat{\facesymbol}{\headvariables}}=1$.
+        \item If $\genmeanwith$ is not in the relative interior of $\facesymbol$, then it is contained in a smaller face.
+    \end{itemize}
+\end{proof}
+
+\subsection{Cube-like faces}
+
+Cube-faces are parametrized by $\hardlegset$ and a boolean tuple $\headindexof{\hardlegset}$.
+For cube-like faces, it is enough to decide entailment and contradiction of each feature.
+
+\begin{theorem}
+    If the mean parameter $\genmeanwith$ to a distribution $\gendistributionwith$ is in the relative interior of a cube-like face, then the face $\faceto{\genmean}$
+    \begin{align*}
+        \hardlegset
+        =\{\selindex \wcols \selindexin \ncond \contraction{\gendistributionwith,\sstatcoordinateofat{\selindex}{\shortcatvariables}} \in \{0,1\} \}
+    \end{align*}
+    and
+    \begin{align*}
+        \headindexof{\selindex}
+        = \contraction{\gendistributionwith,\sstatcoordinateofat{\selindex}{\shortcatvariables}} \, .
+    \end{align*}
+\end{theorem}

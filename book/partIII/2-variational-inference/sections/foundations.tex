@@ -1,0 +1,79 @@
+\section{Foundational inference problems}
+
+We have two parametrizations of maximum entropy distributions:
+\begin{itemize}
+    \item {\bf Mean parametrization:} The mean parameter $\meanparamwith\in\genmeanset$
+    \item {\bf Canonical parametrization:} The face $\facesymbol\in\genfaceset$ together with the weight vector $\canparamwith$
+\end{itemize}
+The fundamental inference problem are finding one parametrization given the other.
+\begin{itemize}
+    \item {\bf Forward mapping:} Given the canonical parametrization $(\facesymbol,\canparamwith)$, find the mean parameter $\meanparamwith$.
+    \item {\bf Backward mapping:} Given the mean parameter $\meanparamwith$, find the face $\facesymbol$ such that $\meanparamwith$ is in the relative interior of the face, and the corresponding canonical parameter $\canparamwith$.
+\end{itemize}
+
+\subsection{Forward mapping}
+
+The forward mapping is the contraction of the distribution with the selection encoding of the statistic, that is the map
+\begin{align*}
+    \forwardmapof{\sstat} \defcols \canparamsetof{\sstat} \rightarrow \meansetof{\sstat}
+\end{align*}
+with
+\begin{align*} % Experiment: Without base measure
+    \forwardmapwrtof{\sstat}{\facesymbol,\weightparam}
+    = \frac{\contractionof{\softacttensorwith,\kcoreofat{\facesymbol}{\headvariables},\bencsstatwith,\sencsstatwith}{\selvariable}}{
+        \contraction{\softacttensorwith,\kcoreofat{\facesymbol}{\headvariables},\bencsstatwith}
+    } \, .
+\end{align*}
+
+\subsection{Backward mapping}
+
+Determining the face such that $\meanparamwith$ in the relative interior, and the corresponding canonical parameter.
+
+\subsubsection{Cross entropy minimization}
+
+%
+The cross entropy between a distribution $\gendistributionwith$ and a maximum entropy distribution $\probofat{\facesymbol,\weightparam}{\shortcatvariables}$ is given by
+\begin{align*}
+    \centropyof{\gendistributionwith
+    }{
+        \probofat{\facesymbol,\weightparam}{\shortcatvariables}
+    }
+    = &-\contraction{\gendistributionwith,\bencsstatwith,\lnof{\softacttensorwith}} \\% first term
+    &- \contraction{\gendistributionwith,\bencsstatwith,\lnof{\kcoreofat{\facesymbol}{\headvariables}}} \\% second term
+    &+ \lnof{\contraction{\softacttensorwith,\kcoreofat{\facesymbol}{\headvariables},\bencsstatwith}} % third term
+\end{align*}
+
+
+% First term
+The first term can be simplified as
+\begin{align*}
+    -\contraction{\gendistributionwith,\bencsstatwith,\lnof{\softacttensorwith}}
+    &= -\sum_{\selindexin} \weightparamat{\indexedselvariable}\cdot\contraction{\gendistributionwith,\sstatcoordinateofat{\selindex}{\shortcatvariables}} \\
+    &= -\contraction{\genmeanwith,\weightparamwith}
+\end{align*}
+
+% Second term
+To investigate the second term, we notice that
+\begin{align*}
+    \contractionof{\bencsstatwith,\lnof{\kcoreofat{\facesymbol}{\headvariables}}}{\indexedshortcatvariables}
+    = \begin{cases}
+          0         & \ifspace \sstatencodingof{\shortcatindices} \in \facesymbol \\
+          -\infty   & \elsetext
+    \end{cases}
+\end{align*}
+Therefore the cross entropy is finite, if and only if $\gendistributionwith$ is supported at the face measure.
+This is only the case if $\genmeanwith\in\facesymbol$.
+If the cross entropy is finite, the second term vanishes.
+
+% Third term
+Among the faces with $\genmeanwith\in\facesymbol$ the third term is minimal for each $\weightparamin$.
+
+\begin{align*}
+    &\argmin_{\facesymbol\in\facelatticeof{\genmeanset}}\argmin_{\weightparamin}\centropyof{\probwith
+    }{
+        \probofat{\facesymbol,\weightparam}{\shortcatvariables}
+    } \\
+    &\quad= \argmin_{\weightparamin}-\contraction{\genmeanwith,\weightparamwith} + \lnof{\contraction{\softacttensorwith,\kcoreofat{\facesymbolof{\genmean}}{\headvariables},\bencsstatwith}}
+\end{align*}
+
+\subsubsection{Definition of backward mapping}

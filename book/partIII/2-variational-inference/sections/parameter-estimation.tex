@@ -1,0 +1,22 @@
+\section{Parameter estimation}
+
+We now present iterative algorithms to train the weight vector, one the face to a mean parameter has been determined.
+They are coordinate descent methods on the cross-entropy loss function.
+
+\subsection{Moment matching}
+
+
+We differentiate the cross-entropy with respect to the weight vector
+\begin{align*}
+    \difofwrt{\centropyof{\gendistribution}{\probof{\facesymbol,\weightparam}}}{\weightparamat{\indexedselvariable}}
+    = \meanparamat{\indexedselvariable}-\genmeanat{\indexedselvariable} \, .
+\end{align*}
+The derivative vanishes when both mean parameters coincide, which is the moment matching condition.
+
+\subsection{Issues with erroneous faces}
+
+If applied to the wrong face, they fail:
+\begin{itemize}
+    \item If $\meanparamwith$ not on the face, then the cross-entropy is infinite.
+    \item If $\meanparamwith$ on the face, but not in the relative interior, then the norm of the weight vector diverges.
+\end{itemize}

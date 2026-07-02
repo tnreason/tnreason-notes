@@ -22,7 +22,7 @@ Our main result generalizes the maximum entropy characterization of \theref{the:
 
 Note, that while we use refined base measures $\genfacemeasure$ to characterize the maximum entropy distribution, \theref{the:MAINgenMaxEntChar} states a representation with respect to the original base measure $\basemeasure$.
 
-To prepare for the proof of this theorem we first show in an auxiliary lemma that we can reduce the set of feasible distributions in \probref{prob:maxEntropy}.
+To prepare for the proof of this theorem we first show in an auxiliary lemma that we can reduce the set of feasible distributions in \problemref{prob:maxEntropy}.
 
 \begin{lemma}
     \label{lem:maxEntReduction}
@@ -64,7 +64,7 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
     We use the following argumentation to show the second claim:
     \begin{itemize}
         \item By \lemref{lem:relativeInteriorPolytopePartition} for any $\meanparam$ we find a unique face $\genfaceset$.
-        \item By \lemref{lem:maxEntReduction} we can reduce the maximum entropy problem \probref{prob:maxEntropy} to $\mathrm{P}_{\sstat,\meanparam,\genfacemeasure}$ to the base measure $\genfacemeasure$.
+        \item By \lemref{lem:maxEntReduction} we can reduce the maximum entropy problem \problemref{prob:maxEntropy} to $\mathrm{P}_{\sstat,\meanparam,\genfacemeasure}$ to the base measure $\genfacemeasure$.
         \item By \lemref{lem:faceAsRefinedPolytope} the face $\genfaceset$ coincides with the polytope $\meansetof{\sstat,\genfacemeasure}$ and in particular $\meanparam$ is in the relative interior of that polytope.
         \item We can now apply \theref{the:maxEntropyInterior} and get a characterization of the maximum entropy solution as a member of the exponential family.
     \end{itemize}
@@ -103,15 +103,23 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
 The family of maximum entropy distributions is the set
 \begin{align*}
     \maxentfamilyof{\sstat}{\basemeasure} =
-    \{\probof{\sstat,\meanparam,\basemeasure} \wcols \meanparam\in\genmeanset\ncond \probof{\sstat,\meanparam,\basemeasure} \quad\text{is a solution of \probref{prob:maxEntropy}} \} \, .
+    \{\probof{\sstat,\meanparam,\basemeasure} \wcols \meanparam\in\genmeanset\ncond \probof{\sstat,\meanparam,\basemeasure} \quad\text{is a solution of \problemref{prob:maxEntropy}} \} \, .
 \end{align*}
 
-By \theref{the:expFamilyTensorRep} this is the union of exponential families to each face measure, that is
+By \theref{the:expFamilyTensorRep} the maximum entropy distributions have a parameterization by
+\begin{align*}
+    \gencanparamset
+    \coloneqq \facelatticeof{\genmeanset} \times \weightspace
+\end{align*}
+that is
 \begin{align*}
     \maxentfamilyof{\sstat}{\basemeasure} =
     \{\normalizationof{\softacttensorat{\headvariables},\kcoreofat{\facesymbol}{\headvariables},\bencsstatwith,\basemeasurewith}{\shortcatvariables}
-    \wcols \canparamwithin\ncond \facesymbol\in\facelatticeof{\genmeanset}\}
+    \wcols \canparamwithin,\facesymbol\in\gencanparamset
+    \} \, .
 \end{align*}
+
+
 
 
 Note that these families are disjoint, since each member of an exponential family has support by the support of the face measure.

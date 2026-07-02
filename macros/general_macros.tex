@@ -233,26 +233,7 @@
 \newcommand{\invrdftypesymbol}{\mathrm{typ}}
 
 
-% HLN Parametrization
-\newcommand{\hardlegset}{\mathcal{U}}
-\newcommand{\hardparam}{(\hardlegset,\headindexof{\hardlegset})}
-\newcommand{\hybridparam}{(\hardlegset,\headindexof{\hardlegset},\canparam)}
-\newcommand{\hybridparamsetofdim}[1]{\mathcal{P}_{#1}}
-\newcommand{\hybridparamset}{\hybridparamsetofdim{\seldim}}
-\newcommand{\hybridparamin}{\hybridparam\in\hybridparamset}
 
-\newcommand{\sechardlegset}{\tilde{\hardlegset}}
-\newcommand{\sechybridparam}{(\sechardlegset,\secheadindexof{\sechardlegset},\seccanparam)}
-
-\newcommand{\genhybridparam}{(\hardlegset^*,\headindexof{\hardlegset^*},\canparam^*)}
-
-\newcommand{\hardlegsetto}[1]{\hardlegset^{#1}}
-\newcommand{\hardlegindicesto}[1]{\headindexof{\hardlegset}^{#1}}
-\newcommand{\hardparamto}[1]{(\hardlegsetto{#1},\headindexof{\hardlegsetto{#1}})}
-
-\newcommand{\hlnparameters}{\hlnstat,\hybridparam}
-\newcommand{\hlnat}[1]{\probofat{\hlnparameters}{#1}}
-\newcommand{\hlnwith}{\hlnat{\shortcatvariables}}
  % Hard leg set to a given dimension
 
 
@@ -423,96 +404,9 @@
 \newcommand{\maxgapofat}[2]{\maxgap_{#1}\left(#2\right)}
 \newcommand{\maxgapof}[1]{\maxgap\left(#1\right)}
 
-%% CONTRACTION 
 \newcommand{\invtemp}{\beta}
 
-
-
 \newcommand{\extnetasset}{\left\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edgein\right\}}
-
-
-
-
-
-%% Exponential families
-\newcommand{\expdistof}[1]{\probtensorof{#1}}
-\newcommand{\expdistofat}[2]{\expdistof{#1}[#2]}
-\newcommand{\expdist}{\probtensorof{(\sstat,\canparam,\basemeasure)}}
-\newcommand{\expdistwith}{\probtensorofat{(\sstat,\canparam,\basemeasure)}{\shortcatvariables}}
-\newcommand{\expdistat}[1]{\expdist\left[#1\right]}
-\newcommand{\stanexpdistof}[1]{\expdistof{(\sstat,#1,\basemeasure)}}
-\newcommand{\mlnexpdistof}[1]{\expdistof{(\formulaset,#1,\basemeasure)}}
-
-\newcommand{\maxentfamilyof}[2]{\Gamma^{#1,#2}}
-\newcommand{\genmaxentfamily}{\maxentfamilyof{\sstat}{\basemeasure}}
-
-\newcommand{\mnexpfamily}{\expfamilyof{\sstatof{\graph},\ones}} % The exponential family of Markov Networks on \graph
-\newcommand{\mnexpfamilyof}[1]{\expfamilyof{\sstatof{#1},\ones}}
-\newcommand{\mlnexpfamily}{\expfamilyof{\hlnstat,\ones}}
-
-\newcommand{\stateset}{\mathcal{X}}
-\newcommand{\sstatencoding}{\sencodingof{\sstat}}
-\newcommand{\sstatencodingat}[1]{\sstatencoding\left(#1\right)}
-\newcommand{\sstatencodingof}[1]{\gamma^{#1}}
-\newcommand{\invsstatencodingat}[1]{\left(\sstatencoding\right)^{-1}\left(#1\right)}
-\newcommand{\genstatshortcatencoding}[1]{\gamma^{\sstat}\left[\indexedshortcatvariables,\selvariable\right]}
-
-
-\newcommand{\genfacemeasure}{\basemeasureof{\sstat,\facecondset}}
-\newcommand{\genfacemeasureat}[1]{\basemeasureofat{\sstat,\facecondset}{#1}}
-\newcommand{\genfacemeasurewith}{\genfacemeasureat{\shortcatvariables}}
-
-\newcommand{\hlnfacemeasure}{\hlnformulaof{\facecondset}}
-\newcommand{\hlnfacemeasureat}[1]{\hlnfacemeasure\left[#1\right]}
-\newcommand{\hlnfacemeasurewith}{\hlnfacemeasureat{\shortcatvariables}}
-
-\newcommand{\trivbm}{\ones}
-
-\newcommand{\secbasemeasure}{\tilde{\basemeasure}}
-\newcommand{\secbasemeasureat}[1]{\secbasemeasure\left[#1\right]}
-
-\newcommand{\sstat}{t}%{\mathcal{S}}
-\newcommand{\sstatat}[1]{\sstat\left(#1\right)}
-\newcommand{\sstatof}[1]{\sstat^{#1}}
-\newcommand{\secsstat}{\tilde{\sstat}}
-\newcommand{\proposalstat}{\fselectionmap^T}
-
-\newcommand{\hlnstat}{\sstat}%{\formulaset}
-\newcommand{\hlnstatat}[1]{\sstatat{#1}}
-
-\newcommand{\universalstat}{\identity}
-\newcommand{\naivestat}{\universalstat}
-\newcommand{\atomstat}{\shortcatvariables}
-
-\newcommand{\sstatcoordinateof}[1]{\sstat_{#1}}
-\newcommand{\sstatcoordinate}{\sstatcoordinateof{\selindex}}
-\newcommand{\sstatcoordinateofat}[2]{\sstat_{#1}\left[#2\right]}
-
-\newcommand{\sstatcc}{\bencodingof{\sstat}}
-\newcommand{\sstatccwith}{\bencodingofat{\sstat}{\headvariables,\shortcatvariables}} % Same as \bencsstatwith
-
-\newcommand{\hlnstatcc}{\bencodingof{\hlnstat}}
-\newcommand{\hlnstatccwith}{\bencodingofat{\hlnstat}{\headvariables,\shortcatvariables}}
-
-\newcommand{\sstatcatof}[1]{\headvariableof{#1}}
-
-\newcommand{\sencsstat}{\sencodingof{\sstat}}
-\newcommand{\sencsstatat}[1]{\sencodingof{\sstat}\left[#1\right]}
-\newcommand{\sencsstatwith}{\sencsstatat{\shortcatvariables,\selvariable}}
-
-\newcommand{\bencsstat}{\bencodingof{\sstat}}
-\newcommand{\bencsstatat}[1]{\bencodingof{\sstat}\left[#1\right]}
-\newcommand{\bencsstatwith}{\bencsstatat{\headvariables,\shortcatvariables}}
-
-\newcommand{\sencfset}{\sencodingof{\formulaset}}
-\newcommand{\sencfsetat}[1]{\sencfset\left[#1\right]}
-
-\newcommand{\sencmlnstat}{\sencodingof{\hlnstat}}
-\newcommand{\sencmlnstatat}[1]{\sencmlnstat\left[#1\right]}
-\newcommand{\sencmlnstatwith}{\sencmlnstat\left[\shortcatvariables,\selvariable\right]}
-\newcommand{\sencproposalstat}{\sencodingof{\proposalstat}}
-
-
 
 \newcommand{\singlecanparam}{\canparam}
 
@@ -540,103 +434,6 @@
 \newcommand{\canparamin}{\canparam\in\canparamhypothesis}
 
 \newcommand{\greedyhypothesis}{\mathcal{H}}
-
-\newcommand{\expsolution}{\gencanparam}
-\newcommand{\empsolution}{\datacanparam}
-
-
-
-\newcommand{\secmeanparam}{\tilde{\mu}}
-\newcommand{\secmeanparamat}[1]{\secmeanparam\left[#1\right]}
-
-\newcommand{\meanrepprob}{\probtensor^{\meanparam}}
-
-\newcommand{\meanset}{\mathcal{M}}
-\newcommand{\meansetof}[1]{\meanset_{#1}}
-\newcommand{\genmeanset}{\meanset_{\sstat,\basemeasure}}
-\newcommand{\hlnmeanset}{\meanset_{\hlnstat,\ones}}
-\newcommand{\propmeanset}{\meanset_{\propstat,\ones}}
-
-\newcommand{\elmeanset}{\meanset^{\elformat}}
-\newcommand{\elmeansetof}[1]{\elmeanset_{#1}}
-\newcommand{\elhlnmeanset}{\elmeansetof{\hlnstat,\basemeasure}}
-
-\newcommand{\genmeansetargmax}{\argmax_{\meanparam\in\genmeanset}}
-\newcommand{\cangenmeansetargmax}{\genmeansetargmax\contraction{\canparamwith,\meanparamwith}}
-\newcommand{\cansstatcatindicesargmax}{\argmax_{\shortcatindices}\contraction{\canparam,\sstat(\shortcatindices)}}
-
-\newcommand{\imset}{\mathcal{N}}
-\newcommand{\imsetof}[2]{\imset_{#1}^{#2}}
-\newcommand{\genimset}{\imsetof{\sstat,\basemeasure}{}}
-\newcommand{\genfaceimset}{\imsetof{\sstat,\basemeasure}{\facesymbol}}
-
-\newcommand{\imelement}{v}
-\newcommand{\imelementof}[1]{\imelement^{#1}}
-\newcommand{\imelementat}[1]{\imelement\left[#1\right]}
-\newcommand{\imelementofat}[2]{\imelement^{#1}\left[#2\right]}
-\newcommand{\imelementwith}{\imelementat{\selvariable}}
-
-\newcommand{\normalvec}{a}
-\newcommand{\normalbound}{b}
-\newcommand{\normalvecofat}[2]{\normalvec_{#1}\left[#2\right]}
-\newcommand{\normalvecat}[1]{\normalvec\left[#1\right]}
-\newcommand{\normalvecwith}{\normalvecat{\selvariable}}
-\newcommand{\normalboundof}[1]{\normalbound_{#1}}
-\newcommand{\normalboundofat}[2]{\normalbound_{#1}\left[#2\right]}
-\newcommand{\halfspaceparams}{\left( (\normalvecofat{i}{\selvariable},\normalboundof{i}) \wcols i \in[n]\right)}
-
-\newcommand{\facesymbol}{\mathcal{F}} % Using the ziegler book notation
-\newcommand{\facesymbolof}[1]{\facesymbol^{#1}}
-\newcommand{\facelatticeof}[1]{L\left(#1\right)}
-\newcommand{\genfacelattice}{\facelatticeof{\genmeanset}}
-\newcommand{\facein}{\facesymbol\in\genfacelattice}
-
-\newcommand{\facecondset}{\mathcal{I}} % OLD, Use instead \facesymbol
-\newcommand{\facecondsetof}[1]{\facecondset^{#1}}
-\newcommand{\faceset}{Q} % OLD, Use instead \facesymbol
-\newcommand{\facesetofspec}[2]{\faceset^{#1}_{#2}}
-\newcommand{\genfacesetof}[1]{\facesetofspec{#1}{\sstat,\basemeasure}}
-\newcommand{\genfaceset}{\genfacesetof{\facecondset}}
-
-\newcommand{\hlnfaceset}{\facesetofspec{\facecondset}{\hlnstat,\ones}}
-
-\newcommand{\maxconeof}[1]{C^{#1}}
-\newcommand{\maxcone}{\maxconeof{\facecondset}}
-
-\newcommand{\genmaxconeof}[1]{C_{\sstat,\basemeasure}^{#1}}
-\newcommand{\genmaxcone}{\genmaxconeof{\facecondset}}
-
-\newcommand{\hlnmaxconeof}[1]{C_{\hlnstat,\basemeasure}^{#1}}
-\newcommand{\hlnmaxcone}{\hlnmaxconeof{\facecondset}}
-
-\newcommand{\datamean}{\meanparamof{\datamap}}
-\newcommand{\datameanat}[1]{\datamean\left[#1\right]}
-\newcommand{\datameanwith}{\datameanat{\selvariable}}
-
-\newcommand{\genmean}{\meanparam^*}
-\newcommand{\genmeanat}[1]{\genmean[#1]}
-\newcommand{\genmeanwith}{\genmeanat{\selvariable}}
-
-\newcommand{\currentmean}{\tilde{\meanparam}}
-\newcommand{\currentmeanat}[1]{\currentmean\left[#1\right]}
-
-\newcommand{\cumfunctionwrt}[1]{A^{#1}}
-\newcommand{\cumfunctionwrtof}[2]{\cumfunctionwrt{#1}\left(#2\right)}
-\newcommand{\cumfunction}{\cumfunctionwrt{(\sstat,\basemeasure)}}
-\newcommand{\cumfunctionof}[1]{\cumfunction(#1)}
-\newcommand{\dualcumfunction}{\big(\cumfunction\big)^*}
-\newcommand{\dualcumfunctionof}[1]{\big(\cumfunction\big)^*(#1)}
-
-\newcommand{\forwardmapwrt}[1]{F^{#1}}
-\newcommand{\forwardmap}{\forwardmapwrt{(\sstat,\basemeasure)}}
-\newcommand{\forwardmapwrtof}[2]{\forwardmapwrt{#1}(#2)}
-\newcommand{\forwardmapof}[1]{\forwardmapwrtof{(\sstat,\basemeasure)}{#1}}
-\newcommand{\forwardmapofat}[2]{\forwardmapof{#1}\left[#2\right]}
-
-\newcommand{\backwardmapwrt}[1]{B^{#1}}
-\newcommand{\backwardmap}{\backwardmapwrt{(\sstat,\basemeasure)}}
-\newcommand{\backwardmapwrtof}[2]{\backwardmapwrt{#1}(#2)}
-\newcommand{\backwardmapof}[1]{\backwardmapwrtof{(\sstat,\basemeasure)}{#1}}
 
 \newcommand{\energyhypothesis}{\Theta}
 \newcommand{\energyhypothesisof}[1]{\energyhypothesis^{#1}}
@@ -777,41 +574,6 @@
 \newcommand{\sudokustartevidence}{E^{\mathrm{start}}}
 \newcommand{\sudokukbof}[1]{\kb^{#1}}
 
-%% Quantum Computing
-
-\newcommand{\basqstateof}[1]{\qstate^{\mathrm{bas}}_{#1}}
-\newcommand{\basqstateofat}[2]{\basqstateof{#1}\left[#2\right]}
-
-\newcommand{\signqstateof}[1]{\qstate^{\mathrm{sign}}_{#1}}
-\newcommand{\signqstateofat}[2]{\signqstateof{#1}\left[#2\right]}
-
-\newcommand{\hminusbas}{\onehotmap^{-}}
-\newcommand{\hminusbasat}[1]{\onehotmap^{-}\left[#1\right]} % Hadamard minus basis 1 -1
-\newcommand{\hplusbas}{\onehotmap^{+}}
-\newcommand{\hplusbasat}[1]{\onehotmap^{+}\left[#1\right]} % Hadamard plus basis 1 1
-
-% Hadamard
-\newcommand{\unitarysymbol}{U}
-\newcommand{\unitaryof}[1]{\unitarysymbol^{#1}}
-\newcommand{\unitaryat}[1]{\unitarysymbol\left[#1\right]}
-\newcommand{\unitaryofat}[2]{\unitaryof{#1}\left[#2\right]}
-
-\newcommand{\paulixsymbol}{\sigma_1}
-\newcommand{\paulixat}[1]{\paulixsymbol\left[#1\right]}
-
-\newcommand{\paulizsymbol}{\sigma_3}
-\newcommand{\paulizat}[1]{\paulizsymbol\left[#1\right]}
-
-\newcommand{\yrotationsymbol}{R_Y}
-\newcommand{\yrotationofat}[2]{\yrotationsymbol\left({#1}\right)\left[#2\right]}
-
-\newcommand{\adjointsymbol}{\textdagger}
-
-\newcommand{\hgate}{H}
-\newcommand{\hgateat}[1]{\hgate\left[#1\right]}
-
-\newcommand{\acceptanceprob}{\lambda}
-\newcommand{\acceptanceprobof}[1]{\lambda^{#1}}
 
 %% Book
 
