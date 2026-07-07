@@ -1,9 +1,27 @@
-\documentclass[12pt]{exam}
+\documentclass[12pt,answers]{exam}
 \input{../../../spec_files/exercise_preamble}
 
 \usepackage{amssymb} % Required for square symbols
-\renewcommand{\checkboxchar}{$\square$}
-\renewcommand{\checkedchar}{$\blacksquare$}
+
+\usepackage{pifont}
+
+%\newcommand{\defaultcirclewithcross}{%
+%  \ooalign{%
+%    $\bigcirc$\cr % The exact default exam class circle
+%    \hidewidth\raisebox{-0.5ex}{\Large\ding{55}}\hidewidth\cr % Inner cross shifted to center
+%  }%
+%}
+
+\newcommand{\defaultcirclewithcross}{%
+  \mbox{% Wrap in an mbox to isolate spacing from the matrix
+    \ooalign{%
+      $\bigcirc$\cr
+      \hidewidth\raisebox{-0.5ex}{\Large\ding{55}}\hidewidth\cr
+    }%
+  }%
+}
+\checkedchar{\defaultcirclewithcross}
+\CorrectChoiceEmphasis{}
 
 \begin{document}
 
@@ -46,7 +64,7 @@
         \end{align*}
         How many coordinates does this tensor have? \\
         \begin{oneparcheckboxes}
-            \choice 4
+            \correctchoice 4
             \choice 16
             \choice 2
         \end{oneparcheckboxes}\\
@@ -54,14 +72,14 @@
         \begin{oneparcheckboxes}
             \choice 4
             \choice 16
-            \choice 2
+            \correctchoice 2
         \end{oneparcheckboxes}
 
         \question
         How many coordinates does a propositional formula of $\catorder$ variables have? \\
         \begin{oneparcheckboxes}
             \choice $\catorder^2$
-            \choice $2^\catorder$
+            \correctchoice $2^\catorder$
             \choice ${\catorder}^\catorder$
             \choice $2^{(2^{\catorder})}$
         \end{oneparcheckboxes}
@@ -70,7 +88,7 @@
         Which of these is a syntactical representation of the formula in question 1? \\
         \begin{oneparcheckboxes}
             \choice $\catvariableof{0}\Leftrightarrow \catvariableof{1}$
-            \choice $\catvariableof{0}\Leftrightarrow \lnot \catvariableof{1}$
+            \correctchoice $\catvariableof{0}\Leftrightarrow \lnot \catvariableof{1}$
             \choice $\catvariableof{0}\Rightarrow \catvariableof{1}$
         \end{oneparcheckboxes}
 
@@ -102,7 +120,7 @@
         \begin{oneparcheckboxes}
             \choice $\big(\catvariableof{0}\Leftrightarrow(\catvariableof{1}\lor\catvariableof{3})\big)\land\catvariableof{3})$
             \choice $\headvariableof{2}\Leftrightarrow\big(\headvariableof{0}\lor\headvariableof{1}\big)$
-            \choice $(\catvariableof{0}\Leftrightarrow\catvariableof{1})\lor(\catvariableof{2}\land\catvariableof{3})$
+            \correctchoice $(\catvariableof{0}\Leftrightarrow\catvariableof{1})\lor(\catvariableof{2}\land\catvariableof{3})$
         \end{oneparcheckboxes}
 
         \question
@@ -120,12 +138,12 @@
                 0 & 0 & 0 \\
                 1 & 0 & 0
             }{\catvariableof{0},\catvariableof{1}}$
-            \choice
-            $\coloredmatrixof{
+                \correctchoice
+                {$\coloredmatrixof{
                 0 & 1 & 1\\
                 1 & 0 & 1 \\
                 1 & 1 & 0
-            }{\catvariableof{0},\catvariableof{1}}$
+            }{\catvariableof{0},\catvariableof{1}}$}
         \end{oneparcheckboxes}
 
         \question Let there be two formulas
@@ -146,19 +164,19 @@
         \end{align*}
         Which of these entailment statements are true? \\
         \begin{oneparcheckboxes}
-            \choice $\formulaof{1}\models\formulaof{0}$
+            \correctchoice $\formulaof{1}\models\formulaof{0}$
             \choice $\formulaof{0}\models\formulaof{1}$
             \choice $\lnot\formulaof{1}\models\lnot\formulaof{0}$
-            \choice $\lnot\formulaof{0}\models\lnot\formulaof{1}$
+            \correctchoice $\lnot\formulaof{0}\models\lnot\formulaof{1}$
             \choice none of the before
         \end{oneparcheckboxes}
 
         %% Probability theory
         \question Which of these tensors is a probability distribution? \\
         \begin{oneparcheckboxes}
-            \choice $\coloredmatrixof{0 & 1 & 0 \\ 0 & 0 & 0}{\catvariableof{0},\catvariableof{1}}$
+            \correctchoice $\coloredmatrixof{0 & 1 & 0 \\ 0 & 0 & 0}{\catvariableof{0},\catvariableof{1}}$
             \choice $\coloredmatrixof{0.2 & 0.2 & 0.3 \\ 0.1 & 0.5 & 0.8}{\catvariableof{0},\catvariableof{1}}$
-            \choice $\coloredmatrixof{0.1 & 0.1 & 0.3 \\ 0.2 & 0.2 & 0.1}{\catvariableof{0},\catvariableof{1}}$
+            \correctchoice $\coloredmatrixof{0.1 & 0.1 & 0.3 \\ 0.2 & 0.2 & 0.1}{\catvariableof{0},\catvariableof{1}}$
         \end{oneparcheckboxes}
 
         \question Let $\probwith$ be a distribution of the variables $\shortcatvariables$ and $\arbset\subset[\catorder]$.
@@ -166,7 +184,7 @@
         \begin{oneparcheckboxes}
             \choice $\contraction{\probwith}$
             \choice $\contractionof{\probwith}{\catvariableof{[\catorder]/\arbset}}$
-            \choice $\contractionof{\probwith}{\catvariableof{\arbset}}$
+            \correctchoice $\contractionof{\probwith}{\catvariableof{\arbset}}$
         \end{oneparcheckboxes}
 
         \question Consider a distribution
@@ -186,7 +204,7 @@
             \begin{tikzpicture}[scale=0.35]
             \drawtextnode{-2}{0}{$\coloredmatrixof{0.20 & 0.05 \\ 0.15 & 0.10}{\catvariableof{0},\catvariableof{1}}$}
             \end{tikzpicture}
-            \choice \begin{tikzpicture}[scale=0.35]
+            \correctchoice \begin{tikzpicture}[scale=0.35]
                 \drawtextnode{-2}{0}{$\begin{pmatrix}
                                           0.40 &  0.10 \\ 0.30 & 0.20
                 \end{pmatrix}$}
@@ -207,7 +225,7 @@
         \end{checkboxes}
         Is $\independent{\catvariableof{0}}{\catvariableof{2}}$ true with respect to this distribution? \\
         \begin{oneparcheckboxes}
-            \choice Yes
+            \correctchoice Yes
             \choice No
         \end{oneparcheckboxes}
 
@@ -234,7 +252,7 @@
         }
         Which of these independence statement is true with respect to any Bayesian network on the hypergraph $a)$?\\
         \begin{oneparcheckboxes}
-            \choice $\independent{\catvariableof{0}}{\catvariableof{1}}$
+            \correctchoice $\independent{\catvariableof{0}}{\catvariableof{1}}$
             \choice $\independent{\catvariableof{2}}{\catvariableof{0},\catvariableof{1}}$
             \choice $\condindependent{\catvariableof{2}}{\catvariableof{0}}{\catvariableof{1}}$
         \end{oneparcheckboxes}\\
@@ -242,8 +260,8 @@
         Which of these independence statement is true with respect to any Markov network on the hypergraph $b)$?\\
         \begin{oneparcheckboxes}
             \choice $\independent{\catvariableof{0}}{\catvariableof{2}}$
-            \choice $\condindependent{\catvariableof{2}}{\catvariableof{0}}{\catvariableof{1}}$
-            \choice $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$
+            \correctchoice $\condindependent{\catvariableof{2}}{\catvariableof{0}}{\catvariableof{1}}$
+            \correctchoice $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$
         \end{oneparcheckboxes}
     \end{questions}
 
