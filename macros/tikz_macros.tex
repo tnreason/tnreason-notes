@@ -75,6 +75,15 @@
 }
 
 % top directed wire
+\newcommand{\drawhwire}[3]{
+    \draw[] (#1,#2) -- (#1+2,#2) node[midway,right] {\colorlabelsize #3};
+}
+\newcommand{\drawvwire}[3]{
+    \draw[] (#1,#2) -- (#1,#2-2) node[midway,right] {\colorlabelsize #3};
+}
+
+
+% top directed wire
 \newcommand{\drawtdwire}[3]{
     \draw[->-] (#1,#2-2) -- (#1,#2) node[midway,right] {\colorlabelsize #3};
 }

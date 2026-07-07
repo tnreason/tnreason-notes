@@ -1,0 +1,251 @@
+\documentclass[12pt]{exam}
+\input{../../../spec_files/exercise_preamble}
+
+\usepackage{amssymb} % Required for square symbols
+\renewcommand{\checkboxchar}{$\square$}
+\renewcommand{\checkedchar}{$\blacksquare$}
+
+\begin{document}
+
+    \begin{center}
+        \fbox{\fbox{\parbox{5.5in}{\centering
+        Test Exam on Foundations of Neuro-Symbolic AI \\
+        July 6, 2026 \\
+        Alex Goeßmann}}}
+    \end{center}
+
+    \vspace{5mm}
+    \makebox[0.75\textwidth]{Name:\enspace\hrulefill}
+
+    \vspace{5mm}
+    \makebox[0.75\textwidth]{Matrikel number:\enspace\hrulefill}
+
+    \begin{tcolorbox}[colback=white, colframe=black, boxrule=0.8pt]
+        \begin{center}
+            {\textbf{Grading policy}}
+        \end{center}
+        Choose the right answers to the questions.
+        There is at least one right answer to each question, and some questions have multiple right answers.
+        \begin{itemize}
+            \item For each right answer you will get one point.
+            \item For each wrong answer you will loose one point.
+            \item Each question will be graded with at least $0$ points.
+        \end{itemize}
+        You are allowed to bring one handwritten A4 sheet (both pages).
+    \end{tcolorbox}
+
+    \begin{questions}
+        \question Let us consider the propositional formula
+        \begin{align*}
+            \formulaat{\catvariableof{0},\catvariableof{1}}
+            =
+            \coloredmatrixof{
+                0 & 1 \\
+                1 & 0
+            }{\catvariableof{0},\catvariableof{1}} \, .
+        \end{align*}
+        How many coordinates does this tensor have? \\
+        \begin{oneparcheckboxes}
+            \choice 4
+            \choice 16
+            \choice 2
+        \end{oneparcheckboxes}\\
+        What is the order of this tensor? \\
+        \begin{oneparcheckboxes}
+            \choice 4
+            \choice 16
+            \choice 2
+        \end{oneparcheckboxes}
+
+        \question
+        How many coordinates does a propositional formula of $\catorder$ variables have? \\
+        \begin{oneparcheckboxes}
+            \choice $\catorder^2$
+            \choice $2^\catorder$
+            \choice ${\catorder}^\catorder$
+            \choice $2^{(2^{\catorder})}$
+        \end{oneparcheckboxes}
+
+        \question
+        Which of these is a syntactical representation of the formula in question 1? \\
+        \begin{oneparcheckboxes}
+            \choice $\catvariableof{0}\Leftrightarrow \catvariableof{1}$
+            \choice $\catvariableof{0}\Leftrightarrow \lnot \catvariableof{1}$
+            \choice $\catvariableof{0}\Rightarrow \catvariableof{1}$
+        \end{oneparcheckboxes}
+
+        \question
+        Consider the tensor network diagram:
+        \stantikzpic{
+            \draw[->-] (-1,-1)--(-1,1) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+            \draw[->-] (2,-1)--(2,1) node[midway,right] {\colorlabelsize $\catvariableof{1}$};
+            \draw[->-] (6,-1)--(6,1) node[midway,right] {\colorlabelsize $\catvariableof{2}$};
+            \draw[->-] (9,-1)--(9,1) node[midway,right] {\colorlabelsize $\catvariableof{3}$};
+
+            \draw (-2,1) rectangle (3, 3);
+            \node[anchor=center] (text) at (0.5,2) {\corelabelsize $\bencodingof{\Leftrightarrow}$};
+
+            \draw[->-] (2,3) --(2,5) node[midway,right]{\colorlabelsize ${\headvariableof{0}}$};
+
+            \draw (5,1) rectangle (10, 3);
+            \node[anchor=center] (text) at (7.5,2) {\corelabelsize $\bencodingof{\land}$};
+
+            \draw[->-] (6,3) --(6,5) node[midway,right]{\colorlabelsize $\headvariableof{1}$};
+
+            \draw (0.5,5) rectangle (7.5,7);
+            \node[anchor=center] (text) at (4,6) {\corelabelsize $\bencodingof{\lor}$};
+
+            \draw[->-] (4,7) -- (4,9) node[midway,right] {\colorlabelsize $\headvariableof{2}$};
+            \drawsquaretensor{4}{10}{$\tbasis$}
+        }
+        Which of these formulas is equivalent to the contraction of this tensor network leaving only $\catvariableof{0},\catvariableof{1},\catvariableof{2},\catvariableof{3}$ open? \\
+        \begin{oneparcheckboxes}
+            \choice $\big(\catvariableof{0}\Leftrightarrow(\catvariableof{1}\lor\catvariableof{3})\big)\land\catvariableof{3})$
+            \choice $\headvariableof{2}\Leftrightarrow\big(\headvariableof{0}\lor\headvariableof{1}\big)$
+            \choice $(\catvariableof{0}\Leftrightarrow\catvariableof{1})\lor(\catvariableof{2}\land\catvariableof{3})$
+        \end{oneparcheckboxes}
+
+        \question
+        Which of these matrices encodes the constraint that the variables $\catvariableof{0}$ and $\catvariableof{1}$ of dimension $3$ are not in the same state? \\
+        \begin{oneparcheckboxes}
+            \choice
+            $\coloredmatrixof{
+                0 & 1 & 0\\
+                1 & 0 & 1 \\
+                0 & 1 & 0
+            }{\catvariableof{0},\catvariableof{1}}$
+            \choice
+            $\coloredmatrixof{
+                0 & 0 & 1\\
+                0 & 0 & 0 \\
+                1 & 0 & 0
+            }{\catvariableof{0},\catvariableof{1}}$
+            \choice
+            $\coloredmatrixof{
+                0 & 1 & 1\\
+                1 & 0 & 1 \\
+                1 & 1 & 0
+            }{\catvariableof{0},\catvariableof{1}}$
+        \end{oneparcheckboxes}
+
+        \question Let there be two formulas
+        \begin{align*}
+            \formulaofat{0}{\catvariableof{0},\catvariableof{1}}
+            =
+            \coloredmatrixof{
+                1 & 1 \\
+                0 & 1
+            }{\catvariableof{0},\catvariableof{1}}
+            \quad \text{and} \quad
+            \formulaofat{1}{\catvariableof{0},\catvariableof{1}}
+            =
+            \coloredmatrixof{
+                0 & 0 \\
+                0 & 1
+            }{\catvariableof{0},\catvariableof{1}}
+        \end{align*}
+        Which of these entailment statements are true? \\
+        \begin{oneparcheckboxes}
+            \choice $\formulaof{1}\models\formulaof{0}$
+            \choice $\formulaof{0}\models\formulaof{1}$
+            \choice $\lnot\formulaof{1}\models\lnot\formulaof{0}$
+            \choice $\lnot\formulaof{0}\models\lnot\formulaof{1}$
+            \choice none of the before
+        \end{oneparcheckboxes}
+
+        %% Probability theory
+        \question Which of these tensors is a probability distribution? \\
+        \begin{oneparcheckboxes}
+            \choice $\coloredmatrixof{0 & 1 & 0 \\ 0 & 0 & 0}{\catvariableof{0},\catvariableof{1}}$
+            \choice $\coloredmatrixof{0.2 & 0.2 & 0.3 \\ 0.1 & 0.5 & 0.8}{\catvariableof{0},\catvariableof{1}}$
+            \choice $\coloredmatrixof{0.1 & 0.1 & 0.3 \\ 0.2 & 0.2 & 0.1}{\catvariableof{0},\catvariableof{1}}$
+        \end{oneparcheckboxes}
+
+        \question Let $\probwith$ be a distribution of the variables $\shortcatvariables$ and $\arbset\subset[\catorder]$.
+        Which of these contractions computes the marginal distribution of the variables $\catvariableof{\arbset}$? \\
+        \begin{oneparcheckboxes}
+            \choice $\contraction{\probwith}$
+            \choice $\contractionof{\probwith}{\catvariableof{[\catorder]/\arbset}}$
+            \choice $\contractionof{\probwith}{\catvariableof{\arbset}}$
+        \end{oneparcheckboxes}
+
+        \question Consider a distribution
+        \stantikzpic{
+            \drawtextnode{-10}{0}{$\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}\,\,=$}
+            \drawtextnode{-2}{0}{$\begin{pmatrix}
+                                      0.20 &  0.05 \\ 0.15 & 0.10
+            \end{pmatrix}$}
+            \drawtextnode{5.5}{1}{$\begin{pmatrix}
+                                       0.20 & 0.05 \\ 0.15 & 0.10
+            \end{pmatrix}$}
+            \drawtextnode{12}{0}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]$}
+        }
+        Which of these is the distribution $\condprobat{\catvariableof{0},\catvariableof{1}}{\catvariableof{2}}$ of $\catvariableof{0},\catvariableof{1}$ conditioned on $\catvariableof{2}$? \\
+        \begin{checkboxes}
+            \choice
+            \begin{tikzpicture}[scale=0.35]
+            \drawtextnode{-2}{0}{$\coloredmatrixof{0.20 & 0.05 \\ 0.15 & 0.10}{\catvariableof{0},\catvariableof{1}}$}
+            \end{tikzpicture}
+            \choice \begin{tikzpicture}[scale=0.35]
+                \drawtextnode{-2}{0}{$\begin{pmatrix}
+                                          0.40 &  0.10 \\ 0.30 & 0.20
+                \end{pmatrix}$}
+                \drawtextnode{5.5}{1}{$\begin{pmatrix}
+                                           0.40 & 0.10 \\ 0.30 & 0.20
+                \end{pmatrix}$}
+                \drawtextnode{12}{0}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]$}
+            \end{tikzpicture}
+            \choice \begin{tikzpicture}[scale=0.35]
+                \drawtextnode{-2}{0}{$\begin{pmatrix}
+                                          0.20 &  0.05 \\ 0.15 & 0.10
+                \end{pmatrix}$}
+                \drawtextnode{5.5}{1}{$\begin{pmatrix}
+                                           0.20 & 0.05 \\ 0.15 & 0.10
+                \end{pmatrix}$}
+                \drawtextnode{12}{0}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]$}
+            \end{tikzpicture}
+        \end{checkboxes}
+        Is $\independent{\catvariableof{0}}{\catvariableof{2}}$ true with respect to this distribution? \\
+        \begin{oneparcheckboxes}
+            \choice Yes
+            \choice No
+        \end{oneparcheckboxes}
+
+        \newpage
+        \question
+        Consider these two hypergraph:
+        \stantikzpic{
+            \drawtextnode{-3}{6}{$a)$}
+            \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+            \drawvariablenode{4}{0}{$\catvariableof{1}$}{X1}
+            \drawvariablenode{2}{5}{$\catvariableof{2}$}{X2}
+            \coordinate (E2) at (2,3) {};
+            \draw[->-] (X0) -- (E2);
+            \draw[->-] (X1) -- (E2);
+            \draw[->-] (E2) -- (X2);
+            \begin{scope}[shift={(15,0)}]
+                \drawtextnode{-3}{6}{$b)$}
+                \drawvariablenode{0}{2.5}{$\catvariableof{0}$}{X0}
+                \drawvariablenode{5}{2.5}{$\catvariableof{1}$}{X1}
+                \drawvariablenode{10}{2.5}{$\catvariableof{2}$}{X2}
+                \draw (X0) -- (X1);
+                \draw (X1) -- (X2);
+            \end{scope}
+        }
+        Which of these independence statement is true with respect to any Bayesian network on the hypergraph $a)$?\\
+        \begin{oneparcheckboxes}
+            \choice $\independent{\catvariableof{0}}{\catvariableof{1}}$
+            \choice $\independent{\catvariableof{2}}{\catvariableof{0},\catvariableof{1}}$
+            \choice $\condindependent{\catvariableof{2}}{\catvariableof{0}}{\catvariableof{1}}$
+        \end{oneparcheckboxes}\\
+        \medskip \\
+        Which of these independence statement is true with respect to any Markov network on the hypergraph $b)$?\\
+        \begin{oneparcheckboxes}
+            \choice $\independent{\catvariableof{0}}{\catvariableof{2}}$
+            \choice $\condindependent{\catvariableof{2}}{\catvariableof{0}}{\catvariableof{1}}$
+            \choice $\condindependent{\catvariableof{0}}{\catvariableof{2}}{\catvariableof{1}}$
+        \end{oneparcheckboxes}
+    \end{questions}
+
+
+\end{document}
