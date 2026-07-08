@@ -1,3 +1,6 @@
+%% Distributions wrt a base measure
+\newcommand{\distmeasuredby}[1]{\Lambda^{#1}}
+
 \newcommand{\stateset}{\mathcal{X}}
 \newcommand{\sstatencoding}{\sencodingof{\sstat}}
 \newcommand{\sstatencodingat}[1]{\sstatencoding\left(#1\right)}
@@ -58,22 +61,23 @@
 \newcommand{\genfacelattice}{\facelatticeof{\genmeanset}}
 \newcommand{\facein}{\facesymbol\in\genfacelattice}
 
-\newcommand{\facecondset}{\mathcal{I}} % OLD, Use instead \facesymbol
+\newcommand{\facecondset}{\facesymbol} % OLD, Use instead \facesymbol
 \newcommand{\facecondsetof}[1]{\facecondset^{#1}}
 \newcommand{\faceset}{Q} % OLD, Use instead \facesymbol
 \newcommand{\facesetofspec}[2]{\faceset^{#1}_{#2}}
 \newcommand{\genfacesetof}[1]{\facesetofspec{#1}{\sstat,\basemeasure}}
 \newcommand{\genfaceset}{\genfacesetof{\facecondset}}
 
-\newcommand{\hlnfaceset}{\facesetofspec{\facecondset}{\hlnstat,\ones}}
+\newcommand{\hlnfaceset}{\facesymbol}
 
-\newcommand{\genfacemeasure}{\basemeasureof{\sstat,\facecondset}}
-\newcommand{\genfacemeasureat}[1]{\basemeasureofat{\sstat,\facecondset}{#1}}
+\newcommand{\genfacemeasure}{\basemeasureof{\sstat,\facesymbol}}
+\newcommand{\genfacemeasureat}[1]{\basemeasureofat{\sstat,\facesymbol}{#1}}
 \newcommand{\genfacemeasurewith}{\genfacemeasureat{\shortcatvariables}}
 
 \newcommand{\hlnfacemeasure}{\hlnformulaof{\facecondset}}
 \newcommand{\hlnfacemeasureat}[1]{\hlnfacemeasure\left[#1\right]}
 \newcommand{\hlnfacemeasurewith}{\hlnfacemeasureat{\shortcatvariables}}
+
 
 
 %% Maximum cones

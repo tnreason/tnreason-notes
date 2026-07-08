@@ -15,9 +15,9 @@ We further show that a maximum entropy distribution is a exponential family memb
     \end{align*}
     and a base measure
     \begin{align*}
-        \basemeasure \defcols \facstates \rightarrow \rr^+
+        \basemeasure \defcols \facstates \rightarrow \rr^+_0
     \end{align*}
-    with $\contraction{\basemeasure}\neq0$, the set $\expfamily=\{\expdist\wcols\canparamwithin\}\subset\bmrealprobof{\basemeasure}$ of probability distributions
+    with $\contraction{\basemeasure}\neq0$, the set $\expfamily=\{\expdist\wcols\canparamwithin\}\subset\distmeasuredby{\basemeasure}$ of probability distributions
     \begin{align*}
         \expdistat{\shortcatvariables}
         = \frac{
@@ -91,12 +91,13 @@ We will use the following well known property (see e.g. \cite{brown_fundamentals
 \begin{lemma}
     \label{lem:interiorRepExpFamily}
     The set of mean parameters of the members of an exponential family is the relative interior of the mean polytope.
+    %% NEEDED?
     For $\canparam,\seccanparam\in\parspace$ with
     \begin{align*}
-        \uniquantwrtof{\selindexin}{
-            \contraction{\expdistofat{\sstat,\canparam,\basemeasure}{\shortcatvariables},\sstatcoordinateofat{\selindex}{\shortcatvariables},\basemeasurewith}
-            = \contraction{\expdistofat{\sstat,\seccanparam,\basemeasure}{\shortcatvariables},\sstatcoordinateofat{\selindex}{\shortcatvariables},\basemeasurewith}
-        }
+        %\uniquantwrtof{\selindexin}{
+            \contractionof{\expdistofat{\sstat,\canparam,\basemeasure}{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}
+            = \contractionof{\expdistofat{\sstat,\seccanparam,\basemeasure}{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}
+        %}
     \end{align*}
     we furthermore have $\expdistofat{\sstat,\canparam,\basemeasure}{\shortcatvariables}=\expdistofat{\sstat,\seccanparam,\basemeasure}{\shortcatvariables}$.
 \end{lemma}
@@ -106,7 +107,7 @@ We will use the following well known property (see e.g. \cite{brown_fundamentals
 
 Based on this property we define the forward and backward mappings to an exponential family.
 
-\begin{definition}
+\begin{definition}\label{def:forwardBackwardMapping}
     The forward map of an exponential family is the map
     \begin{align*}
         \forwardmap  \defcols \parspace \rightarrow \sbinteriorof{\genmeanset}
@@ -137,8 +138,8 @@ We now show that exponential families are maximum entropy distributions.
     We also have $\contractionof{\secprobat{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}=\meanparamat{\selvariable}$ and thus
     \begin{align*}
         \centropyofwrt{\secprobtensor}{\expdistof{(\sstat,\canparam,\basemeasure)}}{\basemeasure}
-        &= -\contraction{\secprobtensor,\lnof{\expdistofat{(\sstat,\canparam,\basemeasure)}{\shortcatvariables}},\basemeasurewith} \\
-        &= -\contraction{\secprobtensor,\sencsstatwith,\canparamwith,\basemeasurewith} + \cumfunctionof{\canparam} \\
+        &= -\contraction{\secprobat{\shortcatvariables},\lnof{\expdistofat{(\sstat,\canparam,\basemeasure)}{\shortcatvariables}},\basemeasurewith} \\
+        &= -\contraction{\secprobat{\shortcatvariables},\sencsstatwith,\canparamwith,\basemeasurewith} + \cumfunctionof{\canparam} \\
         &= - \contraction{\canparamwith,\meanparamwith} + \cumfunctionof{\canparam} \\
         &= \sentropyofwrt{\expdistof{(\sstat,\canparam,\basemeasure)}}{\basemeasure} \, .
     \end{align*}
@@ -147,32 +148,41 @@ We now show that exponential families are maximum entropy distributions.
         \sentropyofwrt{\expdistof{(\sstat,\canparam,\basemeasure)}}{\basemeasure}  - \sentropyofwrt{\secprobtensor}{\basemeasure}
         = \centropyofwrt{\secprobtensor}{\expdistof{(\sstat,\canparam,\basemeasure)}}{\basemeasure}  - \sentropyofwrt{\secprobtensor}{\basemeasure}  > 0 \,
     \end{align*}
-    and thus $\sentropyofwrt{\secprobtensor}{\basemeasure}<\sentropyofwrt{\secprobtensor}{\basemeasure}$.
-    Therefore, if $\secprobtensor$ does not coincide with $\expdistof{(\sstat,\canparam,\basemeasure)}$, it is not a maximum entropy distribution.
+    and thus $\sentropyofwrt{\secprobtensor}{\basemeasure}<\sentropyofwrt{\expdistof{(\sstat,\canparam,\basemeasure)}}{\basemeasure}$.
+    Therefore, any feasible $\secprobtensor$ different from $\expdistof{(\sstat,\canparam,\basemeasure)}$ have less entropy than $\expdistof{(\sstat,\canparam,\basemeasure)}$ and $\expdistof{(\sstat,\canparam,\basemeasure)}$ is a maximum entropy distribution.
 \end{proof}
 
 Together with \lemref{lem:interiorRepExpFamily} stating the existence of an exponential family member for any mean parameter in the relative interior of the mean polytope we arrive at the following theorem.
 
 \begin{theorem}
     \label{the:maxEntropyInterior}
-    %If the only face $\genfacesetof{\facecondset}$ of $\genmeanset$ with $\meanparam\in\genfacesetof{\facecondset}$ is $\genmeanset$ itself
-    If and only if $\genmean$ is in the relative interior of $\genmeanset$, then the unique solution of the maximum entropy problem is the distribution
+    %If the only face $\facesymbolof{\facecondset}$ of $\genmeanset$ with $\meanparam\in\facesymbolof{\facecondset}$ is $\genmeanset$ itself
+    If and only if $\meanparamwith$ is in the relative interior of $\genmeanset$, then the unique solution of the maximum entropy problem is the distribution
     \begin{align*}
-        \expdistofat{\sstat,\genmean,\basemeasure}{\shortcatvariables}\in\expfamilyof{\sstat,\basemeasure}
+        \expdistofat{\sstat,\weightparam,\basemeasure}{\shortcatvariables}\in\expfamilyof{\sstat,\basemeasure}
     \end{align*}
-    with $\contractionof{\expdistofat{\sstat,\genmean,\basemeasure}{\shortcatvariables},\sencsstatwith}{\selvariable}=\genmeanat{\selvariable}$.
+    where for some backward map $\backwardmapwrt{\sstat,\basemeasure}$
+    \begin{align*}
+        \weightparam
+        = \backwardmapwrtof{\sstat,\basemeasure}{\meanparam} \, .
+    \end{align*}
+    %with $\contractionof{\expdistofat{\sstat,\genmean,\basemeasure}{\shortcatvariables},\sencsstatwith}{\selvariable}=\genmeanat{\selvariable}$.
 \end{theorem}
 \begin{proof}
-    By \lemref{lem:interiorRepExpFamily}
+    By \lemref{lem:interiorRepExpFamily} if
     \begin{align*}
         \meanparamwith \in \sbinteriorof{\genmeanset}  \, ,
     \end{align*}
-    there is a canonical parameter $\canparam$ with
+    there is at least one weight parameter $\weightparamwith\in\parspace$ with
     \begin{align*}
-        \contractionof{\expdistofat{\sstat,\canparam,\basemeasure}{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}=\meanparamat{\selvariable} \, .
+        \contractionof{\expdistofat{\sstat,\weightparam,\basemeasure}{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}
+        =\meanparamat{\selvariable}
     \end{align*}
-    By \lemref{lem:expFamilyMaxEnt} we have that $\expdistof{(\sstat,\canparam,\basemeasure)}$ is the maximum entropy distribution with respect to the moment constraint on $\sstat$ by $\meanparamwith$ and the base measure $\basemeasure$.
+    and $\backwardmapwrtof{\sstat,\basemeasure}{\meanparam}$ with respect to any backward map $\backwardmapwrt{\sstat,\basemeasure}$ is such one.
+    With \lemref{lem:expFamilyMaxEnt} we conclude that $\expdistof{(\sstat,\backwardmapwrtof{\sstat,\basemeasure}{\meanparam},\basemeasure)}$ is the maximum entropy distribution with respect to the moment constraint on $\sstat$ by $\meanparamwith$ and the base measure $\basemeasure$.
 \end{proof}
 
-%Exponential families are in $\elrealizabledistsof{\sstat}$, if and only if $\normalizationof{\basemeasure}{\shortcatvariables}\in\elrealizabledistsof{\sstat}$.
-%If $\normalizationof{\basemeasure}{\shortcatvariables}\in\elrealizabledistsof{\sstat}$ and $\meanparamwith \in \sbinteriorof{\genmeanset} $ we therefore have a sparse representation of the maximum entropy distribution with elementary activation tensors.
+Note that while the maximum entropy distribution is unique, the weight vector $\weightparam$ representing the maximum entropy distribution is not always unique.
+This is reflected by multiple possible choices of backward mappings.
+Only if the exponential family is minimal (see \cite{wainwright_graphical_2008}) then the weight vector is unique.
+However, we did not restrict to such situations, since exponential families on refined base measures are not minimal.
