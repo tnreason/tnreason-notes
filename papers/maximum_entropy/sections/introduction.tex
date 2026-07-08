@@ -15,7 +15,7 @@ Extracting characteristics observed in data does not determine an estimated mode
 Choosing the distribution with the least structure among those reflecting the observed characteristics is a regularization principle.
 Here one can choose the Shannon entropy to quantify the negative amount of structure in the distribution and maximize the quantity with respect to the constraints.
 %% Duality to maximum likelihood
-Furthermore, maximum entropy problems are the dual problems to convex maximum likelihood problems.
+Furthermore, maximum entropy problems are the dual problems to convex maximum likelihood problems \cite{koller_probabilistic_2009}.
 
 %% Combining logical and probabilistic models
 Less obvious, studying generalizing maximum entropy distributions might be a key step towards a mathematically sound unification of logical and probabilistic models.
@@ -24,7 +24,7 @@ Combining logical and probabilistic AI is a necessity in statistical relational 
 Probability theory with exponential families typically focuses on distributions with maximal support.
 Logics on the contrary can be understood as a study of the support of models, marking the worlds consistent with a knowledge base.
 % Tensor formalism
-Logical and probabilistic models can be treated in the tensor network formalism, which thus serves as a unifying representation language.
+Logical and probabilistic models can be treated in the tensor network formalism, which thus serves as a unifying representation language \cite{goessmann_tensor_2026}.
 
 % Current AI research (by Gemini)
 Maximum entropy principles appear further in reinforcement learning \cite{yoon_maximum_2024,song_survey_2025}, AGI \cite{miotto_new_2025} and Bayesian NN \cite{rathnakumar_bayesian_2026}. %interferometric data \cite{mus_new-generation_2024}
@@ -143,35 +143,49 @@ We are interested in decomposition formats of $\hypercoreat{\headvariables}$, wh
     \end{align*}
 \end{definition}
 
-\subsection{Contributions}
-
-We in this paper provide tensor network representations
-\begin{itemize}
-%    \item Representation of any distribution with a sufficient statistics: Generic activation tensors.
-    \item Representation of distributions with maximum entropy, in case of positive realizability: Elementary activation tensors
-    \item Representation of generic maximum entropy distributions: CP activation tensors.
-\end{itemize}
-
-Now, we want to characterize the CP rank of the activation tensors
-\begin{itemize}
-    \item Depends on the face of the mean polytope, which contains the mean parameter
-    \item We have thus a well-defined "CP rank" of faces
-    \item Largest faces and vertices have always CP rank of 1, intermediate faces can have larger CP rank
-\end{itemize}
-
-For boolean statistics we further provide insights for boolean statistics (see Chapter~8.5):
-\begin{itemize}
-    \item Example of independent statistics (see Exa.~8.28): Always elementary activation tensors (hypercubes)
-    \item Example of partition statistics (see Exa.~8.30):
-    \item Generic criterion for elementary activation: "Cube-like" polytopes (see Def.~8.29)
-\end{itemize}
-
 \subsection{Outlook}
 
-To prepare for the presentation of our main results we introduce
-\begin{itemize}
+To prepare for the presentation of our main results we introduce in section \secref{sec:meanPolytope} the mean polytope, its faces, and their tensor network representations.
+In \secref{sec:expFamily} we study exponential families as classes of elementary \ComputationActivationNetworks{} and show that they are the maximum entropy distributions to mean parameters in the relative interior of the mean polytope.
+This result is generalized in \secref{sec:genMaxEnt} where we characterize generic maximum entropy distributions based on \ComputationActivationNetworks{}.
+In \secref{sec:booleanStat} we investigate consequences of these results in case of boolean statistics and connect them to propositional logics.
+
+%\begin{itemize}
+%%    \item \ComputationActivationNetworks{}: A tensor network architecture, which will be used to represent maximum entropy distributions -> Already before
+%    \item Mean polytopes: Polytopes, which contain all realizable mean parameter vectors.
+%    \item Exponential families: Maximum entropy distributions in the interior
+%\end{itemize}
+
+
+%\subsection{Contributions}
+%
+%We in this paper provide tensor network representations
+%\begin{itemize}
+%%    \item Representation of any distribution with a sufficient statistics: Generic activation tensors.
+%    \item Representation of distributions with maximum entropy, in case of positive realizability: Elementary activation tensors
+%    \item Representation of generic maximum entropy distributions: CP activation tensors.
+%\end{itemize}
+
+%Now, we want to characterize the CP rank of the activation tensors
+%\begin{itemize}
+%    \item Depends on the face of the mean polytope, which contains the mean parameter
+%    \item We have thus a well-defined "CP rank" of faces
+%    \item Largest faces and vertices have always CP rank of 1, intermediate faces can have larger CP rank
+%\end{itemize}
+
+%For boolean statistics we further provide insights for boolean statistics (see Chapter~8.5):
+%\begin{itemize}
+%    \item Example of independent statistics (see Exa.~8.28): Always elementary activation tensors (hypercubes)
+%    \item Example of partition statistics (see Exa.~8.30):
+%    \item Generic criterion for elementary activation: "Cube-like" polytopes (see Def.~8.29)
+%\end{itemize}
+
+%\subsection{Outlook}
+%
+%To prepare for the presentation of our main results we introduce
+%\begin{itemize}
 %    \item \ComputationActivationNetworks{}: A tensor network architecture, which will be used to represent maximum entropy distributions -> Already before
-    \item Mean polytopes: Polytopes, which contain all realizable mean parameter vectors.
-    \item Exponential families: Maximum entropy distributions in the interior
-\end{itemize}
-We will then show, that dependent on the position of the mean parameter in the mean polytope, we can characterize the corresponding maximum entropy distribution by a \ComputationActivationNetwork{}.
+%    \item Mean polytopes: Polytopes, which contain all realizable mean parameter vectors.
+%    \item Exponential families: Maximum entropy distributions in the interior
+%\end{itemize}
+%We will then show, that dependent on the position of the mean parameter in the mean polytope, we can characterize the corresponding maximum entropy distribution by a \ComputationActivationNetwork{}.

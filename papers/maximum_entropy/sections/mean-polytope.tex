@@ -1,11 +1,6 @@
-\section{The mean polytope}
+\section{The mean polytope}\label{sec:meanPolytope}
 
 The mean polytope is the set of possible mean parameters given the by a base measure representable distributions.
-%To ease the notation, we use the selection encoding $\sencsstatwith$ of a statistic
-%\begin{align*}
-%    \sencsstatat{\shortcatvariables,\indexedselvariable}
-%    = \sstatcoordinateofat{\selindex}{\shortcatvariables} \, .
-%\end{align*}
 We define it as
 \begin{align*}
     \genmeanset
@@ -13,13 +8,12 @@ We define it as
 \end{align*}
 where we denote by $\distmeasuredby{\basemeasure}$ the set of all probability distributions representable with respect to $\basemeasure$, and by $\sencsstatwith$ the selection encoding of the statistic (see introduction).
 
-
-\begin{figure}
-    \begin{center}
-        \input{tikz/mean-polytope/meanset_sketch_generic.tex}
-    \end{center}
-    \caption{Sketch of the statistic mapping the states to the mean parameters.}
-\end{figure}
+%\begin{figure}
+%    \begin{center}
+%        \input{tikz/mean-polytope/meanset_sketch_generic.tex}
+%    \end{center}
+%    \caption{Sketch of the statistic mapping the states to the mean parameters.}
+%\end{figure}
 
 \subsection{Convex hull}
 
@@ -152,11 +146,11 @@ Let us now investigate tensor network representations of refined base measures, 
 %The vertex measure is then
 %\begin{align*}
 %    \basemeasureofat{\sstat,\facesymbol}{\shortcatvariables}
-%    = \contractionof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\onehotmapofat{\meanparam}{\headvariables}}{\shortcatvariables}
+%    = \contractionof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\onehotmapofat{\imelementwith}{\headvariables}}{\shortcatvariables}
 %\end{align*}
 %Here we use that each $\meanparam\in\facesymbol\cap\imageof{\sstatencoding}$ has integer-valued coordinates and denote
 %\begin{align*}
-%    \onehotmapofat{\meanparam}{\headvariables} = \bigotimes_{\selindexin} \onehotmapofat{\meanparamat{\indexedselvariable}}{\headvariableof{\selindex}} \, .
+%    \onehotmapofat{\imelementwith}{\headvariables} = \bigotimes_{\selindexin} \onehotmapofat{\meanparamat{\indexedselvariable}}{\headvariableof{\selindex}} \, .
 %\end{align*}
 
 \begin{theorem}
@@ -169,29 +163,29 @@ Let us now investigate tensor network representations of refined base measures, 
     where
     \begin{align*}
         \kcoreofat{\facesymbol}{\headvariables}
-        = \sum_{\meanparam\in\genfaceimset} \onehotmapofat{\meanparam}{\headvariables} \, .
+        = \sum_{\imelementwith\in\genfaceimset} \onehotmapofat{\imelementwith}{\headvariables} \, .
     \end{align*}
 \end{theorem}
 \begin{proof}
-    For any $\meanparam\in\genfaceimset$ the tensor
+    For any $\imelementwith\in\genfaceimset$ the tensor
     \begin{align*}
-        \hypercoreofat{\meanparam}{\shortcatvariables}
-        = \contractionof{\sstatccwith,\onehotmapofat{\meanparam}{\headvariables}}{\shortcatvariables}
+        \hypercoreofat{\imelement}{\shortcatvariables}
+        = \contractionof{\sstatccwith,\onehotmapofat{\imelementwith}{\headvariables}}{\shortcatvariables}
     \end{align*}
     is the indicator of the preimage of $\meanparam$ under $\sstatencoding$.
-    Since preimages the elements in $\genfaceimset$ are disjoint, the support of $\hypercoreofat{\meanparam}{\shortcatvariables}$ is disjoint and their sum
+    Since preimages of the elements in $\genfaceimset$ are disjoint, the support of $\hypercoreofat{\imelement}{\shortcatvariables}$ is disjoint and their sum
     \begin{align*}
-        \sum_{\meanparam\in\genfaceimset} \hypercoreofat{\meanparam}{\shortcatvariables}
+        \sum_{\imelementwith\in\genfaceimset} \hypercoreofat{\imelement}{\shortcatvariables}
     \end{align*}
     is the indicator of the preimage of $\facesymbol$ under $\sstatencoding$.
     The face measure obeys thus
     \begin{align*}
         \genfacemeasurewith
         &= \contractionof{\left(
-                              \sum_{\meanparam\in\genfaceimset} \hypercoreofat{\meanparam}{\shortcatvariables}
+                              \sum_{\imelementwith\in\genfaceimset} \hypercoreofat{\imelement}{\shortcatvariables}
         \right), \basemeasurewith}{\shortcatvariables} \\
-        &= \sum_{\meanparam\in\genfaceimset}
-        \contractionof{\sstatccwith,\onehotmapofat{\meanparam}{\headvariables},\basemeasurewith}{\shortcatvariables} \\
+        &= \sum_{\imelementwith\in\genfaceimset}
+        \contractionof{\sstatccwith,\onehotmapofat{\imelementwith}{\headvariables},\basemeasurewith}{\shortcatvariables} \\
         & = \contractionof{\sstatccwith,\kcoreofat{\facesymbol}{\headvariables},\basemeasurewith}{\shortcatvariables} \qedhere
     \end{align*}
 \end{proof}
@@ -285,14 +279,16 @@ Let us now investigate, which normalized face measures can be computed using $\s
 
 \begin{example}[Vertices]
     \label{exa:vertexMeasures}
-    Vertices $\facesymbol$ are proper faces of affine dimension $0$, that is they consist in single vectors.
-    Since all vertices are in the image $\sstatencodingat{\stateset}$, there exists an index tuple $\shortcatindices\in\stateset$ such that $\basemeasureat{\indexedshortcatvariables}=1$ and
+    Vertices $\facesymbol=\{\imelementwith\}$ are proper faces of affine dimension $0$, that is they consist in single vectors $\imelementwith$.
+    Since all vertices are in the image $\genimset$, there exists an index tuple $\shortcatindices\in\stateset$ such that $\basemeasureat{\indexedshortcatvariables}=1$ and
     \begin{align*}
-        \facesymbol = \{\sencsstatat{\indexedshortcatvariables,\selvariable}\} \, .
+        \imelementwith
+        = \sencsstatat{\indexedshortcatvariables,\selvariable} \, .
     \end{align*}
     Then $\kcoreofat{\facesymbol}{\headvariables}$ is the one-hot encoding of the by an interpretation map $\indexinterpretation$ assigned index to $\sencsstatat{\indexedshortcatvariables,\selvariable}$, that is
     \begin{align*}
-        \kcoreofat{\facesymbol}{\headvariables} = \onehotmapofat{\invindexinterpretationat{\sencsstatat{\indexedshortcatvariables,\selvariable}}}{\headvariables} \, .
+        \kcoreofat{\facesymbol}{\headvariables}
+        = \onehotmapofat{\invindexinterpretationat{\sencsstatat{\indexedshortcatvariables,\selvariable}}}{\headvariables} \, .
     \end{align*}
     In particular, the activation core is elementary and the face measure to any vertex is in $\realizabledistsof{\sstat,\elgraph,\basemeasure}$.
 \end{example}

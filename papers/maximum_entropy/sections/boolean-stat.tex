@@ -1,35 +1,44 @@
-\section{Characterization for boolean statistics}
+\section{Boolean statistics}\label{sec:booleanStat}
 
-\red{We here study the face CP ranks in case of boolean statistics.
-We further show that any elementary \ComputationActivationNetwork{} to boolean statistics is a maximum entropy distribution.}
+%\red{We here study the face CP ranks in case of boolean statistics.
+%We further show that any elementary \ComputationActivationNetwork{} to boolean statistics is a maximum entropy distribution.}
 
-For boolean statistics $\hlnstat:\facstates\rightarrow\bigtimes_{\selindexin}[2]$ the mean polytope is a subset of the cube $\fullparcube$.
-In this case, any boolean vector in $\meansetof{\hlnstat,\basemeasure}$ is a vertex.
-It follows, that any distribution reproducing a mean parameter $\meanparamwith$ on the relative interior of $\meansetof{\hlnstat,\basemeasure}$ is positive with respect to $\basemeasure$.
+We say that a statistic is boolean, if $\headdimof{\selindex}=2$ for all $\selindexin$.
+The mean polytope is then a 0/1-polytope \cite{ziegler_lectures_2000}, since its vertices are exactly the contained boolean vectors.
+The special case of boolean statistics is especially interesting for two reasons.
+First, we can provide additional intuition on those faces representable by elementary face activating tensors, namely based on intersections with cube faces.
+Based on these properties we also show that any elementary \ComputationActivationNetwork{} to a boolean statistic is a maximum entropy distribution.
+Second, the statistic itself can be interpreted in terms of logical formulas.
+We exploit this property to provide examples and to characterize each 0/1-polytope as a mean polytope to a collection of propositional formulas.
 
-We apply the exponential distribution characterization of the maximum entropy distribution and get that the maximum entropy distribution is in $\elrealizabledistsof{\sstat}$, if and only if the face measure is in $\elrealizabledistsof{\sstat}$.
-This is exactly the case, when the face is an intersection of the mean polytope with a face of the cupe $\fullparcube$.
+%For boolean statistics $\hlnstat:\facstates\rightarrow\bigtimes_{\selindexin}[2]$ the mean polytope is a subset of the cube $\fullparcube$.
+%% NEEDED?
+%In this case, any boolean vector in $\meansetof{\hlnstat,\basemeasure}$ is a vertex.
+%It follows, that any distribution reproducing a mean parameter $\meanparamwith$ on the relative interior of $\meansetof{\hlnstat,\basemeasure}$ is positive with respect to $\basemeasure$.
+
+%We apply the exponential distribution characterization of the maximum entropy distribution and get that the maximum entropy distribution is in $\elrealizabledistsof{\sstat}$, if and only if the face measure is in $\elrealizabledistsof{\sstat}$.
+%This is exactly the case, when the face is an intersection of the mean polytope with a face of the cupe $\fullparcube$.
 
 \subsection{Characterization of elementary representable faces}
-
-
 
 Orienting on \exaref{exa:hypercubeFaces} we define cube-likeness of faces and polytopes.
 
 \begin{definition}
     \label{def:cubeLike}
-    We say that a face $\facesymbol$ of $\hlnmeanset$ is cube-like, if it is empty or there is $\variableset\subset[\seldim]$ and $\headindexof{\variableset}\in\bigtimes_{\selindex\in\variableset}[2]$ such that
+    We say that a face $\facesymbol$ of $\genmeanset$ is cube-like, if it is empty or there is $\variableset\subset[\seldim]$ and $\headindexof{\variableset}\in\bigtimes_{\selindex\in\variableset}[2]$ such that
     \begin{align*}
-        \facesymbol = \meansetof{\hlnstat,\basemeasure} \cap \facesymbolof{(\variableset,\headindexof{\variableset})} \, .
+        \facesymbol 
+        = \genmeanset \cap \facesymbolof{(\variableset,\headindexof{\variableset})} \, .
     \end{align*}
-    We further say that a polytope $\hlnmeanset$ is cube-like, if all faces $\facesymbol\in\facelatticeof{\hlnmeanset}$ are cube-like.
+    Here we denote by $\facesymbolof{(\variableset,\headindexof{\variableset})}$ the faces of the hypercube $\cubeof{\seldim}$ (see \exaref{exa:hypercubeFaces}).
+    We further say that a polytope $\genmeanset$ is cube-like, if all faces $\facesymbol\in\facelatticeof{\genmeanset}$ are cube-like.
 \end{definition}
 
 We now show that a face is cube-like if and only if it is representable by an elementary tensor.
 
 \begin{theorem}
     \label{the:faceMeasureHardLogicNetworks}
-    Let $\hlnstat$ be a boolean statistic, $\basemeasure$ a base measure and $\facesymbol$ be a face of $\hlnmeanset$.
+    Let $\hlnstat$ be a boolean statistic, $\basemeasure$ a base measure and $\facesymbol$ be a face of $\genmeanset$.
     Then the following are equivalent:
     \begin{itemize}
         \item[(i)] $\facesymbol$ is cube-like (see \defref{def:cubeLike}).
@@ -41,8 +50,8 @@ We now show that a face is cube-like if and only if it is representable by an el
     We therefore assume in the following $\facesymbol\neq\varnothing$.
 
     (i)$\Rightarrow$(ii):
-    Let us assume that $\facesymbol$ is cube-like, that is there is $\variableset\subset[\seldim]$ and $\headindexof{\variableset}\in\bigtimes_{\selindex\in\variableset}[2]$ such that $\facesymbol = \meansetof{\hlnstat,\basemeasure} \cap \facesymbolof{(\variableset,\headindexof{\variableset})}$.
-    We use that $\facesymbol,\meansetof{\hlnstat,\basemeasure}$ and $\facesymbolof{(\variableset,\headindexof{\variableset})}$ are the convex hulls of the cube vertex sets $\imsetof{\hlnstat,\meanset}{\facesymbol}$, $\imsetof{\hlnstat,\meanset}{}$ and
+    Let us assume that $\facesymbol$ is cube-like, that is there is $\variableset\subset[\seldim]$ and $\headindexof{\variableset}\in\bigtimes_{\selindex\in\variableset}[2]$ such that $\facesymbol = \genmeanset \cap \facesymbolof{(\variableset,\headindexof{\variableset})}$.
+    We use that $\facesymbol,\genmeanset$ and $\facesymbolof{(\variableset,\headindexof{\variableset})}$ are the convex hulls of the cube vertex sets $\imsetof{\hlnstat,\meanset}{\facesymbol}$, $\imsetof{\hlnstat,\meanset}{}$ and
     \begin{align}\label{eq:cubeFaceVertices}
         \imsetof{}{(\variableset,\headindexof{\variableset})} = \{\imelementwith \wcols \forall \selindex\in\variableset \imelementat{\indexedselvariable}=\headindexof{\variableset}\} \, ,
     \end{align}
@@ -52,13 +61,13 @@ We now show that a face is cube-like if and only if it is representable by an el
     \end{align*}
     Thus, we can choose $\arbset=\imsetof{\hlnstat,\meanset}{\facesymbol}$ for the representation of the face $\facesymbol$ (see \defref{def:faceRepresentability}) and further have that
     \begin{align*}
-        \sum_{\imelementwith\in\imsetof{}{(\variableset,\headindexof{\variableset})}}
+        \sum_{\imelementwith\in\imsetof{}{(\variableset,\headindexof{\variableset})}}\onehotmapofat{\imelementwith}{\headvariables}
         = \bigotimes_{\selindexin} \hardactlegwith \, .
     \end{align*}
     We have thus found an elementary activation tensor for the face $\facesymbol$.
 
     (ii)$\rightarrow$(i)
-    Conversely, let $\acttensorwith$ be an elementary activation tensor of the face $\facesymbol$ in $\hlnmeanset$.
+    Conversely, let $\acttensorwith$ be an elementary activation tensor of the face $\facesymbol$ in $\genmeanset$.
     Since $\acttensorwith$ is the sum of different one-hot encodings it is boolean and we find an elementary decomposition $\acttensorwith=\bigotimes_{\selindexin}\acttensorlegwith$ such that the leg vectors $\acttensorwith$ are boolean.
     Since $\facesymbol\neq\varnothing$ we further have for $\selindexin$ that $\acttensorlegwith\neq\zerosat{\headvariableof{\selindex}}$, and thus $\acttensorlegwith\in \{\fbasisat{\headvariableof{\selindex}},\tbasisat{\headvariableof{\selindex}},\onesat{\headvariableof{\selindex}}\}$
     We construct a set $\variableset\subset[\seldim]$
@@ -85,17 +94,16 @@ We now show that a face is cube-like if and only if it is representable by an el
     \end{align*}
     Taking convex hulls on both sides, this is equivalent to
     \begin{align*}
-        \facesymbol = \facesymbolof{(\variableset,\headindexof{\variableset})} \cap \meansetof{\hlnstat,\basemeasure} \, .
+        \facesymbol = \facesymbolof{(\variableset,\headindexof{\variableset})} \cap \genmeanset \, .
     \end{align*}
     We conclude that $\facesymbol$ is cube-like.
 \end{proof}
 
 %% Reference to simplices and hypercubes
-\theref{the:faceMeasureHardLogicNetworks} implices that hypercubes (see \exaref{exa:hypercubeFaces}) and simplices (see \exaref{exa:simplexFaces}) are cube-like polytopes, since their faces are intersections with faces of the hypercube.
+\theref{the:faceMeasureHardLogicNetworks} implies that hypercubes (see \exaref{exa:hypercubeFaces}) and simplices (see \exaref{exa:simplexFaces}) are cube-like polytopes, since their faces are intersections with faces of the hypercube.
 
 
 %Let us now give with the standard simplices a class of convex polytopes, which are not hypercubes, but cube-like.
-
 %\input{examples/mean-polytope/simplex_faces}
 
 

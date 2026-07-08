@@ -1,20 +1,35 @@
 \section{Outlook}
 
-This is relevant for Parameter Estimation: Instabilities when fitting a mean parameter on a non cube-like face.
+%% Summary
+This work characterized all discrete maximum entropy distributions as \ComputationActivationNetworks{}, a class of tensor networks.
+The mean polytope contains those mean parameters, to which entropy maximization problems are feasible.
+While exponential families are known to be the maximum entropy distributions to the interior of the polytope, we showed that refining the base measure with respect to faces enables the representation of maximum entropy distributions to mean parameters on the particular face.
+To this end we utilized the tensor network formalism and showed how to represent exponential families and their generalizations to maximum entropy distributions.
 
-Further theory to be investigated:
-\begin{itemize}
-    \item Face representability of randomly drawn polytopes (e.g. expectation of a face rank).
-    \item Asymptotic properties for large polytopes (does the average face rank concentrate at an expectation)?
-\end{itemize}
+%% Application in learning
+One important application is estimation of maximum entropy distributions from data, such as learning in exponential families and graphical models \cite{jordan_learning_1998}.
+Maximum likelihood problems are known to be dual to maximum entropy problems \cite{koller_probabilistic_2009} and therefore face similar representation challenges.
+Here the mean parameters of empirical distributions serve as sufficient statistics and are matched by trainable weights in algorithms such as iterative proportional fitting \cite{darroch_generalized_1972,csiszar_geometric_1989}.
+Optimizing parameters within a poor choice of learning architecture will lead to numerical instabilities, resulting from the absence of an optimum.
+Choosing the right tensor format representing the refined base measure guarantees the existence of an optimum.
 
-Investigate the connection with convex polytope investigations:
-\begin{itemize}
-    \item Facet complexity (the amount of information to specify the face by inequalities) \cite{grotschel_geometric_1993}
-\end{itemize}
+%% Future research
+Further research might derive a relation between tensor format complexity \cite{hackbusch_tensor_2012} to notions of facet complexity \cite{grotschel_geometric_1993}.
+The complexity of faces from randomly drawn polytopes is further interesting, especially in the asymptotic limit of large statistics \cite{vershynin_high-dimensional_2018, wainwright_high-dimensional_2019}.
 
-Border-rank development to resolve the issue of non-elementary faces:
-When defining a boarder rank of the activation tensors by limiting \CompActNets{}, then any maximum entropy distribution has border rank 1.
-
-Application in NeSy:
-By format selection (i.e. which complexity is required to represent a face).
+%Further theory to be investigated:
+%\begin{itemize}
+%    \item Face representability of randomly drawn polytopes (e.g. expectation of a face rank).
+%    \item Asymptotic properties for large polytopes (does the average face rank concentrate at an expectation)?
+%\end{itemize}
+%
+%Investigate the connection with convex polytope investigations:
+%\begin{itemize}
+%    \item Facet complexity (the amount of information to specify the face by inequalities) \cite{grotschel_geometric_1993}
+%\end{itemize}
+%
+%Border-rank development to resolve the issue of non-elementary faces:
+%When defining a boarder rank of the activation tensors by limiting \CompActNets{}, then any maximum entropy distribution has border rank 1.
+%
+%Application in NeSy:
+%By format selection (i.e. which complexity is required to represent a face).

@@ -16,10 +16,13 @@
         \item We define the set $\hardlegset\subset[\atomorder]$ of variables, such that the projection onto the variable is $\{0\}$ or $\{1\}$
         \item We define to each $\selindex\in\hardlegset$ an index $\headindexof{\selindex}=0$ if the projection is $\{0\}$ and $\headindexof{\selindex}=1$ if the projection is $\{1\}$.
     \end{itemize}
-
-%    There are thus $2^{\atomorder}$ different sets $\hardlegset$, each with $2^{\hardlegset}$ faces by a choice of $\headindexof{\selindex}$.
-
     Trivially, each face of the hypercube is a cube face and $\elmeansetof{\atomformulaset}=\meansetof{\atomformulaset}$.
 
-    \red{More general: If and only if no combination of possibly negated formulas is unsatisfiable, then the mean polytope is a hypercube.}
+    % Extension: Discussion of those statistics having the hypercube as mean polytope
+    More general, the mean polytope to a collection $\formulaofat{\selindex}{\shortcatvariables}$ of propositional formulas is the hypercube, if and only if for any boolean vector $\imelementwith$ we have
+    \begin{align*}
+        \contraction{\bigwedge_{\selindexin}\lnot^{1-\imelementat{\indexedselvariable}}\formulaofat{\selindex}{\shortcatvariables}} = 0 \, .
+    \end{align*}
+    This means that no conjunction of possibly negated formulas from this statistic entails nor contradicts another formula.
+
 \end{example}
