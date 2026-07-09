@@ -1,0 +1,19 @@
+\section{Languages}
+
+Languages over finite alphabets $\Sigma$ are collection of strings in $\Sigma^{*}$.
+The symbols in $\Sigma$ are enumerated by an index interpretation map $\indexinterpretation$.
+
+Collections $\arbset$ of strings of length $\indorder$ are represented by a boolean tensor
+\begin{align*}
+    \hypercoreofat{\arbset,\indorder}{\indvariableof{[\indorder]}}
+    = \sum_{\imelement\in\arbset} \bigotimes_{\indenumeratorin}
+    \onehotmapofat{\indexinterpretationat{\restrictionofto{\imelement}{\indenumerator}}}{\indvariableof{\indenumerator}} \, .
+\end{align*}
+
+A language $L$ is encoded by the infinite collection of tensors
+\begin{align*}
+    \{\hypercoreofat{L,\indorder}{\indvariableof{[\indorder]}} \wcols \indorder\in\nn \} \, ,
+\end{align*}
+each representing the set of strings of length $\indorder$.
+
+We want to study how to decompose such tensors and relate tensor network schemes to standard models of computation.
