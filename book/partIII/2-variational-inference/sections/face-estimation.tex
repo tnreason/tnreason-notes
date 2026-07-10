@@ -35,3 +35,38 @@ For cube-like faces, it is enough to decide entailment and contradiction of each
         = \contraction{\gendistributionwith,\sstatcoordinateofat{\selindex}{\shortcatvariables}} \, .
     \end{align*}
 \end{theorem}
+
+\subsection{Face refinement}
+
+We present \algoref{alg:faceRefinement} to search the $\faceto{\genmean}$ in the face lattice.
+In each iteration of the \whileSymbol{} loop it either finds a facet of the current with $\genmeanwith\in\secfacesymbol$ or it terminates.
+Since the face lattice has a finite depth $n$, it always terminates after at most $n$ iterations of the \whileSymbol{} loop.
+
+
+\begin{algorithm}[hbt!]
+    \caption{Face refinement}\label{alg:faceRefinement}
+    \begin{algorithmic}
+        \Require Distribution $\gendistributionwith$, statistic $\sstat$
+        \Ensure Face $\faceto{\genmeanwith}$
+        \iosepline
+        \State $\facesymbol\algdefsymbol\genmeanset$
+        \While{True}
+            \State $\mathrm{refined}\algdefsymbol \falsesymbol$
+            \ForAll{facets $\secfacesymbol$ of $\facesymbol$}
+                \If{not $\mathrm{refined}$}
+                    \State Compute
+                    \begin{align*}
+                        \lambda=\contraction{\gendistributionwith,\basemeasureofat{\secfacesymbol}{\shortcatvariables}}
+                    \end{align*}
+                    \If{$\lambda=1$}
+                        \State $\mathrm{refined}\algdefsymbol \truesymbol$
+                        \State $\facesymbol\algdefsymbol\secfacesymbol$
+                    \EndIf
+                \EndIf
+            \EndFor
+            \If{not $\mathrm{refined}$}
+                \State \Return $\facesymbol$
+            \EndIf
+        \EndWhile
+    \end{algorithmic}
+\end{algorithm}
