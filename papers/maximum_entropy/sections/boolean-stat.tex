@@ -4,7 +4,7 @@
 %We further show that any elementary \ComputationActivationNetwork{} to boolean statistics is a maximum entropy distribution.}
 
 We say that a statistic is boolean, if $\headdimof{\selindex}=2$ for all $\selindexin$.
-The mean polytope is then a 0/1-polytope \cite{ziegler_lectures_2000}, since its vertices are exactly the contained boolean vectors.
+The mean polytope is then a 0/1-polytope \cite{ziegler_lectures_2000}, which vertices are exactly the contained boolean vectors.
 The special case of boolean statistics is especially interesting for two reasons.
 First, we can provide additional intuition on those faces representable by elementary face activating tensors, namely based on intersections with cube faces.
 Based on these properties we also show that any elementary \ComputationActivationNetwork{} to a boolean statistic is a maximum entropy distribution.
@@ -149,34 +149,72 @@ We can further show, that for boolean statistics, any distribution in $\realizab
 %    Second claim by characterization of elementary faces by cube-likeness.
 \end{proof}
 
-
 \subsection{Interpretation by propositional formulas}
 
 We can understand each feature as a propositional formula and the variables $\shortcatvariables$ as atoms (possibly after a binarization).
+We use propositional connectives for syntactical representations of the formulas and denote by $\lnot^{1}$ the logical negation and by $\lnot^{0}$ the identity.
+A boolean tensor $\formulaat{\shortcatvariables}$ is called satisfiable, if there is at least one $\shortcatindicesin$ with $\formulaat{\indexedshortcatvariables}=1$.
 
-Each vertex of the cube, which is not a vertex $\imelementwith$ of the polytope corresponds with the unsatisfiability of a formula
-\begin{align*}
-    \bigwedge_{\selindexin} \lnot^{1-\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables}
-\end{align*}
-which is equal with any of the entailment statements for $\arbset\subset[\seldim]$ % Can extend to any partition!
+%% Vertex characterization
+%Each vertex of the cube, which is not a vertex $\imelementwith$ of the polytope corresponds with the unsatisfiability of a formula
+%\begin{align*}
+%    \bigwedge_{\selindexin} \lnot^{1-\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables}
+%\end{align*}
+%which is equal with any of the entailment statements for $\arbset\subset[\seldim]$ % Can extend to any partition!
+%\begin{align*}
+%    \left(\bigwedge_{\selindex\in\arbset} \lnot^{1-\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right)
+%    \models \left(\bigwedge_{\selindex\in\arbset}\lnot^{\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right) \, .
+%\end{align*}
+
+\begin{theorem}\label{the:boolVecSat}
+    Let $\sstat$ be a boolean statistic.
+    Any boolean vector $\imelementwith\in\{0,1\}^{\seldim}$ is a vertex of $\hlnmeanset$ if and only if
+    \begin{align*}
+        \formulaofat{\imelement}{\shortcatvariables}
+        \coloneqq \bigwedge_{\selindexin} \lnot^{1-\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables}
+    \end{align*}
+    is satisfiable.
+\end{theorem}
+\begin{proof}
+    Let $\imelementwith\in\{0,1\}^{\seldim}$ be arbitrary.
+    If and only if $\imelementwith$ is a vertex of $\hlnmeanset$ we find $\shortcatindicesin$ with $\imelementwith=\sencsstat{\indexedshortcatvariables,\selvariable}$.
+    This is further equivalent to $\formulaofat{\selindex}{\indexedshortcatvariables}=\imelementat{\indexedselvariable}$ for any $\selindexin$, $\lnot^{1-\imelementat{\indexedselvariable}}\formulaofat{\selindex}{\indexedshortcatvariables}=1$ for any $\selindexin$, and $\formulaofat{\imelement}{\indexedshortcatvariables}=1$.
+\end{proof}
+
+%% Entailment interpretation
+Since the presence of boolean vectors in $\hlnmeanset$ is by \theref{the:boolVecSat} related to the satisfiability of the conjunction $ \formulaofat{\imelement}{\shortcatvariables}$, the absence is related to entailment statements.
+To be more precise, for any $\imelementwith\in\{0,1\}^{\seldim}$ and arbitrary $\arbset\subset[\seldim]$ we have $\imelementwith\notin\hlnmeanset$, if and only if
 \begin{align*}
     \left(\bigwedge_{\selindex\in\arbset} \lnot^{1-\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right)
-    \models \left(\bigwedge_{\selindex\in\arbset}\lnot^{\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right) \, .
+    \models \left(\bigvee_{\selindex\in\arbset}\lnot^{\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right) \, .
 \end{align*}
+By definition (see \cite{russell_artificial_2021}) the latter holds if and only if
+\begin{align*}
+    \left(\bigwedge_{\selindex\in\arbset} \lnot^{1-\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right)
+    \land \lnot \left(\bigvee_{\selindex\in\arbset}\lnot^{\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right)
+    = \formulaofat{\imelement}{\shortcatvariables}
+\end{align*}
+is not satisfiable.
 
-Along this interpretation we can easily construct examples of statistics, which polytopes are not cube-like.
+
+Along this interpretation we construct examples of statistics, which polytopes are not cube-like.
 
 \input{examples/boolean-stat/nonel_hlnstat_maxent}
+
+Atomic formulas and minterm formulas correspond to hypercubes and simplices as we show next.
 
 \input{examples/boolean-stat/atomic_formulas}
 
 \input{examples/boolean-stat/minterm_formulas}
 
+
+%% Order?
 \input{examples/boolean-stat/tt_diagonal_face}
 
 \subsection{Construction of boolean statistics to polytopes}
 
-We now constructively show, that any convex polytope with boolean vertices in $\parspace$ (a so called 0-1 polytope, see \cite{ziegler_lectures_2000}) is the mean polytope to a boolean statistic.
+We now show, that any convex polytope with boolean vertices in $\parspace$ is the mean polytope to a boolean statistic.
+To construct the corresponding formulas we denote by $\restrictionofto{\meanset}{\arbset}$ the restriction of the vectors in the set $\meanset$ to the coordinates in $\arbset$.
 
 \begin{theorem}
     Let $\meanset$ an arbitrary polytope with boolean vertices in $\parspace$.
@@ -184,20 +222,20 @@ We now constructively show, that any convex polytope with boolean vertices in $\
     \begin{align*}
         \formulaofat{0}{\catvariableof{0}} =
         \begin{cases}
-            \top & \ifspace \restrictionofto{\meanset}{\rr^1\times 0_{\seldim-1}} = \{1\} \\
-            \bot & \ifspace \restrictionofto{\meanset}{\rr^1 \times 0_{\seldim-1}} = \{0\} \\
-            \catvariableof{0} & \ifspace \restrictionofto{\meanset}{\rr^1 \times 0_{\seldim-1}} = [0,1]
+            \top & \ifspace \restrictionofto{\meanset}{\{0\}} = \{1\} \\ %\restrictionofto{\meanset}{\rr^1\times 0_{\seldim-1}} = \{1\} \\
+            \bot & \ifspace \restrictionofto{\meanset}{\{0\}} = \{0\} \\%\restrictionofto{\meanset}{\rr^1 \times 0_{\seldim-1}} = \{0\} \\
+            \catvariableof{0} & \ifspace \restrictionofto{\meanset}{\{0\}} = [0,1] %\restrictionofto{\meanset}{\rr^1 \times 0_{\seldim-1}} = [0,1]
         \end{cases}
     \end{align*}
     and iteratively for $\selindexin$ with $\selindex\geq1$ by
     \begin{align*}
         \formulaofat{\selindex}{\catvariableof{[\selindex+1]}} =
-        \bigwedge_{\imelementwith \in \restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}\cap \{0,1\}^{\seldim}}
-        \left(\left(\bigwedge_{\secselindex\in[\selindex+1]} \lnot^{1-\imelementat{\selvariable=\secselindex}} \formulaofat{\secselindex}{\catvariableof{[\secselindex]}}\right) \Rightarrow
+        \bigwedge_{\imelementwith \in \restrictionofto{(\meanset\cap \{0,1\}^{\seldim})}{[\selindex]}}
+        \left(\left(\bigwedge_{\secselindex\in[\selindex]} \lnot^{1-\imelementat{\selvariable=\secselindex}} \formulaofat{\secselindex}{\catvariableof{[\secselindex+1]}}\right) \Rightarrow
             \begin{cases}
-                \top & \ifspace \restrictionofto{\meanset}{v\times\rr^{1} \times 0_{\seldim-\selindex-1}} = \{1\} \\
-                \bot & \ifspace \restrictionofto{\meanset}{v\times\rr^{1} \times 0_{\seldim-\selindex-1}} = \{0\} \\
-                \catvariableof{\selindex} & \ifspace \restrictionofto{\meanset}{v\times\rr^{1} \times 0_{\seldim-\selindex-1}} = \{0,1\} \\
+                \top & \ifspace \restrictionofto{(\meanset\cap\imelement\times\rr^{\seldim-\selindex})}{\{\selindex\}} = \{1\} \\%\restrictionofto{\meanset}{v\times\rr^{1} \times 0_{\seldim-\selindex-1}} = \{1\} \\
+                \bot & \ifspace \restrictionofto{(\meanset\cap\imelement\times\rr^{\seldim-\selindex})}{\{\selindex\}} = \{0\} \\ %\restrictionofto{\meanset}{v\times\rr^{1} \times 0_{\seldim-\selindex-1}} = \{0\} \\
+                \catvariableof{\selindex} & \ifspace \restrictionofto{(\meanset\cap\imelement\times\rr^{\seldim-\selindex})}{\{\selindex\}} = [0,1] %\restrictionofto{\meanset}{v\times\rr^{1} \times 0_{\seldim-\selindex-1}} = \{0,1\} \\
             \end{cases}
         \right).
     \end{align*}
@@ -208,37 +246,56 @@ We now constructively show, that any convex polytope with boolean vertices in $\
     \begin{align}
         \label{eq:HLNindConTBS}
         \meansetof{\formulaof{[\selindex+1]},\trivbm}
-        = \restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}} \, .
+        = \restrictionofto{\meanset}{[\selindex]} \, .
     \end{align}
 
-    $\selindex=0$: The polytope $\restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}=\{1\}$ (respectively $\restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}=\{0\}$) is reproduced by $\formulaof{0}$ being a tautology (respectively a contradiction).
-    In the case $\restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}=[0,1]$ the polytope is reproduced by the any formula, which is neither a tautology nor a contradiction, and the atomic formula $\catvariableof{0}$ is an example of such an contingency.
+    $"\selindex=0"$: The polytope $\restrictionofto{\meanset}{[\selindex]}=\{1\}$ (respectively $\restrictionofto{\meanset}{[\selindex]}=\{0\}$) is reproduced by $\formulaof{0}$ being a tautology (respectively a contradiction).
+    In the case $\restrictionofto{\meanset}{[\selindex]}=[0,1]$ the polytope is reproduced by the any formula, which is neither a tautology nor a contradiction, and the atomic formula $\catvariableof{0}$ is an example of such an contingency.
     Since the projection of a 0-1 polytope onto the first coordinates is itself a 0-1 polytope, these are the only possible cases and we conclude that in all
     \begin{align*}
-        \meansetof{\formulaof{[\selindex+1]},\trivbm}
-        = \restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}} \, .
+        \meansetof{\formulaof{[\selindex]},\trivbm}
+        = \restrictionofto{\meanset}{[\selindex]} \, .
     \end{align*}
 
-    $\selindex\rightarrow\selindex+1$: Let us assume, that \eqref{eq:HLNindConTBS} holds for a $\selindexin$.
-    Then for any $\shortcatindicesin$ there is exactly one $\imelementwith \in \restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}$ such that $\shortcatindices$ is a model of
+    $"\selindex\rightarrow\selindex+1"$:
+    We define for any $\imelement\in\meansetof{\formulaof{[\selindex]},\trivbm}\cap\{0,1\}^{\selindex}$ the formula
     \begin{align*}
-        \formulaofat{\selindex,v}{\catvariableof{[\selindex+1]}}\coloneqq
-        \bigwedge_{\secselindex\in[\selindex+1]} \lnot^{1-\imelementat{\selvariable=\secselindex}} \formulaofat{\secselindex}{\catvariableof{[\secselindex]}} \, .
+        \formulaofat{\selindex,\imelement}{\catvariableof{[\selindex+1]}}\coloneqq
+        \bigwedge_{\secselindex\in[\selindex]} \lnot^{1-\imelementat{\selvariable=\secselindex}} \formulaofat{\secselindex}{\catvariableof{[\secselindex+1]}} \, .
     \end{align*}
-    This holds, since by the mutual contradiction of these formulas at most one can have $\shortcatindices$ as a model.
-    Further, if none would have $\shortcatindices$ as a model, then the to $\shortcatindices$ corresponding vector of satisfactions $(\formulaofat{\selindex}{\indexedshortcatvariables})_{\selindex\in[\selindex]}$ is not in $\restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}$, which can not be the case.
-    Now, the implications to all $\tilde{v}$ except for $v$ are for the models $\shortcatindices$ of $\formulaof{\selindex,v}$ satisfied, and the satisfaction of $\formulaof{\selindex}$ thus only depends on the head of the implication to $v$.
-    It follows, that the vertices of $\meansetof{\formulaof{[\selindex+2]},\trivbm}$ sharing the first $\selindex$ coordinates with $v$ are determined by the head of the implication at $v$.
-    With the same arguments as in the case $\selindex=0$ we now notice, that in the three cases we construct vertex sets $v\times\{1\},\, v\times\{1\}$ or $v\times\{0,1\}$ if and only if they appear in the polytope $\restrictionofto{\meanset}{\rr^{\selindex+1}\times 0_{\seldim-\selindex-1}}$.
-    This establishes for each vertex $v$ of $\meansetof{\formulaof{[\selindex+1]},\trivbm}$ that
+    and notice that all formulas are satisfiable (since the corresponding vertices are in the $\meansetof{\formulaof{[\selindex]},\trivbm}$) and have disjoint models.
+    We have for any boolean vector $\imelement\in\{0,1\}^{\selindex}$ and $\lambda\in\{0,1\}$ that $\imelement\times\{\lambda\}\in\restrictionofto{\meanset}{[\selindex+1]}$, if and only if
     \begin{align*}
-        \restrictionofto{\left(\meansetof{\formulaof{[\selindex+2]},\trivbm}\right)}{v\times\rr\times0_{\seldim-\selindex-1}}
-        = \restrictionofto{\left(\restrictionofto{\meanset}{\rr^\selindex\times 0_{\seldim-\selindex}}\right)}{v\times\rr\times0_{\seldim-\selindex-1}} \, .
+        \imelement \in \restrictionofto{\meanset}{[\selindex]} \quad \text{and} \quad
+        \lambda \in \restrictionofto{\meanset\cup\imelement\times\rr^{\seldim-\selindex}}{[\selindex]} \, .
     \end{align*}
-    Since for any vertex in $\meanset$ we find a unique vertex in $\meansetof{\formulaof{[\selindex+1]},\trivbm}$ sharing the first $\selindex$ coordinates, we have that \eqref{eq:HLNindConTBS} holds for $\selindex+1$.
+    With modus ponens on $\formulaofat{\selindex+1}{\catvariableof{[\selindex+2]}}$ this is further equivalent to the satisfaction of
+    \begin{align*}
+        \formulaofat{\selindex,\imelement}{\catvariableof{[\selindex+1]}} \land \lnot^{1-\lambda}\formulaofat{\selindex+1}{\catvariableof{[\selindex+2]}}
+    \end{align*}
+    and thus to $\imelement\times\{\lambda\}\in\meansetof{\formulaof{[\selindex+1]},\trivbm}$.
+    The vertices of the 0/1 polytopes $\meansetof{\formulaof{[\selindex+1]},\trivbm}$ and $\restrictionofto{\meanset}{[\selindex+1]}$ thus coincide and both polytopes are therfore equivalent.
+
+%    $\selindex\rightarrow\selindex+1$: Let us assume, that \eqref{eq:HLNindConTBS} holds for a $\selindexin$.
+%    Then for any $\shortcatindicesin$ there is exactly one $\imelementwith \in \restrictionofto{\meanset}{[\selindex]}$ such that $\shortcatindices$ is a model of
+%    \begin{align*}
+%        \formulaofat{\selindex,\imelement}{\catvariableof{[\selindex+1]}}\coloneqq
+%        \bigwedge_{\secselindex\in[\selindex]} \lnot^{1-\imelementat{\selvariable=\secselindex}} \formulaofat{\secselindex}{\catvariableof{[\secselindex+1]}} \, .
+%    \end{align*}
+%    This holds, since by the mutual contradiction of these formulas at most one can have $\shortcatindices$ as a model.
+%    Further, if none would have $\shortcatindices$ as a model, then the to $\shortcatindices$ corresponding vector of satisfactions $(\formulaofat{\selindex}{\indexedshortcatvariables})_{\selindex\in[\selindex]}$ is not in $\restrictionofto{\meanset}{[\selindex]}$, which can not be the case.
+%    Now, the implications to all $\tilde{\imelement}$ except for $\imelement$ are for the models $\shortcatindices$ of $\formulaof{\selindex,\imelement}$ satisfied, and the satisfaction of $\formulaof{\selindex}$ thus only depends on the head of the implication to $v$.
+%    It follows, that the vertices of $\meansetof{\formulaof{[\selindex+2]},\trivbm}$ sharing the first $\selindex$ coordinates with $\imelement$ are determined by the head of the implication at $\imelement$.
+%    With the same arguments as in the case $\selindex=0$ we now notice, that in the three cases we construct vertex sets $\imelement\times\{1\},\, \imelement\times\{0\}$ or $\imelement\times\{0,1\}$ if and only if they appear in the polytope $\restrictionofto{\meanset}{[\selindex+1]}$.
+%    This establishes for each vertex $\imelement$ of $\meansetof{\formulaof{[\selindex+1]},\trivbm}$ that
+%    \begin{align*}
+%        \restrictionofto{(\meansetof{\formulaof{[\selindex+2]},\trivbm}\cap\imelement\times\rr^{\seldim-\selindex})}{[\selindex+1]}
+%        = \restrictionofto{(\meanset\cap\imelement\times\rr^{\seldim-\selindex})}{[\selindex+1]} \, .
+%    \end{align*}
+%    Since for any vertex in $\meanset$ we find a unique vertex in $\meansetof{\formulaof{[\selindex+1]},\trivbm}$ sharing the first $\selindex$ coordinates, we have that \eqref{eq:HLNindConTBS} holds for $\selindex+1$.
 
     By induction the equation \eqref{eq:HLNindConTBS} holds for arbitrary $\selindexin$.
-    For $\selindex=\seldim-1$ the equation is the claim.
+    For $\selindex=\seldim-1$ this is the claim.
 \end{proof}
 
 \subsection{Further Examples of non-cubelike polytopes}
