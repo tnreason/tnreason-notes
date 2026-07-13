@@ -113,6 +113,7 @@ We can further show, that for boolean statistics, any distribution in $\realizab
 %\subsection{Set of maximum entropy distributions}
 
 \begin{theorem}
+    Let $\hlnstat$ be a boolean statistic.
     Any distribution in $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ is a maximum entropy distribution with respect to $(\hlnstat,\meanparam,\basemeasure)$ where $\meanparam$ is its mean parameter.
     %Any maximum entropy distribution is realized by $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ if and only if the mean parameter is in the relative interior of a cube-like face.
 \end{theorem}
@@ -186,27 +187,25 @@ Since the presence of boolean vectors in $\hlnmeanset$ is by \theref{the:boolVec
 To be more precise, for any $\imelementwith\in\{0,1\}^{\seldim}$ and arbitrary $\arbset\subset[\seldim]$ we have $\imelementwith\notin\hlnmeanset$, if and only if
 \begin{align*}
     \left(\bigwedge_{\selindex\in\arbset} \lnot^{1-\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right)
-    \models \left(\bigvee_{\selindex\in\arbset}\lnot^{\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right) \, .
+    \models \left(\bigvee_{\selindex\notin\arbset}\lnot^{\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right) \, .
 \end{align*}
 By definition (see \cite{russell_artificial_2021}) the latter holds if and only if
 \begin{align*}
     \left(\bigwedge_{\selindex\in\arbset} \lnot^{1-\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right)
-    \land \lnot \left(\bigvee_{\selindex\in\arbset}\lnot^{\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right)
+    \land \lnot \left(\bigvee_{\selindex\notin\arbset}\lnot^{\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right)
     = \formulaofat{\imelement}{\shortcatvariables}
 \end{align*}
 is not satisfiable.
 
-
-Along this interpretation we construct examples of statistics, which polytopes are not cube-like.
-
-\input{examples/boolean-stat/nonel_hlnstat_maxent}
-
 Atomic formulas and minterm formulas correspond to hypercubes and simplices as we show next.
 
-\input{examples/boolean-stat/atomic_formulas}
+\input{examples/boolean-stat/hypercube-atomic}
 
-\input{examples/boolean-stat/minterm_formulas}
+\input{examples/boolean-stat/simplex-minterm}
 
+Let us now provide examples of statistics, which polytopes are not cube-like.
+
+\input{examples/boolean-stat/nonel_hlnstat_maxent}
 
 %% Order?
 \input{examples/boolean-stat/tt_diagonal_face}
@@ -298,7 +297,7 @@ To construct the corresponding formulas we denote by $\restrictionofto{\meanset}
     For $\selindex=\seldim-1$ this is the claim.
 \end{proof}
 
-\subsection{Further Examples of non-cubelike polytopes}
+\subsection{Examples in statistical physics and coding theory}
 
 \input{examples/boolean-stat/ising_two}
 

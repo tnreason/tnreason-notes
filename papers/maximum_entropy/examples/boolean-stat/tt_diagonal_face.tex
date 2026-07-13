@@ -17,6 +17,15 @@
     \end{align*}
 
     We now represent their sum in an $\ttformat$ with hidden ranks $r_0=\ldots=r_{\seldim-2}=2$.
+    This format describes tensor networks on a hypergraph
+    \begin{align*}
+        \ttformat
+        = \big(
+            \shortcatvariables\cup\decvariableof{[\catorder-1]},
+            \{\{\decvariableof{\catenumerator-1},\catvariableof{\catenumerator},\decvariableof{\catenumerator}\}\wcols\catenumerator\in\{1,\ldots,\catorder-2\}\}
+        \cup\{\{\catvariableof{0},\decvariableof{0}\},\{\decvariableof{\catorder-2},\catvariableof{\catorder-1}\}\}
+        \big) \, .
+    \end{align*}
     The boolean hidden variables are denoted be $\decvariableof{[\seldim-1]}$ and can be interpreted as indicators, whether the coordinate flip has happened in $[\selindex]$ coordinates.
     We now construct a $\ttformat$ cores for $\selindex=0$ by
     \begin{align*}

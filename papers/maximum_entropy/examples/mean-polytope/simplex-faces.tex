@@ -2,9 +2,8 @@
     \label{exa:simplexFaces}
     The $(\seldim-1)$-dimensional standard simplex $\meansetof{\triangle,\seldim-1}$ in $[0,1]^{\seldim}$ is the convex hull of the vertex sets
     \begin{align*}
-        \imset = \{\onehotmapofat{\selindex}{\selvariable} \wcols\selindexin\} \, . % selvariable
+        \imset = \{\onehotmapofat{\selindex}{\selvariable} \wcols\selindexin\} \, .
     \end{align*}
-    %where $\selvariable$ takes values in $[\seldim-1]$.
     The simplex is the mean polytope of the $\seldim$-dimensional statistic with
     \begin{align*}
         \sstatcoordinateof{\selindex} \defcols [\seldim] \rightarrow [2] \quad, \quad
@@ -14,8 +13,10 @@
               0 & \ifspace \secselindex \neq \selindex
         \end{cases} \, .
     \end{align*}
-    This is sometimes referred to as the probability simplex, since it represents all distributions of a discrete variable with $\seldim$ states.
+    The simplex represents all distributions with respect to the trivial base measure $\trivbm$ which coordinates are all $1$.
+    When flattened to a vector, any tensor in $\realizabledistsof{\ones}$ is an element of $\meansetof{\triangle,\seldim-1}$ where $\seldim=\prod_{\catenumeratorin}\catdimof{\catenumerator}$.
 
+    % Faces
     The face lattice of the simplex consists is enumerated by subsets of $[\seldim]$ as
     \begin{align*}
         \facelatticeof{\meansetof{\triangle,\seldim-1}}
@@ -28,11 +29,4 @@
     \end{align*}
     and therefore itself $(\cardof{\arbset}-1)$-dimensional standard simplices.
     The partial order of the faces coincides with the inclusion order of subsets $\arbset$.
-
-%    Furthermore, each face $\facesymbolof{\arbset}$ is cube-like since
-%    \begin{align*}
-%        \facesymbolof{\arbset}
-%    = \meansetof{\triangle,\seldim-1} \cap \facesymbolof{[\seldim]/\arbset,0_{[\seldim]/\arbset}}
-%    \end{align*}
-%    where $\facesymbolof{[\seldim]/\arbset,0_{[\seldim]/\arbset}}$ are faces of the hypercube following the notation of \exaref{exa:hypercubeFaces}.
 \end{example}

@@ -1,0 +1,20 @@
+\begin{example}[Vertices]
+    \label{exa:vertexMeasures}
+    Vertices $\facesymbol=\{\imelementwith\}$ are proper faces of affine dimension $0$, that is they consist in single vectors $\imelementwith$.
+    Since all vertices are in the image $\genimset$, there exists an index tuple $\shortcatindices\in\stateset$ such that $\basemeasureat{\indexedshortcatvariables}=1$ and
+    \begin{align*}
+        \imelementwith
+        = \sencsstatat{\indexedshortcatvariables,\selvariable} \, .
+    \end{align*}
+    Then $\kcoreofat{\facesymbol}{\headvariables}$ is the one-hot encoding of the vector $\sencsstatat{\indexedshortcatvariables,\selvariable}$, that is
+    \begin{align*}
+        \kcoreofat{\facesymbol}{\headvariables}
+        = \onehotmapofat{\sencsstatat{\indexedshortcatvariables,\selvariable}}{\headvariables} \, .
+    \end{align*}
+    Such tensors are examples of elementary tensors corresponding to the elementary hypergraph
+    \begin{align*}
+        \elformat
+        = \big([\seldim],\{\{\selindex\}\wcols\selindexin\}\big) \, .
+    \end{align*}
+    In particular, the activation core is elementary and the corresponding refined base measures are in $\realizabledistsof{\sstat,\elgraph,\basemeasure}$.
+\end{example}

@@ -1,19 +1,12 @@
 \section{The mean polytope}\label{sec:meanPolytope}
 
-The mean polytope is the set of possible mean parameters given the by a base measure representable distributions.
+The mean polytope is the set of possible mean parameters given a by base measure representable distribution in $\distmeasuredby{\basemeasure}$.
 We define it as
 \begin{align*}
     \genmeanset
-    = \left\{\contractionof{\probwith,\sencsstatwith,\basemeasurewith}{\selvariable}\wcols\probwith\in\distmeasuredby{\basemeasure} \right\} \, ,
+    \coloneqq \left\{\contractionof{\probwith,\sencsstatwith,\basemeasurewith}{\selvariable}\wcols\probwith\in\distmeasuredby{\basemeasure} \right\} \, ,
 \end{align*}
 where we denote by $\distmeasuredby{\basemeasure}$ the set of all probability distributions representable with respect to $\basemeasure$, and by $\sencsstatwith$ the selection encoding of the statistic (see introduction).
-
-%\begin{figure}
-%    \begin{center}
-%        \input{tikz/mean-polytope/meanset_sketch_generic.tex}
-%    \end{center}
-%    \caption{Sketch of the statistic mapping the states to the mean parameters.}
-%\end{figure}
 
 \subsection{Convex hull}
 
@@ -23,7 +16,7 @@ First of all, we characterize the mean polytope as the convex hull of the slices
     For any statistic $\sstat$ and base measure $\basemeasure$, the set of mean parameters is the convex hull of the set
     \begin{align*}
         \genimset
-        = \{\sencsstatat{\indexedshortcatvariables,\selvariable}
+        \coloneqq \{\sencsstatat{\indexedshortcatvariables,\selvariable}
         \wcols\shortcatindices\in\facstates\ncond\basemeasureat{\indexedshortcatvariables}\neq0 \}
     \end{align*}
     that is $\genmeanset = \convhullof{\genimset}$.
@@ -52,13 +45,14 @@ Let us now continue with the investigation of the faces of the mean parameter po
 \begin{definition}
     We say that the convex hull of a subset $\genfaceimset\subset\genimset$ is a face of a mean polytope $\genmeanset$, if and only if there is a face normal vector $\canparamofat{\facesymbol}{\selvariable}\in\parspace$ such that
     \begin{align*}
-        \genfaceimset = \argmax_{\meanparamwith\in\genimset} \contraction{\meanparamwith,\canparamofat{\facesymbol}{\selvariable}} \, .
+        \genfaceimset
+        = \argmax_{\meanparamwith\in\genimset} \contraction{\meanparamwith,\canparamofat{\facesymbol}{\selvariable}} \, .
     \end{align*}
     We denote the face as $\facesymbol=\convhullof{\genfaceimset}$.
     The set of all faces of the mean polytope $\genmeanset$ is denoted by $\facelatticeof{\genmeanset}$.
 \end{definition}
 
-$\facelatticeof{\genmeanset}$ is called a lattice \cite{ziegler_lectures_2013}.
+The set $\facelatticeof{\genmeanset}$ is partially ordered by the inclusion operation and is called a lattice \cite{ziegler_lectures_2013}.
 
 
 We notice, that each face itself is a convex polytope.
@@ -267,7 +261,7 @@ We now investigate the representation of face measures by \ComputationActivation
     \begin{align*}
         \frac{1}{\contraction{\genfacemeasurewith}} \cdot \genfacemeasurewith
         = \frac{
-        \contractionof{\contractionof{\kcoreof{\graph}}{\headvariables},\bencsstatwith}{\shortcatvariables}
+            \contractionof{\contractionof{\kcoreof{\graph}}{\headvariables},\bencsstatwith}{\shortcatvariables}
         }{
             \contraction{\contractionof{\kcoreof{\graph}}{\headvariables},\bencsstatwith,\basemeasurewith}
         }
@@ -277,43 +271,29 @@ We now investigate the representation of face measures by \ComputationActivation
 
 Let us now investigate, which normalized face measures can be computed using $\sstat$ and a hypergraph $\graph$.
 
-\begin{example}[Vertices]
-    \label{exa:vertexMeasures}
-    Vertices $\facesymbol=\{\imelementwith\}$ are proper faces of affine dimension $0$, that is they consist in single vectors $\imelementwith$.
-    Since all vertices are in the image $\genimset$, there exists an index tuple $\shortcatindices\in\stateset$ such that $\basemeasureat{\indexedshortcatvariables}=1$ and
-    \begin{align*}
-        \imelementwith
-        = \sencsstatat{\indexedshortcatvariables,\selvariable} \, .
-    \end{align*}
-    Then $\kcoreofat{\facesymbol}{\headvariables}$ is the one-hot encoding of the by an interpretation map $\indexinterpretation$ assigned index to $\sencsstatat{\indexedshortcatvariables,\selvariable}$, that is
-    \begin{align*}
-        \kcoreofat{\facesymbol}{\headvariables}
-        = \onehotmapofat{\invindexinterpretationat{\sencsstatat{\indexedshortcatvariables,\selvariable}}}{\headvariables} \, .
-    \end{align*}
-    In particular, the activation core is elementary and the face measure to any vertex is in $\realizabledistsof{\sstat,\elgraph,\basemeasure}$.
-\end{example}
+\input{examples/mean-polytope/vertices}
 
 While vertices are the minimal non-vanishing faces in the face-lattice (see \cite{ziegler_lectures_2013}), we now show that also the maximal face, namely the polytope itself, is representable with respect to the elementary hypergraph $\elgraph$.
 
-\begin{example}[Maximal face]
-    \label{exa:maximalFaceMeasure}
-    The maximal face $\facesymbolof{\varnothing}=\genmeanset$ coincides with the mean polytope itself and is given by the choice $\canparamofat{\varnothing}{\selvariable}=\zerosat{\selvariable}$.
-    In this case the corresponding activation tensor to the face measure is trivial, that is
-    \begin{align*}
-        \kcoreofat{\varnothing}{\headvariables}
-        = \onesat{\headvariables} \, .
-    \end{align*}
-    $\kcoreof{\varnothing}$ is elementary and the normalized face measure $\basemeasureof{\sstat,\varnothing}$ to the maximal face is in $\realizabledistsof{\sstat,\elgraph}$.
-\end{example}
+\input{examples/mean-polytope/maximal-face}
+
+\subsection{Representation in the $\cpformat$ format}
 
 
 Extending \exaref{exa:vertexMeasures}, we can provide a coarse estimation of the hypergraph $\graph$ required to decompose $\kcoreof{\facesymbol}$ for generic faces $\facesymbol$.
+To this end, we use the $\cpformat$ format describing tensor networks on the $\cpformat$ hypergraph
+\begin{align*}
+    \cpformat
+    = \big([\seldim]\cup\{\decvariable\},\{\{\selindex,\decvariable\}\wcols\selindexin\}\big) \, .
+\end{align*}
+The dimension of the variable $\decvariable$ is called the hidden rank of the format.
 
 \begin{lemma}
     \label{lem:CPfaceRepresentationBound} % Sharpened bound
     Any face $\facesymbol$ is representable by a $\cpformat$ graph with hidden rank
     \begin{align*}
-        r = \min\left(\cardof{\genfaceimset},\cardof{\genimset}-\cardof{\genfaceimset}+1\right) \, .
+        r
+        \leq \min\left(\cardof{\genfaceimset},\cardof{\genimset}-\cardof{\genfaceimset}+1\right) \, .
     \end{align*}
 \end{lemma}
 \begin{proof}
@@ -352,11 +332,11 @@ Extending \exaref{exa:vertexMeasures}, we can provide a coarse estimation of the
 
 \subsection{Examples of polytopes with elementary representable faces}
 
-We first show in the following example, that all faces of a hypercube are representable by elementary activation tensors.
+We show in the following example, that all faces of a hypercube and a simplex are representable by elementary activation tensors.
 
-\input{examples/mean-polytope/hypercube_faces}
+\input{examples/mean-polytope/hypercube-faces}
 
-\input{examples/mean-polytope/simplex_faces}
+\input{examples/mean-polytope/simplex-faces}
 
 \subsection{Partition into Relative Interiors of Faces}
 

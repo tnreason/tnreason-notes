@@ -2,7 +2,9 @@
     % See Example~3.9 in \cite{wainwright_graphical_2008}
     Consider the codeword polytope with the vertices
     \begin{align*}
-        \{\headindexof{[3]} \wcols \sum_{\catenumerator\in[3]} \headindexof{\catenumerator}=0 \}
+        \imset
+        =\left\{\headindexof{[3]} \wcols \sum_{\catenumerator\in[3]} \headindexof{\catenumerator} \mod 2=0 \right\}
+        = \left\{(0,0,0),\,(0,1,1),\,(1,0,1),\,(1,1,0)\right\}
     \end{align*}
     We interpret the vertices by the strings of length $3$, which parity vanishes.
     Such constrained are common in the construction of codewords using parity-check codes (see \cite{gallager_low-density_1963}).

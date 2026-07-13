@@ -1,27 +1,32 @@
 \begin{example}[Atomic formulas]
     \label{exa:atomicFormulasHypercube}
     %The assumption of \theref{the:sufficientHLNExpressivity} is satisfied in
-    Let us consider the case of atomic formulas. % where the formulas $\formulaof{\formulaset,\canparam}$ are the atoms.
+    Let us consider the case of atomic formulas $\formulaofat{\selindex}{\shortcatvariables}$ defined with the coordiantes at $\shortcatindicesin$ by
+    \begin{align*}
+        \formulaofat{\selindex}{\indexedshortcatvariables}
+        = \catindexof{\selindex} \, .
+    \end{align*}
     The mean polytope in this case is the $\catorder$-dimensional hypercube (see \exaref{exa:hypercubeFaces})
     \begin{align*}
-        \meansetof{\atomformulaset,\ones} = \fullparcube
+        \meansetof{\atomformulaset,\ones}
+        = \fullparcube
     \end{align*}
     which is called a simple polytope, since each vertex is contained in the minimal number of $\catorder$ facets.
     %Since the cube $\fullparcube$ is a face of itself, \theref{the:sufficientHLNExpressivity} implies $\hlnmeanset|_{\hlnsetof{\atomformulaset}}=\hlnmeanset$.
 
-    The faces of a hypercube are enumerated in the following way.
     Each face is characterized by the projections onto each variable, which is either $\{0\}$, $\{1\}$ or $[0,1]$.
     The projections are represented by the tuple $\hardparam$ defined in the following way:
     \begin{itemize}
         \item We define the set $\hardlegset\subset[\atomorder]$ of variables, such that the projection onto the variable is $\{0\}$ or $\{1\}$
         \item We define to each $\selindex\in\hardlegset$ an index $\headindexof{\selindex}=0$ if the projection is $\{0\}$ and $\headindexof{\selindex}=1$ if the projection is $\{1\}$.
     \end{itemize}
-    Trivially, each face of the hypercube is a cube face and $\elmeansetof{\atomformulaset}=\meansetof{\atomformulaset}$.
+    Trivially, each face of the hypercube is a cube face. %$\elmeansetof{\atomformulaset}=\meansetof{\atomformulaset}$.
 
     % Extension: Discussion of those statistics having the hypercube as mean polytope
     More general, the mean polytope to a collection $\formulaofat{\selindex}{\shortcatvariables}$ of propositional formulas is the hypercube, if and only if for any boolean vector $\imelementwith$ we have
     \begin{align*}
-        \contraction{\bigwedge_{\selindexin}\lnot^{1-\imelementat{\indexedselvariable}}\formulaofat{\selindex}{\shortcatvariables}} = 0 \, .
+        \contraction{\bigwedge_{\selindexin}\lnot^{1-\imelementat{\indexedselvariable}}\formulaofat{\selindex}{\shortcatvariables}}
+        \neq 0 \, .
     \end{align*}
     This means that no conjunction of possibly negated formulas from this statistic entails nor contradicts another formula.
 

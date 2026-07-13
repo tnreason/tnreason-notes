@@ -1,0 +1,37 @@
+\begin{example}[Minterm formulas build simplices]
+    \label{exa:mintermHLNSet}
+    The set of minterm formulas is indexed by $\imelementwith\in\{0,1\}^{\seldim}$ and given by
+    \begin{align*}
+        \formulaofat{\imelement}{\shortcatvariables}
+        = \bigwedge_{\selindex\in[\catorder]} \lnot^{1-\imelementat{\indexedshortcatvariables}} \, \catvariableof{\selindex}
+        = \onehotmapofat{\imelementwith}{\shortcatvariables}
+    \end{align*}
+    where by $\catvariableof{\selindex}$ we denote the $\selindex$-th atomic formula (see \exaref{exa:atomicFormulasHypercube}).
+    The mean polytope to the minterm statistic and base measure $\basemeasure$ is the standard simplex of dimension
+    \begin{align*}
+        \cardof{\left\{\imelementwith\wcols\imelement\in\{0,1\}^{\seldim}\ncond\basemeasureat{\shortcatvariables=\imelementwith}\neq 0\right\}}-1 \, ,
+    \end{align*}
+    that is the set
+    \begin{align*}
+        \meansetof{\mintermformulaset,\basemeasure}
+        = \convhullof{\onehotmapofat{\imelementwith}{\headvariables}\wcols\imelement\in\{0,1\}^{\seldim}\ncond\basemeasureat{\shortcatvariables=\imelementwith}\neq 0} \, .
+    \end{align*}
+    We notice that for boolean base measures $\meansetof{\mintermformulaset,\basemeasure}=\realizabledistsof{\basemeasure}$.
+    % Cube like
+    The simplex is further cube-like, since each face is indexed by a subset $\arbset\subset\{0,1\}^{\seldim}$ of vertices and the intersection of the simplex with the cube face
+    $\facesymbolof{(\{0,1\}^p\backslash\arbset,\onetuple{\{0,1\}^p\backslash\arbset})}$.
+
+    %of is the intersection of $\hlnsetof{\mintermformulaset}$ with the cube face $\facesymbolof{\hardparam}$.
+
+%    In this case, $\hlnsetof{\mintermformulaset}$ contains any distribution and therefore trivially realizes any mean parameter in $\meansetof{\mintermformulaset,\ones}$.
+
+%    The faces of the standard simplex are itself standard simplices to base measures $\secbasemeasure$ with $\secbasemeasure\prec\basemeasure$.
+%    We store them by the tuple $\hardparam$, where $\hardlegset$ is the support of $\secbasemeasure$ and $\headindexof{\selindex}=0$ for $\selindex\in\hardlegset$.
+
+
+    % 
+    More general the mean polytope to a boolean statistic is a standard simplex, if and only if each target coordinate restriction $\formulaof{\secselindex}$ contradicts all others, that is
+    \begin{align*}
+        \uniquantwrtof{\selindex\neq\secselindex\in[\seldim]}{\formulaof{\selindex}\models\lnot\formulaof{\secselindex}} \, .
+    \end{align*}
+\end{example}
