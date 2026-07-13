@@ -42,7 +42,7 @@ Maximum entropy principles appear further in reinforcement learning \cite{yoon_m
 \subsection{Tensor Notation}
 
 %% Tensors
-We introduce tensors based on index variables $\catvariableof{\catenumerator}$ to each of the $\catenumeratorin=\{0,\ldots,\catorder-1\}$ axes, each taking values in $[\catdimof{\catenumerator}]\coloneqq\{0,\ldots,\catorder-1\}$, where $\catdimof{\catenumerator}\in\nn$ is the dimension of the variable.
+We introduce tensors based on index variables $\catvariableof{\catenumerator}$ to each of the $\catenumeratorin=\{0,\ldots,\catorder-1\}$ axes, each taking values in $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$, where $\catdimof{\catenumerator}\in\nn$ is the dimension of the variable.
 Tensors are then maps
 \begin{align*}
     \hypercorewith \defcols \facstates \rightarrow \rr
@@ -79,12 +79,12 @@ We denote the set of such distributions by
 Note that we here restrict the support of the tensor $\probwith$ to be included in the support of the base measure, to avoid ambiguity in the representation.
 
 %% Entropy
-The entropy of a distribution is
+The entropy of a distribution relative to the base measure $\basemeasure$ is
 \begin{align*}
     \sentropyofwrt{\probwith}{\basemeasure}
     = -\contraction{\probwith,\lnof{\probwith},\basemeasurewith} \, .
 \end{align*}
-Note that the entropy depends on the chosen base measure.
+Note that this quantity depends on the chosen base measure.
 
 %% Mean parameters
 The mean parameter of a distribution $\probwith$ to a statistic $\sstat:\facstates\rightarrow\selstates$ is the vector $\meanparamwith\in\rr^\seldim$ with the coordinates

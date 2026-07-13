@@ -55,16 +55,16 @@ We treat these maps as tensors with in a variable $\headvariableof{\selindex}$ w
     \begin{align*}
         \expdistat{\shortcatvariables}
         = \frac{
-            \contractionof{\{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}\cup\{\softactlegwith \wcols \selindexin\}}{\shortcatvariables}
+            \contractionof{\{\bencsstatwith\}\cup\{\softactlegwith \wcols \selindexin\}}{\shortcatvariables}
         }{
-            \contraction{\{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}\cup\{\softactlegwith \wcols \selindexin\}\cup\{\basemeasurewith\}}
+            \contraction{\{\bencsstatwith\}\cup\{\softactlegwith \wcols \selindexin\}\cup\{\basemeasurewith\}}
         } \, .
     \end{align*}
 \end{theorem}
 \begin{proof} %% SHORTENED THE PROOF IN THE REPORT
     For each $\shortcatindicesin$ we have
     \begin{align*}
-        &\contractionof{\{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}\cup\{\softactlegwith \wcols \selindexin\}}{\indexedshortcatvariables} \\
+        &\contractionof{\{\bencsstatwith\}\cup\{\softactlegwith \wcols \selindexin\}}{\indexedshortcatvariables} \\
         &\quad = \prod_{\selindexin} \contraction{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\indexedshortcatvariables},\softactlegwith} \\
         &\quad = \prod_{\selindexin} \expof{\canparamat{\indexedselvariable}\cdot\indexinterpretationofat{\selindex}{\sstatcoordinateofat{\selindex}{\shortcatindices}}} \\
         &\quad = \expof{\sum_{\selindexin}\canparamat{\indexedselvariable}\cdot\indexinterpretationofat{\selindex}{\sstatcoordinateofat{\selindex}{\shortcatindices}}} \\
@@ -72,7 +72,7 @@ We treat these maps as tensors with in a variable $\headvariableof{\selindex}$ w
     \end{align*}
     Therefore we have
     \begin{align*}
-        \contractionof{\{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\shortcatvariables} \wcols \selindexin\}\cup\{\softactlegwith \wcols \selindexin\}}{\shortcatvariables}
+        \contractionof{\{\bencsstatwith\}\cup\{\softactlegwith \wcols \selindexin\}}{\shortcatvariables}
         = \expof{\contractionof{\sencsstatat{\shortcatvariables,\selvariable},\canparamwith}{\shortcatvariables}} \, .
     \end{align*}
     The claim follows, since this implies that also the contraction of both sides with $\basemeasurewith$ is equivalent.
@@ -80,7 +80,7 @@ We treat these maps as tensors with in a variable $\headvariableof{\selindex}$ w
 
 \begin{figure}[t]
     \begin{center}
-        \input{tikz/exp-family/unused_expdist_unary_realizable}
+        \input{tikz/exp-family/expdist_unary_realizable}
     \end{center}
     \caption{Representation of a member in an exponential family by a \ComputationActivationNetwork{} with elementary activation.
     Here $\partitionfunction\in\rr$ is a normalization constant.}\label{fig:expdistUnaryRealizable}
@@ -114,12 +114,14 @@ Based on this property we define the forward and backward mappings to an exponen
     \end{align*}
     defined as
     \begin{align*}
-        \uniquantwrtof{\selindexin}{
-            \forwardmapofat{\canparam}{\indexedselvariable}
-            = \contraction{\expdistofat{\sstat,\canparam,\basemeasure}{\shortcatvariables},\sstatcoordinateofat{\selindex}{\shortcatvariables},\basemeasurewith}
-        }
+        \forwardmapof{\canparam} 
+        = \contractionof{\expdistofat{\sstat,\canparam,\basemeasure}{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}
+%        \uniquantwrtof{\selindexin}{
+%            \forwardmapofat{\canparam}{\indexedselvariable}
+%            = \contraction{\expdistofat{\sstat,\canparam,\basemeasure}{\shortcatvariables},\sstatcoordinateofat{\selindex}{\shortcatvariables},\basemeasurewith}
+%        }
     \end{align*}
-    Any map $\backwardmap: \sbinteriorof{\genmeanset}\rightarrow \parspace$ with $\backwardmap\circ\forwardmap=\mathrm{Id}$ is called a backward map.
+    Any map $\backwardmap: \sbinteriorof{\genmeanset}\rightarrow \parspace$ with $\forwardmapof{\backwardmapof{\meanparam}}=\meanparam$ for all $\meanparam\in\sbinteriorof{\genmeanset}$ is called a backward map.
 \end{definition}
 
 \subsection{Maximum entropy distributions}

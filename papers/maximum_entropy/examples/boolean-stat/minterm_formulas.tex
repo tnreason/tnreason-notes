@@ -1,5 +1,8 @@
 \begin{example}[Minterm formulas]
     \label{exa:mintermHLNSet}
+
+    %% x -> v
+
     The set of minterm formulas is indexed by $\shortcatindicesin$ and given by
     \begin{align*}
         \formulaofat{\shortcatindices}{\shortcatvariables} = \bigwedge_{\selindex\in[\catorder]} \lnot^{1-\catindexof{\selindex}} \formulaofat{\selindex}{\shortcatvariables}
@@ -8,9 +11,9 @@
     where by $\formulaofat{\selindex}{\shortcatvariables}$ we denote the $\selindex$-th atomic formula (see \exaref{exa:atomicFormulasHypercube}).
     The mean polytope is in the case of the minterm statistic (also referred to as universal statistic) and a boolean base measure $\basemeasure$ the standard simplex of dimension
     \begin{align*}
-        \cardof{\shortcatindicesin \wcols \basemeasureat{\indexedshortcatvariables}\neq 0}-1 \, ,
+        \cardof{\left\{\shortcatindicesin \wcols \basemeasureat{\indexedshortcatvariables}\neq 0\right\}}-1 \, ,
     \end{align*}
-    that is the set
+    that is the set \red{did not introduce EL notation?}
     \begin{align*}
         \elmeansetof{\mintermformulaset,\basemeasure}
         = \convhullof{\onehotmapofat{\shortcatindices}{\headvariables}\wcols\shortcatindicesin\ncond\basemeasureat{\indexedshortcatvariables}\neq 0} \, .

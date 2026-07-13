@@ -376,8 +376,9 @@ Let us now introduce relative interiors, which enables us to find disjoint parti
 \end{lemma}
 \begin{proof}
     For any $\meanparam\in\genmeanset$ we find a face such that $\meanparam\in\facesymbol$.
-    If $\meanparam\notin\sbinteriorof{\facesymbol}$, then there is a face $\facesymbolof{\tilde{\facesymbol}}\subset\facesymbol$ of smaller affine dimension such that $\meanparam\in\facesymbol$.
-    When continuing this process we reach a face such that $\meanparam\notin\sbinteriorof{\facesymbol}$, since the faces with affine dimension $0$ are vertices and they coincide with their relative interior because they contain a single vector.
+    If $\meanparam\notin\sbinteriorof{\facesymbol}$, then there is a face ${\tilde{\facesymbol}}\subset\facesymbol$ of smaller affine dimension such that $\meanparam\in\tilde{\facesymbol}$.
+    We then redo the above argument for $\facesymbol=\tilde{\facesymbol}$ until we arrive at a face with $\meanparam\in\sbinteriorof{\facesymbol}$.
+    We always reach such a face such a face, since the affine dimension of the faces is decreasing and lower bounded by $0$, and the faces of affine dimension $0$ are vertices for which $\facesymbol=\sbinteriorof{\facesymbol}$.
 \end{proof}
 
 \begin{definition}

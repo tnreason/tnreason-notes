@@ -8,19 +8,19 @@
     \begin{align*}
         \meansetof{\{\formulaof{\selindex}\wcols\selindexin\},\trivbm} = \fullparcube \, .
     \end{align*}
-    The non-empty faces in the face lattice $\facelatticeof{\fullparcube}$ can be enumerated by subsets $\variableset\subset[\seldim]$ and indices $\headindexof{\variableset}\in\bigtimes_{\selindex\in\variableset}[2]$ and represented by the cartesian products
+    The non-empty faces in the face lattice $\facelatticeof{\fullparcube}$ can be enumerated by subsets $\arbset\subset[\seldim]$ and indices $\headindexof{\arbset}\in\bigtimes_{\selindex\in\arbset}[2]$ and represented by the cartesian products
     \begin{align*}
-        % \facesetofspec{(\variableset,\headindexof{\variableset})}{} %{\{\formulaof{\selindex}\wcols\selindexin\},\trivbm}
-        \facesymbolof{(\variableset,\headindexof{\variableset})}
-        = \bigtimes_{\selindexin} \mathcal{I}^{l,(\variableset,\headindexof{\variableset})}
+        % \facesetofspec{(\arbset,\headindexof{\arbset})}{} %{\{\formulaof{\selindex}\wcols\selindexin\},\trivbm}
+        \facesymbolof{(\arbset,\headindexof{\arbset})}
+        = \bigtimes_{\selindexin} \mathcal{I}^{l,(\arbset,\headindexof{\arbset})}
     \end{align*}
     where
     \begin{align*}
-        \mathcal{I}^{l,(\variableset,\headindexof{\variableset})}
+        \mathcal{I}^{l,(\arbset,\headindexof{\arbset})}
         = \begin{cases}
         [0,1]
-              & \ifspace \selindex\notin\variableset \\
-              \{\headindexof{\selindex}\}& \ifspace \selindex\in\variableset
+              & \ifspace \selindex\notin\arbset \\
+              \{\headindexof{\selindex}\}& \ifspace \selindex\in\arbset
         \end{cases} \, .
     \end{align*}
     Each of these faces can be represented with respect to the elementary graph $\elgraph$, namely by the tensor product of leg vectors
@@ -28,8 +28,8 @@
         %\actcoreofat{\selindex}{\headvariableof{\selindex}}
         \hardactlegwith
         = \begin{cases}
-              \onesat{\headvariableof{\selindex}} & \ifspace \selindex\notin\variableset \\
-              \onehotmapofat{\headindexof{\selindex}}{\headvariableof{\selindex}}& \ifspace \selindex\in\variableset
+              \onesat{\headvariableof{\selindex}} & \ifspace \selindex\notin\arbset \\
+              \onehotmapofat{\headindexof{\selindex}}{\headvariableof{\selindex}}& \ifspace \selindex\in\arbset
         \end{cases} \, .
     \end{align*}
     %\red{This will later be interpreted by propositional logics as the example of atomic formulas.}
