@@ -8,35 +8,37 @@ By Shannons source code theorem \cite{shannon_mathematical_1948}, entropy descri
 %% Maximum entropy in physics
 In statistical physics, founded on the ergodic assumptions, maximum entropy distributions such as Maxwell-Boltzmann distributions are the gold standard to model equilibrium distributions.
 
-
 %% Max entropy in machine learning
 The principle of entropy maximization also appears naturally in learning problems.
 Extracting characteristics observed in data does not determine an estimated model yet.
 Choosing the distribution with the least structure among those reflecting the observed characteristics is a regularization principle.
 Here one can choose the Shannon entropy to quantify the negative amount of structure in the distribution and maximize the quantity with respect to the constraints.
 %% Duality to maximum likelihood
-Furthermore, maximum entropy problems are the dual problems to convex maximum likelihood problems \cite{koller_probabilistic_2009}.
-
-%% Combining logical and probabilistic models
-Less obvious, studying generalizing maximum entropy distributions might be a key step towards a mathematically sound unification of logical and probabilistic models.
-Combining logical and probabilistic AI is a necessity in statistical relational AI, neuro-symbolic AI and explainable AI.
-% Differing in support
-Probability theory with exponential families typically focuses on distributions with maximal support.
-Logics on the contrary can be understood as a study of the support of models, marking the worlds consistent with a knowledge base.
-% Tensor formalism
-Logical and probabilistic models can be treated in the tensor network formalism, which thus serves as a unifying representation language \cite{goessmann_tensor_2026}.
-
+These maximum entropy problems are the dual problems to convex maximum likelihood problems \cite{koller_probabilistic_2009}.
 % Current AI research (by Gemini)
 Maximum entropy principles appear further in reinforcement learning \cite{yoon_maximum_2024,song_survey_2025}, AGI \cite{miotto_new_2025} and Bayesian NN \cite{rathnakumar_bayesian_2026}. %interferometric data \cite{mus_new-generation_2024}
 
 
 
-%\textbf{Maximum Entropy in Learning:}
-%Consider a learning problem where we want to estimate a model based on observed data.
-%The maximum entropy problem principle approaches this problem by designing statistics of the data, which means shall be reproduced in the model, and choosing the model reproducing the means of the statistic with least structure.
-%The entropy of a distribution quantifies the degree of structureless in a distribution and is therefore maximized to solve the learning task.
+%% Closure of Exp Families
+A classical result states that maximum entropy distributions are in exponential families, if and only if the corresponding mean parameter is in the relative interior of the mean polytope \cite{barndorff-nielsen_information_1978}.
+A natural extension is therefore the closure of the exponential families \cite{csiszar_closures_2005}.
+Alternative methods use toric ideals to allow for infinite weight vectors \cite{sottile_toric_2008}.
+Numerical stability of the maximum entropy distributions near the boundary is studied in \cite{straszak_computing_2017,straszak_maximum_2019}.
+
+%% TENSOR NETWORKS HERE
+We in this work derive general maximum entropy distributions in tensor network decompositions based on the framework presented in \cite{goessmann_tensor-network_2025g,oessmann_tensor_2026}.
 
 
+%% Combining logical and probabilistic models
+Less obvious, studying general maximum entropy distributions might be a key step towards a mathematically sound unification of logical and probabilistic models.
+Combining logical and probabilistic AI is a necessity in statistical relational AI, neuro-symbolic AI and explainable AI.
+% Differing in support
+Probability theory with exponential families typically focuses on distributions with maximal support. % Hammersley clifford here?
+Logics on the contrary can be understood as a study of the support of models, marking the worlds consistent with a knowledge base.
+% Tensor formalism
+Logical and probabilistic models can be treated in the tensor network formalism, which thus serves as a unifying representation language \cite{goessmann_tensor_2026}.
+%\subsection{Related works}
 
 
 \subsection{Tensor Notation}
@@ -87,15 +89,21 @@ The entropy of a distribution relative to the base measure $\basemeasure$ is
 Note that this quantity depends on the chosen base measure.
 
 %% Mean parameters
-The mean parameter of a distribution $\probwith$ to a statistic $\sstat:\facstates\rightarrow\selstates$ is the vector $\meanparamwith\in\rr^\seldim$ with the coordinates
+The mean parameter of a distribution $\probwith$ to a statistic $\sstat:\facstates\rightarrow\rr^\seldim$ is the vector $\meanparamwith\in\rr^\seldim$ with the coordinates
 \begin{align*}
     \meanparamat{\indexedselvariable}
     = \expectationof{\enumformula}
-    = \contraction{\enumformulaat{\shortcatvariables},\probwith,\basemeasurewith} \, .
+    = \contraction{\sstatcoordinateofat{\selindex}{\shortcatvariables},\probwith,\basemeasurewith} \, .
 \end{align*}
-We express the computation of the mean parameter in the contraction of the selection encoding $\sencsstatwith$ of $\sstat$
+To express the computation of the mean parameter by a single contraction we introduce a coordinate selection variable $\selvariable$ of dimension $\seldim$ and the selection encoding $\sencsstatwith$ with coordinates by
 \begin{align*}
-    \meanparamwith = \contractionof{\probwith,\sencsstatwith}{\selvariable} \, .
+    \sencsstatat{\indexedshortcatvariables,\indexedselvariable}
+    = \sstatcoordinateofat{\selindex}{\indexedshortcatvariables} \, .
+\end{align*}
+The mean parameter is then
+\begin{align*}
+    \meanparamwith
+    = \contractionof{\probwith,\sencsstatwith}{\selvariable} \, .
 \end{align*}
 
 %% Maximum entropy problem
@@ -112,13 +120,20 @@ The maximum entropy problem given a mean parameter $\genmeanwith$ is stated by
 
 We now introduce with \ComputationActivationNetworks{} families of tensor networks representing, as we will show in this work, the solution of any instance of \problemref{prob:maxEntropy}.
 %% Basis encodings
-Given a statistic $\sstat:\facstates\rightarrow\selstates$ we define its basis encoding tensor
+Given a statistic $\sstat:\facstates\rightarrow\rr^{\seldim}$ we define an index enumeration variable $\headvariableof{\selindex}$ of dimension $\cardof{\imageof{\sstatcoordinateof{\selindex}}}$ and injective index enumeration vectors
+\begin{align*}
+    \indexinterpretationofat{\selindex}{\headvariableof{\selindex}} \wcols [\headdimof{\selindex}] \rightarrow \rr \, .
+\end{align*}
+Based on the enumeration of the image we define the basis encoding tensor of the statistic as
 \begin{align*}
     \sstatccwith
-    = \sum_{\shortcatindicesin} \onehotmapofat{\sstat(\shortcatindices)}{\headvariables} \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
+    = \sum_{\shortcatindicesin}
+    \left(\bigotimes_{\selindexin}
+    \onehotmapofat{\invindexinterpretationofat{\selindex}{\sstatcoordinateofat{\selindex}{\shortcatindices}}}{\headvariableof{\selindex}}\right)
+    \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
 \end{align*}
 A computation network is any representation of $\sstatccwith$ as a tensor network.
-These can be constructed in the case statistics being a composition of connective functions.
+These can be constructed in the case statistics being a composition of connective functions, see \cite{goessmann_tensor_2026}.
 
 %% Computation-Activation Networks
 An activation tensor is $\hypercoreat{\headvariables}$ and the corresponding \ComputationActivationNetwork{} with respect to the statistic $\sstat$ and the base measure $\basemeasurewith$ the tensor
@@ -143,49 +158,14 @@ We are interested in decomposition formats of $\hypercoreat{\headvariables}$, wh
     \end{align*}
 \end{definition}
 
-\subsection{Outlook}
+\subsection{Contributions}
+
+We exploit the novel tensor network formalism developed in \cite{goessmann_tensor_2026} to represent generic maximum entropy distributions based on the position of their mean parameters in the mean polytope, see \theref{the:MAINgenMaxEntChar}.
+The connection to logical formalisms of artificial intelligence is exploited in the study of boolean statistics, where we interpret mean polytopes based on satisfiability of formulas (see \theref{the:boolVecSat}) and construct statistics to arbitrary polytopes (see \theref{the:boolStatToPolytope}).
+
+\subsection{Structure of the paper}
 
 To prepare for the presentation of our main results we introduce in section \secref{sec:meanPolytope} the mean polytope, its faces, and their tensor network representations.
 In \secref{sec:expFamily} we study exponential families as classes of elementary \ComputationActivationNetworks{} and show that they are the maximum entropy distributions to mean parameters in the relative interior of the mean polytope.
 This result is generalized in \secref{sec:genMaxEnt} where we characterize generic maximum entropy distributions based on \ComputationActivationNetworks{}.
 In \secref{sec:booleanStat} we investigate consequences of these results in case of boolean statistics and connect them to propositional logics.
-
-%\begin{itemize}
-%%    \item \ComputationActivationNetworks{}: A tensor network architecture, which will be used to represent maximum entropy distributions -> Already before
-%    \item Mean polytopes: Polytopes, which contain all realizable mean parameter vectors.
-%    \item Exponential families: Maximum entropy distributions in the interior
-%\end{itemize}
-
-
-%\subsection{Contributions}
-%
-%We in this paper provide tensor network representations
-%\begin{itemize}
-%%    \item Representation of any distribution with a sufficient statistics: Generic activation tensors.
-%    \item Representation of distributions with maximum entropy, in case of positive realizability: Elementary activation tensors
-%    \item Representation of generic maximum entropy distributions: CP activation tensors.
-%\end{itemize}
-
-%Now, we want to characterize the CP rank of the activation tensors
-%\begin{itemize}
-%    \item Depends on the face of the mean polytope, which contains the mean parameter
-%    \item We have thus a well-defined "CP rank" of faces
-%    \item Largest faces and vertices have always CP rank of 1, intermediate faces can have larger CP rank
-%\end{itemize}
-
-%For boolean statistics we further provide insights for boolean statistics (see Chapter~8.5):
-%\begin{itemize}
-%    \item Example of independent statistics (see Exa.~8.28): Always elementary activation tensors (hypercubes)
-%    \item Example of partition statistics (see Exa.~8.30):
-%    \item Generic criterion for elementary activation: "Cube-like" polytopes (see Def.~8.29)
-%\end{itemize}
-
-%\subsection{Outlook}
-%
-%To prepare for the presentation of our main results we introduce
-%\begin{itemize}
-%    \item \ComputationActivationNetworks{}: A tensor network architecture, which will be used to represent maximum entropy distributions -> Already before
-%    \item Mean polytopes: Polytopes, which contain all realizable mean parameter vectors.
-%    \item Exponential families: Maximum entropy distributions in the interior
-%\end{itemize}
-%We will then show, that dependent on the position of the mean parameter in the mean polytope, we can characterize the corresponding maximum entropy distribution by a \ComputationActivationNetwork{}.

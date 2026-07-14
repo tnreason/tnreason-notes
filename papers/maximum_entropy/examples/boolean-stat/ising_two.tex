@@ -13,11 +13,18 @@
     \begin{align*}
         \hlnstatat{\catindexof{0},\catindexof{1}} = [\formulaofat{0}{\indexedcatvariableof{[2]}},\formulaofat{1}{\indexedcatvariableof{[2]}},\formulaofat{2}{\indexedcatvariableof{[2]}}]^T =
         \begin{cases}
-        [0,0,0]
-            ^T & \ifspace (\catindexof{0},\catindexof{1}) = (0,0) \\
-            [0,1,0]^T & \ifspace (\catindexof{0},\catindexof{1}) = (0,1) \\
-            [1,0,0]^T & \ifspace (\catindexof{0},\catindexof{1}) = (1,0) \\
-            [1,1,1]^T & \ifspace (\catindexof{0},\catindexof{1}) = (1,1)
+            \begin{pmatrix}
+                        0 & 0 & 0
+            \end{pmatrix}& \ifspace (\catindexof{0},\catindexof{1}) = (0,0) \\
+            \begin{pmatrix}
+                        0 & 1 & 0
+            \end{pmatrix}& \ifspace (\catindexof{0},\catindexof{1}) = (0,1) \\
+            \begin{pmatrix}
+                        1 & 0 & 0
+            \end{pmatrix} & \ifspace (\catindexof{0},\catindexof{1}) = (1,0) \\
+            \begin{pmatrix}
+                        1 & 1 & 1
+            \end{pmatrix} & \ifspace (\catindexof{0},\catindexof{1}) = (1,1)
         \end{cases}
     \end{align*}
     and the mean polytope is the convex hull of these, sketched as:

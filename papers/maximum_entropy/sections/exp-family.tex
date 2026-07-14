@@ -5,7 +5,9 @@ However, not any maximum entropy distribution is an exponential family member.
 To prepare for the characterization of generic maximum entropy distributions, we will in this section represent exponential family members as \ComputationActivationNetwork{}s.
 We further show that a maximum entropy distribution is a exponential family member, if and only if its mean parameter is in the relative interior of the mean polytope.
 
-\subsection{Exponential Families}
+\subsection{Representation as elementary \ComputationActivationNetworks{}}
+
+Let us first define exponential families as classes of probability distributions and then derive their representation by elementary \ComputationActivationNetworks{}.
 
 \begin{definition}[Exponential Family]
     \label{def:expFamily}
@@ -15,7 +17,7 @@ We further show that a maximum entropy distribution is a exponential family memb
     \end{align*}
     and a base measure
     \begin{align*}
-        \basemeasure \defcols \facstates \rightarrow \rr^+_0
+        \basemeasure \defcols \facstates \rightarrow [0,\infty)
     \end{align*}
     with $\contraction{\basemeasure}\neq0$, the set $\expfamily=\{\expdist\wcols\canparamwithin\}\subset\distmeasuredby{\basemeasure}$ of probability distributions
     \begin{align*}
@@ -29,15 +31,16 @@ We further show that a maximum entropy distribution is a exponential family memb
     is called the exponential family to $\sstat$.
 \end{definition}
 
-To present a tensor network representation, we introduce image interpretation maps
-\begin{align*}
-    \indexinterpretationof{\selindex} \defcols
-    [\cardof{\imageof{\sstatcoordinateof{\selindex}}}] \rightarrow \imageof{\sstatcoordinateof{\selindex}} \, ,
-\end{align*}
-which enumerate the possible values of each feature.
-We treat these maps as tensors with in a variable $\headvariableof{\selindex}$ with values in $[\cardof{\imageof{\sstatcoordinateof{\selindex}}}]$.
+%% Already in the introduction!
+%To present a tensor network representation, we introduce image interpretation maps
+%\begin{align*}
+%    \indexinterpretationof{\selindex} \defcols
+%    [\cardof{\imageof{\sstatcoordinateof{\selindex}}}] \rightarrow \imageof{\sstatcoordinateof{\selindex}} \, ,
+%\end{align*}
+%which enumerate the possible values of each feature.
+%We treat these maps as tensors with in a variable $\headvariableof{\selindex}$ with values in $[\cardof{\imageof{\sstatcoordinateof{\selindex}}}]$.
 
-\subsection{Representation as elementary \ComputationActivationNetworks{}}
+
 
 \begin{theorem}[Exponential Families are elementary \ComputationActivationNetworks{}]
     \label{the:expFamilyTensorRep}
