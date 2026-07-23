@@ -22,12 +22,12 @@ Maximum entropy principles appear further in reinforcement learning \cite{yoon_m
 
 %% Closure of Exp Families
 A classical result states that maximum entropy distributions are in exponential families, if and only if the corresponding mean parameter is in the relative interior of the mean polytope \cite{barndorff-nielsen_information_1978}.
-A natural extension is therefore the closure of the exponential families \cite{csiszar_closures_2005}.
+A natural extension is therefore the closure of the exponential families as investigated in \cite{csiszar_closures_2005,malago_note_2010}.
 Alternative methods use toric ideals to allow for infinite weight vectors \cite{sottile_toric_2008}.
 Numerical stability of the maximum entropy distributions near the boundary is studied in \cite{straszak_computing_2017,straszak_maximum_2019}.
 
 %% TENSOR NETWORKS HERE
-We in this work derive general maximum entropy distributions in tensor network decompositions based on the framework presented in \cite{goessmann_tensor-network_2025g,oessmann_tensor_2026}.
+We in this work derive tensor network representations of all discrete maximum entropy distributions, based on the framework presented in \cite{goessmann_tensor-network_2025,goessmann_tensor_2026}.
 
 
 %% Combining logical and probabilistic models
@@ -149,7 +149,7 @@ An activation tensor is $\hypercoreat{\headvariables}$ and the corresponding \Co
 We are interested in decomposition formats of $\hypercoreat{\headvariables}$, where we use sets of tensor networks $\tnsetof{\graph}$ on a hypergraph $\graph$.
 
 \begin{definition}
-    The family of by $\sstat$ and a $\graph$ computable distributions are
+    The \ComputationActivationNetworks{} to a statistic $\sstat$ and a hypergraph $\graph$ is the family
     \begin{align*}
         \realizabledistsof{\sstat,\graph,\basemeasure}
         = \left\{
@@ -157,6 +157,8 @@ We are interested in decomposition formats of $\hypercoreat{\headvariables}$, wh
               \wcols \hypercoreat{\headvariables} \in \tnsetof{\graph} \right\} \, .
     \end{align*}
 \end{definition}
+
+%% EL Graph here?
 
 \subsection{Contributions}
 

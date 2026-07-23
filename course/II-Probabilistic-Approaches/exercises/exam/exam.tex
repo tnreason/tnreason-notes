@@ -1,0 +1,340 @@
+\documentclass[answers,12pt]{exam}
+\input{../../../spec_files/exercise_preamble}
+
+\usepackage{amssymb} % Required for square symbols
+
+\usepackage{pifont}
+
+\newcommand{\defaultcirclewithcross}{%
+    \mbox{% Wrap in an mbox to isolate spacing from the matrix
+        \ooalign{%
+            $\bigcirc$\cr
+            \hidewidth\raisebox{-0.5ex}{\Large\ding{55}}\hidewidth\cr
+        }%
+    }%
+}
+\checkedchar{\defaultcirclewithcross}
+\CorrectChoiceEmphasis{}
+
+\begin{document}
+
+    \begin{center}
+        \fbox{\fbox{\parbox{5.5in}{\centering
+        Exam on Foundations of Neuro-Symbolic AI \\
+        July 20, 2026 \\
+        Alex Goeßmann}}}
+    \end{center}
+
+    \vspace{5mm}
+    \makebox[0.75\textwidth]{Name:\enspace\hrulefill}
+
+    \vspace{5mm}
+    \makebox[0.75\textwidth]{Matrikel number:\enspace\hrulefill}
+
+    \begin{tcolorbox}[colback=white, colframe=black, boxrule=0.8pt]
+        \begin{center}
+            {\textbf{Grading policy}}
+        \end{center}
+        Choose the right answers to the questions.
+        There is at least one right answer to each question, and some questions have multiple right answers.
+        \begin{itemize}
+            \item For each right answer you will get one point.
+            \item For each wrong answer you will lose one point.
+            \item Each question will be graded with at least $0$ points.
+        \end{itemize}
+        You are allowed to bring one handwritten A4 sheet (both pages).
+    \end{tcolorbox}
+
+    \begin{questions}
+
+        \question Let us consider the propositional formula:
+        \stantikzpic{
+            \drawtextnode{-7}{0}{$\formulaat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}\,=$}
+            \drawtextnode{0}{0}{$\begin{pmatrix}
+                                     1 & 1 \\ 0 & 1
+            \end{pmatrix}$}
+            \drawtextnode{4}{1}{$\begin{pmatrix}
+                                     0 & 0 \\ 0 & 0
+            \end{pmatrix}$}
+            \drawtextnode{10}{0}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]$}
+        }
+        How many coordinates does this formula have? \\
+        \begin{oneparcheckboxes}
+            \choice 4
+            \choice 16
+            \correctchoice 8
+            \choice 3
+        \end{oneparcheckboxes}\\
+        What is the order of this formula? \\
+        \begin{oneparcheckboxes}
+            \correctchoice 3
+            \choice 8
+            \choice 2
+            \choice 16
+        \end{oneparcheckboxes}
+
+        \question
+        How many coordinates does a tensor of order $3$ and leg dimensions $\catdimof{0},\catdimof{1},\catdimof{2}$ have? \\
+        \begin{oneparcheckboxes}
+            \choice $\catdimof{0}\cdot\catdimof{2}+\catdimof{1}\cdot\catdimof{2}$
+            \choice $(\catdimof{0}\cdot\catdimof{1}\cdot\catdimof{2})^{\catdimof{0}+\catdimof{1}+\catdimof{2}}$
+            \correctchoice $\catdimof{0}\cdot\catdimof{1}\cdot\catdimof{2}$
+            \choice $\catdimof{0}+\catdimof{1}+\catdimof{2}$
+        \end{oneparcheckboxes}
+
+        \question
+        Which of these is a syntactical representation of the formula in question 1? \\
+        \begin{oneparcheckboxes}
+            \choice $\catvariableof{0}\Rightarrow \catvariableof{1}$
+            \choice $\catvariableof{0}\Leftrightarrow (\catvariableof{1}\lor\catvariableof{2})$
+            \choice $\catvariableof{2}\Rightarrow\catvariableof{1}$
+            \correctchoice $(\catvariableof{0}\Rightarrow\catvariableof{1})\land(\lnot\catvariableof{2})$
+        \end{oneparcheckboxes}
+
+        \newpage
+
+        \question
+        Consider the tensor networks:
+        \stantikzpic{
+            \drawtextnode{-2}{12}{$a)$}
+
+            \drawtensorblock{0}{2}{3}{$\bencodingof{\lor}$}
+            \drawtdwire{-2}{1}{ $\catvariableof{0}$}
+            \drawtdwire{2}{1}{ $\catvariableof{1}$}
+
+            \drawtensorblock{8}{2}{3}{$\bencodingof{\lor}$}
+            \drawtdwire{6}{1}{ $\catvariableof{2}$}
+            \drawtdwire{10}{1}{ $\catvariableof{3}$}
+
+            \drawvariabledot{2}{4.5}
+            \draw[->-] (2,3) --(2,4.5) node[midway,right]{\colorlabelsize ${\headvariableof{0}}$};
+            \draw[->-] (2,4.5) --(2,6);
+
+            \drawvariabledot{6}{4.5}
+            \draw[->-] (6,3) --(6,4.5) node[midway,right]{\colorlabelsize ${\headvariableof{1}}$};
+            \draw[->-] (6,4.5) --(6,6);
+
+            \drawtensorblock{4}{7}{3}{$\bencodingof{\Leftrightarrow}$}
+
+            \draw[->-] (4,8) -- (4,9.5) node[midway,right] {\colorlabelsize $\headvariableof{2}$};
+            \drawvariabledot{4}{9.5}
+            \draw[->-] (4,11) -- (4,9.5);
+            \drawsquaretensor{4}{12}{$\tbasis$}
+
+            \begin{scope}[shift={(18,3)}]
+                \drawtextnode{-2}{9}{$b)$}
+
+                \drawtensorblock{0}{2}{3}{$\bencodingof{\lor}$}
+                \drawtdwire{-2}{1}{ $\catvariableof{0}$}
+                \drawtdwire{2}{1}{ $\catvariableof{1}$}
+
+                \drawvariabledot{-2}{-1}
+                \drawvariabledot{2}{-1}
+                \drawsquaretensor{-2}{-4}{$\fbasis$}
+                \drawtdwire{-2}{-1}{}
+                \drawtdwire{2}{-1}{}
+                \drawsquaretensor{2}{-4}{$\tbasis$}
+
+                \drawtensorblock{8}{2}{3}{$\bencodingof{\lor}$}
+                \drawtdwire{6}{1}{ $\catvariableof{2}$}
+                \drawtdwire{10}{1}{ $\catvariableof{3}$}
+
+                \drawvariabledot{6}{-1}
+                \drawvariabledot{10}{-1}
+                \drawsquaretensor{6}{-4}{$\tbasis$}
+                \drawtdwire{6}{-1}{}
+                \drawtdwire{10}{-1}{}
+                \drawsquaretensor{10}{-4}{$\tbasis$}
+
+                \drawvariabledot{2}{4.5}
+                \draw[->-] (2,3) --(2,4.5) node[midway,right]{\colorlabelsize ${\headvariableof{0}}$};
+                \draw[->-] (2,4.5) --(2,6);
+
+                \drawvariabledot{6}{4.5}
+                \draw[->-] (6,3) --(6,4.5) node[midway,right]{\colorlabelsize ${\headvariableof{1}}$};
+                \draw[->-] (6,4.5) --(6,6);
+
+                \drawtensorblock{4}{7}{3}{$\bencodingof{\Leftrightarrow}$}
+
+                \draw[->-] (4,8) -- (4,9.5) node[midway,right] {\colorlabelsize $\headvariableof{2}$};
+            \end{scope}
+        }
+        Which of these formulas is the contraction of the tensor network $a)$ leaving only $\catvariableof{0},\catvariableof{1},\catvariableof{2},\catvariableof{3}$ open? \\
+        \begin{oneparcheckboxes}
+            \choice $\big(\catvariableof{0}\lor(\catvariableof{1}\Leftrightarrow\catvariableof{2})\big)\lor\catvariableof{3}$
+            \correctchoice $(\catvariableof{0}\lor\catvariableof{1})\Leftrightarrow(\catvariableof{2}\lor\catvariableof{3})$
+            \choice $\headvariableof{2}\Leftrightarrow\big(\headvariableof{0}\Leftrightarrow\headvariableof{1}\big)$
+        \end{oneparcheckboxes}\\
+        Which tensor is the contraction of the tensor network $b)$ leaving only $\headvariableof{2}$ open? \\
+        \begin{oneparcheckboxes}
+            \choice $\headvariableof{2}\Leftrightarrow\big(\headvariableof{0}\Leftrightarrow\headvariableof{1}\big)$
+            \choice $\onesat{\headvariableof{2}}$
+            \correctchoice $\tbasisat{\headvariableof{2}}$
+            \choice $\fbasisat{\headvariableof{2}}$
+        \end{oneparcheckboxes}
+
+        \question
+        Which of these matrices encodes the constraint that the state of the variable $\catvariableof{0}$ is by $1$ larger than the state of the variable $\catvariableof{1}$? \\
+        \begin{oneparcheckboxes}
+            \choice
+            $\coloredmatrixof{
+                0 & 1 & 1\\
+                1 & 0 & 1 \\
+                1 & 1 & 0
+            }{\catvariableof{0},\catvariableof{1}}$
+            \correctchoice
+            {$\coloredmatrixof{
+                0 & 0 & 0\\
+                1 & 0 & 0 \\
+                0 & 1 & 0
+            }{\catvariableof{0},\catvariableof{1}}$}\\
+            \choice
+            $\coloredmatrixof{
+                0 & 0 & 0\\
+                1 & 0 & 0 \\
+                1 & 1 & 0
+            }{\catvariableof{0},\catvariableof{1}}$
+            \correctchoice
+            $\coloredmatrixof{
+                0 & 1 & 0\\
+                0 & 0 & 1 \\
+                0 & 0 & 0
+            }{\catvariableof{1},\catvariableof{0}}$
+        \end{oneparcheckboxes}
+
+        \question Let us consider the two propositional formulas
+        \begin{align*}
+            \formulaofat{0}{\catvariableof{0},\catvariableof{1}}
+            =
+            \coloredmatrixof{
+                0 & 0 \\
+                0 & 1
+            }{\catvariableof{0},\catvariableof{1}}
+            \quad \text{and} \quad
+            \formulaofat{1}{\catvariableof{0},\catvariableof{1}}
+            =
+            \coloredmatrixof{
+                1 & 0 \\
+                0 & 0
+            }{\catvariableof{0},\catvariableof{1}} \, .
+        \end{align*}
+        Which of these entailment statements is true? \\
+        \begin{oneparcheckboxes}
+            \choice $\formulaof{1}\models\formulaof{0}$
+            \choice $\lnot\formulaof{0}\models\formulaof{1}$
+            \correctchoice $\formulaof{1}\models\lnot\formulaof{0}$
+            \choice $\lnot\formulaof{1}\models\formulaof{0}$
+            \correctchoice $\formulaof{0}\models\lnot\formulaof{1}$
+            \choice $\formulaof{0}\models\formulaof{1}$
+        \end{oneparcheckboxes}
+
+        %% Probability theory
+        \question Which of these tensors is a probability distribution? \\
+        \begin{oneparcheckboxes}
+            \correctchoice $\coloredmatrixof{0.2 \\ 0.4 \\ 0.4}{\catvariableof{0}}$
+            \choice $\coloredmatrixof{0 \\ 1 \\ 1}{\catvariableof{0}}$
+            \correctchoice $\coloredmatrixof{0.1 & 0.2 & 0.3 \\ 0.1 & 0.3 & 0}{\catvariableof{0},\catvariableof{1}}$
+            \choice $\coloredmatrixof{0.1 & 0.2 & 0.3 \\ 0.6 & 0.2 & 0.1}{\catvariableof{0},\catvariableof{1}}$
+        \end{oneparcheckboxes}
+
+        \question Let $\probwith$ be a distribution of the variables $\shortcatvariables$ and let there be two disjoint subsets $\arbsetof{0},\arbsetof{1}\subset[\catorder]$.
+        Which of these is the distribution of the variables $\catvariableof{\arbsetof{0}}$ conditioned on $\catvariableof{\arbsetof{1}}$? \\
+        \begin{oneparcheckboxes}
+            \choice $\normalizationofwrt{\probwith}{\catvariableof{[\catorder]/\arbsetof{0}}}{\catvariableof{\arbsetof{1}}}$
+            \choice $\contraction{\probwith}$
+            \correctchoice $\normalizationofwrt{\probwith}{\catvariableof{\arbsetof{0}}}{\catvariableof{\arbsetof{1}}}$
+            \choice $\contractionof{\probwith}{\catvariableof{\arbsetof{0}\cup\arbsetof{1}}}$
+        \end{oneparcheckboxes}
+
+        \newpage
+
+        \question Consider a distribution
+        \stantikzpic{
+            \drawtextnode{-10}{0}{$\probat{\catvariableof{0},\catvariableof{1},\catvariableof{2}}\,\,=$}
+            \drawtextnode{-2}{0}{$\begin{pmatrix}
+                                      0.10 &  0.05 \\ 0.05 & 0.05
+            \end{pmatrix}$}
+            \drawtextnode{5.5}{1}{$\begin{pmatrix}
+                                       0.30 & 0.15 \\ 0.15 & 0.15
+            \end{pmatrix}$}
+            \drawtextnode{12}{0}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]$}
+        }
+        Which of these is the distribution $\condprobat{\catvariableof{0},\catvariableof{1}}{\catvariableof{2}}$ of $\catvariableof{0},\catvariableof{1}$ conditioned on $\catvariableof{2}$? \\
+        \begin{checkboxes}
+            \choice \begin{tikzpicture}[scale=0.35]
+            \drawtextnode{-2}{0}{$\coloredmatrixof{0.40 & 0.20 \\ 0.20 & 0.20}{\catvariableof{0},\catvariableof{1}}$}
+            \end{tikzpicture}
+
+            \choice \begin{tikzpicture}[scale=0.35]
+            \drawtextnode{-2}{0}{$\coloredmatrixof{0.20 & 0.10 \\ 0.10 & 0.10}{\catvariableof{0},\catvariableof{1}}$}
+            \end{tikzpicture}
+
+            \choice \begin{tikzpicture}[scale=0.35]
+                \drawtextnode{-2}{0}{$\begin{pmatrix}
+                                          0.10 & 0.05 \\ 0.05 & 0.05
+                \end{pmatrix}$}
+                \drawtextnode{5.5}{1}{$\begin{pmatrix}
+                                           0.30 & 0.15 \\ 0.15 & 0.15
+                \end{pmatrix}$}
+                \drawtextnode{12}{0}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]$}
+            \end{tikzpicture}
+            \correctchoice \begin{tikzpicture}[scale=0.35]
+                \drawtextnode{-2}{0}{$\begin{pmatrix}
+                                          0.40 &  0.20 \\ 0.20 & 0.20
+                \end{pmatrix}$}
+                \drawtextnode{5.5}{1}{$\begin{pmatrix}
+                                           0.40 & 0.20 \\ 0.20 & 0.20
+                \end{pmatrix}$}
+                \drawtextnode{12}{0}{$[\catvariableof{0},\catvariableof{1},\catvariableof{2}]$}
+            \end{tikzpicture}
+        \end{checkboxes}
+        Which of these independence statements is true with respect to this distribution?\\
+        \begin{oneparcheckboxes}
+            \correctchoice $\independent{\catvariableof{0}}{\catvariableof{2}}$
+            \choice $\condindependent{\catvariableof{0}}{\catvariableof{1}}{\catvariableof{2}}$
+            \correctchoice $\independent{\catvariableof{1}}{\catvariableof{2}}$
+            \choice $\independent{\catvariableof{0}}{\catvariableof{1}}$
+            \choice $\condindependent{\catvariableof{1}}{\catvariableof{0}}{\catvariableof{2}}$
+        \end{oneparcheckboxes}
+        \question
+        Consider these two hypergraph:
+        \stantikzpic{
+            \drawtextnode{-4}{6}{$a)$}
+            \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+            \drawvariablenode{-2}{5}{$\catvariableof{1}$}{X1}
+            \drawvariablenode{2}{5}{$\catvariableof{2}$}{X2}
+            \coordinate (E2) at (2,3) {};
+            \draw[->-] (X0) -- (X1);
+            \draw[->-] (X0) -- (X2);
+        %\draw[->-] (E2) -- (X2);
+            \begin{scope}[shift={(15,0)}]
+                \drawtextnode{-3}{6}{$b)$}
+                \drawvariablenode{0}{2.5}{$\catvariableof{0}$}{X0}
+                \drawvariablenode{5}{2.5}{$\catvariableof{1}$}{X1}
+                \drawvariablenode{10}{2.5}{$\catvariableof{2}$}{X2}
+                \drawvariablenode{15}{2.5}{$\catvariableof{3}$}{X3}
+                \draw (X0) -- (X1);
+                \draw (X2) -- (X3);
+            \end{scope}
+        }
+        Which of these independence statements is true with respect to any Bayesian network on the hypergraph $a)$?\\
+        \begin{oneparcheckboxes}
+            \choice $\independent{\catvariableof{0}}{\catvariableof{1}}$
+            \choice $\independent{\catvariableof{0}}{\catvariableof{2}}$
+            \correctchoice $\condindependent{\catvariableof{2}}{\catvariableof{1}}{\catvariableof{0}}$
+            \choice $\independent{\catvariableof{1}}{\catvariableof{2}}$
+            \choice $\independent{\catvariableof{1}}{\catvariableof{2},\catvariableof{0}}$
+        \end{oneparcheckboxes}\\
+        \medskip \\
+        Which of these independence statements is true with respect to any Markov network on the hypergraph $b)$?\\
+        \begin{oneparcheckboxes}
+            \correctchoice $\independent{\catvariableof{0}}{\catvariableof{2}}$
+            \choice $\independent{\catvariableof{0}}{\catvariableof{1}}$
+            \correctchoice $\condindependent{\catvariableof{2}}{\catvariableof{0}}{\catvariableof{1}}$
+            \choice $\independent{\catvariableof{2}}{\catvariableof{3}}$
+            \choice $\independent{\catvariableof{3}}{\catvariableof{2}}$
+        \end{oneparcheckboxes}
+    \end{questions}
+
+
+\end{document}
