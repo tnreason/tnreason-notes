@@ -1,0 +1,24 @@
+\section{Face recovery}
+
+Faces to the mean parameter represent the hard constraints in a model.
+Recovering the right face therefore corresponds with a correct identification of the hard constraints.
+
+\begin{lemma}
+    When generating data by a distribution $\gendistributionwith$ with mean $\genmean$ we always have
+    \begin{align*}
+        \datameanwith \in \faceto{\genmean} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    We always have $\nonzeroof{\gendistributionwith}\prec \nonzeroof{\empdistributionwith}$ when drawing data from $\gendistributionwith$.
+    Since the distribution $\gendistributionwith$ has its mean on the face $\faceto{\genmean}$, the image of its support is included in $\genfaceimset$. %% CHECK NOTATION!
+    Also the image of the support of $\empdistributionwith$ is included therein and thus $\datameanwith \in \faceto{\genmean}$. %% ADD REFERENCE TO THAT LEMMA
+\end{proof}
+
+Estimating the maximum entropy distribution with the data mean, we always estimate the face parameter as $\faceto{\datamean}$.
+Since $\datameanwith \in \faceto{\genmean}$ we have $\faceto{\datamean}\subset\faceto{\genmean}$.
+The constraints are therefore never underestimated.
+
+
+
+\input{examples/face-recovery-bernoulli}
