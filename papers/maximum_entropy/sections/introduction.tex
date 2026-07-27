@@ -1,7 +1,5 @@
 \section{Introduction}
 
-%\subsection{Entropy}
-
 %$ Entropy
 The Shannon entropy of a distribution quantifies the amount of structure, or information, and appears therefore as an important concept across many scientific areas.
 By Shannons source code theorem \cite{shannon_mathematical_1948}, entropy describes fundamental limits of information transfer.
@@ -18,28 +16,27 @@ These maximum entropy problems are the dual problems to convex maximum likelihoo
 % Current AI research (by Gemini)
 Maximum entropy principles appear further in reinforcement learning \cite{yoon_maximum_2024,song_survey_2025}, AGI \cite{miotto_new_2025} and Bayesian NN \cite{rathnakumar_bayesian_2026}. %interferometric data \cite{mus_new-generation_2024}
 
-
-
 %% Closure of Exp Families
 A classical result states that maximum entropy distributions are in exponential families, if and only if the corresponding mean parameter is in the relative interior of the mean polytope \cite{barndorff-nielsen_information_1978}.
 A natural extension is therefore the closure of the exponential families as investigated in \cite{csiszar_closures_2005,malago_note_2010}.
 Alternative methods use toric ideals to allow for infinite weight vectors \cite{sottile_toric_2008}.
 Numerical stability of the maximum entropy distributions near the boundary is studied in \cite{straszak_computing_2017,straszak_maximum_2019}.
 
-%% TENSOR NETWORKS HERE
-We in this work derive tensor network representations of all discrete maximum entropy distributions, based on the framework presented in \cite{goessmann_tensor-network_2025,goessmann_tensor_2026}.
-
-
 %% Combining logical and probabilistic models
 Less obvious, studying general maximum entropy distributions might be a key step towards a mathematically sound unification of logical and probabilistic models.
-Combining logical and probabilistic AI is a necessity in statistical relational AI, neuro-symbolic AI and explainable AI.
+Combining logical and probabilistic AI is a necessity in statistical relational AI, neuro-symbolic AI and explainable AI \cite{de_raedt_probabilistic_2008,getoor_introduction_2019,sarker_neuro-symbolic_2022}.
 % Differing in support
-Probability theory with exponential families typically focuses on distributions with maximal support. % Hammersley clifford here?
+Probability theory with exponential families typically focuses on distributions with maximal support \cite{koller_probabilistic_2009}. % Hammersley clifford here?
 Logics on the contrary can be understood as a study of the support of models, marking the worlds consistent with a knowledge base.
 % Tensor formalism
 Logical and probabilistic models can be treated in the tensor network formalism, which thus serves as a unifying representation language \cite{goessmann_tensor_2026}.
-%\subsection{Related works}
 
+%% TENSOR NETWORKS
+We in this work derive tensor network representations of all discrete maximum entropy distributions, based on the framework presented in \cite{goessmann_tensor-network_2025,goessmann_tensor_2026}.
+Tensor network formats originate from quantum many-body physics \cite{white_density-matrix_1993} as a mitigation scheme for the curse of dimensionality \cite{bellman_adaptive_1961}.
+From a numerical perspective \cite{hackbusch_new_2009,hackbusch_tensor_2012} formats like the $\cpformat$ format \cite{hitchcock_expression_1927,beylkin_algorithms_2005} and the $\ttformat$ format \cite{oseledets_tensor-train_2011} have been studied.
+They have been applied to various areas such as in high-dimensional PDEs \cite{eigel_variational_2019,eigel_adaptive_2020}, or quantum simulation \cite{sander_quantum_2025}.
+Lastly, tensor network schemes are applied to artificial intelligence \cite{badreddine_logic_2022,domingos_tensor_2025,ali_explicit_2025}.
 
 \subsection{Tensor Notation}
 
@@ -63,8 +60,6 @@ A contraction of the tensor network keeping the nodes $\arbset\subset\nodes$ ope
     = \sum_{\catindexof{\nodes\backslash\arbset}} \prod_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
 \end{align*}
 
-
-
 \subsection{The Maximum Entropy Problem}
 
 %% Distributions
@@ -76,7 +71,7 @@ We denote the set of such distributions by
 \begin{align*}
     \distmeasuredby{\basemeasure}
     = \big\{ \probwith \wcols &\probwith \geq \zerosat{\shortcatvariables} \ncond \contraction{\probwith,\basemeasurewith} = 1 \ncond \\
-          &\forall_{\shortcatindicesin} \basemeasureat{\indexedshortcatvariables}=0 \Rightarrow \probat{\indexedshortcatvariables}=0  \big\} \, .
+    &\forall_{\shortcatindicesin} \basemeasureat{\indexedshortcatvariables}=0 \Rightarrow \probat{\indexedshortcatvariables}=0  \big\} \, .
 \end{align*}
 Note that we here restrict the support of the tensor $\probwith$ to be included in the support of the base measure, to avoid ambiguity in the representation.
 
@@ -129,7 +124,7 @@ Based on the enumeration of the image we define the basis encoding tensor of the
     \sstatccwith
     = \sum_{\shortcatindicesin}
     \left(\bigotimes_{\selindexin}
-    \onehotmapofat{\invindexinterpretationofat{\selindex}{\sstatcoordinateofat{\selindex}{\shortcatindices}}}{\headvariableof{\selindex}}\right)
+        \onehotmapofat{\invindexinterpretationofat{\selindex}{\sstatcoordinateofat{\selindex}{\shortcatindices}}}{\headvariableof{\selindex}}\right)
     \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
 \end{align*}
 A computation network is any representation of $\sstatccwith$ as a tensor network.

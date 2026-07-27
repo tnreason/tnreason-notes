@@ -67,17 +67,18 @@
             }{\selvariable}} \, .
     \end{align*}
 
-    This polytope has a non cube-like face (sketched blue in \figref{fig:nonelHlnstatMaxent}), which is the convex hull of the vertices $[0 \, 0]^T, \, [1 \, 1]^T$.
+    This polytope has a non cube-like face (sketched blue in \figref{fig:nonelHlnstatMaxent}), which is the convex hull of the vertices $(0 \, 0)^T, \, (1 \, 1)^T$.
     This face is parametrized by the ($\cpformat$-rank 2) hard activation core
     \begin{align*}
         \kcoreofat{(0,0),(1,1)}{\headvariableof{0},\headvariableof{1}} =
-        \onehotmapofat{(0,0)}{\headvariableof{0},\headvariableof{1}} + \onehotmapofat{(1,1)}{\headvariableof{0},\headvariableof{1}} =
+        \onehotmapofat{(0,0)}{\headvariableof{0},\headvariableof{1}}
+        + \onehotmapofat{(1,1)}{\headvariableof{0},\headvariableof{1}} =
         \coloredmatrixof{
             1 & 0 \\
             0 & 1
         }{\headvariableof{0},\headvariableof{1}}
     \end{align*}
-    and has the face measure
+    and has the refined base measure
     \begin{align*}
         \contractionof{\kcoreofat{(0,0),(1,1)}{\headvariableof{0},\headvariableof{1}}
             ,\bencodingofat{\formulaset}{\headvariableof{0},\headvariableof{1},\catvariableof{0},\catvariableof{1}}}{\catvariableof{0},\catvariableof{1}}
@@ -130,13 +131,14 @@
         = \onehotmapofat{0}{\headvariableof{0}} \otimes \onesat{\headvariableof{1}}   \, .
     \end{align*}
     The maximum entropy distributions to mean parameters on the interior of all other faces than the blue face are represented by \ComputationActivationNetwork{}s with only elementary activation cores.
+    The corresponding lattice is sketched in \figref{fig:latticeNonelHlnstat}.
 
     \begin{figure}
         \begin{center}
             \input{tikz/boolean-stat/nonel_hlnstat_maxent.tikz}
         \end{center}
         \caption{
-            a) Mean polytope of the statistic $\formulaset=(\catvariableof{0} \land \catvariableof{1}, \catvariableof{0} \Rightarrow \catvariableof{1})$ (thick), as a subset of the cube $[0,1]^2$ (dashed).
+            a) Mean polytope of the statistic $\hlnstat=(\catvariableof{0} \land \catvariableof{1}, \catvariableof{0} \Rightarrow \catvariableof{1})$ (thick), as a subset of the cube $[0,1]^2$ (dashed).
             The blue line is the face of the polytope, which is not cube like, that is not an intersection of the polytope with the faces of the polytope.
             We further define for $\lambda\in(0,1)$ a mean parameter $\meanparamofat{\lambda}{\selvariable} = [\lambda \,  \lambda]^T$ which is on the interior of the blue face.
             b) Corresponding \ComputationActivationNetwork{} being the maximum entropy distribution reproducing $\meanparamofat{\lambda}{\selvariable}$, when $\lambda$ is the sigmoid of $\canparamat{\selvariable=0}+\canparamat{\selvariable=1}$.
