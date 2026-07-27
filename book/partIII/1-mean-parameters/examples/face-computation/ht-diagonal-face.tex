@@ -1,0 +1,32 @@
+\begin{example}[Generalization of \exaref{exa:gen_tt_diagonal_face} to arbitrary $\htformat$ formats]
+    Instead of aligning the Hamming count variables linearly, one can find a representation of the activation tensor
+    \begin{align*}
+        \sum_{\arbset\subset[\seldim] \wcols \cardof{\arbset}=s} \onehotmapofat{\imelementof{\arbset}}{\headvariables}
+    \end{align*}
+    in an arbitrary directed acyclic tree hypergraph format $\graph$, which hidden ranks are bounded by the number of leafs in the subtree and $s+1$.
+
+    At any leaf of the tree we define a $2x2$ matrix
+    \begin{align*}
+        \hypercoreofat{\selindex}{\headvariableof{\selindex},\decvariableof{\selindex}}
+        = \onehotmapofat{\imelementat{\indexedselvariable}}{\headvariableof{\selindex}} \otimes \fbasisat{\decvariableof{\selindex}}
+        + \onehotmapofat{1-\imelementat{\indexedselvariable}}{\headvariableof{\selindex}} \otimes \tbasisat{\decvariableof{\selindex}} \, .
+    \end{align*}
+    At each intermediate non-root hyperedge we choose an outgoing counting variable $\decvariableof{\outgoingnodes}$ with dimension by $\decdimof{\outgoingnodes}=\min(\sum_{\node\in\incomingnodes}\decdimof{\incomingnodes},s+1)$ and define a tensor with the slices
+    \begin{align*}
+        \hypercoreofat{\edge}{\decvariableof{\outgoingnodes},\decvariableof{\incomingnodes}}
+        = \bencodingofat{+}{\headvariableof{+}=\decindexof{\outgoingnodes},\decvariableof{\incomingnodes}} \, .
+    \end{align*}
+    We further build at the root hyperedge $\edge$ a tensor
+    \begin{align*}
+        \hypercoreofat{\edge}{\decvariableof{\edge}}
+        = \sum_{\decindex \wcols \contraction{\decindex}=s}
+        \onehotmapofat{\decindexof{\edge}}{\decvariableof{\edge}} \, .
+    \end{align*}
+    Using the counting variable interpretation one can now show that
+    \begin{align*}
+        \sum_{\arbset\subset[\seldim] \wcols \cardof{\arbset}=s} \onehotmapofat{\imelementof{\arbset}}{\headvariables}
+        =\contractionof{
+        \{\hypercoreofat{\edge}{\decvariableof{\edge}} \wcols \edgein \} \cup \{\hypercoreofat{\selindex}{\headvariableof{\selindex},\decvariableof{\selindex}} \wcols \nodein\}
+        }{\headvariables} \, .
+    \end{align*}
+\end{example}

@@ -1,0 +1,35 @@
+\stantikzpic{
+
+    \drawtextnode{0}{5}{$a)$}
+
+    \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+    \drawvariablenode{3}{0}{$\catvariableof{1}$}{X1}
+    \drawtextnode{6}{0}{$\cdots$}
+    \drawvariablenode{9}{0}{$\catvariableof{\catorder-1}$}{Xdmin1}
+
+    \drawvariablenode{4.5}{5}{$\decvariable$}{I}
+
+    \draw (X0) -- (I);
+    \draw (X1) -- (I);
+    \draw (Xdmin1) -- (I);
+
+    \begin{scope}[shift={(15,0)}]
+        \drawtextnode{-3}{5}{$b)$}
+
+        \drawtensorblock{0}{2.5}{1}{$\hypercoreof{0}$}
+        \drawvwire{0}{1.5}{$\catvariableof{0}$}
+        \drawtensorblock{3}{2.5}{1}{$\hypercoreof{1}$}
+        \drawvwire{3}{1.5}{$\catvariableof{1}$}
+
+        \drawtextnode{6}{2.5}{$\cdots$}
+
+        \drawtensorblock{9}{2.5}{1}{$\hypercoreof{\catorder\shortminus1}$}
+        \drawvwire{9}{1.5}{$\catvariableof{\catorder\shortminus1}$}
+
+        \drawvariabledot{4.5}{6}
+        \draw (0,3.5) to[bend right=-20] (4.5,6);
+        \draw (3,3.5) to[bend right=-10] (4.5,6);
+        \draw (9,3.5) to[bend right=20] (4.5,6);
+    \end{scope}
+
+}

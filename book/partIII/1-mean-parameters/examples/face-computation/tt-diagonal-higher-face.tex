@@ -1,0 +1,51 @@
+\begin{example}[Generalization of \exaref{exa:tt_diagonal_face} to larger $\ttformat$ ranks]
+    \label{exa:gen_tt_diagonal_face}
+    %% Extension to larger Hadamard distances
+    We now generalize the construction of \exaref{exa:tt_diagonal_face} by using the Hadamard distance $d(\cdot,\cdot)$ in $\{0,1\}^{\seldim}$, which counts the number of coordinates two vertices differ in.
+    For $s\in\{1,\ldots,\seldim-1\}$ we define for a fixed $\imelementwith\in\{0,1\}^{\seldim}$ a polytope as the convex hull
+    \begin{align*}
+        \{\tilde{\imelement}[\selvariable] \wcols d(\tilde{\imelement},\imelement)\geq s\}  \, .
+    \end{align*}
+    The face to the normal $\frac{1}{2} (2\imelementwith - \onesat{\selvariable})$ is the convex hull
+    \begin{align*}
+        \facesymbolof{\triangleleft,s}\coloneqq \convhullof{
+            \{\tilde{\imelement}[\selvariable] \wcols d(\tilde{\imelement},\imelement) = s\}
+        }
+    \end{align*}
+    containing $\binom{\seldim}{s}$ vertices.
+    We label these vertices by subsets $\arbset\subset[\seldim]$ of cardinality $s$ and define for $\selindexin$
+    \begin{align*}
+        \imelementofat{\arbset}{\indexedselvariable} =
+        \begin{cases}
+            \imelementat{\selindexin} & \ifspace \selindex\notin\arbset \\
+            1-\imelementat{\selindexin} & \ifspace \selindex\notin\arbset
+        \end{cases}
+    \end{align*}
+    We now construct a $\ttformat$ with hidden variables $\decvariableof{\selindex}$ and ranks $r_{\selindex} = \min (\selindex+1,\seldim-\selindex+1, s+1)$ to represent the sum of their one-hot encodings.
+    To this end, let there be $\ttformat$ cores for $\selindex=0$ by
+    \begin{align*}
+        \hypercoreofat{0}{\headvariableof{0},\decvariableof{0}}
+        = \onehotmapofat{\imelementat{\selvariable=0}}{\headvariableof{0}} \otimes \fbasisat{\decvariableof{0}}
+        + \onehotmapofat{1-\imelementat{\selvariable=0}}{\headvariableof{0}} \otimes \tbasisat{\decvariableof{0}}
+    \end{align*}
+    further for $\selindex\notin\{0,\seldim-1\}$ the cores
+    \begin{align*}
+        \hypercoreofat{\selindex}{\decvariableof{\selindex-1},\headvariableof{\selindex},\decvariableof{\selindex}}
+        = \sum_{\selindex\in\{\max(s-\seldim+\selindex,0),\ldots,\max(\selindex,s)\}}
+        \onehotmapofat{\selindex}{\decvariableof{\selindex}}
+        \otimes \left(\onehotmapofat{\imelementat{\indexedselvariable}}{\headvariableof{\selindex}} \otimes \onehotmapofat{\selindex}{\decvariableof{\selindex+1}}
+                    + \onehotmapofat{1-\imelementat{\indexedselvariable}}{\headvariableof{\selindex}} \otimes \onehotmapofat{\selindex+1}{\decvariableof{\selindex+1}}
+        \right)
+    \end{align*}
+    and for $\selindex=\seldim-1$
+    \begin{align*}
+        \hypercoreofat{\seldim-1}{\decvariableof{\seldim-1},\headvariableof{\seldim-1}}
+        = \fbasisat{\decvariableof{\seldim-1}} \otimes \onehotmapofat{1-\imelementat{\selvariable=\seldim-1}}{\headvariableof{\seldim-1}}
+        + \tbasisat{\decvariableof{\seldim-1}} \otimes \onehotmapofat{\imelementat{\selvariable=\seldim-1}}{\headvariableof{\seldim-1}} \, .
+    \end{align*}
+    Based on the interpretation, that the hidden variables $\decvariableof{\selindex}$ count the Hamming distance of the vectors $\restrictionofto{\imelementwith}{\rr^{\selindex}\times 0_{\seldim-\selindex}}$ and the respective $\restrictionofto{\imelementofat{\arbset}{\selvariable}}{\rr^{\selindex}\times 0_{\seldim-\selindex}}$ one can show that
+    \begin{align*}
+        \sum_{\arbset\subset[\seldim] \wcols \cardof{\arbset}=s} \onehotmapofat{\imelementof{\arbset}}{\headvariables}
+        = \contractionof{\{\hypercoreofat{0}{\headvariableof{0},\decvariableof{0}},\hypercoreofat{\seldim-1}{\decvariableof{\seldim-1},\headvariableof{\seldim-1}}\}\cup\{\hypercoreofat{\selindex}{\decvariableof{\selindex-1},\headvariableof{\selindex},\decvariableof{\selindex}}\wcols\selindex\notin\{0,\seldim-1\}\}}{\headvariables} \, .
+    \end{align*}
+\end{example}

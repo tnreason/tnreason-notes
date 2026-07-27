@@ -52,9 +52,7 @@ Let us now continue with the investigation of the faces of the mean parameter po
     The set of all faces of the mean polytope $\genmeanset$ is denoted by $\facelatticeof{\genmeanset}$.
 \end{definition}
 
-The set $\facelatticeof{\genmeanset}$ is partially ordered by the inclusion operation and is called a lattice \cite{ziegler_lectures_2013}.
-
-
+The set $\facelatticeof{\genmeanset}$, which is partially ordered by the inclusion operation, is a lattice \cite{ziegler_lectures_2013}.
 We notice, that each face itself is a convex polytope.
 What is more, we can characterize these as mean parameter polytopes with respect to refined base measures to be defined next.
 
@@ -126,7 +124,6 @@ Representability of a distribution with respect to face measures is an equivalen
     \end{align*}
     which is equal to $\meanparamwith\in\facesymbol$.
     Thus, if and only if $\meanparamwith\in\facesymbol$ then $\probat{\shortcatvariables}$ is only supported at $\shortcatindices$ in the support of $\genfacemeasurewith$.
-
 %    Now, the $\shortcatindices$ with $\genfacemeasureat{\indexedshortcatvariables}=1$ are exactly those, for which the conditions $\facesymbol$ hold straight.
 %    If and only if for a $\shortcatindices$ with $\genfacemeasureat{\indexedshortcatvariables}=0$ we have $\probat{\indexedshortcatvariables}>0$, one of the conditions $\facesymbol$ would not hold straight.
 %    Thus, if and only if $\probwith$ is representable with respect to $\genfacemeasureat{\shortcatvariables}$, we have $\meanparamat{\selvariable}\in\facesymbol$.
@@ -184,51 +181,7 @@ Let us now investigate tensor network representations of refined base measures, 
     \end{align*}
 \end{proof}
 
-%% Going beyond the report
-
-%%  OLD: restriction to CP
-%\begin{definition}
-%    The $\cpformat$ rank of a face is
-%    \begin{align*}
-%        \cprankof{\facesymbol}
-%        = \min_{
-%            \arbset \wcols \arbset\cap\genimset = \genfaceimset
-%            %\{\shortheadindices \wcols \onehotmapof{\shortheadindices}\in\facesymbol\}\subset \arbset \subset \onehotmap(\bigtimes_{\selindexin}[\headdimof{\selindex}]) \ncond
-%            %\arbset \cup \{\shortheadindices \wcols \onehotmapof{\shortheadindices}\in\genmeanset/\facesymbol\} = \varnothing
-%        }
-%        \cprankof{\sum_{v \in \arbset} \onehotmapofat{\imelement}{\headvariables}} \, .
-%    \end{align*}
-%    By replacing $\cprankof{\cdot}$ with $\bascprankof{\cdot}$ and $\baspluscprankof{\cdot}$ we further define the basis and basis+ CP rank of a face.
-%\end{definition}
-%
-%
-%
-%The face measures are contraction of the vertex subset encodings with the computation.
-%They are \ComputationActivationNetworks{}, when choosing the $\cpformat$ graph with rank at least $\baspluscprankof{\facesymbol}$.
-%
-%\begin{lemma}
-%    For each face of the mean polytope we have
-%    \begin{align*}
-%        \genfacemeasureat{\shortcatvariables|\varnothing} \in \realizabledistsof{\sstat,\cpformat^{\cprankof{\facesymbol}}} \, ,
-%    \end{align*}
-%    where $\cpformat^{\cprankof{\facesymbol}}$ is the CP graph with a hidden variable of dimension $\cprankof{\facesymbol}$.
-%\end{lemma}
-%\begin{proof}
-%    We find by definition a set $\arbset$ of basis vectors containing the vertices of the face $\genfacemeasure$ but no further vertices, which has a bas+ $\cpformat$ rank of $\baspluscprankof{\facesymbol}$.
-%    We have therefore, that $\normalizationof{\sstatccwith,\onehotmapofat{\arbset}{\headvariables}}{\shortcatvariables}$ is in $\realizabledistsof{\sstat,\cpformat^{\baspluscprankof{\facesymbol}}}$.
-%    Further it holds that
-%    \begin{align*}
-%        \contractionof{\sstatccwith,\onehotmapofat{\arbset}{\headvariables}}{\shortcatvariables}
-%        &= \sum_{\shortheadindices\in\arbset \wcols \onehotmapof{\shortheadindices}\in\facesymbol} \contractionof{\sstatccwith,\onehotmapofat{\shortheadindices}{\headvariables}}{\shortcatvariables} \\
-%        & \quad \quad + \sum_{\shortheadindices\in\arbset \wcols \onehotmapof{\shortheadindices}\notin\facesymbol} \contractionof{\sstatccwith,\onehotmapofat{\imelement}{\headvariables}}{\shortcatvariables} \\
-%        &= \sum_{\shortheadindices\in\arbset \wcols \onehotmapof{\shortheadindices}\in\facesymbol} \contractionof{\sstatccwith,\onehotmapofat{\shortheadindices}{\headvariables}}{\shortcatvariables} \\
-%        &= \genfacemeasureat{\shortcatvariables} \, .
-%    \end{align*}
-%    Here we used, that for $\shortheadindices\in\arbset$ with $\onehotmapof{\shortheadindices}\notin\facesymbol$ is not in the image of $\sstat$ and therefore the contraction of its one-hot encoding with the computation cores vanishes.
-%    Thus, $\normalizationof{\sstatccwith,\onehotmapofat{\arbset}{\headvariables}}{\shortcatvariables}$ coincides with the normalized face measure, which is therefore in $\realizabledistsof{\sstat,\cpformat^{\baspluscprankof{\facesymbol}}}$.
-%\end{proof}
-
-We now investigate the representation of face measures by \ComputationActivationNetworks{}.
+We now investigate the representation of refined base measures by \ComputationActivationNetworks{}.
 
 \begin{definition}
     \label{def:faceRepresentability}
@@ -269,7 +222,7 @@ We now investigate the representation of face measures by \ComputationActivation
     and thus $\genfacemeasureat{\shortcatvariables|\varnothing} \in \realizabledistsof{\sstat,\graph,\basemeasure}$.
 \end{proof}
 
-Let us now investigate, which normalized face measures can be computed using $\sstat$ and a hypergraph $\graph$.
+%Let us now investigate, which normalized face measures can be computed using $\sstat$ and a hypergraph $\graph$.
 
 \input{examples/mean-polytope/vertices}
 
@@ -279,9 +232,8 @@ While vertices are the minimal non-vanishing faces in the face-lattice (see \cit
 
 \subsection{Representation in the $\cpformat$ format}
 
-
-Extending \exaref{exa:vertexMeasures}, we can provide a coarse estimation of the hypergraph $\graph$ required to decompose $\kcoreof{\facesymbol}$ for generic faces $\facesymbol$.
-To this end, we use the $\cpformat$ format describing tensor networks on the $\cpformat$ hypergraph
+Extending \exaref{exa:vertexMeasures} and \exaref{exa:maximalFaceMeasure}, we can provide a coarse estimation of the hypergraph $\graph$ required to decompose $\kcoreof{\facesymbol}$ for generic faces $\facesymbol$.
+To this end, we use the $\cpformat$ format describing tensor networks on the $\cpformat$ hypergraph (see \figref{fig:cpFormat})
 \begin{align*}
     \cpformat
     = \big([\seldim]\cup\{\decvariable\},\{\{\selindex,\decvariable\}\wcols\selindexin\}\big) \, .
@@ -310,7 +262,7 @@ The dimension of the variable $\decvariable$ is called the hidden rank of the fo
     \end{align*}
     and thus have found an activation tensor network in a $\cpformat$ graph with hidden rank $\cardof{\genfaceimset}$ representing the face $\facesymbol$.
 
-    We continue with the second representation, for which we enumerate the set $\genimset/\genfaceimset$ by $v^{\decindex}[\selvariable]$ where $\decindex\in[\cardof{\genimset}-\cardof{\genfaceimset}]$.
+    We continue with the second representation, for which we enumerate the set $\genimset/\genfaceimset$ by $\imelementofat{\decindex}{\selvariable}$ where $\decindex\in[\cardof{\genimset}-\cardof{\genfaceimset}]$.
     We define variable $\decvariable$ with dimension $r=\cardof{\genimset}-\cardof{\genfaceimset}+1$ and define for $\selindexin$ core tensors
     \begin{align*}
         \hypercoreofat{\selindex}{\headvariableof{\selindex},\indexeddecvariable}
@@ -330,7 +282,15 @@ The dimension of the variable $\decvariable$ is called the hidden rank of the fo
     We have thus found a face activating tensor network for $\facesymbol$ in a $\cpformat$ format with hidden rank $r=\cardof{\genimset}-\cardof{\genfaceimset}+1$.
 \end{proof}
 
-\subsection{Examples of polytopes with elementary representable faces}
+We notice that the $\cpformat$ rank bound of \lemref{lem:CPfaceRepresentationBound} is tight in \exaref{exa:vertexMeasures} and \exaref{exa:maximalFaceMeasure}, since the elementary format is a restriction of the $\cpformat$ format to rank $1$.
+
+\begin{figure}
+    \input{tikz/mean-polytope/cp-format}
+    \caption{The $\cpformat$ tensor format consist in the $\cpformat$ hypergraph a) and decorating tensor networks b).
+    Tensors in this format constructed as in \lemref{lem:CPfaceRepresentationBound} represent arbitrary faces.}
+\end{figure}
+
+\subsection{Examples of elementarily representable faces}
 
 We show in the following example, that all faces of a hypercube and a simplex are representable by elementary activation tensors.
 
@@ -360,6 +320,8 @@ Let us now introduce relative interiors, which enables us to find disjoint parti
     We then redo the above argument for $\facesymbol=\tilde{\facesymbol}$ until we arrive at a face with $\meanparam\in\sbinteriorof{\facesymbol}$.
     We always reach such a face such a face, since the affine dimension of the faces is decreasing and lower bounded by $0$, and the faces of affine dimension $0$ are vertices for which $\facesymbol=\sbinteriorof{\facesymbol}$.
 \end{proof}
+
+We therefore find a unique face to each mean parameter $\genmeanwith$, such that the mean parameter is on its relative interior.
 
 \begin{definition}
     To each $\meanparam\in\genmeanset$ we denote the unique face $\facesymbol$ with $\meanparam\in\sbinteriorof{\facesymbol}$ by $\faceto{\meanparam}$.

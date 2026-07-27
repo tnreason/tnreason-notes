@@ -207,8 +207,27 @@ Let us now provide examples of statistics, which polytopes are not cube-like.
 
 \input{examples/boolean-stat/nonel_hlnstat_maxent}
 
+\begin{figure}
+    \input{tikz/boolean-stat/tt-format}
+    \caption{$\ttformat$ format consisting in th $\ttformat$ hypergraph a) and decorating tensor networks b).}\label{fig:ttFormat}
+\end{figure}
+
 %% Order?
-\input{examples/boolean-stat/tt_diagonal_face}
+
+We further present examples of faces in a $\ttformat$ format representation.
+This format describes tensor networks on a hypergraph (see \figref{fig:ttFormat})
+\begin{align*}
+    \ttformat
+    = \big(
+    \shortcatvariables\cup\decvariableof{[\catorder-1]},
+    \{\{\decvariableof{\catenumerator-1},\catvariableof{\catenumerator},\decvariableof{\catenumerator}\}\wcols\catenumerator\in\{1,\ldots,\catorder-2\}\}
+    \cup\{\{\catvariableof{0},\decvariableof{0}\},\{\decvariableof{\catorder-2},\catvariableof{\catorder-1}\}\}
+    \big) \, .
+\end{align*}
+
+\input{examples/boolean-stat/tt-diagonal-face}
+%\input{examples/boolean-stat/tt-diagonal-higher-face}
+%\input{examples/boolean-stat/unused-ht-diagonal-face}
 
 \subsection{Construction of boolean statistics to polytopes}
 
