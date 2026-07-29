@@ -15,12 +15,12 @@ Our main result generalizes the maximum entropy characterization of \theref{the:
     %% 1. Any member of a face exponential family is maxent
     For any $\weightparamwith$ and $\facein$ the distribution
     \begin{align*}
-        \expdistofat{(\sstat,\weightparam,\genfacemeasure)}{\shortcatvariables}
+        \expdistofat{\sstat,\weightparam,\genfacemeasure}{\shortcatvariables}
     \end{align*}
     is a maximum entropy distribution. \\
     %% 2. Find canonical parametrization by the backward map
     For any $\meanparamwith$ the maximum entropy problem has a feasible distribution, if and only if $\meanparamwith\in\genmeanset$.
-    If $\meanparamwith\in\genmeanset$ the maximum entropy distribution is $\expdistof{(\sstat,\weightparam,\genfacemeasure)}$ where $\facesymbol=\faceto{\meanparam}$ and
+    If $\meanparamwith\in\genmeanset$ the maximum entropy distribution is $\expdistof{\sstat,\weightparam,\genfacemeasure}$ where $\facesymbol=\faceto{\meanparam}$ (see \lemref{lem:faceToMean}) and
     \begin{align*}
         \weightparam
         = \backwardmapwrtof{\sstat,\genfacemeasure}{\meanparam}
@@ -65,7 +65,7 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
 
 \begin{proof}[Proof of \theref{the:MAINgenMaxEntChar}]
     % 1.
-    To show that for any $\weightparamwith$ and $\facein$ the distribution $\expdistof{(\sstat,\weightparam,\genfacemeasure)}$ is a maximum entropy distribution, we apply \lemref{lem:maxEntReduction} and \theref{the:maxEntropyInterior}. \\
+    To show that for any $\weightparamwith$ and $\facein$ the distribution $\expdistof{\sstat,\weightparam,\genfacemeasure}$ is a maximum entropy distribution, we apply \lemref{lem:maxEntReduction} and \theref{the:maxEntropyInterior}. \\
     % 2.
     If $\meanparamwith\notin\genmeanset$ then \problemref{prob:maxEntropy} is not feasible by definition.
     In case $\meanparamwith\in\genmeanset$ we find $\facein$ with $\facesymbol=\faceto{\meanparam}$ and by \lemref{lem:maxEntReduction} the solution of maximum entropy problem \problemref{prob:maxEntropy} coincides with $\mathrm{P}_{\sstat,\meanparam,\genfacemeasure}$.
@@ -79,11 +79,11 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
         \weightparam
         = \backwardmapwrtof{\sstat,\genfacemeasure}{\meanparam} \, .
     \end{align*}
-    and by \theref{the:maxEntropyInterior} $\expdistof{(\sstat,\weightparam,\genfacemeasure)}$ is the corresponding maximum entropy distribution. \\
+    and by \theref{the:maxEntropyInterior} $\expdistof{\sstat,\weightparam,\genfacemeasure}$ is the corresponding maximum entropy distribution. \\
     % 3.
     To show the last claim, it is enough to show that for any by $\graph$ representable face $\facesymbol$ and for any $\weightparamin$ we have
     \begin{align*}
-        \expdistof{(\sstat,\weightparam,\genfacemeasure)}
+        \expdistof{\sstat,\weightparam,\genfacemeasure}
         \in \realizabledistsof{\sstat,\graph,\basemeasure} \, .
     \end{align*}
     To this end, we construct activation cores as follows.
@@ -107,14 +107,14 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
     \end{align*}
     and therefore
     \begin{align*}
-        \expdistof{(\sstat,\weightparam,\genfacemeasure)}
+        \expdistof{\sstat,\weightparam,\genfacemeasure}
         = \frac{
             \contractionof{\{\bencsstatwith\}\cup\tnetof{\graph}}{\shortcatvariables}
         }{
             \contraction{\{\bencsstatwith,\basemeasurewith\}\cup\tnetof{\graph}}
         } \, .
     \end{align*}
-    We conclude $\expdistof{(\sstat,\weightparam,\genfacemeasure)}\in \realizabledistsof{\sstat,\graph,\basemeasure}$.
+    We conclude $\expdistof{\sstat,\weightparam,\genfacemeasure}\in \realizabledistsof{\sstat,\graph,\basemeasure}$.
 %    \textbf{Feasibility Claim:}
 %    If and only if $\meanparamwith\in\genmeanset$ then there is by definition a by $\basemeasure$ representable $\probwith$ reproducing $\meanparamwith$.
 %    Thus if and only if $\meanparamwith\in\genmeanset$ there is a feasible distribution for the maximum entropy problem. \\

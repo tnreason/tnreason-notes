@@ -288,6 +288,7 @@ We notice that the $\cpformat$ rank bound of \lemref{lem:CPfaceRepresentationBou
     \input{tikz/mean-polytope/cp-format}
     \caption{The $\cpformat$ tensor format consist in the $\cpformat$ hypergraph a) and decorating tensor networks b).
     Tensors in this format constructed as in \lemref{lem:CPfaceRepresentationBound} represent arbitrary faces.}
+    \label{fig:cpFormat}
 \end{figure}
 
 \subsection{Examples of elementarily representable faces}
@@ -307,22 +308,36 @@ Let us now introduce relative interiors, which enables us to find disjoint parti
     The relative interior $\sbinteriorof{\arbset}$ of an arbitrary set $\arbset\subset\parspace$ is the interior of $\arbset$ in the affine subspace $\convhullof{\arbset}$.
 \end{definition}
 
+
 \begin{lemma}
-    \label{lem:relativeInteriorPolytopePartition}
-    Any polytope is a disjoint union of the relative interiors of its faces, that is
-    \begin{align*}
-        \genmeanset = \bigcup_{\facein}^{\cdot} \sbinteriorof{\facesymbol} \, .
-    \end{align*}
+    \label{lem:faceToMean}
+    To each $\meanparam\in\genmeanset$ there is a unique face $\facesymbol$, which we denote by $\faceto{\meanparam}$, such that $\meanparam\in\sbinteriorof{\facesymbol}$.
 \end{lemma}
 \begin{proof}
-    For any $\meanparam\in\genmeanset$ we find a face such that $\meanparam\in\facesymbol$.
-    If $\meanparam\notin\sbinteriorof{\facesymbol}$, then there is a face ${\tilde{\facesymbol}}\subset\facesymbol$ of smaller affine dimension such that $\meanparam\in\tilde{\facesymbol}$.
-    We then redo the above argument for $\facesymbol=\tilde{\facesymbol}$ until we arrive at a face with $\meanparam\in\sbinteriorof{\facesymbol}$.
-    We always reach such a face such a face, since the affine dimension of the faces is decreasing and lower bounded by $0$, and the faces of affine dimension $0$ are vertices for which $\facesymbol=\sbinteriorof{\facesymbol}$.
+    For any mean vector $\meanparam$ on a face $\facesymbol$ we either have $\meanparam\in\sbinteriorof{\facesymbol}$ or there is a face $\secfacesymbol$ of lower affine dimension with $\secfacesymbol\subset\facesymbol$ and $\meanparam\in\secfacesymbol$.
+    Starting from the face $\genmeanset$ (for which by assumption $\meanparam\in\genmeanset$) we iteratively choose a face $\facesymbol$ of lower dimension containing $\meanparam$ until we reach a face with $\meanparam\in\sbinteriorof{\facesymbol}$.
+    This procedure is guaranteed to terminate, since the affine dimension is decreasing and any face of affine dimension $0$ coincides with its relative interior.
 \end{proof}
 
-We therefore find a unique face to each mean parameter $\genmeanwith$, such that the mean parameter is on its relative interior.
 
-\begin{definition}
-    To each $\meanparam\in\genmeanset$ we denote the unique face $\facesymbol$ with $\meanparam\in\sbinteriorof{\facesymbol}$ by $\faceto{\meanparam}$.
-\end{definition}
+%\begin{lemma}
+%    \label{lem:relativeInteriorPolytopePartition}
+%    Any polytope is a disjoint union of the relative interiors of its faces, that is
+%    \begin{align*}
+%        \genmeanset
+%        = \bigcup_{\facein}^{\cdot} \sbinteriorof{\facesymbol} \, .
+%    \end{align*}
+%\end{lemma}
+%\begin{proof}
+%    %% Overwork?
+%    For any $\meanparam\in\genmeanset$ we find a face such that $\meanparam\in\facesymbol$.
+%    If $\meanparam\notin\sbinteriorof{\facesymbol}$, then there is a face ${\tilde{\facesymbol}}\subset\facesymbol$ of smaller affine dimension such that $\meanparam\in\tilde{\facesymbol}$.
+%    We then redo the above argument for $\facesymbol=\tilde{\facesymbol}$ until we arrive at a face with $\meanparam\in\sbinteriorof{\facesymbol}$.
+%    We always reach such a face such a face, since the affine dimension of the faces is decreasing and lower bounded by $0$, and the faces of affine dimension $0$ are vertices for which $\facesymbol=\sbinteriorof{\facesymbol}$.
+%\end{proof}
+%
+%We therefore find a unique face to each mean parameter $\genmeanwith$, such that the mean parameter is on its relative interior.
+%
+%\begin{definition}
+%    To each $\meanparam\in\genmeanset$ we denote the unique face $\facesymbol$ with $\meanparam\in\sbinteriorof{\facesymbol}$ by $\faceto{\meanparam}$.
+%\end{definition}
