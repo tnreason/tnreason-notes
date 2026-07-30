@@ -1,49 +1,64 @@
 \section{The mean polytope}\label{sec:meanPolytope}
 
-The mean polytope is the set of possible mean parameters given a by base measure representable distribution in $\distmeasuredby{\basemeasure}$.
-We define it as
+Given a statistic function
+\begin{align*}
+    \sstat \wcols \facstates \rightarrow \rr^{\seldim}
+\end{align*}
+on the states $\facstates$ and a base measure $\basemeasurewith$ the mean polytope is the set
 \begin{align*}
     \genmeanset
-    \coloneqq \left\{\contractionof{\probwith,\sencsstatwith,\basemeasurewith}{\selvariable}\wcols\probwith\in\distmeasuredby{\basemeasure} \right\} \, ,
+    \coloneqq \left\{\contractionof{\probwith,\sencsstatwith,\basemeasurewith}{\selvariable}\wcols\probwith\in\distmeasuredby{\basemeasure} \right\}
 \end{align*}
-where we denote by $\distmeasuredby{\basemeasure}$ the set of all probability distributions representable with respect to $\basemeasure$, and by $\sencsstatwith$ the selection encoding of the statistic (see introduction).
+containing all mean parameters to the distributions in $\distmeasuredby{\basemeasure}$.
+By $\sencsstatwith$ we denote the selection encoding of the statistic (see introduction).
+%% Convex hull
+Since $\distmeasuredby{\basemeasure}$ is the convex hull of the vertices $\frac{1}{\basemeasureat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables}$, and any mean parameters are linear transforms of the distributions, the mean polytope is the convex hull of the vectors
+\begin{align*}
+    \genimset
+    \coloneqq \{\sencsstatat{\indexedshortcatvariables,\selvariable}
+    \wcols\shortcatindices\in\facstates\ncond\basemeasureat{\indexedshortcatvariables}\neq0 \} \, .
+\end{align*}
 
-\subsection{Convex hull}
+%\subsection{Convex hull}
+%
+%First of all, we characterize the mean polytope as the convex hull of the slices to the selection encoding.
+%
+%\begin{lemma}
+%    For any statistic $\sstat$ and base measure $\basemeasure$, the set of mean parameters is the convex hull of the set
+%    \begin{align*}
+%        \genimset
+%        \coloneqq \{\sencsstatat{\indexedshortcatvariables,\selvariable}
+%        \wcols\shortcatindices\in\facstates\ncond\basemeasureat{\indexedshortcatvariables}\neq0 \}
+%    \end{align*}
+%    that is $\genmeanset = \convhullof{\genimset}$.
+%\end{lemma}
+%\begin{proof}
+%    This follows from
+%    \begin{align*}
+%        \distmeasuredby{\basemeasure}
+%        = \convhullof{
+%            \frac{1}{\basemeasureat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables}
+%            \wcols\shortcatindices\in\facstates\ncond\basemeasureat{\indexedshortcatvariables}\neq0} \, .
+%    \end{align*}
+%    and for any vertex of this simplex we have
+%    \begin{align*}
+%        \contractionof{\frac{1}{\basemeasureat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}
+%        = \sencsstatat{\indexedshortcatvariables,\selvariable} \, .
+%    \end{align*}
+%\end{proof}
 
-First of all, we characterize the mean polytope as the convex hull of the slices to the selection encoding.
-
-\begin{lemma}
-    For any statistic $\sstat$ and base measure $\basemeasure$, the set of mean parameters is the convex hull of the set
-    \begin{align*}
-        \genimset
-        \coloneqq \{\sencsstatat{\indexedshortcatvariables,\selvariable}
-        \wcols\shortcatindices\in\facstates\ncond\basemeasureat{\indexedshortcatvariables}\neq0 \}
-    \end{align*}
-    that is $\genmeanset = \convhullof{\genimset}$.
-\end{lemma}
-\begin{proof}
-    This follows from
-    \begin{align*}
-        \distmeasuredby{\basemeasure}
-        = \convhullof{
-            \frac{1}{\basemeasureat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables}
-            \wcols\shortcatindices\in\facstates\ncond\basemeasureat{\indexedshortcatvariables}\neq0} \, .
-    \end{align*}
-    and for any vertex of this simplex we have
-    \begin{align*}
-        \contractionof{\frac{1}{\basemeasureat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}
-        = \sencsstatat{\indexedshortcatvariables,\selvariable} \, .
-    \end{align*}
-\end{proof}
-
-%Thus the polytope of mean parameters depends on the base measure only through its support.
 
 \subsection{Faces}
 
-Let us now continue with the investigation of the faces of the mean parameter polytope. % which we define analogously to Def.~2.1 in \cite{ziegler_lectures_2013}. % ! Defined in Ziegler directly with normals
+%Let us now continue with the investigation of the faces of the mean parameter polytope. % which we define analogously to Def.~2.1 in \cite{ziegler_lectures_2013}. % ! Defined in Ziegler directly with normals
+%The proper faces of a polytope describe its boundary.
+%We in this work will pay special attention to
+
+When studying maximum entropy distributions, we will pay special attention to the faces of a polytope, which form the boundary.
+We here define them based on convex hulls and introduce tensor representations by refined base measures.
 
 \begin{definition}
-    We say that the convex hull of a subset $\genfaceimset\subset\genimset$ is a face of a mean polytope $\genmeanset$, if and only if there is a face normal vector $\canparamofat{\facesymbol}{\selvariable}\in\parspace$ such that
+    We say that the convex hull of a subset $\genfaceimset\subset\genimset$ is a face of a polytope $\genmeanset$, if and only if there is a vector $\canparamofat{\facesymbol}{\selvariable}\in\parspace$ such that
     \begin{align*}
         \genfaceimset
         = \argmax_{\meanparamwith\in\genimset} \contraction{\meanparamwith,\canparamofat{\facesymbol}{\selvariable}} \, .
@@ -52,9 +67,9 @@ Let us now continue with the investigation of the faces of the mean parameter po
     The set of all faces of the mean polytope $\genmeanset$ is denoted by $\facelatticeof{\genmeanset}$.
 \end{definition}
 
-The set $\facelatticeof{\genmeanset}$, which is partially ordered by the inclusion operation, is a lattice \cite{ziegler_lectures_2013}.
-We notice, that each face itself is a convex polytope.
-What is more, we can characterize these as mean parameter polytopes with respect to refined base measures to be defined next.
+The set $\facelatticeof{\genmeanset}$, partially ordered by the inclusion operation, is a lattice \cite{ziegler_lectures_2013}.
+% Refined base measures
+We now show that each face itself is a convex polytope to a refined base measure.
 
 \begin{definition}
     \label{def:faceMeasure}
@@ -68,13 +83,17 @@ What is more, we can characterize these as mean parameter polytopes with respect
     \end{align*}
 \end{definition}
 
-We now specify the mean parameter polytope to any face using the face measure as a refinement of the base measure.
+The refined base measures has by definition a smaller support than the base measure.
+We now show that restricting the distributions in $\distmeasuredby{\basemeasure}$ to those in $\distmeasuredby{\basemeasureof{\sstat,\facesymbol}}$ amounts to a restriction of the polytope $\genmeanset$ to the corresponding face.
+
+%We now specify the mean parameter polytope to any face using the face measure as a refinement of the base measure.
 
 \begin{lemma}
     \label{lem:faceAsRefinedPolytope}
     For any face $\facein$ we have
     \begin{align*}
-        \facesymbol = \meansetof{\sstat,\basemeasureof{\sstat,\facesymbol}} \, .
+        \facesymbol
+        = \meansetof{\sstat,\basemeasureof{\sstat,\facesymbol}} \, .
     \end{align*}
 \end{lemma}
 \begin{proof}
@@ -129,20 +148,7 @@ Representability of a distribution with respect to face measures is an equivalen
 %    Thus, if and only if $\probwith$ is representable with respect to $\genfacemeasureat{\shortcatvariables}$, we have $\meanparamat{\selvariable}\in\facesymbol$.
 \end{proof}
 
-
 Let us now investigate tensor network representations of refined base measures, based on the basis encoding $\bencodingof{\sstat}$ of a statistic.
-% Vertices
-%Vertices of $\genmeanset$ are faces with single elements, that is $\{\meanparamwith\}$.
-%By \lemref{lem:faceConvHullPreimage} there must be $\meanparam$ must lie in the image of $\sstatencoding$, since otherwise $\genmeanset$ would be empty.
-%The vertex measure is then
-%\begin{align*}
-%    \basemeasureofat{\sstat,\facesymbol}{\shortcatvariables}
-%    = \contractionof{\bencodingofat{\sstat}{\headvariables,\shortcatvariables},\onehotmapofat{\imelementwith}{\headvariables}}{\shortcatvariables}
-%\end{align*}
-%Here we use that each $\meanparam\in\facesymbol\cap\imageof{\sstatencoding}$ has integer-valued coordinates and denote
-%\begin{align*}
-%    \onehotmapofat{\imelementwith}{\headvariables} = \bigotimes_{\selindexin} \onehotmapofat{\meanparamat{\indexedselvariable}}{\headvariableof{\selindex}} \, .
-%\end{align*}
 
 \begin{theorem}
     \label{the:faceMeasureCharacterization}
@@ -222,13 +228,18 @@ We now investigate the representation of refined base measures by \ComputationAc
     and thus $\genfacemeasureat{\shortcatvariables|\varnothing} \in \realizabledistsof{\sstat,\graph,\basemeasure}$.
 \end{proof}
 
-%Let us now investigate, which normalized face measures can be computed using $\sstat$ and a hypergraph $\graph$.
-
 \input{examples/mean-polytope/vertices}
 
-While vertices are the minimal non-vanishing faces in the face-lattice (see \cite{ziegler_lectures_2013}), we now show that also the maximal face, namely the polytope itself, is representable with respect to the elementary hypergraph $\elgraph$.
+While vertices are the minimal non-vanishing faces in the face-lattice (see \cite{ziegler_lectures_2013}), we now show that also the maximal face, namely the polytope itself, is representable with respect to the elementary hypergraph $\elgraph$ (see \figref{fig:elFormat}).
 
 \input{examples/mean-polytope/maximal-face}
+
+\begin{figure}
+    \input{tikz/mean-polytope/el-format}
+    \caption{Elementary tensor format consiting in the elementary hypergraph $\elformat$ $a)$, and corresponding tensor networks $b)$ being the tensor products of vectors.}
+    \label{fig:elFormat}
+\end{figure}
+
 
 \subsection{Representation in the $\cpformat$ format}
 
@@ -307,7 +318,6 @@ Let us now introduce relative interiors, which enables us to find disjoint parti
     \label{def:relativeInterior}
     The relative interior $\sbinteriorof{\arbset}$ of an arbitrary set $\arbset\subset\parspace$ is the interior of $\arbset$ in the affine subspace $\convhullof{\arbset}$.
 \end{definition}
-
 
 \begin{lemma}
     \label{lem:faceToMean}

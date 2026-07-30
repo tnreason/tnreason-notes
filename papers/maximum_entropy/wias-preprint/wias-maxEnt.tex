@@ -1,0 +1,79 @@
+\documentclass[a4paper,11pt,twoside,english]{article}
+\usepackage{wiaspreprint}
+\input{info}
+\input{titlepage}
+
+%%%%%%%%%%%%%%%%%% packages
+\usepackage{amsthm}
+
+%%%%%%%%%%%%%%%%%% copied from jmlr submission file
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\usepackage{minted}
+
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz-3dplot}
+\usepackage{import}
+\subimport{../../../macros/}{all-macros.tex}
+
+\usetikzlibrary{fit}
+
+\newcommand{\abs}[1]{\ensuremath{\left\vert#1\right\vert}}
+\newcommand{\alex}[1]{\textcolor{blue}{#1}}
+\newcommand{\maxf}[1]{\textcolor{orange}{#1}}
+\newcommand{\janina}[1]{\textcolor{teal}{#1}}
+\newcommand{\martin}[1]{\textcolor{cyan}{#1}}
+\usepackage{svg}
+%%%%%%%%%%%%%%%%%%%%% copied from book chapter wias preprint
+\usepackage{thmtools}
+
+\declaretheorem[
+    name=Theorem,
+    numberwithin=section]{theorem}
+\declaretheorem[
+    name=Assumption,
+    sibling=theorem]{assumption}
+
+\numberwithin{equation}{section}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{natbib}
+\makeatletter
+\renewcommand\NAT@nmfmt[1]{#1\allowbreak}
+\makeatother
+\setlength{\emergencystretch}{2em}
+
+\begin{document}
+    \maketitle
+
+    \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
+        \input{../sections/abstract}
+    \end{abstract}
+
+    \subimport{..}{./sections/introduction.tex}
+    \subimport{..}{./sections/mean-polytope.tex}
+    \subimport{..}{./sections/exp-family.tex}
+    \subimport{..}{./sections/gen-rep.tex}
+    \subimport{..}{./sections/boolean-stat.tex}
+    \subimport{..}{./sections/outlook.tex}
+
+
+% Manual newpage inserted to improve layout of sample file - not
+% needed in general before appendices/bibliography.
+
+    \vskip 0.2in
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../../references.bib}%
+
+\end{document}

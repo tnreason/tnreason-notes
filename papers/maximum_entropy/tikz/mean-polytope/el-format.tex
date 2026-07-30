@@ -1,19 +1,13 @@
 \stantikzpic{
 
-    \drawtextnode{0}{5}{$a)$}
+    \drawtextnode{-2}{3}{$a)$}
 
     \drawvariablenode{0}{0}{$\headvariableof{0}$}{X0}
     \drawvariablenode{3}{0}{$\headvariableof{1}$}{X1}
     \drawtextnode{6}{0}{$\cdots$}
     \drawvariablenode{9}{0}{$\headvariableof{\seldim-1}$}{Xdmin1}
 
-    \drawvariablenode{4.5}{5}{$\decvariable$}{I}
-
-    \draw (X0) -- (I);
-    \draw (X1) -- (I);
-    \draw (Xdmin1) -- (I);
-
-    \begin{scope}[shift={(15,0)}]
+    \begin{scope}[shift={(15,-2)}]
         \drawtextnode{-3}{5}{$b)$}
 
         \drawtensorblock{0}{2.5}{1}{$\hypercoreof{0}$}
@@ -26,11 +20,6 @@
         \drawtensorblock{9}{2.5}{1}{$\hypercoreof{\seldim\shortminus1}$}
         \drawvwire{9}{1.5}{$\headvariableof{\seldim\shortminus1}$}
 
-        \drawvariabledot{4.5}{6}
-        \drawtextnode{5}{6.5}{\colorlabelsize $\decvariable$}
-        \draw (0,3.5) to[bend right=-20] (4.5,6);
-        \draw (3,3.5) to[bend right=-10] (4.5,6);
-        \draw (9,3.5) to[bend right=20] (4.5,6);
     \end{scope}
 
 }

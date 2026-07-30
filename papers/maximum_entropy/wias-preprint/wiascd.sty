@@ -1,0 +1,555 @@
+%%
+%% This is file `wiascd.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% weierstrass.dtx  (with options: `wiascd')
+%% 2009/2010 da vinci design GmbH
+%% 2010-2025 WIAS (H. Pletat; with contributions by
+%%                 J. Fuhrmann, M. Liero, C. Loebhard, S. Reichelt,
+%%                 and K. Tabelow)
+
+\def\fileversion{1.31}
+\def\filedate{2025/10/01}
+\def\filename{wiascd}
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{\filename}[\filedate\space v\fileversion\space
+                           WIAS Corporate Design]
+
+\newcommand*{\WIASCD@defaultyear}{}
+\newif\if@WIASCD@monochrome\@WIASCD@monochromefalse
+\newif\if@WIASCD@wiasitems\@WIASCD@wiasitemstrue
+\newif\if@WIASCD@mathpazo\@WIASCD@mathpazofalse
+\newif\if@WIASCD@mathptmx\@WIASCD@mathptmxfalse
+\newif\if@WIASCD@lmodern\@WIASCD@lmodernfalse
+\newif\if@WIASCD@nofonts\@WIASCD@nofontsfalse
+\DeclareOption{monochrome}{\@WIASCD@monochrometrue}
+\DeclareOption{nowiasitems}{\@WIASCD@wiasitemsfalse}
+\DeclareOption{wiasitems}{\@WIASCD@wiasitemstrue}
+\DeclareOption{nomathpazo}{\@WIASCD@mathpazofalse}
+\DeclareOption{mathpazo}{\@WIASCD@mathpazotrue}
+\DeclareOption{nomathptmx}{\@WIASCD@mathptmxfalse}
+\DeclareOption{mathptmx}{\@WIASCD@mathptmxtrue}
+\DeclareOption{nolmodern}{\@WIASCD@lmodernfalse}
+\DeclareOption{lmodern}{\@WIASCD@lmoderntrue}
+\DeclareOption{nofonts}{\@WIASCD@nofontstrue}
+\DeclareOption{german}{%
+  \AtBeginDocument{\selectlanguage{german}\main@language{german}}%
+}
+\DeclareOption{ngerman}{%
+  \AtBeginDocument{\selectlanguage{ngerman}\main@language{ngerman}}%
+}
+\DeclareOption{english}{%
+  \AtBeginDocument{\selectlanguage{english}\main@language{english}}%
+}
+\DeclareOption{2003}{\renewcommand*{\WIASCD@defaultyear}{2003}}
+\DeclareOption{2010}{\renewcommand*{\WIASCD@defaultyear}{2010}}
+\ExecuteOptions{2010}
+\ProcessOptions*\relax
+
+
+
+\PassOptionsToPackage{english,german,ngerman}{babel}
+\PassOptionsToPackage{scaled=.85}{helvet}
+\RequirePackage{babel}
+\RequirePackage[T1]{fontenc}
+\if@WIASCD@nofonts\else
+  \if@WIASCD@mathpazo
+    \RequirePackage{mathpazo}
+    \RequirePackage{times}
+  \else\if@WIASCD@mathptmx
+    \RequirePackage{mathptmx}
+  \else\if@WIASCD@lmodern
+    \RequirePackage{lmodern}
+    \RequirePackage{exscale}
+    \RequirePackage{times}
+  \else
+    \RequirePackage{times}
+  \fi\fi\fi
+  \RequirePackage{courier}
+  \RequirePackage{helvet}
+\fi
+\RequirePackage{amssymb}   % needed for \blacksquare (itemize)
+\RequirePackage{xcolor}
+\RequirePackage{graphicx}
+\RequirePackage{keyval}
+\RequirePackage{xspace}
+\RequirePackage{ifthen}
+\RequirePackage{tikz}      % needed for \wiasrg
+
+
+\newcount\WIASCD@year@month
+\WIASCD@year@month=\year
+\multiply\WIASCD@year@month by 100
+\advance\WIASCD@year@month by \month
+\renewcommand*{\familydefault}{\sfdefault}
+\@ifclassloaded{beamer}{}{%
+  \if@WIASCD@wiasitems
+    \renewcommand*{\labelitemi}{{\color{wiasblue}\small $\blacksquare$}}%
+    \renewcommand*{\labelitemii}{{\color{wiasblue}\small $\blacksquare$}}%
+    \renewcommand*{\labelitemiii}{{\color{wiasblue}\small $\blacksquare$}}%
+    \renewcommand*{\labelitemiv}{{\color{wiasblue}\small $\blacksquare$}}%
+    \renewcommand*{\labelenumi}{\arabic{enumi}}%
+    \renewcommand*{\labelenumii}{\labelenumi.\arabic{enumii}}%
+    \renewcommand*{\labelenumiii}{\labelenumii.\arabic{enumiii}}%
+  \fi
+}
+\if@WIASCD@monochrome
+  \definecolor{wiasblue}   {gray}{0.0}
+  \definecolor{wiasblue100}{gray}{0.0}
+  \definecolor{wiasblue90} {gray}{0.1}
+  \definecolor{wiasblue80} {gray}{0.2}
+  \definecolor{wiasblue70} {gray}{0.3}
+  \definecolor{wiasblue60} {gray}{0.4}
+  \definecolor{wiasblue50} {gray}{0.5}
+  \definecolor{wiasblue40} {gray}{0.6}
+  \definecolor{wiasblue30} {gray}{0.7}
+  \definecolor{wiasblue20} {gray}{0.8}
+  \definecolor{wiasblue10} {gray}{0.9}
+\else\ifnum\WIASCD@defaultyear>2009
+  \definecolor{wias}         {cmyk}{1.0, 0.60, 0, 0}
+  \definecolor{wiasblue}     {cmyk}{1.0, 0.60, 0, 0}
+  \definecolor{wiasbluelight}{cmyk}{0.4, 0.08, 0, 0}
+  \definecolor{wiasblue100}  {cmyk}{1.0, 0.60, 0, 0}
+  \definecolor{wiasblue90}   {cmyk}{0.9, 0.54, 0, 0}
+  \definecolor{wiasblue80}   {cmyk}{0.8, 0.48, 0, 0}
+  \definecolor{wiasblue70}   {cmyk}{0.7, 0.42, 0, 0}
+  \definecolor{wiasblue60}   {cmyk}{0.6, 0.36, 0, 0}
+  \definecolor{wiasblue50}   {cmyk}{0.5, 0.30, 0, 0}
+  \definecolor{wiasblue40}   {cmyk}{0.4, 0.24, 0, 0}
+  \definecolor{wiasblue30}   {cmyk}{0.3, 0.18, 0, 0}
+  \definecolor{wiasblue20}   {cmyk}{0.2, 0.12, 0, 0}
+  \definecolor{wiasblue10}   {cmyk}{0.1, 0.06, 0, 0}
+\else\ifnum\WIASCD@defaultyear>2002
+  \definecolor{wias}       {cmyk}{1.0, 0.250, 0, 0.580}
+  \definecolor{wiasblue}   {cmyk}{1.0, 0.250, 0, 0.580}
+  \definecolor{wiasblue100}{cmyk}{1.0, 0.250, 0, 0.580}
+  \definecolor{wiasblue90} {cmyk}{0.9, 0.225, 0, 0.522}
+  \definecolor{wiasblue80} {cmyk}{0.8, 0.200, 0, 0.464}
+  \definecolor{wiasblue70} {cmyk}{0.7, 0.175, 0, 0.406}
+  \definecolor{wiasblue60} {cmyk}{0.6, 0.150, 0, 0.348}
+  \definecolor{wiasblue50} {cmyk}{0.5, 0.125, 0, 0.290}
+  \definecolor{wiasblue40} {cmyk}{0.4, 0.100, 0, 0.232}
+  \definecolor{wiasblue30} {cmyk}{0.3, 0.075, 0, 0.174}
+  \definecolor{wiasblue20} {cmyk}{0.2, 0.050, 0, 0.116}
+  \definecolor{wiasblue10} {cmyk}{0.1, 0.025, 0, 0.058}
+\else
+\fi\fi\fi
+\definecolor{rg1color}     {cmyk}{0.00, 0.90, 0.80, 0.00}
+\definecolor{rg1colorlight}{cmyk}{0.00, 0.36, 0.32, 0.00}
+\definecolor{rg2color}     {cmyk}{0.75, 0.05, 1.00, 0.10}
+\definecolor{rg2colorlight}{cmyk}{0.30, 0.02, 0.40, 0.04}
+\definecolor{rg3color}     {cmyk}{0.00, 0.80, 0.00, 0.00}
+\definecolor{rg3colorlight}{cmyk}{0.00, 0.32, 0.00, 0.00}
+\definecolor{rg4color}     {cmyk}{0.00, 0.10, 1.00, 0.10}
+\definecolor{rg4colorlight}{cmyk}{0.00, 0.04, 0.40, 0.04}
+\definecolor{rg5color}     {cmyk}{0.48, 0.61, 0.00, 0.00}
+\definecolor{rg5colorlight}{cmyk}{0.19, 0.24, 0.00, 0.00}
+\definecolor{rg6color}     {cmyk}{0.70, 0.00, 0.40, 0.00}
+\definecolor{rg6colorlight}{cmyk}{0.28, 0.00, 0.16, 0.00}
+\definecolor{rg7color}     {cmyk}{0.76, 0.53, 1.00, 0.00}
+\definecolor{rg7colorlight}{cmyk}{0.30, 0.21, 0.40, 0.00}
+\definecolor{rg8color}     {cmyk}{0.00, 0.70, 0.90, 0.00}
+\definecolor{rg8colorlight}{cmyk}{0.00, 0.28, 0.36, 0.00}
+\definecolor{ffpcolor}     {cmyk}{0.00, 0.00, 0.00, 0.60}
+\definecolor{ffpcolorlight}{cmyk}{0.00, 0.00, 0.00, 0.30}
+\definecolor{wgcolor}     {cmyk}{0.00, 0.00, 0.00, 0.60}
+\definecolor{wgcolorlight}{cmyk}{0.00, 0.00, 0.00, 0.30}
+\definecolor{gray}   {gray}{0.5}
+\definecolor{gray100}{gray}{0.0}
+\definecolor{gray90} {gray}{0.1}
+\definecolor{gray80} {gray}{0.2}
+\definecolor{gray70} {gray}{0.3}
+\definecolor{gray60} {gray}{0.4}
+\definecolor{gray50} {gray}{0.5}
+\definecolor{gray40} {gray}{0.6}
+\definecolor{gray30} {gray}{0.7}
+\definecolor{gray20} {gray}{0.8}
+\definecolor{gray10} {gray}{0.9}
+\newcommand{\wiasrg}[1]{%
+  \bgroup
+    \ifthenelse{\equal{#1}{FFP}}{%
+      \renewcommand*{\WIASCD@tempa}{#1}%
+      \renewcommand*{\WIASCD@tempb}{ffpcolor}%
+      \renewcommand*{\WIASCD@tempc}{7.4ex}%
+    }{\ifthenelse{\equal{#1}{WG}}{%
+      \renewcommand*{\WIASCD@tempa}{#1}%
+      \renewcommand*{\WIASCD@tempb}{wgcolor}%
+      \renewcommand*{\WIASCD@tempc}{7.1ex}%
+    }{%
+      \renewcommand*{\WIASCD@tempa}{%
+        \iflanguage{german}{FG}{}%
+        \iflanguage{ngerman}{FG}{}%
+        \iflanguage{english}{RG}{}%
+        #1%
+      }%
+      \renewcommand*{\WIASCD@tempb}{rg#1color}%
+      \renewcommand*{\WIASCD@tempc}{7.1ex}%
+    }}%
+    \tikz{\node[rectangle, rounded corners,white, fill=\WIASCD@tempb,text width=\WIASCD@tempc,text centered] {\textbf{\WIASCD@tempa}};}%
+  \egroup
+}
+\define@key{WIASCD@logo@key}{name}{%
+  \renewcommand*{\WIASCD@logo@name}{#1}%
+}
+\define@key{WIASCD@logo@key}{2017}[true]{%
+  \renewcommand*{\WIASCD@logo@year}{2017}%
+}
+\define@key{WIASCD@logo@key}{2012}[true]{%
+  \renewcommand*{\WIASCD@logo@year}{2012}%
+}
+\define@key{WIASCD@logo@key}{2010}[true]{%
+  \renewcommand*{\WIASCD@logo@year}{2010}%
+}
+\define@key{WIASCD@logo@key}{2008}[true]{%
+  \renewcommand*{\WIASCD@logo@year}{2008}%
+}
+\define@key{WIASCD@logo@key}{2007}[true]{%
+  \renewcommand*{\WIASCD@logo@year}{2007}%
+}
+\define@key{WIASCD@logo@key}{2003}[true]{%
+  \renewcommand*{\WIASCD@logo@year}{2003}%
+}
+\define@key{WIASCD@logo@key}{1995}[true]{%
+  \renewcommand*{\WIASCD@logo@year}{1995}%
+}
+\define@key{WIASCD@logo@key}{1992}[true]{%
+  \renewcommand*{\WIASCD@logo@year}{1992}%
+}
+\define@key{WIASCD@logo@key}{year}{%
+  \renewcommand*{\WIASCD@logo@year}{#1}%
+}
+\define@key{WIASCD@logo@key}{black}[true]{%
+  \renewcommand*{\WIASCD@logo@color}{-black}%
+}
+\define@key{WIASCD@logo@key}{gray}[true]{%
+  \renewcommand*{\WIASCD@logo@color}{-gray}%
+}
+\define@key{WIASCD@logo@key}{plain}[true]{%
+  \renewcommand*{\WIASCD@logo@lang}{}%
+}
+\define@key{WIASCD@logo@key}{german}[true]{%
+  \renewcommand*{\WIASCD@logo@lang}{-de}%
+}
+\define@key{WIASCD@logo@key}{ngerman}[true]{%
+  \renewcommand*{\WIASCD@logo@lang}{-de}%
+}
+\define@key{WIASCD@logo@key}{english}[true]{%
+  \renewcommand*{\WIASCD@logo@lang}{-en}%
+}
+\define@key{WIASCD@logo@key}{member}[true]{%
+  \renewcommand*{\WIASCD@logo@addon}{-member}%
+}
+\define@key{WIASCD@logo@key}{width}{%
+  \g@addto@macro{\WIASCD@logo@args}{,width=#1}%
+}
+\define@key{WIASCD@logo@key}{height}{%
+  \g@addto@macro{\WIASCD@logo@args}{,height=#1}%
+}
+\define@key{WIASCD@logo@key}{angle}{%
+  \g@addto@macro{\WIASCD@logo@args}{,angle=#1}%
+}
+\newcommand*{\WIASCD@logo@filename}{}
+\newcommand*{\WIASCD@logo@name}{}
+\newcommand*{\WIASCD@logo@year}{}
+\newcommand*{\WIASCD@logo@color}{}
+\newcommand*{\WIASCD@logo@lang}{}
+\newcommand*{\WIASCD@logo@addon}{}
+\newcommand*{\WIASCD@logo@args}{}
+\newcommand*{\WIASCD@logo@resetkeys}{%
+  \renewcommand*{\WIASCD@logo@filename}{}%
+  \renewcommand*{\WIASCD@logo@name}{wiaslogo-}%
+  \renewcommand*{\WIASCD@logo@addon}{}%
+  \renewcommand*{\WIASCD@logo@args}{}%
+  \if@WIASCD@monochrome
+    \renewcommand*{\WIASCD@logo@color}{-black}%
+  \else
+    \renewcommand*{\WIASCD@logo@color}{}%
+  \fi
+  \ifnum\WIASCD@defaultyear>\year
+    \renewcommand*{\WIASCD@logo@year}{\WIASCD@defaultyear}%
+  \else
+    \renewcommand*{\WIASCD@logo@year}{\year}%
+  \fi
+  \renewcommand*{\WIASCD@logo@lang}{}%
+  \iflanguage{german}{\renewcommand*{\WIASCD@logo@lang}{-de}}{}%
+  \iflanguage{ngerman}{\renewcommand*{\WIASCD@logo@lang}{-de}}{}%
+  \iflanguage{english}{\renewcommand*{\WIASCD@logo@lang}{-en}}{}%
+}
+\newcommand*{\WIASCD@logo@includegraphics}[2]{%
+  \expandafter\includegraphics\expandafter[#1]{#2}%
+}
+\newcommand*{\WIASCD@logo@type@wias}{0}
+\newcommand*{\WIASCD@logo@type@fvb}{1}
+\newcommand*{\WIASCD@logo@type@wgl}{2}
+\newcommand*{\WIASCD@logo@type@ipbb}{3}
+\newcommand*{\WIASCD@logo@type@abuf}{4}
+\newcommand*{\WIASCD@set@logo@filename}[2][wias]{%
+  \WIASCD@logo@resetkeys
+  \setkeys{WIASCD@logo@key}{#2}%
+  \ifcase\csname WIASCD@logo@type@#1\endcsname                  % WIAS logo
+    \renewcommand*{\WIASCD@logo@name}{wiaslogo-}%
+    \ifnum\WIASCD@logo@year>2009
+      \renewcommand*{\WIASCD@logo@year}{2010}%
+      \renewcommand*{\WIASCD@logo@addon}{}%
+    \else\ifnum\WIASCD@logo@year>2002
+      \renewcommand*{\WIASCD@logo@year}{2003}%
+      \renewcommand*{\WIASCD@logo@color}{}%
+      \renewcommand*{\WIASCD@logo@addon}{}%
+    \else
+      \renewcommand*{\WIASCD@logo@year}{1995}%
+      \renewcommand*{\WIASCD@logo@color}{}%
+      \renewcommand*{\WIASCD@logo@lang}{}%
+      \renewcommand*{\WIASCD@logo@addon}{}%
+    \fi\fi
+  \or                                                           % FVB logo
+    \renewcommand*{\WIASCD@logo@name}{fvblogo-}%
+    \ifnum\WIASCD@logo@year>2006
+      \renewcommand*{\WIASCD@logo@year}{2007}%
+      \renewcommand*{\WIASCD@logo@color}{}%
+      \renewcommand*{\WIASCD@logo@lang}{}%
+      \renewcommand*{\WIASCD@logo@addon}{}%
+    \else
+      \renewcommand*{\WIASCD@logo@year}{1992}%
+      \renewcommand*{\WIASCD@logo@color}{}%
+      \renewcommand*{\WIASCD@logo@lang}{}%
+      \renewcommand*{\WIASCD@logo@addon}{}%
+    \fi
+  \or                                                           % WGL logo
+    \renewcommand*{\WIASCD@logo@name}{wgllogo-}%
+    \ifnum\WIASCD@logo@year>2016
+      \renewcommand*{\WIASCD@logo@year}{2017}%
+    \else\ifnum\WIASCD@logo@year>2011
+      \renewcommand*{\WIASCD@logo@year}{2012}%
+    \else
+      \renewcommand*{\WIASCD@logo@year}{2003}%
+      \renewcommand*{\WIASCD@logo@color}{}%
+      \renewcommand*{\WIASCD@logo@lang}{}%
+      \renewcommand*{\WIASCD@logo@addon}{}%
+    \fi\fi
+  \or                                                           % IPBB logo
+    \renewcommand*{\WIASCD@logo@name}{ipbb}%
+      \renewcommand*{\WIASCD@logo@year}{2008}%
+      \renewcommand*{\WIASCD@logo@color}{}%
+      \renewcommand*{\WIASCD@logo@lang}{}%
+      \renewcommand*{\WIASCD@logo@addon}{}%
+  \or                                                           % ABUF logo
+    \renewcommand*{\WIASCD@logo@name}{abuflogo-}%
+      \renewcommand*{\WIASCD@logo@year}{2013}%
+      \renewcommand*{\WIASCD@logo@color}{}%
+      \renewcommand*{\WIASCD@logo@lang}{}%
+      \renewcommand*{\WIASCD@logo@addon}{}%
+  \fi
+  \edef\WIASCD@logo@filename{%
+    \WIASCD@logo@name%
+    \WIASCD@logo@year%
+    \WIASCD@logo@addon%
+    \WIASCD@logo@color%
+    \WIASCD@logo@lang%
+  }%
+}
+\newcommand*{\wiaslogo}[1][]{%
+  \WIASCD@set@logo@filename[wias]{plain,#1}%
+  \WIASCD@logo@includegraphics{\WIASCD@logo@args}{\WIASCD@logo@filename}%
+}
+\newcommand*{\fvblogo}[1][]{%
+  \WIASCD@set@logo@filename[fvb]{#1}%
+  \WIASCD@logo@includegraphics{\WIASCD@logo@args}{\WIASCD@logo@filename}%
+}
+\newcommand*{\wgllogo}[1][]{%
+  \WIASCD@set@logo@filename[wgl]{#1}%
+  \WIASCD@logo@includegraphics{\WIASCD@logo@args}{\WIASCD@logo@filename}%
+}
+\newcommand*{\ipbblogo}[1][]{%
+  \WIASCD@set@logo@filename[ipbb]{#1}%
+  \WIASCD@logo@includegraphics{\WIASCD@logo@args}{\WIASCD@logo@filename}%
+}
+\newcommand*{\abuflogo}[1][]{%
+  \WIASCD@set@logo@filename[abuf]{#1}%
+  \WIASCD@logo@includegraphics{\WIASCD@logo@args}{\WIASCD@logo@filename}%
+}
+\newcommand*{\WIASCD@spnl}{}
+\newcommand*{\WIASCD@institute@german}{%
+  Weierstra\ss-Institut\xspace
+}
+\newcommand*{\WIASCD@institute@english}{%
+  Weierstrass Institute\xspace
+}
+\newcommand*{\WIASCD@institutefor@german}{%
+  f\"ur\WIASCD@spnl Angewandte Analysis und Stochastik\xspace
+}
+\newcommand*{\WIASCD@institutefor@english}{%
+  for\WIASCD@spnl Applied Analysis and Stochastics\xspace
+}
+\newcommand*{\WIASCD@institutename@german}{%
+  \WIASCD@institute@german\WIASCD@institutefor@german
+}
+\newcommand*{\WIASCD@institutename@english}{%
+  \WIASCD@institute@english\WIASCD@institutefor@english
+}
+\newcommand*{\WIASCD@address@german}{%
+  Anton-Wilhelm-Amo-Stra\ss e 39\WIASCD@spnl 10117 Berlin%
+  \xspace
+}
+\newcommand*{\WIASCD@address@english}{%
+  Anton-Wilhelm-Amo-Strasse 39\WIASCD@spnl 10117 Berlin\WIASCD@spnl Germany%
+  \xspace
+}
+\newcommand*{\WIASCD@address@short}{%
+  Anton-Wilhelm-Amo-Str. 39 $\cdot$ 10117 Berlin%
+  \iflanguage{english}{\ $\cdot$ Germany}{}%
+  \xspace
+}
+\newcommand*{\WIASCD@institutename@oneline}{%
+  \bgroup
+    \let\WIASCD@spnl\ % space
+    \iflanguage{german}{\WIASCD@institutename@german}{}%
+    \iflanguage{ngerman}{\WIASCD@institutename@german}{}%
+    \iflanguage{english}{\WIASCD@institutename@english}{}%
+  \egroup
+  \xspace
+}
+\newcommand*{\WIASCD@institutename@twoline}{%
+  \bgroup
+    \let\WIASCD@spnl\\% newline
+    \iflanguage{german}{\WIASCD@institutename@german}{}%
+    \iflanguage{ngerman}{\WIASCD@institutename@german}{}%
+    \iflanguage{english}{\WIASCD@institutename@english}{}%
+  \egroup
+  \xspace
+}
+\newcommand*{\WIASCD@fvbname}{%
+  \ifnum\WIASCD@year@month>201010
+    \iflanguage{german}{Leibniz-Institut }{}%
+    \iflanguage{ngerman}{Leibniz-Institut }{}%
+    \iflanguage{english}{Leibniz Institute }{}%
+  \fi
+  \iflanguage{german}{im}{}%
+  \iflanguage{ngerman}{im}{}%
+  \iflanguage{english}{in}{}%
+  \ Forschungsverbund Berlin e.\,V.%
+  \xspace
+}
+\newcommand*{\WIASCD@address@oneline}{%
+  \bgroup
+    \def\WIASCD@spnl{ $\cdot$ }%
+    \iflanguage{german}{\WIASCD@address@german}{}%
+    \iflanguage{ngerman}{\WIASCD@address@german}{}%
+    \iflanguage{english}{\WIASCD@address@english}{}%
+  \egroup
+  \xspace
+}
+\newcommand*{\WIASCD@address@twoline}{%
+  \bgroup
+    \def\WIASCD@spnl{ $\cdot$ }%
+    \bgroup\def\WIASCD@spnl{\\\egroup}%
+    \iflanguage{german}{\WIASCD@address@german}{}%
+    \iflanguage{ngerman}{\WIASCD@address@german}{}%
+    \iflanguage{english}{\WIASCD@address@english}{}%
+  \egroup
+  \xspace
+}
+\newcommand*{\WIASCD@address@multiline}{%
+  \bgroup
+    \let\WIASCD@spnl\\% newline
+    \iflanguage{german}{\WIASCD@address@german}{}%
+    \iflanguage{ngerman}{\WIASCD@address@german}{}%
+    \iflanguage{english}{\WIASCD@address@english}{}%
+  \egroup
+  \xspace
+}
+\newcommand*{\WIASCD@phoneprefix}{%
+  \iflanguage{german}{030 20372}{}%
+  \iflanguage{ngerman}{030 20372}{}%
+  \iflanguage{english}{+49 30 20372}{}%
+  \xspace
+}
+\newcommand*{\WIASCD@fax}{%
+  \WIASCD@phoneprefix\ 303%
+  \xspace
+}
+\newcommand*{\WIASCD@domain}{wias-berlin.de\xspace}
+\newcommand*{\WIASCD@extrasngerman}{%
+  \languageshorthands{ngerman}%
+  \bbl@activate{"}%
+  \babel@savevariable{\lccode 25}\lccode 25=25%
+  \babel@save\"\umlautlow
+  \bbl@frenchspacing
+}
+\newcommand*{\WIASCD@selectlanguage@orig}{}
+\let\WIASCD@selectlanguage@orig\selectlanguage
+\renewcommand*{\selectlanguage}[1]{%
+  \WIASCD@selectlanguage@orig{#1}%
+  \WIASCD@extrasngerman
+}
+\newcommand*{\WIASCD@tempa}{}
+\newcommand*{\WIASCD@tempb}{}
+\newcommand*{\WIASCD@tempc}{}
+\newsavebox{\WIASCD@tempbox}
+\begingroup
+  % \cs{Hv@scale} is defined by the ``helvet'' package when using
+  % the package's ``scaled'' option.
+  \expandafter\ifx\csname Hv@scale\endcsname\relax
+    \def\Hv@scale{1}
+  \fi
+  \setlength{\@tempdima}{\Hv@scale pt}
+  \setlength{\@tempdima}{1.111\@tempdima}
+  \xdef\WIASCD@tmscale{\strip@pt\@tempdima}
+  \setlength{\@tempdima}{\Hv@scale pt}
+  \setlength{\@tempdima}{1.053\@tempdima}
+  \xdef\WIASCD@plscale{\strip@pt\@tempdima}
+\endgroup
+\newcommand*{\WIASCD@parse@fontshapedecl}{}
+\def\WIASCD@parse@fontshapedecl#1<#2>#3*#4[#5]#6\@nil{%
+  \def\WIASCD@fontshapedecl@i{#1}%
+  \def\WIASCD@fontshapedecl@ii{#2}%
+  \def\WIASCD@fontshapedecl@iii{#3}%
+  \def\WIASCD@fontshapedecl@iv{#4}%
+  \def\WIASCD@fontshapedecl@v{#5}%
+  \def\WIASCD@fontshapedecl@vi{#6}%
+}
+\newcommand*{\WIASCD@DeclareFontShape@Orig}{}
+\let\WIASCD@DeclareFontShape@Orig\DeclareFontShape@
+\renewcommand*{\DeclareFontShape@}[6]{%
+  \begingroup
+    \xdef\WIASCD@fntdesc{#5}%
+    \def\WIASCD@tempa{#2}%
+    \def\WIASCD@tempb{ptm}\ifx\WIASCD@tempa\WIASCD@tempb
+      \expandafter\WIASCD@parse@fontshapedecl#5<>*[]\@nil
+      \ifx\WIASCD@fontshapedecl@vi\@empty
+        \ifx\WIASCD@fontshapedecl@v\@empty
+          \ifx\WIASCD@fontshapedecl@iv\@empty
+            \ifx\WIASCD@fontshapedecl@iii\@empty\else
+              \ifx\WIASCD@fontshapedecl@ii\@empty\else
+                \expandafter\WIASCD@parse@fontshapedecl#5*[]\@nil
+                \def\@tempb{-}\ifx\WIASCD@fontshapedecl@ii\@tempb
+                  \xdef\WIASCD@fntdesc{<->s*[\WIASCD@tmscale]\WIASCD@fontshapedecl@iii}%
+                  \PackageInfo{\filename}{replacing font `#5' by `\WIASCD@fntdesc'}%
+      \fi\fi\fi\fi\fi\fi
+    \else\def\WIASCD@tempb{ppl}\ifx\WIASCD@tempa\WIASCD@tempb
+    \fi\fi
+  \endgroup
+  \WIASCD@DeclareFontShape@Orig{#1}{#2}{#3}{#4}{\WIASCD@fntdesc}{#6}%
+}
+\newcommand{\WIASCD@smash}[1]{%
+  \begingroup
+    \begingroup\expandafter\expandafter\expandafter\endgroup
+    \expandafter\ifx\csname leavevmode@ifvmode\endcsname\relax
+    \else
+      \let\leavevmode@ifvmode\relax
+    \fi
+  \smash{#1}%
+  \endgroup
+}
+
+
+
+
+
+
+
+\endinput
+%%
+%% End of file `wiascd.sty'.

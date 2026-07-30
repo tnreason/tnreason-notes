@@ -15,10 +15,10 @@ Let us first define exponential families as classes of probability distributions
     \begin{align*}
         \sstat \defcols \facstates \rightarrow \parspace
     \end{align*}
-    and a base measure
-    \begin{align*}
-        \basemeasure \defcols \facstates \rightarrow [0,\infty)
-    \end{align*}
+    and a base measure $\basemeasurewith$
+%    \begin{align*}
+%        \basemeasure \defcols \facstates \rightarrow [0,\infty)
+%    \end{align*}
     with $\contraction{\basemeasure}\neq0$, the set $\expfamily=\{\expdist\wcols\canparamwithin\}\subset\distmeasuredby{\basemeasure}$ of probability distributions
     \begin{align*}
         \expdistat{\shortcatvariables}
@@ -30,6 +30,22 @@ Let us first define exponential families as classes of probability distributions
     \end{align*}
     is called the exponential family to $\sstat$.
 \end{definition}
+
+% Relation to standard notation and information geometry
+To connect with standard notation of exponential families we notice that the coordinate of any distribution $\expdistat{\shortcatvariables}$ at some state $\shortcatindicesin$ is
+\begin{align*}
+    \expdistat{\indexedshortcatvariables}
+    = \expof{\sum_{\selindexin}\weightparamat{\indexedselvariable}\cdot\sstatcoordinateofat{\selindex}{\shortcatindices} - \psi_{\sstat,\basemeasure}(\weightparam)}
+\end{align*}
+where
+\begin{align*}
+    \psi_{\sstat,\basemeasure}(\weightparam)
+    = \lnof{\contraction{\expof{\contractionof{\sencsstatat{\shortcatvariables,\selvariable},\canparamwith}{\shortcatvariables}},\basemeasurewith}}
+\end{align*}
+is the cumulant generating function.
+The function $\psi_{\sstat,\basemeasure}(\weightparam)$ and its Legendre transform $\psi^*_{\sstat,\basemeasure}(\meanparam)$ define the dually flat Riemannian structure on the exponential family manifold \cite{amari_information_2016}.
+%
+We now continue with the notation of \defref{def:expFamily} to find representations of exponential families by elementary \ComputationActivationNetworks{}.
 
 
 \begin{theorem}[Exponential Families are elementary \ComputationActivationNetworks{}]
@@ -107,22 +123,15 @@ Based on this property we define the forward and backward mappings to an exponen
     \end{align*}
     defined as
     \begin{align*}
-        \forwardmapof{\canparam} 
+        \forwardmapof{\canparam}
         = \contractionof{\expdistofat{\sstat,\canparam,\basemeasure}{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}
-%        \uniquantwrtof{\selindexin}{
-%            \forwardmapofat{\canparam}{\indexedselvariable}
-%            = \contraction{\expdistofat{\sstat,\canparam,\basemeasure}{\shortcatvariables},\sstatcoordinateofat{\selindex}{\shortcatvariables},\basemeasurewith}
-%        }
     \end{align*}
     Any map $\backwardmap: \sbinteriorof{\genmeanset}\rightarrow \parspace$ with $\forwardmapof{\backwardmapof{\meanparam}}=\meanparam$ for all $\meanparam\in\sbinteriorof{\genmeanset}$ is called a backward map.
 \end{definition}
 
 \subsection{Maximum entropy distributions}
 
-We now show that exponential families are maximum entropy distributions.
-
-%\subsection{Maximum entropy on the interior}
-%A classical result states, that the maximum entropy distribution is in the exponential family $\expfamilyof{\sstat,\basemeasure}$ (see e.g. \cite{koller_probabilistic_2009}).
+One universal property of exponential families amongst others (see \cite{murphy_probabilistic_2023}) is that they maximize the entropy among those with same mean vector.
 
 \begin{lemma}\label{lem:expFamilyMaxEnt}
     Any member of an exponential family $\expfamilyof{\sstat,\basemeasure}$ is a maximum entropy distribution with respect to the moment constraint on $\sstat$ and the base measure $\basemeasure$.
@@ -151,7 +160,6 @@ Together with \lemref{lem:interiorRepExpFamily} stating the existence of an expo
 
 \begin{theorem}
     \label{the:maxEntropyInterior}
-    %If the only face $\facesymbolof{\facecondset}$ of $\genmeanset$ with $\meanparam\in\facesymbolof{\facecondset}$ is $\genmeanset$ itself
     If and only if $\meanparamwith$ is in the relative interior of $\genmeanset$, then the unique solution of the maximum entropy problem is the distribution
     \begin{align*}
         \expdistofat{\sstat,\weightparam,\basemeasure}{\shortcatvariables}\in\expfamilyof{\sstat,\basemeasure}
@@ -161,7 +169,6 @@ Together with \lemref{lem:interiorRepExpFamily} stating the existence of an expo
         \weightparam
         = \backwardmapwrtof{\sstat,\basemeasure}{\meanparam} \, .
     \end{align*}
-    %with $\contractionof{\expdistofat{\sstat,\genmean,\basemeasure}{\shortcatvariables},\sencsstatwith}{\selvariable}=\genmeanat{\selvariable}$.
 \end{theorem}
 \begin{proof}
     By \lemref{lem:interiorRepExpFamily} if
@@ -177,7 +184,8 @@ Together with \lemref{lem:interiorRepExpFamily} stating the existence of an expo
     With \lemref{lem:expFamilyMaxEnt} we conclude that $\expdistof{(\sstat,\backwardmapwrtof{\sstat,\basemeasure}{\meanparam},\basemeasure)}$ is the maximum entropy distribution with respect to the moment constraint on $\sstat$ by $\meanparamwith$ and the base measure $\basemeasure$.
 \end{proof}
 
-Note that while the maximum entropy distribution is unique, the weight vector $\weightparam$ representing the maximum entropy distribution is not always unique.
+% Minimality comments
+While the maximum entropy distribution is unique, the weight vector $\weightparam$ representing the maximum entropy distribution is not always unique.
 This is reflected by multiple possible choices of backward mappings.
 Only if the exponential family is minimal (see \cite{wainwright_graphical_2008}) then the weight vector is unique.
 However, we did not restrict to such situations, since exponential families on refined base measures are not minimal.

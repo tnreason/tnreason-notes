@@ -9,9 +9,10 @@
     Then $\kcoreofat{\facesymbol}{\headvariables}$ is the one-hot encoding of the vector $\sencsstatat{\indexedshortcatvariables,\selvariable}$, that is
     \begin{align*}
         \kcoreofat{\facesymbol}{\headvariables}
-        = \onehotmapofat{\sencsstatat{\indexedshortcatvariables,\selvariable}}{\headvariables} \, .
+        = \onehotmapofat{\sencsstatat{\indexedshortcatvariables,\selvariable}}{\headvariables}
+        = \contractionof{\{\onehotmapofat{\sencsstatat{\indexedshortcatvariables,\indexedselvariable}}{\headvariableof{\selindex}}\wcols\selindexin\}}{\headvariables}\, .
     \end{align*}
-    Such tensors are examples of elementary tensors corresponding to the elementary hypergraph
+    Such tensors are examples of elementary tensors corresponding to the elementary hypergraph (see \figref{fig:elFormat})
     \begin{align*}
         \elformat
         = \big([\seldim],\{\{\selindex\}\wcols\selindexin\}\big) \, .
