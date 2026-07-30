@@ -1,13 +1,7 @@
 \documentclass[a4paper,11pt,english]{article}
 \usepackage{arxiv}
 \input{arXiv-preamble}
-\usepackage{authblk}
-
-\usepackage{tikz-3dplot}
-\usepackage{import}
 \subimport{../../../macros/}{all-macros.tex}
-
-\usepackage{catchfile}
 \CatchFileDef{\mytitle}{../sections/title.tex}{}
 
 \begin{document}
@@ -23,7 +17,7 @@
 
     \maketitle
 
-    \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
+    \begin{abstract}
         \input{../sections/abstract}
     \end{abstract}
 
@@ -34,16 +28,10 @@
     \subimport{..}{./sections/boolean-stat.tex}
     \subimport{..}{./sections/outlook.tex}
 
-   % \section*{Acknowledgements}
-   % \input{../sections/acknowledgements}
-    %AG and ME acknowledge funding from the German Federal Ministry of Education and Research (BMBF), grant number FKZ 13N17160, "Verbundprojekt: Quantum Read-Once-Memory - Verwandlung von klassischen Daten zu Quantenzuständen - Teilvorhaben: Quanten{\allowbreak}schaltkreis-Optimierung von Quantenzuständen durch Tensor-Netzwerke (QOQ-tn)".
-    %JS and ME  acknowledge funding from the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) under Germany´s Excellence Strategy – The Berlin Mathematics Research Center MATH+ (EXC-2046/2, project ID: 390685689, Project PaA-7). MF acknowledges funding from Einstein Research Unit on Quantum Devices.
-
     \vskip 0.2in
     \bibliographystyle{plainnat}
     \bibliography{../../../references.bib}
 
     \appendix
-
 
 \end{document}
