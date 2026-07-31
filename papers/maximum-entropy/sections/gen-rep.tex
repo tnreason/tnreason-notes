@@ -1,6 +1,5 @@
 \section{Generic maximum entropy distributions}\label{sec:genMaxEnt}
 
-%Given the mean polytope discussion we now characterize the tensor network representation of maximum entropy distributions.
 In the previous section we have shown that the members of an exponential family are maximum entropy distribution.
 However, their mean parameters build the relative interior of the mean polytope, but are never on faces of smaller dimension.
 We now exploit the tensor representation study of such faces (see \secref{sec:meanPolytope}) to characterize the maximum entropy distributions in the general case.
@@ -34,7 +33,7 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
 
 \begin{lemma}
     \label{lem:maxEntReduction}
-    For any $\meanparamwith\in\genmeanset$ and a face $\facein$ with $\meanparamwith\in\sbinteriorof{\facesymbol}$ we have that the solutions of $\mathrm{P}_{\sstat,\meanparam,\basemeasure}$ and $\mathrm{P}_{\sstat,\meanparam,\genfacemeasure}$ coincide.
+    For any $\meanparamwith\in\genmeanset$ and a face $\facein$ with $\meanparamwith\in\sbinteriorof{\facesymbol}$ the solution of $\mathrm{P}_{\sstat,\meanparam,\basemeasure}$ and $\mathrm{P}_{\sstat,\meanparam,\genfacemeasure}$ coincides.
 \end{lemma}
 \begin{proof}
     By \lemref{lem:faceMeasureRepCondition} all feasible distributions are representable by the with the face measure refined base measure.
@@ -115,35 +114,6 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
         } \, .
     \end{align*}
     We conclude $\expdistof{\sstat,\weightparam,\genfacemeasure}\in \realizabledistsof{\sstat,\graph,\basemeasure}$.
-%    \textbf{Feasibility Claim:}
-%    If and only if $\meanparamwith\in\genmeanset$ then there is by definition a by $\basemeasure$ representable $\probwith$ reproducing $\meanparamwith$.
-%    Thus if and only if $\meanparamwith\in\genmeanset$ there is a feasible distribution for the maximum entropy problem. \\
-
-%    \textbf{Characterization Claim:}
-%    We use the following argumentation to show the second claim:
-%    \begin{itemize}
-%        \item By \lemref{lem:relativeInteriorPolytopePartition} for any $\meanparam$ we find a unique face $\facesymbol$.
-%        \item By \lemref{lem:maxEntReduction} we can reduce the maximum entropy problem \problemref{prob:maxEntropy} to $\mathrm{P}_{\sstat,\meanparam,\genfacemeasure}$ to the base measure $\genfacemeasure$.
-%        \item By \lemref{lem:faceAsRefinedPolytope} the face $\facesymbol$ coincides with the polytope $\meansetof{\sstat,\genfacemeasure}$ and in particular $\meanparam$ is in the relative interior of that polytope.
-%        \item We can now apply \theref{the:maxEntropyInterior} and get a characterization of the maximum entropy solution as a member of the exponential family.
-%    \end{itemize}
-%
-%    \textbf{Representation Claim:} % ! WE DO A CHANGE OF BASE MEASURE HERE
-%    By \defref{def:faceRepresentability} we find a tensor network $\extnet$ on $\graph$ representing the face measure, that is
-%    \begin{align*}
-%        \genfacemeasurewith = \contractionof{\{\extnet\}\cup\{\bencsstatwith,\basemeasurewith\}}{\shortcatvariables} \, .
-%    \end{align*}
-%    We now contract the activation vectors of the exponential family on this tensor network (see \figref{fig:maxEntropyActcore}).
-%    To this end we choose a hyperedge $\edge(\selindex)$ to each node $\selindexin$, which is possible by assumption, and define a tensor network $\tilde{\tnet}^{\graph}$ by core tensors
-%    \begin{align*}
-%        \sechypercoreofat{\edge}{\headvariableof{\edge}} = \contractionof{\{\hypercoreofat{\edge}{\headvariableof{\edge}}\}\cup\{\softactlegat{\headvariableof{\selindex}}\wcols\edge=\edge(\selindex)\}}{\edgevariables} \, .
-%    \end{align*}
-%    Now we have that
-%    \begin{align*}
-%        \contractionof{\{\tilde{\tnet}^{\graph}\}\cup\{\bencsstatwith,\basemeasurewith\}}{\shortcatvariables}
-%        = \contractionof{\softacttensorat{\headvariables},\bencsstatwith,\genfacemeasurewith}{\shortcatvariables}
-%    \end{align*}
-%    Thus, the activation tensor network $\tilde{\tnet}^{\graph}$ represents the maximum entropy distribution $\probof{\sstat,\meanparam,\basemeasure}$ in the family $\realizabledistsof{\sstat,\graph,\basemeasure}$ of \ComputationActivationNetworks{}.
 \end{proof}
 
 \subsection{Family of maximum entropy distributions}

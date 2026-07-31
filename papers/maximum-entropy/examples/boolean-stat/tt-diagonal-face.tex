@@ -2,7 +2,8 @@
     \label{exa:tt_diagonal_face}
     Consider the vertex set
     \begin{align*}
-        \imset \coloneqq \{0,1\}^{\seldim} / \imelementat{\selvariable}
+        \imset
+        \coloneqq \{0,1\}^{\seldim} / \imelementat{\selvariable}
     \end{align*}
     for some boolean vector $\imelementat{\selvariable}$.
     We are interested in the face $\facesymbolof{\triangleleft,1}$ with the normal $\canparamwith=\frac{1}{2} (2\imelementwith - \onesat{\selvariable})$.
@@ -17,15 +18,15 @@
     \end{align*}
 
     % TT Representation
-    We now represent their sum in an $\ttformat$ with hidden ranks $r_0=\ldots=r_{\seldim-2}=2$.
-    The boolean hidden variables are denoted be $\decvariableof{[\seldim-1]}$ and are interpreted as indicators, whether the coordinate flip has happened in $[\selindex]$ coordinates.
-    We now construct a $\ttformat$ core for $\selindex=0$ by
+    We now represent their sum in an $\ttformat$ format.
+    The boolean hidden variables are denoted by $\decvariableof{[\seldim-1]}$ and are interpreted as indicators, whether the coordinate flip has happened in $[\selindex]$ coordinates.
+    We construct a $\ttformat$ core for $\selindex=0$ by
     \begin{align*}
         \hypercoreofat{0}{\headvariableof{0},\decvariableof{0}}
         = \onehotmapofat{\imelementat{\selvariable=0}}{\headvariableof{0}} \otimes \fbasisat{\decvariableof{0}}
-        + \onehotmapofat{1-\imelementat{\selvariable=0}}{\headvariableof{0}} \otimes \tbasisat{\decvariableof{0}}
+        + \onehotmapofat{1-\imelementat{\selvariable=0}}{\headvariableof{0}} \otimes \tbasisat{\decvariableof{0}} \, ,
     \end{align*}
-    and for $\selindex\notin\{0,\seldim-1\}$ the cores
+    for $\selindex\notin\{0,\seldim-1\}$ the cores
     \begin{align*}
         \hypercoreofat{\selindex}{\decvariableof{\selindex-1},\headvariableof{\selindex},\decvariableof{\selindex}}
         = \, & \fbasisat{\decvariableof{\selindex-1}} \otimes \onehotmapofat{1-\imelementat{\indexedselvariable}}{\headvariableof{\selindex}} \otimes \tbasisat{\decvariableof{\selindex}}
@@ -38,12 +39,12 @@
         = \fbasisat{\decvariableof{\seldim-1}} \otimes \onehotmapofat{1-\imelementat{\selvariable=\seldim-1}}{\headvariableof{\seldim-1}}
         + \tbasisat{\decvariableof{\seldim-1}} \otimes \onehotmapofat{\imelementat{\selvariable=\seldim-1}}{\headvariableof{\seldim-1}} \, .
     \end{align*}
-    For this tensor network in the $\ttformat$ format we have
+    For this tensor network in the $\ttformat$ format we then have
     \begin{align*}
         \sum_{\selindexin} \onehotmapofat{\imelementof{\selindex}}{\headvariables}
         = \contractionof{\{\hypercoreofat{0}{\headvariableof{0},\decvariableof{0}},\hypercoreofat{\seldim-1}{\decvariableof{\seldim-2},\headvariableof{\seldim-1}}\}\cup\{\hypercoreofat{\selindex}{\decvariableof{\selindex-1},\headvariableof{\selindex},\decvariableof{\selindex}}\wcols\selindex\in\{1,\ldots,\seldim-2\}\}}{\headvariables} \, .
     \end{align*}
-    The $\ttformat$ multirank of $2$ is furthermore minimal, since each matrification based on a partition of $[\seldim]$ into non-empty sets has a matrix rank of $2$.
+    The dimension $2$ to the hidden variables is furthermore minimal, since each matrification based on a partition of $[\seldim]$ into non-empty sets has a matrix rank of $2$ \cite{holtz_manifolds_2012}.
 %    With respect to such partitions also the tensor $\onehotmapofat{\imelement}{\headvariables}+\left(\sum_{\selindexin}\onehotmapofat{\imelementof{\selindex}}{\headvariables}\right)$ has matrix ranks of $2$.
     %These are the only two activation tensors for the face $\facesymbolof{\triangleleft,1}$.
 \end{example}

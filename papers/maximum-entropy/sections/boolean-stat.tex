@@ -1,9 +1,7 @@
 \section{Boolean statistics}\label{sec:booleanStat}
+%% Using that sstat and hlnstat have are same macros!
 
-%\red{We here study the face CP ranks in case of boolean statistics.
-%We further show that any elementary \ComputationActivationNetwork{} to boolean statistics is a maximum entropy distribution.}
-
-We say that a statistic is boolean, if $\headdimof{\selindex}=2$ for all $\selindexin$.
+We say that a statistic is boolean, if $\imageof{\sstatcoordinateof{\selindex}}\subset\ozset$ for all $\selindexin$.
 The mean polytope is then a 0/1-polytope \cite{ziegler_lectures_2000}, which vertices are exactly the contained boolean vectors.
 The special case of boolean statistics is especially interesting for two reasons.
 First, we can provide additional intuition on those faces representable by elementary face activating tensors, namely based on intersections with cube faces.
@@ -11,17 +9,9 @@ Based on these properties we also show that any elementary \ComputationActivatio
 Second, the statistic itself can be interpreted in terms of logical formulas.
 We exploit this property to provide examples and to characterize each 0/1-polytope as a mean polytope to a collection of propositional formulas.
 
-%For boolean statistics $\hlnstat:\facstates\rightarrow\bigtimes_{\selindexin}[2]$ the mean polytope is a subset of the cube $\fullparcube$.
-%% NEEDED?
-%In this case, any boolean vector in $\meansetof{\hlnstat,\basemeasure}$ is a vertex.
-%It follows, that any distribution reproducing a mean parameter $\meanparamwith$ on the relative interior of $\meansetof{\hlnstat,\basemeasure}$ is positive with respect to $\basemeasure$.
-
-%We apply the exponential distribution characterization of the maximum entropy distribution and get that the maximum entropy distribution is in $\elrealizabledistsof{\sstat}$, if and only if the face measure is in $\elrealizabledistsof{\sstat}$.
-%This is exactly the case, when the face is an intersection of the mean polytope with a face of the cupe $\fullparcube$.
-
 \subsection{Characterization of elementary representable faces}
 
-Orienting on \exaref{exa:hypercubeFaces} we define cube-likeness of faces and polytopes.
+Orienting on \exaref{exa:hypercubeFaces} we now introduce cube-likeness of faces and polytopes.
 
 \begin{definition}
     \label{def:cubeLike}
@@ -108,7 +98,7 @@ We now show that a face is cube-like if and only if it is representable by an el
 \theref{the:faceMeasureHardLogicNetworks} implies that the maximum entropy distributions to hypercubes (see \exaref{exa:hypercubeFaces}) and simplices (see \exaref{exa:simplexFaces}) are in $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$, since these polytopes are cube-like.
 
 % Theorem intro
-We can further show, that for boolean statistics, any distribution in $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ is a maximum entropy distribution.
+We can further show, that in case of boolean statistics any distribution in $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ is a maximum entropy distribution.
 
 %\subsection{Set of maximum entropy distributions}
 
@@ -146,26 +136,14 @@ We can further show, that for boolean statistics, any distribution in $\realizab
         \end{cases} \, .
     \end{align*}
     Therefore, $\probtensor$ is the maximum entropy distribution to the canonical parameters $\facesymbol$ and $\weightparam$.
-%    First claim by decomposing any elementary tensor into exponential and hard activation core.
-%    Second claim by characterization of elementary faces by cube-likeness.
 \end{proof}
 
 \subsection{Interpretation by propositional formulas}
 
-We can understand each feature as a propositional formula and the variables $\shortcatvariables$ as atoms (possibly after a binarization).
+Let us now assume that $\catdimof{\catenumerator}=2$ for any $\catenumeratorin$.
+Following the formalism in \cite{goessmann_tensor_2026} we understand each coordinate $\sstatcoordinateof{\selindex}$ of the statistic as a propositional formula and the variables $\shortcatvariables$ as atoms of a propositional theory.
 We use propositional connectives for syntactical representations of the formulas and denote by $\lnot^{1}$ the logical negation and by $\lnot^{0}$ the identity.
 A boolean tensor $\formulaat{\shortcatvariables}$ is called satisfiable, if there is at least one $\shortcatindicesin$ with $\formulaat{\indexedshortcatvariables}=1$.
-
-%% Vertex characterization
-%Each vertex of the cube, which is not a vertex $\imelementwith$ of the polytope corresponds with the unsatisfiability of a formula
-%\begin{align*}
-%    \bigwedge_{\selindexin} \lnot^{1-\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables}
-%\end{align*}
-%which is equal with any of the entailment statements for $\arbset\subset[\seldim]$ % Can extend to any partition!
-%\begin{align*}
-%    \left(\bigwedge_{\selindex\in\arbset} \lnot^{1-\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right)
-%    \models \left(\bigwedge_{\selindex\in\arbset}\lnot^{\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right) \, .
-%\end{align*}
 
 \begin{theorem}\label{the:boolVecSat}
     Let $\sstat$ be a boolean statistic.
@@ -197,13 +175,15 @@ By definition (see \cite{russell_artificial_2021}) the latter holds if and only 
 \end{align*}
 is not satisfiable.
 
-Atomic formulas and minterm formulas correspond to hypercubes and simplices as we show next.
+%% Atomic formulas
+Let us now relate two well-studied sets of formulas, namely atomic formulas and minterm formulas, with two well-studied polytopes, namely hypercubes and simplices.
+%Atomic formulas and minterm formulas correspond to hypercubes and simplices as we show next.
 
 \input{examples/boolean-stat/hypercube-atomic}
 
 \input{examples/boolean-stat/simplex-minterm}
 
-Let us now provide examples of statistics, which polytopes are not cube-like.
+While hypercubes and simplices are cube-like, we now provide examples of statistics, which polytopes are not cube-like.
 
 \input{examples/boolean-stat/nonel_hlnstat_maxent}
 
@@ -216,9 +196,7 @@ Let us now provide examples of statistics, which polytopes are not cube-like.
     }\label{fig:ttFormat}
 \end{figure}
 
-%% Order?
-
-We further present examples of faces in a $\ttformat$ format representation.
+The $\ttformat$ format is a well-studied tensor network format with favorable numerical properties \cite{holtz_manifolds_2012} and applied across several scientific areas \cite{sander_large-scale_2025}.
 This format describes tensor networks on a hypergraph (see \figref{fig:ttFormat})
 \begin{align*}
     \ttformat
@@ -226,12 +204,12 @@ This format describes tensor networks on a hypergraph (see \figref{fig:ttFormat}
     \shortcatvariables\cup\decvariableof{[\catorder-1]},
     \{\{\decvariableof{\catenumerator-1},\catvariableof{\catenumerator},\decvariableof{\catenumerator}\}\wcols\catenumerator\in\{1,\ldots,\catorder-2\}\}
     \cup\{\{\catvariableof{0},\decvariableof{0}\},\{\decvariableof{\catorder-2},\catvariableof{\catorder-1}\}\}
-    \big) \, .
+    \big) \, ,
 \end{align*}
+where $\decvariableof{[\catorder-1]}$ are auxiliary hidden variables.
+We now construct an example of a polytope with a face activatable with $\ttformat$, in which all hidden variables are of dimension $2$.
 
 \input{examples/boolean-stat/tt-diagonal-face}
-%\input{examples/boolean-stat/tt-diagonal-higher-face}
-%\input{examples/boolean-stat/unused-ht-diagonal-face}
 
 \subsection{Construction of boolean statistics to polytopes}
 

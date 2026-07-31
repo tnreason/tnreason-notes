@@ -38,7 +38,7 @@ From a numerical perspective \cite{hackbusch_new_2009,hackbusch_tensor_2012} for
 They have been applied to various areas such as in high-dimensional PDEs \cite{eigel_variational_2019,eigel_adaptive_2020}, or quantum simulation \cite{sander_quantum_2025}.
 Lastly, tensor network schemes are applied to artificial intelligence \cite{badreddine_logic_2022,domingos_tensor_2025,ali_explicit_2025}.
 
-\subsection{Tensor Notation}
+\subsection{Tensor notation}
 
 %% Tensors
 We introduce tensors based on index variables $\catvariableof{\catenumerator}$ to each of the $\catenumeratorin=\{0,\ldots,\catorder-1\}$ axes, each taking values in $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$, where $\catdimof{\catenumerator}\in\nn$ is the dimension of the variable.
@@ -60,7 +60,7 @@ A contraction of the tensor network keeping the nodes $\arbset\subset\nodes$ ope
     = \sum_{\catindexof{\nodes\backslash\arbset}} \prod_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
 \end{align*}
 
-\subsection{The Maximum Entropy Problem}
+\subsection{Maximum entropy problem}
 
 %% Distributions
 Given a non-negative and non-vanishing base measure $\basemeasurewith$, a probability distribution is a non-negative tensor $\probwith$ such that
@@ -84,7 +84,9 @@ The entropy of a distribution relative to the base measure $\basemeasure$ is
 Note that this quantity depends on the chosen base measure.
 
 %% Mean parameters
-The mean parameter of a distribution $\probwith$ to a statistic $\sstat:\facstates\rightarrow\rr^\seldim$ is the vector $\meanparamwith\in\rr^\seldim$ with the coordinates
+A statistic is a function $\sstat:\facstates\rightarrow\rr^\seldim$ assigning a real vector of dimension $\seldim$ to each state $\shortcatindicesin$.
+We denote by $\sstatcoordinateof{\selindex}$ the restriction to the $\selindex$-th coordinate of $\sstat$.
+The mean parameter of a distribution $\probwith$ to a statistic $\sstat$ is the vector $\meanparamwith\in\rr^\seldim$ with the coordinates
 \begin{align*}
     \meanparamat{\indexedselvariable}
     = \expectationof{\enumformula}
@@ -152,8 +154,6 @@ We are interested in decomposition formats of $\hypercoreat{\headvariables}$, wh
               \wcols \hypercoreat{\headvariables} \in \tnsetof{\graph} \right\} \, .
     \end{align*}
 \end{definition}
-
-%% EL Graph here?
 
 \subsection{Contributions}
 
