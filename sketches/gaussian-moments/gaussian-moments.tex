@@ -1,0 +1,33 @@
+\documentclass[aps,onecolumn,nofootinbib,pra]{article}
+
+\usepackage{../../spec_files/arxiv}
+\input{../../spec_files/standard_preamble.tex}
+
+\usepackage{import}
+\subimport{../../macros/}{all-macros}
+
+\usepackage{minted}
+
+\newcommand{\gausscore}{g}
+\newcommand{\gausscoreof}[1]{\gausscore_{#1}}
+\newcommand{\gausscoreat}[1]{\gausscore\left[#1\right]}
+\newcommand{\gausscoreofat}[2]{\gausscoreof{#1}\left[#2\right]}
+
+\begin{document}
+    \title{Gaussian moments}
+
+    \maketitle
+    \date{\today}
+
+    We reformulate results in \cite{goessmann_uniform_2021} based on the formalism in \cite{goessmann_tensor_2026}.
+
+    \input{sections/gaussian-chaoses}
+    \input{sections/gaussian-tensor-networks}
+    \input{sections/orlicz-tensor-networks}
+    \input{sections/kg-application}
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
+
+
+\end{document}

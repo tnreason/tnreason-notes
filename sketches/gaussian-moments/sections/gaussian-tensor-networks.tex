@@ -1,0 +1,58 @@
+\section{Gaussian tensor networks}
+
+While gaussian chaoses are defined by tensor products, let us define general Gaussian tensor networks on hypergraphs $\graph$ by tensors
+\begin{align*}
+    \gausscoreofat{\graph}{\nodevariables}
+\end{align*}
+with coordinates
+\begin{align*}
+    \gausscoreofat{\graph}{\indexedcatvariableof{\nodes}}
+    = \prod_{\edgein}\gausscoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
+\end{align*}
+
+Especially we are interested on moment bounds on
+\begin{align*}
+    \contraction{\hypercorewith,\gausscoreofat{\graph}{\nodevariables}}
+\end{align*}
+where $[\catorder]\subset\nodes$.
+Intuitively, averaging over hidden variables improves the concentration behavior of Gaussian tensor networks, due to the law of large numbers.
+Here we need to show effects of averaging over multiple hidden variables.
+
+\subsection{Reduction to Gaussian chaoses}
+
+The trick we apply is that any contracted Gaussian tensor network can be related to a Gaussian chaos on a mutilated hypergraph.
+This mutilation involves introduction of additional edges decorated by delta tensors.
+
+To be more precise we define a new hypergraph
+\begin{align*}
+    \nodes \cup \bigcup_{\edge\in\edges}\bigcup_{\node\in\edge} \{(\edge,\node)\}
+\end{align*}
+and edges
+\begin{align*}
+    \{\{(\edge,\node) \wcols \node\in\edge\} \wcols \edgein \} % for the original edges
+    \cup \{\{(\edge,\node) \wcols \node\in\edge\}\cup\{\node\} \wcols \nodein \} % for the delta tensors
+\end{align*}
+where the first set of edges is decorated as before and the second by delta tensors.
+Then
+\begin{align*}
+    \contraction{\hypercorewith,\gausscoreofat{\graph}{\nodevariables}}
+    = \contraction{\{\hypercorewith\}\cup\{\delta[(\catvariableof{\edge,\node}:\node\in\edge),\catvariableof{\node}]\}
+        \cup \{\gausscoreofat{\edge}{\catvariableof{\edge,\edge}}\wcols\edgein\}
+    }
+\end{align*}
+
+We notice that this is a Gaussian chaos to the structure tensor
+\begin{align*}
+    \contractionof{\{\hypercorewith\}\cup\{\delta[(\catvariableof{(\edge,\node)}:\node\in\edge),\catvariableof{\node}]\}}{
+        \catvariableof{(\node,\edge)\wcols \edgein,\node\in\edge}
+    } \, .
+\end{align*}
+
+To show moment bounds, we are left to calculate the $J$-injective norms of this structure tensor.
+
+\subsection{Properties of $J$-injective norms}
+
+\begin{itemize}
+    \item Tensor product property: Multiplicativity of $J$-injective norms into those to factors.
+    \item Delta tensor property (more general: ODECO).
+\end{itemize}

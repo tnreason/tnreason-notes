@@ -1,0 +1,34 @@
+\section{Gaussian chaoses}
+
+Let $\gausscoreofat{\catenumerator}{\catvariableof{\catenumerator}}$ be for $\catenumeratorin$ an independent vector of indepedent Gaussian coordinates.
+We build the tensor product
+\begin{align*}
+    \gausscoreofat{\elformat}{\shortcatvariables}
+    \coloneqq \contractionof{\{\gausscoreofat{\catenumerator}{\catvariableof{\catenumerator}}\wcols\catenumeratorin\}}{\shortcatvariables} \, .
+\end{align*}
+A gaussian chaos of order $d$ is a contraction of this tensor product with a tensor $\hypercorewith$.
+
+We are interested in the moments of gaussian chaoses and relate them to properties in the tensor $\hypercorewith$.
+
+\begin{definition}[$J$-injective norm]
+        Let $J$ be a partition of $[\catorder]$ and $\hypercorewith$ a tensor.
+        The $J$-injective norm of $\hypercorewith$ is then
+        \begin{align*}
+            \|\hypercorewith\|_{J}
+            = \max \big(\contraction{\{\hypercorewith\}\cup\{\theta^{M}[\catvariableof{M}]\wcols M \in J\}\}}
+            \wcols \contraction{\{\theta^{M}[\catvariableof{M}]\wcols M \in J\}}=1
+            \big) \, .
+        \end{align*}
+\end{definition}
+
+
+\begin{theorem}[Latala bound]
+        There are to each $\catorder$ constants $C_\catorder$ and $c_\catorder$ such that for any $\hypercorewith$ and $q\geq 1$
+        \begin{align*}
+            c_{\catorder} \sum_{J\subset[\catorder]} \|\hypercorewith\|_{J} \cdot q^{\cardof{J}}
+            \leq
+            \|\contraction{\hypercorewith,\gausscoreofat{\elformat}{\shortcatvariables}}\|_q
+            \leq
+            C_{\catorder} \sum_{J\subset[\catorder]} \|\hypercorewith\|_{J} \cdot q^{\cardof{J}}
+        \end{align*}
+\end{theorem}
