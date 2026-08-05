@@ -1,0 +1,58 @@
+\section{Random formulas in First-Order Logic}
+
+
+\subsection{Random formulas in First-Order Logic}
+
+Let there be a random distribution of models in First-Order Logic with a fixed domain of size $\inddim$.
+A random formula of order $\indorder$ is then the random substitution tensor
+\begin{align*}
+    \folexformulaat{\indvariableof{[\indorder]}} \, .
+\end{align*}
+
+Properties:
+\begin{itemize}
+    \item Always: The marginal distribution of each coordinate is a Bernoulli distribution with parameter $p$.
+    \item Restrictive: We sometimes assume the coordinates to be i.i.d.
+\end{itemize}
+
+
+\subsubsection{Conjunctions of random formulas}
+
+The conjunction of random formulas is a random tensor network of them.
+
+
+\begin{example}[SPARQL queries as random formulas]
+    Consider a SPARQL query with a fixed number of triple patterns.
+    Each triple pattern is a random formula of order $3$.
+    The conjunction of the triple patterns is then a random tensor network of the random formulas.
+\end{example}
+
+When each predicate is an independent random formula of i.i.d. Bernoulli coordinates, we have a $2$-Orlicz random tensor network (see \cite{goessmann_uniform_2021}).
+
+
+
+
+\subsection{Statistical models of knowledge graphs}
+
+Setup:
+\begin{itemize}
+    \item Atom extraction queries: Treated as deterministic
+    \item Importance query: I.i.d. bernoulli coordinates (i.e. $2$-Orlicz). Rescaled for isotropy.
+\end{itemize}
+
+Aim:
+\begin{itemize}
+    \item Predict the average of specific functions. This is the expected contraction with the isotropic importance query.
+\end{itemize}
+
+\subsection{Concentration of single expectations}
+
+We first show concentration of the expectation to single formulas
+Bernoulli coordinates are bounded and therefore sub-Gaussian, that is $2$-Orlicz.
+We can therefore apply the results on Orlicz tensor networks to show moment bounds.
+
+\subsection{Uniform concentration of multiple expectations}
+
+Having moment bounds for single expectations, we use chaining with Mendelsons $\Gamma$ functionals to show uniform concentrations.
+We can then show probabilistic guarantee recovery on least squares regression.
+
