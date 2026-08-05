@@ -1,6 +1,6 @@
 \begin{example}[Maximum entropy distribution with non-elementary activation cores]\label{exa:nonelHlnstat}
 
-    Consider two atomic variables $\catvariableof{0}$ and $\catvariableof{1}$ and a statistic $\formulaset$ consisting in the formulas
+    Consider two atomic variables $\catvariableof{0}$ and $\catvariableof{1}$ and a statistic $\formulaset$ consisting of the formulas
     \begin{align*}
         \formulaofat{0}{\catvariableof{0},\catvariableof{1}} = \left( \catvariableof{0} \land \catvariableof{1} \right) \quad, \quad
         \formulaofat{1}{\catvariableof{0},\catvariableof{1}} = \left( \catvariableof{0} \Rightarrow \catvariableof{1} \right)
@@ -107,7 +107,7 @@
     \end{align*}
 
     Note, that the hard activation core $\kcoreofat{(0,0),(1,1)}{\headvariableof{0},\headvariableof{1}}$ to the blue face is the only non-elementary activation core.
-    While the vertices have always elementary cores, the further non-vertex faces have elementary activation cores
+    While the vertices have always elementary cores, the other non-vertex faces have elementary activation cores
     \begin{align*}
         &\kcoreofat{(0,0),(1,0),(1,1)}{\headvariableof{0},\headvariableof{1}}
         = \coloredmatrixof{
@@ -139,7 +139,7 @@
         \end{center}
         \caption{
             a) Mean polytope of the statistic $\hlnstat=(\catvariableof{0} \land \catvariableof{1}, \catvariableof{0} \Rightarrow \catvariableof{1})$ (thick), as a subset of the cube $[0,1]^2$ (dashed).
-            The blue line is the face of the polytope, which is not cube like, that is not an intersection of the polytope with the faces of the polytope.
+            The blue line is the face of the polytope, which is not cube-like, that is not an intersection of the polytope with the faces of the hypercube.
             We further define for $\lambda\in(0,1)$ a mean parameter $\meanparamofat{\lambda}{\selvariable} = [\lambda \,  \lambda]^T$ which is on the interior of the blue face.
             b) Corresponding \ComputationActivationNetwork{} being the maximum entropy distribution reproducing $\meanparamofat{\lambda}{\selvariable}$, when $\lambda$ is the sigmoid of $\canparamat{\selvariable=0}+\canparamat{\selvariable=1}$.
         }\label{fig:nonelHlnstatMaxent}

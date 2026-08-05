@@ -9,10 +9,10 @@ on the states $\facstates$ and a base measure $\basemeasurewith$ the mean polyto
     \genmeanset
     \coloneqq \left\{\contractionof{\probwith,\sencsstatwith,\basemeasurewith}{\selvariable}\wcols\probwith\in\distmeasuredby{\basemeasure} \right\}
 \end{align*}
-containing all mean parameters to the distributions in $\distmeasuredby{\basemeasure}$.
+containing all mean parameters for the distributions in $\distmeasuredby{\basemeasure}$.
 By $\sencsstatwith$ we denote the selection encoding of the statistic (see introduction).
 %% Convex hull
-Since $\distmeasuredby{\basemeasure}$ is the convex hull of the vertices $\frac{1}{\basemeasureat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables}$, and any mean parameters are linear transforms of the distributions, the mean polytope is the convex hull of the vectors
+Since $\distmeasuredby{\basemeasure}$ is the convex hull of the vertices $\frac{1}{\basemeasureat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables}$, and any mean parameter is a linear transformation of the distribution, the mean polytope is the convex hull of the vectors
 \begin{align*}
     \genimset
     \coloneqq \{\sencsstatat{\indexedshortcatvariables,\selvariable}
@@ -55,7 +55,7 @@ Since $\distmeasuredby{\basemeasure}$ is the convex hull of the vertices $\frac{
 %We in this work will pay special attention to
 
 When studying maximum entropy distributions, we will pay special attention to the faces of a polytope, which form the boundary.
-We here define them based on convex hulls and introduce tensor representations by refined base measures.
+Here, we define them based on convex hulls and introduce tensor representations by refined base measures.
 
 \begin{definition}
     We say that the convex hull of a subset $\genfaceimset\subset\genimset$ is a face of a polytope $\genmeanset$, if and only if there is a vector $\canparamofat{\facesymbol}{\selvariable}\in\parspace$ such that
@@ -67,13 +67,13 @@ We here define them based on convex hulls and introduce tensor representations b
     The set of all faces of the mean polytope $\genmeanset$ is denoted by $\facelatticeof{\genmeanset}$.
 \end{definition}
 
-The set $\facelatticeof{\genmeanset}$, partially ordered by the inclusion operation, is a lattice \cite{ziegler_lectures_2013}.
+The set $\facelatticeof{\genmeanset}$, partially ordered by the inclusion operation, is a lattice (see \cite{ziegler_lectures_2013}).
 % Refined base measures
-We now show that each face itself is a convex polytope to a refined base measure.
+We now show that each face itself is a convex polytope corresponding to a refined base measure.
 
 \begin{definition}
     \label{def:faceMeasure}
-    The to a face $\facein$ refined base measure is the tensor $\genfacemeasurewith$ with coordinates to $\shortcatindicesin$ by
+    The refined base measure with respect to a face $\facein$ is the tensor $\genfacemeasurewith$ with coordinates to $\shortcatindicesin$ by
     \begin{align*}
         \genfacemeasurewith
         = \begin{cases}
@@ -83,7 +83,7 @@ We now show that each face itself is a convex polytope to a refined base measure
     \end{align*}
 \end{definition}
 
-The refined base measures has by definition a smaller support than the base measure.
+The refined base measure has by definition a smaller support than the base measure.
 We now show that restricting the distributions in $\distmeasuredby{\basemeasure}$ to those in $\distmeasuredby{\basemeasureof{\sstat,\facesymbol}}$ amounts to a restriction of the polytope $\genmeanset$ to the corresponding face.
 
 %We now specify the mean parameter polytope to any face using the face measure as a refinement of the base measure.
@@ -128,7 +128,7 @@ Representability of a distribution with respect to face measures is an equivalen
         \meanparamat{\selvariable}
         = \sum_{\shortcatindices} \probat{\indexedshortcatvariables}\cdot\basemeasureat{\indexedshortcatvariables} \cdot \genstatshortcatencoding \, .
     \end{align*}
-    Let now $\canparamofat{\facesymbol}{\selvariable}$ be a face normal to the face $\facesymbol$.
+    Now, let $\canparamofat{\facesymbol}{\selvariable}$ be a face normal to the face $\facesymbol$.
     We then have
     \begin{align*}
         \contraction{\meanparamwith,\canparamofat{\facesymbol}{\selvariable}}
@@ -191,7 +191,7 @@ We now investigate the representation of refined base measures by \ComputationAc
 
 \begin{definition}
     \label{def:faceRepresentability}
-    Let $\graph$ be a hypergraph which nodes include $[\seldim]$.
+    Let $\graph$ be a hypergraph whose nodes include $[\seldim]$.
     We say that a face $\facesymbol$ is representable by $\graph$ if and only if there is a set $\arbset$ of basis vectors with $\arbset\cap\genimset = \genfaceimset$ and there is a tensor network $\kcoreof{\graph}$ with respect to the hypergraph $\graph$ such that
     \begin{align*}
         \contractionof{\kcoreof{\graph}}{\headvariables}
@@ -202,7 +202,7 @@ We now investigate the representation of refined base measures by \ComputationAc
 
 \begin{lemma}
     \label{lem:faceMeasureRepresentation}
-    If any only if a face is representable by a hypergraph $\graph$ we have
+    If and only if a face is representable by a hypergraph $\graph$, we have
     \begin{align*}
         \frac{1}{\contraction{\genfacemeasurewith}} \cdot \genfacemeasurewith
         \in \realizabledistsof{\sstat,\graph,\basemeasure} \, .
@@ -230,13 +230,13 @@ We now investigate the representation of refined base measures by \ComputationAc
 
 \input{examples/mean-polytope/vertices}
 
-While vertices are the minimal non-vanishing faces in the face-lattice (see \cite{ziegler_lectures_2013}), we now show that also the maximal face, namely the polytope itself, is representable with respect to the elementary hypergraph $\elgraph$ (see \figref{fig:elFormat}).
+While vertices are the minimal non-vanishing faces in the face-lattice (see \cite{ziegler_lectures_2013}), we now show that the maximal face, namely the polytope itself, is also representable with respect to the elementary hypergraph $\elgraph$ (see \figref{fig:elFormat}).
 
 \input{examples/mean-polytope/maximal-face}
 
 \begin{figure}
     \input{tikz/mean-polytope/el-format}
-    \caption{Elementary tensor format consiting in the elementary hypergraph $\elformat$ $a)$, and corresponding tensor networks $b)$ being the tensor products of vectors.}
+    \caption{Elementary tensor format consisting of the elementary hypergraph $\elformat$ $a)$, and corresponding tensor networks $b)$ being the tensor products of vectors.}
     \label{fig:elFormat}
 \end{figure}
 
@@ -297,14 +297,14 @@ We notice that the $\cpformat$ rank bound of \lemref{lem:CPfaceRepresentationBou
 
 \begin{figure}
     \input{tikz/mean-polytope/cp-format}
-    \caption{The $\cpformat$ tensor format consist in the $\cpformat$ hypergraph a) and decorating tensor networks b).
+    \caption{The $\cpformat$ tensor format consist of the $\cpformat$ hypergraph a) and decorating tensor networks b).
     Tensors in this format constructed as in \lemref{lem:CPfaceRepresentationBound} represent arbitrary faces.}
     \label{fig:cpFormat}
 \end{figure}
 
 \subsection{Examples of elementarily representable faces}
 
-We show in the following example, that all faces of a hypercube and a simplex are representable by elementary activation tensors.
+We show in the following example that all faces of a hypercube and a simplex are representable by elementary activation tensors.
 
 \input{examples/mean-polytope/hypercube-faces}
 
@@ -312,7 +312,7 @@ We show in the following example, that all faces of a hypercube and a simplex ar
 
 \subsection{Partition into relative interiors of faces}
 
-Let us now introduce relative interiors, which enables us to find disjoint partitions of the mean polytope.
+Let us now introduce relative interiors, which enable us to find disjoint partitions of the mean polytope.
 
 \begin{definition}[Relative Interior]
     \label{def:relativeInterior}

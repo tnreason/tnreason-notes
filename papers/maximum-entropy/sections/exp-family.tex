@@ -1,9 +1,9 @@
 \section{Exponential families}\label{sec:expFamily}
 
 It is well known that exponential families are specific maximum entropy distributions.
-However, not any maximum entropy distribution is an exponential family member.
+However, not every maximum entropy distribution is an exponential family member.
 To prepare for the characterization of generic maximum entropy distributions, we will in this section represent exponential family members as \ComputationActivationNetwork{}s.
-We further show that a maximum entropy distribution is a exponential family member, if and only if its mean parameter is in the relative interior of the mean polytope.
+We further show that a maximum entropy distribution is an exponential family member if and only if its mean parameter is in the relative interior of the mean polytope.
 
 \subsection{Representation as elementary \ComputationActivationNetworks{}}
 
@@ -24,7 +24,7 @@ Let us first define exponential families as classes of probability distributions
             \contraction{\expof{\contractionof{\sencsstatat{\shortcatvariables,\selvariable},\canparamwith}{\shortcatvariables}},\basemeasurewith}
         }
     \end{align*}
-    is called the exponential family to $\sstat$.
+    is called the exponential family with respect to $\sstat$.
 \end{definition}
 
 % Relation to standard notation and information geometry
@@ -87,7 +87,7 @@ We now continue with the notation of \defref{def:expFamily} to find representati
     \begin{center}
         \input{tikz/exp-family/expdist_unary_realizable}
     \end{center}
-    \caption{Representation of a member in an exponential family by a \ComputationActivationNetwork{} with elementary activation.
+    \caption{Representation of a member of an exponential family by a \ComputationActivationNetwork{} with elementary activation.
     Here $\partitionfunction\in\rr$ is a normalization constant.}\label{fig:expdistUnaryRealizable}
 \end{figure}
 
@@ -127,13 +127,13 @@ Based on this property we define the forward and backward mappings to an exponen
 
 \subsection{Maximum entropy distributions}
 
-One universal property of exponential families amongst others (see \cite{murphy_probabilistic_2023}) is that they maximize the entropy among those with same mean vector.
+One universal property of exponential families amongst others (see \cite{murphy_probabilistic_2023}) is that they maximize the entropy among those with the same mean vector.
 
 \begin{lemma}\label{lem:expFamilyMaxEnt}
     Any member of an exponential family $\expfamilyof{\sstat,\basemeasure}$ is a maximum entropy distribution with respect to the moment constraint on $\sstat$ and the base measure $\basemeasure$.
 \end{lemma}
 \begin{proof}
-    Let $\expdistof{\sstat,\canparam,\basemeasure}$ be a exponential family member with canonical parameter $\canparam$ and let $\meanparamwith$ be the corresponding mean parameter.
+    Let $\expdistof{\sstat,\canparam,\basemeasure}$ be an exponential family member with canonical parameter $\canparam$ and let $\meanparamwith$ be the corresponding mean parameter.
     Let $\secprobat{\shortcatvariables}$ be any feasible distribution for the maximum entropy problem with respect to the moment constraint on $\sstat$ by $\meanparamwith$ and the base measure $\basemeasure$.
     We also have $\contractionof{\secprobat{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}=\meanparamat{\selvariable}$ and thus
     \begin{align*}
@@ -149,7 +149,7 @@ One universal property of exponential families amongst others (see \cite{murphy_
         = \centropyofwrt{\secprobtensor}{\expdistof{\sstat,\canparam,\basemeasure}}{\basemeasure}  - \sentropyofwrt{\secprobtensor}{\basemeasure}  > 0 \,
     \end{align*}
     and thus $\sentropyofwrt{\secprobtensor}{\basemeasure}<\sentropyofwrt{\expdistof{\sstat,\canparam,\basemeasure}}{\basemeasure}$.
-    Therefore, any feasible $\secprobtensor$ different from $\expdistof{\sstat,\canparam,\basemeasure}$ have less entropy than $\expdistof{\sstat,\canparam,\basemeasure}$ and $\expdistof{\sstat,\canparam,\basemeasure}$ is a maximum entropy distribution.
+    Therefore, any feasible $\secprobtensor$ different from $\expdistof{\sstat,\canparam,\basemeasure}$ has less entropy than $\expdistof{\sstat,\canparam,\basemeasure}$ and $\expdistof{\sstat,\canparam,\basemeasure}$ is a maximum entropy distribution.
 \end{proof}
 
 Together with \lemref{lem:interiorRepExpFamily} stating the existence of an exponential family member for any mean parameter in the relative interior of the mean polytope we arrive at the following theorem.

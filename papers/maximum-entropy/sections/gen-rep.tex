@@ -1,7 +1,7 @@
 \section{Generic maximum entropy distributions}\label{sec:genMaxEnt}
 
-In the previous section we have shown that the members of an exponential family are maximum entropy distribution.
-However, their mean parameters build the relative interior of the mean polytope, but are never on faces of smaller dimension.
+In the previous section we have shown that the members of an exponential family are maximum entropy distributions.
+However, while their mean parameters constitute the relative interior of the mean polytope, they never lie on faces of lower dimension.
 We now exploit the tensor representation study of such faces (see \secref{sec:meanPolytope}) to characterize the maximum entropy distributions in the general case.
 
 \subsection{Main result}
@@ -33,10 +33,10 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
 
 \begin{lemma}
     \label{lem:maxEntReduction}
-    For any $\meanparamwith\in\genmeanset$ and a face $\facein$ with $\meanparamwith\in\sbinteriorof{\facesymbol}$ the solution of $\mathrm{P}_{\sstat,\meanparam,\basemeasure}$ and $\mathrm{P}_{\sstat,\meanparam,\genfacemeasure}$ coincides.
+    For any $\meanparamwith\in\genmeanset$ and a face $\facein$ with $\meanparamwith\in\sbinteriorof{\facesymbol}$ the solutions of $\mathrm{P}_{\sstat,\meanparam,\basemeasure}$ and $\mathrm{P}_{\sstat,\meanparam,\genfacemeasure}$ coincide.
 \end{lemma}
 \begin{proof}
-    By \lemref{lem:faceMeasureRepCondition} all feasible distributions are representable by the with the face measure refined base measure.
+    By \lemref{lem:faceMeasureRepCondition} all feasible distributions are representable by the base measure refined to the face $\facesymbol$.
     We have that any for $\mathrm{P}_{\sstat,\meanparam,\basemeasure}$ feasible distribution $\probwith$ satisfies
     \begin{align*}
         \contraction{\probwith,\genfacemeasure} = 1 \,
@@ -80,7 +80,7 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
     \end{align*}
     and by \theref{the:maxEntropyInterior} $\expdistof{\sstat,\weightparam,\genfacemeasure}$ is the corresponding maximum entropy distribution. \\
     % 3.
-    To show the last claim, it is enough to show that for any by $\graph$ representable face $\facesymbol$ and for any $\weightparamin$ we have
+    To show the last claim, it is enough to show that for any face $\facesymbol$ representable by $\graph$ and for any $\weightparamin$ we have
     \begin{align*}
         \expdistof{\sstat,\weightparam,\genfacemeasure}
         \in \realizabledistsof{\sstat,\graph,\basemeasure} \, .
@@ -124,8 +124,8 @@ The family of maximum entropy distributions is the set
     \maxentfamilyof{\sstat}{\basemeasure} =
     \{\probwith \wcols \exists\meanparam\in\genmeanset : \probwith \quad\text{is a solution of \problemref{prob:maxEntropy}} \} \, .
 \end{align*}
-\theref{the:MAINgenMaxEntChar} suggest a parametrization of this family as tuples of corresponding faces $\facesymbol$ and weight vectors $\meanparamwith$.
-As sketched in \figref{fig:maxEntropyActcore} the activation tensor of each maximum entropy distribution is decomposed into a possibly non-elementary boolean tensor corresponding to the base measure refinement on a face $\facesymbol$, and an elementary tensor dependent on the weight vector $\weightparamin$.
+\theref{the:MAINgenMaxEntChar} suggests a parametrization of this family as tuples of corresponding faces $\facesymbol$ and weight vectors $\meanparamwith$.
+As sketched in \figref{fig:maxEntropyActcore} the activation tensor of each maximum entropy distribution is decomposed into a possibly non-elementary Boolean tensor corresponding to the base measure refinement on a face $\facesymbol$, and an elementary tensor dependent on the weight vector $\weightparamin$.
 We thus define the canonical parameter space
 \begin{align*}
     \gencanparamset
@@ -152,7 +152,7 @@ Note that these families are disjoint, since each member of an exponential famil
     \end{center}
     \caption{
         Tensor network decomposition of maximum entropy distributions to the constraint $\meanparamat{\selvariable}=\contractionof{\probwith,\sencsstatwith}{\selvariable}$.
-        Blue: Boolean tensor $\kcoreofat{\facesymbol}{\headvariables}$ dependent on the face $\faceto(\meanparam)$, which represents the refinement of the base measure to the face, and is possibly non-elementary.
+        Blue: Boolean tensor $\kcoreofat{\facesymbol}{\headvariables}$ dependent on the face $\faceto{\meanparam}$, which represents the refinement of the base measure to the face, and is possibly non-elementary.
         Red: Elementary activation tensor $\softacttensorwith=\bigotimes_{\selenumeratorin}\softactlegwith$ to the weight $\weightparamwith= \backwardmapwrtof{\sstat,\genfacemeasure}{\meanparam}$.
     }\label{fig:maxEntropyActcore}
 \end{figure}

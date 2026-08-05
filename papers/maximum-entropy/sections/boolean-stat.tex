@@ -1,11 +1,11 @@
 \section{Boolean statistics}\label{sec:booleanStat}
 %% Using that sstat and hlnstat have are same macros!
 
-We say that a statistic is boolean, if $\imageof{\sstatcoordinateof{\selindex}}\subset\ozset$ for all $\selindexin$.
-The mean polytope is then a 0/1-polytope \cite{ziegler_lectures_2000}, which vertices are exactly the contained boolean vectors.
-The special case of boolean statistics is especially interesting for two reasons.
+We say that a statistic is Boolean, if $\imageof{\sstatcoordinateof{\selindex}}\subset\ozset$ for all $\selindexin$.
+The mean polytope is then a 0/1-polytope \cite{ziegler_lectures_2000}, which vertices are exactly the contained Boolean vectors.
+The special case of Boolean statistics is especially interesting for two reasons.
 First, we can provide additional intuition on those faces representable by elementary face activating tensors, namely based on intersections with cube faces.
-Based on these properties we also show that any elementary \ComputationActivationNetwork{} to a boolean statistic is a maximum entropy distribution.
+Based on these properties we also show that any elementary \ComputationActivationNetwork{} to a Boolean statistic is a maximum entropy distribution.
 Second, the statistic itself can be interpreted in terms of logical formulas.
 We exploit this property to provide examples and to characterize each 0/1-polytope as a mean polytope to a collection of propositional formulas.
 
@@ -28,7 +28,7 @@ We now show that a face is cube-like if and only if it is representable by an el
 
 \begin{theorem}
     \label{the:faceMeasureHardLogicNetworks}
-    Let $\hlnstat$ be a boolean statistic, $\basemeasure$ a base measure and $\facesymbol$ be a face of $\genmeanset$.
+    Let $\hlnstat$ be a Boolean statistic, $\basemeasure$ a base measure and $\facesymbol$ be a face of $\genmeanset$.
     Then the following are equivalent:
     \begin{itemize}
         \item[(i)] $\facesymbol$ is cube-like (see \defref{def:cubeLike}).
@@ -60,7 +60,7 @@ We now show that a face is cube-like if and only if it is representable by an el
 
     (ii)$\rightarrow$(i)
     Conversely, let $\acttensorwith$ be an elementary activation tensor of the face $\facesymbol$ in $\genmeanset$.
-    Since $\acttensorwith$ is the sum of different one-hot encodings it is boolean and we find an elementary decomposition $\acttensorwith=\bigotimes_{\selindexin}\acttensorlegwith$ such that the leg vectors $\acttensorwith$ are boolean.
+    Since $\acttensorwith$ is the sum of different one-hot encodings it is Boolean and we find an elementary decomposition $\acttensorwith=\bigotimes_{\selindexin}\acttensorlegwith$ such that the leg vectors $\acttensorwith$ are Boolean.
     Since $\facesymbol\neq\varnothing$ we further have for $\selindexin$ that $\acttensorlegwith\neq\zerosat{\headvariableof{\selindex}}$, and thus $\acttensorlegwith\in \{\fbasisat{\headvariableof{\selindex}},\tbasisat{\headvariableof{\selindex}},\onesat{\headvariableof{\selindex}}\}$
     We construct a set $\arbset\subset[\seldim]$
     \begin{align*}
@@ -98,12 +98,12 @@ We now show that a face is cube-like if and only if it is representable by an el
 \theref{the:faceMeasureHardLogicNetworks} implies that the maximum entropy distributions to hypercubes (see \exaref{exa:hypercubeFaces}) and simplices (see \exaref{exa:simplexFaces}) are in $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$, since these polytopes are cube-like.
 
 % Theorem intro
-We can further show, that in case of boolean statistics any distribution in $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ is a maximum entropy distribution.
+We can further show, that in case of Boolean statistics any distribution in $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ is a maximum entropy distribution.
 
 %\subsection{Set of maximum entropy distributions}
 
 \begin{theorem}
-    Let $\hlnstat$ be a boolean statistic.
+    Let $\hlnstat$ be a Boolean statistic.
     Any distribution in $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ is a maximum entropy distribution with respect to $(\hlnstat,\meanparam,\basemeasure)$ where $\meanparam$ is its mean parameter.
     %Any maximum entropy distribution is realized by $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ if and only if the mean parameter is in the relative interior of a cube-like face.
 \end{theorem}
@@ -123,7 +123,7 @@ We can further show, that in case of boolean statistics any distribution in $\re
               0 \elsetext
         \end{cases} \, .
     \end{align*}
-    Since $\hlnstat$ is a boolean statistic the $\bigotimes_{\selindexin}\kcoreofat{\selindex}{\headvariableof{\selindex}}$ is a face activation tensor to the face
+    Since $\hlnstat$ is a Boolean statistic the $\bigotimes_{\selindexin}\kcoreofat{\selindex}{\headvariableof{\selindex}}$ is a face activation tensor to the face
     \begin{align*}
         \facesymbol \coloneqq \hlnmeanset \cap \facesymbolof{(\arbset,\headindexof{\arbset})}
     \end{align*}
@@ -143,11 +143,11 @@ We can further show, that in case of boolean statistics any distribution in $\re
 Let us now assume that $\catdimof{\catenumerator}=2$ for any $\catenumeratorin$.
 Following the formalism in \cite{goessmann_tensor_2026} we understand each coordinate $\sstatcoordinateof{\selindex}$ of the statistic as a propositional formula and the variables $\shortcatvariables$ as atoms of a propositional theory.
 We use propositional connectives for syntactical representations of the formulas and denote by $\lnot^{1}$ the logical negation and by $\lnot^{0}$ the identity.
-A boolean tensor $\formulaat{\shortcatvariables}$ is called satisfiable, if there is at least one $\shortcatindicesin$ with $\formulaat{\indexedshortcatvariables}=1$.
+A Boolean tensor $\formulaat{\shortcatvariables}$ is called satisfiable, if there is at least one $\shortcatindicesin$ with $\formulaat{\indexedshortcatvariables}=1$.
 
 \begin{theorem}\label{the:boolVecSat}
-    Let $\sstat$ be a boolean statistic.
-    Any boolean vector $\imelementwith\in\{0,1\}^{\seldim}$ is a vertex of $\hlnmeanset$ if and only if
+    Let $\sstat$ be a Boolean statistic.
+    Any Boolean vector $\imelementwith\in\{0,1\}^{\seldim}$ is a vertex of $\hlnmeanset$ if and only if
     \begin{align*}
         \formulaofat{\imelement}{\shortcatvariables}
         \coloneqq \bigwedge_{\selindexin} \lnot^{1-\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables}
@@ -161,7 +161,7 @@ A boolean tensor $\formulaat{\shortcatvariables}$ is called satisfiable, if ther
 \end{proof}
 
 %% Entailment interpretation
-Since the presence of boolean vectors in $\hlnmeanset$ is by \theref{the:boolVecSat} related to the satisfiability of the conjunction $ \formulaofat{\imelement}{\shortcatvariables}$, the absence is related to entailment statements.
+Since the presence of Boolean vectors in $\hlnmeanset$ is related by \theref{the:boolVecSat} to the satisfiability of the conjunction $ \formulaofat{\imelement}{\shortcatvariables}$, the absence is related to entailment statements.
 To be more precise, for any $\imelementwith\in\{0,1\}^{\seldim}$ and arbitrary $\arbset\subset[\seldim]$ we have $\imelementwith\notin\hlnmeanset$, if and only if
 \begin{align*}
     \left(\bigwedge_{\selindex\in\arbset} \lnot^{1-\imelementat{\indexedselvariable}} \formulaofat{\selindex}{\shortcatvariables} \right)
@@ -192,7 +192,7 @@ While hypercubes and simplices are cube-like, we now provide examples of statist
 \begin{figure}
     \input{tikz/boolean-stat/tt-format}
     \caption{
-        $\ttformat$ format consisting in the $\ttformat$ hypergraph a) and decorating tensor networks b).
+        $\ttformat$ format consisting of the $\ttformat$ hypergraph a) and decorating tensor networks b).
     }\label{fig:ttFormat}
 \end{figure}
 
@@ -211,13 +211,13 @@ We now construct an example of a polytope with a face activatable with $\ttforma
 
 \input{examples/boolean-stat/tt-diagonal-face}
 
-\subsection{Construction of boolean statistics to polytopes}
+\subsection{Construction of Boolean statistics to polytopes}
 
-We now show, that any convex polytope with boolean vertices in $\parspace$ is the mean polytope to a boolean statistic.
+We now show that any convex polytope with Boolean vertices in $\parspace$ is the mean polytope to a Boolean statistic.
 To construct the corresponding formulas we denote by $\restrictionofto{\meanset}{\arbset}$ the restriction of the vectors in the set $\meanset$ to the coordinates in $\arbset$.
 
 \begin{theorem}\label{the:boolStatToPolytope}
-    Let $\meanset$ an arbitrary polytope with boolean vertices in $\parspace$.
+    Let $\meanset$ be an arbitrary polytope with Boolean vertices in $\parspace$.
     Then we construct propositional formulas on atoms $\catvariableof{[\seldim]}$ by
     \begin{align*}
         \formulaofat{0}{\catvariableof{0}} =
@@ -250,7 +250,7 @@ To construct the corresponding formulas we denote by $\restrictionofto{\meanset}
     \end{align}
 
     $"\selindex=0"$: The polytope $\restrictionofto{\meanset}{[\selindex]}=\{1\}$ (respectively $\restrictionofto{\meanset}{[\selindex]}=\{0\}$) is reproduced by $\formulaof{0}$ being a tautology (respectively a contradiction).
-    In the case $\restrictionofto{\meanset}{[\selindex]}=[0,1]$ the polytope is reproduced by the any formula, which is neither a tautology nor a contradiction, and the atomic formula $\catvariableof{0}$ is an example of such an contingency.
+    In the case $\restrictionofto{\meanset}{[\selindex]}=[0,1]$ the polytope is reproduced by the any formula, which is neither a tautology nor a contradiction, and the atomic formula $\catvariableof{0}$ is an example of such a contingency.
     Since the projection of a 0-1 polytope onto the first coordinates is itself a 0-1 polytope, these are the only possible cases and we conclude that in all
     \begin{align*}
         \meansetof{\formulaof{[\selindex]},\trivbm}
@@ -264,7 +264,7 @@ To construct the corresponding formulas we denote by $\restrictionofto{\meanset}
         \bigwedge_{\secselindex\in[\selindex]} \lnot^{1-\imelementat{\selvariable=\secselindex}} \formulaofat{\secselindex}{\catvariableof{[\secselindex+1]}} \, .
     \end{align*}
     and notice that all formulas are satisfiable (since the corresponding vertices are in the $\meansetof{\formulaof{[\selindex]},\trivbm}$) and have disjoint models.
-    We have for any boolean vector $\imelement\in\{0,1\}^{\selindex}$ and $\lambda\in\{0,1\}$ that $\imelement\times\{\lambda\}\in\restrictionofto{\meanset}{[\selindex+1]}$, if and only if
+    We have for any Boolean vector $\imelement\in\{0,1\}^{\selindex}$ and $\lambda\in\{0,1\}$ that $\imelement\times\{\lambda\}\in\restrictionofto{\meanset}{[\selindex+1]}$, if and only if
     \begin{align*}
         \imelement \in \restrictionofto{\meanset}{[\selindex]} \quad \text{and} \quad
         \lambda \in \restrictionofto{\meanset\cup\imelement\times\rr^{\seldim-\selindex}}{[\selindex]} \, .
@@ -274,7 +274,7 @@ To construct the corresponding formulas we denote by $\restrictionofto{\meanset}
         \formulaofat{\selindex,\imelement}{\catvariableof{[\selindex+1]}} \land \lnot^{1-\lambda}\formulaofat{\selindex+1}{\catvariableof{[\selindex+2]}}
     \end{align*}
     and thus to $\imelement\times\{\lambda\}\in\meansetof{\formulaof{[\selindex+1]},\trivbm}$.
-    The vertices of the 0/1 polytopes $\meansetof{\formulaof{[\selindex+1]},\trivbm}$ and $\restrictionofto{\meanset}{[\selindex+1]}$ thus coincide and both polytopes are therfore equivalent.
+    The vertices of the 0/1 polytopes $\meansetof{\formulaof{[\selindex+1]},\trivbm}$ and $\restrictionofto{\meanset}{[\selindex+1]}$ thus coincide and both polytopes are therefore equivalent.
 
 %    $\selindex\rightarrow\selindex+1$: Let us assume, that \eqref{eq:HLNindConTBS} holds for a $\selindexin$.
 %    Then for any $\shortcatindicesin$ there is exactly one $\imelementwith \in \restrictionofto{\meanset}{[\selindex]}$ such that $\shortcatindices$ is a model of

@@ -1,8 +1,8 @@
 \section{Introduction}
 
 %$ Entropy
-The Shannon entropy of a distribution quantifies the amount of structure, or information, and appears therefore as an important concept across many scientific areas.
-By Shannons source code theorem \cite{shannon_mathematical_1948}, entropy describes fundamental limits of information transfer.
+The Shannon entropy of a distribution quantifies the amount of structure, or information, and therefore appears as an important concept across many scientific areas.
+By Shannon's source code theorem \cite{shannon_mathematical_1948}, entropy describes fundamental limits of information transfer.
 %% Maximum entropy in physics
 In statistical physics, founded on the ergodic assumptions, maximum entropy distributions such as Maxwell-Boltzmann distributions are the gold standard to model equilibrium distributions \cite{uffink_compendium_2007,presse_principles_2013}.
 
@@ -17,7 +17,7 @@ These maximum entropy problems are the dual problems to convex maximum likelihoo
 Maximum entropy principles appear further in reinforcement learning \cite{yoon_maximum_2024,song_survey_2025}, AGI \cite{miotto_new_2025} and Bayesian NN \cite{rathnakumar_bayesian_2026}. %interferometric data \cite{mus_new-generation_2024}
 
 %% Closure of Exp Families
-A classical result states that maximum entropy distributions are in exponential families, if and only if the corresponding mean parameter is in the relative interior of the mean polytope \cite{barndorff-nielsen_information_1978}.
+A classical result states that maximum entropy distributions belong to exponential families, if and only if the corresponding mean parameter is in the relative interior of the mean polytope \cite{barndorff-nielsen_information_1978}.
 A natural extension is therefore the closure of the exponential families as investigated in \cite{csiszar_closures_2005,malago_note_2010}.
 Alternative methods use toric ideals to allow for infinite weight vectors \cite{sottile_toric_2008}.
 Numerical stability of the maximum entropy distributions near the boundary is studied in \cite{straszak_computing_2017,straszak_maximum_2019}.
@@ -27,14 +27,14 @@ Less obvious, studying general maximum entropy distributions might be a key step
 Combining logical and probabilistic AI is a necessity in statistical relational AI, neuro-symbolic AI and explainable AI \cite{de_raedt_probabilistic_2008,getoor_introduction_2019,sarker_neuro-symbolic_2022}.
 % Differing in support
 Probability theory with exponential families typically focuses on distributions with maximal support \cite{koller_probabilistic_2009}. % Hammersley clifford here?
-Logics on the contrary can be understood as a study of the support of models, marking the worlds consistent with a knowledge base.
+In contrast, logic can be understood as a study of the support of models, marking the worlds consistent with a knowledge base.
 % Tensor formalism
 Logical and probabilistic models can be treated in the tensor network formalism, which thus serves as a unifying representation language \cite{goessmann_tensor_2026}.
 
 %% TENSOR NETWORKS
 We in this work derive tensor network representations of all discrete maximum entropy distributions, based on the framework presented in \cite{goessmann_tensor-network_2025,goessmann_tensor_2026}.
 Tensor network formats originate from quantum many-body physics \cite{white_density-matrix_1993} as a mitigation scheme for the curse of dimensionality \cite{bellman_adaptive_1961}.
-From a numerical perspective \cite{hackbusch_new_2009,hackbusch_tensor_2012} formats like the $\cpformat$ format \cite{hitchcock_expression_1927,beylkin_algorithms_2005} and the $\ttformat$ format \cite{oseledets_tensor-train_2011} have been studied.
+From a numerical perspective \cite{hackbusch_new_2009,hackbusch_tensor_2012} formats such as the $\cpformat$ format \cite{hitchcock_expression_1927,beylkin_algorithms_2005} and the $\ttformat$ format \cite{oseledets_tensor-train_2011} have been studied.
 They have been applied to various areas such as in high-dimensional PDEs \cite{eigel_variational_2019,eigel_adaptive_2020}, or quantum simulation \cite{sander_quantum_2025}.
 Lastly, tensor network schemes are applied to artificial intelligence \cite{badreddine_logic_2022,domingos_tensor_2025,ali_explicit_2025}.
 
@@ -51,8 +51,8 @@ from indices $\shortcatindices=(\catindexof{0},\ldots,\catindexof{\catorder-1})\
 One-hot encodings of index tuples $\shortcatindices$ are specific tensors $\onehotmapofat{\shortcatindices}{\shortcatvariables}$ such that $\onehotmapofat{\shortcatindices}{\shortcatvariables=\tildecatindexof{[\catorder]}}=1$ if $\tildecatindexof{[\catorder]}=\shortcatindices$ and $0$ else.
 
 %% Hypergraphs
-Given a hypergraph $\graph=\big(\nodes,\edges\big)$ of an arbitrary node set $\nodes$ and hyperedges $\edgein$ being subsets of $\nodes$, we define decorating tensor network as follows.
-Each node $\nodein$ gets decorated by a variable $\catvariableof{\node}$ of dimension $\catdimof{\node}$ and each hyperedge $\edgein$ by a tensor $\hypercoreofat{\edge}{\catvariableof{\edge}}$ with the index variables to the contained nodes.
+Given a hypergraph $\graph=\big(\nodes,\edges\big)$ of an arbitrary node set $\nodes$ and hyperedges $\edgein$ as arbitrary subsets of $\nodes$, we define decorating tensor network as follows.
+Each node $\nodein$ is decorated by a variable $\catvariableof{\node}$ of dimension $\catdimof{\node}$ and each hyperedge $\edgein$ by a tensor $\hypercoreofat{\edge}{\catvariableof{\edge}}$ with the index variables to the contained nodes.
 The set of decorating tensors then builds the tensor network $\extnet$ on the hypergraph.
 A contraction of the tensor network keeping the nodes $\arbset\subset\nodes$ open is then the tensor $\contractionof{\extnet}{\catvariableof{\arbset}}$ with variables $\catvariableof{\arbset}$ and coordinates to the indices $\catindexof{\arbset}$ by
 \begin{align*}
@@ -92,7 +92,7 @@ The mean parameter of a distribution $\probwith$ to a statistic $\sstat$ is the 
     = \expectationof{\enumformula}
     = \contraction{\sstatcoordinateofat{\selindex}{\shortcatvariables},\probwith,\basemeasurewith} \, .
 \end{align*}
-To express the computation of the mean parameter by a single contraction we introduce a coordinate selection variable $\selvariable$ of dimension $\seldim$ and the selection encoding $\sencsstatwith$ with coordinates by
+To express the computation of the mean parameter as a single contraction, we introduce a coordinate selection variable $\selvariable$ of dimension $\seldim$ and the selection encoding $\sencsstatwith$ with coordinates by
 \begin{align*}
     \sencsstatat{\indexedshortcatvariables,\indexedselvariable}
     = \sstatcoordinateofat{\selindex}{\indexedshortcatvariables} \, .
@@ -115,7 +115,7 @@ The maximum entropy problem given a mean parameter $\genmeanwith$ is stated by
 
 \subsection{\ComputationActivationNetworks{}}
 
-We now introduce with \ComputationActivationNetworks{} families of tensor networks representing, as we will show in this work, the solution of any instance of \problemref{prob:maxEntropy}.
+We now introduce \ComputationActivationNetworks{}, a family of tensor networks representing, as we will show in this work, the solution of any instance of \problemref{prob:maxEntropy}.
 %% Basis encodings
 Given a statistic $\sstat:\facstates\rightarrow\rr^{\seldim}$ we define an index enumeration variable $\headvariableof{\selindex}$ of dimension $\cardof{\imageof{\sstatcoordinateof{\selindex}}}$ and injective index enumeration vectors
 \begin{align*}
@@ -130,7 +130,7 @@ Based on the enumeration of the image we define the basis encoding tensor of the
     \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
 \end{align*}
 A computation network is any representation of $\sstatccwith$ as a tensor network.
-These can be constructed in the case statistics being a composition of connective functions, see \cite{goessmann_tensor_2026}.
+These can be constructed in the case where the statistics are a composition of connective functions, see \cite{goessmann_tensor_2026}.
 
 %% Computation-Activation Networks
 An activation tensor is $\hypercoreat{\headvariables}$ and the corresponding \ComputationActivationNetwork{} with respect to the statistic $\sstat$ and the base measure $\basemeasurewith$ the tensor
@@ -158,11 +158,11 @@ We are interested in decomposition formats of $\hypercoreat{\headvariables}$, wh
 \subsection{Contributions}
 
 We exploit the novel tensor network formalism developed in \cite{goessmann_tensor_2026} to represent generic maximum entropy distributions based on the position of their mean parameters in the mean polytope, see \theref{the:MAINgenMaxEntChar}.
-The connection to logical formalisms of artificial intelligence is exploited in the study of boolean statistics, where we interpret mean polytopes based on satisfiability of formulas (see \theref{the:boolVecSat}) and construct statistics to arbitrary polytopes (see \theref{the:boolStatToPolytope}).
+The connection to logical formalisms of artificial intelligence is exploited in the study of Boolean statistics, where we interpret mean polytopes based on satisfiability of formulas (see \theref{the:boolVecSat}) and construct statistics to arbitrary polytopes (see \theref{the:boolStatToPolytope}).
 
 \subsection{Structure of the paper}
 
 To prepare for the presentation of our main results we introduce in section \secref{sec:meanPolytope} the mean polytope, its faces, and their tensor network representations.
 In \secref{sec:expFamily} we study exponential families as classes of elementary \ComputationActivationNetworks{} and show that they are the maximum entropy distributions to mean parameters in the relative interior of the mean polytope.
 This result is generalized in \secref{sec:genMaxEnt} where we characterize generic maximum entropy distributions based on \ComputationActivationNetworks{}.
-In \secref{sec:booleanStat} we investigate consequences of these results in case of boolean statistics and connect them to propositional logics.
+In \secref{sec:booleanStat} we investigate consequences of these results in case of Boolean statistics and connect them to propositional logics.
