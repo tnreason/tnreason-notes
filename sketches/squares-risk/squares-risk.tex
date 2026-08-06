@@ -1,0 +1,126 @@
+\documentclass[aps,onecolumn,nofootinbib,pra]{article}
+
+\usepackage{../../spec_files/arxiv}
+\input{../../spec_files/standard_preamble.tex}
+
+\usepackage{import}
+\subimport{../../macros/}{all-macros}
+
+\usepackage{minted}
+
+\newcommand{\gausscore}{g}
+\newcommand{\gausscoreof}[1]{\gausscore_{#1}}
+\newcommand{\gausscoreat}[1]{\gausscore\left[#1\right]}
+\newcommand{\gausscoreofat}[2]{\gausscoreof{#1}\left[#2\right]}
+
+\newcommand{\slopevec}{\tilde{\theta}}
+
+\begin{document}
+    \title{Squares risk}
+
+    \maketitle
+    \date{\today}
+
+    We reformulate results in \cite{goessmann_uniform_2021} based on the formalism in \cite{goessmann_tensor_2026}.
+
+
+    \section{Quadratic exponential models}
+
+    We consider distributions of variables $\shortcatvariables$ and $Y$ indexed by vector parameters $\slopevec[L]\in\rr^\catorder$ with $L$
+    \begin{align*}
+        \probofat{\slopevec}{\indexedshortcatvariables,Y=y}
+        =
+        \frac{1}{\partitionfunction(\slopevec)} \cdot
+        \expof{-(\contraction{\slopevec[L],x[L]}-y)^2} \, .
+    \end{align*}
+    Here we treat the index tuple $\shortcatindices$ as a vector $x[L]$.
+
+    \begin{example}[Gaussian processes]
+        When $\shortcatvariables$ and $Y$ are continuous real variables, and the contraction is defined as Lebesque integral, then $\probof{\slopevec}$ is a Gaussian process.
+
+
+        Here we allow for arbitrary state sets to $\shortcatvariables$ and $Y$, but are specially interested in discrete cases (where the contraction is the sum).
+    \end{example}
+
+    \subsection{Cross entropy}
+
+    The cross entropy between an empirical distribution $\empdistribution$ to the data $\datamap=\dataset$ and the model $\probof{\slopevec}$ is
+    \begin{align*}
+        \centropyof{\empdistribution}{\probof{\slopevec}}
+        &= \frac{1}{\datdim} \sum_{\datindexin}
+        -\lnof{\probofat{\slopevec}{\indexedshortcatvariables^\datindex,Y=y^\datindex}} \\
+        &= \lnof{\partitionfunction(\slopevec)}
+        - \frac{1}{\datdim} \sum_{\datindexin}
+        (\contraction{\slopevec[L],\catindex^\datindex} - y^\datindex)^2 \, .
+    \end{align*}
+
+    The cross entropy differs by the term $\lnof{\partitionfunction(\slopevec)}$ from the squares risk
+    \begin{align*}
+        \frac{1}{\datdim} \sum_{\datindexin}
+        \left(\contraction{\slopevec[L],\catindex^\datindex} - y^\datindex\right)^2 \, .
+    \end{align*}
+
+    \subsection{Conditioned likelihood}
+
+    When $Y$ is real valued, then the distribution of $Y$ conditioned on $\indexedshortcatvariables$ is
+    \begin{align*}
+        \probofat{\slopevec}{Y=y|\indexedshortcatvariables} \, ,
+    \end{align*}
+    that is a normal distribution with $\sigma=\sqrt{\frac{1}{2}}$.
+
+    The log likelihood of the data $\datamap$ conditioned on the variables $\shortcatvariables$ is
+    \begin{align*}
+        \lnof{\sqrt{\pi}} +
+        \frac{1}{\datdim} \sum_{\datindexin}
+        \left(\contraction{\slopevec[L],\catindex^\datindex} - y^\datindex\right)^2 \, .
+    \end{align*}
+    Thus, the difference to the squares risk is a constant term $\lnof{\sqrt{\pi}}$, which can be ignored when optimizing over $\slopevec$.
+
+    \subsection{Exponential family}
+
+    By factorization of the squares term we get
+    \begin{align*}
+        \probofat{\slopevec}{\indexedshortcatvariables,Y=y}
+        =
+        \frac{1}{\partitionfunction(\slopevec)}
+        \expof{
+            -\contraction{\slopevec[L],x[L]}^2
+            + 2 y \contraction{\slopevec[L],x[L]}
+            - y^2
+        } \, .
+    \end{align*}
+    This is a member of the exponential family with the statistic
+    \begin{align*}
+        \sstat(x,y)
+        = (-x[L]\otimes x[\tilde[L]], 2y \cdot x[L], -y^2)
+    \end{align*}
+    and the canonical parameter
+    \begin{align*}
+        \canparam(\slopevec)
+        = (\slopevec[L]\otimes\slopevec[\tilde{L}], \slopevec[L], 1) \, .
+    \end{align*}
+
+
+    \section{Inference}
+
+    The special case of Gaussian processes enable training methods like alternating least squares, see \cite{goessmann_uniform_2021}.
+    They require sparsity assumptions by restricting $\slopevec$ to admit tensor network decompositions.
+
+    \section{Probabilistic guarantees}
+
+    From the basic inequality
+    \begin{align*}
+        \centropyof{\empdistribution}{\probof{\hat{\slopevec}}}
+        \leq
+        \centropyof{\empdistribution}{\probof{\slopevec^*}}
+    \end{align*}
+    we derive an inequality consisting product and multiplier processes, scaling with $\|\hat{\slopevec}-\slopevec^*\|^2$ and $\|\hat{\slopevec}-\slopevec^*\|$.
+    In combination with uniform concentration inequalities (involving e.g. Mendelsons Lambda functional), we then get a bound on $\|\hat{\slopevec}-\slopevec^*\|$.
+
+
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
+
+
+\end{document}
