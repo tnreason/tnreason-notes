@@ -1,0 +1,25 @@
+\stantikzpic{
+
+    \drawtextnode{-2}{3}{$a)$}
+
+    \drawvariablenode{0}{0}{$\headvariableof{0}$}{X0}
+    \drawvariablenode{3}{0}{$\headvariableof{1}$}{X1}
+    \drawtextnode{6}{0}{$\cdots$}
+    \drawvariablenode{9}{0}{$\headvariableof{\seldim-1}$}{Xdmin1}
+
+    \begin{scope}[shift={(15,-2)}]
+        \drawtextnode{-3}{5}{$b)$}
+
+        \drawtensorblock{0}{2.5}{1}{$\hypercoreof{0}$}
+        \drawvwire{0}{1.5}{$\headvariableof{0}$}
+        \drawtensorblock{3}{2.5}{1}{$\hypercoreof{1}$}
+        \drawvwire{3}{1.5}{$\headvariableof{1}$}
+
+        \drawtextnode{6}{2.5}{$\cdots$}
+
+        \drawtensorblock{9}{2.5}{1}{$\hypercoreof{\seldim\shortminus1}$}
+        \drawvwire{9}{1.5}{$\headvariableof{\seldim\shortminus1}$}
+
+    \end{scope}
+
+}

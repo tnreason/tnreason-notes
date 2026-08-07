@@ -1,0 +1,56 @@
+\stantikzpic{
+
+    \drawtextnode{0}{5}{$a)$}
+
+    \drawvariablenode{0}{0}{$\catvariableof{0}$}{X0}
+    \drawvariablenode{4}{0}{$\catvariableof{1}$}{X1}
+    \drawvariablenode{8}{0}{$\catvariableof{2}$}{X2}
+    \drawtextnode{11}{0}{$\cdots$}
+    \drawvariablenode{14}{0}{$\catvariableof{\catorder-1}$}{Xdmin1}
+
+    \drawvariablenode{2}{4}{$\decvariableof{0}$}{I0}
+    \drawvariablenode{6}{4}{$\decvariableof{1}$}{I1}
+    \drawtextnode{9}{4}{$\cdots$}
+    \drawvariablenode{12}{4}{$\decvariableof{\catorder-2}$}{Idmin2}
+
+    \node[anchor=south] (E0) at (0.5,2) {\colorlabelsize $e_0$};
+    \draw (X0) -- (I0);
+
+    \node[anchor=south] (E1) at (4,2) {\colorlabelsize $e_1$};
+    %\drawvariabledot{4}{2}
+    \draw (4,2) -- (X1);
+    \draw (4,2) -- (I0);
+    \draw (4,2) -- (I1);
+
+    \node[anchor=south] (E1) at (8,2) {\colorlabelsize $e_2$};
+    %\drawvariabledot{8}{2}
+    \draw (8,2) -- (X2);
+    \draw (8,2) -- (I1);
+    \draw (8,2) -- (9,3);
+
+    \node[anchor=south] (E0) at (13.5,2) {\colorlabelsize $e_{\catorder\shortminus2}$};
+    \draw (Xdmin1) -- (Idmin2);
+
+    \begin{scope}[shift={(18,0)}]
+        \drawtextnode{-2}{5}{$b)$}
+
+        \drawtensorblock{0}{2.5}{1}{$\hypercoreof{0}$}
+        \drawvwire{0}{1.5}{$\catvariableof{0}$}
+        \drawtensorblock{4}{2.5}{1}{$\hypercoreof{1}$}
+        \drawvwire{4}{1.5}{$\catvariableof{1}$}
+
+        \drawtensorblock{8}{2.5}{1}{$\hypercoreof{2}$}
+        \drawvwire{8}{1.5}{$\catvariableof{2}$}
+
+        \drawtextnode{12}{2.5}{$\cdots$}
+
+        \drawtensorblock{16}{2.5}{1}{$\hypercoreof{\catorder\shortminus1}$}
+        \drawvwire{16}{1.5}{$\catvariableof{\catorder\shortminus1}$}
+
+        \drawhwire{1}{2.5}{$\decvariableof{0}$}
+        \drawhwire{5}{2.5}{$\decvariableof{1}$}
+        \drawhwire{9}{2.5}{$\decvariableof{2}$}
+        \drawhwire{13}{2.5}{$\decvariableof{\catorder\shortminus1}$}
+    \end{scope}
+
+}

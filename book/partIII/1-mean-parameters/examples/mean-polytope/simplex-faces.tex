@@ -1,0 +1,32 @@
+\begin{example}[Simplices]
+    \label{exa:simplexFaces}
+    The $(\seldim-1)$-dimensional standard simplex $\meansetof{\triangle,\seldim-1}$ in $[0,1]^{\seldim}$ is the convex hull of the vertex sets
+    \begin{align*}
+        \imset = \{\onehotmapofat{\selindex}{\selvariable} \wcols\selindexin\} \, .
+    \end{align*}
+    The simplex is the mean polytope of the $\seldim$-dimensional statistic with
+    \begin{align*}
+        \sstatcoordinateof{\selindex} \defcols [\seldim] \rightarrow [2] \quad, \quad
+        \sstatcoordinateofat{\selindex}{\secselindex}
+        = \begin{cases}
+              1 & \ifspace \secselindex = \selindex \\
+              0 & \ifspace \secselindex \neq \selindex
+        \end{cases} \, .
+    \end{align*}
+    The simplex represents all distributions with respect to the trivial base measure $\trivbm$ which coordinates are all $1$.
+    When flattened to a vector, any tensor in $\distmeasuredby{\ones}$ is an element of $\meansetof{\triangle,\seldim-1}$ where $\seldim=\prod_{\catenumeratorin}\catdimof{\catenumerator}$.
+
+    % Faces
+    The face lattice of the simplex is enumerated by subsets of $[\seldim]$ as
+    \begin{align*}
+        \facelatticeof{\meansetof{\triangle,\seldim-1}}
+        = \{\facesymbolof{\arbset}\wcols\arbset\subset[\seldim]\}
+    \end{align*}
+    where the faces are
+    \begin{align*}
+        \facesymbolof{\arbset}
+        = \convhullof{\onehotmapofat{\selindex}{\selvariable} \wcols\selindex\in\arbset}
+    \end{align*}
+    and are therefore themselves $(\cardof{\arbset}-1)$-dimensional standard simplices.
+    The partial order of the faces coincides with the inclusion order of subsets $\arbset$.
+\end{example}

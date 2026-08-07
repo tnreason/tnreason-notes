@@ -1,0 +1,353 @@
+\section{The mean polytope}\label{sec:meanPolytope}
+
+Given a statistic function
+\begin{align*}
+    \sstat \wcols \facstates \rightarrow \rr^{\seldim}
+\end{align*}
+on the states $\facstates$ and a base measure $\basemeasurewith$ the mean polytope is the set
+\begin{align*}
+    \genmeanset
+    \coloneqq \left\{\contractionof{\probwith,\sencsstatwith,\basemeasurewith}{\selvariable}\wcols\probwith\in\distmeasuredby{\basemeasure} \right\}
+\end{align*}
+containing all mean parameters for the distributions in $\distmeasuredby{\basemeasure}$.
+By $\sencsstatwith$ we denote the selection encoding of the statistic (see introduction).
+%% Convex hull
+Since $\distmeasuredby{\basemeasure}$ is the convex hull of the vertices $\frac{1}{\basemeasureat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables}$, and any mean parameter is a linear transformation of the distribution, the mean polytope is the convex hull of the vectors
+\begin{align*}
+    \genimset
+    \coloneqq \{\sencsstatat{\indexedshortcatvariables,\selvariable}
+    \wcols\shortcatindices\in\facstates\ncond\basemeasureat{\indexedshortcatvariables}\neq0 \} \, .
+\end{align*}
+
+%\subsection{Convex hull}
+%
+%First of all, we characterize the mean polytope as the convex hull of the slices to the selection encoding.
+%
+%\begin{lemma}
+%    For any statistic $\sstat$ and base measure $\basemeasure$, the set of mean parameters is the convex hull of the set
+%    \begin{align*}
+%        \genimset
+%        \coloneqq \{\sencsstatat{\indexedshortcatvariables,\selvariable}
+%        \wcols\shortcatindices\in\facstates\ncond\basemeasureat{\indexedshortcatvariables}\neq0 \}
+%    \end{align*}
+%    that is $\genmeanset = \convhullof{\genimset}$.
+%\end{lemma}
+%\begin{proof}
+%    This follows from
+%    \begin{align*}
+%        \distmeasuredby{\basemeasure}
+%        = \convhullof{
+%            \frac{1}{\basemeasureat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables}
+%            \wcols\shortcatindices\in\facstates\ncond\basemeasureat{\indexedshortcatvariables}\neq0} \, .
+%    \end{align*}
+%    and for any vertex of this simplex we have
+%    \begin{align*}
+%        \contractionof{\frac{1}{\basemeasureat{\indexedshortcatvariables}} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}
+%        = \sencsstatat{\indexedshortcatvariables,\selvariable} \, .
+%    \end{align*}
+%\end{proof}
+
+
+\subsection{Faces}
+
+%Let us now continue with the investigation of the faces of the mean parameter polytope. % which we define analogously to Def.~2.1 in \cite{ziegler_lectures_2013}. % ! Defined in Ziegler directly with normals
+%The proper faces of a polytope describe its boundary.
+%We in this work will pay special attention to
+
+When studying maximum entropy distributions, we will pay special attention to the faces of a polytope, which form the boundary.
+Here, we define them based on convex hulls and introduce tensor representations by refined base measures.
+
+\begin{definition}
+    We say that the convex hull of a subset $\genfaceimset\subset\genimset$ is a face of a polytope $\genmeanset$, if and only if there is a vector $\canparamofat{\facesymbol}{\selvariable}\in\parspace$ such that
+    \begin{align*}
+        \genfaceimset
+        = \argmax_{\meanparamwith\in\genimset} \contraction{\meanparamwith,\canparamofat{\facesymbol}{\selvariable}} \, .
+    \end{align*}
+    We denote the face as $\facesymbol=\convhullof{\genfaceimset}$.
+    The set of all faces of the mean polytope $\genmeanset$ is denoted by $\facelatticeof{\genmeanset}$.
+\end{definition}
+
+The set $\facelatticeof{\genmeanset}$, partially ordered by the inclusion operation, is a lattice (see \cite{ziegler_lectures_2013}).
+% Refined base measures
+We now show that each face itself is a convex polytope corresponding to a refined base measure.
+
+\begin{definition}
+    \label{def:faceMeasure}
+    The refined base measure with respect to a face $\facein$ is the tensor $\genfacemeasurewith$ with coordinates to $\shortcatindicesin$ by
+    \begin{align*}
+        \genfacemeasurewith
+        = \begin{cases}
+              \basemeasureat{\indexedshortcatvariables} & \ifspace \sstatat{\shortcatindices}\in\genfaceimset \\
+              0 & \elsetext
+        \end{cases} \, .
+    \end{align*}
+\end{definition}
+
+The refined base measure has by definition a smaller support than the base measure.
+We now show that restricting the distributions in $\distmeasuredby{\basemeasure}$ to those in $\distmeasuredby{\basemeasureof{\sstat,\facesymbol}}$ amounts to a restriction of the polytope $\genmeanset$ to the corresponding face.
+
+%We now specify the mean parameter polytope to any face using the face measure as a refinement of the base measure.
+
+\begin{lemma}
+    \label{lem:faceAsRefinedPolytope}
+    For any face $\facein$ we have
+    \begin{align*}
+        \facesymbol
+        = \meansetof{\sstat,\basemeasureof{\sstat,\facesymbol}} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    For any $\shortcatindicesin$ we have $\genfacemeasureat{\indexedshortcatvariables}\neq0$ if and only if $\sstatat{\shortcatindices}\in\genfaceimset$ and $\basemeasureat{\indexedshortcatvariables}\neq0$.
+    Thus we have
+    \begin{align*}
+        \facesymbol
+        &= \convhullof{\genfaceimset} \\
+        &= \convhullof{\sencsstatat{\indexedshortcatvariables,\selvariable} \wcols \sstatat{\shortcatindices}\in\genfaceimset\ncond \basemeasureat{\indexedshortcatvariables}\neq 0} \\
+        &= \convhullof{\sencsstatat{\indexedshortcatvariables,\selvariable} \wcols \genfacemeasureat{\indexedshortcatvariables}\neq 0} \\
+        &= \meansetof{\sstat,\basemeasureof{\sstat,\facesymbol}} \, . \qedhere
+    \end{align*}
+\end{proof}
+
+Representability of a distribution with respect to face measures is an equivalent condition for the mean parameter of a distribution to be on a face, as we show next.
+
+\begin{lemma}
+    \label{lem:faceMeasureRepCondition} % was \label{the:facePolytopeCharacterization} in the report
+    If and only if for a distribution $\probwith\in\distmeasuredby{\basemeasure}$ and a face $\facein$ we have
+    \begin{align*}
+        \contractionof{\sencsstatwith,\probwith,\basemeasurewith}{\selvariable}\in\facesymbol\, ,
+    \end{align*}
+    then %$\probwith$ is representable with respect to the base measure \red{Did not define representable, reformulate with the support!}
+    \begin{align*}
+        \probwith \in \distmeasuredby{\genfacemeasure} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    For a distribution $\probwith\in\distmeasuredby{\basemeasure}$ to be in $\distmeasuredby{\genfacemeasure}$, it is enough to show that $\probwith$ is only supported at $\genfacemeasurewith$.
+    We have
+    \begin{align*}
+        \meanparamat{\selvariable}
+        = \sum_{\shortcatindices} \probat{\indexedshortcatvariables}\cdot\basemeasureat{\indexedshortcatvariables} \cdot \genstatshortcatencoding \, .
+    \end{align*}
+    Now, let $\canparamofat{\facesymbol}{\selvariable}$ be a face normal to the face $\facesymbol$.
+    We then have
+    \begin{align*}
+        \contraction{\meanparamwith,\canparamofat{\facesymbol}{\selvariable}}
+        = \sum_{\shortcatindicesin}
+        \probat{\indexedshortcatvariables}\cdot\basemeasureat{\indexedshortcatvariables} \cdot \contraction{\genstatshortcatencoding,\canparamofat{\facesymbol}{\selvariable}} \, .
+    \end{align*}
+
+    Now if and only if $\probat{\indexedshortcatvariables}\cdot\basemeasureat{\indexedshortcatvariables}$ is supported only for $\shortcatindices$ with $\sstatat{\shortcatindices}\in\genfaceimset$ we have that
+    \begin{align*}
+        \contraction{\meanparamwith,\canparamofat{\facesymbol}{\selvariable}}
+        = \max_{\meanparamwith\in\genmeanset} \contraction{\meanparamwith,\canparamofat{\facesymbol}{\selvariable}}
+    \end{align*}
+    which is equal to $\meanparamwith\in\facesymbol$.
+    Thus, if and only if $\meanparamwith\in\facesymbol$ then $\probat{\shortcatvariables}$ is only supported at $\shortcatindices$ in the support of $\genfacemeasurewith$.
+%    Now, the $\shortcatindices$ with $\genfacemeasureat{\indexedshortcatvariables}=1$ are exactly those, for which the conditions $\facesymbol$ hold straight.
+%    If and only if for a $\shortcatindices$ with $\genfacemeasureat{\indexedshortcatvariables}=0$ we have $\probat{\indexedshortcatvariables}>0$, one of the conditions $\facesymbol$ would not hold straight.
+%    Thus, if and only if $\probwith$ is representable with respect to $\genfacemeasureat{\shortcatvariables}$, we have $\meanparamat{\selvariable}\in\facesymbol$.
+\end{proof}
+
+Let us now investigate tensor network representations of refined base measures, based on the basis encoding $\bencodingof{\sstat}$ of a statistic.
+
+\begin{theorem}
+    \label{the:faceMeasureCharacterization}
+    For any face $\facesymbol$ of $\meanset$ we have
+    \begin{align*}
+        \genfacemeasureat{\shortcatvariables}
+        =\contractionof{\sstatccwith,\kcoreofat{\facesymbol}{\headvariables},\basemeasurewith}{\shortcatvariables}
+    \end{align*}
+    where
+    \begin{align*}
+        \kcoreofat{\facesymbol}{\headvariables}
+        = \sum_{\imelementwith\in\genfaceimset} \onehotmapofat{\imelementwith}{\headvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    For any $\imelementwith\in\genfaceimset$ the tensor
+    \begin{align*}
+        \hypercoreofat{\imelement}{\shortcatvariables}
+        = \contractionof{\sstatccwith,\onehotmapofat{\imelementwith}{\headvariables}}{\shortcatvariables}
+    \end{align*}
+    is the indicator of the preimage of $\meanparam$ under $\sstatencoding$.
+    Since preimages of the elements in $\genfaceimset$ are disjoint, the support of $\hypercoreofat{\imelement}{\shortcatvariables}$ is disjoint and their sum
+    \begin{align*}
+        \sum_{\imelementwith\in\genfaceimset} \hypercoreofat{\imelement}{\shortcatvariables}
+    \end{align*}
+    is the indicator of the preimage of $\facesymbol$ under $\sstatencoding$.
+    The face measure obeys thus
+    \begin{align*}
+        \genfacemeasurewith
+        &= \contractionof{\left(
+                              \sum_{\imelementwith\in\genfaceimset} \hypercoreofat{\imelement}{\shortcatvariables}
+        \right), \basemeasurewith}{\shortcatvariables} \\
+        &= \sum_{\imelementwith\in\genfaceimset}
+        \contractionof{\sstatccwith,\onehotmapofat{\imelementwith}{\headvariables},\basemeasurewith}{\shortcatvariables} \\
+        & = \contractionof{\sstatccwith,\kcoreofat{\facesymbol}{\headvariables},\basemeasurewith}{\shortcatvariables} \qedhere
+    \end{align*}
+\end{proof}
+
+We now investigate the representation of refined base measures by \ComputationActivationNetworks{}.
+
+\begin{definition}
+    \label{def:faceRepresentability}
+    Let $\graph$ be a hypergraph whose nodes include $[\seldim]$.
+    We say that a face $\facesymbol$ is representable by $\graph$ if and only if there is a set $\arbset$ of basis vectors with $\arbset\cap\genimset = \genfaceimset$ and there is a tensor network $\kcoreof{\graph}$ with respect to the hypergraph $\graph$ such that
+    \begin{align*}
+        \contractionof{\kcoreof{\graph}}{\headvariables}
+        = \sum_{\imelement\in\arbset} \onehotmapofat{\imelement}{\headvariables} \, . % Can allow for arbitrary weights of the non-supported coordinates!
+    \end{align*}
+    We call any such tensor network a face activating tensor network.
+\end{definition}
+
+\begin{lemma}
+    \label{lem:faceMeasureRepresentation}
+    If and only if a face is representable by a hypergraph $\graph$, we have
+    \begin{align*}
+        \frac{1}{\contraction{\genfacemeasurewith}} \cdot \genfacemeasurewith
+        \in \cansof{\sstat,\graph,\basemeasure} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    For any $\arbset$ with $\arbset \wcols \arbset\cap\genimset = \genfaceimset$ and tensor network $\kcoreof{\graph}$ respecting the assumptions of \defref{def:faceRepresentability} we have
+    \begin{align*}
+        \contractionof{\contractionof{\kcoreof{\graph}}{\headvariables},\bencsstatwith}{\shortcatvariables}
+        &= \contractionof{\sum_{\imelement\in\arbset}\onehotmapofat{\imelement}{\headvariables},\bencsstatwith}{\shortcatvariables} \\
+        &= \contractionof{\sum_{\imelement\in\genfaceimset}\onehotmapofat{\imelement}{\headvariables},\bencsstatwith}{\shortcatvariables} \, .
+    \end{align*}
+    Here we used in the second equation that only the vertices in $\genimset $ are in the image of $\sstat$.
+    It follows, that
+    \begin{align*}
+        \frac{1}{\contraction{\genfacemeasurewith}} \cdot \genfacemeasurewith
+        = \frac{
+            \contractionof{\contractionof{\kcoreof{\graph}}{\headvariables},\bencsstatwith}{\shortcatvariables}
+        }{
+            \contraction{\contractionof{\kcoreof{\graph}}{\headvariables},\bencsstatwith,\basemeasurewith}
+        }
+    \end{align*}
+    and thus $\genfacemeasureat{\shortcatvariables|\varnothing} \in \cansof{\sstat,\graph,\basemeasure}$.
+\end{proof}
+
+\input{examples/mean-polytope/vertices}
+
+While vertices are the minimal non-vanishing faces in the face-lattice (see \cite{ziegler_lectures_2013}), we now show that the maximal face, namely the polytope itself, is also representable with respect to the elementary hypergraph $\elgraph$ (see \figref{fig:elFormat}).
+
+\input{examples/mean-polytope/maximal-face}
+
+\begin{figure}
+    \input{tikz-pics/mean-polytope/el-format}
+    \caption{Elementary tensor format consisting of the elementary hypergraph $\elformat$ $a)$, and corresponding tensor networks $b)$ being the tensor products of vectors.}
+    \label{fig:elFormat}
+\end{figure}
+
+
+\subsection{Representation in the $\cpformat$ format}
+
+Extending \exaref{exa:vertexMeasures} and \exaref{exa:maximalFaceMeasure}, we can provide a coarse estimation of the hypergraph $\graph$ required to decompose $\kcoreof{\facesymbol}$ for generic faces $\facesymbol$.
+To this end, we use the $\cpformat$ format describing tensor networks on the $\cpformat$ hypergraph (see \figref{fig:cpFormat})
+\begin{align*}
+    \cpformat
+    = \big([\seldim]\cup\{\decvariable\},\{\{\selindex,\decvariable\}\wcols\selindexin\}\big) \, .
+\end{align*}
+The dimension of the variable $\decvariable$ is called the hidden rank of the format.
+
+\begin{lemma}
+    \label{lem:CPfaceRepresentationBound} % Sharpened bound
+    Any face $\facesymbol$ is representable by a $\cpformat$ graph with hidden rank
+    \begin{align*}
+        r
+        \leq \min\left(\cardof{\genfaceimset},\cardof{\genimset}-\cardof{\genfaceimset}+1\right) \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    We show the claim by constructing two face activating tensor networks to $\facesymbol$ in a $\cpformat$ hypergraph with hidden rank $\cardof{\genfaceimset}$ and in a $\cpformat$ hypergraph with hidden rank $\cardof{\genimset}-\cardof{\genfaceimset}+1$.
+    To show the first representation we enumerate the vertices by a variable $\decvariable$ with dimension $r=\cardof{\genfaceimset}$, i.e. $\genfaceimset = \{v^{\decindex}[\selvariable] \wcols \decindexin\}$.
+    Then we define for $\selindexin$ core tensors $\hypercoreofat{\selindex}{\headvariableof{\selindex},\decvariable}$
+    \begin{align*}
+        \hypercoreofat{\selindex}{\headvariableof{\selindex},\indexeddecvariable} = \onehotmapofat{\imelementofat{\decindex}{\indexedselvariable}}{\headvariableof{\selindex}} \, .
+    \end{align*}
+    Then we have
+    \begin{align*}
+        \contractionof{\{\hypercoreofat{\selindex}{\headvariableof{\selindex},\decvariable}\wcols\selindexin\}}{\headvariables}
+        =\sum_{\imelement\in\genfaceimset} \onehotmapofat{\imelement}{\headvariables}
+    \end{align*}
+    and thus have found an activation tensor network in a $\cpformat$ graph with hidden rank $\cardof{\genfaceimset}$ representing the face $\facesymbol$.
+
+    We continue with the second representation, for which we enumerate the set $\genimset/\genfaceimset$ by $\imelementofat{\decindex}{\selvariable}$ where $\decindex\in[\cardof{\genimset}-\cardof{\genfaceimset}]$.
+    We define variable $\decvariable$ with dimension $r=\cardof{\genimset}-\cardof{\genfaceimset}+1$ and define for $\selindexin$ core tensors
+    \begin{align*}
+        \hypercoreofat{\selindex}{\headvariableof{\selindex},\indexeddecvariable}
+        =
+        \begin{cases}
+            -\onehotmapofat{\imelementofat{\decindex}{\indexedselvariable}}{\headvariableof{\selindex}} & \ifspace \decindex < \cardof{\genimset}-\cardof{\genfaceimset} \\
+            \onesat{\headvariableof{\selindex}} & \ifspace \decindex = \cardof{\genimset}-\cardof{\genfaceimset}
+        \end{cases} \, .
+    \end{align*}
+    We then have
+    \begin{align*}
+        \contractionof{\{\hypercoreofat{\selindex}{\headvariableof{\selindex},\decvariable}\wcols\selindexin\}}{\headvariables}
+        &=\onesat{\headvariables} - \sum_{\imelement\in\genimset/\genfaceimset} \onehotmapofat{\imelement}{\headvariables} \\
+        &= \sum_{\imelement\in\genfaceimset} \onehotmapofat{\imelement}{\headvariables}
+        + \sum_{\imelement\in\left(\bigtimes_{\selindexin}[\seldimof{\selindex}]\right)/\genimset} \onehotmapofat{\imelement}{\headvariables} \, .
+    \end{align*}
+    We have thus found a face activating tensor network for $\facesymbol$ in a $\cpformat$ format with hidden rank $r=\cardof{\genimset}-\cardof{\genfaceimset}+1$.
+\end{proof}
+
+We notice that the $\cpformat$ rank bound of \lemref{lem:CPfaceRepresentationBound} is tight in \exaref{exa:vertexMeasures} and \exaref{exa:maximalFaceMeasure}, since the elementary format is a restriction of the $\cpformat$ format to rank $1$.
+
+\begin{figure}
+    \input{tikz-pics/mean-polytope/cp-format}
+    \caption{The $\cpformat$ tensor format consist of the $\cpformat$ hypergraph a) and decorating tensor networks b).
+    Tensors in this format constructed as in \lemref{lem:CPfaceRepresentationBound} represent arbitrary faces.}
+    \label{fig:cpFormat}
+\end{figure}
+
+\subsection{Examples of elementarily representable faces}
+
+We show in the following example that all faces of a hypercube and a simplex are representable by elementary activation tensors.
+
+\input{examples/mean-polytope/hypercube-faces}
+
+\input{examples/mean-polytope/simplex-faces}
+
+\subsection{Partition into relative interiors of faces}
+
+Let us now introduce relative interiors, which enable us to find disjoint partitions of the mean polytope.
+
+\begin{definition}[Relative Interior]
+    \label{def:relativeInterior}
+    The relative interior $\sbinteriorof{\arbset}$ of an arbitrary set $\arbset\subset\parspace$ is the interior of $\arbset$ in the affine subspace $\convhullof{\arbset}$.
+\end{definition}
+
+\begin{lemma}
+    \label{lem:faceToMean}
+    To each $\meanparam\in\genmeanset$ there is a unique face $\facesymbol$, which we denote by $\faceto{\meanparam}$, such that $\meanparam\in\sbinteriorof{\facesymbol}$.
+\end{lemma}
+\begin{proof}
+    For any mean vector $\meanparam$ on a face $\facesymbol$ we either have $\meanparam\in\sbinteriorof{\facesymbol}$ or there is a face $\secfacesymbol$ of lower affine dimension with $\secfacesymbol\subset\facesymbol$ and $\meanparam\in\secfacesymbol$.
+    Starting from the face $\genmeanset$ (for which by assumption $\meanparam\in\genmeanset$) we iteratively choose a face $\facesymbol$ of lower dimension containing $\meanparam$ until we reach a face with $\meanparam\in\sbinteriorof{\facesymbol}$.
+    This procedure is guaranteed to terminate, since the affine dimension is decreasing and any face of affine dimension $0$ coincides with its relative interior.
+\end{proof}
+
+
+%\begin{lemma}
+%    \label{lem:relativeInteriorPolytopePartition}
+%    Any polytope is a disjoint union of the relative interiors of its faces, that is
+%    \begin{align*}
+%        \genmeanset
+%        = \bigcup_{\facein}^{\cdot} \sbinteriorof{\facesymbol} \, .
+%    \end{align*}
+%\end{lemma}
+%\begin{proof}
+%    %% Overwork?
+%    For any $\meanparam\in\genmeanset$ we find a face such that $\meanparam\in\facesymbol$.
+%    If $\meanparam\notin\sbinteriorof{\facesymbol}$, then there is a face ${\tilde{\facesymbol}}\subset\facesymbol$ of smaller affine dimension such that $\meanparam\in\tilde{\facesymbol}$.
+%    We then redo the above argument for $\facesymbol=\tilde{\facesymbol}$ until we arrive at a face with $\meanparam\in\sbinteriorof{\facesymbol}$.
+%    We always reach such a face such a face, since the affine dimension of the faces is decreasing and lower bounded by $0$, and the faces of affine dimension $0$ are vertices for which $\facesymbol=\sbinteriorof{\facesymbol}$.
+%\end{proof}
+%
+%We therefore find a unique face to each mean parameter $\genmeanwith$, such that the mean parameter is on its relative interior.
+%
+%\begin{definition}
+%    To each $\meanparam\in\genmeanset$ we denote the unique face $\facesymbol$ with $\meanparam\in\sbinteriorof{\facesymbol}$ by $\faceto{\meanparam}$.
+%\end{definition}

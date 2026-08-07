@@ -1,0 +1,52 @@
+\section{Maximum entropy problem}
+
+%% Distributions
+Given a non-negative and non-vanishing base measure $\basemeasurewith$, a probability distribution is a non-negative tensor $\probwith$ such that
+\begin{align*}
+    \contraction{\probwith,\basemeasurewith} = 1 \, .
+\end{align*}
+We denote the set of such distributions by
+\begin{align*}
+    \distmeasuredby{\basemeasure}
+    = \big\{ \probwith \wcols &\probwith \geq \zerosat{\shortcatvariables} \ncond \contraction{\probwith,\basemeasurewith} = 1 \ncond \\
+    &\forall_{\shortcatindicesin} \basemeasureat{\indexedshortcatvariables}=0 \Rightarrow \probat{\indexedshortcatvariables}=0  \big\} \, .
+\end{align*}
+Note that we here restrict the support of the tensor $\probwith$ to be included in the support of the base measure, to avoid ambiguity in the representation.
+
+%% Entropy
+The entropy of a distribution relative to the base measure $\basemeasure$ is
+\begin{align*}
+    \sentropyofwrt{\probwith}{\basemeasure}
+    = -\contraction{\probwith,\lnof{\probwith},\basemeasurewith} \, .
+\end{align*}
+Note that this quantity depends on the chosen base measure.
+
+%% Mean parameters
+A statistic is a function $\sstat:\facstates\rightarrow\rr^\seldim$ assigning a real vector of dimension $\seldim$ to each state $\shortcatindicesin$.
+We denote by $\sstatcoordinateof{\selindex}$ the restriction to the $\selindex$-th coordinate of $\sstat$.
+The mean parameter of a distribution $\probwith$ to a statistic $\sstat$ is the vector $\meanparamwith\in\rr^\seldim$ with the coordinates
+\begin{align*}
+    \meanparamat{\indexedselvariable}
+    = \expectationof{\enumformula}
+    = \contraction{\sstatcoordinateofat{\selindex}{\shortcatvariables},\probwith,\basemeasurewith} \, .
+\end{align*}
+To express the computation of the mean parameter as a single contraction, we introduce a coordinate selection variable $\selvariable$ of dimension $\seldim$ and the selection encoding $\sencsstatwith$ with coordinates by
+\begin{align*}
+    \sencsstatat{\indexedshortcatvariables,\indexedselvariable}
+    = \sstatcoordinateofat{\selindex}{\indexedshortcatvariables} \, .
+\end{align*}
+The mean parameter is then
+\begin{align*}
+    \meanparamwith
+    = \contractionof{\probwith,\sencsstatwith}{\selvariable} \, .
+\end{align*}
+
+%% Maximum entropy problem
+The maximum entropy problem given a mean parameter $\genmeanwith$ is stated by
+\begin{equation}
+    \tag{$\mathrm{P}_{\sstat,\meanparam,\basemeasure}$}\label{prob:maxEntropy}
+    \argmax_{\probwith\in\distmeasuredby{\basemeasure}} \sentropyofwrt{\probwith}{\basemeasure}
+    \stspace
+    %\forall_{\selindexin} \wcols
+    \contractionof{\probwith,\sencsstatwith,\basemeasurewith}{\selvariable} = \genmeanat{\selvariable}
+\end{equation}

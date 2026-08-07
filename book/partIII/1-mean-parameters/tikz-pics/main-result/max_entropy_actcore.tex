@@ -1,0 +1,43 @@
+\begin{tikzpicture}[scale=0.35,thick]
+
+    \begin{scope}
+    [shift={(-15,0)}]
+
+        \drawtensorblock{2}{-2}{3}{$\probtensor$}
+        \drawddwire{0}{-5}{$\catvariableof{0}$}
+        \drawddwire{1.5}{-5}{$\catvariableof{1}$}
+        \drawddwire{4}{-5}{$\catvariableof{\catorder\shortminus1}$}
+        \drawtextnode{3.25}{-4.75}{\colorlabelsize $\cdots$};
+
+        \drawtextnode{8}{-2}{$= \,\frac{1}{\partitionfunction} \cdot $}
+    \end{scope}
+
+    \draw[\concolor] (-1,1) rectangle (5,3);
+    \drawtextnode{2}{2}{\textcolor{\concolor}{$\kcoreof{\facesymbol}$}}
+
+    \draw[->-] (0,-1)--(0,0);
+    \node[right] (text) at (0,0) {\colorlabelsize $\headvariableof{0}$};
+    \draw[\concolor] (0,0)--(0,1);
+    \drawvariabledot{0}{0}
+    \drawtextnode{2}{-0.5}{\colorlabelsize $\cdots$}
+
+    \draw[\probcolor] (0,0) -- (-2,0);
+    \draw[\probcolor] (-2,1) rectangle (-4,-1);
+    \node[anchor=center,\probcolor] (text) at (-3,0) {\corelabelsize $\softactsymbolof{0,\canparam}$};
+
+    \draw[->-] (4,-1)--(4,0);
+    \node[left] (text) at (4,0) {\colorlabelsize $\headvariableof{\seccatorder\shortminus1}$};
+    \draw[\concolor] (4,0)--(4,1);
+    \drawvariabledot{4}{0}
+
+    \draw[\probcolor] (4,0) -- (6,0);
+    \draw[\probcolor] (6,1) rectangle (8.5,-1);
+    \node[anchor=center,\probcolor] (text) at (7.25,0) {\corelabelsize $\softactsymbolof{\seccatorder\shortminus1,\canparam}$};
+
+    \drawtensorblock{2}{-2}{3}{$\bencodingof{\sstat}$}
+    \drawtdwire{0}{-3}{$\catvariableof{0}$}
+    \drawtdwire{1.5}{-3}{$\catvariableof{1}$}
+    \drawtdwire{4}{-3}{$\catvariableof{\catorder\shortminus1}$}
+    \drawtextnode{3.25}{-4.75}{\colorlabelsize $\cdots$};
+
+\end{tikzpicture}

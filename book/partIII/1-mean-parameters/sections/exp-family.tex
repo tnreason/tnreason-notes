@@ -1,0 +1,180 @@
+\section{Exponential families}\label{sec:expFamily}
+
+It is well known that exponential families are specific maximum entropy distributions.
+However, not every maximum entropy distribution is an exponential family member.
+To prepare for the characterization of generic maximum entropy distributions, we will in this section represent exponential family members as \ComputationActivationNetwork{}s.
+We further show that a maximum entropy distribution is an exponential family member if and only if its mean parameter is in the relative interior of the mean polytope.
+
+\subsection{Representation as elementary \ComputationActivationNetworks{}}
+
+\todo{Fusion with the definition in previous section: Resolve the base measure difference.}
+
+Let us first define exponential families as classes of probability distributions and then derive their representation by elementary \ComputationActivationNetworks{}.
+
+\begin{definition}[Exponential Family]
+    \label{def:expFamily}
+    Given a statistic function
+    \begin{align*}
+        \sstat \defcols \facstates \rightarrow \parspace
+    \end{align*}
+    and a base measure $\basemeasurewith$ with $\contraction{\basemeasure}\neq0$, the set $\expfamily=\{\expdist\wcols\canparamwithin\}\subset\distmeasuredby{\basemeasure}$ of probability distributions
+    \begin{align*}
+        \expdistat{\shortcatvariables}
+        = \frac{
+            \expof{\contractionof{\sencsstatat{\shortcatvariables,\selvariable},\canparamwith}{\shortcatvariables}}
+        }{
+            \contraction{\expof{\contractionof{\sencsstatat{\shortcatvariables,\selvariable},\canparamwith}{\shortcatvariables}},\basemeasurewith}
+        }
+    \end{align*}
+    is called the exponential family with respect to $\sstat$.
+\end{definition}
+
+% Relation to standard notation and information geometry
+To connect with standard notation of exponential families we notice that the coordinate of any distribution $\expdistat{\shortcatvariables}$ at some state $\shortcatindicesin$ is
+\begin{align*}
+    \expdistat{\indexedshortcatvariables}
+    = \expof{\sum_{\selindexin}\weightparamat{\indexedselvariable}\cdot\sstatcoordinateofat{\selindex}{\shortcatindices} - \psi_{\sstat,\basemeasure}(\weightparam)}
+\end{align*}
+where
+\begin{align*}
+    \psi_{\sstat,\basemeasure}(\weightparam)
+    = \lnof{\contraction{\expof{\contractionof{\sencsstatat{\shortcatvariables,\selvariable},\canparamwith}{\shortcatvariables}},\basemeasurewith}}
+\end{align*}
+is the cumulant generating function.
+The function $\psi_{\sstat,\basemeasure}(\weightparam)$ and its Legendre transform $\psi^*_{\sstat,\basemeasure}(\meanparam)$ define the dually flat Riemannian structure on the exponential family manifold \cite{amari_information_2016}.
+%
+We now continue with the notation of \defref{def:expFamily} to find representations of exponential families by elementary \ComputationActivationNetworks{}.
+
+
+\begin{theorem}[Exponential Families are elementary \ComputationActivationNetworks{}]
+    \label{the:expFamilyTensorRep}
+    Given any base measure $\basemeasure$ and a sufficient statistic $\sstat$ we enumerate for each coordinate $\selindexin$ the image $\imageof{\sstatcoordinateof{\selindex}}$ by a variable $\headvariableof{\selindex}$ taking values in $[\cardof{\imageof{\sstatcoordinateof{\selindex}}}]$, given an interpretation map
+    \begin{align*}
+        \indexinterpretationof{\selindex} \defcols
+        [\cardof{\imageof{\sstatcoordinateof{\selindex}}}] \rightarrow \imageof{\sstatcoordinateof{\selindex}} \, .
+    \end{align*}
+    For any canonical parameter vector $\canparamwithin$ we build the activation cores $\softactlegwith$ for each coordinate $\headindexof{\selindex}\in[\cardof{\imageof{\sstatcoordinateof{\selindex}}}]$ by
+    \begin{align*}
+        \softactleg\left[\indexedheadvariableof{\selindex}\right]
+        = \expof{\canparamat{\indexedselvariable} \cdot \indexinterpretationofat{\selindex}{\headindexof{\selindex}} } \,
+    \end{align*}
+    and have (see \figref{fig:expdistUnaryRealizable})
+    \begin{align*}
+        \expdistat{\shortcatvariables}
+        = \frac{
+            \contractionof{\{\bencsstatwith\}\cup\{\softactlegwith \wcols \selindexin\}}{\shortcatvariables}
+        }{
+            \contraction{\{\bencsstatwith\}\cup\{\softactlegwith \wcols \selindexin\}\cup\{\basemeasurewith\}}
+        } \, .
+    \end{align*}
+\end{theorem}
+\begin{proof} %% SHORTENED THE PROOF IN THE REPORT
+    For each $\shortcatindicesin$ we have
+    \begin{align*}
+        &\contractionof{\{\bencsstatwith\}\cup\{\softactlegwith \wcols \selindexin\}}{\indexedshortcatvariables} \\
+        &\quad = \prod_{\selindexin} \contraction{\bencodingofat{\sstatcoordinateof{\selindex}}{\headvariableof{\selindex},\indexedshortcatvariables},\softactlegwith} \\
+        &\quad = \prod_{\selindexin} \expof{\canparamat{\indexedselvariable}\cdot\indexinterpretationofat{\selindex}{\sstatcoordinateofat{\selindex}{\shortcatindices}}} \\
+        &\quad = \expof{\sum_{\selindexin}\canparamat{\indexedselvariable}\cdot\indexinterpretationofat{\selindex}{\sstatcoordinateofat{\selindex}{\shortcatindices}}} \\
+        &\quad = \expof{\contractionof{\sencsstatat{\shortcatvariables,\selvariable},\canparamwith}{\indexedshortcatvariables}} \, .
+    \end{align*}
+    Therefore we have
+    \begin{align*}
+        \contractionof{\{\bencsstatwith\}\cup\{\softactlegwith \wcols \selindexin\}}{\shortcatvariables}
+        = \expof{\contractionof{\sencsstatat{\shortcatvariables,\selvariable},\canparamwith}{\shortcatvariables}} \, .
+    \end{align*}
+    The claim follows, since this implies that also the contraction of both sides with $\basemeasurewith$ is equivalent.
+\end{proof}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz-pics/exp-family/expdist_unary_realizable}
+    \end{center}
+    \caption{Representation of a member of an exponential family by a \ComputationActivationNetwork{} with elementary activation.
+    Here $\partitionfunction\in\rr$ is a normalization constant.}\label{fig:expdistUnaryRealizable}
+\end{figure}
+
+We will use the following well known property (see e.g. \cite{brown_fundamentals_1987}), that the mean parameters of the members of an exponential family are exactly the relative interior of the mean polytope.
+
+\begin{lemma}
+    \label{lem:interiorRepExpFamily}
+    The set of mean parameters of the members of an exponential family is the relative interior of the mean polytope.
+\end{lemma}
+\begin{proof}
+    See The~3.3 in \cite{wainwright_graphical_2008}.
+\end{proof}
+
+Based on this property we define the forward and backward mappings to an exponential family.
+
+\begin{definition}\label{def:forwardBackwardMapping}
+    The forward map of an exponential family is the map
+    \begin{align*}
+        \forwardmap  \defcols \parspace \rightarrow \sbinteriorof{\genmeanset}
+    \end{align*}
+    defined as
+    \begin{align*}
+        \forwardmapof{\canparam}
+        = \contractionof{\expdistofat{\sstat,\canparam,\basemeasure}{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}
+    \end{align*}
+    Any map $\backwardmap: \sbinteriorof{\genmeanset}\rightarrow \parspace$ with $\forwardmapof{\backwardmapof{\meanparam}}=\meanparam$ for all $\meanparam\in\sbinteriorof{\genmeanset}$ is called a backward map.
+\end{definition}
+
+\subsection{Maximum entropy distributions}
+
+One universal property of exponential families amongst others (see \cite{murphy_probabilistic_2023}) is that they maximize the entropy among those with the same mean vector.
+
+\begin{lemma}\label{lem:expFamilyMaxEnt}
+    Any member of an exponential family $\expfamilyof{\sstat,\basemeasure}$ is a maximum entropy distribution with respect to the moment constraint on $\sstat$ and the base measure $\basemeasure$.
+\end{lemma}
+\begin{proof}
+    Let $\expdistof{\sstat,\canparam,\basemeasure}$ be an exponential family member with canonical parameter $\canparam$ and let $\meanparamwith$ be the corresponding mean parameter.
+    Let $\secprobat{\shortcatvariables}$ be any feasible distribution for the maximum entropy problem with respect to the moment constraint on $\sstat$ by $\meanparamwith$ and the base measure $\basemeasure$.
+    We also have $\contractionof{\secprobat{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}=\meanparamat{\selvariable}$ and thus
+    \begin{align*}
+        \centropyofwrt{\secprobtensor}{\expdistof{\sstat,\canparam,\basemeasure}}{\basemeasure}
+        &= -\contraction{\secprobat{\shortcatvariables},\lnof{\expdistofat{\sstat,\canparam,\basemeasure}{\shortcatvariables}},\basemeasurewith} \\
+        &= -\contraction{\secprobat{\shortcatvariables},\sencsstatwith,\canparamwith,\basemeasurewith} + \cumfunctionof{\canparam} \\
+        &= - \contraction{\canparamwith,\meanparamwith} + \cumfunctionof{\canparam} \\
+        &= \sentropyofwrt{\expdistof{\sstat,\canparam,\basemeasure}}{\basemeasure} \, .
+    \end{align*}
+    With the Gibbs inequality we have if $\secprobtensor\neq\expdistof{\sstat,\canparam,\basemeasure}$
+    \begin{align*}
+        \sentropyofwrt{\expdistof{\sstat,\canparam,\basemeasure}}{\basemeasure}  - \sentropyofwrt{\secprobtensor}{\basemeasure}
+        = \centropyofwrt{\secprobtensor}{\expdistof{\sstat,\canparam,\basemeasure}}{\basemeasure}  - \sentropyofwrt{\secprobtensor}{\basemeasure}  > 0 \,
+    \end{align*}
+    and thus $\sentropyofwrt{\secprobtensor}{\basemeasure}<\sentropyofwrt{\expdistof{\sstat,\canparam,\basemeasure}}{\basemeasure}$.
+    Therefore, any feasible $\secprobtensor$ different from $\expdistof{\sstat,\canparam,\basemeasure}$ has less entropy than $\expdistof{\sstat,\canparam,\basemeasure}$ and $\expdistof{\sstat,\canparam,\basemeasure}$ is a maximum entropy distribution.
+\end{proof}
+
+Together with \lemref{lem:interiorRepExpFamily} stating the existence of an exponential family member for any mean parameter in the relative interior of the mean polytope we arrive at the following theorem.
+
+\begin{theorem}
+    \label{the:maxEntropyInterior}
+    If and only if $\meanparamwith$ is in the relative interior of $\genmeanset$, then the unique solution of the maximum entropy problem is the distribution
+    \begin{align*}
+        \expdistofat{\sstat,\weightparam,\basemeasure}{\shortcatvariables}\in\expfamilyof{\sstat,\basemeasure}
+    \end{align*}
+    where for some backward map $\backwardmapwrt{\sstat,\basemeasure}$
+    \begin{align*}
+        \weightparam
+        = \backwardmapwrtof{\sstat,\basemeasure}{\meanparam} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    By \lemref{lem:interiorRepExpFamily} if
+    \begin{align*}
+        \meanparamwith \in \sbinteriorof{\genmeanset}  \, ,
+    \end{align*}
+    there is at least one weight parameter $\weightparamwith\in\parspace$ with
+    \begin{align*}
+        \contractionof{\expdistofat{\sstat,\weightparam,\basemeasure}{\shortcatvariables},\sencsstatwith,\basemeasurewith}{\selvariable}
+        =\meanparamat{\selvariable}
+    \end{align*}
+    and $\backwardmapwrtof{\sstat,\basemeasure}{\meanparam}$ with respect to any backward map $\backwardmapwrt{\sstat,\basemeasure}$ is such one.
+    With \lemref{lem:expFamilyMaxEnt} we conclude that $\expdistof{(\sstat,\backwardmapwrtof{\sstat,\basemeasure}{\meanparam},\basemeasure)}$ is the maximum entropy distribution with respect to the moment constraint on $\sstat$ by $\meanparamwith$ and the base measure $\basemeasure$.
+\end{proof}
+
+% Minimality comments
+While the maximum entropy distribution is unique, the weight vector $\weightparam$ representing the maximum entropy distribution is not always unique.
+This is reflected by multiple possible choices of backward mappings.
+Only if the exponential family is minimal (see \cite{wainwright_graphical_2008}) then the weight vector is unique.
+However, we did not restrict to such situations, since exponential families on refined base measures are not minimal.

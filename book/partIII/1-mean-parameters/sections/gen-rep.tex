@@ -1,0 +1,158 @@
+\section{Generic maximum entropy distributions}\label{sec:genMaxEnt}
+
+In the previous section we have shown that the members of an exponential family are maximum entropy distributions.
+However, while their mean parameters constitute the relative interior of the mean polytope, they never lie on faces of lower dimension.
+We now exploit the tensor representation study of such faces (see \secref{sec:meanPolytope}) to characterize the maximum entropy distributions in the general case.
+
+\subsection{Main result}
+
+Our main result generalizes the maximum entropy characterization of \theref{the:maxEntropyInterior} to arbitrary mean parameters.
+
+\begin{theorem}[Generic characterization of Maximum Entropy Solutions]
+    \label{the:MAINgenMaxEntChar}
+    Let $\sstat$ be a statistic and $\basemeasure$ a base measure.
+    %% 1. Any member of a face exponential family is maxent
+    For any $\weightparamwith$ and $\facein$ the distribution
+    \begin{align*}
+        \expdistofat{\sstat,\weightparam,\genfacemeasure}{\shortcatvariables}
+    \end{align*}
+    is a maximum entropy distribution. \\
+    %% 2. Find canonical parametrization by the backward map
+    For any $\meanparamwith$ the maximum entropy problem has a feasible distribution, if and only if $\meanparamwith\in\genmeanset$.
+    If $\meanparamwith\in\genmeanset$ the unique maximum entropy distribution is $\expdistof{\sstat,\weightparam,\genfacemeasure}$ where $\facesymbol=\faceto{\meanparam}$ (see \lemref{lem:faceToMean}) and
+    \begin{align*}
+        \weightparam
+        = \backwardmapwrtof{\sstat,\genfacemeasure}{\meanparam}
+    \end{align*}
+    where $\genfacemeasure$ is the refined base measure (see \defref{def:faceMeasure}) and $\backwardmapwrt{\sstat,\genfacemeasure}$ is any backward map to the exponential family $\expfamilyof{\sstat,\genfacemeasure}$ (see \defref{def:forwardBackwardMapping}). \\
+    %% 3. Represent maxent as a CAN
+    For any hypergraph $\graph$ and any face $\facein$ we have that all maximum entropy distributions to mean parameters on $\interiorof{\facesymbol}$ are in $\cansof{\sstat,\graph,\basemeasure}$ if $\facesymbol$ is representable with respect to $\graph$ (see \defref{def:faceRepresentability}).
+\end{theorem}
+
+To prepare for the proof of this theorem we first show in an auxiliary lemma that we can reduce the set of feasible distributions in \problemref{prob:maxEntropy}.
+
+\begin{lemma}
+    \label{lem:maxEntReduction}
+    For any $\meanparamwith\in\genmeanset$ and a face $\facein$ with $\meanparamwith\in\sbinteriorof{\facesymbol}$ the solutions of $\mathrm{P}_{\sstat,\meanparam,\basemeasure}$ and $\mathrm{P}_{\sstat,\meanparam,\genfacemeasure}$ coincide.
+\end{lemma}
+\begin{proof}
+    By \lemref{lem:faceMeasureRepCondition} all feasible distributions are representable by the base measure refined to the face $\facesymbol$.
+    We have that any for $\mathrm{P}_{\sstat,\meanparam,\basemeasure}$ feasible distribution $\probwith$ satisfies
+    \begin{align*}
+        \contraction{\probwith,\genfacemeasure} = 1 \,
+    \end{align*}
+    and thus $\probwith\in\distmeasuredby{\genfacemeasure}$.
+    Conversely, any $\probwith\in\distmeasuredby{\genfacemeasure}$ satisfies
+    \begin{align*}
+        \contraction{\probwith,\genfacemeasure} = \contraction{\probwith,\basemeasure} = 1
+    \end{align*}
+    and thus $\probwith\in\distmeasuredby{\basemeasure}$.
+    Problem $\mathrm{P}_{\sstat,\meanparam,\basemeasure}$ is thus equal to
+    \begin{align*}
+        \argmax_{\probwith\in\distmeasuredby{\genfacemeasure}} \sentropyofwrt{\probwith}{\basemeasure}
+        \stspace
+        \contractionof{\probwith,\sencsstatwith,\basemeasurewith}{\selvariable}
+        = \genmeanat{\selvariable}
+    \end{align*}
+    We further have that any $\probwith\in\distmeasuredby{\genfacemeasure}$
+    \begin{align*}
+        \sentropyofwrt{\probwith}{\basemeasure} = \sentropyofwrt{\probwith}{\genfacemeasure}
+    \end{align*}
+    and arrive together with the above equivalence at the claim.
+\end{proof}
+
+
+\begin{proof}[Proof of \theref{the:MAINgenMaxEntChar}]
+    % 1.
+    To show that for any $\weightparamwith$ and $\facein$ the distribution $\expdistof{\sstat,\weightparam,\genfacemeasure}$ is a maximum entropy distribution, we apply \lemref{lem:maxEntReduction} and \theref{the:maxEntropyInterior}. \\
+    % 2.
+    If $\meanparamwith\notin\genmeanset$ then \problemref{prob:maxEntropy} is not feasible by definition.
+    In case $\meanparamwith\in\genmeanset$ we find $\facein$ with $\facesymbol=\faceto{\meanparam}$ and by \lemref{lem:maxEntReduction} the solution of maximum entropy problem \problemref{prob:maxEntropy} coincides with $\mathrm{P}_{\sstat,\meanparam,\genfacemeasure}$.
+    Since by \lemref{lem:faceAsRefinedPolytope} the face is the polytope
+    \begin{align*}
+        \facesymbol
+        =\meansetof{\sstat,\genfacemeasure}
+    \end{align*}
+    we find a weight parameter
+    \begin{align*}
+        \weightparam
+        = \backwardmapwrtof{\sstat,\genfacemeasure}{\meanparam} \, .
+    \end{align*}
+    and by \theref{the:maxEntropyInterior} $\expdistof{\sstat,\weightparam,\genfacemeasure}$ is the corresponding maximum entropy distribution. \\
+    % 3.
+    To show the last claim, it is enough to show that for any face $\facesymbol$ representable by $\graph$ and for any $\weightparamin$ we have
+    \begin{align*}
+        \expdistof{\sstat,\weightparam,\genfacemeasure}
+        \in \cansof{\sstat,\graph,\basemeasure} \, .
+    \end{align*}
+    To this end, we construct activation cores as follows.
+    By \defref{def:faceRepresentability} and \lemref{lem:faceMeasureRepresentation} there is a tensor network $\kcoreof{\graph}$ such that
+    \begin{align*}
+        \genfacemeasurewith
+        = \contractionof{\kcoreof{\graph}\cup\{\basemeasurewith\}}{\shortcatvariables} \, .
+    \end{align*}
+    For each $\selindexin$ we find an edge $\edge(\selindex)\in\edges$ with $\selindex\in\edge(\selindex)$.
+    Now we define a tensor network $\tnetof{\graph}$ by the cores to $\edgein$ as
+    \begin{align*}
+        \hypercoreofat{\edge}{\catvariableof{\edge}}
+        = \contractionof{
+            \{\kcoreofat{\edge}{\catvariableof{\edge}}\} \cup \{\softactlegwith\wcols\edge=\edge(\selindex)\}
+        }{\catvariableof{\edge}} \, .
+    \end{align*}
+    Then, we have
+    \begin{align*}
+        \contractionof{\bencsstatwith,\contractionof{\tnetof{\graph}}{\headvariables}}{\shortcatvariables}
+        = \contractionof{\bencsstatwith,\softacttensorwith,\contractionof{\kcoreof{\graph}}{\headvariables}}{\shortcatvariables}
+    \end{align*}
+    and therefore
+    \begin{align*}
+        \expdistof{\sstat,\weightparam,\genfacemeasure}
+        = \frac{
+            \contractionof{\{\bencsstatwith\}\cup\tnetof{\graph}}{\shortcatvariables}
+        }{
+            \contraction{\{\bencsstatwith,\basemeasurewith\}\cup\tnetof{\graph}}
+        } \, .
+    \end{align*}
+    We conclude $\expdistof{\sstat,\weightparam,\genfacemeasure}\in \cansof{\sstat,\graph,\basemeasure}$.
+\end{proof}
+
+\subsection{Family of maximum entropy distributions}
+
+
+The family of maximum entropy distributions is the set
+\begin{align*}
+    \maxentfamilyof{\sstat}{\basemeasure} =
+    \{\probwith \wcols \exists\meanparam\in\genmeanset : \probwith \quad\text{is a solution of \problemref{prob:maxEntropy}} \} \, .
+\end{align*}
+\theref{the:MAINgenMaxEntChar} suggests a parametrization of this family as tuples of corresponding faces $\facesymbol$ and weight vectors $\weightparamwith$.
+As sketched in \figref{fig:maxEntropyActcore} the activation tensor of each maximum entropy distribution is decomposed into a possibly non-elementary Boolean tensor corresponding to the base measure refinement on a face $\facesymbol$, and an elementary tensor dependent on the weight vector $\weightparamin$.
+We thus define the canonical parameter space
+\begin{align*}
+    \gencanparamset
+    \coloneqq \facelatticeof{\genmeanset} \times \weightspace
+\end{align*}
+and have
+\begin{align*}
+    \maxentfamilyof{\sstat}{\basemeasure} =
+    \left\{
+        \frac{
+            \contractionof{\softacttensorat{\headvariables},\kcoreofat{\facesymbol}{\headvariables},\bencsstatwith}{\shortcatvariables}
+        }{
+            \contraction{\softacttensorat{\headvariables},\kcoreofat{\facesymbol}{\headvariables},\bencsstatwith,\basemeasurewith}
+        }
+        \wcols \canparamwithin,\facesymbol\in\gencanparamset
+    \right\} \, .
+\end{align*}
+
+Note that these families are disjoint, since each member of an exponential family has support by the support of the face measure.
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz-pics/main-result/max_entropy_actcore}
+    \end{center}
+    \caption{
+        Tensor network decomposition of maximum entropy distributions to the constraint $\meanparamat{\selvariable}=\contractionof{\probwith,\sencsstatwith}{\selvariable}$.
+        Blue: Boolean tensor $\kcoreofat{\facesymbol}{\headvariables}$ dependent on the face $\faceto{\meanparam}$, which represents the refinement of the base measure to the face, and is possibly non-elementary.
+        Red: Elementary activation tensor $\softacttensorwith=\bigotimes_{\selenumeratorin}\softactlegwith$ to the weight $\weightparamwith= \backwardmapwrtof{\sstat,\genfacemeasure}{\meanparam}$.
+    }\label{fig:maxEntropyActcore}
+\end{figure}
