@@ -41,20 +41,28 @@ We now show that a face is cube-like if and only if it is representable by an el
 
     (i)$\Rightarrow$(ii):
     Let us assume that $\facesymbol$ is cube-like, that is there is $\arbset\subset[\seldim]$ and $\headindexof{\arbset}\in\bigtimes_{\selindex\in\arbset}[2]$ such that $\facesymbol = \genmeanset \cap \facesymbolof{(\arbset,\headindexof{\arbset})}$.
-    We use that $\facesymbol,\genmeanset$ and $\facesymbolof{(\arbset,\headindexof{\arbset})}$ are the convex hulls of the cube vertex sets $\imsetof{\hlnstat,\meanset}{\facesymbol}$, $\imsetof{\hlnstat,\meanset}{}$ and
+    We use that $\facesymbol,\genmeanset$ and $\facesymbolof{(\arbset,\headindexof{\arbset})}$ are the convex hulls of the cube vertex sets $\imsetof{\hlnstat,\meanset}{\facesymbol}$, $\imsetof{\hlnstat,\meanset}{}$ and that for the set
     \begin{align}\label{eq:cubeFaceVertices}
         \imsetof{}{\arbset,\headindexof{\arbset}}
         = \{\imelementwith \wcols \uniquantwrtof{\selindex\in\arbset}{\imelementat{\indexedselvariable}=\headindexof{\arbset}}\} \, ,
     \end{align}
-    which implies that
+    we have
     \begin{align*}
         \imsetof{\hlnstat,\meanset}{\facesymbol}
         = \imsetof{}{\arbset,\headindexof{\arbset}} \cap \imsetof{\hlnstat,\meanset}{} \, .
     \end{align*}
-    Thus, we can choose $\arbset=\imsetof{\hlnstat,\meanset}{\facesymbol}$ for the representation of the face $\facesymbol$ (see \defref{def:faceRepresentability}) and further have that
+    Thus, we can choose $\imsetof{}{\arbset,\headindexof{\arbset}}$ for the representation of the face $\facesymbol$ (see \defref{def:faceRepresentability}) and further have that
     \begin{align*}
         \sum_{\imelementwith\in\imsetof{}{(\arbset,\headindexof{\arbset})}}\onehotmapofat{\imelementwith}{\headvariables}
-        = \bigotimes_{\selindexin} \hardactlegwith \, .
+        = \bigotimes_{\selindexin} \hardactlegwith \, ,
+    \end{align*}
+    where
+    \begin{align*}
+        \hardactlegwith
+        = \begin{cases}
+                \onehotmapofat{\headindexof{\selindex}}{\headvariableof{\selindex}} & \ifspace \selindex\in\arbset \\
+                \onesat{\headvariableof{\selindex}} & \ifspace \selindex\notin\arbset \, .
+        \end{cases}
     \end{align*}
     We have thus found an elementary activation tensor for the face $\facesymbol$.
 
@@ -95,21 +103,21 @@ We now show that a face is cube-like if and only if it is representable by an el
 \end{proof}
 
 %% Reference to simplices and hypercubes
-\theref{the:faceMeasureHardLogicNetworks} implies that the maximum entropy distributions to hypercubes (see \exaref{exa:hypercubeFaces}) and simplices (see \exaref{exa:simplexFaces}) are in $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$, since these polytopes are cube-like.
+\theref{the:faceMeasureHardLogicNetworks} implies that the maximum entropy distributions to hypercubes (see \exaref{exa:hypercubeFaces}) and simplices (see \exaref{exa:simplexFaces}) are in $\cansof{\hlnstat,\elgraph,\basemeasure}$, since these polytopes are cube-like.
 
 % Theorem intro
-We can further show, that in case of Boolean statistics any distribution in $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ is a maximum entropy distribution.
+We can further show, that in case of Boolean statistics any distribution in $\cansof{\hlnstat,\elgraph,\basemeasure}$ is a maximum entropy distribution.
 
 %\subsection{Set of maximum entropy distributions}
 
 \begin{theorem}
     Let $\hlnstat$ be a Boolean statistic.
-    Any distribution in $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ is a maximum entropy distribution with respect to $(\hlnstat,\meanparam,\basemeasure)$ where $\meanparam$ is its mean parameter.
-    %Any maximum entropy distribution is realized by $\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ if and only if the mean parameter is in the relative interior of a cube-like face.
+    Any distribution in $\cansof{\hlnstat,\elgraph,\basemeasure}$ is a maximum entropy distribution with respect to $(\hlnstat,\meanparam,\basemeasure)$ where $\meanparam$ is its mean parameter.
+    %Any maximum entropy distribution is realized by $\cansof{\hlnstat,\elgraph,\basemeasure}$ if and only if the mean parameter is in the relative interior of a cube-like face.
 \end{theorem}
 \begin{proof}
     %To show the first claim,
-    Let $\probtensor\in\realizabledistsof{\hlnstat,\elgraph,\basemeasure}$ be arbitrary.
+    Let $\probtensor\in\cansof{\hlnstat,\elgraph,\basemeasure}$ be arbitrary.
     We then find an elementary tensor $\bigotimes_{\selenumeratorin}\hypercoreofat{\selindex}{\headvariableof{\selindex}}$ and $\partitionfunction\in\rr$ such that
     \begin{align*}
         \probwith
@@ -231,13 +239,14 @@ To construct the corresponding formulas we denote by $\restrictionofto{\meanset}
     \begin{align*}
         \formulaofat{\selindex}{\catvariableof{[\selindex+1]}} =
         \bigwedge_{\imelementwith \in \restrictionofto{(\meanset\cap \{0,1\}^{\seldim})}{[\selindex]}}
-        \left(\left(\bigwedge_{\secselindex\in[\selindex]} \lnot^{1-\imelementat{\selvariable=\secselindex}} \formulaofat{\secselindex}{\catvariableof{[\secselindex+1]}}\right) \Rightarrow
-            \begin{cases}
+            {\Big(}&
+        \big(\bigwedge_{\secselindex\in[\selindex]} \lnot^{1-\imelementat{\selvariable=\secselindex}} \formulaofat{\secselindex}{\catvariableof{[\secselindex+1]}}\big) \Rightarrow \\
+            &\begin{cases}
                 \top & \ifspace \restrictionofto{(\meanset\cap\imelement\times\rr^{\seldim-\selindex})}{\{\selindex\}} = \{1\} \\%\restrictionofto{\meanset}{v\times\rr^{1} \times 0_{\seldim-\selindex-1}} = \{1\} \\
                 \bot & \ifspace \restrictionofto{(\meanset\cap\imelement\times\rr^{\seldim-\selindex})}{\{\selindex\}} = \{0\} \\ %\restrictionofto{\meanset}{v\times\rr^{1} \times 0_{\seldim-\selindex-1}} = \{0\} \\
                 \catvariableof{\selindex} & \ifspace \restrictionofto{(\meanset\cap\imelement\times\rr^{\seldim-\selindex})}{\{\selindex\}} = [0,1] %\restrictionofto{\meanset}{v\times\rr^{1} \times 0_{\seldim-\selindex-1}} = \{0,1\} \\
             \end{cases}
-        \right).
+            {\Big)}.
     \end{align*}
     Here we denote by $\restrictionofto{\meanset}{V}$ the projections of the vertices in $\meanset$ onto the subspaces $V$, and by $0_{\seldim}$ the zero vector in $\rr^{\seldim}$.
 \end{theorem}
@@ -267,7 +276,7 @@ To construct the corresponding formulas we denote by $\restrictionofto{\meanset}
     We have for any Boolean vector $\imelement\in\{0,1\}^{\selindex}$ and $\lambda\in\{0,1\}$ that $\imelement\times\{\lambda\}\in\restrictionofto{\meanset}{[\selindex+1]}$, if and only if
     \begin{align*}
         \imelement \in \restrictionofto{\meanset}{[\selindex]} \quad \text{and} \quad
-        \lambda \in \restrictionofto{\meanset\cup\imelement\times\rr^{\seldim-\selindex}}{[\selindex]} \, .
+        \lambda \in \restrictionofto{\meanset\cap\imelement\times\rr^{\seldim-\selindex}}{[\selindex]} \, .
     \end{align*}
     With modus ponens on $\formulaofat{\selindex+1}{\catvariableof{[\selindex+2]}}$ this is further equivalent to the satisfaction of
     \begin{align*}

@@ -19,14 +19,14 @@ Our main result generalizes the maximum entropy characterization of \theref{the:
     is a maximum entropy distribution. \\
     %% 2. Find canonical parametrization by the backward map
     For any $\meanparamwith$ the maximum entropy problem has a feasible distribution, if and only if $\meanparamwith\in\genmeanset$.
-    If $\meanparamwith\in\genmeanset$ the maximum entropy distribution is $\expdistof{\sstat,\weightparam,\genfacemeasure}$ where $\facesymbol=\faceto{\meanparam}$ (see \lemref{lem:faceToMean}) and
+    If $\meanparamwith\in\genmeanset$ the unique maximum entropy distribution is $\expdistof{\sstat,\weightparam,\genfacemeasure}$ where $\facesymbol=\faceto{\meanparam}$ (see \lemref{lem:faceToMean}) and
     \begin{align*}
         \weightparam
         = \backwardmapwrtof{\sstat,\genfacemeasure}{\meanparam}
     \end{align*}
     where $\genfacemeasure$ is the refined base measure (see \defref{def:faceMeasure}) and $\backwardmapwrt{\sstat,\genfacemeasure}$ is any backward map to the exponential family $\expfamilyof{\sstat,\genfacemeasure}$ (see \defref{def:forwardBackwardMapping}). \\
     %% 3. Represent maxent as a CAN
-    For any hypergraph $\graph$ and any face $\facein$ we have that all maximum entropy distributions to mean parameters on $\interiorof{\facesymbol}$ are in $\realizabledistsof{\sstat,\graph,\basemeasure}$ if $\facesymbol$ is representable with respect to $\graph$ (see \defref{def:faceRepresentability}).
+    For any hypergraph $\graph$ and any face $\facein$ we have that all maximum entropy distributions to mean parameters on $\interiorof{\facesymbol}$ are in $\cansof{\sstat,\graph,\basemeasure}$ if $\facesymbol$ is representable with respect to $\graph$ (see \defref{def:faceRepresentability}).
 \end{theorem}
 
 To prepare for the proof of this theorem we first show in an auxiliary lemma that we can reduce the set of feasible distributions in \problemref{prob:maxEntropy}.
@@ -41,20 +41,20 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
     \begin{align*}
         \contraction{\probwith,\genfacemeasure} = 1 \,
     \end{align*}
-    and thus $\probwith\in\realizabledistsof{\sstat,\genfacemeasure}$.
-    Conversely, any $\probwith\in\realizabledistsof{\sstat,\genfacemeasure}$ satisfies
+    and thus $\probwith\in\distmeasuredby{\genfacemeasure}$.
+    Conversely, any $\probwith\in\distmeasuredby{\genfacemeasure}$ satisfies
     \begin{align*}
         \contraction{\probwith,\genfacemeasure} = \contraction{\probwith,\basemeasure} = 1
     \end{align*}
-    and thus $\probwith\in\realizabledistsof{\sstat,\basemeasure}$.
+    and thus $\probwith\in\distmeasuredby{\basemeasure}$.
     Problem $\mathrm{P}_{\sstat,\meanparam,\basemeasure}$ is thus equal to
     \begin{align*}
-        \argmax_{\probwith\in\realizabledistsof{\sstat,\genfacemeasure}} \sentropyofwrt{\probwith}{\basemeasure}
+        \argmax_{\probwith\in\distmeasuredby{\genfacemeasure}} \sentropyofwrt{\probwith}{\basemeasure}
         \stspace
         \contractionof{\probwith,\sencsstatwith,\basemeasurewith}{\selvariable}
         = \genmeanat{\selvariable}
     \end{align*}
-    We further have that any $\probwith\in\realizabledistsof{\sstat,\genfacemeasure}$
+    We further have that any $\probwith\in\distmeasuredby{\genfacemeasure}$
     \begin{align*}
         \sentropyofwrt{\probwith}{\basemeasure} = \sentropyofwrt{\probwith}{\genfacemeasure}
     \end{align*}
@@ -83,7 +83,7 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
     To show the last claim, it is enough to show that for any face $\facesymbol$ representable by $\graph$ and for any $\weightparamin$ we have
     \begin{align*}
         \expdistof{\sstat,\weightparam,\genfacemeasure}
-        \in \realizabledistsof{\sstat,\graph,\basemeasure} \, .
+        \in \cansof{\sstat,\graph,\basemeasure} \, .
     \end{align*}
     To this end, we construct activation cores as follows.
     By \defref{def:faceRepresentability} and \lemref{lem:faceMeasureRepresentation} there is a tensor network $\kcoreof{\graph}$ such that
@@ -113,7 +113,7 @@ To prepare for the proof of this theorem we first show in an auxiliary lemma tha
             \contraction{\{\bencsstatwith,\basemeasurewith\}\cup\tnetof{\graph}}
         } \, .
     \end{align*}
-    We conclude $\expdistof{\sstat,\weightparam,\genfacemeasure}\in \realizabledistsof{\sstat,\graph,\basemeasure}$.
+    We conclude $\expdistof{\sstat,\weightparam,\genfacemeasure}\in \cansof{\sstat,\graph,\basemeasure}$.
 \end{proof}
 
 \subsection{Family of maximum entropy distributions}
@@ -124,7 +124,7 @@ The family of maximum entropy distributions is the set
     \maxentfamilyof{\sstat}{\basemeasure} =
     \{\probwith \wcols \exists\meanparam\in\genmeanset : \probwith \quad\text{is a solution of \problemref{prob:maxEntropy}} \} \, .
 \end{align*}
-\theref{the:MAINgenMaxEntChar} suggests a parametrization of this family as tuples of corresponding faces $\facesymbol$ and weight vectors $\meanparamwith$.
+\theref{the:MAINgenMaxEntChar} suggests a parametrization of this family as tuples of corresponding faces $\facesymbol$ and weight vectors $\weightparamwith$.
 As sketched in \figref{fig:maxEntropyActcore} the activation tensor of each maximum entropy distribution is decomposed into a possibly non-elementary Boolean tensor corresponding to the base measure refinement on a face $\facesymbol$, and an elementary tensor dependent on the weight vector $\weightparamin$.
 We thus define the canonical parameter space
 \begin{align*}

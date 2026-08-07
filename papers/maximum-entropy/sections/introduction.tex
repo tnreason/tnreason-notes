@@ -59,6 +59,7 @@ A contraction of the tensor network keeping the nodes $\arbset\subset\nodes$ ope
     \contractionof{\extnet}{\indexedcatvariableof{\arbset}}
     = \sum_{\catindexof{\nodes\backslash\arbset}} \prod_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
 \end{align*}
+We in this work always assume that to each node in the hypergraph there is at least one hyperedge containing it.
 
 \subsection{Maximum entropy problem}
 
@@ -148,7 +149,7 @@ We are interested in decomposition formats of $\hypercoreat{\headvariables}$, wh
 \begin{definition}
     The \ComputationActivationNetworks{} to a statistic $\sstat$ and a hypergraph $\graph$ is the family
     \begin{align*}
-        \realizabledistsof{\sstat,\graph,\basemeasure}
+        \cansof{\sstat,\graph,\basemeasure}
         = \left\{
               \frac{\contractionof{\hypercoreat{\headvariables},\bencsstatwith}{\shortcatvariables}}{\contraction{\hypercoreat{\headvariables},\bencsstatwith,\basemeasurewith}}
               \wcols \hypercoreat{\headvariables} \in \tnsetof{\graph} \right\} \, .
