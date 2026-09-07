@@ -1,0 +1,372 @@
+\documentclass{beamer}
+\input{../template/ENEXA/packages.tex}
+
+\usepackage{tcolorbox}
+\usepackage{braket}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{pdfpages}
+
+\usepackage{import}
+\subimport{../../macros}{all-macros.tex}
+
+\newcommand{\bigtimes}{\mathop{\text{\Large$\times$}}\displaylimits}
+
+\tikzset{
+    midarrow/.style={
+        postaction={decorate},
+        decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{Straight Barb[length=3pt, width=3pt]}}
+            % Or use {Stealth}, {To}, or {Latex[open]}
+        }
+    },
+    midbackarrow/.style={
+        postaction={decorate},
+        decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{<[Straight Barb[length=3pt, width=3pt]]}}
+        }
+    },
+    >>-/.style={midarrow},
+    <<-/.style={midbackarrow}
+}
+
+
+\title[Tensor networks for neuro-symbolic AI]{
+    Tensor networks for neuro-symbolic AI
+}
+\date[September 15, 2026]{NESYRE Workshop\\ September 15, 2026}
+\author[A.~Goessmann]{Alex Goessmann \\ joint work with Janina Schütte, Maximilian Fröhlich and Martin Eigel \\
+arXiv : 2601.15442}
+\institute[WIAS]{
+    Weierstraß Institute for Applied Analysis and Stochastics (WIAS)
+}
+
+\begin{document}
+
+    {\frame[plain]{\titlepage}}
+
+    \AtBeginSection[]
+    {
+        \begin{frame}{Outline}
+            \tableofcontents[currentsection]
+        \end{frame}
+    }
+    \begin{frame}{Outline}
+        \tableofcontents
+    \end{frame}
+
+    \addtocounter{framenumber}{-1}
+
+
+    \section{Tensor networks for neuro-symbolic AI}
+
+    \begin{frame}{Motivation: Toy accounting rule system}
+
+        \begin{block}{Toy accounting rule system}
+            Assume you want to book one of two accounts $\mathrm{A1}$ and $\mathrm{A2}$ depending on a feature $\mathrm{F}$ of an invoice, based on two rules:
+            \begin{itemize}
+                \item \textcolor{\concolor}{Exactly one account must be booked.}
+                \item \textcolor{\probcolor}{If feature $\mathrm{F}$ is present on the invoice, the account $\mathrm{A1}$ is typically booked.}
+            \end{itemize}
+        \end{block}
+
+        \begin{itemize}
+            \item {Accounting rules} are formalised in propositional logics, triggered by receipts properties.
+            \item These rules can either be \textcolor{\concolor}{hard restrictions}, or \textcolor{\probcolor}{prone to exceptions}.
+        \end{itemize}
+
+        \begin{center}
+            \bf We apply tensor networks for neuro-symbolic use cases like this!
+        \end{center}
+
+    \end{frame}
+
+
+    \begin{frame}{Productive accounting rule systems}
+
+        The variables and main relations of the DATEV accounting ontology\footnote{\tiny https://github.com/EnexaProject/enexa-use-case-1-business-software-solutions}:
+        \begin{center}
+            \begin{tikzpicture}
+                \drawtextnode{0}{0}{\includegraphics[height=0.4\textwidth]{images/ontology_fine_snapshot}}
+                \drawtextnode{0}{-3}{\bf Coarse Visualization}
+                \drawtextnode{5}{0}{\includegraphics[height=0.4\textwidth]{images/ontology_coarse_snapshot}}
+                \drawtextnode{5}{-3}{\bf Detailed Visualization}
+            \end{tikzpicture}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}{Tensors: Natural description of factored representations}
+
+        {\bf Factored representations}
+        are collection of variables $\shortcatvariables$, each with a finite set of states $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$
+        \cite{russell_artificial_2021}.
+        The set of states is then the cartesian product
+        \begin{align*}
+            \facstates
+        \end{align*}
+
+            {\bf Knowledge about the system}, for example the probability of each state, is a \emph{tensor}
+        \begin{align*}
+            \hypercorewith \defcols \facstates \rightarrow \rr
+        \end{align*}
+        We represent them by diagrams with legs decorated by the variables:
+        \begin{center}
+
+            \begin{tikzpicture}[scale=0.35,thick] % , baseline = -3.5pt
+                \draw (-1,-1) rectangle (5,-3);
+                \node[anchor=center] (text) at (2,-2) {\corelabelsize $\hypercore$};
+                \draw (0,-3)--(0,-5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+                \draw (1.5,-3)--(1.5,-5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
+                \node[anchor=center] (text) at (3,-4) {$\cdots$};
+                \draw (4,-3)--(4,-5) node[midway,right] {\colorlabelsize $\catvariableof{\atomorder\shortminus1}$};
+            \end{tikzpicture}
+        \end{center}
+    \end{frame}
+
+
+    \begin{frame}{Tensor Network Decompositions}
+
+        Necessity
+
+        \begin{align*}
+            \extnetat{\indexedcatvariableof{\nodes}}
+            = \prod_{\edgein}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+        \end{align*}
+
+        Typically: Applied in a Black Box manner
+        Here: We relate decompositions to the logical and probabilistic structure
+
+    \end{frame}
+
+
+
+    \begin{frame}{Neural function decompositions}
+
+        \begin{block}{Neural sparsity}
+            Functions of interest decompose into simple functions (neurons).
+        \end{block}
+
+
+        Capture by tensor networks: \emph{Basis encodings}
+        \begin{align*}
+            \bencodingofat{\exformula}{\headvariables,\shortcatvariables}
+            = \sum_{\shortcatindicesin} \onehotmapofat{\exformula(\shortcatindices)}{\headvariables}
+            \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables}
+        \end{align*}
+
+        \begin{minipage}{0.45\textwidth}
+            {\bf Example:}
+            The basis encoding of $\formulaat{\catvariableof{[3]}} = (\catvariableof{0} \lor \catvariableof{1}) \land \lnot \catvariableof{2}$ is decomposed as:
+        \end{minipage}
+        \begin{minipage}{0.45\textwidth}
+            \begin{center}
+                \input{tikz/formula-decomposition}
+            \end{center}
+        \end{minipage}
+
+    \end{frame}
+
+
+    \begin{frame}{Propositional formulas by tensor networks}
+
+        Logical syntax translates in tensor network formats
+
+    \end{frame}
+
+
+    \begin{frame}{Probabilistic models by tensor networks}
+
+        Graphical models: Directly tensor networks
+
+        Tensor network graphs encode conditional independences
+    \end{frame}
+
+%    \begin{frame}{Sparsity by tensor network decompositions}
+%
+%        We represent functions between factored state sets by their \emph{basis encodings}
+%        \begin{align*}
+%            \bencodingofat{\exformula}{\headvariables,\shortcatvariables}
+%            = \sum_{\shortcatindicesin} \onehotmapofat{\exformula(\shortcatindices)}{\headvariables}
+%            \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables}
+%        \end{align*}
+%
+%        \begin{block}{Main sparsity principle}
+%            Any decomposition of a function is reflected in a tensor network decomposition of the basis encoding.
+%        \end{block}
+%
+%        \begin{minipage}{0.45\textwidth}
+%            {\bf Example:}
+%            The basis encoding of $\formulaat{\catvariableof{[3]}} = (\catvariableof{0} \lor \catvariableof{1}) \land \lnot \catvariableof{2}$ is decomposed as:
+%        \end{minipage}
+%        \begin{minipage}{0.45\textwidth}
+%            \begin{center}
+%                \input{tikz/formula-decomposition}
+%            \end{center}
+%        \end{minipage}
+%
+%    \end{frame}
+
+    \begin{frame}{\ComputationActivationNetworks{} (\CompActNets{})}
+        A novel tensor network architecture captures logical and probabilistic models (see \cite{goessmann_tensor_2026}):
+        \begin{center}
+            \input{tikz/can-explanation}
+        \end{center}
+
+    \end{frame}
+
+    \begin{frame}{Toy accounting system as a \CompActNet{}}
+
+        We represent the toy accounting system as a \ComputationActivationNetwork{}:
+        \begin{center}
+            \input{tikz/toy-accounting-network.tex}
+        \end{center}
+
+        \begin{itemize}
+            \item The hard activation vector $\textcolor{\concolor}{\coloredmatrixof{0 \\ 1}{\headvariableof{A1\oplus A2}}}$ ensures that the first rule is always true.
+            \item The soft activation vector $\textcolor{\probcolor}{\coloredmatrixof{1 \\ \expof{\canparam}}{\headvariableof{F\oplus A1}}}$ introduces the trainable parameter $\canparam\in\rr$ controlling the satisfaction probability of the second rule.
+        \end{itemize}
+    \end{frame}
+
+
+    \begin{frame}{Inference by Contractions}
+        \begin{block}{Main inference principle}
+            Model inference amounts to tensor network contractions.
+        \end{block}
+
+        \begin{itemize}
+            \item Probabilistic inference: Contractions are marginal probabilities.
+            \item Logical inference: Contractions are model counts, which decide entailment.
+        \end{itemize}
+
+            {\bf Example:} Distribution of $\catvariableof{A1}$ and $\catvariableof{A2}$ conditioned on $\catvariableof{F}=0$ is parallel to
+        \begin{center}
+            \input{tikz/toy-accounting-reasoning}
+        \end{center}
+%        More advanced inference schemes:
+%        \begin{itemize}
+%            \item Parameter estimation: Moments in an inner loops, which are iteratively matched.
+%            \item Expectation propagation: Approximation framework for contractions by orchestration of efficient inference steps.
+%        \end{itemize}
+
+    \end{frame}
+
+
+    \begin{frame}{Tensor networks for neuro-symbolic AI}
+        Tensor networks provide a unifying language to capture the different paradigms of AI \cite{goessmann_tensor_2026}:
+        \begin{center}
+            \input{tikz/paradigms-sketch}
+        \end{center}
+    \end{frame}
+
+
+    \section{Maximum entropy principles}
+
+    \begin{frame}{Maximum entropy problem}
+
+        Shannon Entropy: Natural measure of structure (negative information content) of a distribution.
+
+
+        \begin{block}{Maximum entropy principle}
+            Among those distributions reproducing certain characteristics of observed data, choose the one with the least structure (=maximum entropy).
+        \end{block}
+
+
+        Formally the maximum entropy problem is
+        \begin{align*}
+            \argmax_{\probwith} \,\,\sentropyof{\probwith}
+            \quad\text{s.t.}\quad
+            \contractionof{\probwith,\sencsstatwith}{\selvariable} = \meanparamwith \, .
+        \end{align*}
+
+
+    \end{frame}
+
+
+    \begin{frame}{Exponential families are maximum entropy distributions}
+
+    \end{frame}
+
+    \begin{frame}{Generic maximum entropy distributions}
+
+        Not all maximum entropy distributions are in the exponential family.
+
+        Characterization by the face of the mean polytope to which the mean parameter belongs.
+
+
+    \end{frame}
+
+    \begin{frame}{Mean polytope}
+        Realizable mean parameters form a convex polytope, the \emph{mean polytope} of the statistic $\sstat$:
+
+        Exponential families can only realize the relative interior of the mean polytope.
+
+        What are the solutions to the mean parameters on the boundary of the mean polytope?
+
+    \end{frame}
+
+    \begin{frame}{Example}
+
+        Consider the statistic
+        \begin{align*}
+            \formulaofat{0}{\catvariableof{0},\catvariableof{1}} = \left( \catvariableof{0} \land \catvariableof{1} \right) \quad, \quad
+            \formulaofat{1}{\catvariableof{0},\catvariableof{1}} = \left( \catvariableof{0} \Rightarrow \catvariableof{1} \right)
+        \end{align*}
+
+        \begin{minipage}{0.45\textwidth}
+            The mean polytope of this statistic is
+            \begin{center}
+                \input{tikz/nonel-polytope}
+            \end{center}
+            We notice: The blue face cannot be represented by an elementary tensor.
+        \end{minipage}
+        \begin{minipage}{0.45\textwidth}
+            Representation of the maximum entropy distribution for a mean parameter in the blue face:
+            \begin{center}
+                \input{tikz/nonel-rep}
+            \end{center}
+        \end{minipage}
+
+
+    \end{frame}
+
+
+    \section{Summary and Outlook}
+
+
+    \begin{frame}{Summary and Outlook}
+
+        {\bf Tensor networks}
+        \begin{itemize}
+            \item Tensors appear naturally as factored system representations
+            \item \emph{Sparsity principle:} Decomposition into tensor networks
+            \item \emph{Inference principle:} Tensor network contractions
+        \end{itemize}
+
+
+            {\bf Implementations} in \python{} packages:
+        \begin{itemize}
+            \item {\bf \tnreason{}}\footnote{https://pypi.org/project/tnreason/}: Tensor network based reasoning
+            \item {\bf \qcreason{}}\footnote{https://pypi.org/project/qcreason/}: Quantum inference for contractions
+        \end{itemize}
+
+    \end{frame}
+
+    \begin{frame}{References}
+
+        \begin{center}
+            \bf Thank you very much for your attention!
+        \end{center}
+
+        \medskip
+
+        \small
+
+        \bibliographystyle{alpha}
+        \bibliography{../../references.bib}
+
+    \end{frame}
+
+
+\end{document}

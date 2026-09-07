@@ -1,0 +1,81 @@
+\begin{tikzpicture}[scale=0.32, thick, yscale=-1, xscale=-1] % , baseline = -3.5pt
+
+    \draw[->-]  (3,1.75)--(3,-1) node[midway,left] {\colorlabelsize $\catvariableof{A2}$};
+
+    \draw[->-] (-1.5,1) to[bend right=20] (-3,-1);
+    \draw[->-] (-1.5,1) to[bend right=-20] (0,-1);
+    \drawvariabledot{-1.5}{1}
+    \draw (-1.5,1)--(-1.5,1.75)  node[midway,left] {\colorlabelsize $\catvariableof{A1}$};
+
+    \draw[->-] (-6,1)--(-6,-1) node[midway,left] {\colorlabelsize $\catvariableof{F}$};
+    \draw (-7,1) rectangle (-5,3);
+    \drawtextnode{-6}{2}{\corelabelsize $\fbasis$}
+
+    \draw (-7,-1) rectangle (-2, -3);
+    \node[anchor=center] (text) at (-4.5,-2) {\corelabelsize  $\bencodingof{\Rightarrow}$};
+    \draw[->-] (-4.5,-3) --(-4.5,-5.5) node[midway,left]{\colorlabelsize $\headvariableof{F \Rightarrow A1}$};
+
+    \draw[fill, \probcolor] (-4.5,-5.5) circle (\dotsize);
+    \draw[\probcolor] (-4.5,-5.5) -- (-5,-5.5);
+    \draw[\probcolor]  (-10, -3.5) rectangle (-5, -6.5);
+    \node[anchor=center,\probcolor] (text) at (-7.5,-5) {\corelabelsize $\begin{pmatrix}
+                                                                             1 \\
+                                                                             \expof{\canparam}
+    \end{pmatrix}$};
+
+
+    \draw (-1,-1) rectangle (4, -3);
+    \node[anchor=center] (text) at (1.5,-2) {\corelabelsize  $\bencodingof{\oplus}$};
+    \draw[->-] (1.5,-3) --(1.5,-5.5) node[midway,left]{\colorlabelsize $\headvariableof{A1 \oplus A2}$};
+
+    \draw[fill, \concolor] (1.5,-5.5) circle (\dotsize);
+    \draw[\concolor] (1.5,-5.5) -- (1,-5.5);
+    \draw[\concolor]  (-1, -3.5) rectangle (1, -6.5);
+    \node[anchor=center,\concolor] (text) at (0,-5) {\corelabelsize  $\begin{pmatrix}
+                                                                          0 \\
+                                                                          1
+    \end{pmatrix}$};
+
+    %\drawtextnode{-9}{-2}{${=}$}
+%    \drawtextnode{-10}{-2}{${=} {\tiny \expof{\canparam} \cdot }$}
+    \node[font=\small,anchor=center] at (-9.5,-2) {$= \exp(\canparam) \cdot$};
+
+    \begin{scope}[shift={(-16,0)}]
+
+        \draw[->-]  (3,1.75)--(3,-1) node[midway,left] {\colorlabelsize $\catvariableof{A2}$};
+
+        \draw (-2,-1) rectangle (-4,-3);
+        \drawtextnode{-3}{-2}{\corelabelsize $\ones$}
+        \draw[->-] (-1.5,1) to[bend right=20] (-3,-1);
+        \draw[->-] (-1.5,1) to[bend right=-20] (0,-1);
+        \drawvariabledot{-1.5}{1}
+        \draw (-1.5,1)--(-1.5,1.75)  node[midway,left] {\colorlabelsize $\catvariableof{A1}$};
+
+
+        \draw (-1,-1) rectangle (4, -3);
+        \node[anchor=center] (text) at (1.5,-2) {\corelabelsize  $\bencodingof{\oplus}$};
+        \draw[->-] (1.5,-3) --(1.5,-5.5) node[midway,left]{\colorlabelsize $\headvariableof{A1 \oplus A2}$};
+
+        \draw[fill, \concolor] (1.5,-5.5) circle (\dotsize);
+        \draw[\concolor] (1.5,-5.5) -- (1,-5.5);
+        \draw[\concolor]  (-1, -3.5) rectangle (1, -6.5);
+        \node[anchor=center,\concolor] (text) at (0,-5) {\corelabelsize  $\begin{pmatrix}
+                                                                              0 \\
+                                                                              1
+        \end{pmatrix}$};
+
+
+    \end{scope}
+
+    \node[font=\small,anchor=center] at (-22.5,-2) {$= \exp(\canparam) \cdot$};
+    %\drawtextnode{-22}{-2}{${=} {\tiny \expof{\canparam} \cdot }$}
+
+    \begin{scope}[shift={(-28,0)}]
+        \draw[->-]  (2.5,1.75)--(2.5,-1) node[midway,left] {\colorlabelsize $\catvariableof{A2}$};
+        \draw (0.5,1.75)--(0.5,-1)  node[midway,left] {\colorlabelsize $\catvariableof{A1}$};
+        \draw (-0.25,-1) rectangle (3.25, -3);
+        \node[anchor=center] (text) at (1.5,-2) {\colorlabelsize  $\blankmatrix{0 & 1 \\ 1 & 0}$};
+    \end{scope}
+
+
+\end{tikzpicture}
