@@ -128,12 +128,16 @@ arXiv : 2601.15442}
 
     \begin{frame}{Tensor Network Decompositions}
 
-        Necessity
+        Necessity to overcome the curse of dimensionality.
 
+        Definition on a hypergraph $\graph=(\nodes,\edges)$
         \begin{align*}
             \extnetat{\indexedcatvariableof{\nodes}}
             = \prod_{\edgein}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
         \end{align*}
+
+        Example: TT format
+
 
         Typically: Applied in a Black Box manner
         Here: We relate decompositions to the logical and probabilistic structure
@@ -150,11 +154,30 @@ arXiv : 2601.15442}
 
 
         Capture by tensor networks: \emph{Basis encodings}
+        of a function
+        \begin{align*}
+            \exformula : \bigtimes_{\catenumeratorin} [\catdimof{\catenumerator}]
+            \rightarrow \bigtimes_{\selindexin} [\catdimof{\selindex}]
+        \end{align*}
+        is the tensor
         \begin{align*}
             \bencodingofat{\exformula}{\headvariables,\shortcatvariables}
             = \sum_{\shortcatindicesin} \onehotmapofat{\exformula(\shortcatindices)}{\headvariables}
-            \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables}
+            \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
         \end{align*}
+
+        Basis calculus: Contraction with one-hot encoded input yields the one-hot encoded output.
+
+
+    \end{frame}
+
+
+    \begin{frame}{Propositional formulas by tensor networks}
+
+        Logical syntax translates in tensor network decompositions:
+        \begin{itemize}
+            \item Basis encodings of the logical connectives $\land$, $\lor$, $\lnot$ are elementary tensors.
+        \end{itemize}
 
         \begin{minipage}{0.45\textwidth}
             {\bf Example:}
@@ -166,12 +189,9 @@ arXiv : 2601.15442}
             \end{center}
         \end{minipage}
 
-    \end{frame}
-
-
-    \begin{frame}{Propositional formulas by tensor networks}
-
-        Logical syntax translates in tensor network formats
+        \begin{block}{Outlook: First-order logics}
+            Objects enumerated in additional tensor legs.
+        \end{block}
 
     \end{frame}
 
@@ -180,7 +200,8 @@ arXiv : 2601.15442}
 
         Graphical models: Directly tensor networks
 
-        Tensor network graphs encode conditional independences
+        Tensor network graphs encode conditional independencies.
+
     \end{frame}
 
 %    \begin{frame}{Sparsity by tensor network decompositions}
@@ -285,6 +306,9 @@ arXiv : 2601.15442}
 
 
     \begin{frame}{Exponential families are maximum entropy distributions}
+        \begin{center}
+            \input{tikz/exp-family-rep}
+        \end{center}
 
     \end{frame}
 
