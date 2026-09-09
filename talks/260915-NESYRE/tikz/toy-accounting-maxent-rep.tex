@@ -1,0 +1,92 @@
+\begin{tikzpicture}[scale=0.35, thick, yscale=1, xscale=1] % , baseline = -3.5pt
+
+
+    \draw[\probcolor] (0,3) -- (-1,3);
+    \draw[\probcolor] (-1,4) rectangle (-4,2);
+    \node[anchor=center,\probcolor] (text) at (-2.5,3) {$\softactsymbolof{\canparamat{\selvariable=0}}$};
+
+    \draw[\concolor] (0,3) -- (1,3);
+    \only<1>{
+        \draw[\concolor] (1,4) rectangle (3,2);
+        \node[anchor=center,\concolor] (text) at (2,3) {$\kcoreof{0}$};
+    }
+    \only<2>{
+        \draw[\concolor] (1,4.5) rectangle (3,1.5);
+        \node[anchor=center,\concolor] (text) at (2,3) {$\begin{pmatrix}
+                                                             1 \\ 1
+        \end{pmatrix}$};
+    }
+    \only<3>{
+        \draw[\concolor] (1,4.5) rectangle (3,1.5);
+        \node[anchor=center,\concolor] (text) at (2,3) {$\begin{pmatrix}
+                                                             0 \\ 1
+        \end{pmatrix}$};
+    }
+    \drawvariabledot{0}{3}
+    \drawtdwire{0}{3}{}
+    \drawtensorblock{0}{0}{2.5}{$\bencodingof{\oplus}$}
+
+
+    \draw[\probcolor] (10,3) -- (9,3);
+    \draw[\probcolor] (9,4) rectangle (6,2);
+    \node[anchor=center,\probcolor] (text) at (7.5,3) {$\softactsymbolof{\canparamat{\selvariable=1}}$};
+
+    \draw[\concolor] (10,3) -- (11,3);
+    \only<1>{
+        \draw[\concolor] (11,4) rectangle (13,2);
+        \node[anchor=center,\concolor] (text) at (12,3) {$\kcoreof{1}$};
+    }
+    \only<2,3>{
+        \draw[\concolor] (11,4.5) rectangle (13,1.5);
+        \node[anchor=center,\concolor] (text) at (12,3) {$\begin{pmatrix}
+                                                             1 \\ 1
+        \end{pmatrix}$};
+    }
+    \drawvariabledot{10}{3}
+    \drawtdwire{10}{3}{}
+    \drawtensorblock{10}{0}{2.5}{$\bencodingof{\Rightarrow}$}
+
+
+    \drawtdwire{-1}{-1}{$\catvariableof{A2}$}
+
+    \drawtdwire{12}{-1}{$\catvariableof{F}$}
+
+    \draw[->-] (5,-2) to[bend right=-20] (1.5,-1);
+    \draw[->-] (5,-2) to[bend right=20] (9,-1);
+    \drawvariabledot{5}{-2}
+    \draw[->-] (5,-3) -- (5,-2) node[midway,right] {\colorlabelsize $\catvariableof{A1}$};
+
+%    \draw[->-]  (3,1.75)--(3,-1) node[midway,left] {\colorlabelsize $\catvariableof{A2}$};
+
+
+%    \drawvariabledot{-1.5}{1}
+%    \draw (-1.5,1)--(-1.5,1.75)  node[midway,left] {\colorlabelsize $\catvariableof{A1}$};
+%
+%    \draw[->-] (-6,1.75)--(-6,-1) node[midway,left] {\colorlabelsize $\catvariableof{F}$};
+%
+%    \draw (-7,-1) rectangle (-2, -3);
+%    \node[anchor=center] (text) at (-4.5,-2) {$\bencodingof{\Rightarrow}$};
+%    \draw[->-] (-4.5,-3) --(-4.5,-5.5); % node[midway,left]{\colorlabelsize $\headvariableof{F \Rightarrow A1}$};
+%
+%    \draw[fill, \probcolor] (-4.5,-5.5) circle (\dotsize);
+%    \draw[\probcolor] (-4.5,-5.5) -- (-5,-5.5);
+%    \draw[\probcolor]  (-10, -3.5) rectangle (-5, -6.5);
+%    \node[anchor=center,\probcolor] (text) at (-7.5,-5) {$\begin{pmatrix}
+%                                                              1 \\
+%                                                              \expof{\canparam_1}
+%    \end{pmatrix}$};
+%
+%
+%    \draw (-1,-1) rectangle (4, -3);
+%    \node[anchor=center] (text) at (1.5,-2) {$\bencodingof{\oplus}$};
+%    \draw[->-] (1.5,-3) --(1.5,-5.5);% node[midway,left]{\colorlabelsize $\headvariableof{A1 \oplus A2}$};
+%
+%    \draw[fill, \concolor] (1.5,-5.5) circle (\dotsize);
+%    \draw[\concolor] (1.5,-5.5) -- (1,-5.5);
+%    \draw[\concolor]  (-1, -3.5) rectangle (1, -6.5);
+%    \node[anchor=center,\concolor] (text) at (0,-5) {$\begin{pmatrix}
+%                                                          0 \\
+%                                                          1
+%    \end{pmatrix}$};
+
+\end{tikzpicture}

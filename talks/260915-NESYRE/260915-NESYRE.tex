@@ -7,6 +7,8 @@
 \usepackage{algpseudocode}
 \usepackage{pdfpages}
 
+\usepackage{pgfplots}
+
 \usepackage{import}
 \subimport{../../macros}{all-macros.tex}
 
@@ -128,22 +130,34 @@ arXiv : 2601.15442}
 
     \begin{frame}{Tensor Network Decompositions}
 
-        Necessity to overcome the curse of dimensionality.
-
-        Definition on a hypergraph $\graph=(\nodes,\edges)$
+        To overcome the curse of dimensionality, tensors are decomposed into networks on hypergraphs $\graph=(\nodes,\edges)$
         \begin{align*}
             \extnetat{\indexedcatvariableof{\nodes}}
             = \prod_{\edgein}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
         \end{align*}
 
-        Example: TT format
+            {\bf Example:} TT format
+        \begin{center}
+            \input{tikz/tt-format}
+        \end{center}
 
-
-        Typically: Applied in a Black Box manner
-        Here: We relate decompositions to the logical and probabilistic structure
+            {\bf Beyond black-boxes:} Hypergraphs encode symbolic structure.
+        \begin{itemize}
+            \item Probabilistic perspective: Hypergraphs encode \emph{conditional independencies}.
+            \item Neural and logical perspective: Hypergraphs encode \emph{function decompositions}.
+        \end{itemize}
 
     \end{frame}
 
+
+    \begin{frame}{Probabilistic models by tensor networks}
+
+        Graphical models: Interpretation of tensor networks as probability distributions.
+
+        Separation in hypergraphs implies conditional independencies in the distribution.
+
+
+    \end{frame}
 
 
     \begin{frame}{Neural function decompositions}
@@ -195,14 +209,6 @@ arXiv : 2601.15442}
 
     \end{frame}
 
-
-    \begin{frame}{Probabilistic models by tensor networks}
-
-        Graphical models: Directly tensor networks
-
-        Tensor network graphs encode conditional independencies.
-
-    \end{frame}
 
 %    \begin{frame}{Sparsity by tensor network decompositions}
 %
@@ -282,9 +288,44 @@ arXiv : 2601.15442}
     \end{frame}
 
 
-    \section{Maximum entropy principles}
+    \section{Maximum entropy distributions}
 
-    \begin{frame}{Maximum entropy problem}
+    \begin{frame}{Toy accounting example}
+
+        Assume we observe the following satisfaction rates of the toy accounting system:
+        \begin{align*}
+            &\meanparamat{\selvariable=0} = 1 \\
+            &\meanparamat{\selvariable=1} = 0.75
+        \end{align*}
+
+        What distribution should we choose to model the system?
+
+            {\bf Intution:} Choose the distribution with the least structure, which reproduces the observed satisfaction rates.
+
+    \end{frame}
+
+
+    \begin{frame}{Entropy: Quantifying the amount of structure}
+
+        %      \begin{minipage}{0.45\textwidth}
+        The entropy of a distribution $\probwith$ is a measure of its structure:
+        \begin{align*}
+            &\sentropyof{\probwith}
+            &= -\sum_{\shortcatindicesin} \probat{\indexedshortcatvariables} \cdot \lnof{\probat{\indexedshortcatvariables}}
+        \end{align*}
+%        \end{minipage}
+%        \begin{minipage}{0.45\textwidth}
+            {\bf Example:} Entropy of Bernoulli distributions \\
+        \begin{center}
+            \input{tikz/bernoulli-ent-plot}
+        \end{center}
+        %       \end{minipage}
+
+
+    \end{frame}
+
+    \begin{frame}{Maximum entropy principle}
+
 
         Shannon Entropy: Natural measure of structure (negative information content) of a distribution.
 
@@ -306,23 +347,32 @@ arXiv : 2601.15442}
 
 
     \begin{frame}{Exponential families are maximum entropy distributions}
+
+        The exponential family of a statistic $\sstat$ is the set of distributions
+        \begin{align*}
+            \probofat{(\sstat,\canparam)}{\shortcatvariables}
+            = \frac{1}{\partitionfunctionof{\canparam}} \expof{\contractionof{\canparam,\sencsstatwith}{\selvariable}}
+        \end{align*}
+
+        We represent any member as a \ComputationActivationNetwork{}:
         \begin{center}
             \input{tikz/exp-family-rep}
         \end{center}
 
-    \end{frame}
-
-    \begin{frame}{Generic maximum entropy distributions}
-
-        Not all maximum entropy distributions are in the exponential family.
-
-        Characterization by the face of the mean polytope to which the mean parameter belongs.
-
+            {\bf Classical theorem:}
+        Any member of the exponential family is a solution of the maximum entropy problem to its mean parameter $\meanparamwith$ \cite{koller_probabilistic_2009}.
 
     \end{frame}
+
+
 
     \begin{frame}{Mean polytope}
         Realizable mean parameters form a convex polytope, the \emph{mean polytope} of the statistic $\sstat$:
+        \begin{align*}
+            \meansetof{\sstat}
+            = \convhullof{\sencsstatat{\indexedshortcatvariables,\selvariable}\wcols\indexedshortcatvariables\in\facstates}
+        \end{align*}
+
 
         Exponential families can only realize the relative interior of the mean polytope.
 
@@ -330,12 +380,52 @@ arXiv : 2601.15442}
 
     \end{frame}
 
-    \begin{frame}{Example}
+    \begin{frame}{Mean parameters on the faces}
+
+        Characterization by the face of the mean polytope to which the mean parameter belongs.
+
+        We represent faces in activation cores \cite{goessmann_tensor_2026-1}
+        \begin{align*}
+            \kcoreofat{\facesymbol}{\headvariables}
+            = \sum_{\imelement\in\facesymbol} \onehotmapofat{\imelement}{\headvariables}
+        \end{align*}
+
+        \begin{theorem}[Generic maximum entropy representation \cite{goessmann_tensor_2026-1}]
+            For any mean parameter on the relative interior of a face $\facesymbol$, we find a parameter $\canparamwith$ such that the corresponding maximum entropy is
+            \begin{align*}
+                \frac{
+                    \contractionof{\bencsstatwith,\kcoreofat{\facesymbol}{\headvariables},\actcoreofat{\canparam}{\headvariables}
+                    }{\shortcatvariables}}{
+                    \contraction{\bencsstatwith,\kcoreofat{\facesymbol}{\headvariables},\actcoreofat{\canparam}}
+                }
+            \end{align*}
+        \end{theorem}
+
+    \end{frame}
+
+
+    \begin{frame}{Toy accounting example}
+
+        The mean polytope is
+        \begin{center}
+            \input{tikz/toy-polytope}
+        \end{center}
+
+        Any solution of the maximum entropy problem is a CompActNet{} with elementary activation.
+        \begin{center}
+            \input{tikz/toy-accounting-maxent-rep}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}{Non-elementary example}
+
 
         Consider the statistic
         \begin{align*}
-            \formulaofat{0}{\catvariableof{0},\catvariableof{1}} = \left( \catvariableof{0} \land \catvariableof{1} \right) \quad, \quad
-            \formulaofat{1}{\catvariableof{0},\catvariableof{1}} = \left( \catvariableof{0} \Rightarrow \catvariableof{1} \right)
+            \formulaofat{0}{\catvariableof{0},\catvariableof{1}}
+            = \left( \catvariableof{0} \land \catvariableof{1} \right) \quad, \quad
+            \formulaofat{1}{\catvariableof{0},\catvariableof{1}}
+            = \left( \catvariableof{0} \Rightarrow \catvariableof{1} \right)
         \end{align*}
 
         \begin{minipage}{0.45\textwidth}
@@ -343,7 +433,7 @@ arXiv : 2601.15442}
             \begin{center}
                 \input{tikz/nonel-polytope}
             \end{center}
-            We notice: The blue face cannot be represented by an elementary tensor.
+            The blue face cannot be represented by an elementary tensor.
         \end{minipage}
         \begin{minipage}{0.45\textwidth}
             Representation of the maximum entropy distribution for a mean parameter in the blue face:

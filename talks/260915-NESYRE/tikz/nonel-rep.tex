@@ -14,11 +14,8 @@
         \drawvariabledot{0}{0}
 
         \draw[\probcolor] (0,0) -- (-1.5,0);
-        \draw[\probcolor] (-1.5,1.5) rectangle (-8.5,-1.5);
-        \node[anchor=center,\probcolor] (text) at (-5,0) {\corelabelsize $\begin{pmatrix}
-                                                                              1 \\
-                                                                              \expof{\canparamat{\selvariable=0}}
-        \end{pmatrix}$};
+        \draw[\probcolor] (-1.5,1) rectangle (-4.5,-1);
+        \node[anchor=center,\probcolor] (text) at (-3,0) {\corelabelsize $\actcoreof{\canparamat{\selvariable=0}}$};
 %       \node[anchor=center,\probcolor] (text) at (-3,0) {\corelabelsize $\softactsymbolof{0,\canparam}$};
 
         \draw[->-] (4,-1)--(4,0);
@@ -27,11 +24,8 @@
         \drawvariabledot{4}{0}
 
         \draw[\probcolor] (4,0) -- (5.5,0);
-        \draw[\probcolor] (5.5,1.5) rectangle (12.5,-1.5);
-        \node[anchor=center,\probcolor] (text) at (9,0) {\corelabelsize $\begin{pmatrix}
-                                                                             1 \\
-                                                                             \expof{\canparamat{\selvariable=1}}
-        \end{pmatrix}$};
+        \draw[\probcolor] (5.5,1) rectangle (8.5,-1);
+        \node[anchor=center,\probcolor] (text) at (7,0) {\corelabelsize $\actcoreof{\canparamat{\selvariable=1}}$};
 
 
         \draw (-1,-1) rectangle (5,-3);

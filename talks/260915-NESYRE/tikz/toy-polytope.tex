@@ -1,0 +1,45 @@
+\begin{tikzpicture}[scale=0.35]
+
+    \node[anchor=east] at (0,0) {$\begin{pmatrix}
+                                      0 \\ 0
+    \end{pmatrix}$};
+    \node[anchor=west] at (5,0) {$\begin{pmatrix}
+                                      1 \\ 0
+    \end{pmatrix}$};
+    \node[anchor=west] at (5,5) {$\begin{pmatrix}
+                                      1 \\ 1
+    \end{pmatrix}$};
+    \node[anchor=east] at (0,5) {$\begin{pmatrix}
+                                      0 \\ 1
+    \end{pmatrix}$};
+
+    \drawvectormark{0}{0}
+    \drawvectormark{0}{5}
+    \drawvectormark{5}{0}
+    \drawvectormark{5}{5}
+
+    \draw[thick] (5,5) -- (5,0) -- (0,0) -- (0,5) -- (5,5);
+
+    \only<2>{
+        \fill[\concolor!20] (0,0) rectangle (5,5);
+        \drawvectormark{0}{0}
+        \drawvectormark{0}{5}
+        \drawvectormark{5}{0}
+        \drawvectormark{5}{5}
+        \draw[thick] (5,5) -- (5,0) -- (0,0) -- (0,5) -- (5,5);
+        \drawvectormark{2}{3}
+        \node[anchor=center] at (3.3,3) {$\meanparamwith$};
+
+    }
+    \only<3>{
+        \draw[\concolor,thick] (5,0) -- (5,5);
+        \drawvectormark{0}{0}
+        \drawvectormark{0}{5}
+        \drawvectormark{5}{0}
+        \drawvectormark{5}{5}
+        \drawvectormark{5}{2}
+        \node[anchor=center] at (3.7,2) {$\meanparamwith$};
+
+    }
+
+\end{tikzpicture}
