@@ -1,6 +1,7 @@
 \documentclass{beamer}
 \input{../template/ENEXA/packages.tex}
 
+\usepackage{mathtools}
 \usepackage{tcolorbox}
 \usepackage{braket}
 \usepackage{algorithm}
@@ -12,7 +13,7 @@
 \usepackage{import}
 \subimport{../../macros}{all-macros.tex}
 
-\newcommand{\bigtimes}{\mathop{\text{\Large$\times$}}\displaylimits}
+%\newcommand{\bigtimes}{\mathop{\text{\huge$\times$}}\displaylimits}
 
 \tikzset{
     midarrow/.style={
@@ -40,7 +41,7 @@
 }
 \date[September 15, 2026]{NESYRE Workshop\\ September 15, 2026}
 \author[A.~Goessmann]{Alex Goessmann \\ joint work with Janina Schütte, Maximilian Fröhlich and Martin Eigel \\
-arXiv : 2601.15442}
+arXiv : 2601.15442, 2609.07184}
 \institute[WIAS]{
     Weierstraß Institute for Applied Analysis and Stochastics (WIAS)
 }
@@ -80,9 +81,46 @@ arXiv : 2601.15442}
         \end{itemize}
 
         \begin{center}
-            \bf We apply tensor networks for neuro-symbolic use cases like this!
+            \bf We use tensor networks to represent hard and soft accounting rules in a unified framework.
         \end{center}
 
+    \end{frame}
+
+
+
+
+    \begin{frame}{Tensors: Natural description of factored representations}
+
+        {\bf Factored representations}
+        are collection of variables $\shortcatvariables=(\catvariableof{0},\ldots,\catvariableof{\catorder\shortminus1})$, each with a finite set of states $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$
+        \cite{russell_artificial_2021}.
+        The set of states is then the cartesian product
+        \begin{align*}
+            \facstates = \{0,\ldots,\catdimof{0}\} \times \ldots \times \{0,\ldots,\catdimof{\atomorder\shortminus1}\} \, .
+        \end{align*}
+
+            {\bf Knowledge about the system} (possibility or uncertainty of a state) is a \emph{tensor}
+        \begin{align*}
+            \hypercorewith \defcols \facstates \rightarrow \rr \, .
+        \end{align*}
+        We represent tensors by diagrams with legs decorated by the variables:
+        \begin{center}
+            \stantikzpic{
+                \drawtensorblock{2}{-2}{3}{$\hypercore$}
+                \draw (0,-3)--(0,-5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+                \draw (1.5,-3)--(1.5,-5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
+                \drawtextnode{3}{-4}{\colorlabelsize $\cdots$}
+                \drawvwire{4}{-3}{$\catvariableof{\catorder\shortminus1}$}
+            }
+%            \begin{tikzpicture}[scale=0.35,thick] % , baseline = -3.5pt
+%                \draw (-1,-1) rectangle (5,-3);
+%                \node[anchor=center] (text) at (2,-2) {\corelabelsize $\hypercore$};
+%                \draw (0,-3)--(0,-5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
+%                \draw (1.5,-3)--(1.5,-5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
+%                \node[anchor=center] (text) at (3,-4) {$\cdots$};
+%                \draw (4,-3)--(4,-5) node[midway,right] {\colorlabelsize $\catvariableof{\atomorder\shortminus1}$};
+%            \end{tikzpicture}
+        \end{center}
     \end{frame}
 
 
@@ -92,45 +130,23 @@ arXiv : 2601.15442}
         \begin{center}
             \begin{tikzpicture}
                 \drawtextnode{0}{0}{\includegraphics[height=0.4\textwidth]{images/ontology_fine_snapshot}}
-                \drawtextnode{0}{-3}{\bf Coarse Visualization}
+                \drawtextnode{0}{-2.5}{Coarse Visualization}
                 \drawtextnode{5}{0}{\includegraphics[height=0.4\textwidth]{images/ontology_coarse_snapshot}}
-                \drawtextnode{5}{-3}{\bf Detailed Visualization}
+                \drawtextnode{5}{-2.5}{Detailed Visualization}
             \end{tikzpicture}
         \end{center}
-    \end{frame}
 
-    \begin{frame}{Tensors: Natural description of factored representations}
-
-        {\bf Factored representations}
-        are collection of variables $\shortcatvariables$, each with a finite set of states $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$
-        \cite{russell_artificial_2021}.
-        The set of states is then the cartesian product
-        \begin{align*}
-            \facstates
-        \end{align*}
-
-            {\bf Knowledge about the system}, for example the probability of each state, is a \emph{tensor}
-        \begin{align*}
-            \hypercorewith \defcols \facstates \rightarrow \rr
-        \end{align*}
-        We represent them by diagrams with legs decorated by the variables:
         \begin{center}
-
-            \begin{tikzpicture}[scale=0.35,thick] % , baseline = -3.5pt
-                \draw (-1,-1) rectangle (5,-3);
-                \node[anchor=center] (text) at (2,-2) {\corelabelsize $\hypercore$};
-                \draw (0,-3)--(0,-5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
-                \draw (1.5,-3)--(1.5,-5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
-                \node[anchor=center] (text) at (3,-4) {$\cdots$};
-                \draw (4,-3)--(4,-5) node[midway,right] {\colorlabelsize $\catvariableof{\atomorder\shortminus1}$};
-            \end{tikzpicture}
+            \bf The curse of dimensionality prevents naive tensor representations.
         \end{center}
+
     \end{frame}
 
 
     \begin{frame}{Tensor Network Decompositions}
 
-        To overcome the curse of dimensionality, tensors are decomposed into networks on hypergraphs $\graph=(\nodes,\edges)$
+        To overcome the curse of dimensionality, tensors $\extnetat{\nodevariables}$ are decomposed into core tensors $\hypercoreofat{\edge}{\catvariableof{\edge}}$.
+        networks on hypergraphs $\graph=(\nodes,\edges)$
         \begin{align*}
             \extnetat{\indexedcatvariableof{\nodes}}
             = \prod_{\edgein}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
@@ -143,18 +159,70 @@ arXiv : 2601.15442}
 
             {\bf Beyond black-boxes:} Hypergraphs encode symbolic structure.
         \begin{itemize}
-            \item Probabilistic perspective: Hypergraphs encode \emph{conditional independencies}.
-            \item Neural and logical perspective: Hypergraphs encode \emph{function decompositions}.
+            \item Probabilistic perspective: \emph{Conditional independencies}.
+            \item Neural and logical perspective: \emph{Function decompositions}.
         \end{itemize}
 
     \end{frame}
 
 
-    \begin{frame}{Probabilistic models by tensor networks}
+    \begin{frame}{Probabilistic Graphical models are Tensor Networks}
 
-        Graphical models: Interpretation of tensor networks as probability distributions.
+        {\bf Graphical models:} Distributions are factorized into tensors $\hypercoreofat{\edge}{\catvariableof{\edge}}$, coordinate retrieval by
+        \begin{align*}
+            \probat{\indexedcatvariableof{\nodes}}
+            = \prod_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
+        \end{align*}
 
-        Separation in hypergraphs implies conditional independencies in the distribution.
+        This is the tensor decomposition
+        \begin{align*}
+            \probat{\catvariableof{\nodes}}
+            = \contractionof{\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edgein\}}{\nodevariables} \, .
+        \end{align*}
+
+
+        \begin{block}{Interpretation of hypergraphs}
+            Separation in hypergraphs implies conditional independencies in the distribution.
+        \end{block}
+
+
+    \end{frame}
+
+    \begin{frame}{Example: Recommending a student}
+%        Consider a distribution of the variables:
+%        \begin{itemize}
+%            \item Intelligence of a student: $\catvariableof{I}$
+%            \item SAT score of the student: $\catvariableof{S}$
+%            \item Difficulty of a test: $\catvariableof{D}$
+%            \item Grade of the test: $\catvariableof{G}$
+%            \item Recommendation by the teacher: $\catvariableof{L}$
+%        \end{itemize}
+%%        A student of  and SAT score ($\catvariableof{S}$) is assigned a test of difficulty ($\catvariableof{D}$), for which he gets a grade ($\catvariableof{G}$) depending on which he gets a recommendation letter ($\catvariableof{L}$) by its teacher.
+%%        We make the following modelling assumptions:
+        Consider a distribution of a students intelligence $\catvariableof{I}$, SAT score $\catvariableof{S}$, test difficulty $\catvariableof{D}$, grade $\catvariableof{G}$ and recommendation $\catvariableof{L}$.
+        \begin{minipage}{0.5\linewidth}
+            Let us assume the independencies:
+            \begin{itemize}
+                \item "The SAT score depends only on the student's intelligence":
+                \begin{align*}
+                    \condindependent{\catvariableof{S}}{\catvariableof{\{D,G,L\}}}{\catvariableof{I}}
+                \end{align*}
+                \item "The recommendation letter depends only on the grade":
+                \begin{align*}
+                    \condindependent{\catvariableof{L}}{\catvariableof{\{D,I,S\}}}{\catvariableof{G}}
+                \end{align*}
+            \end{itemize}
+        \end{minipage}
+        \begin{minipage}{0.45\linewidth}
+            The independencies are captured by:
+            \begin{center}
+                \input{tikz/student-markov-hypergraph}
+            \end{center}
+            $\probat{\catvariableof{L},\catvariableof{G},\catvariableof{D},\catvariableof{L},\catvariableof{S}}$ is decomposed by
+            \begin{center}
+                \input{tikz/student-markov-network}
+            \end{center}
+        \end{minipage}
 
 
     \end{frame}
@@ -162,26 +230,68 @@ arXiv : 2601.15442}
 
     \begin{frame}{Neural function decompositions}
 
-        \begin{block}{Neural sparsity}
-            Functions of interest decompose into simple functions (neurons).
-        \end{block}
+    %\begin{block}{Neural sparsity}
+    %    Functions of interest decompose into simple functions (neurons).
+    %\end{block}
 
+        {\bf Example:} Summation of integers in fixed-point representation
 
-        Capture by tensor networks: \emph{Basis encodings}
-        of a function
+        Any number $n\in[\catdim^{\catorder}]$ has a unique $\catdim$-adic representation
+        \begin{align*}
+            \sum_{\catenumeratorin} \catindexof{\catenumerator} \cdot \catdim^{\catenumerator}
+        \end{align*}
+        Given two numbers $\catindexof{[\catorder]}$ and $\tildecatindexof{[\catorder]}$ we want the tuple $\headindexof{[\catorder+1]}$ such that
+        \begin{align*}
+            \sum_{\catenumerator\in[\catorder+1]} \headindexof{\catenumerator} \cdot \catdim^{\catenumerator}
+            =             \sum_{\catenumeratorin} (\catindexof{\catenumerator} + \tildecatindexof{\catenumerator}) \cdot \catdim^{\catenumerator}\, .
+        \end{align*}
+
+        The function decomposes into half-adders with carry bit variables $\thirdcatvariableof{[\catorder-1]}$:
+        \begin{center}
+            \input{tikz/m-adic-graph}
+        \end{center}
+
+    \end{frame}
+
+    \begin{frame}{Basis encodings}
+
+        {\bf Aim:} Orient tensor network decompositions on circuit graphs.
+
+        We define the \emph{basis encoding} of a function
         \begin{align*}
             \exformula : \bigtimes_{\catenumeratorin} [\catdimof{\catenumerator}]
             \rightarrow \bigtimes_{\selindexin} [\catdimof{\selindex}]
         \end{align*}
-        is the tensor
+        \vspace{-0.5cm} \\
+        as the tensor
         \begin{align*}
             \bencodingofat{\exformula}{\headvariables,\shortcatvariables}
             = \sum_{\shortcatindicesin} \onehotmapofat{\exformula(\shortcatindices)}{\headvariables}
             \otimes \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
         \end{align*}
 
-        Basis calculus: Contraction with one-hot encoded input yields the one-hot encoded output.
+            {\bf Basis calculus:} Contraction with encoded input yields the encoded output.
+        \begin{align*}
+            \contractionof{\bencodingofat{\exformula}{\headvariables,\shortcatvariables},\onehotmapofat{\shortcatindices}{\shortcatvariables}}{\headvariables}
+            = \onehotmapofat{\exformula(\shortcatindices)}{\headvariables}
+        \end{align*}
+        \begin{center}
+            \input{tikz/basis-calculus}
+        \end{center}
+    \end{frame}
 
+
+    \begin{frame}{Example: Integer summation in fix-point representation}
+
+        Orient on the circuit of half-adders we find a tensor network decomposition
+        \begin{center}
+            \input{tikz/m-adic-decomposition}
+        \end{center}
+
+            {\bf Basis Calculus:} Contraction with one-hot encoded input integers yields the one-hot encoded sum.
+        \begin{center}
+            \input{tikz/m-adic-calculus}
+        \end{center}
 
     \end{frame}
 
@@ -190,7 +300,7 @@ arXiv : 2601.15442}
 
         Logical syntax translates in tensor network decompositions:
         \begin{itemize}
-            \item Basis encodings of the logical connectives $\land$, $\lor$, $\lnot$ are elementary tensors.
+            \item Basis encodings of the logical connectives $\land$, $\lor$, $\lnot$
         \end{itemize}
 
         \begin{minipage}{0.45\textwidth}
@@ -292,48 +402,59 @@ arXiv : 2601.15442}
 
     \begin{frame}{Toy accounting example}
 
-        Assume we observe the following satisfaction rates of the toy accounting system:
+        \begin{block}{Toy accounting rule system}
+            Assume you want to book one of two accounts $\mathrm{A1}$ and $\mathrm{A2}$ depending on a feature $\mathrm{F}$ of an invoice, based on two rules:
+            \begin{itemize}
+                \item \textcolor{\concolor}{Exactly one account must be booked.}
+                \item \textcolor{\probcolor}{If feature $\mathrm{F}$ is present on the invoice, the account $\mathrm{A1}$ is typically booked.}
+            \end{itemize}
+        \end{block}
+
+        Lets assume the following satisfaction rates of the toy accounting system on an invoice dataset:
         \begin{align*}
             &\meanparamat{\selvariable=0} = 1 \\
             &\meanparamat{\selvariable=1} = 0.75
         \end{align*}
 
-        What distribution should we choose to model the system?
+        \begin{center}
+            \bf What is the "simplest" distribution reproducing these satsifaction rates?
+        \end{center}
 
-            {\bf Intution:} Choose the distribution with the least structure, which reproduces the observed satisfaction rates.
+        %What distribution should we choose to model the system?
+        %{\bf Intution:} Choose the distribution with the least structure, which reproduces the observed satisfaction rates.
 
     \end{frame}
 
 
     \begin{frame}{Entropy: Quantifying the amount of structure}
 
-        %      \begin{minipage}{0.45\textwidth}
         The entropy of a distribution $\probwith$ is a measure of its structure:
         \begin{align*}
             &\sentropyof{\probwith}
             &= -\sum_{\shortcatindicesin} \probat{\indexedshortcatvariables} \cdot \lnof{\probat{\indexedshortcatvariables}}
         \end{align*}
-%        \end{minipage}
-%        \begin{minipage}{0.45\textwidth}
             {\bf Example:} Entropy of Bernoulli distributions \\
         \begin{center}
             \input{tikz/bernoulli-ent-plot}
         \end{center}
-        %       \end{minipage}
-
 
     \end{frame}
 
     \begin{frame}{Maximum entropy principle}
 
-
-        Shannon Entropy: Natural measure of structure (negative information content) of a distribution.
-
+        {\bf Shannon Entropy:}
+        Natural measure of structure (negative information content) of a distribution.
 
         \begin{block}{Maximum entropy principle}
             Among those distributions reproducing certain characteristics of observed data, choose the one with the least structure (=maximum entropy).
         \end{block}
 
+
+        To simplify notation we introduce selection encodings of functions $\sstat$ as tensors with coordinates
+        \begin{align*}
+            \sencsstatat{\indexedshortcatvariables,\indexedselvariable}
+            = \sstatcoordinateof{\selindex}(\shortcatindices) \, .
+        \end{align*}
 
         Formally the maximum entropy problem is
         \begin{align*}
@@ -351,44 +472,114 @@ arXiv : 2601.15442}
         The exponential family of a statistic $\sstat$ is the set of distributions
         \begin{align*}
             \probofat{(\sstat,\canparam)}{\shortcatvariables}
-            = \frac{1}{\partitionfunctionof{\canparam}} \expof{\contractionof{\canparam,\sencsstatwith}{\selvariable}}
+            = \frac{1}{\partitionfunctionof{\canparam}} \expof{\contractionof{\canparamwith,\sencsstatwith}{\selvariable}}
         \end{align*}
+        where $\canparamwith\in\parspace$.
 
-        We represent any member as a \ComputationActivationNetwork{}:
+        We find activation cores $\softactsymbolofat{\canparamat{\indexedselvariable}}{\headvariableof{\selindex}}$ to represent the members as \CompActNets{}:
         \begin{center}
             \input{tikz/exp-family-rep}
         \end{center}
-
-            {\bf Classical theorem:}
+            {\bf Classical result:}
         Any member of the exponential family is a solution of the maximum entropy problem to its mean parameter $\meanparamwith$ \cite{koller_probabilistic_2009}.
 
     \end{frame}
 
-
-
     \begin{frame}{Mean polytope}
-        Realizable mean parameters form a convex polytope, the \emph{mean polytope} of the statistic $\sstat$:
-        \begin{align*}
-            \meansetof{\sstat}
-            = \convhullof{\sencsstatat{\indexedshortcatvariables,\selvariable}\wcols\indexedshortcatvariables\in\facstates}
-        \end{align*}
-
+        \begin{minipage}{0.65\textwidth}
+            Realizable mean parameters form a convex polytope, the \emph{mean polytope} of the statistic $\sstat$:
+            \begin{align*}
+                \meansetof{\sstat}
+                = \convhullof{\sencsstatat{\indexedshortcatvariables,\selvariable}\wcols\shortcatindices\in\facstates}
+            \end{align*}
+        \end{minipage}
+        \begin{minipage}{0.25\textwidth}
+            \input{tikz/meanset-sketch}
+        \end{minipage}
 
         Exponential families can only realize the relative interior of the mean polytope.
 
-        What are the solutions to the mean parameters on the boundary of the mean polytope?
+
+        \begin{center}
+            \bf What are the solutions to the mean parameters on the boundary of the mean polytope?
+        \end{center}
+
 
     \end{frame}
 
     \begin{frame}{Mean parameters on the faces}
+        \begin{minipage}{0.45\textwidth}
+            Faces of the mean polytope are sets
+            \begin{align*}
+                \facesymbol
+                = \argmax_{\imelement\in\meansetof{\sstat}} \contraction{\canparamwith,\imelementwith}
+            \end{align*}
+            We represent faces by activation cores \cite{goessmann_tensor_2026-1}
+            \begin{align*}
+                \kcoreofat{\facesymbol}{\headvariables}
+                = \sum_{\imelement\in\facesymbol\cap\headstates} \onehotmapofat{\imelement}{\headvariables}
+            \end{align*}
+        \end{minipage}
+        \begin{minipage}{0.45\textwidth}
+            \begin{tikzpicture}[scale=0.2]
+                % Define points
 
-        Characterization by the face of the mean polytope to which the mean parameter belongs.
+                \node[below] at (1,7) {${\genmeanset}$};
 
-        We represent faces in activation cores \cite{goessmann_tensor_2026-1}
-        \begin{align*}
-            \kcoreofat{\facesymbol}{\headvariables}
-            = \sum_{\imelement\in\facesymbol} \onehotmapofat{\imelement}{\headvariables}
-        \end{align*}
+                \coordinate (A) at (0,0);
+
+                %   \node[below] at (A) {$\meanparamof{1}$};
+                %   \draw[fill] (A) circle (\dotsize);
+
+                \coordinate (B) at (12,2.5);
+                \path (A) -- (B) coordinate[pos=0.7] (P1);
+
+                %   \node[below] at (P1) {$\meanparamof{2}$};
+                %   \draw[fill] (P1) circle (\dotsize);
+
+                \coordinate (P2) at (2,10);
+%    \node[below] at (P2) {$\meanparamof{3}$};
+%    \draw[fill] (P2) circle (\dotsize);
+
+                \coordinate (C) at (7.5,12);
+                \path (B) -- (C) coordinate[pos=0.5] (P4);
+
+                \node[right] at (P4) {$\facesymbol$};
+                \coordinate (D) at (-3,12);
+                \coordinate (E) at (-10,5);
+
+                %\node[below] at ($0.5*(A)+0.5*(E)-(0,1.3)$) {$\genmeanset/\interiorof{\genmeanset}$};
+
+                \draw[thick, dashed] (A) -- (B) -- (C) -- (D) -- (E) -- cycle;
+
+                \node[left] at (-12,11) {$\rr^\seldim$};
+
+                \coordinate (Or) at (-9,11);
+                \node[below] at (Or) {\corelabelsize $\zerosat{\selvariable}$};
+                \drawvariabledot{-9}{11}
+
+                % Face normal
+                \draw[thick] (Or) -- ($(Or) + -0.6*(-9.5,-4.5)$) node[midway,below] {\corelabelsize $\canparamwith$};
+                \draw[->,dashed] (Or) -- ($(Or) + -1.2*(-9.5,-4.5)$);
+                \draw[dashed] (Or) -- ($(Or) + -1.45*(-9.5,-4.5)$);
+                \draw[dashed] (B) -- ($(B)!1.57!(C)$);
+                \draw[thick] (B) -- (C);
+
+%    \coordinate (int) at ($(Or) + -1.45*(-9.5,-4.5)$);
+                % angle
+                \draw[thick] ($(Or) + -1.22*(-9.5,-4.5)$) arc[start angle=-154.7, end angle=-64.4, radius=2.5cm];
+                \draw[fill] ($(Or) + -1.22*(-9.5,-4.5) + (1.75,0)$) circle (0.08cm);
+
+                \coordinate (M1) at ($(Or) + 0.2*(C) + -0.2*(B)$);
+                \coordinate (M2) at ($(Or) + -1.45*(-9.5,-4.5) + 0.2*(C) + -0.2*(B)$);
+
+
+                %\draw[<->] (M1) --(M2) node [midway, left] {\corelabelsize $\frac{1}{\|\canparam\|} \cdot \max_{\meanparam\in\genmeanset}\contraction{\meanparam,\canparam}$};
+
+            \end{tikzpicture}
+        \end{minipage}
+
+
 
         \begin{theorem}[Generic maximum entropy representation \cite{goessmann_tensor_2026-1}]
             For any mean parameter on the relative interior of a face $\facesymbol$, we find a parameter $\canparamwith$ such that the corresponding maximum entropy is
@@ -396,7 +587,7 @@ arXiv : 2601.15442}
                 \frac{
                     \contractionof{\bencsstatwith,\kcoreofat{\facesymbol}{\headvariables},\actcoreofat{\canparam}{\headvariables}
                     }{\shortcatvariables}}{
-                    \contraction{\bencsstatwith,\kcoreofat{\facesymbol}{\headvariables},\actcoreofat{\canparam}}
+                    \contraction{\bencsstatwith,\kcoreofat{\facesymbol}{\headvariables},\actcoreofat{\canparam}{\headvariables}}
                 }
             \end{align*}
         \end{theorem}
@@ -446,26 +637,26 @@ arXiv : 2601.15442}
     \end{frame}
 
 
-    \section{Summary and Outlook}
+    % \section{Summary and Outlook}
 
 
-    \begin{frame}{Summary and Outlook}
-
-        {\bf Tensor networks}
-        \begin{itemize}
-            \item Tensors appear naturally as factored system representations
-            \item \emph{Sparsity principle:} Decomposition into tensor networks
-            \item \emph{Inference principle:} Tensor network contractions
-        \end{itemize}
-
-
-            {\bf Implementations} in \python{} packages:
-        \begin{itemize}
-            \item {\bf \tnreason{}}\footnote{https://pypi.org/project/tnreason/}: Tensor network based reasoning
-            \item {\bf \qcreason{}}\footnote{https://pypi.org/project/qcreason/}: Quantum inference for contractions
-        \end{itemize}
-
-    \end{frame}
+%    \begin{frame}{Summary and Outlook}
+%
+%        {\bf Tensor networks}
+%        \begin{itemize}
+%            \item Tensors appear naturally as factored system representations
+%            \item \emph{Sparsity principle:} Decomposition into tensor networks
+%            \item \emph{Inference principle:} Tensor network contractions
+%        \end{itemize}
+%
+%
+%            {\bf Implementations} in \python{} packages:
+%        \begin{itemize}
+%            \item {\bf \tnreason{}}\footnote{https://pypi.org/project/tnreason/}: Tensor network based reasoning
+%            \item {\bf \qcreason{}}\footnote{https://pypi.org/project/qcreason/}: Quantum inference for contractions
+%        \end{itemize}
+%
+%    \end{frame}
 
     \begin{frame}{References}
 

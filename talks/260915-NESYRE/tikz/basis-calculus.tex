@@ -1,0 +1,22 @@
+\stantikzpic{
+
+    \drawtdwire{1}{3}{$\headvariableof{0}$}
+    \drawtextnode{3.5}{2}{\colorlabelsize $\cdots$}
+    \drawtdwire{5}{3}{$\headvariableof{\headdim-1}$}
+
+    \draw (0,-1) rectangle (6,1);
+    \drawtextnode{3}{0}{\corelabelsize $\bencodingof{\formula}$}
+    \draw[->-] (1,-3) -- (1,-1) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+    \draw[->-] (5,-3) -- (5,-1) node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+    \drawsmalltensor{1}{-4}{\corelabelsize $\onehotmapof{\catindexof{0}}$}
+    \drawtextnode{3.5}{-2}{\colorlabelsize $\cdots$}
+    \drawsmalltensor{5}{-4}{\corelabelsize $\onehotmapof{\catindexof{\catorder-1}}$}
+
+    \drawtextnode{8}{0}{${=}$}
+
+    \drawtdwire{11}{3}{$\headvariableof{0}$}
+    \drawtextnode{13.5}{2}{\colorlabelsize $\cdots$}
+    \drawtdwire{15}{3}{$\headvariableof{\headdim-1}$}
+    \drawtensorblock{13}{0}{3}{$\onehotmapof{\formula(\shortcatindices)}$}
+
+}

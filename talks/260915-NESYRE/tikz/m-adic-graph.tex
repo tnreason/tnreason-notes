@@ -1,0 +1,73 @@
+\stantikzpic{
+    \begin{scope}[shift={(-6,10)}]
+
+
+        \node (of) at (0,1.35) {};
+
+        \draw[thick, dashed, rounded corners=10pt]  ($(-5,3)+(of)$) -- ($(-5,3)-(of)$)  -- ($(28.5,3)-(of)$) -- ($(28.5,3)+(of)$) -- cycle;
+        \node[anchor=center] (A) at (-3,3) {\corelabelsize $\node^{\outsymbol}$};
+
+        \draw[thick, dashed, rounded corners=10pt]  ($(-5,-3)+(of)$) -- ($(-5,-3)-(of)$)  -- ($(28.5,-3)-(of)$) -- ($(28.5,-3)+(of)$) -- cycle;
+        \node[anchor=center] (A) at (-3,-3) {\corelabelsize $\node^{\insymbol}$};
+
+        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (Y0) at (1.5,3) {};
+        \node[] (text) at (1.5,3) {\corelabelsize $\headvariableof{0}$};
+        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X00) at (0,-3) {};
+        \node[] (text) at (0,-3) {\corelabelsize $\catvariableof{0}$};
+        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X10) at (3,-3) {};
+        \node[] (text) at (3,-3) {\corelabelsize $\tildecatvariableof{0}$};
+        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (Z0) at (5,0) {};
+        \node[] (text) at (5,0) {\corelabelsize $\thirdcatvariableof{0}$};
+
+        \coordinate (m0) at (1.5,0);
+        \node[anchor=east]  at (1.5,0) {$\edgeof{0}$};
+        \draw[->-] (X00) -- (m0);
+        \draw[->-] (X10) -- (m0);
+        \draw[->-] (m0) -- (Y0);
+        \draw[->-] (m0) -- (Z0);
+
+        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (Y1) at (8.5,3) {};
+        \node[] (text) at (8.5,3) {\corelabelsize $\headvariableof{1}$};
+        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X01) at (7,-3) {};
+        \node[] (text) at (7,-3) {\corelabelsize $\catvariableof{1}$};
+        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X11) at (10,-3) {};
+        \node[] (text) at (10,-3) {\corelabelsize $\tildecatvariableof{1}$};
+        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (Z1) at (12,0) {};
+        \node[] (text) at (12,0) {\corelabelsize $\thirdcatvariableof{1}$};
+
+        \coordinate (m1) at (8.5,0);
+        \node[anchor=east]  at (8.5,0.75) {$\edgeof{1}$};
+        \draw[->-] (Z0) -- (m1);
+        \draw[->-] (X01) -- (m1);
+        \draw[->-] (X11) -- (m1);
+        \draw[->-] (m1) -- (Y1);
+        \draw[->-] (m1) -- (Z1);
+
+        \draw[->-] (Z1) -- (15,0) node[anchor=west]{$\cdots$};
+
+        \begin{scope}[shift={(15,0)}]
+            \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (Z0) at (5,0) {};
+            \node[] (text) at (5,0) {\corelabelsize $\thirdcatvariableof{\catorder\shortminus2}$};
+
+            \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (Y1) at (8.5,3) {};
+            \node[] (text) at (8.5,3) {\corelabelsize $\headvariableof{\catorder\shortminus 1}$};
+            \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X01) at (7,-3) {};
+            \node[] (text) at (7,-3) {\corelabelsize $\catvariableof{\catorder\shortminus1}$};
+            \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X11) at (10,-3) {};
+            \node[] (text) at (10,-3) {\corelabelsize $\tildecatvariableof{\catorder\shortminus1}$};
+            \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (Z1) at (12,3) {};
+            \node[] (text) at (12,3) {\corelabelsize $\headvariableof{\catorder}$};
+
+            \coordinate (me) at (8.5,0);
+            \node[anchor=east]  at (8.5,1) {$\edgeof{\catorder\shortminus 1}$};
+            \draw[->-] (2,0)  -- (Z0);
+            \draw[->-] (Z0) -- (me);
+            \draw[->-] (X01) -- (me);
+            \draw[->-] (X11) -- (me);
+            \draw[->-] (me) -- (Y1);
+            \draw[->-] (me) -- (Z1);
+        \end{scope}
+
+    \end{scope}
+
+}

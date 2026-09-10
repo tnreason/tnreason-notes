@@ -1,0 +1,30 @@
+\stantikzpic{
+
+%\begin{scope}[shift={(0,5)}]
+%    \drawtensorblock{0}{0}{3}{$\probat{\catvariableof{L},\catvariableof{G},\catvariableof{D},\catvariableof{L},\catvariableof{S}}$}
+%
+%\end{scope}
+
+    \drawtensorblock{-5}{0}{1.5}{$\hypercoreof{\edgeof{2}}$}
+    \drawtensorblock{0}{0}{2.5}{$\hypercoreof{\edgeof{0}}$}
+    \drawtensorblock{5}{0}{1.5}{$\hypercoreof{\edgeof{1}}$}
+
+    \drawvwire{-6}{-1}{$\catvariableof{L}$}
+    %\drawvwire{-6}{-1}{$\catvariableof{G}$}
+
+    \drawvariabledot{-2.75}{-2}
+    \draw (-2.75,-2) to[bend right=-20] (-4,-1);
+    \draw (-2.75,-2) to[bend right=20] (-1.5,-1);
+    \drawvwire{-2.75}{-2}{$\catvariableof{G}$}
+
+    \drawvwire{0}{-1}{$\catvariableof{D}$}
+    %\drawvwire{1.5}{-1}{$\catvariableof{I}$}
+
+    \drawvariabledot{2.75}{-2}
+    \draw (2.75,-2) to[bend right=20] (4,-1);
+    \draw (2.75,-2) to[bend right=-20] (1.5,-1);
+    \drawvwire{2.75}{-2}{$\catvariableof{I}$}
+
+    %\drawvwire{4}{-1}{$\catvariableof{I}$}
+    \drawvwire{6}{-1}{$\catvariableof{S}$}
+}
