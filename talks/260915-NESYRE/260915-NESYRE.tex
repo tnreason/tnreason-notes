@@ -65,7 +65,25 @@ arXiv : 2601.15442, 2609.07184}
 
     \section{Tensor networks for neuro-symbolic AI}
 
-    \begin{frame}{Motivation: Toy accounting rule system}
+    \begin{frame}{Motivation: Automation of accounting at DATEV}
+        Accounts need to be selected to invoices\footnote{\tiny https://www.datev.de/web/de/steuerberatung/loesungen/rechnungswesen/buchfuehrung-erstellen/automatisierungsservices-rechnungswesen/}:
+        \begin{center}
+
+            \stantikzpic{
+                \drawtextnode{0}{0}{\includegraphics[height=0.5\textwidth]{images/asr}}
+
+                \draw[->, line width=0.6mm] (-11,4) -- (-6.5,2.5);
+                \drawtextnode{-13}{3.5}{Features \\ extracted by OCR}
+                \draw[->, line width=0.6mm] (11,3.75) -- (7,2);
+                \drawtextnode{13}{3.5}{Invoice \\ to be booked}
+                \draw[->, line width=0.6mm] (11,-5) -- (7,-6);
+                \drawtextnode{13.25}{-3.5}{Generated \\ accounting proposal}
+            }
+
+        \end{center}
+    \end{frame}
+
+    \begin{frame}{Toy accounting rule system}
 
         \begin{block}{Toy accounting rule system}
             Assume you want to book one of two accounts $\mathrm{A1}$ and $\mathrm{A2}$ depending on a feature $\mathrm{F}$ of an invoice, based on two rules:
@@ -81,7 +99,7 @@ arXiv : 2601.15442, 2609.07184}
         \end{itemize}
 
         \begin{center}
-            \bf We use tensor networks to represent hard and soft accounting rules in a unified framework.
+            \bf We propose tensor (networks) to represent hard and soft accounting rules in a unified framework.
         \end{center}
 
     \end{frame}
@@ -99,7 +117,7 @@ arXiv : 2601.15442, 2609.07184}
             \facstates = \{0,\ldots,\catdimof{0}\} \times \ldots \times \{0,\ldots,\catdimof{\atomorder\shortminus1}\} \, .
         \end{align*}
 
-            {\bf Knowledge about the system} (possibility or uncertainty of a state) is a \emph{tensor}
+            {\bf Knowledge about the system} (e.g. possibility or uncertainty of a state) is a \emph{tensor}
         \begin{align*}
             \hypercorewith \defcols \facstates \rightarrow \rr \, .
         \end{align*}
@@ -112,19 +130,11 @@ arXiv : 2601.15442, 2609.07184}
                 \drawtextnode{3}{-4}{\colorlabelsize $\cdots$}
                 \drawvwire{4}{-3}{$\catvariableof{\catorder\shortminus1}$}
             }
-%            \begin{tikzpicture}[scale=0.35,thick] % , baseline = -3.5pt
-%                \draw (-1,-1) rectangle (5,-3);
-%                \node[anchor=center] (text) at (2,-2) {\corelabelsize $\hypercore$};
-%                \draw (0,-3)--(0,-5) node[midway,left] {\colorlabelsize $\catvariableof{0}$};
-%                \draw (1.5,-3)--(1.5,-5) node[midway,left] {\colorlabelsize $\catvariableof{1}$};
-%                \node[anchor=center] (text) at (3,-4) {$\cdots$};
-%                \draw (4,-3)--(4,-5) node[midway,right] {\colorlabelsize $\catvariableof{\atomorder\shortminus1}$};
-%            \end{tikzpicture}
         \end{center}
     \end{frame}
 
 
-    \begin{frame}{Productive accounting rule systems}
+    \begin{frame}{Outlook: Productive accounting ontology}
 
         The variables and main relations of the DATEV accounting ontology\footnote{\tiny https://github.com/EnexaProject/enexa-use-case-1-business-software-solutions}:
         \begin{center}
@@ -230,10 +240,6 @@ arXiv : 2601.15442, 2609.07184}
 
     \begin{frame}{Neural function decompositions}
 
-    %\begin{block}{Neural sparsity}
-    %    Functions of interest decompose into simple functions (neurons).
-    %\end{block}
-
         {\bf Example:} Summation of integers in fixed-point representation
 
         Any number $n\in[\catdim^{\catorder}]$ has a unique $\catdim$-adic representation
@@ -255,15 +261,15 @@ arXiv : 2601.15442, 2609.07184}
 
     \begin{frame}{Basis encodings}
 
-        {\bf Aim:} Orient tensor network decompositions on circuit graphs.
+        {\bf Aim:} Find tensor network decompositions based on circuit graphs.
 
         We define the \emph{basis encoding} of a function
         \begin{align*}
-            \exformula : \bigtimes_{\catenumeratorin} [\catdimof{\catenumerator}]
+            \exformula \defcols \bigtimes_{\catenumeratorin} [\catdimof{\catenumerator}]
             \rightarrow \bigtimes_{\selindexin} [\catdimof{\selindex}]
         \end{align*}
-        \vspace{-0.5cm} \\
-        as the tensor
+        \vspace{-0.4cm} \\
+        as the sum over one-hot encodings
         \begin{align*}
             \bencodingofat{\exformula}{\headvariables,\shortcatvariables}
             = \sum_{\shortcatindicesin} \onehotmapofat{\exformula(\shortcatindices)}{\headvariables}
@@ -288,7 +294,7 @@ arXiv : 2601.15442, 2609.07184}
             \input{tikz/m-adic-decomposition}
         \end{center}
 
-            {\bf Basis Calculus:} Contraction with one-hot encoded input integers yields the one-hot encoded sum.
+            {\bf Basis Calculus:} Contraction with one-hot encoded input integers yields the one-hot encoded sum:
         \begin{center}
             \input{tikz/m-adic-calculus}
         \end{center}
@@ -298,10 +304,18 @@ arXiv : 2601.15442, 2609.07184}
 
     \begin{frame}{Propositional formulas by tensor networks}
 
-        Logical syntax translates in tensor network decompositions:
+        Logical syntax reflects the decomposition of formulas into connectives:
         \begin{itemize}
-            \item Basis encodings of the logical connectives $\land$, $\lor$, $\lnot$
+            \item Propositional formulas can be represented in basis encodings
+            \item The basis encodings decompose into networks of connectives
         \end{itemize}
+
+%        translates in tensor network decompositions:
+%        \begin{itemize}
+%            \item Basis encodings of the logical connectives $\land$, $\lor$, $\lnot$
+%        \end{itemize}
+
+        \vspace{1cm}
 
         \begin{minipage}{0.45\textwidth}
             {\bf Example:}
@@ -313,9 +327,9 @@ arXiv : 2601.15442, 2609.07184}
             \end{center}
         \end{minipage}
 
-        \begin{block}{Outlook: First-order logics}
-            Objects enumerated in additional tensor legs.
-        \end{block}
+%        \begin{block}{Outlook: First-order logics}
+%
+%        \end{block}
 
     \end{frame}
 
@@ -367,7 +381,7 @@ arXiv : 2601.15442, 2609.07184}
     \end{frame}
 
 
-    \begin{frame}{Inference by Contractions}
+    \begin{frame}{Inference by contractions}
         \begin{block}{Main inference principle}
             Model inference amounts to tensor network contractions.
         \end{block}
@@ -412,8 +426,8 @@ arXiv : 2601.15442, 2609.07184}
 
         Lets assume the following satisfaction rates of the toy accounting system on an invoice dataset:
         \begin{align*}
-            &\meanparamat{\selvariable=0} = 1 \\
-            &\meanparamat{\selvariable=1} = 0.75
+            &\text{Always exactly one account has been booked:}     &\meanparamat{\selvariable=0} = 1 \\
+            &\text{Feature $F$ implies in most cases account $A1$:} &\meanparamat{\selvariable=1} = 0.9
         \end{align*}
 
         \begin{center}
@@ -426,7 +440,7 @@ arXiv : 2601.15442, 2609.07184}
     \end{frame}
 
 
-    \begin{frame}{Entropy: Quantifying the amount of structure}
+    \begin{frame}{Entropy: Quantifying the structure of a distribution}
 
         The entropy of a distribution $\probwith$ is a measure of its structure:
         \begin{align*}
