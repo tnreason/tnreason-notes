@@ -110,8 +110,7 @@ arXiv : 2601.15442, 2609.07184}
     \begin{frame}{Tensors: Natural description of factored representations}
 
         {\bf Factored representations}
-        are collection of variables $\shortcatvariables=(\catvariableof{0},\ldots,\catvariableof{\catorder\shortminus1})$, each with a finite set of states $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$
-        \cite{russell_artificial_2021}.
+        are collection of variables $\shortcatvariables=(\catvariableof{0},\ldots,\catvariableof{\catorder\shortminus1})$, each with a finite set of states $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$.%\cite{russell_artificial_2021}
         The set of states is then the cartesian product
         \begin{align*}
             \facstates = \{0,\ldots,\catdimof{0}\} \times \ldots \times \{0,\ldots,\catdimof{\atomorder\shortminus1}\} \, .
@@ -156,10 +155,10 @@ arXiv : 2601.15442, 2609.07184}
     \begin{frame}{Tensor Network Decompositions}
 
         To overcome the curse of dimensionality, tensors $\extnetat{\nodevariables}$ are decomposed into core tensors $\hypercoreofat{\edge}{\catvariableof{\edge}}$.
-        networks on hypergraphs $\graph=(\nodes,\edges)$
+        Tensor networks on hypergraphs $\graph=(\nodes,\edges)$ are factorizations
         \begin{align*}
             \extnetat{\indexedcatvariableof{\nodes}}
-            = \prod_{\edgein}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+            = \prod_{\edgein}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
         \end{align*}
 
             {\bf Example:} TT format
@@ -184,11 +183,11 @@ arXiv : 2601.15442, 2609.07184}
             = \prod_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
         \end{align*}
 
-        This is the tensor decomposition
-        \begin{align*}
-            \probat{\catvariableof{\nodes}}
-            = \contractionof{\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edgein\}}{\nodevariables} \, .
-        \end{align*}
+%        This is the tensor decomposition
+%        \begin{align*}
+%            \probat{\catvariableof{\nodes}}
+%            = \contractionof{\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edgein\}}{\nodevariables} \, .
+%        \end{align*}
 
 
         \begin{block}{Interpretation of hypergraphs}
@@ -238,10 +237,9 @@ arXiv : 2601.15442, 2609.07184}
     \end{frame}
 
 
-    \begin{frame}{Neural function decompositions}
+    \begin{frame}{Example: Integer summation in fix-point representation}
 
-        {\bf Example:} Summation of integers in fixed-point representation
-
+%        {\bf Example:}
         Any number $n\in[\catdim^{\catorder}]$ has a unique $\catdim$-adic representation
         \begin{align*}
             \sum_{\catenumeratorin} \catindexof{\catenumerator} \cdot \catdim^{\catenumerator}
@@ -287,9 +285,9 @@ arXiv : 2601.15442, 2609.07184}
     \end{frame}
 
 
-    \begin{frame}{Example: Integer summation in fix-point representation}
+    \begin{frame}{Decomposition of basis encodings}
 
-        Orient on the circuit of half-adders we find a tensor network decomposition
+        Oriented on the circuit of half-adders we find a tensor network decomposition
         \begin{center}
             \input{tikz/m-adic-decomposition}
         \end{center}
@@ -302,20 +300,52 @@ arXiv : 2601.15442, 2609.07184}
     \end{frame}
 
 
+    \begin{frame}{Efficient basis calculus}
+
+        As an example, let us consider the sum of $\catindexof{[3]}=(2,1,1)$ and $\tildecatindexof{[3]}=(0,2,1)$ in basis $\catdim=3$
+
+        \begin{center}
+            \input{tikz/m-adic-contraction}
+        \end{center}
+
+    \end{frame}
+
     \begin{frame}{Propositional formulas by tensor networks}
 
-        Logical syntax reflects the decomposition of formulas into connectives:
-        \begin{itemize}
-            \item Propositional formulas can be represented in basis encodings
-            \item The basis encodings decompose into networks of connectives
-        \end{itemize}
+        Propositional formulas are tensors $\formulaat{\shortcatvariables}$ with coordinates
+        \begin{align*}
+            \formulaat{\indexedshortcatvariables}
+            = \begin{cases}
+                  1 & \ifspace \shortcatindices \text{ is a model of } $\formula$ \\
+                  0 & \elsetext \, .
+            \end{cases}
+        \end{align*}
 
-%        translates in tensor network decompositions:
+        Formulas are contracted basis encodings:
+        \vspace{-1cm}
+        \stantikzpic{
+            \drawtensorblock{0}{0}{2}{$\formula$}
+
+            \draw[] (-1.5,-2.5) -- (-1.5,-1) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+            \drawtextnode{0}{-2}{\colorlabelsize $\cdots$}
+            \draw[] (1.5,-2.5) -- (1.5,-1) node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+            \drawtextnode{5}{0}{$=$}
+
+            \drawsmalltensor{10}{3.5}{$\tbasis$}
+            \draw[->-] (10,1) -- (10,2.5) node[midway,right] {\colorlabelsize $\headvariableof{\formula}$};
+            \drawtensorblock{10}{0}{2}{$\bencodingof{\formula}$}
+
+            \draw[->-] (8.5,-2.5) -- (8.5,-1) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
+            \drawtextnode{10}{-2}{\colorlabelsize $\cdots$}
+            \draw[->-] (11.5,-2.5) -- (11.5,-1) node[midway,right] {\colorlabelsize $\catvariableof{\catorder-1}$};
+        }
+%
+%        Logical syntax reflects the decomposition of formulas into connectives:
 %        \begin{itemize}
-%            \item Basis encodings of the logical connectives $\land$, $\lor$, $\lnot$
+%            \item Propositional formulas can be represented in basis encodings
+%            \item
 %        \end{itemize}
-
-        \vspace{1cm}
+The basis encodings decompose into networks of connectives.
 
         \begin{minipage}{0.45\textwidth}
             {\bf Example:}
@@ -326,10 +356,6 @@ arXiv : 2601.15442, 2609.07184}
                 \input{tikz/formula-decomposition}
             \end{center}
         \end{minipage}
-
-%        \begin{block}{Outlook: First-order logics}
-%
-%        \end{block}
 
     \end{frame}
 
@@ -360,7 +386,7 @@ arXiv : 2601.15442, 2609.07184}
 %    \end{frame}
 
     \begin{frame}{\ComputationActivationNetworks{} (\CompActNets{})}
-        A novel tensor network architecture captures logical and probabilistic models (see \cite{goessmann_tensor_2026}):
+        A novel tensor network architecture captures logical and probabilistic models\footnote{\tiny Goessmann, Schütte, Fröhlich and Eigel: A tensor network formalism for neuro-symbolic AI, arXiv:2601.15442}:
         \begin{center}
             \input{tikz/can-explanation}
         \end{center}
@@ -405,7 +431,7 @@ arXiv : 2601.15442, 2609.07184}
 
 
     \begin{frame}{Tensor networks for neuro-symbolic AI}
-        Tensor networks provide a unifying language to capture the different paradigms of AI \cite{goessmann_tensor_2026}:
+        Tensor networks provide a unifying language to capture the different paradigms of AI\footnote{\tiny Goessmann, Schütte, Fröhlich and Eigel: A tensor network formalism for neuro-symbolic AI, arXiv:2601.15442}:
         \begin{center}
             \input{tikz/paradigms-sketch}
         \end{center}
@@ -456,8 +482,8 @@ arXiv : 2601.15442, 2609.07184}
 
     \begin{frame}{Maximum entropy principle}
 
-        {\bf Shannon Entropy:}
-        Natural measure of structure (negative information content) of a distribution.
+%        {\bf Shannon Entropy:}
+%        Natural measure of structure (negative information content) of a distribution.
 
         \begin{block}{Maximum entropy principle}
             Among those distributions reproducing certain characteristics of observed data, choose the one with the least structure (=maximum entropy).
@@ -495,7 +521,7 @@ arXiv : 2601.15442, 2609.07184}
             \input{tikz/exp-family-rep}
         \end{center}
             {\bf Classical result:}
-        Any member of the exponential family is a solution of the maximum entropy problem to its mean parameter $\meanparamwith$ \cite{koller_probabilistic_2009}.
+        Any member of the exponential family is a solution of the maximum entropy problem to its mean parameter $\meanparamwith$.
 
     \end{frame}
 
@@ -504,7 +530,7 @@ arXiv : 2601.15442, 2609.07184}
             Realizable mean parameters form a convex polytope, the \emph{mean polytope} of the statistic $\sstat$:
             \begin{align*}
                 \meansetof{\sstat}
-                = \convhullof{\sencsstatat{\indexedshortcatvariables,\selvariable}\wcols\shortcatindices\in\facstates}
+                = \convhullof{\textcolor{\concolor}{\sencsstatat{\indexedshortcatvariables,\selvariable}}\wcols\shortcatindices\in\facstates}
             \end{align*}
         \end{minipage}
         \begin{minipage}{0.25\textwidth}
@@ -517,92 +543,36 @@ arXiv : 2601.15442, 2609.07184}
         \begin{center}
             \bf What are the solutions to the mean parameters on the boundary of the mean polytope?
         \end{center}
-
-
+        
     \end{frame}
 
     \begin{frame}{Mean parameters on the faces}
         \begin{minipage}{0.45\textwidth}
-            Faces of the mean polytope are sets
+            Faces of the mean polytope are
             \begin{align*}
                 \facesymbol
                 = \argmax_{\imelement\in\meansetof{\sstat}} \contraction{\canparamwith,\imelementwith}
             \end{align*}
-            We represent faces by activation cores \cite{goessmann_tensor_2026-1}
+            and represented by cores%\footnote{\tiny Goessmann and Eigel: Tensor network representations of discrete maximum entropy distributions via mean polytopes, arXiv:2609.07184}
             \begin{align*}
                 \kcoreofat{\facesymbol}{\headvariables}
-                = \sum_{\imelement\in\facesymbol\cap\headstates} \onehotmapofat{\imelement}{\headvariables}
+                = \sum_{\textcolor{\concolor}{\imelement\in\facesymbol\cap\headstates}} \onehotmapofat{\imelement}{\headvariables} \, .
             \end{align*}
         \end{minipage}
         \begin{minipage}{0.45\textwidth}
-            \begin{tikzpicture}[scale=0.2]
-                % Define points
-
-                \node[below] at (1,7) {${\genmeanset}$};
-
-                \coordinate (A) at (0,0);
-
-                %   \node[below] at (A) {$\meanparamof{1}$};
-                %   \draw[fill] (A) circle (\dotsize);
-
-                \coordinate (B) at (12,2.5);
-                \path (A) -- (B) coordinate[pos=0.7] (P1);
-
-                %   \node[below] at (P1) {$\meanparamof{2}$};
-                %   \draw[fill] (P1) circle (\dotsize);
-
-                \coordinate (P2) at (2,10);
-%    \node[below] at (P2) {$\meanparamof{3}$};
-%    \draw[fill] (P2) circle (\dotsize);
-
-                \coordinate (C) at (7.5,12);
-                \path (B) -- (C) coordinate[pos=0.5] (P4);
-
-                \node[right] at (P4) {$\facesymbol$};
-                \coordinate (D) at (-3,12);
-                \coordinate (E) at (-10,5);
-
-                %\node[below] at ($0.5*(A)+0.5*(E)-(0,1.3)$) {$\genmeanset/\interiorof{\genmeanset}$};
-
-                \draw[thick, dashed] (A) -- (B) -- (C) -- (D) -- (E) -- cycle;
-
-                \node[left] at (-12,11) {$\rr^\seldim$};
-
-                \coordinate (Or) at (-9,11);
-                \node[below] at (Or) {\corelabelsize $\zerosat{\selvariable}$};
-                \drawvariabledot{-9}{11}
-
-                % Face normal
-                \draw[thick] (Or) -- ($(Or) + -0.6*(-9.5,-4.5)$) node[midway,below] {\corelabelsize $\canparamwith$};
-                \draw[->,dashed] (Or) -- ($(Or) + -1.2*(-9.5,-4.5)$);
-                \draw[dashed] (Or) -- ($(Or) + -1.45*(-9.5,-4.5)$);
-                \draw[dashed] (B) -- ($(B)!1.57!(C)$);
-                \draw[thick] (B) -- (C);
-
-%    \coordinate (int) at ($(Or) + -1.45*(-9.5,-4.5)$);
-                % angle
-                \draw[thick] ($(Or) + -1.22*(-9.5,-4.5)$) arc[start angle=-154.7, end angle=-64.4, radius=2.5cm];
-                \draw[fill] ($(Or) + -1.22*(-9.5,-4.5) + (1.75,0)$) circle (0.08cm);
-
-                \coordinate (M1) at ($(Or) + 0.2*(C) + -0.2*(B)$);
-                \coordinate (M2) at ($(Or) + -1.45*(-9.5,-4.5) + 0.2*(C) + -0.2*(B)$);
-
-
-                %\draw[<->] (M1) --(M2) node [midway, left] {\corelabelsize $\frac{1}{\|\canparam\|} \cdot \max_{\meanparam\in\genmeanset}\contraction{\meanparam,\canparam}$};
-
-            \end{tikzpicture}
+            \input{tikz/face-sketch}
         \end{minipage}
 
-
-
-        \begin{theorem}[Generic maximum entropy representation \cite{goessmann_tensor_2026-1}]
+        \begin{theorem}[Generic maximum entropy representation\footnote{\tiny Goessmann and Eigel: Tensor network repr. of discrete maximum entropy distr. via mean polytopes, arXiv:2609.07184}]
             For any mean parameter on the relative interior of a face $\facesymbol$, we find a parameter $\canparamwith$ such that the corresponding maximum entropy is
             \begin{align*}
-                \frac{
+                %\frac{
+                \frac{1}{\partitionfunction} \cdot
                     \contractionof{\bencsstatwith,\kcoreofat{\facesymbol}{\headvariables},\actcoreofat{\canparam}{\headvariables}
-                    }{\shortcatvariables}}{
-                    \contraction{\bencsstatwith,\kcoreofat{\facesymbol}{\headvariables},\actcoreofat{\canparam}{\headvariables}}
-                }
+                    }{\shortcatvariables} \, .
+                %}{
+                %    \contraction{\bencsstatwith,\kcoreofat{\facesymbol}{\headvariables},\actcoreofat{\canparam}{\headvariables}}
+                %}
             \end{align*}
         \end{theorem}
 
@@ -650,10 +620,23 @@ arXiv : 2601.15442, 2609.07184}
 
     \end{frame}
 
+    \begin{frame}{Outlook: Application of the maximum entropy approach}
+
+        Maximum likelihood estimation:
+        \begin{itemize}
+            \item Numerical instabilities arise when the mean is not on the parametrised face
+            \item Choosing a sufficient tensor format guarantees a solution
+        \end{itemize}
+
+        Probabilistic success guarantees:
+        \begin{itemize}
+            \item Hard constraints tend to be overestimated
+            \item Derive uniform concentration bounds on correct estimation\footnote{\tiny Goessmann: Tensor networks for Efficient and Explainable AI, Technical report on the ENEXA project, \url{https://github.com/EnexaProject/enexa-tensor-reasoning-documentation/}}
+        \end{itemize}
+
+    \end{frame}
 
     % \section{Summary and Outlook}
-
-
 %    \begin{frame}{Summary and Outlook}
 %
 %        {\bf Tensor networks}
@@ -672,19 +655,24 @@ arXiv : 2601.15442, 2609.07184}
 %
 %    \end{frame}
 
-    \begin{frame}{References}
+    \begin{frame}{Thank you very much for your attention!}
 
-        \begin{center}
-            \bf Thank you very much for your attention!
-        \end{center}
+
+        Further material available at {\url{github.com/tnreason}}:
+        \begin{itemize}
+            \item Python library $\mathtt{tnreason}$: Reasoning with tensor networks, also available on \url{https://pypi.org/project/tnreason/}
+            \item Course on "Foundations of Neuro-Symbolic AI" (Summer term 2026, THWS): Introduction to symbolic and neural reasoning based on tensor networks
+        \end{itemize}
 
         \medskip
 
-        \small
-
-        \bibliographystyle{alpha}
-        \bibliography{../../references.bib}
-
+        This research has been part of the projects:
+        \begin{itemize}
+            \item \emph{ENEXA} (2023-2025): Efficient and Explainable Learning on Knowledge Graphs
+            \item \emph{QROM} (2025-2028): Quantum Read-Once-Memory
+        \end{itemize}
+        
+        
     \end{frame}
 
 
