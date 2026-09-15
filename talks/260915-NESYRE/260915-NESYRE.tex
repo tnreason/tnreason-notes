@@ -66,7 +66,7 @@ arXiv : 2601.15442, 2609.07184}
     \section{Tensor networks for neuro-symbolic AI}
 
     \begin{frame}{Motivation: Automation of accounting at DATEV}
-        Accounts need to be selected to invoices\footnote{\tiny https://www.datev.de/web/de/steuerberatung/loesungen/rechnungswesen/buchfuehrung-erstellen/automatisierungsservices-rechnungswesen/}:
+        Accounts need to be selected for invoices\footnote{\tiny https://www.datev.de/web/de/steuerberatung/loesungen/rechnungswesen/buchfuehrung-erstellen/automatisierungsservices-rechnungswesen/}:
         \begin{center}
 
             \stantikzpic{
@@ -107,7 +107,7 @@ arXiv : 2601.15442, 2609.07184}
 
 
 
-    \begin{frame}{Tensors: Natural description of factored representations}
+    \begin{frame}{Factored representations lead to tensors}
 
         {\bf Factored representations}
         are collection of variables $\shortcatvariables=(\catvariableof{0},\ldots,\catvariableof{\catorder\shortminus1})$, each with a finite set of states $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$.%\cite{russell_artificial_2021}
@@ -118,8 +118,9 @@ arXiv : 2601.15442, 2609.07184}
 
             {\bf Knowledge about the system} (e.g. possibility or uncertainty of a state) is a \emph{tensor}
         \begin{align*}
-            \hypercorewith \defcols \facstates \rightarrow \rr \, .
+            \hypercorewith \defcols \facstates \rightarrow \rr
         \end{align*}
+        where we denote its coordiantes by $\hypercorewith(\shortcatindices)=\hypercoreat{\indexedshortcatvariables}$.
         We represent tensors by diagrams with legs decorated by the variables:
         \begin{center}
             \stantikzpic{
@@ -152,7 +153,7 @@ arXiv : 2601.15442, 2609.07184}
     \end{frame}
 
 
-    \begin{frame}{Tensor Network Decompositions}
+    \begin{frame}{Tensor network decompositions}
 
         To overcome the curse of dimensionality, tensors $\extnetat{\nodevariables}$ are decomposed into core tensors $\hypercoreofat{\edge}{\catvariableof{\edge}}$.
         Tensor networks on hypergraphs $\graph=(\nodes,\edges)$ are factorizations
@@ -161,7 +162,7 @@ arXiv : 2601.15442, 2609.07184}
             = \prod_{\edgein}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
         \end{align*}
 
-            {\bf Example:} TT format
+            {\bf Example:} Tensor-Train (TT) format introduces hidden variables $\decvariableof{[\catorder-1]}$ to be summed over.
         \begin{center}
             \input{tikz/tt-format}
         \end{center}
@@ -175,7 +176,13 @@ arXiv : 2601.15442, 2609.07184}
     \end{frame}
 
 
-    \begin{frame}{Probabilistic Graphical models are Tensor Networks}
+    \begin{frame}{Probabilistic graphical models are tensor networks}
+
+        Joint distributions of variables are tensors $\probwith$ with non-negative coordinates such that
+        \begin{align*}
+            \sum_{\shortcatindicesin} \probat{\indexedshortcatvariables} = 1 \, .
+        \end{align*}
+
 
         {\bf Graphical models:} Distributions are factorized into tensors $\hypercoreofat{\edge}{\catvariableof{\edge}}$, coordinate retrieval by
         \begin{align*}
@@ -223,11 +230,11 @@ arXiv : 2601.15442, 2609.07184}
             \end{itemize}
         \end{minipage}
         \begin{minipage}{0.45\linewidth}
-            The independencies are captured by:
+            The corresponding hypergraph is:
             \begin{center}
                 \input{tikz/student-markov-hypergraph}
             \end{center}
-            $\probat{\catvariableof{L},\catvariableof{G},\catvariableof{D},\catvariableof{L},\catvariableof{S}}$ is decomposed by
+            $\probat{\catvariableof{L},\catvariableof{G},\catvariableof{D},\catvariableof{I},\catvariableof{S}}$ is decomposed by
             \begin{center}
                 \input{tikz/student-markov-network}
             \end{center}
@@ -237,7 +244,21 @@ arXiv : 2601.15442, 2609.07184}
     \end{frame}
 
 
-    \begin{frame}{Example: Integer summation in fix-point representation}
+    \begin{frame}{Conditional independencies as tensor decompositions}
+
+        When we condition on the grade $\catindexof{G}$, the distribution is parallel to:
+
+        \begin{center}
+            \input{tikz/student-markov-independence}
+        \end{center}
+
+        \only<3>{
+            The variable $\catvariableof{L}$ is then independent of $\catvariableof{D},\catvariableof{I},\catvariableof{S}$.
+        }
+
+    \end{frame}
+
+    \begin{frame}{Example: Integer summation in $\catdim$-adic representation}
 
 %        {\bf Example:}
         Any number $n\in[\catdim^{\catorder}]$ has a unique $\catdim$-adic representation
@@ -276,9 +297,10 @@ arXiv : 2601.15442, 2609.07184}
 
             {\bf Basis calculus:} Contraction with encoded input yields the encoded output.
         \begin{align*}
-            \contractionof{\bencodingofat{\exformula}{\headvariables,\shortcatvariables},\onehotmapofat{\shortcatindices}{\shortcatvariables}}{\headvariables}
+            \sum_{\shortcatindicesin} \bencodingofat{\exformula}{\headvariables,\indexedshortcatvariables}\cdot\onehotmapofat{\shortcatindices}{\indexedshortcatvariables}
             = \onehotmapofat{\exformula(\shortcatindices)}{\headvariables}
         \end{align*}
+    \vspace{-0.5cm}
         \begin{center}
             \input{tikz/basis-calculus}
         \end{center}
@@ -287,7 +309,7 @@ arXiv : 2601.15442, 2609.07184}
 
     \begin{frame}{Decomposition of basis encodings}
 
-        Oriented on the circuit of half-adders we find a tensor network decomposition
+        Oriented on the circuit of half-adders we find a tensor network decomposition:
         \begin{center}
             \input{tikz/m-adic-decomposition}
         \end{center}
@@ -302,7 +324,7 @@ arXiv : 2601.15442, 2609.07184}
 
     \begin{frame}{Efficient basis calculus}
 
-        As an example, let us consider the sum of $\catindexof{[3]}=(2,1,1)$ and $\tildecatindexof{[3]}=(0,2,1)$ in basis $\catdim=3$
+        As an example, let us consider the sum of $\catindexof{[3]}=(2,1,1)$ and $\tildecatindexof{[3]}=(0,2,1)$ in basis $\catdim=3$:
 
         \begin{center}
             \input{tikz/m-adic-contraction}
@@ -310,7 +332,7 @@ arXiv : 2601.15442, 2609.07184}
 
     \end{frame}
 
-    \begin{frame}{Propositional formulas by tensor networks}
+    \begin{frame}{Decomposition of propositional formulas}
 
         Propositional formulas are tensors $\formulaat{\shortcatvariables}$ with coordinates
         \begin{align*}
@@ -345,7 +367,7 @@ arXiv : 2601.15442, 2609.07184}
 %            \item Propositional formulas can be represented in basis encodings
 %            \item
 %        \end{itemize}
-The basis encodings decompose into networks of connectives.
+        The basis encodings decompose into networks of connectives.
 
         \begin{minipage}{0.45\textwidth}
             {\bf Example:}
@@ -543,7 +565,7 @@ The basis encodings decompose into networks of connectives.
         \begin{center}
             \bf What are the solutions to the mean parameters on the boundary of the mean polytope?
         \end{center}
-        
+
     \end{frame}
 
     \begin{frame}{Mean parameters on the faces}
@@ -568,8 +590,8 @@ The basis encodings decompose into networks of connectives.
             \begin{align*}
                 %\frac{
                 \frac{1}{\partitionfunction} \cdot
-                    \contractionof{\bencsstatwith,\kcoreofat{\facesymbol}{\headvariables},\actcoreofat{\canparam}{\headvariables}
-                    }{\shortcatvariables} \, .
+                \contractionof{\bencsstatwith,\kcoreofat{\facesymbol}{\headvariables},\actcoreofat{\canparam}{\headvariables}
+                }{\shortcatvariables} \, .
                 %}{
                 %    \contraction{\bencsstatwith,\kcoreofat{\facesymbol}{\headvariables},\actcoreofat{\canparam}{\headvariables}}
                 %}
@@ -671,8 +693,8 @@ The basis encodings decompose into networks of connectives.
             \item \emph{ENEXA} (2023-2025): Efficient and Explainable Learning on Knowledge Graphs
             \item \emph{QROM} (2025-2028): Quantum Read-Once-Memory
         \end{itemize}
-        
-        
+
+
     \end{frame}
 
 

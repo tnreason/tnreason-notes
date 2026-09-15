@@ -1,0 +1,57 @@
+\stantikzpic{
+
+
+    \drawtensorblock{-5}{0}{1.5}{$\hypercoreof{\edgeof{2}}$}
+    \drawtensorblock{0}{0}{2.5}{$\hypercoreof{\edgeof{0}}$}
+    \drawtensorblock{5}{0}{1.5}{$\hypercoreof{\edgeof{1}}$}
+
+    \drawvwire{-6}{-1}{$\catvariableof{L}$}
+
+    \drawvariabledot{-2.75}{-2}
+    \draw (-2.75,-2) to[bend right=-20] (-4,-1);
+    \draw (-2.75,-2) to[bend right=20] (-1.5,-1);
+    \drawvwire{-2.75}{-2}{$\catvariableof{G}$}
+
+    \drawtensorblock{-2.75}{-5}{0.8}{$\onehotmapof{\catindexof{G}}$}
+
+
+    \drawvwire{0}{-1}{$\catvariableof{D}$}
+
+    \drawvariabledot{2.75}{-2}
+    \draw (2.75,-2) to[bend right=20] (4,-1);
+    \draw (2.75,-2) to[bend right=-20] (1.5,-1);
+    \drawvwire{2.75}{-2}{$\catvariableof{I}$}
+
+    \drawvwire{6}{-1}{$\catvariableof{S}$}
+
+    \only<2->{
+        \begin{scope}[shift={(2,-8)}]
+
+            \drawtextnode{-8}{0}{$=$}
+
+            \drawtensorblock{-5}{0}{1.5}{$\hypercoreof{\edgeof{2}}$}
+            \drawvwire{-4.3}{-1}{}
+            \drawtensorblock{-4.3}{-4}{0.8}{$\onehotmapof{\catindexof{G}}$}
+
+            \drawtensorblock{0}{0}{2.5}{$\hypercoreof{\edgeof{0}}$}
+            \drawvwire{-1.7}{-1}{}
+            \drawtensorblock{-1.7}{-4}{0.8}{$\onehotmapof{\catindexof{G}}$}
+
+            \only<3>{
+                \draw[line width=0.75mm,\concolor] (-3,-6) -- (-3,2);
+            }
+            \drawtensorblock{5}{0}{1.5}{$\hypercoreof{\edgeof{1}}$}
+
+            \drawvwire{-6}{-1}{$\catvariableof{L}$}
+
+            \drawvwire{0}{-1}{$\catvariableof{D}$}
+
+            \drawvariabledot{2.75}{-2}
+            \draw (2.75,-2) to[bend right=20] (4,-1);
+            \draw (2.75,-2) to[bend right=-20] (1.5,-1);
+            \drawvwire{2.75}{-2}{$\catvariableof{I}$}
+
+            \drawvwire{6}{-1}{$\catvariableof{S}$}
+        \end{scope}
+    }
+}
