@@ -1,5 +1,5 @@
 \stantikzpic{
-
+    \drawtextnode{-15}{0}{$\frac{1}{\probat{\indexedcatvariableof{G}}} \cdot \probat{\catvariableof{L},\catvariableof{D},\catvariableof{I},\catvariableof{S}|\indexedcatvariableof{G}}\,\, =$}
 
     \drawtensorblock{-5}{0}{1.5}{$\hypercoreof{\edgeof{2}}$}
     \drawtensorblock{0}{0}{2.5}{$\hypercoreof{\edgeof{0}}$}
@@ -25,7 +25,7 @@
     \drawvwire{6}{-1}{$\catvariableof{S}$}
 
     \only<2->{
-        \begin{scope}[shift={(2,-8)}]
+        \begin{scope}[shift={(0.5,-9)}]
 
             \drawtextnode{-8}{0}{$=$}
 
@@ -53,5 +53,15 @@
 
             \drawvwire{6}{-1}{$\catvariableof{S}$}
         \end{scope}
+    }
+
+    \only<3>{
+        %\drawtextnode{-10}{-10}{
+        \node[align=left] at (-17,-10){
+                {\bf Interpretation:} \\
+            The variable $\catvariableof{L}$ is independent \\
+            of $\catvariableof{D},\catvariableof{I},\catvariableof{S}$
+            conditioned on $\catvariableof{G}$.
+        };
     }
 }

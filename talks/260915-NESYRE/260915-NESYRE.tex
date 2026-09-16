@@ -109,9 +109,8 @@ arXiv : 2601.15442, 2609.07184}
 
     \begin{frame}{Factored representations lead to tensors}
 
-        {\bf Factored representations}
-        are collection of variables $\shortcatvariables=(\catvariableof{0},\ldots,\catvariableof{\catorder\shortminus1})$, each with a finite set of states $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$.%\cite{russell_artificial_2021}
-        The set of states is then the cartesian product
+        {\bf Factored representations} use variables $\shortcatvariables=(\catvariableof{0},\ldots,\catvariableof{\catorder\shortminus1})$, each with a finite set of states $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$.
+    The set of states is then the cartesian product
         \begin{align*}
             \facstates = \{0,\ldots,\catdimof{0}\} \times \ldots \times \{0,\ldots,\catdimof{\atomorder\shortminus1}\} \, .
         \end{align*}
@@ -120,7 +119,7 @@ arXiv : 2601.15442, 2609.07184}
         \begin{align*}
             \hypercorewith \defcols \facstates \rightarrow \rr
         \end{align*}
-        where we denote its coordiantes by $\hypercorewith(\shortcatindices)=\hypercoreat{\indexedshortcatvariables}$.
+        where we denote its coordinates by $\hypercorewith(\shortcatindices)=\hypercoreat{\indexedshortcatvariables}$.
         We represent tensors by diagrams with legs decorated by the variables:
         \begin{center}
             \stantikzpic{
@@ -184,18 +183,11 @@ arXiv : 2601.15442, 2609.07184}
         \end{align*}
 
 
-        {\bf Graphical models:} Distributions are factorized into tensors $\hypercoreofat{\edge}{\catvariableof{\edge}}$, coordinate retrieval by
+            {\bf Graphical models} factorize distributions into tensors $\hypercoreofat{\edge}{\catvariableof{\edge}}$, coordinate are then retrieved by
         \begin{align*}
             \probat{\indexedcatvariableof{\nodes}}
             = \prod_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
         \end{align*}
-
-%        This is the tensor decomposition
-%        \begin{align*}
-%            \probat{\catvariableof{\nodes}}
-%            = \contractionof{\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edgein\}}{\nodevariables} \, .
-%        \end{align*}
-
 
         \begin{block}{Interpretation of hypergraphs}
             Separation in hypergraphs implies conditional independencies in the distribution.
@@ -205,16 +197,7 @@ arXiv : 2601.15442, 2609.07184}
     \end{frame}
 
     \begin{frame}{Example: Recommending a student}
-%        Consider a distribution of the variables:
-%        \begin{itemize}
-%            \item Intelligence of a student: $\catvariableof{I}$
-%            \item SAT score of the student: $\catvariableof{S}$
-%            \item Difficulty of a test: $\catvariableof{D}$
-%            \item Grade of the test: $\catvariableof{G}$
-%            \item Recommendation by the teacher: $\catvariableof{L}$
-%        \end{itemize}
-%%        A student of  and SAT score ($\catvariableof{S}$) is assigned a test of difficulty ($\catvariableof{D}$), for which he gets a grade ($\catvariableof{G}$) depending on which he gets a recommendation letter ($\catvariableof{L}$) by its teacher.
-%%        We make the following modelling assumptions:
+
         Consider a distribution of a students intelligence $\catvariableof{I}$, SAT score $\catvariableof{S}$, test difficulty $\catvariableof{D}$, grade $\catvariableof{G}$ and recommendation $\catvariableof{L}$.
         \begin{minipage}{0.5\linewidth}
             Let us assume the independencies:
@@ -246,15 +229,13 @@ arXiv : 2601.15442, 2609.07184}
 
     \begin{frame}{Conditional independencies as tensor decompositions}
 
-        When we condition on the grade $\catindexof{G}$, the distribution is parallel to:
+        When we condition on the grade $\catindexof{G}$, the distribution is:
 
         \begin{center}
             \input{tikz/student-markov-independence}
         \end{center}
 
-        \only<3>{
-            The variable $\catvariableof{L}$ is then independent of $\catvariableof{D},\catvariableof{I},\catvariableof{S}$.
-        }
+
 
     \end{frame}
 
@@ -300,7 +281,7 @@ arXiv : 2601.15442, 2609.07184}
             \sum_{\shortcatindicesin} \bencodingofat{\exformula}{\headvariables,\indexedshortcatvariables}\cdot\onehotmapofat{\shortcatindices}{\indexedshortcatvariables}
             = \onehotmapofat{\exformula(\shortcatindices)}{\headvariables}
         \end{align*}
-    \vspace{-0.5cm}
+        \vspace{-0.5cm}
         \begin{center}
             \input{tikz/basis-calculus}
         \end{center}
@@ -430,13 +411,19 @@ arXiv : 2601.15442, 2609.07184}
 
 
     \begin{frame}{Inference by contractions}
-        \begin{block}{Main inference principle}
-            Model inference amounts to tensor network contractions.
-        \end{block}
+        Contractions of tensor networks $\extnetasset$ keeping $\secnodes\subset\nodes$ open are tensors $\contractionof{\extnetasset}{\catvariableof{\secnodes}}$ with coordinates
+        \begin{align*}
+            \contractionof{\extnetasset}{\indexedcatvariableof{\secnodes}}
+            =\sum_{\catindexof{\nodes/\secnodes}} \prod_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
+        \end{align*}
+
+        % \begin{block}{Main inference principle}
+        %     Model inference amounts to tensor network contractions.
+        % \end{block}
 
         \begin{itemize}
-            \item Probabilistic inference: Contractions are marginal probabilities.
-            \item Logical inference: Contractions are model counts, which decide entailment.
+            \item \emph{Probabilistic inference:} Contractions are marginal probabilities.
+            \item \emph{Logical inference:} Contractions are model counts, which decide entailment.
         \end{itemize}
 
             {\bf Example:} Distribution of $\catvariableof{A1}$ and $\catvariableof{A2}$ conditioned on $\catvariableof{F}=0$ is parallel to
@@ -531,14 +518,13 @@ arXiv : 2601.15442, 2609.07184}
 
     \begin{frame}{Exponential families are maximum entropy distributions}
 
-        The exponential family of a statistic $\sstat$ is the set of distributions
+        The \emph{exponential family} of a statistic $\sstat$ is the set of distributions
         \begin{align*}
             \probofat{(\sstat,\canparam)}{\shortcatvariables}
             = \frac{1}{\partitionfunctionof{\canparam}} \expof{\contractionof{\canparamwith,\sencsstatwith}{\selvariable}}
         \end{align*}
         where $\canparamwith\in\parspace$.
-
-        We find activation cores $\softactsymbolofat{\canparamat{\indexedselvariable}}{\headvariableof{\selindex}}$ to represent the members as \CompActNets{}:
+        We find elementary activation cores $\softactsymbolofat{\canparamat{\indexedselvariable}}{\headvariableof{\selindex}}$ to represent the members as \CompActNets{}:
         \begin{center}
             \input{tikz/exp-family-rep}
         \end{center}
@@ -548,8 +534,9 @@ arXiv : 2601.15442, 2609.07184}
     \end{frame}
 
     \begin{frame}{Mean polytope}
-        \begin{minipage}{0.65\textwidth}
-            Realizable mean parameters form a convex polytope, the \emph{mean polytope} of the statistic $\sstat$:
+
+        \begin{minipage}{0.55\textwidth}
+            Realizable mean parameters to a statistic $\sstat$ form the \emph{mean polytope}
             \begin{align*}
                 \meansetof{\sstat}
                 = \convhullof{\textcolor{\concolor}{\sencsstatat{\indexedshortcatvariables,\selvariable}}\wcols\shortcatindices\in\facstates}
@@ -559,9 +546,10 @@ arXiv : 2601.15442, 2609.07184}
             \input{tikz/meanset-sketch}
         \end{minipage}
 
-        Exponential families can only realize the relative interior of the mean polytope.
-
-
+        \ \\
+        \medskip
+        Exponential families only realize the relative interior of the mean polytope.
+        \medskip
         \begin{center}
             \bf What are the solutions to the mean parameters on the boundary of the mean polytope?
         \end{center}
@@ -608,7 +596,7 @@ arXiv : 2601.15442, 2609.07184}
             \input{tikz/toy-polytope}
         \end{center}
 
-        Any solution of the maximum entropy problem is a CompActNet{} with elementary activation.
+        Any solution of the maximum entropy problem is a \CompActNet{} with elementary activation:
         \begin{center}
             \input{tikz/toy-accounting-maxent-rep}
         \end{center}
@@ -653,7 +641,7 @@ arXiv : 2601.15442, 2609.07184}
         Probabilistic success guarantees:
         \begin{itemize}
             \item Hard constraints tend to be overestimated
-            \item Derive uniform concentration bounds on correct estimation\footnote{\tiny Goessmann: Tensor networks for Efficient and Explainable AI, Technical report on the ENEXA project, \url{https://github.com/EnexaProject/enexa-tensor-reasoning-documentation/}}
+            \item Derive uniform concentration bounds for $\meanparamwith$ to guarantee correct estimation\footnote{\tiny Goessmann: Tensor networks for Efficient and Explainable AI, Technical report on the ENEXA project, \url{https://github.com/EnexaProject/enexa-tensor-reasoning-documentation/}}
         \end{itemize}
 
     \end{frame}
@@ -697,5 +685,82 @@ arXiv : 2601.15442, 2609.07184}
 
     \end{frame}
 
-
 \end{document}
+
+
+\section{Tensor networks in structured representations}
+
+\begin{frame}{Structured representations}
+
+    When turning from factored representations to structured representations we have:
+    \begin{itemize}
+        \item States of a system contain objects
+        \item Formulas contain variables
+    \end{itemize}
+
+    To describe probability distributions over such worlds we encounter:
+    \begin{itemize}
+        \item \emph{Substitution structure:} States itself are described by tensors, using term variables $\indvariable$
+        \item \emph{Semantic structure:} Variables $\catvariable$ enumerate all possible states
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Example: Knowledge graphs}
+
+    Knowledge graphs can be represented by order-3 tensors, with variables $\indvariableof{s},\indvariableof{p},\indvariableof{o}$ enumerating the appearing entities
+    \begin{align*}
+        &\kgat{\indexedindvariableof{s},\indexedindvariableof{p},\indexedindvariableof{o}} \\
+        & \quad = \begin{cases}
+                      1 & \text{if the triple }(\indindexof{s},\indindexof{p},\indindexof{0}) \text{ exists} \\
+                      0 & \elsetext
+        \end{cases} \, .
+    \end{align*}
+
+    \stantikzpic{
+        \drawtensorblock{0}{0}{2}{$\kg$}
+        \drawvwire{-1.5}{-1}{$\indvariableof{s}$}
+        \drawvwire{0}{-1}{$\indvariableof{p}$}
+        \drawvwire{1.5}{-1}{$\indvariableof{o}$}
+    }
+\end{frame}
+
+\begin{frame}{First order logic formulas}
+
+    Quantifier free formulas are decomposed using basis encodings
+\end{frame}
+
+\begin{frame}{Quantifiers}
+    \begin{itemize}
+        \item
+        Universal quantifiers $\forall f(\indindexof{0},\ldots,\indindexof{\indorder-1})$ translate into contraction equations
+        \stantikzpic{
+
+            \drawtensorblock{0}{0}{3}{$\formula$}
+            \drawvwire{-2}{-1}{$\indvariableof{0}$}
+            \drawtextnode{0}{-2}{\colorlabelsize $\cdots$}
+            \drawvwire{2}{-1}{$\indvariableof{\indorder-1}$}
+            \drawtextnode{5}{0}{$=$}
+            \drawtensorblock{10}{0}{3}{$\ones$}
+
+            \drawvwire{8}{-1}{$\indvariableof{0}$}
+            \drawtextnode{10}{-2}{\colorlabelsize $\cdots$}
+            \drawvwire{12}{-1}{$\indvariableof{\indorder-1}$}
+        }
+        \item  Existential quantifiers $\exists f(\indindexof{0},\ldots,\indindexof{\indorder-1})$ translate into contraction equations
+        \stantikzpic{
+            \drawtensorblock{0}{0}{3}{$\formula$}
+            \drawvwire{-2}{-1}{$\indvariableof{0}$}
+            \drawtextnode{0}{-2}{\colorlabelsize $\cdots$}
+            \drawvwire{2}{-1}{$\indvariableof{\indorder-1}$}
+            \drawtextnode{5}{0}{$\neq$}
+            \drawtensorblock{10}{0}{3}{$\zeros$}
+
+            \drawvwire{8}{-1}{$\indvariableof{0}$}
+            \drawtextnode{10}{-2}{\colorlabelsize $\cdots$}
+            \drawvwire{12}{-1}{$\indvariableof{\indorder-1}$}
+        }
+    \end{itemize}
+\end{frame}
+
+
