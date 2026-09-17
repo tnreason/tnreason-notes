@@ -63,15 +63,13 @@ arXiv : 2601.15442, 2609.07184}
     \addtocounter{framenumber}{-1}
 
 
-    \section{Tensor networks for neuro-symbolic AI}
+    \section{Tensor networks as a unifying framework for AI}
 
     \begin{frame}{Motivation: Automation of accounting at DATEV}
         Accounts need to be selected for invoices\footnote{\tiny https://www.datev.de/web/de/steuerberatung/loesungen/rechnungswesen/buchfuehrung-erstellen/automatisierungsservices-rechnungswesen/}:
         \begin{center}
-
             \stantikzpic{
                 \drawtextnode{0}{0}{\includegraphics[height=0.5\textwidth]{images/asr}}
-
                 \draw[->, line width=0.6mm] (-11,4) -- (-6.5,2.5);
                 \drawtextnode{-13}{3.5}{Features \\ extracted by OCR}
                 \draw[->, line width=0.6mm] (11,3.75) -- (7,2);
@@ -79,13 +77,11 @@ arXiv : 2601.15442, 2609.07184}
                 \draw[->, line width=0.6mm] (11,-5) -- (7,-6);
                 \drawtextnode{13.25}{-3.5}{Generated \\ accounting proposal}
             }
-
         \end{center}
     \end{frame}
 
-    \begin{frame}{Toy accounting rule system}
-
-        \begin{block}{Toy accounting rule system}
+    \begin{frame}{Toy accounting system}
+        \begin{block}{Toy accounting system}
             Assume you want to book one of two accounts $\mathrm{A1}$ and $\mathrm{A2}$ depending on a feature $\mathrm{F}$ of an invoice, based on two rules:
             \begin{itemize}
                 \item \textcolor{\concolor}{Exactly one account must be booked.}
@@ -105,17 +101,15 @@ arXiv : 2601.15442, 2609.07184}
     \end{frame}
 
 
-
-
     \begin{frame}{Factored representations lead to tensors}
 
-        {\bf Factored representations} use variables $\shortcatvariables=(\catvariableof{0},\ldots,\catvariableof{\catorder\shortminus1})$, each with a finite set of states $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$.
+        {\bf Factored representations} contain variables $\shortcatvariables=(\catvariableof{0},\ldots,\catvariableof{\catorder\shortminus1})$, each with a finite set of states $[\catdimof{\catenumerator}]=\{0,\ldots,\catdimof{\catenumerator}-1\}$.
     The set of states is then the cartesian product
         \begin{align*}
             \facstates = \{0,\ldots,\catdimof{0}\} \times \ldots \times \{0,\ldots,\catdimof{\atomorder\shortminus1}\} \, .
         \end{align*}
 
-            {\bf Knowledge about the system} (e.g. possibility or uncertainty of a state) is a \emph{tensor}
+            {\bf Information about the system} (e.g. possibility or uncertainty of a state) is stored in a \emph{tensor}
         \begin{align*}
             \hypercorewith \defcols \facstates \rightarrow \rr
         \end{align*}
@@ -135,7 +129,7 @@ arXiv : 2601.15442, 2609.07184}
 
     \begin{frame}{Outlook: Productive accounting ontology}
 
-        The variables and main relations of the DATEV accounting ontology\footnote{\tiny https://github.com/EnexaProject/enexa-use-case-1-business-software-solutions}:
+        The variables are described by the DATEV accounting ontology\footnote{\tiny \url{https://github.com/EnexaProject/enexa-use-case-1-business-software-solutions}}:
         \begin{center}
             \begin{tikzpicture}
                 \drawtextnode{0}{0}{\includegraphics[height=0.4\textwidth]{images/ontology_fine_snapshot}}
@@ -161,7 +155,7 @@ arXiv : 2601.15442, 2609.07184}
             = \prod_{\edgein}\hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
         \end{align*}
 
-            {\bf Example:} Tensor-Train (TT) format introduces hidden variables $\decvariableof{[\catorder-1]}$ to be summed over.
+            {\bf Example:} Tensor-Train (TT) format with hidden variables $\decvariableof{[\catorder-1]}$ (to be summed over).
         \begin{center}
             \input{tikz/tt-format}
         \end{center}
@@ -175,22 +169,56 @@ arXiv : 2601.15442, 2609.07184}
     \end{frame}
 
 
-    \begin{frame}{Probabilistic graphical models are tensor networks}
+    \begin{frame}{Probability distributions}
 
-        Joint distributions of variables are tensors $\probwith$ with non-negative coordinates such that
+        Joint distributions of variables are tensors $\probwith$ with non-negative coordinates $\probat{\indexedshortcatvariables}$ (the probabilities of states $\shortcatindices$) such that
         \begin{align*}
             \sum_{\shortcatindicesin} \probat{\indexedshortcatvariables} = 1 \, .
         \end{align*}
 
+            {\bf Example:} If the variables are independent on each other we have a decomposition by an elementary tensor network
+        \begin{align*}
+            \probat{\indexedshortcatvariables}
+            = \prod_{\catenumeratorin} \probofat{\catenumerator}{\indexedcatvariableof{\catenumerator}}
+        \end{align*}
+        \stantikzpic{
+            \drawtensorblock{-10}{0}{2}{$\probtensor$}
+            \drawtdwire{-11.5}{-1}{$\catvariableof{0}$}
+            \drawtextnode{-9.5}{-2}{\colorlabelsize $\cdots$}
+            \drawtdwire{-8.5}{-1}{$\catvariableof{\catorder-1}$}
 
-            {\bf Graphical models} factorize distributions into tensors $\hypercoreofat{\edge}{\catvariableof{\edge}}$, coordinate are then retrieved by
+            \drawtextnode{-6}{0}{$=$}
+            \drawtensorblock{-3}{0}{1}{$\probtensorof{0}$}
+            \drawtdwire{-3}{-1}{$\catvariableof{0}$}
+
+            \drawtextnode{0}{0}{\colorlabelsize $\cdots$}
+            \drawtensorblock{3}{0}{1}{$\probtensorof{\catorder\shortminus1}$}
+            \drawtdwire{3}{-1}{$\catvariableof{\catorder\shortminus1}$}
+        }
+        \begin{center}
+            \bf The curse of dimensions is mitigated by independence!
+        \end{center}
+
+    \end{frame}
+
+    \begin{frame}{Graphical models}
+
+        Pairwise independence is a very restrictive assumption:
+        \begin{itemize}
+            \item AI requires dependencies for non-trivial inference.
+            \item Usually variables depend on each other.
+        \end{itemize}
+        \medskip
+        {\bf Conditional independence} models variable dependence conditioned on states of a third variable. \\
+        \medskip
+        {\bf Graphical models} factorize distributions into tensors $\hypercoreofat{\edge}{\catvariableof{\edge}}$, coordinate are then retrieved by
         \begin{align*}
             \probat{\indexedcatvariableof{\nodes}}
             = \prod_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
         \end{align*}
 
-        \begin{block}{Interpretation of hypergraphs}
-            Separation in hypergraphs implies conditional independencies in the distribution.
+        \begin{block}{Hammersley-Clifford Theorem (informal)}
+            Node separation in hypergraphs correspond with conditional independence in the distribution.
         \end{block}
 
 
@@ -206,7 +234,7 @@ arXiv : 2601.15442, 2609.07184}
                 \begin{align*}
                     \condindependent{\catvariableof{S}}{\catvariableof{\{D,G,L\}}}{\catvariableof{I}}
                 \end{align*}
-                \item "The recommendation letter depends only on the grade":
+                \item "The recommendation depends only on the grade":
                 \begin{align*}
                     \condindependent{\catvariableof{L}}{\catvariableof{\{D,I,S\}}}{\catvariableof{G}}
                 \end{align*}
@@ -217,7 +245,7 @@ arXiv : 2601.15442, 2609.07184}
             \begin{center}
                 \input{tikz/student-markov-hypergraph}
             \end{center}
-            $\probat{\catvariableof{L},\catvariableof{G},\catvariableof{D},\catvariableof{I},\catvariableof{S}}$ is decomposed by
+            $\probat{\catvariableof{L},\catvariableof{G},\catvariableof{D},\catvariableof{I},\catvariableof{S}}$ is decomposed into:
             \begin{center}
                 \input{tikz/student-markov-network}
             \end{center}
@@ -236,15 +264,14 @@ arXiv : 2601.15442, 2609.07184}
         \end{center}
 
 
-
     \end{frame}
 
     \begin{frame}{Example: Integer summation in $\catdim$-adic representation}
 
 %        {\bf Example:}
-        Any number $n\in[\catdim^{\catorder}]$ has a unique $\catdim$-adic representation
+        Any number $n\in[\catdim^{\catorder}]$ has a unique $\catdim$-adic representation $\catindexof{[\catorder]}$ such that
         \begin{align*}
-            \sum_{\catenumeratorin} \catindexof{\catenumerator} \cdot \catdim^{\catenumerator}
+            n = \sum_{\catenumeratorin} \catindexof{\catenumerator} \cdot \catdim^{\catenumerator} \, .
         \end{align*}
         Given two numbers $\catindexof{[\catorder]}$ and $\tildecatindexof{[\catorder]}$ we want the tuple $\headindexof{[\catorder+1]}$ such that
         \begin{align*}
@@ -305,7 +332,7 @@ arXiv : 2601.15442, 2609.07184}
 
     \begin{frame}{Efficient basis calculus}
 
-        As an example, let us consider the sum of $\catindexof{[3]}=(2,1,1)$ and $\tildecatindexof{[3]}=(0,2,1)$ in basis $\catdim=3$:
+        As an example, let us consider the sum of $\catindexof{[3]}=(2,1,1)$ ($n=14$) and $\tildecatindexof{[3]}=(0,2,1)$ ($n=15$) in basis $\catdim=3$:
 
         \begin{center}
             \input{tikz/m-adic-contraction}
@@ -440,18 +467,87 @@ arXiv : 2601.15442, 2609.07184}
 
 
     \begin{frame}{Tensor networks for neuro-symbolic AI}
-        Tensor networks provide a unifying language to capture the different paradigms of AI\footnote{\tiny Goessmann, Schütte, Fröhlich and Eigel: A tensor network formalism for neuro-symbolic AI, arXiv:2601.15442}:
+        Tensor networks capture the different paradigms of AI\footnote{\tiny Goessmann, Schütte, Fröhlich and Eigel: A tensor network formalism for neuro-symbolic AI, arXiv:2601.15442}:
         \begin{center}
             \input{tikz/paradigms-sketch}
         \end{center}
     \end{frame}
 
 
-    \section{Maximum entropy distributions}
 
-    \begin{frame}{Toy accounting example}
 
-        \begin{block}{Toy accounting rule system}
+    \begin{frame}{Outlook: Tensor networks for structured representations}
+
+        When turning from \emph{factored representations} (e.g. propostional logics) to \emph{structured representations} (e.g. first-order logics) challenges arise:
+        \begin{itemize}
+            \item States of a system contain (varying numbers of) objects
+            \item Formulas contain variables and quantifiers
+        \end{itemize}
+
+        \medskip
+
+        To describe probability distributions over such worlds we encounter:
+        \begin{itemize}
+            \item \emph{Substitution structure:} States itself are described by tensors, using term variables $\indvariable$
+            \item \emph{Semantic structure:} Variables $\catvariable$ enumerate all possible states
+        \end{itemize}
+
+        \begin{center}
+            \bf Which tricks are used to reason in such large spaces?
+        \end{center}
+
+    \end{frame}
+
+    \begin{frame}{Outlook: Knowledge graphs}
+
+        Knowledge graphs can be represented by order-3 tensors, with variables $\indvariableof{s},\indvariableof{p},\indvariableof{o}$ enumerating the nodes:
+
+        \begin{minipage}{0.45\textwidth}
+            \begin{align*}
+                &\kgat{\indexedindvariableof{s},\indexedindvariableof{p},\indexedindvariableof{o}} \\
+                & \quad = \begin{cases}
+                              1 & \text{if the triple }(\indindexof{s},\indindexof{p},\indindexof{0}) \text{ exists} \\
+                              0 & \elsetext
+                \end{cases} \, .
+            \end{align*}
+        \end{minipage}
+        \begin{minipage}{0.25\textwidth}
+            \stantikzpic{
+                \drawtensorblock{0}{0}{2}{$\kg$}
+                \drawvwire{-1.5}{-1}{$\indvariableof{s}$}
+                \drawvwire{0}{-1}{$\indvariableof{p}$}
+                \drawvwire{1.5}{-1}{$\indvariableof{o}$}
+            }
+        \end{minipage}
+
+        \medskip
+        The tensor structure has been exploited to
+        \begin{itemize}
+            \item Train embedding models (RESCAL, ComplEx, DistMult)
+            \item Answer SPARQL queries efficiently (tentris)
+            \item Derive statistical models\footnote{\tiny Nickel et al: A review of relational machine learning for knowledge graphs. Proceedings of the IEEE 104(1):11-33}
+        \end{itemize}
+    \end{frame}
+
+
+    \begin{frame}{Outlook: Quantum inference for \CompActNets{}}
+        \begin{center}
+            \bf Quantum computers are naturally tensor network contractors.
+        \end{center}
+
+            {\bf Example:} Quantum rejection sampling of the toy accounting system by
+        \begin{center}
+            \input{tikz/toy-accounting-circuit}
+        \end{center}
+
+    \end{frame}
+
+
+    \section{Motivation from maximum entropy principles}
+
+    \begin{frame}{Training the toy accounting system}
+
+        \begin{block}{Toy accounting system}
             Assume you want to book one of two accounts $\mathrm{A1}$ and $\mathrm{A2}$ depending on a feature $\mathrm{F}$ of an invoice, based on two rules:
             \begin{itemize}
                 \item \textcolor{\concolor}{Exactly one account must be booked.}
@@ -638,6 +734,8 @@ arXiv : 2601.15442, 2609.07184}
             \item Choosing a sufficient tensor format guarantees a solution
         \end{itemize}
 
+        \medskip
+
         Probabilistic success guarantees:
         \begin{itemize}
             \item Hard constraints tend to be overestimated
@@ -678,8 +776,8 @@ arXiv : 2601.15442, 2609.07184}
 
         This research has been part of the projects:
         \begin{itemize}
-            \item \emph{ENEXA} (2023-2025): Efficient and Explainable Learning on Knowledge Graphs
-            \item \emph{QROM} (2025-2028): Quantum Read-Once-Memory
+            \item \emph{ENEXA} (2023-2025): Efficient and Explainable Learning on Knowledge Graphs, funded by Horizon 2020 program
+            \item \emph{QROM} (2025-2028): Quantum Read-Once-Memory, funded by BMBF
         \end{itemize}
 
 
@@ -690,40 +788,7 @@ arXiv : 2601.15442, 2609.07184}
 
 \section{Tensor networks in structured representations}
 
-\begin{frame}{Structured representations}
 
-    When turning from factored representations to structured representations we have:
-    \begin{itemize}
-        \item States of a system contain objects
-        \item Formulas contain variables
-    \end{itemize}
-
-    To describe probability distributions over such worlds we encounter:
-    \begin{itemize}
-        \item \emph{Substitution structure:} States itself are described by tensors, using term variables $\indvariable$
-        \item \emph{Semantic structure:} Variables $\catvariable$ enumerate all possible states
-    \end{itemize}
-
-\end{frame}
-
-\begin{frame}{Example: Knowledge graphs}
-
-    Knowledge graphs can be represented by order-3 tensors, with variables $\indvariableof{s},\indvariableof{p},\indvariableof{o}$ enumerating the appearing entities
-    \begin{align*}
-        &\kgat{\indexedindvariableof{s},\indexedindvariableof{p},\indexedindvariableof{o}} \\
-        & \quad = \begin{cases}
-                      1 & \text{if the triple }(\indindexof{s},\indindexof{p},\indindexof{0}) \text{ exists} \\
-                      0 & \elsetext
-        \end{cases} \, .
-    \end{align*}
-
-    \stantikzpic{
-        \drawtensorblock{0}{0}{2}{$\kg$}
-        \drawvwire{-1.5}{-1}{$\indvariableof{s}$}
-        \drawvwire{0}{-1}{$\indvariableof{p}$}
-        \drawvwire{1.5}{-1}{$\indvariableof{o}$}
-    }
-\end{frame}
 
 \begin{frame}{First order logic formulas}
 
