@@ -24,7 +24,7 @@
     The statistic qubit $\headvariableof{0}$ is therefore prepared by two controlled NOT gates (see \figref{fig:toyAccounting}b).
 
     For the preparation of the second statistic qubit $\headvariableof{1}$ to $\sstatcoordinateof{1}=\catvariableof{F}\Rightarrow \catvariableof{A1}$ we exploit that the implication is $\truesymbol$ except for the case where the premise $\catvariableof{F}$ is $\truesymbol$ and the head $\catvariableof{A1}$ is $\falsesymbol$.
-    In out mod 2 calculus, this amounts to
+    The second statistic has the Reed-Muller expansion
     \begin{align*}
         \catvariableof{F}\Rightarrow \catvariableof{A1}
         = \onesat{\catvariableof{F},\catvariableof{A1}} \oplus \onehotmapofat{1}{\catvariableof{F}} \otimes \onehotmapofat{0}{\catvariableof{A1}}\, .
@@ -194,7 +194,7 @@
             \end{tikzpicture}
         \end{center}
         \caption{Circuit to sample from the \ComputationActivationNetwork{} in the toy accounting \exaref{exa:toyAccounting}.
-        %Note that a first Pauli-X gate $\paulixsymbol$ acting on $\catvariableof{A2}$ can be omitted, since the prepared stated is uniform.
+        Note that a first Pauli-X gate $\paulixsymbol$ acting on $\catvariableof{A2}$ can be omitted, since the prepared stated is the Hadamard basis vector $\hplusbasat{\catvariableof{A2}}$.
         }
         \label{fig:toyAccounting}
     \end{figure}

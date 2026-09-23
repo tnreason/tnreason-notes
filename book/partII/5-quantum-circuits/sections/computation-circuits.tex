@@ -2,7 +2,13 @@
 
 %\red{Understand \computationCircuits{} as preparation of q-samples to normalized basis encodings.}
 
-We here suggest a quantum pendant to basis encodings, which has the decomposition by contraction property.
+% Orientation on Low construction: Motivation by sparsity
+In the previous sections we have studied the schemes to encode arbitrary conditional probability distributions, which concatenation prepares q-samples of Bayesian networks \cite{low_quantum_2014}.
+While these schemes do not assume any further structure in the conditional probability distributions, we now investigate how to exploit the structure to achieve sparser circuits.
+To be more precise, we focus on deterministic conditional probability distributions, which are basis encodings to functions.
+%
+To this end, let us first introduce a quantum pendant to encode functions, which has the decomposition by contraction property as we show later.
+We will also relate them to basis encodings.
 
 \begin{definition}[\ComputationCircuit{}]
     Given a boolean function $\exformula:\atomstates\rightarrow[2]$ the \computationCircuit{} is the unitary tensor
@@ -66,6 +72,8 @@ Based on the equivalence of \computationCircuits{} and contracted \basisEncoding
 \input{examples/computation-circuits/mcnot-benc}
 
 \subsection{\PolynomialSparsity{}}
+
+\todo{To be called Reed-Muller Expansions.}
 
 \begin{lemma}
     \label{lem:comCircuitCommutative}

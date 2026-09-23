@@ -1,14 +1,21 @@
-\chapter{Quantum Inference}
+\chapter{Quantum inference}
 
 \abstract{
     We here investigate, how inference on \ComputationActivationNetworks{} can be executed by quantum algorithms.
     While we find circuits corresponding to the computation networks, we exploit Grover operators for the activation of the computed qubits.
+    We propose two inference algorithms:
+    \begin{itemize}
+        \item \textbf{Quantum rejection sampling:}
+        When the canonical parameters of an \CompActNet{} are available, we prepare q-samples of the ancilla augmented \CompActNet{} and apply Grover rotations to achieve an square root advantage in sampling.
+        \item \textbf{Quantum moment matching:}
+        When the mean parameters to an \CompActNet{} are available, we iteratively construct the q-sample of an approximation.
+    \end{itemize}
 }
 
 \input{sections/introduction}
 \input{sections/grover-operator}
 \input{sections/preparation}
 \input{sections/rejection-sampling}
-\input{sections/moment-estimation}
+%\input{/Users/goessmann/Documents/tnreason/tnreason-notes/book/partII/5-quantum-circuits/sections/moment-estimation}
 \input{sections/moment-amplification}
 \input{sections/proposal-distributions}

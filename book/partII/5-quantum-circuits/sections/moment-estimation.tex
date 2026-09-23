@@ -1,12 +1,5 @@
 \section{Moment Estimation}\label{sec:amplitudeEstimation}
 
-\red{Instead of amplitude amplification we here exploit the Grover operator from a different perspective:
-    \begin{itemize}
-        \item Good and bad states by the restriction to the support of formulas
-        \item Good state reflection using the oracle on an disentangled ancilla qubit in the Hadamard basis state $\hminusbasat{\headvariable}$
-        \item We perform Quantum Phase Estimation to extract the moment through the phase of the eigenvalue of the Grover algorithm
-    \end{itemize}
-}
 
 \begin{figure}
     \begin{center}
@@ -18,6 +11,8 @@
     \label{fig:ancillaGrover}
 \end{figure}
 
+
+\todo{We here do Quantum Phase Estimation on a Grover operator to measure the moment of a function.}
 Given a distribution $\probwith$ and a propositional formula $\formulaat{\shortcatvariables}$, we now investigate how to use Quantum Phase Estimation to estimate
 \begin{align*}
     \meanparam
@@ -41,6 +36,14 @@ We assume that
     \item a \computationCircuit{} for $\formulawith$
 \end{itemize}
 
+
+\red{Instead of amplitude amplification we here exploit the Grover operator from a different perspective:
+    \begin{itemize}
+        \item Good and bad states by the restriction to the support of formulas
+        \item Good state reflection using the oracle on an disentangled ancilla qubit in the Hadamard basis state $\hminusbasat{\headvariable}$
+        \item We perform Quantum Phase Estimation to extract the moment through the phase of the eigenvalue of the Grover algorithm
+    \end{itemize}
+}
 
 %% FROM AMPLIFICATION
 %\subsection{Effective reflection by single \computationCircuits{}}
@@ -221,10 +224,11 @@ Through measuring the phase $\phasecore\in\{\pm\rotanglesymbol\}$ of one of thes
     = \left(\sinof{\frac{\phasecore}{2}}\right)^2 \, .
 \end{align*}
 
-\subsection{Quantum Phase Estimation}
 
-% Generic Quantum Phase Estimation
-The phase of the Grover eigenvalues can be estimated using the Quantum Phase Estimation routine \cite{kitaev_quantum_1995, cleve_quantum_1998}.
+\subsection{Measuring the phase}
+
+\todo{We apply the Quantum Phase Estimation (\secref{sec:quantumPhaseEstimation}) to measure the moment.}
+
 We prepare auxiliary qubits $\avariables$ and perform for each $\selindexin$ $2^{\selindex}$ repetitions of $\groverof{\probtensor,\exformula}$ controlled on $\avariableof{\selindex}$.
 The inverse Fourier transform on the auxiliary qubits is supported on the (2-adic representation of the) phases on the eigenvalues, i.e. $\pm\rotanglesymbol$, and can be detected by a computational basis measure of the ancilla variables.
 
@@ -240,3 +244,5 @@ We retrieve the mean in both cases by
     \meanparam
     = \sin^2\left(\pi \cdot \sum_{\selindexin} 2^{-(\selindex+1)} \aindexof{\selindex}\right) \, .
 \end{align*}
+
+\todo{Computational resources: Square root improvement?}

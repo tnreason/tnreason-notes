@@ -1,0 +1,39 @@
+\documentclass[a4paper,11pt,english]{article}
+\usepackage{arxiv}
+\input{arXiv-preamble}
+\subimport{../../../macros/}{all-macros.tex}
+\CatchFileDef{\mytitle}{../info/title.tex}{}
+
+\begin{document}
+
+    \title{\mytitle{}}
+    \author{Alex Goessmann}
+    \author{Martin Eigel}
+    \affil{Weierstrass Institute of Applied Analysis and Stochastics \\
+    Anton-Wilhelm-Amo-Straße 39\\
+    Berlin, 10117, Germany}
+
+    \maketitle
+
+    \begin{abstract}
+        \input{../info/abstract}
+    \end{abstract}
+
+    \subimport{..}{./sections/introduction.tex}
+    \subimport{..}{./sections/notation.tex}
+    \subimport{..}{./sections/computation_circuits.tex}
+    \subimport{..}{./sections/activation_circuits.tex}
+    \subimport{..}{./sections/sampling.tex}
+    \subimport{..}{./sections/conclusion.tex}
+
+
+
+    \vskip 0.2in
+    \bibliographystyle{plainnat}
+    \bibliography{../../../references.bib}
+
+    \appendix
+
+    \subimport{..}{./appendix/implementation.tex}
+
+\end{document}

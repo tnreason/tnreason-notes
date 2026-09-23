@@ -126,9 +126,9 @@ One can ask, whether we can use other ancilla states and get different phase kic
 However, since we construct here \computationCircuit{} we are restricted to the eigenvectors of the Pauli-X gate, which is the Hadamard basis
 \begin{align*}
     \hminusbasat{\headvariable}
-    &= \sqrt{\frac{1}{2}} \left(\fbasisat{\headvariable} - \tbasisat{\headvariable}\right) \quad,\quad
+    = \sqrt{\frac{1}{2}} \left(\fbasisat{\headvariable} - \tbasisat{\headvariable}\right) \quad,\quad
     \hplusbasat{\headvariable}
-    &=\sqrt{\frac{1}{2}} \left(\fbasisat{\headvariable} + \tbasisat{\headvariable}\right)
+    =\sqrt{\frac{1}{2}} \left(\fbasisat{\headvariable} + \tbasisat{\headvariable}\right)
 \end{align*}
 with eigenvalues $(-1)$ and $0$.
 
@@ -176,11 +176,3 @@ Limitations:
 
 
 % Multiple formulas
-
-\subsection{Conclusion}
-
-We have seen that preparing some classically hard to compute contraction can be done efficiently by a quantum circuit.
-We showed in particular that contracted basis encodings can be prepared by circuits, which are classically hard to contract in the presence of undirected loops in the decomposition hypergraph.
-However, when assessing the prepared contraction state by computational basis measurements, we effectively draw samples from the corresponding distribution, which can also be achieved classically.
-A quantum advantage could arise from different measurement schemes studied in the quantum state tomography community (see \cite{gross_quantum_2010,cramer_efficient_2010,roth_semi-device-dependent_2023}).
-To this end, future research could show, how hard to achieve expectation queries can efficiently be prepared by customized measurement schemes.
