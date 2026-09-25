@@ -1,0 +1,42 @@
+\section{Unfolding}
+
+The Fourier transform of vectors in $\mathbb{C}^{\catdim}$ is represented by a matrix
+\begin{align*}
+    F[\indexedcatvariable,\headvariable=\headindex]
+    = \frac{1}{\sqrt{\catdim}} \expof{2\pi i \cdot \frac{\catindex\cdot\headindex}{\catdim}}
+\end{align*}
+where $\catvariable,\headvariable$ are variables of dimension $\catdim$.
+The Fourier transform of a vector $\vectorat{\catvariable}$ is then the contraction
+\begin{align*}
+    \contractionof{\vectorat{\catvariable},F[\catvariable,\headvariable]}{\headvariable} \, .
+\end{align*}
+
+We assume $\catdim=2^{\catorder}$ and represent each index $\catindex\in[2^{\catorder}]$ by a tuple $(\catindexof{0},\ldots,\catindexof{\catorder-1})\in[2]^{\catorder}$ such that
+\begin{align*}
+    \catindex
+    = \sum_{\catenumeratorin} \catindexof{\catenumerator} \cdot 2^{\catorder-\catenumerator-1} \, .
+\end{align*}
+Note that in this convention, $\catindexof{\catorder-1}$ is the least significant bit.
+We follow \cite{nielsen_quantum_2010} and denote $\catindex$ by $\catindexof{0}\ldots\catindexof{\catorder-1}$.
+By $\catindexof{0}\ldots\catindexof{\catenumerator-1}.\catindexof{\catenumerator}\ldots\catindexof{\catorder-1}$ we denote $\frac{1}{2^{\catorder-\catenumerator-1}} \cdot \catindex$.
+
+% Unfolded vector
+The unfolded vector $\vectorat{\catvariable}$ is a tensor $\vectorat{\shortcatvariables}$ with indices
+\begin{align*}
+    \vectorat{\indexedshortcatvariables}
+    = \vectorat{\catvariable=\left(\sum_{\catenumeratorin} \catindexof{\catenumerator} \cdot 2^{\catorder-\catenumerator-1}\right)} \, .
+\end{align*}
+
+% Unfolded FT
+In the unfolded representation the fourier transform is described as the contraction with a tensor $F^{\catorder}[\catvariableof{[\catorder]},\headvariableof{[\catorder]}]$ with coordinates
+\begin{align*}
+    F^{\catorder}[\indexedcatvariableof{[\catorder]},\indexedheadvariableof{[\catorder]}]
+    = \frac{1}{\sqrt{2^\catorder}} \expof{2\pi i
+    \cdot \left(\sum_{\catenumeratorin} \catindexof{\catenumerator} \cdot 2^{\catorder-\catenumerator-1}\right)
+    \cdot \left(\sum_{\catenumeratorin} \headindexof{\catenumerator} \cdot 2^{\catorder-\catenumerator-1}\right)
+    } \, ,
+\end{align*}
+that is the Fourier transform of $\vectorat{\shortcatvariables}$ is
+\begin{align*}
+    \contractionof{\vectorat{\shortcatvariables},F[\shortcatvariables,\headvariableof{[\catorder]}]}{\headvariableof{[\catorder]}} \, .
+\end{align*}

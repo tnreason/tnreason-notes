@@ -1,0 +1,9 @@
+\section{Quantum Fourier Transform}
+
+When $\vectorat{\shortcatvariables}$ is a quantum state, the Fourier transform can be understood as a unitary evolving the state.
+Since both the controlled $U$ tensor and the Hadamard $H$ are unitary, each of them can be implemented by a sequence of gates.
+For sparse implementation one can exploit that $U$ is a tensor product of matrices (i.e. single qubit gates).
+
+% Gate complexity
+To realize the QFT we need $\catorder$ single-qubit Hadamard gates and $\sum_{\catenumeratorin} \catenumerator = \frac{\catorder\cdot(\catorder-1)}{2}$ controlled diagonal single-qubit gates (to realize the $U^{\catenumerator}$ transforms).
+The gate complexity is therefore $\mathcal{O}(\catorder^2)$.
