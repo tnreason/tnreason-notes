@@ -1,35 +1,14 @@
-\section{Generic groups}
+\subsection{Generic groups}
 
 So far we have treated the Fourier transform on the cyclic group $[\prod_{\catenumeratorin}\catdimof{\catenumerator}]$ using unfoldings.
 More naturally, a tensor is defined as a complex field on the cartesian product group $\facstates$.
 Let us now generalize to generic groups.
 
-\subsection{Tensors as group fields}
 
-A group field is a vector
-\begin{align*}
-    \hypercoreat{\catvariable} \wcols G \rightarrow \mathbb{C}
-\end{align*}
-where $\catvariable$ enumerated the $\cardof{G}=\catdim$ elements of the group.
-The $\catindex$-th element of the group is then mapped to $\hypercoreat{\indexedcatvariable}$.
 
-\begin{example}{Unfolding is not an isomorphism}
-    Let us note that the unfolding of $[\prod_{\catenumeratorin}\catdimof{\catenumerator}]$ to $\facstates$ is not a group isomorphism.
-    The group operation in $\prod_{\catenumeratorin}\catdimof{\catenumerator}$ is the integer summation
-    \begin{align*}
-        \catindex \circ \seccatindex =
-        \catindex + \seccatindex \modspace \left(\prod_{\catenumeratorin}\catdimof{\catenumerator}\right) \, .
-    \end{align*}
-    In the unfolding the group operation is
-    \begin{align*}
-        (\catindexof{0},\ldots,\catindexof{\catorder-1}) \circ (\seccatindexof{0},\ldots,\seccatindexof{\catorder-1})
-        = (\catindexof{0}+\seccatindexof{0}\modspace \catdimof{0},\ldots,\catindexof{\catorder-1}+\seccatindexof{\catorder-1}\modspace \catdimof{\catorder-1}) \, .
-    \end{align*}
-    Intuitively, the difference of these groups is that in the unfolded group summation carry bits are set to $0$.
+\subsubsection{Representations}
 
-\end{example}
-
-\subsection{Representations}
+Recall that tensors are group fields, see \secref{sec:groupFields}.
 
 A representation is a map of $G$ to a matrix group.
 Irreducible representations (irrep) $\rho$ are those, which are not equivalent to matrix groups in block form.
@@ -53,8 +32,7 @@ We represent them by tensors
 \end{example}
 
 
-
-\subsection{Finite Abelian groups}
+\subsubsection{Finite Abelian groups}
 
 Finite Abelian groups are equivalent to cartesian products of cyclic groups, that is
 \begin{align*}
@@ -68,7 +46,7 @@ The irreps of finite Abelian groups are thus disconnected tensor networks
 where each $\rho^{[\catdimof{\catenumerator}]}[\catvariableof{\catenumerator},\selvariableof{\catenumerator},\cheadvariableof{\insymbol}{\catenumerator},\cheadvariableof{\outsymbol}{\catenumerator}]$ is the irrep tensor to $[\catdimof{\catenumerator}]$, see \exaref{exa:cycGroupIrreps}.
 
 
-\subsection{Fourier transform}
+\subsubsection{Fourier transform}
 
 The Fourier transform of a group field $\hypercoreat{\catvariable}$ maps each irrep $\rho$ to
 \begin{align*}

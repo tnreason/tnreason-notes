@@ -1,0 +1,56 @@
+\glsdefs@newdocentry{qpe}%
+{%
+name={Quantum Phase Estimation},%
+sort={Quantum Phase Estimation},%
+type={main},%
+first={Quantum Phase Estimation},%
+firstplural={Quantum Phase Estimations},%
+text={Quantum Phase Estimation},%
+plural={Quantum Phase Estimations},%
+description={\pageref {sec}},%
+descriptionplural={\pageref {sec}},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{qpe-grover}%
+{%
+name={for Grover's Search},%
+sort={for Grover's Search},%
+type={main},%
+first={for Grover's Search},%
+firstplural={for Grover's Searchs},%
+text={for Grover's Search},%
+plural={for Grover's Searchs},%
+description={Application of phase estimation to speed up unstructured database search. See page~\pageref {sec:grover} for details.},%
+descriptionplural={Application of phase estimation to speed up unstructured database search. See page~\pageref {sec:grover} for details.},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={qpe},%
+%
+}%
+

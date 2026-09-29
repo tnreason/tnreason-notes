@@ -9,3 +9,11 @@
 \newcommand{\normalizationof}[2]{\normalizationofwrt{#1}{#2}{\varnothing}}
 
 \newcommand{\nzcontractionof}[2]{\nonzerocirc\contractionof{#1}{#2}}
+
+%% Generic contractions based on semirings
+\newcommand{\satsemiring}{(\{0,1\},\lor,\land,0,1)}
+\newcommand{\gensemiring}{(S,\srplus,\srmul,0,1)}
+\newcommand{\srcontractionwrt}[2]{\langle#1\rangle^{#2}}
+\newcommand{\srcontractionofwrt}[3]{\langle#1\rangle^{#3}_{[#2]}}
+\newcommand{\srplus}{\oplus}
+\newcommand{\srmul}{\otimes} % Clash with tensor product!

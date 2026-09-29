@@ -23,15 +23,13 @@ Quantum gates are unitary tensors
 that is
 \begin{align*}
     \contractionof{(\unitaryat{\ccatvariable{\midsymbol},\ccatvariable{\outsymbol}})^\dagger, \unitaryat{\ccatvariable{\midsymbol},\ccatvariable{\insymbol}}}
-    = \identityat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}
+    = \identityat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}} \, .
 \end{align*}
 
-
-%with image in $\mathbb{C}$ instead of $\mathbb{R}$ as in the report.
-
-\begin{remark}
-    Contractions of quantum circuits are understood on the semiring $(\mathbb{C},+,\cdot)$ instead of the default semiring $(\rr,+,\cdot)$.
-\end{remark}
+Application of quantum gates on quantum states is their contraction with respect to the complex sum-product semiring (see \secref{sec:complexSPContraction}).
+%\begin{remark}
+%    Contractions of quantum circuits are understood on the semiring $(\mathbb{C},+,\cdot)$ instead of the default semiring $(\rr,+,\cdot)$.
+%\end{remark}
 
 
 A coarse comparison of the nomenclature used for quantum circuits and tensor networks:
