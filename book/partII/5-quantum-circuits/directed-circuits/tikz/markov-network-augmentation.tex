@@ -1,4 +1,4 @@
-\begin{tikzpicture}[scale=0.35,thick]
+\stantikzpic{
     \node[anchor=center] (text) at (-3.5,-2) {${a)}$};
 
     \draw (-1,-1) rectangle (5,-3);
@@ -103,38 +103,29 @@
 
         \node[anchor=center] (text) at (-3.5,0) {$d)$};
 
-        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X0) at (0,-5) {};
-        \drawtextnode{0}{-5}{\corelabelsize $\catvariableof{0}$}
+        \drawvariablenode{0}{-5}{$\catvariableof{0}$}{X0}
+        \drawvariablenode{4}{-5}{$\catvariableof{1}$}{X1}
+        \drawvariablenode{8}{-5}{$\catvariableof{2}$}{X2}
+        \drawvariablenode{12}{-5}{$\catvariableof{3}$}{X3}
 
-        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X1) at (4,-5) {};
-        \drawtextnode{4}{-5}{\corelabelsize $\catvariableof{1}$}
+        \drawvariablenode{2}{0}{$\avariableof{0}$}{A0}
+        \drawvariablenode{6}{0}{$\avariableof{1}$}{A1}
+        \drawvariablenode{10}{0}{$\avariableof{2}$}{A2}
 
-        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X2) at (8,-5) {};
-        \drawtextnode{8}{-5}{\corelabelsize $\catvariableof{2}$}
+        \coordinate (E0) at (2,-2.5);
+        \draw[->-] (X0) -- (E0);
+        \draw[->-] (X1) -- (E0);
+        \draw[->-] (X2) -- (E0);
+        \draw[->-] (E0) -- (A0);
 
-        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (X3) at (12,-5) {};
-        \drawtextnode{12}{-5}{\corelabelsize $\catvariableof{3}$}
+        \coordinate (E1) at (6,-2.5);
+        \draw[->-] (X2) -- (E1);
+        \draw[->-] (X3) -- (E1);
+        \draw[->-] (E1) -- (A1);
 
-        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A0) at (2,0) {};
-        \drawtextnode{2}{0}{\corelabelsize $\avariableof{0}$}
-
-        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A1) at (6,0) {};
-        \drawtextnode{6}{0}{\corelabelsize $\avariableof{1}$}
-
-        \node[circle, draw, thick, fill=\nodegrayscale, minimum size = \nodeminsize] (A2) at (10,0) {};
-        \drawtextnode{10}{0}{\corelabelsize $\avariableof{2}$}
-
-        \draw[->] (X0) -- (A0);
-        \draw[->] (X1) -- (A0);
-        \draw[->] (X2) -- (A0);
-
-        \draw[->] (X2) -- (A1);
-        \draw[->] (X3) -- (A1);
-
-        \draw[->] (X1) -- (A2);
-        \draw[->] (X2) -- (A2);
-
+        \coordinate (E2) at (10,-2.5);
+        \draw[->-] (X1) -- (E2);
+        \draw[->-] (X2) -- (E2);
+        \draw[->-] (E2) -- (A2);
     \end{scope}
-
-
-\end{tikzpicture}
+}

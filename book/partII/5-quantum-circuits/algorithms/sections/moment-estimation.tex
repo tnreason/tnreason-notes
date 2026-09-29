@@ -1,9 +1,15 @@
-\section{Moment Estimation}\label{sec:amplitudeEstimation}
+\subsection{Moment Estimation}\label{sec:amplitudeEstimation}
 
+As an example, we here investigate how to use the introduced quantum routines to measure the mean of a function given a probability distribution.
+Given a distribution $\probwith$, the mean of a propositional formula $\formulaat{\shortcatvariables}$ is the contraction
+\begin{align*}
+    \meanparam
+    = \contraction{\probat{\shortcatvariables},\formulaat{\shortcatvariables}} \, .
+\end{align*}
 
 \begin{figure}
     \begin{center}
-        \input{tikz/moment-estimation/ancilla-grover}
+        \input{tikz/ancilla-grover}
     \end{center}
     \caption{Amplification scheme of the at the models of a Boolean function $\exformula$ supported coordinates of a quantum state.
     The ancilla variable $\headvariable$ is prepared as an disentagled Hadamard basis vector and stays disentangled during the following reflections.
@@ -12,14 +18,7 @@
 \end{figure}
 
 
-\todo{We here do Quantum Phase Estimation on a Grover operator to measure the moment of a function.}
-Given a distribution $\probwith$ and a propositional formula $\formulaat{\shortcatvariables}$, we now investigate how to use Quantum Phase Estimation to estimate
-\begin{align*}
-    \meanparam
-    = \contraction{\probat{\shortcatvariables},\formulaat{\shortcatvariables}} \, .
-\end{align*}
-
-We assume that
+We assume that we have
 \begin{itemize}
     \item a circuit $\unitarysymbol$ preparing a state with measurement distribution $\probwith$, i.e.
     \begin{align*}
@@ -37,93 +36,11 @@ We assume that
 \end{itemize}
 
 
-\red{Instead of amplitude amplification we here exploit the Grover operator from a different perspective:
-    \begin{itemize}
-        \item Good and bad states by the restriction to the support of formulas
-        \item Good state reflection using the oracle on an disentangled ancilla qubit in the Hadamard basis state $\hminusbasat{\headvariable}$
-        \item We perform Quantum Phase Estimation to extract the moment through the phase of the eigenvalue of the Grover algorithm
-    \end{itemize}
-}
-
-%% FROM AMPLIFICATION
-%\subsection{Effective reflection by single \computationCircuits{}}
-
-%\red{Note, that the \computationCircuit{} is not a reflection, but acts as one when preparing the ancilla in the real anti-symmetric state.}
-%To start let
-%\begin{itemize}
-%    \item $\qstateofat{0}{\shortcatvariables}$ has the measurement distribution $\probofat{0}{\shortcatvariables}$
-%    \item $\unitarysymbol$ be a unitary preparing the state
-%    \item $\qcbencodingof{\exformula}$ be a \computationCircuit{} to a formula $\exformula$
-%\end{itemize}
-
-%\subsubsection{Decomposition of the q-sample}
-%
-%The we split the initial state into vectors supported at the models of $\exformula$ and the complement as
-%\begin{align*}
-%    \qstateofat{0}{\shortcatvariables}
-%    =\qstateofat{\goodstatesymbol}{\shortcatvariables}+\qstateofat{\badstatesymbol}{\shortcatvariables}
-%\end{align*}
-%where
-%\begin{align*}
-%    \qstateofat{\goodstatesymbol}{\shortcatvariables}
-%    &= \sum_{\shortcatindicesin\wcols\exformulaat{\indexedshortcatvariables}=1} \sqrt{\probat{\indexedshortcatvariables}}
-%    \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \\
-%    \qstateofat{\badstatesymbol}{\shortcatvariables}
-%    &= \sum_{\shortcatindicesin\wcols\exformulaat{\indexedshortcatvariables}=0} \sqrt{\probat{\indexedshortcatvariables}}
-%    \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \, .
-%\end{align*}
-
-%We further define for a boolean formula
-%\begin{align*}
-%    \qstateofat{\probof{0},\exformula}{\shortcatvariables}
-%    = \frac{\qstateofat{\goodstatesymbol}{\shortcatvariables}}{\normof{\qstateofat{\goodstatesymbol}{\shortcatvariables}}}
-%\end{align*}
-%and have consistently for its negation
-%\begin{align*}
-%    \qstateofat{\probof{0},\lnot\exformula}{\shortcatvariables}
-%    = \frac{\qstateofat{\badstatesymbol}{\shortcatvariables}}{\normof{\qstateofat{\badstatesymbol}{\shortcatvariables}}}
-%\end{align*}
-
-%We define an angle $\rotanglesymbol$ by
-%\begin{align*}
-%    \sinof{\frac{\rotanglesymbol}{2}} \coloneqq \normof{\qstateofat{\goodstatesymbol}{\shortcatvariables}}
-%\end{align*}
-%and have
-%\begin{align*}
-%    \qstateofat{0}{\shortcatvariables}
-%    = \sinof{\frac{\rotanglesymbol}{2}} \qstateofat{\probof{0},\exformula}{\shortcatvariables} +
-%    \cosof{\frac{\rotanglesymbol}{2}} \qstateofat{\probof{0},\exformula}{\shortcatvariables} \, .
-%\end{align*}
-%Further we have that
-%\begin{align*}
-%    \meanparam^{0}
-%    &= \contraction{\probofat{0}{\shortcatvariables},\formulawith} \\
-%    &= \sum_{\shortcatindicesin} \absof{\qstateofat{0}{\indexedshortcatvariables}\formulaat{\indexedshortcatvariables}}^2 \\
-%    &= \left(\|\qstateofat{\goodstatesymbol}{\shortcatvariables}\|_2\right)^2 \\
-%    &= \left(\sinof{\frac{\rotanglesymbol}{2}}\right)^2 \, .
-%\end{align*}
-%
-%We prepare an ancilla qubit in the anti-symmetric state and consider as initial state
-%\begin{align*}
-%    \qstateofat{0}{\shortcatvariables} \otimes
-%    \sqrt{\frac{1}{2}}\cdot\coloredmatrixof{1\\-1}{\avariable} \,.
-%\end{align*}
-%
-%The \computationCircuit{} $\qcbencodingof{\exformula}$ acting on this state prepares a state
-%\begin{align*}
-%    \left(\qstateofat{\badstatesymbol}{\shortcatvariables}-\qstateofat{\goodstatesymbol}{\shortcatvariables}\right) \otimes
-%    \sqrt{\frac{1}{2}}\cdot\coloredmatrixof{1\\-1}{\avariable}  \,.
-%\end{align*}
-%This is the reflection on the subspace spanned by the one-hot encodings of the models of $\exformula$.
-
-
-
-\subsection{Moments as rotation angles}
+\subsubsection{Moments as rotation angles}
 
 We construct a Grover operator, which rotation angle determines the moment.
 The moment can therefore be estimated based on the measurement of the operators eigenvalue phases.
 
-%We define the moment of the measurement distribution to $\qstateof{0}$ with respect to $\exformula$ as
 We have
 \begin{align*}
     %\meanparam
@@ -156,8 +73,6 @@ Instead of amplifying this acceptance probability we here want to measure it to 
 We prepare the reflection $-\reflectionof{0}$ in the Pauli-Z scheme and the reflection $\reflectionof{\badstatesymbol}$ in the oracle scheme (see \secref{sec:groverOperator}).
 Their concatenation results in the negated Grover operator, which causes a phase offset by $\pi$.
 
-%\subsection{}
-%The mean parameter can be retrieved from the eigenvalues of an associated (effective) Grover operator as we prepare next.
 
 
 %The Grover operator $\groverofat{\probtensor,\formula}{\shortcatvariables^{\insymbol},\shortcatvariables^{\outsymbol},\avariable^{\insymbol},\avariable^{\outsymbol}}$ amplifying $\formula$
@@ -188,35 +103,20 @@ Their concatenation results in the negated Grover operator, which causes a phase
 %    \item Negated reflection across $\qstateof{0}$ by $(\unitaryof{\textdagger}\circ\reflectionof{\fbasis}\circ \unitarysymbol)$ where $\reflectionof{\fbasis}$ is the reflection across the ground state $\onehotmapofat{\zerotuple{[\catorder]}}{\shortcatvariables}$ leaving $\headvariable$ invariant.
 %\end{itemize}
 
+\subsubsection{Retrieving the moment from the phase}
 
-\subsection{Retrieving the moment from the phase}
+We now estimate the eigenvalue phases of the Grover algorithm (see \secref{sec:groverAngleMeasurement}) to read of the moment.
 
-%% Plane projection -> To groverOperator Section
-%We describe the Grover operator by its action on the projection onto the plane
-%\begin{align*}
-%    \spanof{\qstateof{\goodstatesymbol},\qstateof{\badstatesymbol}}
-%\end{align*}
-%as
-%\begin{align*}
-%    \coloredmatrixof{\cosof{\rotanglesymbol} & \sinof{\rotanglesymbol} \\
-%    -\sinof{\rotanglesymbol} & \cosof{\rotanglesymbol}}{
-%        \indvariable^{\insymbol},\indvariable^{\outsymbol}
-%    } \, .
-%\end{align*}
-%Here we introduce a boolean variables $\indvariable$ to select the two axis on the plane, and copy it to $\indvariableof{\insymbol},\indvariableof{\outsymbol}$.
-
-The eigenvalues of the Grover operator are (see \secref{sec:groverOperator}) $\expof{\pm i\rotanglesymbol}$ and $1$.
-%\end{align*}
-%to the eigenstates
-%\begin{align*}
-%    \frac{1}{2}
-%    \coloredmatrixof{1\\\pm i}{\indvariable} \, .
-%\end{align*}
 Note that the projection of the state $\qstateof{0}$ onto the eigen space to the eigen value $1$ vanishes, and the corresponding trivial phase is not measured by the Quantum Phase Estimation procedure.
 
-The rotation angle is related to $\meanparam$ as
+The phase is related to the rotation angle by (see \secref{sec:groverAngleMeasurement})
 \begin{align*}
-    \rotanglesymbol = 2 \cdot \sin^{-1}\left(\sqrt{\meanparam}\right)
+    \rotanglesymbol
+    \approx \pm \frac{1}{\twopii} \sum_{\catenumerator\in[n]} \phi_{\catenumerator} 2^{\catorder-\catenumerator-1} \, .
+\end{align*}
+The rotation angle is further related to the mean $\meanparam$ as
+\begin{align*}
+    \rotanglesymbol = 2 \cdot \sin^{-1}\left(\sqrt{\meanparam}\right) \, .
 \end{align*}
 Through measuring the phase $\phasecore\in\{\pm\rotanglesymbol\}$ of one of these eigenvalues we can therefore retrieve the mean by
 \begin{align*}
@@ -224,8 +124,7 @@ Through measuring the phase $\phasecore\in\{\pm\rotanglesymbol\}$ of one of thes
     = \left(\sinof{\frac{\phasecore}{2}}\right)^2 \, .
 \end{align*}
 
-
-\subsection{Measuring the phase}
+\subsubsection{Measuring the phase}
 
 \todo{We apply the Quantum Phase Estimation (\secref{sec:quantumPhaseEstimation}) to measure the moment.}
 

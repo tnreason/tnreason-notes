@@ -1,0 +1,203 @@
+\section{Basis Encoding of Subsets}
+
+Based on the concept of one-hot encodings of states we in this chapter develop the construction of encodings to sets, relations and functions.
+We start with the definition of subset encodings, which represent set memberships in their boolean coordinates.
+
+\begin{definition}[Basis encoding of subsets]
+    \label{def:subsetEncoding}
+    We say that an arbitrary finite set $\arbset$ is enumerated by an enumeration variable $\indvariableof{\arbset}$ taking values in $[\inddimof{\arbset}]$, when $\inddimof{\arbset}=\absof{\arbset}$ and there is a bijective index interpretation function
+    \begin{align*}
+        \indexinterpretation \defcols [\inddimof{\arbset}] \rightarrow \arbset \, .
+    \end{align*}
+    Given an set $\arbset$ enumerated by the variable $\indvariableof{\arbset}$, any subset $\arbsubset\subset\arbset$ is encoded by the tensor $\onehotmapto{\arbsubset}[\indvariable]$ defined for $\indindex\in[\absof{\arbset}]$ as
+    \begin{align*}
+        \onehotmapofat{\arbsubset}{\indexedindvariable}
+        = \begin{cases}
+              1 & \ifspace \indexinterpretationat{\indindex} \in \arbsubset \\
+              0 & \text{else}
+        \end{cases} \, .
+    \end{align*}
+\end{definition}
+
+% Decomposition
+In a one-hot basis decomposition we have
+\begin{align*}
+    \onehotmapofat{\arbsubset}{\indvariable}
+    \coloneqq \sum_{\indindex\in[\inddimof{\arbset}]\,:\,\indexinterpretationat{\indindex}\in\arbsubset}\onehotmapofat{\indindex}{\indvariable} \, .
+\end{align*}
+
+
+The inclusion of subsets is represented by the partial ordering of tensors.
+Let us first define this property for arbitrary tensors.
+
+% Here for general tensors, not just propositional formulas!
+\begin{definition}[Partial ordering of tensors]
+    \label{def:partialOrder}
+    We say that two tensors $\exformulaat{\shortcatvariables}$ and $\secexformulaat{\shortcatvariables}$ attached with the same variables are partially ordered, denoted by
+    \begin{align*}
+    {\exformula}
+        \prec{\secexformula} \, ,
+    \end{align*}
+    if for all $\shortcatindices\in\facstates$
+    \begin{align*}
+        \exformulaat{\indexedshortcatvariables} \leq \secexformulaat{\shortcatindices}  \, .
+    \end{align*}
+\end{definition}
+
+For boolean tensors, the partially ordering is equal to a subset relation of the coordinates with value $1$, as we show next.
+
+\begin{theorem}
+    \label{the:subsetRelationSubsetEncoding}
+    Let $\arbset$ be an arbitrary set enumerated by the variable $\indvariable$ and index interpretation function $\indexinterpretation$.
+    For two subsets $\arbsetof{0},\arbsetof{1}$ of $\arbset$ we have
+    \begin{align*}
+        \arbsetof{0} \subset \arbsetof{1}
+    \end{align*}
+    if and only if
+    \begin{align*}
+        \onehotmapofat{\arbsetof{0}}{\indvariable} \prec \onehotmapofat{\arbsetof{1}}{\indvariable} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We have $\arbsetof{0} \subset \arbsetof{1}$ if and only if
+    \begin{align*}
+        \forall{\indindex\in[\cardof{\arbset}]} \big(\indexinterpretationat{\indindex}\in\arbsetof{0}\big) \Rightarrow \big(\indexinterpretationat{\indindex}\in\arbsetof{1}\big) \, ,
+    \end{align*}
+    which is equal to
+    \begin{align*}
+        \forall{\indindex\in[\cardof{\arbset}]} \big(\onehotmapofat{\arbsetof{0}}{\indexedindvariable}=1\big) \Rightarrow \big(\onehotmapofat{\arbsetof{0}}{\indexedindvariable}=1\big)  \, .
+    \end{align*}
+    Since subset encodings are boolean tensors, this is equivalent to
+    \begin{align*}
+        \onehotmapofat{\arbsetof{0}}{\indvariable} \prec \onehotmapofat{\arbsetof{1}}{\indvariable} \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+\subsection{Binary Relations}
+
+% Explanation
+%Encoding of subsets as vectors: Each coordinate associated with a possible element, $\{0,1\}$ encoding whether in subset.
+%The encodings is thus a boolean tensor.
+%Any subset encoding is a boolean tensor.
+
+% Relation
+Since relations are subsets of cartesian products between two sets, their encoding is a straightforward generalization of \defref{def:subsetEncoding}.
+
+\begin{definition}[Basis encoding of binary relations]
+    A relation between two finite sets $\inset$ and $\outset$ is a subset of their cartesian product
+    \begin{align*}
+        \exrelation \subset \inset \times \outset \, .
+    \end{align*}
+    Given an enumeration of $\inset$ and $\outset$ by the categorical variables $\indvariableof{\insymbol}$ and $\indvariableof{\outsymbol}$ and interpretation maps $\indexinterpretationof{\insymbol}$, $\indexinterpretationof{\outsymbol}$, we define the basis encoding of this subset as the tensor $\onehotmapto{\exrelation}[\indvariableof{\insymbol},\indvariableof{\outsymbol}]$ with the coordinates
+    \begin{align*}
+        \onehotmapofat{\exrelation}{\indexedindvariableof{\insymbol},\indexedindvariableof{\outsymbol}}
+        = \begin{cases}
+              1 & \ifspace (\indexinterpretationofat{\insymbol}{\indindexof{\insymbol}},\indexinterpretationofat{\outsymbol}{\indindexof{\outsymbol}}) \in \exrelation \\
+              0 & \text{else}
+        \end{cases} \, .
+    \end{align*}
+\end{definition}
+
+% Decomposition
+The basis encoding has a decomposition into one-hot encodings as
+\begin{align*}
+    \onehotmapofat{\exrelation}{\indvariableof{\insymbol},\indvariableof{\outsymbol}}
+    = \sum_{\indindexof{\insymbol},\indindexof{\outsymbol} \wcols (\indexinterpretationofat{\insymbol}{\indindexof{\insymbol}},\indexinterpretationofat{\outsymbol}{\indindexof{\outsymbol}}) \in \exrelation}
+    \onehotmapofat{\indindexof{\insymbol}}{\indvariableof{\insymbol}}  \otimes \onehotmapofat{\indindexof{\outsymbol}}{\indvariableof{\outsymbol}}  \, .
+\end{align*}
+
+basis encodings have a matrix structure by the cartesian product, which can be further folded to tensors, when the sets itself are cartesian products.
+The basis encoding is a bijection between the relations of two sets and the boolean tensors with their enumeration variables.
+
+%They provide representations of generic relations by boolean tensors, in the sense that each relation between two sets is represented
+%\begin{theorem}
+%	The basis encoding is a bijection between the set of relations and the set of boolean tensors.
+%\end{theorem}
+%\begin{proof}
+%	% =>
+%	By definition, a basis encoding is the encoding of a subset and thus a boolean tensor.
+%	% <=
+%	Any matrification of a boolean tensor marks by its $1$ coordinates the elements of a relation.
+%\end{proof}
+%
+%% Significance
+%We can thus understand any matrification of a boolean tensor as the encoding of a relation and vice versa.
+
+
+
+\subsection{Higher-Order Relations}
+
+We can extend this contraction to relations of higher order, and arrive at encoding schemes usable for relational databases.
+
+\begin{definition}[Basis encoding of $\atomorder$-ary relations]
+    \label{def:daryRelation}
+    Given sets $\arbsetof{\atomenumerator}$ for $\atomenumeratorin$, a $\atomorder$-ary relation is a subset of a their cartesian product, that is
+    \begin{align*}
+        \exrelation \subset\bigtimes_{\atomenumeratorin} \arbsetof{\atomenumerator} \, .
+    \end{align*}
+    Given an enumeration of each set $\arbsetof{\atomenumerator}$ by a variable $\indvariableof{\atomenumerator}$ and an interpretation map $\indexinterpretationof{\atomenumerator}$, we define the basis encoding of the relation as the tensor $\onehotmapto{\exrelation}[\indvariableof{[\atomorder]}]$ with coordinates
+    \begin{align*}
+        \onehotmapofat{\exrelation}{\indexedindvariableof{[\catorder]}}
+        = \begin{cases}
+              1 & \ifspace (\indexinterpretationofat{0}{\indindexof{0}},\ldots,\indexinterpretationofat{\atomorder-1}{\indindexof{\atomorder-1}}) \in \exrelation \\
+              0 & \text{else}
+        \end{cases} \, .
+    \end{align*}
+\end{definition}
+
+%\begin{example}[Propositional Formulas]
+Let there be for $\atomenumeratorin$ sets $\arbsetof{\atomenumerator}$ of truth assignments to the $\atomenumerator$-th atom, which are all enumerated by $[2]$.
+A propositional formula then corresponds with a $\atomorder$-ary relation and we directly defined them in \defref{def:formulas} by their basis encoding.
+%\end{example}
+
+% Minterm interpretation
+%If we demand $\catdimof{\atomenumerator}=2$, we can interpret the one-hot encoding of  propositional formulas.
+
+% Knowledge Bases
+\begin{theorem}
+    The encoding of any $\catorder$-ary relation
+    \begin{align*}
+        \exrelation = \{ \shortcatindices^{\decindex} \wcols \decindexin \} \subset \bigtimes_{\catenumeratorin} \truthset \,
+    \end{align*}
+    where the objects in $\truthset$ are enumerated by $\catvariableof{\atomenumerator}$ with the standard index interpretation function (see \secref{sec:booleanEncoding})
+    \begin{align*}
+        \indexinterpretationat{\truesymbol} = 1 \andspace \indexinterpretationat{\falsesymbol} = 0 \, ,
+    \end{align*}
+    coincides with the propositional formula
+    \begin{align*}
+        \formulaat{\shortcatvariables} = \bigvee_{\decindexin} \termof{\catindex_{[\atomorder]}^{\decindex}} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    By definition, the encoding $\onehotmapof{\exrelation}$ is decomposed as
+    \begin{align*}
+        \onehotmapofat{\exrelation}{\shortcatvariables}
+        = \sum_{\decindexin} \onehotmapofat{\shortcatindices^{\decindex}}{\shortcatvariables} \, .
+    \end{align*}
+    By \theref{the:tensorToMaxMinTerms} this is equal to
+    \begin{align*}
+        \hypercoreat{\shortcatvariables} = \left( \bigvee_{\hyperonecoordinates}
+        \termof{\catzeropositions}{\catonepositions}
+        \right)[\shortcatvariables]
+        = \bigvee_{\decindexin} \termof{\catindex_{[\atomorder]}^{\decindex}} \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+
+\begin{example}[Relational Databases]
+    Relational Databases can be encoded as tensors using the relation encoding scheme.
+    Each column is thereby understood as an enumeration variable, which values form the sets $\arbsetof{\catenumerator}$.
+\end{example}
+
+% Sparse Representations
+Let us notice, that the dimensionality of the tensor space used for representing a relation is
+\begin{align*}
+    \prod_{\catenumeratorin} \cardof{\arbsetof{\catenumerator}}
+\end{align*}
+and therefore growing exponentially with the number of variables.
+Relations are however often sparse, in the sense that
+\begin{align*}
+    \cardof{\exrelation} << \prod_{\catenumeratorin} \cardof{\arbsetof{\catenumerator}} \, .
+\end{align*}
+It is therefore often beneficially to choose sparse encoding schemes, for example by restricted CP formats (see \charef{cha:sparseRepresentation}) to represent $\onehotmapof{\exrelation}$.
+

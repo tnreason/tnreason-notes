@@ -1,39 +1,41 @@
-\section{Graph Controlled Circuits}
+\section{Directed Circuits}
 
-\red{All circuits presented in this work are graph controlled circuits, which are a directed class of quantum circuits.
-We here show, that their measurement distributions are equivalent with Bayesian networks.}
+We introduce a class of quantum circuits, which we frame directed circuits.
+We show that their measurement distribution is equivalent with that of Bayesian networks.
 
+%\red{All circuits presented in this work are graph controlled circuits, which are a directed class of quantum circuits.
+%We here show, that their measurement distributions are equivalent with Bayesian networks.}
 
 \subsection{Definition}
 
 We build on the definition of uniformly controlled unitaries (see \cite{mottonen_transformation_2005}), and study their alignment along directed acyclic hypergraphs.
 % Hypergraphs
-We define graph-controlled circuits using hypergraphs, which nodes are associated with the qubits of the circuit.
+We define directed circuits using hypergraphs, which nodes are associated with the qubits of the circuit.
 The hyperedges are tuples of two subsets of the qubits, namely the incoming qubits representing control and the outgoing qubit representing the target of a unitary.
 To each hyperedge we then associate a uniformly controlled unitary.
 
-\begin{definition}[Graph-Controlled Circuit]
+\begin{definition}[Directed Circuit]
     Let $\graph=(\nodes,\edges)$ be a directed acyclic hypergraph, where each hyperedge has exactly one outgoing node and all nodes appear exactly once as outgoing nodes of an hyperedge.
-    Then a by $\graph$ controlled circuit is a decoration of the edges $\edge=(\incomingnodes,\{\node\})\in\edges$ by uniformly controlled unitaries
+    Then a directed circuit on $\graph$ is a decoration of the edges $\edge=(\incomingnodes,\{\node\})\in\edges$ by uniformly controlled unitaries
     \begin{align*}
-        \contunitaryofat{\edge}{\catvariableof{\node,\insymbol},\catvariableof{\node,\outsymbol},\catvariableof{\incomingnodes,\outsymbol}} \, .
+        \contunitaryofat{\edge}{\ccatvariableof{\insymbol}{\node},\ccatvariableof{\outsymbol}{\node},\ccatvariableof{\outsymbol}{\incomingnodes}} \, .
     \end{align*}
 \end{definition}
 
-\begin{example}
-    Each \activationCircuit{} is a graph-controlled circuit, where the corresponding hypergraph consists in $\nodes=\shortcatvariables\cup\{\avariable\}$ and a single edge $\edges=(\shortcatvariables,\{\avariable\})$.
-\end{example}
+%\begin{example}
+%    Each \activationCircuit{} is a directed circuit, where the corresponding hypergraph consists in $\nodes=\shortcatvariables\cup\{\avariable\}$ and a single edge $\edges=(\shortcatvariables,\{\avariable\})$.
+%\end{example}
 
 % Orders of the qubits respecting directionality
-Since the hypergraph $\graph$ to a graph-controlled circuit is acyclic, we find an order of the qubits, such that to each qubit appearing in the outgoing qubits of a hyperedge is ordered after the incoming qubits.
-In such way, we have a unique definition of the graph-controlled circuit as a concatenation of the controlled unitaries respecting a directionality order.
+Since the hypergraph $\graph$ to a directed circuit is acyclic, we find an order of the qubits, such that to each qubit appearing in the outgoing qubits of a hyperedge is ordered after the incoming qubits.
+In such way, we have a unique definition of the directed circuit as a concatenation of the controlled unitaries respecting a directionality order.
 When there are multiple orders respecting the directionality, then the concatenation respecting the orders all lead to an equivalent circuit.
 % Should we show this using TN?
 
 %%
 \begin{example}[Generic State Representation]
     \label{exa:genericControlCircuit}
-    In \cite{mottonen_transformation_2005} a preparation scheme for arbitrary states with real and positive amplitudes by graph-controlled circuits is presented.
+    In \cite{mottonen_transformation_2005} a preparation scheme for arbitrary states with real and positive amplitudes by directed circuits is presented.
     Therein, the hypergraph $\graph=(\nodes,\edges)$ is constructed as follows:
     \begin{itemize}
         \item Nodes $\nodes={[\catorder]}$
@@ -52,7 +54,7 @@ When there are multiple orders respecting the directionality, then the concatena
 We now study circuits preparing q-samples of Bayesian Networks.
 
 
-%A specific scheme to construct graph-controlled circuits with specific Bayesian Networks as measurement distributions are \activationCircuits{}.
+%A specific scheme to construct directed circuits with specific Bayesian Networks as measurement distributions are \activationCircuits{}.
 %Here we restrict during the preparation procedure to real and positive amplitudes (i.e. prepare q-samples).
 
 
@@ -73,7 +75,7 @@ For any $p\in[0,1]$ we then have
 \begin{definition}[\ActivationCircuit{}]
     Given a function
     \begin{align*}
-        \exformula : \facstates \rightarrow [0,1]
+        \exformula \wcols \facstates \rightarrow [0,1]
     \end{align*}
     its \activationCircuit{} is the uniformly controlled unitary
     $\qcaencodingofat{\exformula}{\cavariable{\insymbol},\cavariable{\outsymbol},\shortcatvariables}$ defined as
@@ -93,6 +95,7 @@ For any $p\in[0,1]$ we then have
 When we have a probability tensor, its \activationCircuit{} be prepared, since all values are in $[0,1]$.
 Note that for rejection sampling, only the quotients of the values are important, we can therefore scale the value by a scalar such that the mode is $1$.
 
+
 %% Rescaling tensors with larger coordinates
 Tensors $\hypercoreat{\shortcatvariables}$ with non-negative coordinates can be encoded after dividing them by their maximum, that is the \activationCircuit{} of the function
 \begin{align*}
@@ -104,7 +107,7 @@ When the maximum of the tensor is not known, it can be replaced by an upper boun
 
 \subsubsection{Q-samples of Bayesian Networks}
 
-%We revisit the correspondence of Bayesian Networks with graph-controlled circuits, by showing that any Bayesian Network can be prepared by \activationCircuits{} of the conditional probability distributions.
+%We revisit the correspondence of Bayesian Networks with directed circuits, by showing that any Bayesian Network can be prepared by \activationCircuits{} of the conditional probability distributions.
 Q-samples of Bayesian Networks can be prepared by quantum circuits, where each conditional probability distribution is prepared by an \activationCircuit{}.
 
 \begin{theorem}[\cite{low_quantum_2014}]
@@ -154,19 +157,19 @@ Q-samples of Bayesian Networks can be prepared by quantum circuits, where each c
     }\label{fig:cpdEncoding}
 \end{figure}
 
-\input{examples/graph-controlled-circuits/grover-rudolph}
+\input{examples/grover-rudolph}
 
 
 \subsection{Equivalence with Bayesian Networks}
 
 %% Missing direction of Equivalence with BN
-Above we have shown, how Bayesian Networks can be prepared by \activationCircuits{}, which are a class of graph-controlled circuits.
-We now show, that the measurement distribution of any graph-controlled circuit is a Bayesian Network.
-It then follows that the set of distributions prepared by graph-controlled circuits is exactly the set of Bayesian Networks.
+Above we have shown, how Bayesian Networks can be prepared by \activationCircuits{}, which are a class of directed circuits.
+We now show, that the measurement distribution of any directed circuit is a Bayesian Network.
+It then follows that the set of distributions prepared by directed circuits is exactly the set of Bayesian Networks.
 
 
 This is closely connected to the chain decomposition of probability distributions, and their construction.
-In \cite{low_quantum_2014} Bayesian Networks are prepared by graph-controlled circuits.
+In \cite{low_quantum_2014} Bayesian Networks are prepared by directed circuits.
 When in the graph $\graph$ each node appears at most once as outgoing node, it is also the hypergraph to a family of Bayesian Networks.
 The measurement distributions of a state prepared by a $\graph$-controlled Circuit acting on disentangled initial states are exactly the Bayesian Networks with respect to $\graph$.
 
@@ -205,7 +208,7 @@ The measurement distributions of a state prepared by a $\graph$-controlled Circu
     Since the equivalence holds for any coordinate, this establishes the equivalence of the measurement distribution of $\qstatewith$ and $\probwith$.
 \end{proof}
 
-While we have already shown by \lemref{lem:BNtoGCC} that arbitrary Bayesian Networks can be prepared by graph-controlled circuits, we now show the converse, namely that any distribution prepared by graph-controlled circuits is a Bayesian Network.
+While we have already shown by \lemref{lem:BNtoGCC} that arbitrary Bayesian Networks can be prepared by directed circuits, we now show the converse, namely that any distribution prepared by directed circuits is a Bayesian Network.
 To this end, we use the characterization of Bayesian Networks by the conditional independencies they encode (see \cite{koller_probabilistic_2009}).
 To be more precise, we need to show that any node variable is conditionally independent of its non-descendants given its parents.
 
@@ -266,7 +269,7 @@ When there are phase cores which do not have such a decomposition, the correspon
 \cite{mottonen_transformation_2005} shows, that when the graph is chosen as in \exaref{exa:genericControlCircuit}, then also the phases can be represented.
 
 
-\section{Ancilla Augmentation}
+\subsection{Ancilla Augmentation}
 
 \red{We provide here some further theory underlying the ancilla augmentation of \ComputationActivationNetworks{}.}
 
@@ -274,7 +277,7 @@ Graph controlled circuits prepare Bayesian Networks, and do not apply to undirec
 We therefore introduce in the following ancilla augmentation, which is a method to represent Markov Networks as conditioned Bayesian Network.
 This enables usage of the previously used preparation schemes for Bayesian Networks.
 
-\subsection{Post-selection by Ancilla Variables}
+\subsubsection{Post-selection by Ancilla Variables}
 
 First of all we define ancilla augmentation and then show how they can be prepared as measurement distributions using \activationCircuits{}.
 
@@ -342,7 +345,7 @@ and accepting the sample with probability
 %    \normalizationofwrt{\secprobtensor}{\avariable=1}{\shortcatvariables} \, .
 \end{align*}
 
-\subsection{Construction based on Uniform Distributions}
+\subsubsection{Construction based on Uniform Distributions}
 
 We construct ancilla augmentations based on the decomposition \eqref{eq:ancillaDecomposition} where the marginal of $\shortcatvariables$ is the uniform distribution, that is
 \begin{align*}
@@ -384,7 +387,7 @@ Given a distribution $\probat{\shortcatvariables}$ we add an ancilla variable $\
 
 \begin{figure}
     \begin{center}
-        \input{tikz/graph-controlled-circuits/ancilla_augmentation}
+        \input{tikz/ancilla_augmentation}
     \end{center}
     \caption{
         Ancilla augmentation of a distribution $\probwith$.
@@ -448,7 +451,7 @@ Given a distribution $\probat{\shortcatvariables}$ we add an ancilla variable $\
 % Circuit diagram and acceptance probability
 In our tensor network circuit notation, \lemref{lem:actCircuitAncilla} states the equation
 \begin{center}
-    \input{tikz/graph-controlled-circuits/activation_ancilla_preparation}
+    \input{tikz/activation_ancilla_preparation}
 \end{center}
 for the acceptance probability (see proof of \lemref{lem:actCircuitAncilla})
 \begin{align*}
@@ -460,7 +463,7 @@ If $\probwith$ is not uniform, we can improve by building the \activationCircuit
     \frac{1}{\max_{\shortcatindicesin}\probat{\indexedshortcatvariables}} \cdot \probwith \, .
 \end{align*}
 
-\subsection{Best Acceptance Probability by $\infty$-Renyi Divergence}
+\subsubsection{Best Acceptance Probability by $\infty$-Renyi Divergence}
 
 Let us now show, how the best acceptance probability in sets of ancilla augmented distributions is connected with $\infty$-Renyi divergences.
 For $0<\alpha<\infty$ and $\alpha\neq 1$ the Renyi Divergence is defined as
@@ -580,11 +583,11 @@ When sampling with Quantum Circuits, this could be implemented by a state prepar
 It would be interesting to train variational quantum circuits for this task.
 However, when we want to apply the same scheme as above, one needs to encode $\mathbb{Q}$ into the ancilla preparing rotations, so $\mathbb{Q}$ would need to be an elementary \ComputationActivationNetwork{} as well.
 
-\subsection{Augmentation of Markov Networks}
+\subsubsection{Augmentation of Markov Networks}
 
 Let us now show how multiple ancilla variables can be designed to sample from arbitrary Markov Networks.
 
-\input{examples/graph-controlled-circuits/elementary_tensors}
+\input{examples/elementary_tensors}
 
 Let there be a Markov Network, i.e. any non-vanishing tensor network of non-negative tensors, which is understood as a probability disribution after normalization (see \cite{goessmann_tensor_2026}).
 For an example of a Markov Network see \figref{fig:markovNetworkAugmentation}a.
@@ -676,7 +679,7 @@ Using the \activationCircuits{} studied above, we can now determine a rejection 
     \end{align*}
     We then build a concatenation of activation circuits to each function $\exfunctionof{\edge}$, where each has a distinct ancilla qubit $\avariableof{\edge}$.
 %    We build the concatenation of activation circuits to each tensor $\hypercoreofat{\edge}{\catvariableof{\edge}}$
-    Then the constructed graph-controlled circuit acting on the state
+    Then the constructed directed circuit acting on the state
     \begin{align*}
         \sqrt{\frac{1}{\prod_{\nodein}\catdimof{\node}}}\onesat{\nodevariables} \otimes \left(\bigotimes_{\edgein}\onehotmapofat{0}{\avariableof{\edge}}\right)
     \end{align*}
@@ -723,7 +726,7 @@ In this case, one faces a tradeoff between the size of the circuit to prepare an
 
 \begin{figure}
     \begin{center}
-        \input{tikz/graph-controlled-circuits/markov_network_augmentation}
+        \input{tikz/markov-network-augmentation}
     \end{center}
     \caption{Ancilla augmentation of a Markov Network a) onto a Bayesian Network b).
     To this end the arbitrary non-negative cores $\hypercoreof{\edge}$ are replaced by directed ancilla augmented cores $\sechypercoreof{\edge}$, with ancilly variables outgoing.}

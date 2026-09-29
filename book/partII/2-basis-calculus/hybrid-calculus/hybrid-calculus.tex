@@ -1,0 +1,162 @@
+\sect{Hybrid Basis and Coordinate Calculus}\label{sec:hybridCalculus}
+
+% Motivation: Effective Coordinate Calculus
+In some situations, we can perform basis calculus more effectively by avoiding image enumeration variables, and instead apply coordinatewise transforms on tensors (see \defref{def:coordinatewiseTransform}).
+As we show here, these include conjunctions, which correspond with coordinatewise multiplication, and negation, which correspond with coordinatewise subtraction from the trivial tensor.
+Such schemes are applied for example in \cite{tsilionis_tensor-based_2024} in batchwise logical inference.
+
+\begin{figure}
+    \begin{center}
+        \input{tikz/skeleton_elements.tex}
+    \end{center}
+    \caption{Decomposition schemes by hybrid calculus, using coordinatewise transforms of tensors (see \defref{def:coordinatewiseTransform}).
+    a) Conjunction performed by coordinatewise multiplications.
+    b) Negations performed by coordinatewise subtraction from one.}\label{fig:ConNegDecomposition}
+\end{figure}
+
+\begin{theorem}
+    \label{the:effectiveConjunction}
+    For any formulas $\exformula,\secexformula$ we have
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\land}{\headvariableof{\exformula\land\secexformula},\formulavar,\secexformulavar},\tbasisat{\headvariableof{\exformula\land\secexformula}}
+        }{\formulavar,\secexformulavar}
+        = \tbasisat{\formulavar} \otimes \tbasisat{\secexformulavar} \, .
+    \end{align*}
+    In particular, it holds that (see \figref{fig:ConNegDecomposition}a)
+    \begin{align*}
+    (\exformula\land\secexformula)[\shortcatvariables]
+        = \contractionof{\exformula,\secexformula}{\shortcatvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We decompose
+    \begin{align*}
+        \bencodingofat{\land}{\headvariableof{\exformula\land\secexformula},\formulavar,\secexformulavar}
+        = \tbasisat{\headvariableof{\exformula\land\secexformula}} \otimes \tbasisat{\formulavar} \otimes \tbasisat{\secexformulavar}
+        + \fbasisat{\headvariableof{\exformula\land\secexformula}} \left( \onesat{\formulavar,\secexformulavar} -  \tbasisat{\formulavar} \otimes \tbasisat{\secexformulavar} \right)
+    \end{align*}
+    and get the first claim as
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\land}{\headvariableof{\exformula\land\secexformula},\formulavar,\secexformulavar},\tbasisat{\headvariableof{\exformula\land\secexformula}}
+        }{\formulavar,\secexformulavar}
+        & = \contractionof{
+            \tbasisat{\headvariableof{\exformula\land\secexformula}} \otimes \tbasisat{\formulavar} \otimes \tbasisat{\secexformulavar},\tbasisat{\headvariableof{\exformula\land\secexformula}}
+        }{\formulavar,\secexformulavar} \\
+        & = \tbasisat{\formulavar} \otimes \tbasisat{\secexformulavar} \, .
+    \end{align*}
+    To show the second claim we use
+    \begin{align*}
+    (\exformula\land\secexformula)[\shortcatvariables]
+        &= \contractionof{
+            \bencodingofat{\exformula}{\formulavar,\shortcatvariables},
+            \bencodingofat{\secexformula}{\secexformulavar,\shortcatvariables},
+            \bencodingofat{\land}{\headvariableof{\exformula\land\secexformula},\formulavar,\secexformulavar},
+            \tbasisat{\headvariableof{\exformula\land\secexformula}}
+        }{\shortcatvariables} \\
+        &  = \contractionof{
+            \bencodingofat{\exformula}{\formulavar,\shortcatvariables},
+            \bencodingofat{\secexformula}{\secexformulavar,\shortcatvariables},
+            (\tbasisat{\formulavar}\otimes \tbasisat{\secexformulavar})
+        %\bencodingofat{\land}{\formulavar,\secexformulavar,\headvariableof{\exformula\land\secexformula}}
+        }{\shortcatvariables} \\
+        &= \contractionof{\exformula,\secexformula}{\shortcatvariables} \, . \qedhere
+    \end{align*}
+\end{proof}
+
+A similar decomposition holds for negations, as we show next.
+
+\begin{theorem}
+    For any formula $\exformula$ we have
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\lnot}{\headvariableof{\lnot\exformula},\formulavar},\tbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar}
+        = \fbasisat{\formulavar} =  \onesat{\formulavar} - \tbasisat{\formulavar} \, .
+    \end{align*}
+    and
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\lnot}{\formulavar,\headvariableof{\lnot\exformula}},\fbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar}
+        = \tbasisat{\formulavar} \, .
+    \end{align*}
+    In particular, it holds that (see \figref{fig:ConNegDecomposition}b)
+    \begin{align*}
+    (\lnot\exformula)[\shortcatvariables]
+        = \onesat{\shortcatvariables} - \formulaat{\shortcatvariables}  \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We have
+    \begin{align*}
+        \bencodingofat{\lnot}{\headvariableof{\lnot\exformula},\formulavar}
+        = \tbasisat{\headvariableof{\lnot\exformula}} \otimes \fbasisat{\formulavar}
+        +\fbasisat{\headvariableof{\lnot\exformula}} \otimes \tbasisat{\formulavar}
+    \end{align*}
+    and therefore get the second claim by contraction with $\fbasisat{\headvariableof{\lnot\exformula}}$
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\lnot}{\formulavar,\headvariableof{\lnot\exformula}},\fbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar}
+        &=  \contractionof{
+            \tbasisat{\headvariableof{\lnot\exformula}} \otimes \fbasisat{\formulavar},\fbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar} \\
+        &\quad +  \contractionof{
+            \fbasisat{\headvariableof{\lnot\exformula}} \otimes \tbasisat{\formulavar},\fbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar}
+        \\
+        &= \tbasisat{\formulavar} \, .
+    \end{align*}
+    The first equation of the first claim follows similarly by contraction with $\tbasisat{\headvariableof{\lnot\exformula}}$ as
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\lnot}{\headvariableof{\lnot\exformula},\formulavar},\tbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar}
+        = \fbasisat{\formulavar}
+    \end{align*}
+    and the second equation using that $\onesat{\catvariable}=\fbasisat{\catvariable}+\tbasisat{\catvariable}$ and hence
+    \begin{align*}
+        \fbasisat{\formulavar} =  \onesat{\formulavar} - \tbasisat{\formulavar} \, .
+    \end{align*}
+    To show the third claim, we contract the computation tensor $\bencodingofat{\exformula}{\formulavar,\shortcatvariables}$ to the formula $\exformula$ on both sides of the first claim and get
+    \begin{align*}
+        &\contractionof{
+            \bencodingofat{\exformula}{\formulavar,\shortcatvariables},\bencodingofat{\lnot}{\headvariableof{\lnot\exformula},\formulavar},\tbasisat{\headvariableof{\lnot\exformula}}
+        }{\formulavar} \\
+        &\quad=
+        \contractionof{\bencodingofat{\exformula}{\formulavar,\shortcatvariables},\onesat{\formulavar}}{\formulavar}
+        - \contractionof{\bencodingofat{\exformula}{\formulavar,\shortcatvariables},\tbasisat{\formulavar}}{\formulavar} \, .
+    \end{align*}
+    We simplify this equation using the trivial head contraction identity of directed tensors of \corref{cor:onesHead} stating that % and \lemref{lem:formulaEncodingDecomposition}
+%    For any formula $\formulaat{\shortcatvariables}$ we further have by \lemref{lem:formulaEncodingDecomposition}
+    \begin{align*}
+        \formulaat{\shortcatvariables} = \contractionof{\bencodingofat{\exformula}{\formulavar,\shortcatvariables},\tbasisat{\formulavar}}{\shortcatvariables}
+        \andspace
+        \lnot\formulaat{\shortcatvariables} = \contractionof{\bencodingofat{\exformula}{\formulavar,\shortcatvariables},\fbasisat{\formulavar}}{\shortcatvariables}
+    \end{align*}
+    and arrive at the third claim
+    \begin{align*}
+    (\lnot\exformula)[\shortcatvariables]
+        = \onesat{\shortcatvariables} - \formulaat{\shortcatvariables}  \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+% Usage
+These theorems provide a mean to represent logical formulas by sums of one-hot encodings.
+Since any propositional formula can be represented by compositions of negations and conjunctions, they are universal.
+We further notice, that the resulting decomposition is a basis+ CP format, as further discussed in \charef{cha:sparseRepresentation}.
+In \figref{fig:DecompositionExample} we provide an example of this decomposition.
+
+
+\begin{figure}
+    \begin{center}
+        \input{tikz/skeleton_example.tex}
+    \end{center}
+    \caption{
+        Example of a decomposition by hybrid calculus of a formula
+        $\formulaat{\catvariableof{1},\catvariableof{2}} = \textcolor{blue}{\lnot} \secexformula^{(1)}[\catvariableof{1},\catvariableof{2}] \textcolor{red}{\land}  \secexformula^{(2)}[\catvariableof{1},\catvariableof{2}]$ into a sum of contractions.
+    }\label{fig:DecompositionExample}
+\end{figure}
+

@@ -1,0 +1,148 @@
+\section{Basis Encoding of Functions}
+
+Let us now restrict to relations, which have an expression by functions.
+We in this section then show, how contractions of their encodings can be exploited in function evaluation.
+
+\subsection{Definition}
+
+%We now generalize the representation scheme towards maps between arbitrary unstructured sets.
+
+\begin{definition}[Basis encoding of maps]
+    \label{def:functionRelationEncoding}
+    Any map
+    \begin{align*}
+        \exfunction\defcols \inset \rightarrow \outset
+    \end{align*}
+    can be represented by a relation
+    \begin{align*}
+        \exrelationof{\exfunction} \coloneqq \left\{ \big(x,\exfunction(x)\big) \wcols x \in\inset \right\} \subset \inset \times \outset \, .
+    \end{align*}
+    Given a enumeration of the sets by $\indvariableof{\insymbol}$ and $\indvariableof{\outsymbol}$ we define the basis encoding of $\exfunction$ as the tensor
+    \begin{align*}
+        \bencodingofat{\exfunction}{\indvariableof{\outsymbol},\indvariableof{\insymbol}}
+        = \onehotmapofat{\exrelationof{\exfunction}}{\indvariableof{\insymbol},\indvariableof{\outsymbol}}  \, .
+    \end{align*}
+\end{definition}
+
+\begin{remark}[Reduction to images]
+    % Image enumeration
+    When $\exfunction$ maps into a set of infinite cardinality, we restrict $\outset$ to the image of $\exfunction$ and enumerate the image by a variable $\indvariableof{\exfunction}$.
+    This scheme is applied, when $\exfunction$ is itself a tensor, i.e. $\outset=\rr$.
+    While the variable $\indvariableof{\exfunction}$ can in general be of the same cardinality as the domain set $\inset$, it will be valued in $[2]$ when considering boolean tensors.
+\end{remark}
+
+% Characterization of the directed and boolean tensors
+We notice that any basis representation of a function is also a directed tensor with incoming variables to the domain and outgoing variables to the image.
+It furthermore holds, that the set of directed and boolean tensors is characterized by the basis encoding of functions.
+This is shown in the next theorem, by the claim that any boolean tensor which is directed is the basis representation of a function.
+
+\begin{theorem}
+    \label{the:bencodingDirected}
+    Let $\inset,\outset$ be sets and $\exrelation\subset\inset\times\outset$ a relation.
+    If and only if there exists a map $\exfunction:\inset\rightarrow\outset$ such that $\exrelation=\exrelationof{\exfunction}$, the basis encoding $\bencodingof{\exfunction}$ is a directed tensor with $\indvariableof{\insymbol}$ incoming and $\indvariableof{\outsymbol}$ outgoing.
+\end{theorem}
+\begin{proof}
+    \proofrightsymbol{}:
+    When $\exfunction$ is a function, we have for any $\indindexofin{\insymbol}$
+    \begin{align*}
+        \sum_{\indindexofin{\outsymbol}} \bencodingofat{\exfunction}{\indexedindvariableof{\outsymbol},\indexedindvariableof{\insymbol}}
+        =  \bencodingofat{\exfunction}{\indvariableof{\outsymbol}=\invindexinterpretationofat{\outsymbol}{\exfunctionat{\indexinterpretationofat{\insymbol}{\indindexof{\insymbol}}}},\indexedindvariableof{\insymbol}}
+        = 1 \, .
+    \end{align*}
+    Thus, $\bencodingofat{\exfunction}{\indvariableof{\outsymbol},\indvariableof{\insymbol}}$ is a directed tensor with variables $\indvariableof{\insymbol}$ incoming and $\indvariableof{\outsymbol}$ outgoing.
+
+    \proofleftsymbol{}:
+    Conversely let there be a relation $\exrelation$, such that $\bencodingof{\exrelation}$ is directed.
+    To this end, we observe that for any $\indindexofin{\insymbol}$ the tensor
+    \begin{align*}
+        \onehotmapofat{\exrelation}{\indexedindvariableof{\insymbol},\indvariableof{\outsymbol}}
+    \end{align*}
+    is a boolean tensor with coordinate sum one and therefore a basis vector.
+    It follows that the function $\exfunction : \inset \rightarrow \outset $ defined for $x\in\inset$ as
+    \begin{align*}
+        \exfunctionat{x}
+        = \indexinterpretationofat{\outsymbol}{\invonehotmapof{\onehotmapofat{\exrelation}{\indvariableof{\insymbol}=\invindexinterpretationofat{\insymbol}{x},\indvariableof{\outsymbol}}}}
+    \end{align*}
+    is well-defined.
+    We then have by construction
+    \begin{align*}
+        \bencodingofat{\exfunction}{\indvariableof{\outsymbol},\indvariableof{\insymbol}}
+        & = \sum_{\indindexofin{\insymbol}}
+        \onehotmapofat{\exfunction(\indindexof{\insymbol})}{\indvariableof{\outsymbol}} \otimes
+        \onehotmapofat{\indindexof{\insymbol}}{\indvariableof{\insymbol}} \\
+        & =  \sum_{\indindexofin{\insymbol}} \onehotmapofat{\exrelation}{\indexedindvariableof{\insymbol},\indvariableof{\outsymbol}} \otimes
+        \onehotmapofat{\indindexof{\insymbol}}{\indvariableof{\insymbol}} \\
+        & = \onehotmapofat{\exrelation}{\indvariableof{\outsymbol},\indvariableof{\insymbol}}
+    \end{align*}
+    and therefore by \defref{def:functionRelationEncoding} $\exrelation=\exrelationof{\exfunction}$.
+\end{proof}
+
+% Grid sets
+We are specially interested in sets of states of a factored system, which amounts to the case in \defref{def:functionRepresentation}.
+Those state sets have a decomposition into a cartesian product of $\atomorder$ sets
+\[ \arbset = \facstates \, . \]
+The most obvious enumeration of the set $\arbset$ is therefore by the collection of state variables $\{\catvariableof{\atomenumerator}\wcols \atomenumeratorin \}$.
+Functions between states of factored systems with $\atomorder_{\insymbol}$ and $\atomorder_{\outsymbol}$ state variables can be represented by $\atomorder_{\insymbol}+\atomorder_{\outsymbol}$-ary relations and \defref{def:functionRelationEncoding} has an obvious generalization to this case with multiple enumeration variables.
+
+%% NOT NEEDED -> Done in propositional logics
+%% Conditional
+%Since the basis encoding of any map between factored systems is directed, it can be interpreted by a conditional probability tensor, as we state next.
+%
+%%% Maps
+%\begin{corollary}%\label{the:condProbFunctionRepresentation}
+%	The basis encoding $\bencodingof{\exfunction}$ (see \defref{def:functionRepresentation}) of a function $\exfunction$ between factored systems is a conditional probability tensor, where the legs to the image system are the conditions and the legs to the target system the distribution legs.
+%\end{corollary}
+%
+%%% Deterministic by construction
+%These are deterministic conditional probability tensors, in the sense that any slice with respect to the input variables is a basis tensor.
+%Through contractions with distribution tensors (e.g. distributions in domain systems) they get stochastic.
+%This is for example the case in the empirical distribution, which can be understood as the forwarding of the uniform distribution on the sample enumeration.
+
+
+
+\subsection{Function Evaluation}
+
+We now justify the nomenclature of basis calculus, by showing that contraction with basis elements produce the one-hot encoded function evaluation.
+
+\begin{theorem}[Function evaluation in Basis Calculus]
+    \label{the:basisCalculus}
+    Retrieving the value of the function $\exfunction$ at a specific state is then the contraction of the tensor representation with the one-hot encoded state.
+    For any $\arbelement\in\inset$ we have
+    \begin{align*}
+        \onehotmapofat{\invindexinterpretationofat{\outsymbol}{\exfunctionat{\arbelement}}}{\indvariableof{\outsymbol}}
+        = \contractionof{
+            \bencodingofat{\exformula}{\indvariableof{\outsymbol},\indvariableof{\insymbol}},
+            \onehotmapofat{\invindexinterpretationofat{\insymbol}{\arbelement}}{\indvariableof{\insymbol}}
+        }{\indvariableof{\outsymbol}} \, .
+    \end{align*}
+    Thus, we can retrieve the function evaluation by the inverse one-hot mapping as
+    \begin{align*}
+        \exfunctionat{\arbelement} = \invonehotmapof{\contractionof{
+            \bencodingofat{\exformula}{\indvariableof{\outsymbol},\indvariableof{\insymbol}},
+            \onehotmapofat{\invindexinterpretationofat{\insymbol}{\arbelement}}{\indvariableof{\insymbol}}
+        }{\indvariableof{\outsymbol}}} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    From the representation
+    \begin{align*}
+        \bencodingofat{\exfunction}{\indvariableof{\outsymbol},\indvariableof{\insymbol}}
+        & =  \sum_{\indindexofin{\insymbol}}
+        \onehotmapofat{(\invindexinterpretationof{\outsymbol} \circ \exfunction \circ \indexinterpretationof{\insymbol}) \indindexof{\insymbol}
+        }{\indvariableof{\insymbol}}
+        \otimes
+        \onehotmapofat{\indindexof{\insymbol}}{\indvariableof{\insymbol}}
+    \end{align*}
+    and the orthonormality of the one-hot encodings of the input enumeration we get
+    \begin{align*}
+        \contractionof{
+            \bencodingofat{\exformula}{\indvariableof{\outsymbol},\indvariableof{\insymbol}},
+            \onehotmapofat{\invindexinterpretationofat{\insymbol}{\arbelement}}{\indvariableof{\insymbol}}
+        }{\indvariableof{\outsymbol}}
+        = \onehotmapofat{\invindexinterpretationofat{\outsymbol}{\exfunctionat{\arbelement}}}{\indvariableof{\outsymbol}} \, . & \qedhere
+    \end{align*}
+\end{proof}
+
+% Comparsion with coordinate calculus
+In comparison with the Coordinate Calculus scheme (see \theref{the:coordinateCalculus}), the Basis Calculus produces basis vectors of a functions evaluation instead of scalars.
+While this seems to produce unnecessary redundancy in representing a function, we will see in the following section, that this scheme is efficient in representing compositions of functions.
