@@ -1,0 +1,133 @@
+\subsection{Quantum Fourier transform}\glsadd{cc:FT:QFT}
+
+Recall the tensor network decomposition of the Fourier transform developed in \secref{sec:fourierTransform}.
+
+When $\vectorat{\shortcatvariables}$ is a quantum state, the Fourier transform can be understood as a unitary evolving the state.
+Since both the controlled $U$ tensor and the Hadamard $H$ are unitary, each of them can be implemented by a sequence of gates.
+For sparse implementation one can exploit that $U$ is a tensor product of matrices (i.e. single qubit gates).
+
+% Gate representation
+We introduce the gates
+\begin{align*}
+    R^{\catenumerator}[\ccatvariable{\insymbol},\ccatvariable{\outsymbol}] =
+    \coloredmatrixof{
+        1 & 0 \\
+        0 & \expof{2\pi i \frac{1}{2^\catenumerator}}
+    }{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}} \, .
+\end{align*}
+The unitary $U^{\catorder}$ in the tensor network decomposition of the fourier transform (see \secref{sec:ft:tn}) is then the tensor product
+\begin{align*}
+    U^{\catorder}[\ccatvariableof{\insymbol}{[\catorder]},\ccatvariableof{\outsymbol}{[\catorder]}]
+    = \bigotimes_{\catenumeratorin} R^{\catenumerator+2}[\ccatvariableof{\insymbol}{\catenumerator},\ccatvariableof{\outsymbol}{\catenumerator}] \, .
+\end{align*}
+Controlling $U^{\catorder}$ by $\catvariableof{\catorder}$ is equivalent to controlling each $R^{\catenumerator}$ gate.
+
+
+% Gate complexity
+To realize the QFT we need $\catorder$ single-qubit Hadamard gates and $\sum_{\catenumeratorin} \catenumerator = \frac{\catorder\cdot(\catorder-1)}{2}$ controlled diagonal single-qubit gates (to realize the $U^{\catenumerator}$ transforms).
+The gate complexity is therefore $\mathcal{O}(\catorder^2)$.
+
+\subsubsection{Walsh-Hadamard transform}\glsadd{qc:WH}
+
+In case of $\catdimof{\catenumerator}=2$, the Fourier transform is known to be the Walsh-Hadamard tranform.
+The transform is performed by applying Hadamard gates on each variable.
+This is equivalent with contraction of the tensor
+\begin{align*}
+    \hgate^{\catorder}\left[\catvariableof{[\catorder],\insymbol},\catvariableof{[\catorder],\outsymbol}\right] =
+    \bigotimes_{\catenumeratorin} \hgateat{\ccatvariableof{\catenumerator}{\insymbol},\ccatvariableof{\catenumerator}{\outsymbol}} \, ,
+\end{align*}
+which coordinates are
+\begin{align*}
+    \hgate^{\catorder}\left[\indexedcatvariableof{[\catorder],\insymbol},\indexedcatvariableof{[\catorder],\outsymbol}\right] =
+    \sqrt{\frac{1}{2^{\catorder}}} \left(-1\right)^{\sum_{\catenumeratorin}\catindexof{\catenumerator,\insymbol} \cdot \catindexof{\catenumerator,\outsymbol}} \, .
+\end{align*}
+
+We have
+\begin{align*}
+    \contractionof{\onehotmapofat{0}{\ccatvariable{\insymbol}},
+        \hgateat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}}{\ccatvariable{\outsymbol}}
+    &= \sqrt{\frac{1}{2}} \onesat{\ccatvariable{\outsymbol}} \\
+    \contractionof{\onehotmapofat{1}{\ccatvariable{\insymbol}},
+        \hgateat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}}{\ccatvariable{\outsymbol}}
+    &= \sqrt{\frac{1}{2}} \coloredmatrixof{1 \\ -1}{\ccatvariable{\outsymbol}}
+\end{align*}
+and conversely
+\begin{align*}
+    \contractionof{\sqrt{\frac{1}{2}} \onesat{\ccatvariable{\insymbol}},
+        \hgateat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}}{\ccatvariable{\outsymbol}}
+    &= \onehotmapofat{0}{\ccatvariable{\outsymbol}} \\
+    \contractionof{\sqrt{\frac{1}{2}} \coloredmatrixof{1 \\ -1}{\ccatvariable{\insymbol}},
+        \hgateat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}}{\ccatvariable{\outsymbol}}
+    &= \onehotmapofat{1}{\ccatvariable{\outsymbol}} \, .
+\end{align*}
+If and only if the function is constant, then the transformed state is the ground state.
+
+Let us present two known algorithms as the measurement of states prepared by \computationCircuits{}.
+
+\input{examples/deutsch-jozsa}
+
+% Generalization
+\todo{Another generalizations would be period detection.}
+Deutsch-Jozsa can be generalized to estimating the moments of a distribution given its q-sample.
+Note, that we have to demand a q-sample (i.e. vanishing phase tensor), otherwise the measurement is affected by the phase tensor and the Deutsch-Jozsa test is effectively done wrt another function.
+If for example the coordinates of the phase tensor are multiples of $\pi$, and the phases are thus $+1/-1$, then the test is done wrt the function $\exformula\oplus(\frac{1}{\pi}\phasecore)$ instead of $\exformula$.
+
+\input{examples/inversion-test}
+
+%\subsection{Further Overlap-measuring Circuits}
+Quantum Circuits such as the SWAP test and the Hadamard test (\cite[Section 3.6.1]{schuld_machine_2021}) can be used to measure overlaps of quantum states, which are the squared absolutes of contractions of two state tensors.
+\begin{itemize}
+    \item When we have preparation schemes for two tensors, we can control them with a common ancilla qubit and measure their contraction by a Hadamard test (alternatively, using the SWAP test and state preparation in two registers).
+    \item Can we extend these schemes to contractions of more general tensor networks?
+\end{itemize}
+
+%\subsection{Discussion}
+While the preparation of contracted basis encodings is done efficiently, accessing the prepared state by measurements is a bottleneck.
+This is a typical \emph{quantum state tomography} problem \cite{roth_semi-device-dependent_2023}.
+Sparsity of the contracted state can be exploited to probabilistically guarantee precise estimates \cite{gross_quantum_2010}.
+However, when deciding whether $\exformula$ is satisfiable, based on the prepared contraction $\sqrt{\normalizationof{\bencodingofat{\exformula}{\headvariable,\shortcatvariables}}{\headvariable}}$, we have an exponentially small error tolerance.
+Moreover, the applied sample mean is the UMVUE (Uniformly Minimum Variance Unbiased Estimator, see \cite{casella_statistical_2001}), and can thus not be improved by other unbiased estimators.
+
+
+
+
+\subsubsection{Period detection}
+
+QFT is a typical component in Quantum algorithms: QFT can be done efficiently with $\mathcal{0}(\catorder^2)$ controlled single-qubit gates.
+If the Fourier transform is a basis vector, a single measurement is sufficient to determine it.
+We now investigate how this can be used in the detection of periods.
+
+%\subsubsection{Detecting periods}
+
+Based on the support of the Fourier transform, one can derive the periods of a function.
+Periods are indices $(\thirdcatvariableof{0},\ldots,\thirdcatvariableof{\catorder-1})$ such that
+\begin{align*}
+    \hypercoreat{\shortcatvariables=\shortcatindices}
+    = \hypercoreat{\shortcatvariables=\shortcatindices\oplus\thirdcatindexof{[\catorder]}}
+\end{align*}
+where $\oplus$ is the position-wise sum $\mathrm{mod}\,\,\catdimof{\catenumerator}$.
+
+
+Each supported index of the Fourier transform corresponds with periods in the function.
+The periods of the functions are thus at least the intersection of those (when assuming more structure one might have more periods).
+
+%% WH-case
+In case of the Walsh-Hadamard transform (i.e. $\catdimof{\catenumerator}=2$), we can easily determine the periods corresponding to each basis vector.
+The inverse Fourier transform of $\onehotmapofat{\selindexof{[\catorder]}}{\selvariableof{[\catorder]}}$ is the tensor
+\begin{align*}
+    \left(\bigotimes_{\catenumeratorin \wcols \selindexof{\catenumerator}=0} \hplusbasat{\catvariableof{\catenumerator}} \right)
+    \otimes
+    \left(\bigotimes_{\catenumeratorin \wcols \selindexof{\catenumerator}=1} \hminusbasat{\catvariableof{\catenumerator}} \right) \, .
+\end{align*}
+
+For each $\hplusbasat{\catvariableof{\catenumerator}}$ we have a period generator of $\onehotmapof{\catenumerator}$.
+For each pair of $\hminusbasat{\catvariableof{\catenumerator}}\otimes \hminusbasat{\catvariableof{\seccatenumerator}}$ we have a period generator of $\onehotmapof{\catenumerator}+\onehotmapof{\seccatenumerator}$.
+
+One example is the Deutsch-Jozsa test, where the transformed is the $\onehotmapofat{0}{\selvariableof{[\catorder]}}$ state, if and only if the function is constant.
+In this case, any vector is a period, since the group itself is generated by the period generators.
+
+
+%\subsubsection{Generic Hidden Subgroup Problems}
+
+% Generic hidden subgroup problems
+%In general \cite{nielsen_quantum_2010} approached by generic Fourier transforms of the distributed variables of a basis encoding state to a function.
