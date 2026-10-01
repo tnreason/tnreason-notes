@@ -1,0 +1,219 @@
+\documentclass[aps,onecolumn,nofootinbib,pra]{article}
+
+\usepackage{../../spec_files/arxiv}
+\input{../../spec_files/standard_preamble.tex}
+
+\usepackage{import}
+\subimport{../../macros/}{all-macros}
+
+\usepackage{minted}
+
+\begin{document}
+    \title{Tensor-network based inference for the event calculus}
+
+    \maketitle
+    \date{\today}
+
+    \begin{abstract}
+        We investigate the tensor-based inference scheme in \cite{tsilionis_tensor-based_2024} exploiting the law of inertia in the event calculus.
+        We derive representation of the laws of inertia as tensor network contraction equations exploiting the basis calculus scheme in \cite{goessmann_tensor_2026}.
+    \end{abstract}
+
+
+    \section{Event calculus}
+
+    We introduce two term variables:
+    \begin{itemize}
+        \item $f$ fluent, enumerated by $\indvariableof{f}$
+        \item $t$ time stamps, enumerated by $\indvariableof{t}$
+    \end{itemize}
+
+    Further the function:
+    \begin{itemize}
+        \item $suc(t)$ successor of the time stamp
+    \end{itemize}
+
+    And the predicates:
+    \begin{itemize}
+        \item $h(f,t)$ fluent $f$ holds at time stamp $t$
+        \item $e(f,t)$ fluent $f$ ends at time stamp $t$
+        \item $s(f,t)$ fluent $f$ starts at time stamp $t$
+    \end{itemize}
+
+
+    \section{Laws of inertia}
+
+    "If a fluent holds or starts at a time $t$, and it is not terminated at time $t$, then it holds also at the successing time stamp $suc(t)$:"
+    \begin{align*}
+        \big((h(f,t)  \lor s(f,t)) \land \lnot e(f,t) \big)
+        \rightarrow h(f,suc(t))
+    \end{align*}
+
+    Exploiting basis calculus, these pose the contraction equation on the basis encodings of the predicates and functions (which specify the FOL worlds):
+    \stantikzpic{
+
+        \drawtensorblock{9}{8}{10}{$\impbincon$}
+
+        \drawtdwire{0}{7}{$\headvariableof{\lnot e}$}
+        \drawsmalltensor{0}{4}{$\bencodingof{\lnot}$}
+        \drawtdwire{0}{3}{$\headvariableof{e}$}
+        \drawtensorblock{0}{0}{2}{$\bencodingof{e}$}
+
+        \drawtdwire{7.5}{7}{$\headvariableof{\lor}$}
+        \drawtensorblock{7.5}{4}{3}{$\bencodingof{\lor}$}
+
+        \drawtdwire{5}{3}{$\headvariableof{s}$}
+        \drawtensorblock{5}{0}{2}{$\bencodingof{s}$}
+
+        \drawtdwire{10}{3}{$\headvariableof{h}$}
+        \drawtensorblock{10}{0}{2}{$\bencodingof{h}$}
+
+        \drawtdwire{18}{7}{$\headvariableof{h}$}
+        \drawtensorblock{18}{4}{2}{$\bencodingof{h}$}
+        \drawtdwire{19.5}{3}{$\indvariableof{suc(t)}$}
+        \drawtensorblock{19.5}{0}{2}{$\bencodingof{suc}$}
+
+        \draw[->-] (5,-4) to[bend right=-20] (-1.5,-1);
+        \draw[->-] (5,-4) to[bend right=-5] (3.5,-1);
+        \draw[->-] (5,-4) to[bend right=15] (8.5,-1);
+        \draw[->-] (5,-4) to[bend right=25] (16.5,3);
+        \drawvariabledot{5}{-4} % t
+        \drawtdwire{5}{-4}{$\indvariableof{f}$}
+
+        \draw[->-] (10,-4) to[bend right=-20] (1.5,-1);
+        \draw[->-] (10,-4) to[bend right=-5] (6.5,-1);
+        \draw[->-] (10,-4) to[bend right=15] (11.5,-1);
+        \draw[->-] (10,-4) to[bend right=18] (19.5,-1);
+        \drawvariabledot{10}{-4} % t
+        \drawtdwire{10}{-4}{$\indvariableof{t}$}
+
+
+        \drawtextnode{25}{0}{$=$}
+        \drawtensorblock{30}{0}{2}{$\ones$}
+        \drawtdwire{28.5}{-1}{$\indvariableof{f}$}
+        \drawtdwire{31.5}{-1}{$\indvariableof{t}$}
+    }
+
+    When choosing the time order on the time stamps, the basis encoding of $suc$ is (called $U$ in \cite{tsilionis_tensor-based_2024})
+    \begin{align*}
+        \bencodingofat{suc}{\indexedindvariableof{suc(t)},\indexedindvariableof{t}}
+        = \begin{cases}
+              1 & \ifspace \indindexof{suc(t)} = \indindexof{t}+1 \\
+              0 & \elsetext \, .
+        \end{cases}
+    \end{align*}
+
+
+    \section{Inference}
+
+    Let us consider that the groundings to the predicates $s[\indvariableof{f},\indvariableof{t}]$ and $t[\indvariableof{f},\indvariableof{t}]$ and to the function $suc$ are known, and consider infering the least tensor $h[\indvariableof{f},\indvariableof{t}]$ respecting the laws of inertia:
+    \begin{align*}
+        \argmin_{h[\indvariableof{f},\indvariableof{t}]} \contraction{h[\indvariableof{f},\indvariableof{t}]}
+        \quad \text{subject to the laws of inertia holding for given}\quad s[\indvariableof{f},\indvariableof{t}],t[\indvariableof{f},\indvariableof{t}]
+    \end{align*}
+
+    To solve the contraction equation we contract with any $\onehotmapof{\indindexof{t}}$ for $\indindexofin{t}$ to get the equation:
+
+    \stantikzpic{
+
+        \drawtensorblock{9}{8}{10}{$\impbincon$}
+
+        \drawtdwire{0}{7}{$\headvariableof{\lnot e}$}
+        \drawsmalltensor{0}{4}{$\bencodingof{\lnot}$}
+        \drawtdwire{0}{3}{$\headvariableof{e}$}
+        \drawtensorblock{0}{0}{2}{$\bencodingof{e}$}
+
+        \drawtdwire{7.5}{7}{$\headvariableof{\lor}$}
+        \drawtensorblock{7.5}{4}{3}{$\bencodingof{\lor}$}
+
+        \drawtdwire{5}{3}{$\headvariableof{s}$}
+        \drawtensorblock{5}{0}{2}{$\bencodingof{s}$}
+
+        \drawtdwire{10}{3}{$\headvariableof{h}$}
+        \drawtensorblock{10}{0}{2}{$\bencodingof{h}$}
+
+        \drawtdwire{18}{7}{$\headvariableof{h}$}
+        \drawtensorblock{18}{4}{2}{$\bencodingof{h}$}
+        \drawtdwire{19.5}{3}{$\indvariableof{suc(t)}$}
+        \drawtensorblock{19.5}{0}{1.5}{$\onehotmapof{\indindexof{t}+1}$}
+
+        \draw[->-] (5,-4) to[bend right=-20] (-1.5,-1);
+        \draw[->-] (5,-4) to[bend right=-5] (3.5,-1);
+        \draw[->-] (5,-4) to[bend right=15] (8.5,-1);
+        \draw[->-] (5,-4) to[bend right=25] (16.5,3);
+        \drawvariabledot{5}{-4} % t
+        \drawtdwire{5}{-4}{$\indvariableof{f}$}
+
+        \draw[->-] (1.5,-6) -- (1.5,-1);
+        \drawsmalltensor{1.5}{-7}{$\onehotmapof{\indindexof{t}}$}
+        \draw[->-] (6.5,-6) -- (6.5,-1);
+        \drawsmalltensor{6.5}{-7}{$\onehotmapof{\indindexof{t}}$}
+        \draw[->-] (11.5,-6) -- (11.5,-1);
+        \drawsmalltensor{11.5}{-7}{$\onehotmapof{\indindexof{t}}$}
+
+        \drawtextnode{25}{0}{$=$}
+        \drawtensorblock{30}{0}{1}{$\ones$}
+        \drawtdwire{30}{-1}{$\indvariableof{t}$}
+    }
+
+    We solve them iteratively by computing the vectors on the right hand side and write them into the slices of $h$ as:
+    \stantikzpic{
+
+        \drawtensorblock{3.75}{8}{5}{$\land$}
+
+        \drawtdwire{0}{7}{$\headvariableof{\lnot e}$}
+        \drawsmalltensor{0}{4}{$\bencodingof{\lnot}$}
+        \drawtdwire{0}{3}{$\headvariableof{e}$}
+        \drawtensorblock{0}{0}{2}{$\bencodingof{e}$}
+
+        \drawtdwire{7.5}{7}{$\headvariableof{\lor}$}
+        \drawtensorblock{7.5}{4}{3}{$\bencodingof{\lor}$}
+
+        \drawtdwire{5}{3}{$\headvariableof{s}$}
+        \drawtensorblock{5}{0}{2}{$\bencodingof{s}$}
+
+        \drawtdwire{10}{3}{$\headvariableof{h}$}
+        \drawtensorblock{10}{0}{2}{$\bencodingof{h}$}
+
+
+
+        \draw[->-] (5,-4) to[bend right=-20] (-1.5,-1);
+        \draw[->-] (5,-4) to[bend right=-5] (3.5,-1);
+        \draw[->-] (5,-4) to[bend right=15] (8.5,-1);
+
+        %\draw[->-] (5,-4) to[bend right=25] (16.5,3);
+        \drawvariabledot{5}{-4} % t
+        \drawtdwire{5}{-4}{$\indvariableof{f}$}
+
+        \draw[->-] (1.5,-6) -- (1.5,-1);
+        \drawsmalltensor{1.5}{-7}{$\onehotmapof{\indindexof{t}}$}
+        \draw[->-] (6.5,-6) -- (6.5,-1);
+        \drawsmalltensor{6.5}{-7}{$\onehotmapof{\indindexof{t}}$}
+        \draw[->-] (11.5,-6) -- (11.5,-1);
+        \drawsmalltensor{11.5}{-7}{$\onehotmapof{\indindexof{t}}$}
+
+
+
+        \drawtextnode{-8}{0}{$\algdefsymbol$}
+        \drawtensorblock{-15}{0}{3}{${h}$}
+        \drawtdwire{-13.5}{-1}{$\indvariableof{t}$}
+        \drawtdwire{-16.5}{-1}{$\indvariableof{f}$}
+        \drawtensorblock{-13.5}{-4}{1.5}{$\onehotmapof{\indindexof{t}+1}$}
+    }
+
+    Note that we exploit in the solution the consecutive dependence structure of the equations, induced by the $\bencodingof{suc}$ matrix.
+
+    \section{Generic solution strategies}
+
+    The solution of contraction equations can in general be done by simplifying them:
+    \begin{itemize}
+        \item Close some open legs with arbitrary tensors: When choosing basis tensors (or more general normed tensors), the right hand sight is still a $\ones$ tensor.
+        We used this trick to derive sequences of simpler equations for each time stamp.
+        \item Contract only a subset of the left hand side: We could restrict by removing $\bencodingof{s}$ and $\bencodingof{h}$ to the two original laws of inertia in \cite{tsilionis_tensor-based_2024}.
+    \end{itemize}
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
+
+
+\end{document}
