@@ -1,4 +1,4 @@
-\section{Circuits}
+\section{Circuits}\label{sec:circuits}
 
 The neural paradigm of artificial intelligence exploits the decomposition of functions into neurons, which are aligned in a directed acyclic graph.
 We show in this section how functions decomposable into neurons can be represented by tensor networks.
@@ -57,7 +57,7 @@ As a main principle of tensor decompositions, we now show that basis encodings o
 We now define a more generic decomposition of discrete functions.
 
 \begin{definition}
-    \label{def:circuit}
+    \label{def:circuit}\glsadd{bc:circuit}
     A \emph{circuit} is a directed acyclic hypergraph $\graph=(\nodes,\edges)$ such that the following holds.
     \begin{itemize}
         \item Each node $\nodein$ is decorated by a set $\arbsetof{\node}$ of finite cardinality $\catdimof{\node}$, a variable $\catvariableof{\node}$, and an index interpretation function

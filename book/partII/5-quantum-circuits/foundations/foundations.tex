@@ -22,8 +22,6 @@ Comparison with classical side, which we can call \emph{Tensor Network Paralleli
 Message-passing schemes for efficient contractions, but exact in limited cases.
 
 
-
-
 We present the basic notation of quantum circuits using the tensor network notation used in the \tnreason{} formalism.
 
 \subsection{Quantum states and quantum circuits}
@@ -51,48 +49,17 @@ that is
 \end{align*}
 
 Application of quantum gates on quantum states is their contraction with respect to the complex sum-product semiring (see \secref{sec:complexSPContraction}).
-%\begin{remark}
-%    Contractions of quantum circuits are understood on the semiring $(\mathbb{C},+,\cdot)$ instead of the default semiring $(\rr,+,\cdot)$.
-%\end{remark}
+A quantum state $\qstateat{\ccatvariable{\insymbol}}$ transforms under the gate $\unitaryat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}$ to the state
+\stantikzpic{
+    \drawsmalltensor{0}{0}{$\qstate$}
+    \drawhwire{1}{0}{$\ccatvariable{\insymbol}$}
+    \drawsmalltensor{4}{0}{$\unitarysymbol$}
+    \drawhwire{5}{0}{$\ccatvariable{\outsymbol}$}
 
+    \drawtextnode{9}{-1.5}{$\cdot$}
+}
 
-A coarse comparison of the nomenclature used for quantum circuits and tensor networks:
-
-\begin{center}
-    \begin{tabular}{l|l}
-        \textbf{Quantum Circuit} & \textbf{Tensor Network}                         \\
-        \hline
-        Qubit                    & Boolean Variable                                \\
-        Quantum Gate             & Unitary Tensor                                  \\
-        Quantum Circuit          & Tensor Network of unitaries on a directed graph
-    \end{tabular}
-\end{center}
-
-Some constraints appear for a tensor network to be a quantum circuit
-\begin{itemize}
-    \item \textbf{Incoming-Outgoing structure:} Variable appear at most once as incoming and at most once as outgoing variables.
-    Those not appearing as outgoing (respectively as incoming) are the input and the output variables of the whole circuit.
-    \item \textbf{Unitarity of each gate:} That is the variables of each tensor are bipartite into sets $\variablesetof{\insymbol}$ and $\variablesetof{\outsymbol}$ of same cardinality and the tensor is unitary.
-%    \begin{align*}
-%        \unitaryat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}
-%        \defcols \bigotimes_{\atomenumerator\in\variablesetof{\insymbol}} \mathbb{C}^2 \rightarrow \bigotimes_{\atomenumerator\in\variablesetof{\outsymbol}} \mathbb{C}^2  \, ,
-%    \end{align*}
-%    is a unitary map, that is
-%    \begin{align*}
-%        \left(T_{\insymbol \rightarrow \outsymbol}\right)^H \circ \left(T_{\insymbol \rightarrow \outsymbol}\right)
-%        = \contractionof{
-%            T_{\insymbol \rightarrow \outsymbol}[\ccatvariable{\insymbol},\seccatvariable],
-%            \overline{T}_{\insymbol \rightarrow \outsymbol}[\seccatvariable,\ccatvariable{\outsymbol}]
-%        }{\ccatvariable{\outsymbol},\ccatvariable{\insymbol}}
-%        = \identityat{\ccatvariable{\outsymbol},\ccatvariable{\insymbol}}.
-%    \end{align*}
-    \item \textbf{Acyclicity:} Incoming and outgoing variables of each tensor core provide a direction of each edge tensor.
-    With respect to this directionality the graph underlying the tensor network has to be acyclic.
-\end{itemize}
-
-The unitary tensors can be aligned layerwise, if and only if the last two assumption hold, i.e. the directed graph is acyclic and each variable appears at most once as an incoming and at most once as an outgoing variable.
-
-\subsection{Controlled Single Qubit Gates}
+\subsection{Controlled single qubit gates}
 
 We define the rotation gate around the Y-axis by an angle $\alpha$ as
 \begin{align*}
@@ -116,19 +83,21 @@ Controlled single qubit gates are defined using control qubits, where the gate i
 In the tensor network diagrams, we do not distinguish between incoming and outgoing control qubit variables, since the control acts as a Dirac tensor.
 Thus, controlled unitary with target qubit $\catvariableof{t}$ and control qubits $\catvariableof{c}$ are represented by tensors
 \begin{align*}
-    \contunitaryat{\catvariableof{t,\insymbol},\catvariableof{t,\outsymbol},\catvariableof{c}}
+    \contunitaryat{\ccatvariableof{\insymbol}{t},\ccatvariableof{\outsymbol}{t},\catvariableof{c}}
 \end{align*}
 where for each state $\catindexof{c}$ to the control variables we have that
 \begin{align*}
-    \contunitaryat{\catvariableof{t,\insymbol},\catvariableof{t,\outsymbol},\indexedcatvariableof{c}}
+    \contunitaryat{\ccatvariableof{\insymbol}{t},\ccatvariableof{\outsymbol}{t},\indexedcatvariableof{c}}
 \end{align*}
 is a unitary matrix acting on the leg space of the target variable.
+
+
+
 
 \subsection{Measurements and Contractions}
 
 The main difficulty of using quantum circuits as contraction providers is that we can only extract information through measurements.
 Therefore measurement is the only way to execute contractions of the circuit, which come with restrictions when interested in contraction with open variables.
-
 
 \subsubsection{Computational basis measurement}
 
@@ -210,7 +179,7 @@ The most general measurement formalism is through a POVM, a set
 \end{align*}
 of positive operators with
 \begin{align*}
-    \sum_{\seccatindex\in[r]} E_\seccatindex[\ccatvariable{\insymbol},\ccatvariable{\outsymbol}] 
+    \sum_{\seccatindex\in[r]} E_\seccatindex[\ccatvariable{\insymbol},\ccatvariable{\outsymbol}]
     = \identityat{\ccatvariable{\insymbol},\ccatvariable{\outsymbol}}
 \end{align*}
 

@@ -71,100 +71,11 @@ Based on the equivalence of \computationCircuits{} and contracted \basisEncoding
 % Good place?
 \input{examples/mcnot-benc}
 
-\subsection{\PolynomialSparsity{}}
+\subsection{Circuit \decompositionSparsity{}}
 
-\todo{To be called Reed-Muller Expansions.}
-
-\begin{lemma}
-    \label{lem:comCircuitCommutative}
-    The composition of two \computationCircuits{} to functions $\exfunction$ and $\secexfunction$ (see \figref{fig:mod2ComputationCircuit}), where the \computationCircuits{} share the target qubit, is the \computationCircuit{} of their sum mod2.
-    In particular, \computationCircuits{} commute when they have the same target qubit.
-\end{lemma}
-\begin{proof}
-    This follows from the representation of \computationCircuits{} by basis encodings of the corresponding function and the mod2 sum $\oplus$.
-\end{proof}
-
-\begin{figure}[t]
-    \begin{center}
-        \input{tikz/mod2_sum_computation_circuit}
-    \end{center}
-    \caption{Equivalence of the composition of \computationCircuits{} with the \computationCircuit{} of their mod2 sum (\lemref{lem:comCircuitCommutative}).}
-    \label{fig:mod2ComputationCircuit}
-\end{figure}
-
-Concatenating two \computationCircuit{}s, which have the same head qubit, is the \computationCircuit{} of their mod2 sum.
-
-%Note that in general controlled unitaries on the same target qubit do not commute.
-
-A basis+ elementary function can be encoded by a single controlled NOT operation with auxiliary Pauli-X to prepare the control state at the $\catvariable$ qubits.
-
-This motivates the mod2-basis+ CP decomposition of tensors, which is exactly the decomposition of boolean polynomials into monomials.
-Each monomial is called a term (products of x or (1-x) factors), and minterms in case that all variables appear.
-
-\begin{definition}
-    Given a boolean tensor $\hypercore$, a mod2-basis+ CP decomposition is a collection $\sliceset$ of tuples $(\variableset,\catindexof{\variableset})$ with such that for any $\shortcatindicesin$
-    \begin{align*}
-        \hypercoreat{\indexedshortcatvariables}
-        = \bigoplus_{(\variableset,\catindexof{\variableset})\in\sliceset} \contractionof{\onehotmapofat{\catindexof{\variableset}}{\catvariableof{\variableset}}}{\indexedshortcatvariables} \, .
-    \end{align*}
-\end{definition}
-
-% Algebraic Normal Form
-This decomposition is closely related to the Algebraic Normal Form of a Boolean polynomial.
-
-Using that basis CP decompositions are a special case of basis+ CP decompositions, we get the following rank bound.
-
-\begin{lemma}
-    The mod2-basis+ CP rank is bounded by the basis CP rank.
-\end{lemma}
-\begin{proof}
-    Use $\variableset=[\atomorder]$, and $\catindexof{\variableset}$ to each supported state.
-    Then the mod2-sum is a usual sum and the basis CP decomposition is also a mod2-basis+ CP decomposition.
-\end{proof}
-
-This shows in particular, that any propositional formula can be represented by a mod2-basis+ CP decomposition.
-
-\begin{lemma}
-    The \computationCircuit{} to a boolean tensor $\hypercore$ with a mod2-basis+ CP decomposition $\sliceset$ obeys
-    \begin{align*}
-        &\qcbencodingofat{\hypercore}{
-            \cheadvariableof{\hypercore}{\insymbol},
-            \cheadvariableof{\hypercore}{\outsymbol},
-            \shortcatvariables
-        } \\
-        & \quad =
-        \breakablecontractionof{
-            \{\identityat{\cheadvariableof{\hypercore}{\insymbol},\headvariableof{0}},\identityat{\cheadvariableof{\hypercore}{\outsymbol},\headvariableof{\cardof{\sliceset}-1}}\} \cup
-            \{\qcbencodingofat{\onehotmapof{\catindexof{\variableset}}}{
-                \headvariableof{\decindex}, \headvariableof{\decindex+1},
-                \catvariableof{\variableset}} \wcols (\variableset,\catindexof{\variableset})\in\sliceset\}
-        }{\cheadvariableof{\hypercore}{\insymbol},\cheadvariableof{\hypercore}{\outsymbol},\shortcatvariables}
-    \end{align*}
-    where $\decindex\in[\cardof{\sliceset}]$ enumerates the tuples in $\sliceset$.
-\end{lemma}
-\begin{proof}
-    Can be seen by the basis encoding representation, and the accociativtiy of the sum mod2 ($\oplus$).
-\end{proof}
-
-Each \computationCircuit{} to each boolean monomial can be prepared by a multiple-controlled $\paulixsymbol$ gate and further pairs of $\paulixsymbol$ gates preparing the control state, see \figref{fig:qcbencodingPolynomial}. %where the control qubits are the affected variables and the target qubit is the value qubit.
-When we sum monomials wrt modulus 2 calculus, then the preparation is a sequence of such circuits.
-In such way, we can prepare the \computationCircuit{} to any propositional formula.
-This encoding strategy exploits a modified (by mod2 calculus) \polynomialSparsity{}.
-
-\begin{figure}
-    \begin{center}
-        \input{tikz/slice_computation_circuit}
-    \end{center}
-    \caption{
-        Representation of an slice as a controlled $\mathrm{CNOT}$ gate.
-        When the control state to a variable is $0$, we introduce auxiliary Pauli-X gates.
-    }\label{fig:qcbencodingPolynomial}
-\end{figure}
-
-\subsection{\DecompositionSparsity{}}
-
-The decomposition by contraction property of basis encodings is now a composition of circuits property, as stated in the next lemma.
-Instead of hidden variables as in the \tnreason{} approach, we here exploit further working qubits.
+We develop now a quantum equivalent to the circuit decompositions of basis encodings (see \secref{sec:circuits}) sis now a composition of circuits property, as stated in the next lemma.
+Similar to the introduction of hidden variables, we here utilize further working qubits to realize decompositions.
+To highlight the similarity, we call these sparsity principle circuit \decompositionSparsity{}.
 
 \begin{lemma}
     \label{lem:comCirDecSpar}
@@ -247,63 +158,158 @@ Note that while this is necessary in some applications, it is not necessary for 
 
 \input{examples/mcnot-decomposition}
 
-%\subsection{Preparation by fine and coarse structure}
-%
-%Having a mod2-basis+ CP decomposition of rank $r$ to a connective, we need $r$ controlled NOT gates to prepare the basis encoding.
-%Given a syntactical decomposition of a boolean statistics, we prepare the basis encoding as a circuit with:
-%\begin{itemize}
-%    \item \textbf{Fine Structure:} Represent each logical connective based on its mod2-basis+ CP decomposition, as a concatenation of \computationCircuit{}s with the same variables.
-%    \item \textbf{Coarse Structure:} Arrange the logical connective representing circuits according to the syntactical hypergraph, where parent head variables appear as distributed variables at their children.
-%\end{itemize}
-%
+\subsection{Circuit \polynomialSparsity{}}\glsadd{sc:reedMullerExpansion:qc}
+
+While we have introduced additional auxiliary qubits to represent decomposable functions, we now investigate concatenations of \computationCircuits{}, which are sharing the same target qubit.
+As we will show, these are related to summations $\modtwoword$ (which are contractions in the semiring $\galoissemiring$, see \secref{sec:semiringGalois}), and can be constructed using Reed-Muller expansions (see \secref{sec:reedMullerExpansion}).
+To highlight the similarity to \polynomialSparsity{}, which has been developed in \charef{cha:sparseCalculus}, we call this sparsity principle circuit \polynomialSparsity{}.
 
 
-%%% OLD: From Moment Estimation
-%\subsubsection{Decomposition into auxiliary statistic qubits}
-%
-%% Decomposition Sparsity requires uncomputation of the ancilla qubits
-%We can exploit \decompositionSparsity{} to find a sparse representation of a \computationCircuit{} with further auxiliary statistic qubits.
-%Any auxiliary statistic qubits $\headvariable$ is prepared in the initial state $\fbasisat{\headvariable}$, only the head statistic qubit is prepared in the anti-symmetric state.
-%To prepare a sign encoding such that the auxiliary statistic qubits are disentangled, one has to uncompute all auxiliary statistic qubits, by applying the respective \computationCircuits{} with auxiliary target qubits again.
-%
-%
-%To be more precise, let $\headvariables$ be auxiliary statistic qubits representing the subformulas $\hlnstat$ in a syntactic decomposition of $\exformula$, applying a decomposed \computationCircuit{} on the initial state then gives
-%\begin{align*}
-%    \left(\sum_{\shortcatindicesin} (-1)^{\exformula(\shortcatindices)} \qstateofat{0}{\indexedshortcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \otimes \onehotmapofat{\hlnstat(\shortcatindices)}{\headvariables}\right)
-%\end{align*}
-%Notice, that in this case the auxiliary qubits are entangled with the distributed qubits.
-%This can be resolved by applying the adjoint of the \computationCircuit{} except for those where the control is on the ancilla qubit.
-%We then have
-%\begin{align*}
-%    &\left(\sum_{\shortcatindicesin} (-1)^{\exformula(\shortcatindices)} \qstateofat{0}{\indexedshortcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \right) \otimes \onehotmapofat{\hlnstat(\shortcatindices)\oplus \hlnstat(\shortcatindices)}{\headvariables} \\
-%    &\quad =\left(\sum_{\shortcatindicesin} (-1)^{\exformula(\shortcatindices)} \qstateofat{0}{\indexedshortcatvariables} \cdot \onehotmapofat{\shortcatindices}{\shortcatvariables} \right) \otimes \onehotmapofat{0_{[\seldim]}}{\headvariables}
-%\end{align*}
-%
-%Alternatively, one can include the auxiliary statistic qubits into the distributed qubits, and understand the parts of the \computationCircuit{} not affecting the ancilla qubit as part of the initial state preparing unitary $\unitarysymbol$.
-%Note that this perspective has been applied in section \secref{sec:sampling}, where we took $\unitarysymbol$ as the \ComputationActivationCircuit{} preparing the q-sample of the ancilla augmentation.
-%
-%
+%\begin{lemma}
+%    \label{lem:comCircuitMod2}
+%    The composition of two \computationCircuits{} to functions $\exfunction$ and $\secexfunction$ (see \figref{fig:mod2ComputationCircuit}), where the \computationCircuits{} share the target qubit, is the \computationCircuit{} of their sum mod2.
+%    In particular, \computationCircuits{} commute when they have the same target qubit.
+%\end{lemma}
+%\begin{proof}
+%    This follows from the representation of \computationCircuits{} by basis encodings of the corresponding function and the $\modtwoword$ sum $\oplus$ (see \figref{fig:mod2ComputationCircuit}).
+%\end{proof}
+
+
+
+\begin{lemma}\label{lem:comCircuitMod2}
+    Let $\{\formulaofat{\selindex}{\shortcatvariables}\wcols\selindexin\}$ be a set of propositional formulas, and let
+    \begin{align*}
+        \secexformulaat{\shortcatvariables}
+        = \srcontractionofwrt{\sencodingofat{\formula}{\shortcatvariables,\selvariable}}{\shortcatvariables}{\galoissemiring} \,
+    \end{align*}
+    be their summation $\modtwoword$, which can be expressed using the selection encoding $\sencodingofat{\formula}{\shortcatvariables,\selvariable}$ of the formula set.
+    Then we have that
+    \begin{align*}
+        \contractionof{
+            \{\qcbencodingofat{\formulaof{\selindex}}{\cheadvariable{\selindex},\cheadvariable{\selindex+1},\shortcatvariables} \wcols \selindexin\}
+        }{\shortcatvariables}
+        = \qcbencodingofat{\secexformula}{\cheadvariable{0},\cheadvariable{\seldim},\shortcatvariables} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    We first show the claim for $\seldim=2$, the sum of two formulas $\formulaof{0}$ and $\formulaof{1}$.
+    We decompose in \figref{fig:mod2ComputationCircuit} each \computationCircuit{} into a contraction of the functions basis encoding with the basis encoding of $\oplus$, the summation $\modtwoword$.
+    By associativity of $\modtwosum$, we can rewrite the contraction using the basis encoding of $\formulaof{0}\modtwosum\formulaof{1}$.
+
+    % Case m=2
+    We then show the generic statement by induction over $\seldim$.
+    The statement is trivial for $\seldim=1$.
+    % Case m>2 -> Could also do a full induction here
+    Let us assume that the claim holds for $\seldim-1$ formulas, and let there be $\seldim$ formulas.
+    By assumption, the concatenation of the first $\seldim-1$ computation circuits is the computation circuit of
+    \begin{align*}
+        \bigoplus_{\catenumerator\in[\seldim]}\formulaof{\catenumerator}
+    \end{align*}
+    Applying the statement for $\seldim=2$, we conclude that the concatenation of all $\seldim$ computation circuits is the computation circuit of
+    \begin{align*}
+        \secexformula
+        =\bigoplus_{\catenumerator\in[\seldim]}\formulaof{\seccatenumerator}
+        = \srcontractionofwrt{\sencodingofat{\formula}{\shortcatvariables,\selvariable}}{\shortcatvariables}{\galoissemiring} \, .
+    \end{align*}
+\end{proof}
+
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz/mod2_sum_computation_circuit}
+    \end{center}
+    \caption{Equivalence of the composition of \computationCircuits{} with the \computationCircuit{} of their mod2 sum (\lemref{lem:comCircuitMod2}).}
+    \label{fig:mod2ComputationCircuit}
+\end{figure}
+
+
+Recall that while the quantum circuit itself is defined in the complex sum-product semiring, we use the semiring $\galoissemiring$ for function decomposition.
+% Algebraic Normal Form
+The $\cpformatof{\galoissemiring}$ decomposition is closely related to the Algebraic Normal Form of a Boolean polynomial.
+In the latter, we need to restrict to leg vectors $\onesat{\catvariable}$ and $\tbasisat{\catvariable}$, that is forbid the usage of $\fbasisat{\catvariable}$ vectors.
+The Algebraic Normal Form is also called positive-polarity Reed-Muller expansion.
+Allowing for the $\fbasisat{\catvariable}$ vector in the $\cpformatof{\galoissemiring}$ decomposition corresponds with mixed-polarity Reed-Muller (MPRM) expansions.
+
+
+Let us now determine \computationCircuits{} for MPRM terms to get an encoding for arbitrary formulas in MPRM expansions.
+
+\begin{lemma}\label{lem:mprmTermRep}
+    A MPRM term $\formulaof{\hardparam}$ has the \computationCircuit{} (see \figref{fig:qcbencodingPolynomial})
+    \begin{align*}
+        &\contractionof{\qcaencodingofat{\formulaof{\hardparam}}{\cheadvariable{\insymbol},\cheadvariable{\outsymbol},\shortcatvariables},
+            \identityat{\shortcatvariables,\ccatvariableof{[\catorder]}{\insymbol},\ccatvariableof{[\catorder]}{\outsymbol}}}{
+            \cheadvariable{\insymbol},\cheadvariable{\outsymbol},\ccatvariableof{[\catorder]}{\insymbol},\ccatvariableof{[\catorder]}{\outsymbol}
+        } \\
+        &\quad = \breakablecontractionof{
+            \{\mathrm{MCNOT}^{\cardof{\hardlegset}}[\cheadvariable{\insymbol},\cheadvariable{\outsymbol},\catvariableof{\hardlegset}]\}
+            \cup \left(\bigcup_{\catenumerator\in\hardlegset\ncond\headindexof{\catenumerator}=0}\{\paulixat{\ccatvariableof{\catenumerator}{\insymbol},\catvariableof{\catenumerator}},
+                     \paulixat{\catvariableof{\catenumerator},\ccatvariableof{\catenumerator}{\outsymbol}}\}\right) \\
+            &\quad\quad\quad\quad\quad \cup \left(\bigcup_{\catenumerator\in\hardlegset\ncond\headindexof{\catenumerator}=1}\{
+                                                \identityat{\catvariableof{\catenumerator},\ccatvariableof{\catenumerator}{\insymbol},\ccatvariableof{\catenumerator}{\outsymbol}}
+                                                \}\right)
+        }{
+            \cheadvariable{\insymbol},\cheadvariable{\outsymbol},\ccatvariableof{[\catorder]}{\insymbol},\ccatvariableof{[\catorder]}{\outsymbol}
+        } \, .
+    \end{align*}
+    The \computationCircuit{} of a formula $\formula$ with MPRM expansion $\sliceset$ is a concatenation of the \computationCircuits{} to $\hardlegset\in\sliceset$.
+\end{lemma}
+\begin{proof}
+    For any $\ccatindexof{[\catorder]}{\insymbol},\ccatindexof{[\catorder]}{\outsymbol}$ the slices on both sides are vanishing, if $\ccatindexof{[\catorder]}{\insymbol}\neq\ccatindexof{[\catorder]}{\outsymbol}$.
+    If $\ccatindexof{[\catorder]}{\insymbol}=\ccatindexof{[\catorder]}{\outsymbol}$ we have
+    \begin{align*}
+        &\breakablecontractionof{
+            \{\mathrm{MCNOT}^{\cardof{\hardlegset}}[\cheadvariable{\insymbol},\cheadvariable{\outsymbol},\catvariableof{\hardlegset}]\}
+            \cup \left(\bigcup_{\catenumerator\in\hardlegset\ncond\headindexof{\catenumerator}=0}\{\paulixat{\ccatvariableof{\catenumerator}{\insymbol},\catvariableof{\catenumerator}},
+                     \paulixat{\catvariableof{\catenumerator},\ccatvariableof{\catenumerator}{\outsymbol}}\}\right) \\
+            &\quad\quad\quad\quad \cup \left(\bigcup_{\catenumerator\in\hardlegset\ncond\headindexof{\catenumerator}=1}\{
+                                           \identityat{\catvariableof{\catenumerator},\ccatvariableof{\catenumerator}{\insymbol},\ccatvariableof{\catenumerator}{\outsymbol}}
+                                           \}\right)
+        }{
+            \cheadvariable{\insymbol},\cheadvariable{\outsymbol},\ccatvariableof{[\catorder]}{\insymbol}=\ccatindexof{[\catorder]}{\insymbol},\ccatvariableof{[\catorder]}{\outsymbol}=\ccatindexof{[\catorder]}{\outsymbol}
+        } \\
+        & \quad = \contractionof{\{\mathrm{MCNOT}^{\cardof{\hardlegset}}[\cheadvariable{\insymbol},\cheadvariable{\outsymbol},\catvariableof{\hardlegset}]\}
+            \cup\{\onehotmapofat{(1-\ccatindexof{\catenumerator}{\insymbol})}{\catvariableof{\catenumerator}} \wcols \catenumerator\in\hardlegset\ncond\headindexof{\catenumerator}=0\}
+            \cup\{\onehotmapofat{\ccatindexof{\catenumerator}{\insymbol}}{\catvariableof{\catenumerator}} \wcols \catenumerator\in\hardlegset\ncond\headindexof{\catenumerator}=1\}
+        }{ \cheadvariable{\insymbol},\cheadvariable{\outsymbol}}\\
+        & \quad =
+        \begin{cases}
+            \mathrm{NOT}[\cheadvariable{\insymbol},\cheadvariable{\outsymbol}] & \ifspace \formulaof{\hardparam}(\ccatindexof{[\catorder]}{\insymbol})=1 \\
+            \identityat{\cheadvariable{\insymbol},\cheadvariable{\outsymbol}} & \ifspace \formulaof{\hardparam}(\ccatindexof{[\catorder]}{\insymbol})=0
+        \end{cases} \, .
+    \end{align*}
+    Thus, the right contraction coincides for all slices on the variables $\ccatvariableof{[\catorder]}{\insymbol}$ and $\ccatvariableof{[\catorder]}{\outsymbol}$ with the oracle of $\formulaof{\hardparam}$.
+\end{proof}
+
+\begin{figure}
+    \begin{center}
+        \input{tikz/MPRM-term-cc}
+    \end{center}
+    \caption{
+        \ComputationCircuit{} to a MPRM term $\formulaof{\hardparam}$, consisting in a multiple controlled $\mathrm{NOT}$ gate and Pauli-X gates for legs with $\headindexof{\catenumerator}=0$.
+    }\label{fig:qcbencodingPolynomial}
+\end{figure}
+
+
+% Generic encoding
+Combining \lemref{lem:mprmTermRep} and \lemref{lem:comCircuitMod2} we can create the \computationCircuit{} of any function based on the $\cpformatof{\galoissemiring}$ decomposition, which is equivalent to Reed-Muller expansions (see \secref{sec:reedMullerExpansion}).
 
 
 \subsection{Function Encoding}
 
-\red{We investigate how Boolean functions can be encoded in quantum states using \computationCircuits{}.}
-
-Using the \computationCircuit{} we can prepare two function encoding schemes, depending on the start state.
-
+We investigate how Boolean functions can be encoded in quantum states using \computationCircuits{}.
+Depending on the start state, we introduce two function encoding states.
 
 \begin{remark}[Basis and Amplitude Encodings in Quantum Computation \cite{schuld_machine_2021} and \tnreason{}]
     % Compare with Quantum Computing
     Basis Encoding in Quantum Computation refers to the representation of classical $n$ bit strings by $n$ qubit basis states, and is called one-hot encoding in \tnreason{}.
     The Basis Encoding scheme in \tnreason{} goes beyond this scheme and also encodes subsets by sums of one-hot encodings to the members of the set.
-    In this way, relations and functions are represented by boolean tensors and contraction of them is refered as \BasisCalculus{}.
+    In this way, relations and functions are represented by boolean tensors and contraction of them is refered to as \BasisCalculus{}.
 
     Amplitude Encoding in Quantum Computation refers to the storage of complex numbers in the amplitudes of quantum states.
     The pendant in \tnreason{} is the Coordinate Encoding scheme, where real numbers are stored in the coordinates of real-valued tensors.
     Compared to Amplitude Encoding, Coordinate Encoding does not have the normalization constraint of quantum states.
     The Amplitude Encoding of the square root of a probability distribution is sometimes called q-sample.
 \end{remark}
-
 
 \subsubsection{Basis encoding}
 
@@ -449,17 +455,14 @@ The initial state can be prepared by applying Hadamard gates on all distributed 
     \end{align*}
 \end{proof}
 
-Limitations:
+Limitations of sign encodings:
 \begin{itemize}
     \item The prepared state $\signqstateof{\exformula}$ is distinguished from the state $\signqstateof{\lnot\exformula}$ only by a non-observable phase factor
     \begin{align*}
         \signqstateof{\exformula}
         = (-1) \cdot \signqstateof{\lnot\exformula}
     \end{align*}
-    \item With this construction the statistic qubit is disentangled with the distributed qubits.
+    \item With this construction the statistic qubit is disentangled with the distributed qubits (in contrast to basis encoding states).
     Further manipulation of the statistic qubits alone (as we do with \activationCircuits{}) will not retrieve any information about the encoded function.
     \item When doing the sign encoding procedure for multiple formulas, we get a disentangled state of the head variables with the distributed variables encoded in the sign encoding state of $\bigoplus_{\exformulain}\exformula$ (where by $\bigoplus$ we denote the mod2 sum of boolean functions).
 \end{itemize}
-
-
-% Multiple formulas

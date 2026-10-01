@@ -1,0 +1,99 @@
+\section{Reed-Muller expansions}\label{sec:reedMullerExpansion}\glsadd{sc:reedMullerExpansion}
+
+So far we have investigated sparse representations based on $\cpformat$ decompositions with respect to the default sum-product semiring.
+The Reed-Muller expansion of Boolean functions \cite{muller_application_1954,reed_class_1954} can be regarded as a $\cpformat$ decomposition with respect to the Galois field $\galoissemiring$ (see \secref{sec:semiringGalois}).
+
+% Explanation
+Since the multiplication operation coincided in the semiring $\galoissemiring$ with the standard sum-product semiring, also the elementary tensor decomposition coincides in both semirings.
+As a consequence elementary tensors correspond also with respect to $\galoissemiring$ to terms (see \secref{sec:termClauseDecomposition}), which are parametrized by a subset $\arbset\subset[\catorder]$ of affected atoms and the polarity index $\headindexof{\arbset}$ of the literals.
+Each term is a tensor
+\begin{align*}
+    \formulaofat{(\arbset,\headindexof{\arbset})}{\indexedshortcatvariables}
+    = \begin{cases}
+          1 & \ifspace \uniquantwrtof{\catenumerator\in\arbset}{\catindexof{\catenumerator}=\headindexof{\catenumerator}} \\
+          0 & \elsetext
+    \end{cases}
+\end{align*}
+and has therefore an elementary decomposition by
+\begin{align*}
+    \formulaofat{(\arbset,\headindexof{\arbset})}{\indexedshortcatvariables}
+    = \srcontractionofwrt{
+        \{\onehotmapofat{\headindexof{\catenumerator}}{\catvariableof{\catenumerator}}\wcols\catenumerator\in\arbset\}
+        \cup \{\onesat{\catvariableof{\catenumerator}}\wcols\catenumerator\notin\arbset\}
+    }{\shortcatvariables}{\galoissemiring} \, .
+\end{align*}
+
+% Reed-Muller expansion
+Given a mixed-polarity Reed-Muller expansion
+\begin{align*}
+    \formulaat{\indexedshortcatvariables}
+    = \bigoplus_{\decindexin} \formulaofat{(\arbsetof{\decindex},\cheadindexof{\arbsetof{\decindex}}{\decindex})}{\indexedshortcatvariables}
+\end{align*}
+we build leg cores for $\catenumeratorin$ with coordinates for $\decindexin$ by
+\begin{align*}
+    \legcoreofat{\catenumerator}{\catvariableof{\catenumerator},\indexeddecvariable}
+    = \begin{cases}
+          \onesat{\catvariableof{\catenumerator}} & \ifspace \catenumerator\notin\arbsetof{\decindex} \\
+          \onehotmapofat{\cheadindexof{\catenumerator}{\decindex}}{\catvariableof{\catenumerator}} & \elsetext \, .
+    \end{cases}
+\end{align*}
+The three possible leg vectors $\onesat{\catvariableof{\catenumerator}}$, $\fbasisat{\catvariableof{\catenumerator}}$ and $\tbasisat{\catvariableof{\catenumerator}}$ correspond thus an absent literal, $\lnot\catvariableof{\catenumerator}$ and $\catvariableof{\catenumerator}$.
+Using these cores we have the $\cpformat$ decomposition of $\formulawith$ in the $\galoissemiring$ semiring by
+\begin{align*}
+    \formulawith
+    = \srcontractionofwrt{
+        \{\legcoreofat{\catenumerator}{\catvariableof{\catenumerator},\decvariable} \wcols \catenumeratorin\}
+    }{\shortcatvariables}{\galoissemiring} \, .
+\end{align*}
+The sum over the states $\decindex$ of the hidden variable $\decvariable$ is the $\modspace 2$ summation over terms.
+
+
+
+Variants are:
+\begin{itemize}
+    \item Mixed polarity reed-muller expansion: General $\cpformat$ decomposition
+    \item Algebraic normal form: Allowing only $\onesat{\catvariable}$ and $\tbasisat{\catvariable}$ for the leg vectors (also called positive polarity)
+\end{itemize}
+
+
+\begin{example}[Reed-Muller expansion for the implication]
+    The propositional formula $\formulaat{\catvariableof{0},\catvariableof{1}}=\catvariableof{0}\rightarrow\catvariableof{1}$ has the mixed polarity expansion
+    \begin{align*}
+        1 \oplus (\catvariableof{0}\land\lnot\catvariableof{1}) \, ,
+    \end{align*}
+    where we denote by $1$ the formula which is always true.
+    Which corresponds with the $\cpformat$ decomposition of rank $2$ and leg cores
+    \begin{align*}
+        \legcoreofat{0}{\catvariableof{0},\decvariable}
+        = \coloredmatrixof{1 & 0 \\ 1 & 1}{\catvariableof{0},\decvariable}
+        \quad, \quad
+        \legcoreofat{1}{\catvariableof{1},\decvariable}
+        = \coloredmatrixof{1 & 1 \\ 1 & 0}{\catvariableof{0},\decvariable} \, .
+    \end{align*}
+    When allowing only for positive polarity (i.e. building the algebraic normal form), we further decompose to
+    \begin{align*}
+        1 \oplus (\catvariableof{0}\land\lnot\catvariableof{1})
+        &= 1 \oplus \big(\catvariableof{0} \land (1 \oplus \catvariableof{1})\big) \\
+        &= 1 \oplus \catvariableof{0} \oplus (\catvariableof{0}\land\catvariableof{1}) \, .
+    \end{align*}
+    The positive polarity expansion is thus the $\cpformat$ decomposition of rank $3$ and leg cores
+    \begin{align*}
+        \legcoreofat{0}{\catvariableof{0},\decvariable}
+        = \coloredmatrixof{1 & 0 & 0\\ 1 & 1 & 1}{\catvariableof{0},\decvariable}
+        \quad, \quad
+        \legcoreofat{1}{\catvariableof{1},\decvariable}
+        = \coloredmatrixof{1 & 1 & 0\\ 1 & 1 & 1}{\catvariableof{0},\decvariable} \, .
+    \end{align*}
+\end{example}
+
+\subsection{Rank bound}
+
+Using that basis CP decompositions are a special case of basis+ CP decompositions, we get the following rank bound.
+
+\begin{lemma}
+    The $\cpformatof{\galoissemiring}$ rank is bounded by the basis $\cpformat$ rank.
+\end{lemma}
+\begin{proof}
+    Use $\variableset=[\atomorder]$, and $\catindexof{\variableset}$ to each supported state.
+    Then the mod2-sum is a usual sum and the basis CP decomposition is also a mod2-basis+ CP decomposition.
+\end{proof}

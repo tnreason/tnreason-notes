@@ -1,19 +1,19 @@
 \section{Semiring contraction}
 
-\todo{We here introduce the algebraic structure required for the main separability property of contractions: semirings.}
+\todo{We here introduce the algebraic structure required for the main separability property of contractions: commutative semirings.}
 
-See \cite{liu_computing_2023,liu_tropical_2021}.
+See \cite{liu_computing_2023,liu_tropical_2021} for applications and \cite{gondran_graphs_2008} for algebraic and graph-theoretic foundations.
 
 %\section{Semirings}
 
 \begin{definition}
-    A semiring is a tuple $\gensemiring$, where $S$ is a set, $0,1\in S$, and
+    A commutative semiring is a tuple $\gensemiring$, where $S$ is a set, $0,1\in S$, and
     \begin{align*}
         \srplus \defcols S \times S \rightarrow S \quad, \quad \srmul \defcols S \times S \rightarrow S \, ,
     \end{align*}
     such that the following properties hold:
     \begin{itemize}
-        \item[(i)] $(S,\srplus,0)$ is a commutative monoid\footnote{That is associativity, commutativitiy of $\srplus$ and identity of $s\srplus 0=s$ for all $s\in S$.}.
+        \item[(i)] $(S,\srplus,0)$ is a commutative monoid\footnote{That is associativity, commutativity of $\srplus$ and identity of $s\srplus 0=s$ for all $s\in S$.}.
         \item[(ii)] $(S,\srmul,1)$ is a commutative monoid.
         \item[(iii)] $\srmul$ distributes over $\srplus$, that is for any $s_0,s_1,s_2\in S$
         \begin{align*}
@@ -152,9 +152,9 @@ Tensors over $\{0,1\}$ are interpreted as constraints, and their tensor networks
 The satisfiability of a constraint network $\extnetasset$ is the contraction
 \begin{align*}
     \bigvee_{\catindexof{\nodes}} \bigwedge_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
-    = \srcontractionofwrt{
+    = \srcontractionwrt{
         \extnetasset
-    }{\varnothing}{\satsemiring} \, .
+    }{\satsemiring} \, .
 \end{align*}
 
 As an additional property, we have invariance of adding subcontractions to the network.
@@ -162,25 +162,77 @@ In general tensor networks, this holds only for the support of subcontractions (
 
 \subsubsection{Maximum calculus}
 
-The maximal coordinate of a standard TN is the contraction wrt the semiring
+The maximum semiring is the tuple
 \begin{align*}
 (\rr,\mathrm{max},\cdot,0,1)
     \, .
 \end{align*}
 
-Analogously the minimal coordinate by
+The full contraction is the maximal coordinate in the tensor
+\begin{align*}
+    \srcontractionwrt{\hypercorewith}{(\rr,\mathrm{max},\cdot,0,1)}
+    = \max_{\shortcatindicesin} \hypercoreat{\indexedshortcatvariables} \, .
+\end{align*}
+When leaving variables open in the contraction, we get the maximal coordinate in the specific slices of the tensor, namely
+\begin{align*}
+    \srcontractionofwrt{\hypercorewith}{\indexedcatvariableof{\secnodes}}{(\rr,\mathrm{max},\cdot,0,1)}
+    = \max_{\catindexof{\nodes\backslash\secnodes}} \hypercoreat{\indexedshortcatvariables} \, .
+\end{align*}
+
+Analogous properties has the minimal semiring
 \begin{align*}
 (\rr,\mathrm{min},\cdot,0,1)
     \, .
 \end{align*}
 
 
-These schemes only work, when taking the minimal coordiante keeping all variables open.
-When searching for the maximal/minimal coordiante of a contraction with some variables closed, we need to first coarse grain the tensor network.
+These schemes only work, when taking the minimal coordinate keeping all variables open.
+When searching for the maximal/minimal coordinate of a contraction with some variables closed, we need to first coarse grain the tensor network.
 
 These contractions are used in encoding-decoding schemes \cite{mezard_information_2009,mackay_information_2003}.
 Message passing schemes involving the maximum semiring are known as max-product algorithms \cite{koller_probabilistic_2009}.
 
 \subsubsection{Tropical semiring}
 
-The tropical semiring \cite{liu_tropical_2021} is $(\rr\cup\{\infty\},\mathrm{min},+,\infty,0)$.
+The tropical semiring is
+\begin{align*}
+    \mathbb{T}
+    = (\rr\cup\{\infty\},\mathrm{min},+,\infty,0) \, .
+\end{align*}
+
+The contraction of a tensor gives the minimum
+\begin{align*}
+    \srcontractionwrt{\hypercorewith}{\mathbb{T}}
+    = \min_{\shortcatindicesin} \hypercoreat{\shortcatvariables} \, .
+\end{align*}
+
+The tensor product in the tropical semiring sums the leg vector coordinates, that is
+\begin{align*}
+    \srcontractionofwrt{
+        \{\legcoreofat{\catenumerator}{\catvariableof{\catenumerator}} \wcols \catenumeratorin\}
+    }{\indexedshortcatvariables}{\mathbb{T}}
+    = \sum_{\catenumeratorin} \legcoreofat{\catenumerator}{\indexedcatvariableof{\catenumerator}} \, .
+\end{align*}
+
+Further application in \cite{hu_tropical_2026} and on spin glasses \cite{liu_tropical_2021}.
+
+\subsubsection{Galois field of two elements}\label{sec:semiringGalois}
+
+The Galois field of two elements is the semiring
+\begin{align*}
+    \galoissemiring
+    \coloneqq (\ozset,\oplus,\cdot,0,1) \, ,
+\end{align*}
+where $\oplus$ denotes the sum $\modspace 2$ and $\cdot$ the standard multiplication.
+
+\begin{example}{Contractions in the semiring $\galoissemiring$}
+    While $\contraction{\formulawith}$ is the model count, the contraction with respect to $\galoissemiring$ decides whether the number of models is odd or even:
+    \begin{align*}
+        \srcontractionwrt{\formulawith}{\galoissemiring}
+        &= \bigoplus_{\shortcatindicesin} \formulaat{\indexedshortcatvariables} \\
+        &= \cardof{\{\shortcatindices \wcols \formulaat{\indexedshortcatvariables}=1\}} \modspace 2 \, .
+    \end{align*}
+\end{example}
+
+
+We will investigate that semiring further in \secref{sec:reedMullerExpansion}, where we relate $\cpformat$ decompositions with respect to that semiring to Reed-Muller expansions.

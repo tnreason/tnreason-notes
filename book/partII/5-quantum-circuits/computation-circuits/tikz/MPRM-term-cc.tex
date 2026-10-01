@@ -5,35 +5,35 @@
     \begin{scope}
     [shift={(-20,-1)}]
 
-        \node[anchor=center] (text) at (-1,9) {\colorlabelsize $\cheadvariableof{\onehotmapof{\headindexof{\variableset}}}{\insymbol}$};
-        \node[anchor=center] (text) at (12,9) {\colorlabelsize $\cheadvariableof{\onehotmapof{\headindexof{\variableset}}}{\outsymbol}$};
+        \node[anchor=center] (text) at (-1,9) {\colorlabelsize $\cheadvariable{\insymbol}$};
+        \node[anchor=center] (text) at (12,9) {\colorlabelsize $\cheadvariable{\outsymbol}$};
 
         \draw (5,6) -- (5,8);
         \drawvariabledot{5}{6}
         \draw (6,-1) -- (6,8);
         \drawvariabledot{6}{-1}
 
-        \draw (1,9) -- (4,9);
-        \draw (4,8) rectangle (7,10);
-        \node[anchor=center] (text) at (5.5,9) {\corelabelsize $\qcbencodingof{\onehotmapof{\headindexof{\variableset}}}$};
-        \draw (7,9) -- (10,9);
+        \draw (1,9) -- (3.5,9);
+        \draw (3.5,8) rectangle (7.5,10);
+        \node[anchor=center] (text) at (5.5,9) {\corelabelsize $\qcbencodingof{\formulaof{\hardparam}}$};
+        \draw (7.5,9) -- (10,9);
 
         \draw (1,6) -- (10,6);
 
         \draw[dashed] (0.5,7.5) -- (10.5,7.5);
 
         \node[anchor=center] (text) at (3,3.25) {$\vdots$};
-        \node[anchor=center] (text) at (-1,3) {\colorlabelsize $\catvariableof{\variableset}$};
+        \node[anchor=center] (text) at (-1,3) {\colorlabelsize $\ccatvariableof{\variableset}{\insymbol}$};
 
         \node[anchor=center] (text) at (8,3.25) {$\vdots$};
-        \node[anchor=center] (text) at (12,3) {\colorlabelsize $\catvariableof{\variableset}$};
+        \node[anchor=center] (text) at (12,3) {\colorlabelsize $\ccatvariableof{\variableset}{\outsymbol}$};
 
         \draw (1,-1) -- (10,-1);
 
     \end{scope}
 
-    \node[anchor=center] (text) at (-1,8) {\colorlabelsize $\cheadvariableof{\onehotmapof{\headindexof{\variableset}}}{\insymbol}$};
-    \node[anchor=center] (text) at (12,8) {\colorlabelsize $\cheadvariableof{\onehotmapof{\headindexof{\variableset}}}{\outsymbol}$};
+    \node[anchor=center] (text) at (-1,8) {\colorlabelsize $\cheadvariable{\insymbol}$};
+    \node[anchor=center] (text) at (12,8) {\colorlabelsize $\cheadvariable{\outsymbol}$};
 
     \draw (1,8) -- (10,8);
 
@@ -67,8 +67,8 @@
     \node[anchor=center] (text) at (1.75,-0.75) {$\vdots$};
     \node[anchor=center] (text) at (9.25,-0.75) {$\vdots$};
 
-    \node[anchor=center] (text) at (-1,2) {\colorlabelsize $\catvariableof{\variableset}$};
-    \node[anchor=center] (text) at (12,2) {\colorlabelsize $\catvariableof{\variableset}$};
+    \node[anchor=center] (text) at (-1,2) {\colorlabelsize $\ccatvariableof{\variableset}{\insymbol}$};
+    \node[anchor=center] (text) at (12,2) {\colorlabelsize $\ccatvariableof{\variableset}{\outsymbol}$};
 
     \draw (4.75,5) -- (4.75,7.35);
     \draw (5.25,2) -- (5.25,7);
