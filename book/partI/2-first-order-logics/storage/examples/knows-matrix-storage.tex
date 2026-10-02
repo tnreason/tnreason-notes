@@ -1,0 +1,88 @@
+\begin{example}
+    Consider the binary relation $Knows$ on the set of individuals $\{Alice,Bob,Charlie\}$ defined by the following pairs:
+    \begin{center}
+
+        \begin{tabular}{c|c}
+            \textbf{Individual 0} & \textbf{Individual 1} \\
+            \hline
+            Alice                 & Bob                   \\
+            Bob                   & Alice                 \\
+            Charlie               & Bob                   \\
+            Bob                   & Charlie
+        \end{tabular}
+    \end{center}
+
+    \begin{align*}
+        Knows[\indvariableof{0},\indvariableof{1}] =
+        \coloredmatrixof{
+            0 & 1 & 0 \\
+            1 & 0 & 1 \\
+            0 & 1 & 0
+        }{\indvariableof{0},\indvariableof{1}} \, .
+    \end{align*}
+    with a $\cpformat$ representation with the leg cores
+    \begin{align*}
+        \legcoreofat{0}{\indvariableof{0},\decvariable}
+        = \coloredmatrixof{
+            1 & 0 & 0 & 0 \\
+            0 & 1 & 1 & 0 \\
+            0 & 0 & 0 & 1
+        }{\indvariableof{0},\decvariable}
+        \quad \text{and} \quad
+        \legcoreofat{1}{\indvariableof{1},\decvariable}
+        = \coloredmatrixof{
+            0 & 1 & 0 & 0 \\
+            1 & 0 & 0 & 1 \\
+            0 & 0 & 1 & 0
+        }{\indvariableof{1},\decvariable} \, .
+    \end{align*}
+
+    %%% For basis + CP
+    Consider now an extension
+    \begin{center}
+        \begin{tabular}{c|c}
+            \textbf{Individual 0} & \textbf{Individual 1} \\
+            \hline
+            Alice                 & Bob                   \\
+            Bob                   & Alice                 \\
+            Charlie               & Bob                   \\
+            Bob                   & Charlie               \\
+            John                  & Alice                 \\
+            John                  & Bob                   \\
+            John                  & John                  \\
+            Alice                 & John                  \\
+            Bob                   & John                  \\
+            Charlie               & John                  \\
+        \end{tabular}
+    \end{center}
+    Enumerating them in the order $[Alice,Bob,Charlie,John]$ this is the matrix
+    \begin{align*}
+        Knows[\indvariableof{0},\indvariableof{1}] =
+        \coloredmatrixof{
+            0 & 1 & 0 & 1\\
+            1 & 0 & 1 & 1\\
+            0 & 1 & 0 & 1\\
+            1 & 1 & 1 & 1
+        }{\indvariableof{0},\indvariableof{1}} \, .
+    \end{align*}
+    This has basis rank of $11$.
+    Notice, that allowing for bas+ representation, we would reduce to $5$, by encoding that John knows everyone, and everyone knows John.
+
+    \begin{align*}
+        \legcoreofat{0}{\indvariableof{0},\decvariable}
+        = \coloredmatrixof{
+            1 & 0 & 0 & 0 & 0 & 1\\
+            0 & 1 & 1 & 0 & 0 & 1\\
+            0 & 0 & 0 & 1 & 0 & 1\\
+            0 & 0 & 0 & 0 & 1 & 1
+        }{\indvariableof{0},\decvariable}
+        \quad \text{and} \quad
+        \legcoreofat{1}{\indvariableof{1},\decvariable}
+        = \coloredmatrixof{
+            0 & 1 & 0 & 0 & 1 & 0\\
+            1 & 0 & 0 & 1 & 1 & 0\\
+            0 & 0 & 1 & 0 & 1 & 0\\
+            0 & 0 & 0 & 0 & 1 & 1\\
+        }{\indvariableof{1},\decvariable} \, .
+    \end{align*}
+\end{example}

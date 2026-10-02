@@ -1,0 +1,190 @@
+\section{Inference}
+
+\todo{Substitutions are used to lift inference to propositional logics:
+    \begin{itemize}
+        \item Represent the formulas to be infered with the same computation network of atomic formulas.
+        \item Represent the formulas with an entangled activation network (whereas before they were disentangled, since refering to different atomic sentences).
+    \end{itemize}
+}
+
+
+
+\subsection{Manipulation of contraction equations}
+
+Universally quantified FOL formulas are equations of FOL \ComputationActivationNetworks{} to the trivial tensor.
+
+
+We understand inference as manipulations in the activation network.
+\begin{itemize}
+    \item {\bf Substituion}: Substitution of variables to represent multiple sentences by same activation network.
+    The task of unification is to find a substitution, such that two computation networks can be merged with same term variables.
+    \item {\bf Propositional inference}: Manipulations in activation network, as for constraint networks
+    \item {\bf Restrictions to parts}: Any sub-network of the activation network in a contraction equation poses an implied contraction equation.
+\end{itemize}
+
+\subsubsection{Substitution}
+
+Substitution is the contraction with one-hot encodings to the term variables.
+It is easy to see, that when a contraction equation holds, it also holds for any substitution of the term variables.
+Note that substitution changes the computation network, but not the activation network.
+
+\subsubsection{Propositional inference}
+
+We understand propositional inference as the simplication of the activation network.
+Whenever a propositional formula is infered by the activation network, we can add it to the activation network as a new decorated edge.
+
+\subsubsection{Extraction of entailed formulas}
+
+We can extract entailed formulas from a contraction equation by restricting the activation network to a sub-network, as we show as the next theorem.
+Therefore any result of the propositional inference, in the shape of a Boolean tensor added to the activation network, can be used to extract entailed formulas.
+
+\begin{theorem}
+    Let $\extnet$ be an activation network of boolean tensors on a hypergraph $\graph$ and let $\secedges\subset\edges$.
+    Let $\folpredicateof{[\catorder]}$ be an arbitrary set of first order predicates with the term variables
+    If
+    \begin{align*}
+        \contractionof{\extnet\cup
+            \{\bencodingofat{\catenumerator}{\catvariableof{\catenumerator},\indvariableof{[n]}} \wcols \catenumeratorin\}
+        }{\indvariableof{[n]}}
+        = \onesat{\catvariableof{[n]}}
+    \end{align*}
+    then also
+    \begin{align*}
+        \contractionof{
+            \{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edge\in\secedges\}
+            \cup
+            \{\bencodingofat{\catenumerator}{\catvariableof{\catenumerator},\indvariableof{[n]}} \wcols \catenumeratorin\}
+        }{\indvariableof{[n]}}
+        = \onesat{\catvariableof{[n]}}
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Notice, that the contraction with the smaller set of edges $\secedges\subset\edges$ is a Boolean tensor.
+    By the monotonicity of the contraction, we have that the support of the contraction is smaller (in the partial order of tensors) to that of all edges.
+    Since by assumption the latter is the ones tensors, the former must also be the ones tensor.
+\end{proof}
+
+
+
+
+\subsection{Unification}
+
+Unification of atomic sentences: Find a substitution to the variables, such that both sentences are represented by the same computation network.
+
+Compressing of complex sentences:
+\begin{itemize}
+    \item Find a unification of the atomic sentences in both complex sentences
+    \item Represent the substituted complex sentences by a constraction of the activation networks
+\end{itemize}
+
+\subsection{Modus ponens}
+
+\input{examples/lifted-modus-ponens}
+
+\subsection{Contraction equations}
+
+Quantified formulas understood are contraction equations.
+
+Understanding them as hard constraints, one can infer parts of the substitution tensors, which holds for all supported worlds.
+
+\begin{example}[Modus ponens on the substitution structure]
+    We here examplify an application of unification to apply the modus ponens inference rule in the substitution structure.
+    Let us consider the formula
+    \begin{align*}
+        \uniquantwrtof{\shortcatindices}{\formulaat{\indexedshortcatvariables}\impbincon\secformulaat{\indexedshortcatvariables}} \, ,
+    \end{align*}
+    which corresponds to the contraction equation
+    \stantikzpic{
+        \drawtensorblock{2.5}{4}{3}{$\impbincon$}
+        \drawtdwire{0}{3}{$\catvariableof{\formula}$}
+        \drawtensorblock{0}{0}{2}{$\bencodingof{\formula}$}
+        \drawtdwire{5}{3}{$\catvariableof{\secformula}$}
+        \drawtensorblock{5}{0}{2}{$\bencodingof{\secformula}$}
+
+        \draw (1,-3) to[bend right=-20] (-1,-1);
+        \draw (1,-3) to[bend right=20] (4,-1);
+        \drawvariabledot{1}{-3}
+        \drawtdwire{1}{-3}{$\indvariableof{0}$}
+        \draw (4,-3) to[bend right=-20] (1,-1);
+        \draw (4,-3) to[bend right=20] (6,-1);
+        \drawvariabledot{4}{-3}
+        \drawtdwire{4}{-3}{$\indvariableof{\indorder-1}$}
+        \drawtextnode{3}{-4.5}{\colorlabelsize $\cdots$}
+
+        \drawtextnode{10}{0}{$=$}
+
+        \drawtensorblock{15}{0}{2}{$\ones$}
+        \drawtdwire{13.5}{-1}{$\indvariableof{0}$}
+        \drawtextnode{15.5}{-2.5}{\colorlabelsize $\cdots$}
+        \drawtdwire{16.5}{-1}{$\indvariableof{\indorder-1}$}
+    }
+    When knowing for some $\shortcatindicesin$ that $\formulaat{\indexedshortcatvariables}=1$, this is the contraction equation
+    we conclude that $\secformulaat{\indexedshortcatvariables}=1$.
+
+    \stantikzpic{
+        \drawtensorblock{2.5}{4}{3}{$\impbincon$}
+        \drawtdwire{0}{3}{$\catvariableof{\formula}$}
+        \drawtensorblock{0}{0}{2}{$\bencodingof{\formula}$}
+        \drawtdwire{5}{3}{$\catvariableof{\secformula}$}
+        \drawtensorblock{5}{0}{2}{$\bencodingof{\secformula}$}
+
+        \draw (1,-3) to[bend right=-20] (-1,-1);
+        \draw (1,-3) to[bend right=20] (4,-1);
+        \drawvariabledot{1}{-3}
+        \drawtdwire{1}{-3}{$\indvariableof{0}$}
+        \draw (4,-3) to[bend right=-20] (1,-1);
+        \draw (4,-3) to[bend right=20] (6,-1);
+        \drawvariabledot{4}{-3}
+        \drawtdwire{4}{-3}{$\indvariableof{\indorder-1}$}
+        \drawtextnode{3}{-4.5}{\colorlabelsize $\cdots$}
+
+        \drawsmalltensor{1}{-6}{$\onehotmapof{\catindexof{0}}$}
+        \drawsmalltensor{4}{-6}{$\onehotmapof{\catindexof{\indorder\shortminus1}}$}
+
+        \drawtextnode{10}{0}{$=$}
+
+        \drawtensorblock{15}{0}{2}{$\ones$}
+        \drawtdwire{13.5}{-1}{$\indvariableof{0}$}
+        \drawtextnode{15.5}{-2.5}{\colorlabelsize $\cdots$}
+        \drawtdwire{16.5}{-1}{$\indvariableof{\indorder-1}$}
+        \drawsmalltensor{13.5}{-4}{$\onehotmapof{\catindexof{0}}$}
+        \drawsmalltensor{16.5}{-4}{$\onehotmapof{\catindexof{\indorder\shortminus1}}$}
+
+
+        \drawtextnode{20}{0}{$=\quad 1$}
+    }
+
+    We simplify the left hand side using basis calculus to
+
+    \stantikzpic{
+        \drawtensorblock{2.5}{4}{3}{$\impbincon$}
+        \drawtdwire{0}{3}{$\catvariableof{\formula}$}
+        \drawtensorblock{-1}{0}{2.5}{$\onehotmapof{\formulaat{\indexedshortcatvariables}}$}
+        \drawtdwire{5}{3}{$\catvariableof{\secformula}$}
+        \drawtensorblock{5}{0}{2}{$\bencodingof{\secformula}$}
+        \drawtdwire{3.5}{-1}{$\indvariableof{0}$}
+        \drawtextnode{5.5}{-2.25}{\colorlabelsize $\cdots$}
+        \drawtdwire{6.5}{-1}{$\indvariableof{\indorder\shortminus1}$}
+        \drawsmalltensor{3.5}{-4}{$\onehotmapof{\catindexof{0}}$}
+        \drawsmalltensor{6.5}{-4}{$\onehotmapof{\catindexof{\indorder\shortminus1}}$}
+
+        \drawtextnode{11}{0}{$= \quad 1$}
+    }
+    When known that $\formulaat{\indexedshortcatvariables}=1$, this further simplifies to
+
+    \stantikzpic{
+        \drawtensorblock{5}{4}{1}{$\tbasis$}
+        \drawtdwire{5}{3}{$\catvariableof{\secformula}$}
+        \drawtensorblock{5}{0}{2}{$\bencodingof{\secformula}$}
+        \drawtdwire{3.5}{-1}{$\indvariableof{0}$}
+        \drawtextnode{5.5}{-2.25}{\colorlabelsize $\cdots$}
+        \drawtdwire{6.5}{-1}{$\indvariableof{\indorder\shortminus1}$}
+        \drawsmalltensor{3.5}{-4}{$\onehotmapof{\catindexof{0}}$}
+        \drawsmalltensor{6.5}{-4}{$\onehotmapof{\catindexof{\indorder\shortminus1}}$}
+
+        \drawtextnode{11}{0}{$= \quad 1$}
+    }
+    which is equal to $\secformulaat{\indexedshortcatvariables}=1$.
+\end{example}
+
+More sophisticated reasoning schemes based on contraction equations are applied in \cite{sato_linear_2017,tsilionis_tensor-based_2024}, where recursive linear equations are derived.

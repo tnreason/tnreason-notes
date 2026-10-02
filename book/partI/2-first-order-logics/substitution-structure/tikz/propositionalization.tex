@@ -1,33 +1,38 @@
-\begin{tikzpicture}[scale=0.35, yscale=1, thick] % , baseline = -3.5pt
+\stantikzpic{
 
-    \draw (1,-1) rectangle (7,-3);
-    \node[anchor=center] (text) at (4,-2) {$\groundingof{\folexformula}$};
+    \drawtensorblock{4}{-2}{3}{$\groundingof{\folexformula}$}
+    \drawvwire{2}{-3}{$\indvariableof{0}$}
+    \drawtextnode{4.5}{-4}{\colorlabelsize $\cdots$}
+    \drawvwire{6}{-3}{$\indvariableof{\indorder-1}$}
 
-    \draw[] (2,-3) -- (2,-5) node[midway,left] {\colorlabelsize $\indvariableof{0}$};
-    \node[anchor=center] (text) at (4,-4) {$\cdots$};
-    \draw[] (6,-3) -- (6,-5) node[midway,right] {\colorlabelsize $\indvariableof{\indorder-1}$};
-
-
-    \node[anchor=center] (text) at (10,-2) {${=}$};
+    \drawtextnode{10}{-2}{$=$}
 
     \begin{scope}
-        [shift={(12,-2)}]
+    [shift={(12,-2)}]
 
-        \draw (1,3) rectangle (12,5);
-        \node[anchor=center] (text) at (6.5,4) {$\exformula$};
+        \drawtensorblock{6.5}{6}{5.5}{$\exformula$}
+        \drawvwire{2.5}{5}{$\catvariableof{0}$}
+        \drawvariabledot{2.5}{3}
+        \drawtextnode{7}{4}{\colorlabelsize $\cdots$}
+        \drawvariabledot{10.5}{3}
+        \drawvwire{10.5}{5}{$\catvariableof{\catorder-1}$}
 
-        \drawvariabledot{2.5}{2}
-        \draw (2.5,3) -- (2.5,2) node[midway,right] {\colorlabelsize $\catvariableof{0}$};
-        \draw[->-] (2.5,1) -- (2.5,2);
+        \drawtextnode{17}{6}{Activation Network}
+        \draw[dashed] (0,3.5) -- (22,3.5) -- (22,8) -- (0,8) -- (0,3.5);
+
+        \drawtextnode{17}{0}{Computation Network}
+        \draw[dashed] (0,2.5) -- (22,2.5) -- (22,-6.5) -- (0,-6.5) -- (0,2.5);
+
+        \drawtdwire{2.5}{3}{}
+        \drawtdwire{10.5}{3}{}
+
+
         \draw (1,-1) rectangle (4,1);
         \node[anchor=center] (text) at (2.5,0) {$\bencodingof{\groundingof{\extformulaof{0}}}$};
         \node[anchor=center] (text) at (2.5,-2) {$\cdots$};
 
         \node[anchor=center] (text) at (6.5,0) {$\cdots$};
 
-        \drawvariabledot{10.5}{2}
-        \draw (10.5,2) -- (10.5,3) node[midway,right] {\colorlabelsize $\catvariableof{\atomorder-1}$};
-        \draw[->-] (10.5,1) -- (10.5,2);
         \draw (8.75,-1) rectangle (12.25,1);
         \node[anchor=center] (text) at (10.5,0) {$\bencodingof{\groundingof{\extformulaof{\atomorder\shortminus1}}}$};
         \node[anchor=center] (text) at (10.5,-2) {$\cdots$};
@@ -55,7 +60,8 @@
         \drawvariabledot{5.5}{-5}
         \draw[-<-] (5.5,-5) -- (5.5,-7) node[left] {\colorlabelsize $\indvariableof{0}$} ;
 
+
     \end{scope}
 
 
-\end{tikzpicture}
+}

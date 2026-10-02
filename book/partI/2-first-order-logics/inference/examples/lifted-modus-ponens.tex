@@ -1,0 +1,307 @@
+\begin{example}[Lifted modus ponens]\label{exa:liftedModusPonens}
+    For example we have
+    \begin{itemize}
+        \item John knows everyone: Knows(John,z)
+        \item People who know each other are friends: Knows(x,y) $\Rightarrow$ Friends(x,y)
+    \end{itemize}
+    We illustrate the derivation of the entailed formula Friends(John,z) (i.e. John is a friend of everyone) by modus ponens.
+    The formulas are represented by the contraction equation
+
+    \stantikzpic{
+        \drawsmalltensor{5}{4}{$\tbasis$}
+        \drawtdwire{5}{3}{$\catvariableof{Knows}$}
+        \drawtensorblock{5}{0}{2}{$\bencodingof{Knows}$}
+        \drawtdwire{3.5}{-1}{$\indvariableof{0}$}
+        \drawtensorblock{3.5}{-4}{1.5}{$\onehotmapof{John}$}
+        \drawtdwire{6.5}{-1}{$\indvariableof{1}$}
+
+        \drawtextnode{10}{0}{$=$}
+
+        \drawtensorblock{14}{0}{1}{$\ones$}
+        \drawtdwire{14}{-1}{$\indvariableof{1}$}
+
+        \drawtextnode{19}{0}{and}
+
+        \begin{scope}[shift={(25,0)}]
+
+            \drawtensorblock{2.5}{4}{3}{$\impbincon$}
+            \drawtdwire{0}{3}{$\catvariableof{Knows}$}
+            \drawtensorblock{0}{0}{2}{$\bencodingof{Knows}$}
+            \drawtdwire{5}{3}{$\catvariableof{Friends}$}
+            \drawtensorblock{5}{0}{2}{$\bencodingof{Friends}$}
+
+            \draw (1,-3) to[bend right=-20] (-1,-1);
+            \draw (1,-3) to[bend right=20] (4,-1);
+            \drawvariabledot{1}{-3}
+            \drawtdwire{1}{-3}{$\indvariableof{2}$}
+            \draw (4,-3) to[bend right=-20] (1,-1);
+            \draw (4,-3) to[bend right=20] (6,-1);
+            \drawvariabledot{4}{-3}
+            \drawtdwire{4}{-3}{$\indvariableof{3}$}
+
+            \drawtextnode{10}{0}{$=$}
+
+            \drawtensorblock{15}{0}{2}{$\ones$}
+            \drawtdwire{13.5}{-1}{$\indvariableof{2}$}
+            \drawtdwire{16.5}{-1}{$\indvariableof{3}$}
+        \end{scope}
+    }
+
+    We combine them by the tensor product of both sides as
+
+    \stantikzpic{
+
+        \drawsmalltensor{5}{4}{$\tbasis$}
+        \drawtdwire{5}{3}{$\catvariableof{Knows,0}$}
+        \drawtensorblock{5}{0}{2}{$\bencodingof{Knows}$}
+        \drawtdwire{3.5}{-1}{$\indvariableof{0}$}
+        \drawtensorblock{3.5}{-4}{1.5}{$\onehotmapof{John}$}
+        \drawtdwire{6.5}{-1}{$\indvariableof{1}$}
+
+        \begin{scope}[shift={(10,0)}]
+
+            \drawtensorblock{2.5}{4}{3}{$\impbincon$}
+            \drawtdwire{0}{3}{$\catvariableof{Knows,1}$}
+            \drawtensorblock{0}{0}{2}{$\bencodingof{Knows}$}
+            \drawtdwire{5}{3}{$\catvariableof{Friends}$}
+            \drawtensorblock{5}{0}{2}{$\bencodingof{Friends}$}
+
+            \draw (1,-3) to[bend right=-20] (-1,-1);
+            \draw (1,-3) to[bend right=20] (4,-1);
+            \drawvariabledot{1}{-3}
+            \drawtdwire{1}{-3}{$\indvariableof{2}$}
+            \draw (4,-3) to[bend right=-20] (1,-1);
+            \draw (4,-3) to[bend right=20] (6,-1);
+            \drawvariabledot{4}{-3}
+            \drawtdwire{4}{-3}{$\indvariableof{3}$}
+
+
+        \end{scope}
+
+
+        \drawtextnode{19}{0}{$=$}
+
+        \drawtensorblock{23}{0}{2.5}{$\ones$}
+        \drawtdwire{21}{-1}{$\indvariableof{1}$}
+        \drawtdwire{23}{-1}{$\indvariableof{2}$}
+        \drawtdwire{25}{-1}{$\indvariableof{3}$}
+    }
+
+    The necessary substitution for the unification of both is $\indvariableof{2}\mapsto$ John and $\indvariableof{1},\indvariableof{3}\mapsto\indvariableof{4}$.
+    This amounts to contraction of both sides with the tensor
+    \stantikzpic{
+        \drawtdwire{-1}{3}{$\indvariableof{1}$}
+        \drawtdwire{1}{3}{$\indvariableof{3}$}
+        \drawtensorblock{0}{0}{1.5}{$\identity$}
+        \drawtdwire{0}{-1}{$\indvariableof{4}$}
+
+        \drawtdwire{3.5}{3}{$\indvariableof{2}$}
+        \drawtensorblock{3.5}{0}{1.5}{$\onehotmapof{John}$}
+    }
+
+    We contract this tensor to both sides of the combined contraction equation and get
+    \stantikzpic{
+        \drawsmalltensor{-5}{4}{$\tbasis$}
+        \drawtdwire{-5}{3}{$\catvariableof{Knows,0}$}
+        \drawtensorblock{-5}{0}{2}{$\bencodingof{Knows}$}
+
+        \drawtensorblock{2.5}{4}{3}{$\impbincon$}
+        \drawtdwire{0}{3}{$\catvariableof{Knows,1}$}
+        \drawtensorblock{0}{0}{2}{$\bencodingof{Knows}$}
+        \drawtdwire{5}{3}{$\catvariableof{Friends}$}
+        \drawtensorblock{5}{0}{2}{$\bencodingof{Friends}$}
+
+
+        \draw (1,-3) to[bend right=-10] (-6,-1);
+        \draw (1,-3) to[bend right=-20] (-1,-1);
+        \draw (1,-3) to[bend right=20] (4,-1);
+        \drawvariabledot{1}{-3}
+        \drawtdwire{1}{-3}{$\indvariableof{2}$}
+        \drawtensorblock{1}{-6}{1.5}{$\onehotmapof{John}$}
+
+
+        \draw (4,-3) to[bend right=-10] (-4,-1);
+        \draw (4,-3) to[bend right=-20] (1,-1);
+        \draw (4,-3) to[bend right=20] (6,-1);
+        \drawvariabledot{4}{-3}
+        \drawtdwire{4}{-3}{$\indvariableof{4}$}
+
+        \drawtextnode{9}{0}{$=$}
+
+        \drawtensorblock{13}{0}{1}{$\ones$}
+        \drawtdwire{13}{-1}{$\indvariableof{4}$}
+    }
+
+    Now we notice that the computation network of the variables $\catvariableof{Knows,0}$ and $\catvariableof{Knows,1}$ are equivalent (what was the goal of the unification).
+    We simplify the equation to
+    \stantikzpic{
+        \drawsmalltensor{0}{5}{$\tbasis$}
+        \drawtensorblock{4}{5}{2}{$\impbincon$}
+
+        \draw (0,3) to [bend right=20] (3,4);
+        \draw (0,3) -- (0,4);
+
+        \drawvariabledot{0}{3}
+        \drawtdwire{0}{3}{$\catvariableof{Knows}$}
+        \drawtensorblock{0}{0}{2}{$\bencodingof{Knows}$}
+
+        \draw (5,3) -- (5,4);
+        \drawvariabledot{5}{3}
+        \drawtdwire{5}{3}{$\catvariableof{Friends}$}
+        \drawtensorblock{5}{0}{2}{$\bencodingof{Friends}$}
+
+        \draw (1,-3) to[bend right=-20] (-1,-1);
+        \draw (1,-3) to[bend right=20] (4,-1);
+        \drawvariabledot{1}{-3}
+        \drawtdwire{1}{-3}{$\indvariableof{2}$}
+        \drawtensorblock{1}{-6}{1.5}{$\onehotmapof{John}$}
+
+        \draw (4,-3) to[bend right=-20] (1,-1);
+        \draw (4,-3) to[bend right=20] (6,-1);
+        \drawvariabledot{4}{-3}
+        \drawtdwire{4}{-3}{$\indvariableof{4}$}
+
+        \drawtextnode{9}{0}{$=$}
+
+        \begin{scope}[shift={(13,0)}]
+
+            \drawsmalltensor{0}{5}{$\tbasis$}
+            \drawsmalltensor{5}{5}{$\tbasis$}
+
+            \draw (0,3) -- (0,4);
+
+            \drawvariabledot{0}{3}
+            \drawtdwire{0}{3}{$\catvariableof{Knows}$}
+            \drawtensorblock{0}{0}{2}{$\bencodingof{Knows}$}
+
+            \draw (5,3) -- (5,4);
+            \drawvariabledot{5}{3}
+            \drawtdwire{5}{3}{$\catvariableof{Friends}$}
+            \drawtensorblock{5}{0}{2}{$\bencodingof{Friends}$}
+
+            \draw (1,-3) to[bend right=-20] (-1,-1);
+            \draw (1,-3) to[bend right=20] (4,-1);
+            \drawvariabledot{1}{-3}
+            \drawtdwire{1}{-3}{$\indvariableof{2}$}
+            \drawtensorblock{1}{-6}{1.5}{$\onehotmapof{John}$}
+
+            \draw (4,-3) to[bend right=-20] (1,-1);
+            \draw (4,-3) to[bend right=20] (6,-1);
+            \drawvariabledot{4}{-3}
+            \drawtdwire{4}{-3}{$\indvariableof{4}$}
+
+            \drawtextnode{9}{0}{$=$}
+
+            \drawtensorblock{13}{0}{1}{$\ones$}
+            \drawtdwire{13}{-1}{$\indvariableof{4}$}
+        \end{scope}
+
+    }
+
+    Here we applied modus ponens on the activation network in the first equation.
+    Restricting the activation network to the variable $\catvariableof{Friends}$ is then the derived formula Friends(John,z) (i.e. John is a friend of everyone):
+
+    \stantikzpic{
+        \drawsmalltensor{5}{5}{$\tbasis$}
+
+        \draw (5,3) -- (5,4);
+        \drawvariabledot{5}{3}
+        \drawtdwire{5}{3}{$\catvariableof{Friends}$}
+        \drawtensorblock{5}{0}{2}{$\bencodingof{Friends}$}
+
+        \drawtdwire{3.5}{-1}{$\indvariableof{2}$}
+        \drawtensorblock{3.5}{-4}{1.5}{$\onehotmapof{John}$}
+
+        \drawtdwire{6.5}{-1}{$\indvariableof{4}$}
+
+        \drawtextnode{9}{0}{$=$}
+
+        \drawtensorblock{13}{0}{1}{$\ones$}
+        \drawtdwire{13}{-1}{$\indvariableof{4}$}
+
+    }
+
+
+
+
+
+% OLD, more direct sketch
+%    Now we do modus ponens on the activation network and get Friends(John,z).
+%    \stantikzpic{
+%% From Knows(John,z)
+%        \drawsquaretensor{0}{4}{$\tbasis$}
+%        \draw (0,2) -- (0,3);
+%
+%        % From Knows(x,y) $\Rightarrow$ Friends(x,y)
+%        \draw (3,3) rectangle (7,5);
+%        \drawtextnode{5}{4}{\corelabelsize $\Rightarrow$};
+%        \draw (0,2) to[bend right=20] (4,3);
+%        \draw (6,2) -- (6,3);
+%
+%        \drawvariabledot{0}{2}
+%        \drawvariabledot{6}{2}
+%
+%        %% SUBSTITUTION
+%        \draw [->-] (0,1) -- (0,2) node[midway,right] {\colorlabelsize $\indvariableof{Knows}$};
+%        \draw (-2,-1) rectangle (2,1);
+%        \drawtextnode{0}{0}{\corelabelsize $\bencodingof{Knows}$};
+%
+%        \begin{scope}[shift={(6,0)}]
+%            \draw [->-] (0,1) -- (0,2) node[midway,right] {\colorlabelsize $\indvariableof{Friends}$};
+%            \draw (-2,-1) rectangle (2,1);
+%            \drawtextnode{0}{0}{\corelabelsize $\bencodingof{Friends}$};
+%        \end{scope}
+%
+%        \draw[->-] (1.5,-4) to[bend right=-40] (-1.5,-1);
+%        \draw[->-] (1.5,-4) to[bend right=40] (4.5,-1);
+%        \drawvariabledot{1.5}{-4}
+%        \draw[->-] (1.5,-5) -- (1.5,-4) node[midway,right] {\colorlabelsize $\indvariableof{x}$};
+%        \drawsquaretensor{1.5}{-6}{$\onehotmapof{John}$}
+%
+%        \draw[->-] (4.5,-4) to[bend right=-40] (1.5,-1);
+%        \draw[->-] (4.5,-4) to[bend right=40] (7.5,-1);
+%        \drawvariabledot{4.5}{-4}
+%        \draw[->-] (4.5,-5) -- (4.5,-4) node[midway,right] {\colorlabelsize $\indvariableof{z}$};
+%        \drawsquaretensor{4.5}{-6}{$\identity$}
+%        \draw[->-] (4.5,-8.5) -- (4.5,-7) node[midway,right] {\colorlabelsize $\indvariableof{z}$};
+%
+%        \drawtextnode{13}{0}{${=}$}
+%    %%% RIGHT SIDE
+%        \begin{scope}[shift={(20,0)}]
+%            % From Knows(John,z)
+%            \drawsquaretensor{0}{4}{$\tbasis$}
+%            \draw (0,2) -- (0,3);
+%
+%            % Modus ponens infered
+%            \drawsquaretensor{6}{4}{$\tbasis$}
+%            \draw (6,2) -- (6,3);
+%
+%            \drawvariabledot{0}{2}
+%            \drawvariabledot{6}{2}
+%
+%            %% SUBSTITUTION
+%            \draw [->-] (0,1) -- (0,2) node[midway,right] {\colorlabelsize $\indvariableof{Knows}$};
+%            \draw (-2,-1) rectangle (2,1);
+%            \drawtextnode{0}{0}{\corelabelsize $\bencodingof{Knows}$};
+%
+%            \begin{scope}[shift={(6,0)}]
+%                \draw [->-] (0,1) -- (0,2) node[midway,right] {\colorlabelsize $\indvariableof{Friends}$};
+%                \draw (-2,-1) rectangle (2,1);
+%                \drawtextnode{0}{0}{\corelabelsize $\bencodingof{Friends}$};
+%            \end{scope}
+%
+%            \draw[->-] (1.5,-4) to[bend right=-40] (-1.5,-1);
+%            \draw[->-] (1.5,-4) to[bend right=40] (4.5,-1);
+%            \drawvariabledot{1.5}{-4}
+%            \draw[->-] (1.5,-5) -- (1.5,-4) node[midway,right] {\colorlabelsize $\indvariableof{x}$};
+%            \drawsquaretensor{1.5}{-6}{$\onehotmapof{John}$}
+%
+%            \draw[->-] (4.5,-4) to[bend right=-40] (1.5,-1);
+%            \draw[->-] (4.5,-4) to[bend right=40] (7.5,-1);
+%            \drawvariabledot{4.5}{-4}
+%            \draw[->-] (4.5,-5) -- (4.5,-4) node[midway,right] {\colorlabelsize $\indvariableof{z}$};
+%            \drawsquaretensor{4.5}{-6}{$\identity$}
+%            \draw[->-] (4.5,-8.5) -- (4.5,-7) node[midway,right] {\colorlabelsize $\indvariableof{z}$};
+%        \end{scope}
+%    }
+\end{example}

@@ -5,6 +5,10 @@ Here we focus on A-Box representation by sparse tensors.}
 
 Let us now represent a specific fragment of \firstOrderLogic{}, namely Description Logics which Knowledge Bases are often referred to as Knowledge Graphs.
 We here use the $\mathrm{OWL\,2}$ standard, which encodes the syntax of the description logic $\mathcal{SROIQ(D)}$ \cite{rudolph_foundations_2011}.
+It is further applied as a foundation of semantic web \cite{antoniou_semantic_2012}.
+Knowledge bases in this fragment are further called Knowledge Graphs \cite{hogan_knowledge_2021}, due to a graphical interpretation.
+%
+Note that the relation to tensor representations is here through extended adjacency matrices, and not decorations of the graphs by tensors as in the formalism here.
 
 \subsection{Representation as Unary and Binary Predicates}
 
@@ -65,7 +69,7 @@ Approximations of grounding tensors by decompositions leads to embeddings of the
 % basis encoding
 For our purposes of evaluating logical formulas such as $\sparql$ queries we use the basis encoding of the groundings, which are depicted by
 \begin{center}
-    \input{tikz/knowledge-graphs/kg_formula_tensor.tex}
+    \input{tikz/kg_formula_tensor.tex}
 \end{center}
 
 
@@ -138,7 +142,7 @@ That means that applying $\psi (\psi^T)$ is the same map as applying once.
 
 \begin{figure}[t]
     \begin{center}
-        \input{tikz/knowledge-graphs/kg_triple_patterns.tex}
+        \input{tikz/kg_triple_patterns.tex}
     \end{center}
     \caption{Triple patterns of $\sparql$ as tensor networks.
     a) Example of unary triple pattern $\exunarytriple$ specifying whether an individual $\indexinterpretationof{\indindexof{1}}$ is a member of class $C$.

@@ -1,0 +1,113 @@
+\section{Tensor storage of Groundings}
+
+\todo{
+    A typical storage of a grounding is the enlistment of all non-zero coordinates.
+    We understand this as a basis $\cpformat$ decomposition of the grounding tensor.
+    We then propose more efficient storage tensor formats, which are respecting the structure of the grounded formula.
+}
+
+\subsection{Storage in Basis CP Decomposition}\label{sec:basisCPgrounding}
+
+In many situations, grounding cores are sparse and representations as single tensor cores comes with a drastic overhead.
+We often encounter sparse grounding tensors, where the number of non-zero coordinates (to be investigated by basis CP ranks in \charef{cha:sparseRepresentation}) satisfies
+\begin{align*}
+    \sparsityof{\groundingof{\folexformula}} << \inddim^{\cardof{\indvariableof{\folexformula}}} \, .
+\end{align*}
+In this case, since most coordinates vanish, the basis CP decomposition (see \secref{sec:basisCP}) enables a representation of the grounding with significantly lower storage demand, see \theref{the:sparseBasisCP}.
+This is particularly useful for representing large relational databases, where each object has only a few relations with others, while the majority of possible relations remains unsatisfied.
+We depict such CP decomposition of a formula grounding in \theref{fig:groundingCP}.
+
+% Standard KB Encoding and Assumptions
+Most logical syntaxes exploit $\ell_0$-sparsity, explicitly storing only known assertions.
+The interpretation of unspecified assertions depends on the underlying assumptions.
+Under the Closed World Assumption, all unspecified assertions are assumed to be false.
+
+%
+\input{examples/knows-matrix-storage}
+
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz/grounding_decomposition.tex}
+    \end{center}
+    \caption{Basis CP Decomposition of the grounding of $\folexformula$, following the scheme of \theref{the:sparseBasisCP}.
+    Instead of direct storage of the grounding tensor $\groundingof{\folexformula}$, the non-zero coordinates are enumerated by a variable $\datvariable$ and the corresponding coordinates stored in leg-matrices $\legcoreof{\folexformula,\indenumerator}$.}
+    \label{fig:groundingCP}
+\end{figure}
+
+%\subsection{Summary}
+%
+%Let us summarize the tensor encodings of the representations of the different concepts, given a single \firstOrderLogic{} world:
+%\begin{center}
+%    \begin{tabular}{|p{\threecolumnwidth}|p{\threecolumnwidth}|p{\threecolumnwidth}|}
+%        \hline
+%        \textbf{Concept}        & \textbf{Representation}                       & \textbf{Decomposition}                             \\
+%        \hline
+%        Constant Symbol         & Basis vector                                  &                                                    \\
+%        \hline
+%        Function Symbol         & \BasisEncoding{}: Boolean and directed tensor &                                                    \\
+%        Term                    & ""                                            & Acyclic tensor network of represented functions    \\
+%        \hline
+%        Predicate Symbol        & \CoordinateEncoding{}: Boolean tensor         &                                                    \\
+%%        Relation & Boolean tensor \\
+%        Quantifier-free Formula & ""                                            & Contraction of represented terms with relations    \\
+%        Formula                 & ""                                            & Transform of corresponding quantifier-free formula \\
+%        \hline
+%    \end{tabular}
+%\end{center}
+
+\subsection{Example: Relational Databases}
+
+A database is understood as a specific \firstOrderLogic{} world, and are operations on such a single world.
+Queries are described by a formula $\impformula$, which are asked against a specific world $\worldindices$ to retrieve the grounding $\groundingof{\impformula}$.
+The variables of such formulas are called projection variables.
+The answer $\groundingof{\impformula}$ of a query is most conveniently represented as a list of solution mappings from the projection variables to objects in the world, such that the query formula is satisfied.
+Answering a query by solution mappings corresponds with finding the basis CP Decomposition (see \secref{sec:basisCP}) of $\groundingof{\impformula}$.
+We can understand these solution mappings as stored in the leg-matrices $\legcoreof{\folexformula,\indenumerator}$ (see \figref{fig:groundingCP}).
+
+Let us give with the outer join an example of a popular operation to define queries, which efficient execution and storage can be improved based on considerations in the tensor network formalism.
+
+\begin{definition}[Outer join]
+    Let there be a world $\worldindices$ and formulas $\extformulaof{\selindex}$ depending on variables $\indvariableof{\nodesof{\selindex}}$, which have grounding tensors by
+    \begin{align*}
+        \groundingofat{\extformulaof{\selindex}}{\indvariableof{\node}} \wcols  \bigtimes_{\node\in\nodesof{\selindex}}[\inddimof{\node}] \rightarrow \ozset \, .
+    \end{align*}
+    Then their (outer) $\joinsymbol$ is defined as the grounding of their conjunctions, as
+    \begin{align*}
+        \groundingofat{\joinsymbol\left(\extformulaof{0},\ldots,\extformulaof{\seldim-1}\right)}{\bigcup_{\selindexin}\indvariableof{\nodesof{\selindex}}}
+        = \contractionof{\groundingofat{\extformulaof{\selindex}}{\indvariableof{\nodesof{\selindex}}}\,:\,\selindexin}{\bigcup_{l\in[p]}\indvariableof{\nodesof{\selindex}}} \, .
+    \end{align*}
+\end{definition}
+
+%Visualization and efficiency
+We can understand the $\joinsymbol$ of groundings by a factor graph, where each grounding tensor decorates the hyperedge to the node set $\nodesof{\selindex}$.
+The projection variable assignment to each formula combined in a $\joinsymbol$ operation provide a basic tensor network format to store the output of the operation.
+There are thus situations, in which the solution map storage corresponding with a CP Decomposition comes with unnecessary overheads compared with other formats.
+
+% Coordinatewise transform
+We can also understand the $\joinsymbol$ operation as a coordinatewise transform (see \defref{def:coordinatewiseTransform}) with the product as transform function.
+To make this connection solid, one would need to extend each joined formula trivially to the variables appearing in other formulas.
+
+% Evaluation similar constraint propagation
+The efficiency of evaluating the contraction to a $\joinsymbol$ operation might be improved by understanding it as an Constraint Satisfaction Problem (see \charef{cha:logicalReasoning}).
+When applying efficient Message Passing algorithms such as Knowledge Propagation (see \algoref{alg:knowledgePropagation}), the groundings can be sparsified by local constraint propagation operations before turning to more global and more demanding contraction operations.
+Here the groundings $\groundingof{\extformulaof{\selindex}}$ would be used to initialize Knowledge Cores $\kcoreof{\edge}$ and sequentially sparsified during the algorithm.
+
+%\begin{example} % WOULD NEED OVERWORK: DRAW!
+%	For example take a query with many basic graph patterns with pairwise different projection variables.
+%	The global CP Decomposition would come here with an exponential storage overhead compared with storage as a tensor product of CP Decompositions to each Basic graph pattern.
+%\end{example}
+
+%% CONFUSING?
+%\begin{remark}[Distinguishing from probabilistic queries]
+%	Let us distinguish the discussion here from those of queries in probabilistic reasoning, which have two main differences.
+%	First, we ask queries against all possible pairs of variables, instead of asking the probability of satisfaction of a specific formula.
+%	Second, since we made the epistemologic assumption of knowing possibilities and not probabilities in logics, a query is answered by a truth value.
+%	We then only output in the shape of solution mappings the variable assignments where the query formula is true.
+% 	Thus, the queries here can be thought of as a batch of probabilistic queries with Boolean answers.
+%	% Alternative -> Later?
+%	Probabilistic queries can furthermore be understood in terms of the data extraction process described in this section.
+%	We can ask the query in probabilistic form (decomposed into atomic formulas) on the resulting empirical distribution.
+%	This results in the ratio of the worlds satisfying the query among those worlds satisfying the extraction query $\impformula$.
+%\end{remark}
+

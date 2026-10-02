@@ -1,10 +1,10 @@
 \section{Semiring contraction}
 
-\todo{We here introduce the algebraic structure required for the main separability property of contractions: commutative semirings.}
+We here introduce with commutative semirings the algebraic structure required for the main separability property of contractions, and therefore for message-passing algorithms.
 
 See \cite{liu_computing_2023,liu_tropical_2021} for applications and \cite{gondran_graphs_2008} for algebraic and graph-theoretic foundations.
 
-%\section{Semirings}
+\subsection{Foundations}
 
 \begin{definition}
     A commutative semiring is a tuple $\gensemiring$, where $S$ is a set, $0,1\in S$, and
@@ -236,3 +236,11 @@ where $\oplus$ denotes the sum $\modspace 2$ and $\cdot$ the standard multiplica
 
 
 We will investigate that semiring further in \secref{sec:reedMullerExpansion}, where we relate $\cpformat$ decompositions with respect to that semiring to Reed-Muller expansions.
+
+\subsection{Tensor network formats}
+
+Based on the semiring contraction, we can define tensor network formats for arbitrary semirings.
+\begin{itemize}
+    \item $\elformat$ depends only on the multiplicative structure of the semiring. Therefore equivalent for all the semirings with the standard product.
+    \item $\cpformat$ format is the semiring sum of $\elformat$. Examples in the galois field semiring in \secref{sec:reedMullerExpansion}.
+\end{itemize}
