@@ -1,0 +1,115 @@
+\documentclass[aps,onecolumn,nofootinbib,pra]{article}
+
+\usepackage{../../spec_files/arxiv}
+\input{../../spec_files/standard_preamble.tex}
+
+\usepackage{import}
+\subimport{../../macros/}{all-macros}
+
+\usepackage{minted}
+
+\begin{document}
+    \title{Tensorized Knowledge Units}
+
+    \maketitle
+    \date{\today}
+
+    \begin{abstract}
+        We investigate, whether tensor networks could serve as a knowledge representation format for the project Alexandria \cite{schuhmann_project_2025}.
+        To represent uncertainties and relations between claims we apply the formalism discussed in \cite{goessmann_tensor_2026}.
+    \end{abstract}
+
+
+    \section{Incorporating uncertainties}
+
+    \begin{center}
+        \textit{
+            Climate change is happening with $80\%$ probability.
+        }
+    \end{center}
+    \stantikzpic{
+        \draw (-2,-3) rectangle (2,1);
+        \drawtextnode{0}{-1}{$\begin{pmatrix}
+                                  0.2 \\ 0.8
+        \end{pmatrix}$}
+        \drawvwire{0}{-3}{$\catvariableof{0}$}
+    }
+
+
+    \section{Modelling relations between claims}
+
+    \begin{center}
+        \textit{
+            When the polar ice is melting, then climate change is happening.
+        }
+    \end{center}
+
+    \begin{itemize}
+        \item $\catvariableof{0}$: Polar ice is melting
+        \item $\catvariableof{1}$: Climate change is happening
+    \end{itemize}
+
+
+
+    \stantikzpic{
+        \draw (-2,-3) rectangle (2,1);
+        \drawtextnode{0}{-1}{$\begin{pmatrix}
+                                  1 & 1 \\
+                                  0 & 1
+        \end{pmatrix}$}
+        \drawvwire{-1}{-3}{$\catvariableof{0}$}
+        \drawvwire{1}{-3}{$\catvariableof{1}$}
+    }
+
+
+    \section{Inference}
+
+
+    \begin{center}
+        \textit{
+            Assuming that the polar ice is melting, what is the probability of climate change, according to the paper?
+        }
+    \end{center}
+
+    This would be a contraction with $\tbasisat{\catvariableof{0}}$
+
+    \stantikzpic{
+        \draw (-2,-3) rectangle (2,1);
+        \drawtextnode{0}{-1}{$\begin{pmatrix}
+                                  1 & 1 \\
+                                  0 & 1
+        \end{pmatrix}$}
+        \drawvwire{-1}{-3}{$\catvariableof{0}$}
+        \drawvwire{1}{-3}{$\catvariableof{1}$}
+        \drawsmalltensor{-1}{-6}{$\tbasis$}
+
+        \drawtextnode{5}{-1}{$=$}
+
+        \draw (8,-3) rectangle (12,1);
+        \drawtextnode{10}{-1}{$\begin{pmatrix}
+                                   0 \\ 1
+        \end{pmatrix}$}
+
+        \drawvwire{10}{-3}{$\catvariableof{1}$}
+    }
+
+
+    \section{Similarity by contractions}
+
+    The extracted tensorized Knowledge Units can be contracted to observe the similarity between their claims.
+    For example, two knowledge units with contradicting claim have vanishing contractions.
+
+%
+%    Further ideas:
+%    \begin{itemize}
+%        \item Usage of distance measures of probability distributions
+%        \item Entailment of knowledge units
+%    \end{itemize}
+
+
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
+
+
+\end{document}
