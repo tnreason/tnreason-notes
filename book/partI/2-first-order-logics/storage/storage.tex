@@ -35,26 +35,51 @@ Under the Closed World Assumption, all unspecified assertions are assumed to be 
     \label{fig:groundingCP}
 \end{figure}
 
-%\subsection{Summary}
-%
-%Let us summarize the tensor encodings of the representations of the different concepts, given a single \firstOrderLogic{} world:
-%\begin{center}
-%    \begin{tabular}{|p{\threecolumnwidth}|p{\threecolumnwidth}|p{\threecolumnwidth}|}
-%        \hline
-%        \textbf{Concept}        & \textbf{Representation}                       & \textbf{Decomposition}                             \\
-%        \hline
-%        Constant Symbol         & Basis vector                                  &                                                    \\
-%        \hline
-%        Function Symbol         & \BasisEncoding{}: Boolean and directed tensor &                                                    \\
-%        Term                    & ""                                            & Acyclic tensor network of represented functions    \\
-%        \hline
-%        Predicate Symbol        & \CoordinateEncoding{}: Boolean tensor         &                                                    \\
-%%        Relation & Boolean tensor \\
-%        Quantifier-free Formula & ""                                            & Contraction of represented terms with relations    \\
-%        Formula                 & ""                                            & Transform of corresponding quantifier-free formula \\
-%        \hline
-%    \end{tabular}
-%\end{center}
+
+
+\subsection{Storage in Tensor Network Formats}
+
+We now investigate, whether the basis $\cpformat$ storage of a formula is optimal.
+
+
+
+\begin{itemize}
+    \item Advantage of contracted storage: Redundancies by vanishing slices removed.
+    We could try to remove redundancies by message passing algorithms, processing constraints on the support of the tensor.
+    \item Advantage of decomposed store: Repetition effects of partial indices are respected.
+\end{itemize}
+
+
+\begin{example}[Conjunction chain of random predicates]
+
+    Let us consider a conjunction chain of predicates, i.e. the $\catenumerator$ predicate shares with the $\catenumerator+1$ and $\catenumerator-1$ predicate one term variable, but with no other predicate.
+    The formula would be a $\ttformat$-like tensor network.
+    %
+    Now let us consider an random world, where each complete substitution of each predicate is satisfied independently with probability $p$.
+    The expectation of the groundings is the tensor $p^{\catorder} \cdot \onesat{\indvariableof{[\catorder+1]}}$ and the expectation of the contraction is
+    \begin{align*}
+        p^{\catorder} \cdot \inddim^(\catorder+1) \, .
+    \end{align*}
+    The expected basis $\cpformat$ rank of the grounding grows exponentially in $\catorder$, while in the $\ttformat$-like decomposition the expectation of the storage demand is
+    \begin{align*}
+        p \cdot \catorder \cdot \inddim^2 \,
+    \end{align*}
+    and thus linear in $\catorder$.
+
+    % Arbitrary random tensor network
+    More general, when any random network of predicates is considered, the expected contraction is
+    \begin{align*}
+        p^{\cardof{\edges}} \cdot \inddim^{\indorder}
+    \end{align*}
+    and the storage demand
+    \begin{align*}
+        \sum_{\edgein} p \cdot \inddim^{\cardof{\edge}} \, .
+    \end{align*}
+
+
+
+\end{example}
+
 
 \subsection{Example: Relational Databases}
 

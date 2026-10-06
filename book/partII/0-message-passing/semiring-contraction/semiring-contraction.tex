@@ -244,3 +244,14 @@ Based on the semiring contraction, we can define tensor network formats for arbi
     \item $\elformat$ depends only on the multiplicative structure of the semiring. Therefore equivalent for all the semirings with the standard product.
     \item $\cpformat$ format is the semiring sum of $\elformat$. Examples in the galois field semiring in \secref{sec:reedMullerExpansion}.
 \end{itemize}
+
+\subsection{Basis calculus} % Check, whether basis calculus before
+
+Basis calculus works on different semirings, namely those satisfying:
+\begin{itemize}
+    \item $0,1 \in S$
+    \item $0 \oplus 0 = 0, 0 \oplus 1= 1$
+    \item $1\otimes 1 = 1, 0 \otimes 1 = 0, 0 \otimes 0 = 0$
+\end{itemize}
+
+This is satisfied for the default semiring, the galois field semiring, the $\lor,\land$ semiring and the maximum semiring.
