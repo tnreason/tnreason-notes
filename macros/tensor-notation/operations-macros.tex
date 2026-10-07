@@ -11,10 +11,17 @@
 \newcommand{\nzcontractionof}[2]{\nonzerocirc\contractionof{#1}{#2}}
 
 %% Generic contractions based on semirings
+\newcommand{\gensemiring}{(S,\srplus,\srmul,\srzero,\srone)}
 \newcommand{\booleansemiring}{(\{0,1\},\lor,\land,0,1)}
 \newcommand{\galoissemiring}{\mathbb{F}_2}
-\newcommand{\gensemiring}{(S,\srplus,\srmul,0,1)}
+\newcommand{\maxsemiring}{(\rr^+,\mathrm{max},\cdot,0,1)}
+\newcommand{\minsemiring}{(\rr^+,\mathrm{min},\cdot,\infty,1)}
+\newcommand{\tropicalsemiring}{\mathbb{T}}
+
 \newcommand{\srcontractionwrt}[2]{\langle#1\rangle^{#2}_{\varnothing}}
 \newcommand{\srcontractionofwrt}[3]{\langle#1\rangle^{#3}_{[#2]}}
 \newcommand{\srplus}{\oplus}
+\newcommand{\bigsrplus}{\bigoplus}
 \newcommand{\srmul}{\otimes} % Clash with tensor product!
+\newcommand{\srone}{\mathbf{1}}
+\newcommand{\srzero}{\mathbf{0}}

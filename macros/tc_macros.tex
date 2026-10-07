@@ -14,6 +14,7 @@
 \newcommand{\bencodingof}[1]{\beta^{#1}}
 %\newcommand{\bencodingofat}[2]{\bencodingof{#1}\left[#2\right]}
 \newcommand{\bencodingwith}{\bencodingofat{\exfunction}{\headvariableof{\exfunction},\shortcatvariables}}
+\newcommand{\bencodingofatwrt}[3]{\bencodingof{#1,#3}[#2]} % For semiring specific encoding
 
 \NewDocumentCommand{\bencodingofat}{m m o}{
     \IfValueTF{#3}{%

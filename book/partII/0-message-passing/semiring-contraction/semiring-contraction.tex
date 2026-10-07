@@ -9,27 +9,49 @@ In an even broader perspective, contractions can be defined based on sequential 
 \subsection{Foundations}
 
 \begin{definition}
-    A commutative semiring is a tuple $\gensemiring$, where $S$ is a set, $0,1\in S$, and
+    A commutative semiring is a tuple $\gensemiring$, where $S$ is a set, $\srzero,\srone\in S$, and
     \begin{align*}
         \srplus \defcols S \times S \rightarrow S \quad, \quad \srmul \defcols S \times S \rightarrow S \, ,
     \end{align*}
     such that the following properties hold:
     \begin{itemize}
-        \item[(i)] $(S,\srplus,0)$ is a commutative monoid\footnote{That is associativity, commutativity of $\srplus$ and identity of $s\srplus 0=s$ for all $s\in S$.}.
-        \item[(ii)] $(S,\srmul,1)$ is a commutative monoid.
+        \item[(i)] $(S,\srplus,\srzero)$ is a commutative monoid\footnote{That is associativity, commutativity of $\srplus$ and identity of $s\srplus \srzero=s$ for all $s\in S$.}.
+        \item[(ii)] $(S,\srmul,\srone)$ is a commutative monoid.
         \item[(iii)] $\srmul$ distributes over $\srplus$, that is for any $s_0,s_1,s_2\in S$
         \begin{align*}
             s_0 \srmul (s_1 \srplus s_2)
             = (s_0 \srmul s_1) \srplus (s_0 \srmul s_2) \, .
         \end{align*}
-        \item[(iv)] $0$ annihilates $\srmul$, that is for any $s_0\in S$
+        \item[(iv)] $\srzero$ annihilates $\srmul$, that is for any $s_0\in S$
         \begin{align*}
-            0 \srmul s_0 = 0 \, .
+            \srzero \srmul s_0 = \srzero \, .
         \end{align*}
     \end{itemize}
 \end{definition}
 
-We understand $S$ as the set of coordinates in a tensor.
+Notice, that by these properties, the group operations $\srplus$ and $\srmul$ are specified on elements $\ozset$, except for $1\srplus 1$, that is the following holds for any semiring:
+\stantikzpic{
+    \drawtextnode{0}{0}{
+        \begin{tabular}{c|cc}
+            $\srplus$ & $\srzero$ & $\srone$ \\
+            \hline
+            $\srzero$ & $\srzero$ & $\srone$ \\
+            $\srone$  & $\srone$  & *
+        \end{tabular}
+    }
+    \drawtextnode{10}{0}{
+        \begin{tabular}{c|cc}
+            $\srmul$  & $\srzero$ & $\srone$  \\
+            \hline
+            $\srzero$ & $\srzero$ & $\srzero$ \\
+            $\srone$  & $\srzero$ & $\srone$
+        \end{tabular}
+    }
+}
+The Galois semiring and the Boolean semiring are the smallest semirings containing only the elements $\srzero,\srone$ and differing only in $\srone\srplus\srone$.
+
+
+We understand $S$ as the set of possible coordinates of a tensor.
 
 \begin{definition}
     A tensor with coordinates in $S$ of order $\catorder\in\nn$ and leg dimensions $\catdimof{[\catorder]}=(\catdimof{0},\ldots,\catdimof{\catorder-1})$, where $\catdimof{\catenumerator}\in\nn$ for $\catenumeratorin$, is a map
@@ -124,7 +146,7 @@ As a consequence, message passing schemes such as variable elimination generaliz
 
 Standard TN use the semiring
 \begin{align*}
-(\rr,+,\cdot,0,1)
+    (\rr,+,\cdot,0,1)
     \, .
 \end{align*}
 
@@ -166,7 +188,7 @@ In general tensor networks, this holds only for the support of subcontractions (
 The relation with the standard semiring is for boolean tensor networks
 \begin{align*}
     \srcontractionofwrt{\extnet}{\catvariableof{\secnodes}}{\booleansemiring}
-    \nonzeroof{\contractionof{\extnet}{\catvariableof{\secnodes}}} 
+    \nonzeroof{\contractionof{\extnet}{\catvariableof{\secnodes}}}
 \end{align*}
 In this way, the message passing based algorithms in \charef{cha:propositionalLogic} and \charef{cha:constraintSatisfactionProblems} simplify when chosing the satisfaction semiring instead of the default semiring.
 
@@ -187,45 +209,45 @@ is the contraction equation
 
 The maximum semiring is the tuple
 \begin{align*}
-(\rr,\mathrm{max},\cdot,0,1)
+    \maxsemiring
     \, .
 \end{align*}
 
 The full contraction is the maximal coordinate in the tensor
 \begin{align*}
-    \srcontractionwrt{\hypercorewith}{(\rr,\mathrm{max},\cdot,0,1)}
+    \srcontractionwrt{\hypercorewith}{\maxsemiring}
     = \max_{\shortcatindicesin} \hypercoreat{\indexedshortcatvariables} \, .
 \end{align*}
 When leaving variables open in the contraction, we get the maximal coordinate in the specific slices of the tensor, namely
 \begin{align*}
-    \srcontractionofwrt{\hypercorewith}{\indexedcatvariableof{\secnodes}}{(\rr,\mathrm{max},\cdot,0,1)}
+    \srcontractionofwrt{\hypercorewith}{\indexedcatvariableof{\secnodes}}{\maxsemiring}
     = \max_{\catindexof{\nodes\backslash\secnodes}} \hypercoreat{\indexedshortcatvariables} \, .
 \end{align*}
 
 Analogous properties has the minimal semiring
 \begin{align*}
-(\rr,\mathrm{min},\cdot,0,1)
-    \, .
+    \minsemiring \, .
 \end{align*}
 
 
 These schemes only work, when taking the minimal coordinate keeping all variables open.
 When searching for the maximal/minimal coordinate of a contraction with some variables closed, we need to first coarse grain the tensor network.
 
+% Applications
 These contractions are used in encoding-decoding schemes \cite{mezard_information_2009,mackay_information_2003}.
-Message passing schemes involving the maximum semiring are known as max-product algorithms \cite{koller_probabilistic_2009}.
+Message passing schemes involving the maximum semiring are known as max-product algorithms \cite{koller_probabilistic_2009}, and generalizations of the Viterbi algorithm.
 
 \subsubsection{Tropical semiring}
 
 The tropical semiring is
 \begin{align*}
-    \mathbb{T}
+    \tropicalsemiring
     = (\rr\cup\{\infty\},\mathrm{min},+,\infty,0) \, .
 \end{align*}
 
 The contraction of a tensor gives the minimum
 \begin{align*}
-    \srcontractionwrt{\hypercorewith}{\mathbb{T}}
+    \srcontractionwrt{\hypercorewith}{\tropicalsemiring}
     = \min_{\shortcatindicesin} \hypercoreat{\shortcatvariables} \, .
 \end{align*}
 
@@ -233,7 +255,7 @@ The tensor product in the tropical semiring sums the leg vector coordinates, tha
 \begin{align*}
     \srcontractionofwrt{
         \{\legcoreofat{\catenumerator}{\catvariableof{\catenumerator}} \wcols \catenumeratorin\}
-    }{\indexedshortcatvariables}{\mathbb{T}}
+    }{\indexedshortcatvariables}{\tropicalsemiring}
     = \sum_{\catenumeratorin} \legcoreofat{\catenumerator}{\indexedcatvariableof{\catenumerator}} \, .
 \end{align*}
 
@@ -270,13 +292,52 @@ Based on the semiring contraction, we can define tensor network formats for arbi
 
 \subsection{Basis calculus} % Check, whether basis calculus before
 
-Basis calculus works on different semirings, namely those satisfying:
-\begin{itemize}
-    \item $0,1 \in S$
-    \item $0 \oplus 0 = 0, 0 \oplus 1= 1$ % 1 \oplus 1 can be arbitary, since not used in basis calculus  -> Galoissemiring also working
-    \item $1\otimes 1 = 1, 0 \otimes 1 = 0, 0 \otimes 0 = 0$
-\end{itemize}
 
-This means that the restriction of the $\oplus$ and $\otimes$ operations on $\{0,1\}$ needs to coincide with that of the sum-product semiring, except for $1\oplus 1$, which can be arbitrary (since not used in basis calculus).
+Basis calculus can be generalized to arbitrary semirings.
 
-This is satisfied for the default semiring, the galois field semiring, the boolean semiring and the maximum semiring.
+\begin{definition}
+    Let $\gensemiring$ be a commutative semiring and $\exfunction \wcols \facstates \rightarrow \headstates$ a function.
+    Then the basis encoding of $\exfunction$ with respect to the $\gensemiring$ is the tensor $\bencodingofat{\exfunction}{\headvariables,\shortcatvariables}$ with coordinates
+    \begin{align*}
+        \bencodingofatwrt{\exfunction}{\indexedheadvariableof{[\seldim]},\indexedshortcatvariables}{\gensemiring}
+        = \begin{cases}
+              \srone & \ifspace \exfunctionat{\shortcatindices} = \headindexof{[\seldim]} \\
+              \srzero & \elsetext \, .
+        \end{cases}
+    \end{align*}
+\end{definition}
+
+Based on the restricted group operation tables we show the decomposition property of generic basis encodings.
+
+\begin{theorem}
+    Let $\gensemiring$ be a commutative semiring and $\exfunction \wcols \facstates \rightarrow [\thirdcatdim]$ and $\secexfunction \wcols [\thirdcatdim] \rightarrow \headstates$ functions.
+    Then we have
+    \begin{align*}
+        \srcontractionofwrt{
+            \bencodingofatwrt{\exfunction}{\thirdcatvariable,\shortcatvariables}{\gensemiring},
+            \bencodingofatwrt{\secexfunction}{\headvariables,\thirdcatvariable}{\gensemiring}
+        }{
+            \shortcatvariables,\headvariables
+        }{\gensemiring}
+        =\bencodingofatwrt{\secexfunction\circ\exfunction}{\headvariables,\shortcatvariables}{\gensemiring}
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    For any indices $\shortcatindices$ and $\headindexof{[\seldim]}$ we have
+    \begin{align*}
+        &\srcontractionofwrt{
+            \bencodingofatwrt{\exfunction}{\thirdcatvariable,\shortcatvariables}{\gensemiring},
+            \bencodingofatwrt{\secexfunction}{\headvariables,\thirdcatvariable}{\gensemiring}
+        }{
+            \indexedshortcatvariables,\indexedheadvariableof{[\seldim]}
+        }{\gensemiring} \\
+        &\quad=
+        \bigsrplus_{\thirdcatindex\in[\thirdcatdim]}
+        \bencodingofatwrt{\exfunction}{\thirdcatvariable=\thirdcatindex,\indexedshortcatvariables}{\gensemiring} \srmul
+        \bencodingofatwrt{\secexfunction}{\indexedheadvariableof{[\seldim]},\thirdcatvariable=\thirdcatindex}{\gensemiring}
+       % \left(\sum_{\thirdcatindex\in[\thirdcatdim]\backslash(\{\exfunctionat{\shortcatindices}\}\cup\secexfunction^{-1}(\headindexof{[\seldim]})}) \srzero \right) \srmul \srzero
+    \end{align*}
+    Now, for any $\thirdcatindex$ for which either $\exfunctionat{\shortcatindices}\neq\thirdcatindex$ or $\secexfunctionat{\thirdcatindex}\neq\headindexof{[\seldim]}$, the summand is the neutral element $\srzero$ ($\srzero\srmul\srzero$, $\srzero\srmul\srone$ or $\srone\srmul\srzero$).
+    If and only if $\secexfunction\circ\exfunctionat{\shortcatindices}=\headindexof{[\seldim]}$, there is one summand $\srone\srmul\srone=\srone$, and the contraction coordinate of the contraction is thus $\srone$.
+    The coordinates therefore coincide with those of $\bencodingofatwrt{\secexfunction\circ\exfunction}{\headvariables,\shortcatvariables}{\gensemiring}$.
+\end{proof}

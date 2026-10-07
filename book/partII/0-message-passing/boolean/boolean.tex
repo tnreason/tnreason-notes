@@ -27,3 +27,23 @@ The main property of contractions in the Boolean semiring is the invariance unde
 
 \theref{the:booleanContractionInvariance} can be generalized to contractions on more general semirings sharing the elements $0,1$ with $\booleansemiring$.
 In such way we can switch to message passing schemes in the Boolean semiring to sparsify more generic tensor networks.
+
+\subsection{Generic support tensors}
+
+%% Generic support tensor
+Even more generic, we define the support operator on a generic tensor with respect to a semiring $\gensemiring$ as
+\begin{align*}
+    \nonzeroof{\hypercoreat{\indexedshortcatvariables}}
+    = \begin{cases}
+          \srzero & \ifspace \hypercoreat{\indexedshortcatvariables} = \srzero \\
+          \srone & \elsetext \, .
+    \end{cases}
+\end{align*}
+We notice that the support operator leaves any tensor over semirings with $S=\{\srzero,\srone\}$ invariant.
+This is the case for the Boolean semiring $\booleansemiring$ and the Galois field $\galoissemiring$.
+
+Any tensor is furthermore invariant under contraction with its support tensor, that is
+\begin{align*}
+    \hypercorewith =
+    \srcontractionofwrt{\hypercorewith,\nonzeroof{\hypercorewith}}{\shortcatvariables}{\gensemiring} \, .
+\end{align*}
