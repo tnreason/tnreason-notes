@@ -7,8 +7,25 @@
 \newcommand{\sect}[1]{\section{#1}}
 \newcommand{\subsect}[1]{\subsection{#1}}
 
+
+%% ALGORITHMS
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+
+%% CODE
+\usepackage{minted}
+\setminted{
+    bgcolor=gray!10,
+    breaklines=true
+}
+\newminted{sparql}{
+    frame=lines,
+    framesep=2mm,
+    linenos,
+    fontsize=\footnotesize,
+    baselinestretch=1.2
+}
+
 \usepackage{braket}
 
 \usepackage{hyperref}

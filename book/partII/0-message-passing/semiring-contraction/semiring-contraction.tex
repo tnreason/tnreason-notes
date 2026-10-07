@@ -4,6 +4,8 @@ We here introduce with commutative semirings the algebraic structure required fo
 
 See \cite{liu_computing_2023,liu_tropical_2021} for applications and \cite{gondran_graphs_2008} for algebraic and graph-theoretic foundations.
 
+In an even broader perspective, contractions can be defined based on sequential compositions of categories \cite{tull_towards_2024}.
+
 \subsection{Foundations}
 
 \begin{definition}
@@ -133,7 +135,7 @@ Variants are:
     \item Generalization of $\rr$ to complex numbers $\mathbb{C}$: Used in quantum computing
 \end{itemize}
 
-\subsubsection{Constraint Satisfaction}
+\subsubsection{Boolean semiring}
 
 We take $S=\{0,1\}$ and interpret $0$ as $\falsesymbol$, $1$ as $\truesymbol$.
 We define the disjunction and conjunction operations by
@@ -154,11 +156,32 @@ The satisfiability of a constraint network $\extnetasset$ is the contraction
     \bigvee_{\catindexof{\nodes}} \bigwedge_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
     = \srcontractionwrt{
         \extnetasset
-    }{\satsemiring} \, .
+    }{\booleansemiring} \, .
 \end{align*}
 
 As an additional property, we have invariance of adding subcontractions to the network.
 In general tensor networks, this holds only for the support of subcontractions (being the operator mapping $0$ to $0$ and any other $s\in S$ to $1$).
+
+% Relation with default semiring: Simplification of CSP message passing systems
+The relation with the standard semiring is for boolean tensor networks
+\begin{align*}
+    \srcontractionofwrt{\extnet}{\catvariableof{\secnodes}}{\booleansemiring}
+    \nonzeroof{\contractionof{\extnet}{\catvariableof{\secnodes}}} 
+\end{align*}
+In this way, the message passing based algorithms in \charef{cha:propositionalLogic} and \charef{cha:constraintSatisfactionProblems} simplify when chosing the satisfaction semiring instead of the default semiring.
+
+
+% Application in FOL
+We can use the Boolean semiring to represent first-oder logic formulas with existential quantifications as contraction equations.
+A formula
+\begin{align*}
+    \forall \catindexof{\secnodes} \wcols \exists \catindexof{\thirdnodes} \wcols \formulaat{\indexedcatvariableof{\secnodes},\indexedcatvariableof{\thirdnodes}}
+\end{align*}
+is the contraction equation
+\begin{align*}
+    \srcontractionofwrt{\formulaat{\catvariableof{\secnodes\cup\thirdnodes}}}{\catvariableof{\secnodes}}{\booleansemiring}
+    = \onesat{\catvariableof{\secnodes}} \, .
+\end{align*}
 
 \subsubsection{Maximum calculus}
 
@@ -250,8 +273,10 @@ Based on the semiring contraction, we can define tensor network formats for arbi
 Basis calculus works on different semirings, namely those satisfying:
 \begin{itemize}
     \item $0,1 \in S$
-    \item $0 \oplus 0 = 0, 0 \oplus 1= 1$
+    \item $0 \oplus 0 = 0, 0 \oplus 1= 1$ % 1 \oplus 1 can be arbitary, since not used in basis calculus  -> Galoissemiring also working
     \item $1\otimes 1 = 1, 0 \otimes 1 = 0, 0 \otimes 0 = 0$
 \end{itemize}
 
-This is satisfied for the default semiring, the galois field semiring, the $\lor,\land$ semiring and the maximum semiring.
+This means that the restriction of the $\oplus$ and $\otimes$ operations on $\{0,1\}$ needs to coincide with that of the sum-product semiring, except for $1\oplus 1$, which can be arbitrary (since not used in basis calculus).
+
+This is satisfied for the default semiring, the galois field semiring, the boolean semiring and the maximum semiring.

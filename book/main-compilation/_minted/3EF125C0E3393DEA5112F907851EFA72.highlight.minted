@@ -1,0 +1,8 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+    \PYG{k}{PREFIX} \PYG{n+nn}{foaf}\PYG{p}{:} \PYG{n+nl}{\PYGZlt{}http://xmlns.com\PYGZgt{}}
+    \PYG{k}{SELECT} \PYG{n+nv}{?a} \PYG{n+nv}{?c}
+    \PYG{k}{WHERE}\PYG{p}{\PYGZob{}}
+        \PYG{n+nv}{?a} \PYG{n+nn}{foaf}\PYG{p}{:}\PYG{n+nt}{knows} \PYG{n+nv}{?b}\PYG{p}{;}
+        \PYG{n+nv}{?b} \PYG{n+nn}{foaf}\PYG{p}{:}\PYG{n+nt}{friendOf} \PYG{n+nv}{?c}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

@@ -8,7 +8,7 @@
 
 \usepackage{minted}
 
-\newcommand{\satsemiring}{(\{0,1\},\lor,\land,0,1)}
+\newcommand{\booleansemiring}{(\{0,1\},\lor,\land,0,1)}
 \newcommand{\gensemiring}{(S,\srplus,\srmul,0,1)}
 \newcommand{\srcontractionwrt}[2]{\langle#1\rangle^{#2}}
 \newcommand{\srcontractionofwrt}[3]{\langle#1\rangle^{#3}_{[#2]}}
@@ -168,7 +168,7 @@
         \bigvee_{\catindexof{\nodes}} \bigwedge_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
         = \srcontractionofwrt{
             \extnetasset
-        }{\varnothing}{\satsemiring} \, .
+        }{\varnothing}{\booleansemiring} \, .
     \end{align*}
 
     As an additional property, we have invariance of adding subcontractions to the network.

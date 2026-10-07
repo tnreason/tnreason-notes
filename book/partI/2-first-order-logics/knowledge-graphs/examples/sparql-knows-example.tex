@@ -1,0 +1,90 @@
+\begin{example}[SPARQL query in a tensor network]
+    Let us consider the example query:
+    \begin{minted}{sparql}
+    PREFIX foaf: <http://xmlns.com>
+    SELECT ?a ?c
+    WHERE{
+        ?a foaf:knows ?b;
+        ?b foaf:friendOf ?c;
+    }
+    \end{minted}
+
+    As a tensor network the query is represented as:
+    \stantikzpic{
+
+        \drawvwire{-2.5}{-1}{$\indvariableof{a}$}
+        \drawtensorblock{0}{0}{3}{$\kg$}
+        \drawvwire{0}{-1}{}
+        \drawtensorblock{0}{-4}{1.5}{$\onehotmapof{knows}$}
+
+        \draw (3.5,-2.5) to[bend right= -10] (2.5,-1);
+        \drawvariabledot{3.5}{-2.5}
+        \drawtextnode{3.5}{-3.25}{\colorlabelsize $\indvariableof{b}$}
+        \draw (3.5,-2.5) to[bend right= 10] (4.5,-1);
+
+        \drawtensorblock{7}{0}{3}{$\kg$}
+        \drawvwire{7}{-1}{}
+        \drawtensorblock{7}{-4}{2}{$\onehotmapof{friendOf}$}
+        \drawvwire{9.5}{-1}{$\indvariableof{c}$}
+    }
+
+
+    We can now apply sparsification techniques developed in \secref{sec:groundingStorage} to provide an efficient storage.
+    \begin{itemize}
+        \item Local contraction with the basis vectors:
+        \stantikzpic{
+
+            \drawtensorblock{-9}{0}{2}{$\hypercoreof{knows}$}
+            \drawvwire{-10.5}{-1}{$\indvariableof{a}$}
+            \drawvwire{-7.5}{-1}{$\indvariableof{b}$}
+
+            \drawtextnode{-5}{-1}{$\algdefsymbol$}
+
+            \drawvwire{-2.5}{-1}{$\indvariableof{a}$}
+            \drawtensorblock{0}{0}{3}{$\kg$}
+            \drawvwire{0}{-1}{}
+            \drawtensorblock{0}{-4}{1.5}{$\onehotmapof{knows}$}
+            \drawvwire{-2.5}{-1}{$\indvariableof{a}$}
+            \drawvwire{2.5}{-1}{$\indvariableof{b}$}
+
+            \drawtextnode{5}{-1}{and}
+
+            \begin{scope}[shift={(15,0)}]
+
+                \drawtensorblock{-9}{0}{2.5}{$\hypercoreof{friendsOf}$}
+                \drawvwire{-10.5}{-1}{$\indvariableof{b}$}
+                \drawvwire{-7.5}{-1}{$\indvariableof{c}$}
+
+                \drawtextnode{-5}{-1}{$\algdefsymbol$}
+
+                \drawtensorblock{0}{0}{3}{$\kg$}
+                \drawvwire{0}{-1}{}
+                \drawtensorblock{0}{-4}{2}{$\onehotmapof{firendsOf}$}
+                \drawvwire{-2.5}{-1}{$\indvariableof{b}$}
+                \drawvwire{2.5}{-1}{$\indvariableof{c}$}
+            \end{scope}
+        }
+        \item Message passing of the support:
+        \begin{align*}
+            \sechypercoreofat{knows}{\indvariableof{a},\indvariableof{b}}
+            \algdefsymbol \nzcontractionof{
+                \hypercoreofat{knows}{\indvariableof{a},\indvariableof{b}},
+                \contractionof{\hypercoreofat{friendsOf}{\indvariableof{b},\indvariableof{c}}}{\indvariableof{b}}
+            }{\indvariableof{a},\indvariableof{b}}
+        \end{align*}
+        and
+        \begin{align*}
+            \sechypercoreofat{friendsOf}{\indvariableof{b},\indvariableof{c}}
+            \algdefsymbol \nzcontractionof{
+                \hypercoreofat{friendsOf}{\indvariableof{b},\indvariableof{c}},
+                \contractionof{\hypercoreofat{knows}{\indvariableof{a},\indvariableof{b}}}{\indvariableof{b}}
+            }{\indvariableof{b},\indvariableof{c}}
+        \end{align*}
+    \end{itemize}
+    The resulting sparsified storage of the query is then the tensor network
+    \begin{align*}
+        \{\sechypercoreofat{knows}{\indvariableof{a},\indvariableof{b}},\sechypercoreofat{friendsOf}{\indvariableof{b},\indvariableof{c}}\} \, .
+    \end{align*}
+    For any locally supported index, we find an extension to an global index which is supported by the tensor network (see \charef{cha:messagePassing}).
+    For example, if for a tuple $\indindexof{a},\indindexof{b}$ we have $\sechypercoreofat{knows}{\indexedindvariableof{a},\indexedindvariableof{b}}=1$ then there is $\indindexof{c}$ with $\sechypercoreofat{friendsOf}{\indexedindvariableof{b},\indexedindvariableof{c}}=1$, which means that $(\indindexof{a},\indindexof{b},\indindexof{c})$ is a solution of the query.
+\end{example}

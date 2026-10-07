@@ -1,4 +1,4 @@
-\section{Tensor storage of Groundings}
+\section{Tensor storage of Groundings}\label{sec:groundingStorage}
 
 \todo{
     A typical storage of a grounding is the enlistment of all non-zero coordinates.
@@ -40,9 +40,6 @@ Under the Closed World Assumption, all unspecified assertions are assumed to be 
 \subsection{Storage in Tensor Network Formats}
 
 We now investigate, whether the basis $\cpformat$ storage of a formula is optimal.
-
-
-
 \begin{itemize}
     \item Advantage of contracted storage: Redundancies by vanishing slices removed.
     We could try to remove redundancies by message passing algorithms, processing constraints on the support of the tensor.
@@ -76,8 +73,6 @@ We now investigate, whether the basis $\cpformat$ storage of a formula is optima
         \sum_{\edgein} p \cdot \inddim^{\cardof{\edge}} \, .
     \end{align*}
 
-
-
 \end{example}
 
 
@@ -109,30 +104,22 @@ We can understand the $\joinsymbol$ of groundings by a factor graph, where each 
 The projection variable assignment to each formula combined in a $\joinsymbol$ operation provide a basic tensor network format to store the output of the operation.
 There are thus situations, in which the solution map storage corresponding with a CP Decomposition comes with unnecessary overheads compared with other formats.
 
-% Coordinatewise transform
-We can also understand the $\joinsymbol$ operation as a coordinatewise transform (see \defref{def:coordinatewiseTransform}) with the product as transform function.
-To make this connection solid, one would need to extend each joined formula trivially to the variables appearing in other formulas.
+%% Coordinatewise transform
+%We can also understand the $\joinsymbol$ operation as a coordinatewise transform (see \defref{def:coordinatewiseTransform}) with the product as transform function.
+%To make this connection solid, one would need to extend each joined formula trivially to the variables appearing in other formulas.
 
-% Evaluation similar constraint propagation
-The efficiency of evaluating the contraction to a $\joinsymbol$ operation might be improved by understanding it as an Constraint Satisfaction Problem (see \charef{cha:logicalReasoning}).
-When applying efficient Message Passing algorithms such as Knowledge Propagation (see \algoref{alg:knowledgePropagation}), the groundings can be sparsified by local constraint propagation operations before turning to more global and more demanding contraction operations.
-Here the groundings $\groundingof{\extformulaof{\selindex}}$ would be used to initialize Knowledge Cores $\kcoreof{\edge}$ and sequentially sparsified during the algorithm.
 
-%\begin{example} % WOULD NEED OVERWORK: DRAW!
-%	For example take a query with many basic graph patterns with pairwise different projection variables.
-%	The global CP Decomposition would come here with an exponential storage overhead compared with storage as a tensor product of CP Decompositions to each Basic graph pattern.
-%\end{example}
 
-%% CONFUSING?
-%\begin{remark}[Distinguishing from probabilistic queries]
-%	Let us distinguish the discussion here from those of queries in probabilistic reasoning, which have two main differences.
-%	First, we ask queries against all possible pairs of variables, instead of asking the probability of satisfaction of a specific formula.
-%	Second, since we made the epistemologic assumption of knowing possibilities and not probabilities in logics, a query is answered by a truth value.
-%	We then only output in the shape of solution mappings the variable assignments where the query formula is true.
-% 	Thus, the queries here can be thought of as a batch of probabilistic queries with Boolean answers.
-%	% Alternative -> Later?
-%	Probabilistic queries can furthermore be understood in terms of the data extraction process described in this section.
-%	We can ask the query in probabilistic form (decomposed into atomic formulas) on the resulting empirical distribution.
-%	This results in the ratio of the worlds satisfying the query among those worlds satisfying the extraction query $\impformula$.
-%\end{remark}
+\section{Sparsification}
+
+
+The grounding of a formula when represented as a tensor network often comes with redundancies to be removed for sparser representation.
+Some assignments to variable subsets, which satisfy local formulas, can never be extended to a global assignments, which is supported by the overall grounding.
+Iterative message passing algorithms can be constructed to remove the redundancy, analogously to solution algorithms of CSPs (see \secref{sec:booleanMessagePassing}).
+
+
+%% From report: Evaluation similar constraint propagation
+%The efficiency of evaluating the contraction to a $\joinsymbol$ operation might be improved by understanding it as an Constraint Satisfaction Problem (see \charef{cha:logicalReasoning}).
+%When applying efficient Message Passing algorithms such as Knowledge Propagation (see \algoref{alg:knowledgePropagation}), the groundings can be sparsified by local constraint propagation operations before turning to more global and more demanding contraction operations.
+%Here the groundings $\groundingof{\extformulaof{\selindex}}$ would be used to initialize Knowledge Cores $\kcoreof{\edge}$ and sequentially sparsified during the algorithm.
 

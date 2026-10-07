@@ -1,0 +1,29 @@
+\section{Boolean message passing}\label{sec:booleanMessagePassing}
+
+\todo{
+    We investigate message passing schemes with respect to the Boolean semiring $\booleansemiring$.
+}
+
+The main property of contractions in the Boolean semiring is the invariance under adding subcontractions, which we state in the next theorem.
+
+\begin{theorem}\label{the:booleanContractionInvariance}
+    Let $\extnet$ be an tensor network on an arbitrary hypergraph $\graph=(\nodes,\edges)$ with respect to the Boolean semiring.
+    For any subsets $\secnodes\subset\nodes$ and $\secedges\subset\edges$ we have
+    \begin{align*}
+        \srcontractionofwrt{\extnet\cup
+            \{\srcontractionofwrt{\{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols\edge\in\secedges\}}{\catvariableof{\secnodes}}{\booleansemiring}\}
+        }{\catvariableof{\nodes}}{\booleansemiring}
+        = \srcontractionofwrt{\extnet}{\catvariableof{\nodes}}{\booleansemiring} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Coordinatewise:
+    Only invariant, if subcontraction evaluates to $0$.
+    But then by monotonocity of subcontractions also the whole contraction evaluates to $0$, therefore invariant.
+\end{proof}
+
+
+\subsection{Application on sum-product contractions}
+
+\theref{the:booleanContractionInvariance} can be generalized to contractions on more general semirings sharing the elements $0,1$ with $\booleansemiring$.
+In such way we can switch to message passing schemes in the Boolean semiring to sparsify more generic tensor networks.
