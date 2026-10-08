@@ -1,10 +1,33 @@
-% Main source: II.11.5+6 in the report
-
 \chapter{Probabilistic Relational Models}\label{cha:probabilisticRelationalModels}
 
 \abstract{
-    We investigate in this chapter, how Compuation-Activation Networks can be trained given data in the form of a first-order logic world.
+    Computation networks in \firstOrderLogic{} contain incoming axes to the substitution and the semantic structure.
+    It is often not possible to contract them and therefore to perform reasoning schemes on them.
+    We in this chapter investigate methods to reduce reasoning to the activation network, a strategy which we call \emph{lifting}.
+    First of all, we review inference schemes developed in \firstOrderLogic{}.
+    We further investigate, how \ComputationActivationNetworks{} can be trained given data in the form of a first-order logic world.
 }
+
+
+\section{Ideas}
+
+We here understand lifting as the reduction of inference in structured representations to factored representations.
+%% CAN as a structure for lifting
+In the perspective of \ComputationActivationNetworks{}, we find lifting schemes as reductions to inference in the activation network.
+We draw on the representations investigated in \charef{cha:firstOrderLogic}, where the computation network contains the FOL atoms, and the activation the connectives acting on them.
+
+
+We investigate two lifting schemes:
+\begin{itemize}
+    \item \textbf{FOL lifted inference:}
+    Restrict the computation networks implicitly by contraction equations and restrict to the activation network parts of these equations.
+    Simplify the activation network based on substitutions and propositional inference.
+    \item \textbf{Probabilistic Relational Models (PRM):}
+    Represent the likelihood of a single observed FOL world by the likelihood of a dataset in a factored representation.
+\end{itemize}
+
+
+\subimport{inference/}{inference}
 
 \input{sections/distributions}
 \input{sections/fol-hln}
