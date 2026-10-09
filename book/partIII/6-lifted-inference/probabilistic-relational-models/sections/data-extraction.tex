@@ -1,0 +1,231 @@
+\subsection{Sample Extraction from First-Order Logic Worlds}
+
+We have observed that in certain situations the log-likelihood of a \firstOrderLogic{} world with respect to a \HybridFOLNetwork{} coincides with the likelihood of a data set in a propositional \HybridLogicNetwork{}.
+Let us now investigate the extraction process of these data set.
+%The decomposition of the likelihood suggests the following approach to generate samples from groundings:
+%%We propose the following approach to generate datacores from groundings:
+%\begin{itemize}
+%    \item Define an importance formula $\impformula$, which we decompose in the basis CP decomposition and interpret each slice as the one-hot encoding of the datapoint.
+%    \item Define for $\atomenumeratorin$ extraction formulas $\extformulaof{\atomenumerator}$ generating the atoms $\catvariableof{\atomenumerator}$.
+%    %Predicates along with assignment of variables / constants to its positions.
+%    \item Contract the groundings of each formula $\extformulaof{\atomenumerator}$ with the grounding of $\impformula$ to build a data core.
+%\end{itemize}
+%\subsubsection{Representation by Tensor Networks}
+We model the extraction process as a relation between a tuple of individuals and the extracted world in the factored system of atoms $\catvariableof{\atomenumerator}$.
+
+\begin{definition}
+    \label{def:extractionRelation}
+    Given a \firstOrderLogic{} world $\worldindices$, an importance formula $\impformula$ and extraction formulas $\extformulaof{\catenumerator}$ for $\catenumeratorin$, we define the extraction relation
+    \begin{align*}
+        \extractionrelation \subset \left(\symindstates\right) \otimes \left(\atomstates\right)
+    \end{align*}
+    by
+    \begin{align*}
+        \extractionrelation
+        = \{ (\shortindindices, \shortcatindices)
+        \wcols  \groundingofat{\impformula}{\indexedshortindvariables} = 1 \ncond \uniquantwrtof{\catenumeratorin}{\catindexof{\atomenumerator} = \extformulaofat{\atomenumerator}{\indexedshortindvariables}} \} \, .
+    \end{align*}
+\end{definition}
+
+The encoding of an extraction relation is the tensor
+\begin{align*}
+    \bencodingofat{\extractionrelation}{\shortindvariables,\shortcatvariables} \subset \left(\indspace\right) \otimes \left(\atomspace\right) \,
+\end{align*}
+and drawn in a contraction diagram by
+\begin{center}
+    \input{tikz/extraction_relation.tex}
+\end{center}
+Here the contraction of $\bencodingof{\impformula}$ with the truth vector $\tbasis$ represents the matching condition posed by $\impformula$ when extracting pairs of individuals.
+
+%% Empirical Distribution
+The empirical distribution of the extracted data is then the normalized contraction leaving only the legs to the extracted atomic formulas open, that is
+\begin{align*}
+    \empdistribution
+    = \frac{
+        \contractionof{\bencodingof{\extractionrelation}}{\shortcatvariables}
+    }{
+        \contraction{\bencodingof{\extractionrelation}}
+    }  \, .
+\end{align*}
+Here the number of extracted data is the denominator
+\begin{align*}
+    \datanum
+    = \contraction{\bencodingof{\extractionrelation}}
+    = \contraction{\bencodingofat{\impformula}{\headvariableof{\impformula},\shortindvariables},\tbasisat{\headvariableof{\impformula}}}\, .
+\end{align*}
+
+We depict this by
+\begin{center}
+    \input{tikz/empirical_generation.tex}
+\end{center}
+
+%\subsubsection{Decomposition of extracted data}
+
+To connect with the empirical distribution introduced in \secref{sec:empDistribution} we now show how the empirical distribution extracted from the interpretations of the formulas $\impformula,\extformulas$ on a \firstOrderLogic{} world $\worldindices$ can be represented by tensor networks.
+
+First of all, we decompose the importance formula into a basis $\cpformat$ format (see \charef{cha:sparseRepresentation}), that is a decomposition
+\begin{align*}
+    \groundingofat{\impformula}{\shortindvariables}
+    = \contractionof{
+        \{\legcoreofat{\indenumerator}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin \}
+    }{\shortindvariables}
+\end{align*}
+such that all $\legcoreofat{\indenumerator}{\indvariableof{\indenumerator},\datvariable}$ are directed and boolean tensors.
+Here an auxiliary variables $\datvariable$ taking values in $[\datanum]$ is introduced, which we call the data variable, which enumerates the non-vanishing coordinates of $\groundingof{\impformula}$.
+With this decomposition, we can understand the decomposition of $\groundingofat{\impformula}{\shortindvariables}$ as a basis encoding of an term selection map $\secdatamap$ with coordinate maps defined such that
+\begin{align*}
+    \bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable}
+    = \legcoreofat{\indenumerator}{\indvariableof{\indenumerator},\datvariable} \, .
+\end{align*}
+We depict this decomposition by:
+\begin{center}
+    \input{tikz/impformula_cp.tex}
+\end{center}
+
+Based on these construction, we now provide a tensor network decomposition of the extracted empirical distribution.
+
+\begin{theorem}
+    \label{the:extractionrelationDecomposition}
+    Given a \firstOrderLogic{} world $\worldindices$, an importance formula $\impformula$ and extraction formulas $\extformulaof{\catenumerator}$ for $\catenumeratorin$, we have
+    \begin{align*}
+        \bencodingofat{\extractionrelation}{\shortindvariables,\shortcatvariables} =
+        \contractionof{
+            \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables} \wcols \catenumeratorin\}
+            \cup \{\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+        }{\shortindvariables,\shortcatvariables}
+    \end{align*}
+    and thus
+    \begin{align*}
+        \empdistributionat{\shortcatvariables} =
+        \frac{1}{\datanum}  \contractionof{
+            \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables} \wcols \catenumeratorin\}
+            \cup \{\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+        }{\shortcatvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    To show the first claim, let us choose arbitrary state tuples $\shortindindices$ and $\shortcatindices$.
+    We then have
+    \begin{align*}
+        &\contractionof{
+            \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables} \wcols \catenumeratorin\}
+            \cup \{\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+        }{\indexedshortindvariables,\indexedshortcatvariables} \\
+        & \quad  =  \contraction{
+            \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\indexedcatvariableof{\catenumerator},\indexedshortindvariables} \wcols \catenumeratorin\}
+            \cup \{\bencodingofat{\secdatamap_{\indenumerator}}{\indexedindvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+        } \, .
+    \end{align*}
+    This contraction evaluates to $1$, if and only if for all $\catenumeratorin$ we have $\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables}=1$ and
+    \begin{align*}
+        \contraction{\{\bencodingofat{\secdatamap_{\indenumerator}}{\indexedindvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}}  = 1 \, .
+    \end{align*}
+    The first condition is equal to $\catindexof{\atomenumerator} = \extformulaofat{\atomenumerator}{\indexedshortindvariables}$ for all $\catenumeratorin$ and the second to
+    \begin{align*}
+        \groundingofat{\impformula}{\indexedshortindvariables} = 1 \, .
+    \end{align*}
+    Comparing with the definition of the extraction relation (see \defref{def:extractionRelation}), we notice that these conditions are equal to $(\shortindindices,\shortcatindices)\in\extractionrelation$ and therefore to
+    \begin{align*}
+        \bencodingofat{\extractionrelation}{\indexedshortindvariables,\indexedshortcatvariables} \, .
+    \end{align*}
+    The first claim follows, since $\bencodingof{\extractionrelation}$ is boolean, as is the contraction of the cores $\bencodingof{\groundingof{\extformulaof{\atomenumerator}}}$ with the cores $\bencodingof{\secdatamap_{\indenumerator}}$, which leaves the outgoing variables $\shortcatvariables$ open.
+    The second claim follows from the first using that $\empdistributionat{\shortcatvariables}=\frac{1}{\datanum}\contractionof{\bencodingof{\extractionrelation}}{\shortcatvariables}$.
+\end{proof}
+
+To connect with the representation of empirical distributions based on data cores (see \secref{sec:empDistribution}), we now form data cores by contractions with the grounding of extraction formulas with the cores $\bencodingof{\secdatamap_{\indenumerator}}$ (see \figref{fig:datacoreGeneration}),
+\begin{align*}
+    \datacoreofat{\atomenumerator}{\catvariableof{\catenumerator},\datvariable}
+    = \contractionof{
+        \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables}\}
+        \cup \{ \legcoreofat{\indenumerator}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+    }{\catvariableof{\atomenumerator},\datvariable} \, .
+\end{align*}
+
+% Empirical distribution
+The empirical distribution is then a tensor network of these tensors, as we show next.
+
+\begin{theorem}
+    \label{the:extractionDataCores}
+    We have
+    \begin{align*}
+        \contractionof{\bencodingof{\extractionrelation}}{\shortcatvariables}
+        = \contractionof{\{\datacoreofat{\atomenumerator}{\datvariable,\catvariableof{\atomenumerator}} \wcols \atomenumeratorin\}}{\shortcatvariables}
+    \end{align*}
+    and thus
+    \begin{align*}
+        \empdistributionat{\shortcatvariables}
+        = \frac{1}{\datanum} \contractionof{\{\datacoreofat{\atomenumerator}{\datvariable,\catvariableof{\atomenumerator}}  \wcols \atomenumeratorin\}}{\shortcatvariables} \, .
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    By \theref{the:extractionrelationDecomposition} we have
+    \begin{align*}
+        \bencodingofat{\extractionrelation}{\shortindvariables,\shortcatvariables} =
+        \contractionof{
+            \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables} \wcols \catenumeratorin\}
+            \cup \{\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+        }{\shortindvariables,\shortcatvariables} \, .
+    \end{align*}
+    Since $\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable}$ are directed and boolean, they can be copied and separately contracted with each $\groundingof{\extformulaof{\atomenumerator}}$, without changing the contraction.
+    We arrive at
+    \begin{align*}
+        &\bencodingofat{\extractionrelation}{\shortindvariables,\shortcatvariables} \\
+        &\quad = \contractionof{
+            \big\{\contractionof{
+                \{\bencodingofat{\groundingof{\extformulaof{\atomenumerator}}}{\catvariableof{\catenumerator},\shortindvariables}\}
+                \cup \{\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable} \wcols \indenumeratorin\}
+            }{\catvariableof{\catenumerator},\datvariable} \wcols \catenumeratorin \big\}
+        }{\shortindvariables,\shortcatvariables} \\
+        & \quad =  \contractionof{\{\datacoreofat{\atomenumerator}{\datvariable,\catvariableof{\atomenumerator}}  \wcols \atomenumeratorin\}}{\shortcatvariables} \, ,
+    \end{align*}
+    which established the claim.
+\end{proof}
+
+% Efficient contraction: Do also basis decomposition of the extraction query and use efficient contraction!
+%Towards efficient calculation of the data cores, we build a basis CP decomposition of $\groundingof{\impformula}$, where we further demand $\scalarcore=\ones$.
+%This is a collection of basis leg cores $\legcoreof{\fixedimpformula,\indenumerator}$ such that
+%\begin{align*}
+%    \fixedimpformula[\shortindvariablelist]
+%    = \contractionof{ \left\{ \legcoreofat{\fixedimpformula,\indenumerator}{\datvariable,\indvariableof{\indenumerator}} \wcols \indenumeratorin \right\} }{\shortindvariablelist} \, .
+%\end{align*}
+
+% Data enumeration -> To representation
+%We can further utilize any decomposition of $\impformula$ into a directed and binary CP Format to enumerate the datapoints by the slice index $\datindex$. % Approaches like SPARQL directly give us these by solution mappings.
+%Understanding $\impformula$ as a query on the world being the database, such decomposition is given by the set of solution mappings.
+
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz/datacore_generation.tex}
+    \end{center}
+    \caption{Generation of a data core for the variable $\catvariableof{\catenumerator}$ given an extraction formula $\extformulaof{\catenumerator}$ and an importance formula, which grounding is decomposed into a basis CP format with leg vectors $\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable}$.
+    Term variables, which are appearing in the importance formula, but not in the extraction formula $\extformulaof{\catenumerator}$ can be treated trivally by contraction with the trivial tensor (here $\indvariableof{4},\ldots,\indvariableof{\indorder-1})$.
+    }
+    \label{fig:datacoreGeneration}
+\end{figure}
+
+
+% Comment: Exploitation of common structure
+When many atom extraction formulas differ only by a constant, we can replace the constant by an auxiliary term variable.
+The atoms are then the atomizations of this variable (see \secref{sec:categoricalTN}), treated as a categorical variable, with respect to the constant in the extraction query.
+The advantages are that we can avoid the $\bencodingof{}$-formalism and directly model the categorical distributions.
+
+This also enables a batchwise computation of multiple $\sparql$ queries, which differ only in one constant.
+
+
+%\subsection{Design of the Formulas}
+%
+%Most intuitive when labeling individuals by classes.
+%Extraction formulas $\extformulas$ can then be defined by subclasses of the member of a class and relations between objects of different classes. % Koller calls atomic formulas the template attributes
+%We then choose $\formulaset$ as more involved formulas decomposed into connectives acting on these atoms.
+%The importance formula $\impformula$ is then designed based on class memberships to ensure, that the arguments of the formulas are always of specific classes. % Koller specifies to each argument of the attributes a class
+%
+%% Approach
+%We propose to
+%\begin{itemize}
+%    \item Execute an extraction query to get pairs of individuals (the pairDf).
+%    \item Propositionalize the FOL Formulas independently on each tuple taking the individuals as a set of constant and filtering on the possible properties of each individuals.
+%    (Can understand as adding knowledge that most of the relations do not hold)
+%    \item Understand each such generated knowledge base as datapoint and average over them to get the empirical distribution to be fit.
+%    \item Fit a MLN describing the statistical relations of unseen results of the extraction query, based on likelihood maximation.
+%\end{itemize}

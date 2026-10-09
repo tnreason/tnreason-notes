@@ -8,7 +8,7 @@
 \newcommand{\breakablenormalizationof}[2]{\breakablenormalizationofwrt{#1}{#2}{\varnothing}}
 \newcommand{\normalizationof}[2]{\normalizationofwrt{#1}{#2}{\varnothing}}
 
-\newcommand{\nzcontractionof}[2]{\nonzerocirc\contractionof{#1}{#2}}
+
 
 %% Generic contractions based on semirings
 \newcommand{\gensemiring}{(S,\srplus,\srmul,\srzero,\srone)}
@@ -25,3 +25,11 @@
 \newcommand{\srmul}{\otimes} % Clash with tensor product!
 \newcommand{\srone}{\mathbf{1}}
 \newcommand{\srzero}{\mathbf{0}}
+
+\newcommand{\nonzerofunction}{\ones_{\neq0}}
+\newcommand{\nonzeroof}[1]{\nonzerofunction\left(#1\right)}
+\newcommand{\nonzerocirc}{\nonzerofunction\circ}
+\newcommand{\nzcontractionof}[2]{\nonzerocirc\contractionof{#1}{#2}}
+
+\newcommand{\srnonzerofunction}{\ones_{\neq\srzero}}
+\newcommand{\srnonzerocirc}{\srnonzerofunction\circ}

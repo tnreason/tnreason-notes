@@ -1,8 +1,9 @@
 \section{Boolean message passing}\label{sec:booleanMessagePassing}
 
-\todo{
-    We investigate message passing schemes with respect to the Boolean semiring $\booleansemiring$.
-}
+We investigate message passing schemes with respect to the Boolean semiring $\booleansemiring$.
+To this end, we derive the schemes based on properties of the Boolean semiring and then show their application to sparsify generic contractions.
+
+\subsection{Properties of the Boolean semiring}
 
 The main property of contractions in the Boolean semiring is the invariance under adding subcontractions, which we state in the next theorem.
 
@@ -22,7 +23,6 @@ The main property of contractions in the Boolean semiring is the invariance unde
     But then by monotonocity of subcontractions also the whole contraction evaluates to $0$, therefore invariant.
 \end{proof}
 
-
 \subsection{Application on sum-product contractions}
 
 \theref{the:booleanContractionInvariance} can be generalized to contractions on more general semirings sharing the elements $0,1$ with $\booleansemiring$.
@@ -33,7 +33,7 @@ In such way we can switch to message passing schemes in the Boolean semiring to 
 %% Generic support tensor
 Even more generic, we define the support operator on a generic tensor with respect to a semiring $\gensemiring$ as
 \begin{align*}
-    \nonzeroof{\hypercoreat{\indexedshortcatvariables}}
+    \srnonzerocirc\hypercoreat{\indexedshortcatvariables}
     = \begin{cases}
           \srzero & \ifspace \hypercoreat{\indexedshortcatvariables} = \srzero \\
           \srone & \elsetext \, .
@@ -42,8 +42,93 @@ Even more generic, we define the support operator on a generic tensor with respe
 We notice that the support operator leaves any tensor over semirings with $S=\{\srzero,\srone\}$ invariant.
 This is the case for the Boolean semiring $\booleansemiring$ and the Galois field $\galoissemiring$.
 
-Any tensor is furthermore invariant under contraction with its support tensor, that is
+\begin{lemma}\label{lem:supportInvarianceGeneric}
+    Any tensor is invariant under contraction with its support tensor, that is
+    \begin{align*}
+        \hypercorewith
+        = \srcontractionofwrt{
+            \hypercorewith,\srnonzerocirc\hypercorewith
+        }{\shortcatvariables}{\gensemiring} \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    For any coordinate $s\neq\srzero$ the support operator returns $\srone$, and by the multiplicative invariance property we have $s \srmul \srone = s$.
+    If $s=\srzero$ the support operator returns $\srzero$ and we have $\srzero\srmul\srzero=\srzero$.
+\end{proof}
+
+\begin{definition}
+    A semiring $\gensemiring$ is called \emph{inverse-free}, if for any $s_0,s_1\in S$ with $s_0\srplus s_1=\srzero$ we have $s_0=s_1=\srzero$.
+\end{definition}
+
+% Examples
+Note that $([0,\infty),+,\cdot,0,1)$ is inverse-free, while $(\rr,+,\cdot,0,1)$ is not.
+The Boolean semiring $\booleansemiring$ is inverse-free, but the Galois field $\galoissemiring$ is not.
+
+\begin{lemma}\label{lem:supportDecompositionGeneric}
+    The support of a contraction obeys
+    \begin{align*}
+        \srnonzerocirc\srcontractionofwrt{\extnet}{\catvariableof{\secnodes}}{\gensemiring}
+        \prec \srcontractionofwrt{
+            \{\srnonzerocirc\hypercoreofat{\edge}{\catvariableof{\edge} \wcols \edgein}\}
+        }{\catvariableof{\secnodes}}{\booleansemiring} \, .
+    \end{align*}
+    Here the Boolean semiring is defined with the neutral elements $\srzero,\srone$ of the semiring $\gensemiring$, and the inequality denotes partial ordering of Boolean tensors.
+    If the semiring is inverse free, then the above inequality holds straight.
+\end{lemma}
+\begin{proof}
+    To show the first claim, let $\catindexof{\secnodes}$ be an index such that
+    \begin{align*}
+        \srcontractionofwrt{
+            \{\srnonzerocirc\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edgein\}
+        }{\indexedcatvariableof{\secnodes}}{\booleansemiring}
+        = \srzero \, .
+    \end{align*}
+    It suffices to show that for this index we have $\srcontractionofwrt{\extnet}{\indexedcatvariableof{\secnodes}}{\gensemiring}=\srzero$.
+    Since the Boolean semiring is inverse-free we have for any extension $\catindexof{\nodes}$ of $\catindexof{\secnodes}$ to $\nodes$ that
+    \begin{align*}
+        \srcontractionofwrt{
+            \{\srnonzerocirc\hypercoreofat{\edge}{\catvariableof{\edge} \wcols \edgein}\}
+        }{\indexedcatvariableof{\nodes}}{\booleansemiring}
+        = \srzero \, .
+    \end{align*}
+    We therefore find $\edgein$ such that for the restriction $\catindexof{\edge}$ of $\catindexof{\nodes}$ to $\edge$ we have
+    \begin{align*}
+        \hypercoreofat{\edge}{\indexedcatvariableof{\edge}}
+        = \srzero
+    \end{align*}
+    and thus
+    \begin{align*}
+        \srcontractionofwrt{\extnet}{\indexedcatvariableof{\nodes}}{\gensemiring}
+        = \srzero \, .
+    \end{align*}
+    It follows that also
+    \begin{align*}
+        \srcontractionofwrt{\extnet}{\indexedcatvariableof{\secnodes}}{\gensemiring}
+        = \srzero \, .
+    \end{align*}
+
+    The second claim, namely the vise versa inequality, can be shown analogously using that $\gensemiring$ is inverse-free.
+\end{proof}
+
+% Non-equality example
+As an example, where the inequality in \lemref{lem:supportDecompositionGeneric} does not hold straight, consider the contraction of
 \begin{align*}
-    \hypercorewith =
-    \srcontractionofwrt{\hypercorewith,\nonzeroof{\hypercorewith}}{\shortcatvariables}{\gensemiring} \, .
+    \hypercoreofat{0}{\catvariableof{0}}
+    \coloredmatrixof{
+        1 \\ -1
+    }{\catvariableof{0}}
+    \quad \text{and} \quad
+    \hypercoreofat{1}{\catvariableof{0},\catvariableof{1}}
+    \coloredmatrixof{
+        1 & 1 \\ 1 & 1
+    }{\catvariableof{0},\catvariableof{1}} \, .
 \end{align*}
+The support is the trivial tensor in both cases, but $\contractionof{\hypercoreofat{0}{\catvariableof{0}},\hypercoreofat{1}{\catvariableof{0},\catvariableof{1}}}{\catvariableof{1}}=\onesat{\catvariableof{1}}$.
+When we restrict to the non-negative real numbers in the sum-product semiring, the semiring is inverse free and \lemref{lem:supportDecompositionGeneric} would guarantee equality.
+
+Boolean message passing can therefore be applied to sparsify generic contractions to arbitrary semirings:
+\begin{itemize}
+    \item Add the support of the contraction (\lemref{lem:supportInvarianceGeneric})
+    \item Decompose the support into local network (\lemref{lem:supportDecompositionGeneric})
+    \item Perform Boolean message passing to simplify the support
+\end{itemize}
