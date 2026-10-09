@@ -11,7 +11,7 @@ We in this section treat random worlds in \firstOrderLogic{} with fixed domains 
 %
 We in this section show, when and how we can interpret likelihoods of \MarkovLogicNetworks{} in \firstOrderLogic{} in terms of samples of a \MarkovLogicNetwork{} in \propositionalLogic{}.
 
-\subsect{\HybridFOLNetworks{}}
+\subsection{\HybridFOLNetworks{}}
 
 % Templates
 Following \cite{richardson_markov_2006} \MarkovLogicNetworks{} in \firstOrderLogic{} are templates for distributions, which instantiate random worlds when choosing a set of objects $\worlddomain$.
@@ -61,7 +61,7 @@ These vectors store are the counts of satisfied groundings to each formula, that
     } \, .
 \end{align*}
 
-\subsect{Propositionalization}
+\subsection{Propositionalization}
 
 % Propositionalization
 Let us notice, that different to the case of propositional \HybridLogicNetworks{} treated in \charef{cha:networkRepresentation}, the statistic does not consist of boolean features, when formulas contain variables and we have multiple objects.
@@ -173,7 +173,7 @@ Each substitution of the variables in $\enumfolformula$ by objects in $\worlddom
 
 
 
-\subsect{Conditioning on an Importance Formula}
+\subsection{Conditioning on an Importance Formula}
 
 %\red{Analogous to a guard formula in \cite[Definition 6.11]{koller_probabilistic_2009}!}
 
@@ -222,7 +222,7 @@ Intuitively, $\groundingof{\impformula}$ represents certain evidence about a \fi
 %\end{assumption}
 
 
-\subsect{Decomposition of the Log Likelihood}
+\subsection{Decomposition of the Log Likelihood}
 
 
 % Extraction query
@@ -260,7 +260,7 @@ Towards connecting with \propositionalLogic{}, we further make the assumption, t
 
 We depict the assumption, that any formula is of the form \eqref{eq:folImplicationForm} in the diagram
 \begin{center}
-    \input{tikz/distributions/implication_propositionalization.tex}
+    \input{tikz/implication_propositionalization.tex}
 \end{center}
 where the second summand depends only on the query $\impformula$ and therefore does not appear in the likelihood.
 
@@ -271,7 +271,7 @@ where the second summand depends only on the query $\impformula$ and therefore d
 %\end{example}
 
 
-\subsect{Reduction to Propositional Logic}
+\subsection{Reduction to Propositional Logic}
 
 We now make additional assumptions to decompose the partition function of an \HybridFOLNetwork{} as a product of \HybridLogicNetwork{} partition functions.
 
@@ -471,7 +471,7 @@ There are situations, where \assref{ass:independentTuples} is violated.
 
 
 
-\subsect{Sample Extraction from First-Order Logic Worlds}
+\subsection{Sample Extraction from First-Order Logic Worlds}
 
 We have observed that in certain situations the log-likelihood of a \firstOrderLogic{} world with respect to a \HybridFOLNetwork{} coincides with the likelihood of a data set in a propositional \HybridLogicNetwork{}.
 Let us now investigate the extraction process of these data set.
@@ -483,7 +483,7 @@ Let us now investigate the extraction process of these data set.
 %    %Predicates along with assignment of variables / constants to its positions.
 %    \item Contract the groundings of each formula $\extformulaof{\atomenumerator}$ with the grounding of $\impformula$ to build a data core.
 %\end{itemize}
-%\subsubsect{Representation by Tensor Networks}
+%\subsubsection{Representation by Tensor Networks}
 We model the extraction process as a relation between a tuple of individuals and the extracted world in the factored system of atoms $\catvariableof{\atomenumerator}$.
 
 \begin{definition}
@@ -506,7 +506,7 @@ The encoding of an extraction relation is the tensor
 \end{align*}
 and drawn in a contraction diagram by
 \begin{center}
-    \input{tikz/distributions/extraction_relation.tex}
+    \input{tikz/extraction_relation.tex}
 \end{center}
 Here the contraction of $\bencodingof{\impformula}$ with the truth vector $\tbasis$ represents the matching condition posed by $\impformula$ when extracting pairs of individuals.
 
@@ -529,10 +529,10 @@ Here the number of extracted data is the denominator
 
 We depict this by
 \begin{center}
-    \input{tikz/distributions/empirical_generation.tex}
+    \input{tikz/empirical_generation.tex}
 \end{center}
 
-%\subsubsect{Decomposition of extracted data}
+%\subsubsection{Decomposition of extracted data}
 
 To connect with the empirical distribution introduced in \secref{sec:empDistribution} we now show how the empirical distribution extracted from the interpretations of the formulas $\impformula,\extformulas$ on a \firstOrderLogic{} world $\worldindices$ can be represented by tensor networks.
 
@@ -552,7 +552,7 @@ With this decomposition, we can understand the decomposition of $\groundingofat{
 \end{align*}
 We depict this decomposition by:
 \begin{center}
-    \input{tikz/distributions/impformula_cp.tex}
+    \input{tikz/impformula_cp.tex}
 \end{center}
 
 Based on these construction, we now provide a tensor network decomposition of the extracted empirical distribution.
@@ -669,7 +669,7 @@ The empirical distribution is then a tensor network of these tensors, as we show
 
 \begin{figure}[t]
     \begin{center}
-        \input{tikz/distributions/datacore_generation.tex}
+        \input{tikz/datacore_generation.tex}
     \end{center}
     \caption{Generation of a data core for the variable $\catvariableof{\catenumerator}$ given an extraction formula $\extformulaof{\catenumerator}$ and an importance formula, which grounding is decomposed into a basis CP format with leg vectors $\bencodingofat{\secdatamap_{\indenumerator}}{\indvariableof{\indenumerator},\datvariable}$.
     Term variables, which are appearing in the importance formula, but not in the extraction formula $\extformulaof{\catenumerator}$ can be treated trivally by contraction with the trivial tensor (here $\indvariableof{4},\ldots,\indvariableof{\indorder-1})$.
@@ -686,7 +686,7 @@ The advantages are that we can avoid the $\bencodingof{}$-formalism and directly
 This also enables a batchwise computation of multiple $\sparql$ queries, which differ only in one constant.
 
 
-%\subsect{Design of the Formulas}
+%\subsection{Design of the Formulas}
 %
 %Most intuitive when labeling individuals by classes.
 %Extraction formulas $\extformulas$ can then be defined by subclasses of the member of a class and relations between objects of different classes. % Koller calls atomic formulas the template attributes
@@ -714,7 +714,7 @@ This also enables a batchwise computation of multiple $\sparql$ queries, which d
     To be more precise, we follow the intuition that the ones coordinates mark possible worlds compatible with the knowledge about a factored system.
     Each possible world can then be encoded in a subgraph of the Knowledge Graph representing the world.
 %
-    This amounts to an "inversion" of the data generation process described in the subsection above.
+    This amounts to an "inversion" of the data generation process described in the subsectionion above.
 }
 
 In the previous section we have described a way to extract an effective empirical distribution for the likelihood of a \firstOrderLogic{} world given a \HybridFOLNetwork{}.
@@ -738,7 +738,7 @@ We can then interpret $\datanum$ as the number of samples, and construct a sampl
 We show different schemes and give examples on Knowledge Graphs, where we provide examples for importance and extraction formulas by $\sparql$ queries.
 
 
-%\subsect{Example: Generation of Knowledge Graphs} % To generation of \firstOrderLogic{} worlds?
+%\subsection{Example: Generation of Knowledge Graphs} % To generation of \firstOrderLogic{} worlds?
 %
 % Having a directed and binary CP decomposition of $\exformula$, each possible world is encoded by a slice.
 
@@ -755,9 +755,9 @@ We show different schemes and give examples on Knowledge Graphs, where we provid
 %This interpretation requires a rounding of the real probabilities by rational numbers.
 
 
-\subsect{Samples by Single Objects}
+\subsection{Samples by Single Objects}
 
-%\subsect{Samples by single objects}
+%\subsection{Samples by single objects}
 
 In the first reproduction scheme we construct datapoints by dedicated objects, which represent a sample, that is we choose a domain $\worlddomain=[\datdim]$.
 
@@ -915,7 +915,7 @@ In this simple Knowledge Graph, Description Logic is expressive enough to repres
 
 
 
-\subsect{Samples by Tuples of Objects}
+\subsection{Samples by Tuples of Objects}
 
 %\paragraph{TBox:} The categorical variables of the factored system are the classes.
 %We define atomic formulas by the state indicators of each categorical variable as in \secref{sec:categoricalTN}.
@@ -924,7 +924,7 @@ In this simple Knowledge Graph, Description Logic is expressive enough to repres
 %
 %\paragraph{ABox:} The samples are represented by single individuals in the Knowledge Graph.
 %Their sub-class memberships corresponding with the categorical variables of the system are instantiated whenever the atom is true in the sample.
-%%\subsubsect{Samples by pairs of resources}
+%%\subsubsection{Samples by pairs of resources}
 %
 %\begin{remark}[Refinement of the Samples]
 %    We can split each sample node into a pair of individuals.

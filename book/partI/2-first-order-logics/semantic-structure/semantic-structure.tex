@@ -1,9 +1,14 @@
-\section{Semantic Structure}
-
-\todo{Understand semantics as model sets, over which distributions can be defined.}
+\section{Semantic structure}
 
 We now investigate the \semanticStructure{} of a \firstOrderLogic{} theory, when restricting to database semantics.
 This involves the representation of collections of worlds, where each has a \substitutionStructure{} as discussed above.
+
+\subsection{Database semantics}
+
+We want to enumerate all models in a \firstOrderLogic{} theory.
+However, without restricting assumptions, there are infinitely many worlds.
+Therefore we apply database semantics, where the objects appearing in the models are fixed sets.
+We can then enumerated all possible worlds by semantic variables $\catvariable$.
 
 \subsection{World Enumerating Variables}
 
@@ -40,6 +45,14 @@ To restrict to those worlds, where this is true, we further introduce the valida
         0 & \text{else}
     \end{cases} \, .
 \end{align*}
+
+% High dimensionality
+We notice that there are
+\begin{align*}
+    \left(\sum_{\catenumeratorin}\inddim^{\indorderof{\catenumerator}}\right) +  \left(\sum_{\seccatenumeratorin}\inddim^{\indorderof{\seccatenumerator}}\right)
+\end{align*}
+many semantic variables, and the number of states is exponential in that number.
+
 
 \subsection{Representation of Terms and Formulas}
 
@@ -105,24 +118,3 @@ defined by
 This is a tensor of order $\catorder\cdot\inddim^{\indorder}$, in a tensor space of dimension $2^{\left(\catorder\cdot\inddim^{\indorder}\right)}$.
 Storage of such tensors in naive formats would not be possible.
 However, the basis $\cpformat$ format discussed in \charef{cha:sparseRepresentation} still provides storage with demand linear in the order $\catorder\cdot\inddim^{\indorder}$.
-
-
-\subsection{Probability Distributions}
-
-Having established the formalism of one-hot encodings also in the case of \firstOrderLogic{} worlds, we can now proceed with the definition of distributions and formulas, analogously to the development in \parref{par:one}.
-Probability distributions over worlds coinciding on their domain are then non-negative and normalized tensors $\probat{\worldvariables}$ where each coordinate of a world $\worldindices$ is captured by a boolean random variable $\catvariableof{\atomenumerator,\shortindindices}$, indicating whether the $\atomenumerator$-th predicate holds on the object tuple indexed by $\shortindindices$.
-
-% High-dimensional - watch out for repetitions!
-We notice that by definition these probability distributions are distributions of
-\begin{align*}
-    \left(\sum_{\catenumeratorin}\inddim^{\indorderof{\catenumerator}}\right) +  \left(\sum_{\seccatenumeratorin}\inddim^{\indorderof{\seccatenumerator}}\right)
-\end{align*}
-Booleans.
-% One-hot encodings minimal
-Unfortunately, it is not possible to design encoding spaces of smaller dimension, when our aim is to get any distribution over possible worlds by an element in the encoding space.
-This is due to the fact, that one-hot encodings provide a basis in the tensor space, as will be shown in \charef{cha:coordinateCalculus}.
-The reason for the large encoding space dimension is therefore rooted in the equal number of possible worlds and not in an overhead in the dimension of the one-hot encoding space.
-We will later in this chapter investigate methods to handle such high-dimensional distributions in the formalism of exponential families.
-
-
-
