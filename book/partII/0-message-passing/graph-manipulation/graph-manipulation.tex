@@ -1,0 +1,241 @@
+\section{Hypergraph manipulations}
+
+\subsection{Bethe hypergraphs}
+
+\begin{definition}[Delta tensor on generic semirings]
+    Given a semiring $\gensemiring=\gensemiringexp$ and a collection of variables $\catvariableof{\edge}$ of same dimension, the corresponding delta tensor $\identityat{\catvariableof{\edge}}$
+    \begin{align*}
+        \identityat{\indexedcatvariableof{\edge}}
+        = \begin{cases}
+              \srone & \ifspace \uniquantwrtof{\node,\secnode\in\edge}{\catindexof{\node} = \catindexof{\secnode}} \\
+              \srzero & \elsetext
+        \end{cases} \, .
+    \end{align*}
+\end{definition}
+
+The main manipulation operation with delta tensor is shown in the next lemma.
+
+\begin{lemma}
+    Given a tensor network $\extnetwith$ with respect to a semiring $\gensemiring=\gensemiringexp$.
+    For any set of edges $\secedges\subset\edges$ each containing a variable $\node$ define cores $\sechypercoreofat{\edge}{\catvariableof{\edge\backslash\{\node\}},\catvariableof{\nodeof{\edge}}} $ with coordinates
+    \begin{align*}
+        \sechypercoreofat{\edge}{\indexedcatvariableof{\edge\backslash\{\node\}},\catvariableof{\nodeof{\edge}}=\catindexof{\node}}
+        = \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
+    \end{align*}
+    Then we have
+    \begin{align*}
+        \extnetwith =
+        \srcontractionof{
+            \{\hypercoreofat{\edge}{\catvariableof{\edge}}\wcols \edge\notin\secedges\}
+            \cup
+            \{ \sechypercoreofat{\edge}{\catvariableof{\edge\backslash\{\node\}},\catvariableof{\nodeof{\edge}}} \wcols \edge\in\secedges\}
+            \cup
+            \{\identityat{\catvariableof{\node},\catvariableof{\nodeof{\edge}}\wcols\edge\in\secedges}\}
+        }{
+            \nodevariables
+        } \, .
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    Using the neutrality properties of $\srone$ and $\srzero$.
+\end{proof}
+
+
+
+\begin{definition}\glsadd{mp:BetheHypergraph}
+    Given a tensor network $\tnetof{\graph}$ on a decorated hypergraph $\graph$, we define the Bethe hypergraph $\secgraph$ as
+    $(\secnodes, \secedges \cup \Delta^{\graph})$ where we have
+    \begin{itemize}
+        \item Recolored Edges $\secedges = \{\tilde{\edge} \wcols \edge\in \edges\}$ where $\tilde{\edge} = \{\node^{\edge} \wcols \node\in\edge\}$, which decoration tensor has same coordinates as $\hypercoreof{\edge}$
+        \item Nodes $\secnodes = \nodes \cup (\bigcup_{\edge\in\edges}\tilde{\edge})$ %$\secnodes = \bigcup_{\edge\in\edges}\{\node^{\edge} \wcols \node\in\edge \}$
+        \item Delta Edges $\Delta^{\graph} =  \big\{ \{\node\} \cup \{\node^{\edge} \wcols \edge\ni\node \}\wcols \node\in\nodes \big\} $, each of which decorated by a delta tensor $\delta^{\{\node^{\edge} \wcols \edge\ni\node \}}$
+    \end{itemize}
+\end{definition}
+
+% Bipartite
+The resulting overlap graph is bipartite, since any variable appears exactly in one cluster in $\secedges$ and in one cluster of $\Delta^{\graph}$.
+This further makes the dual of the Bethe Cluster Hypergraph a proper graph (i.e. edges consistent of node pairs).
+
+We effectively copy each node $\node$ by $\node^{\edge}$.
+Let us now show, that when assigning dirac delta tensors the contraction reproduces the original contraction.
+
+By adding delta tensors to each node $\node\in\nodes$ and defining its leg variables by $\node^{\edge}$ for $\edge\in\edges$.
+We mark each such delta tensor by a cluster in $\Delta^{\graph}$, as defined in the following (see also \figref{fig:betheDataExample}).
+
+By \lemref{lem:betheInvariance} this construction does not change contractions.
+
+\begin{lemma}[Bethe Invariance]\label{lem:betheInvariance}
+    Given a tensor network $\extnetwith$ on a hypergraph $\graph$.
+    We define a tensor network on its bethe hypergraph $\secgraph$ by the tensors for $\edge\in\edges$
+    \begin{align*}
+        \sechypercoreofat{\tilde{\edge}}{\catvariableof{\tilde{\edge}}}
+        = \contractionof{\hypercoreofat{\edge}{\catvariableof{\edge}},\identityat{\catvariableof{\edge},\catvariableof{\tilde{\edge}}}}{\catvariableof{\tilde{\edge}}}
+    \end{align*}
+    and the tensors for $\tilde{\edge}\in\Delta^{\graph}$
+    \begin{align*}
+        \sechypercoreofat{\tilde{\edge}}{\catvariableof{\tilde{\edge}},\catvariableof{\node}}
+        = \identityat{\catvariableof{\tilde{\edge}},\catvariableof{\node}} \, .
+    \end{align*}
+    Then we have
+    \begin{align*}
+        \extnetwith =
+        \contractionof{\{\sechypercoreofat{\tilde{\edge}}{\catvariableof{\tilde{\edge}}} \wcols \tilde{\edge}\in\secedges \cup \Delta^{\graph}\}}{\nodevariables}
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    By invariance of adding dirac deltas.
+\end{proof}
+
+Equal constructions:
+\begin{itemize}
+    \item BP on factor graphs in \cite{mezard_information_2009}
+    \item Bethe Cluster graphs in \cite{koller_probabilistic_2009}
+\end{itemize}
+
+\begin{figure}[t]
+    \begin{center}
+        \input{tikz/bethe-hypergraph-example}
+    \end{center}
+    \caption{Example of a Bethe Cluster Graph.
+    a) Example of a Tensor Network $\tnetof{\graph}$, which represents the by $\lambda$ averaged evaluation of the formula $(a\land b)\lor c$ on data $\datamap$.
+    b) Corresponding Bethe Cluster Hypergraph, which dual is bipartite by the sets $\Delta$ and $\tilde{\edges}$.
+    }
+    \label{fig:betheDataExample}
+\end{figure}
+
+\subsection{Coarse graining}
+
+We often account for tensor networks, which are not defined on a tree hypergraph.
+In that case, one can perform graph manipulations, which we call coarse graining schemes, to reformulate the contraction on an equivalent tree hypergraph.
+
+\begin{definition}
+    Let $\graph=(\nodes,\edges)$ and $\secgraph=(\node,\secedges)$ be two hypergraphs sharing their node set and $c: \edges \rightarrow \secedges$ a map.
+    We say that $c$ is a coarse graining map and $\secgraph$, if for all $\edgein$
+    \begin{align*}
+        \edge \subset c(\edge) \, .
+    \end{align*}
+    For any tensor network $\graphtnetwith$ on $\graph$ we further define a coarse grained tensor network $\sectnetofat{\secgraph}{\nodevariables}$ on $\secgraph$ with hypercores to $\secedge\in\secedges$ by
+    \begin{align*}
+        \sechypercoreofat{\secedge}{\catvariableof{\secedge}}
+        = \srcontractionof{\{\edgehypercorewith\wcols\secedge=c(\edge)\}}{\catvariableof{\secedge}} \, .
+    \end{align*}
+\end{definition}
+
+In the literature such coarse graining procedures appear as Cluster Graphs.
+
+We notice that coarse graining of tensor networks preserves their contractions, since
+\begin{align*}
+    \graphtnetwith
+    &= \srcontractionof{\{\edgehypercorewith\wcols\edgein\}}{\nodevariables} \\
+    &= \srcontractionof{\bigcup_{\secedge\in\secedges}\{\edgehypercorewith\wcols c(\edge)=\secedge\}}{\nodevariables} \\
+    &= \srcontractionof{\{\srcontractionof{\{\edgehypercorewith\wcols c(\edge)=\secedge\}}{\edgevariables}\wcols\secedge\in\secedges\}}{\nodevariables} \\
+    &= \srcontractionof{\{\sechypercoreofat{\secedge}{\catvariableof{\secedge}}\wcols\secedge\in\secedges\}}{\nodevariables} \\
+    &= \sectnetofat{\secgraph}{\nodevariables} \, .
+\end{align*}
+
+
+\subsubsection{Variable Elimination}\glsadd{mp:VariableElimination}
+
+Given an order of the nodes the variable elimination procedure provides a coarse graining scheme of an augmented graph.
+
+
+\begin{algorithm}[hbt!]
+    \caption{Variable Elimination}\label{alg:variableElimination}
+    \begin{algorithmic}
+        \Require Tensor network $\extnetasset$ with total order of the nodes
+        \Ensure Coarse graining map $c$ towards a tree hypergraph $(\nodes,\secedges)$
+
+        \iosepline
+        \State $\mathcal{C}\algdefsymbol\varnothing$ of cores already contracted
+
+        \State $c:\varnothing\rightarrow\varnothing$
+
+        \State $\mathcal{M}$ auxiliary edges (messages)
+
+        \For{$\nodein$ following the total order}
+
+            \State {\bf Step 1:} Plan new message $\edgeof{\node}$ given the current ones $\mathcal{M}$
+            \begin{itemize}
+                \item Choose all edges from $\edges$ containing $\node$, which have not been contracted before and update the contracted ones
+                \begin{align*}
+                    \edgesof{\node} &\algdefsymbol \{\edge \wcols \edge\in\edges\backslash\mathcal{C} \ncond \node\in\edge \} \\
+                    \mathcal{C} & \algdefsymbol \mathcal{C} \cup \edgesof{\node}
+                \end{align*}
+                \item Choose and remove all message edges from $\mathcal{M}$ containing $\node$
+                \begin{align*}
+                    \mathcal{M}^{\node} & \algdefsymbol \{\edgeof{\secnode} \wcols \edgeof{\secnode} \in \mathcal{M}\ncond \nodeof{\secnode}\in\edgeof{\secnode} \} \\
+                    \mathcal{M} & \algdefsymbol \mathcal{M}\backslash\mathcal{M}^{\node}
+                \end{align*}
+                \item Build a coarse grained edge and add it to the messages
+                \begin{align*}
+                    \edgeof{\node} &\algdefsymbol
+                    \{\node\} \cup
+                    \bigcup_{\edge\in\edgesof{\node}} \{\thirdnodeof{\node} \wcols \thirdnode\in\edge\backslash\{\node\} \} \cup
+                    \bigcup_{\edgeof{\secnode}\in\mathcal{M}^{\node}} \{\thirdnodeof{\secnode} \wcols \thirdnodeof{\secnode}\in\edgeof{\secnode}\backslash\{\secnode\} \} \\
+                    \mathcal{M} &\algdefsymbol \mathcal{M} \cup \{\edgeof{\node}\}
+                \end{align*}
+            \end{itemize}
+
+            \State {\bf Step 2}: Build manipulated cores of an augmented network, which are coarse grained to $\edgeof{\node}$
+            \begin{itemize}
+                \item  Rename the variables at each $\edge\in\edgesof{\node}$, keeping only $\node$
+                \begin{align*}
+                    \sechypercoreofat{\edge}{\catvariableof{\node},\catvariableof{\secnodeof{\node}}\wcols \secnode\in\edge\backslash\{\node\}} \algdefsymbol
+                    \srcontractionof{
+                        \hypercoreofat{\edge}{\catvariableof{\edge}}
+                        \cup \{\identityat{\catvariableof{\secnode},\catvariableof{\secnodeof{\node}}} \wcols \secnode\in\edge\backslash\{\node\}\}
+                    }{
+                        \catvariableof{\node},\catvariableof{\secnodeof{\node}}\wcols \secnode\in\edge\backslash\{\node\}
+                    }
+                \end{align*}
+                \item Add delta core to current variable
+                \begin{align*}
+                    \identityat{\catvariableof{\node},\catvariableof{\nodeof{\secnode}}\wcols\edgeof{\secnode}\in\mathcal{M}^{\node}} \\
+                    c(\{\node\}\cup\{\nodeof{\secnode}\wcols\edgeof{\secnode}\in\mathcal{M}^{\node}\}) = \edgeof{\node}
+                \end{align*}
+                \item Add delta cores to any other variable $\thirdnodeof{\node}\in\edgeof{\node}\{\node\}$
+                \begin{align*}
+                    \identityat{\catvariableof{\thirdnodeof{\node}},\catvariableof{\thirdnodeof{\secnode}}\wcols\edgeof{\secnode}\in\mathcal{M}^{\node}\ncond\thirdnode\in\secnode}
+                    c(\{\thirdnodeof{\node}\}\cup\{\thirdnodeof{\secnode}\wcols\edgeof{\secnode}\in\mathcal{M}^{\node}\ncond\thirdnode\in\secnode\}) = \edgeof{\node}
+                \end{align*}
+            \end{itemize}
+        \EndFor
+        \State \Return $c,\secedges$
+    \end{algorithmic}
+\end{algorithm}
+
+The variable elimination algorithm is simultaneously defining an augmentation of a tensor network with delta cores and defining a coarse graining mechanism of the augmentation.
+
+
+\begin{lemma}
+    The \algoref{alg:variableElimination} returns a coarse graining map $c$ towards a tree hypergraph.
+\end{lemma}
+\begin{proof}
+    By construction we have $\edge\subset c(\edge)$ for any $\edgein$, thus $c$ is a coarse graining map.
+
+\end{proof}
+
+\begin{figure}
+        % Example
+    \input{tikz/chain-variable-elimination}
+    \caption{Variable Elimination on a tensor network in the order $(\catvariableof{0},\ldots,\catvariableof{\catorder-1},\decvariable)$.
+    a) Original contraction on a non-tree tensor network, b) Coarse grained Bethe hypergraph and c) Coarse grained contraction.
+    }
+\end{figure}
+
+
+\subsubsection{Junction tree algorithm}
+
+Classically the junction tree algorithm is formulated on the extended graph (we define extended graphs here by two nodes adjacent if and only if they are contained in a hypergraph) \cite{lauritzen_local_1988}, where one exploits that a graph has a junction tree if and only if it is triangulated \cite{lauritzen_graphical_1996}.
+The junction tree algorithm therefore constructs a triangulation of the graph by adding edges (also called chordal graph \cite{koller_probabilistic_2009}), and gets a tree-hypergraph by its cliques.
+The coarse graining map to a tree hypergraph is thus the selection of the maximal clique in the triangulated extended graph, which contains the nodes of the hyperedge.
+Note that finding a minimal triangulation is $\mathrm{NP}$-hard.
+
+%% Formulation on hypergraphs
+%We can equally formulate the junction tree algorithm on hypergraphs.
+%Equivalent to searching for a triangulation of an extended graph, we here search for a coarse grained hypergraph, which is a tree.
+%Then the cliques of the triangulated graphs correspond with the hyperedges of the coarse grained hypergraph.
+%
+%\red{Triangulation via Delta transform:
+%Choice of delta tensors and assignment to hyperedges amounts to triangulation procedure (i.e. combination of Bethe transform and coarse graining).
+%}

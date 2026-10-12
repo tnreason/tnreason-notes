@@ -107,6 +107,23 @@
 %    \end{itemize}
 
 
+    \section{Structured representations}
+
+    \begin{center}
+        \textit{
+            Method a on benchmark 1 was successful, but not on benchmark 2.
+            Method b was successful on benchmark 1 and 2.
+        }
+    \end{center}
+
+    This could be either represented by $\tbasis$ basis vectors to each possible substitution (i.e. each combination like \textit{Method a on benchmark 1 was successful} is associated with an atomic variable $\catvariable$), or in a structured representation with variables $\indvariable$ enumerating possible methods, benchmarks etc.
+    The knowledge would then be represented in the matrix
+    \begin{align*}
+        \coloredmatrixof{
+            1 & 0 \\
+            1 & 1
+        }{\indvariableof{method},\indvariableof{benchmark}} \, .
+    \end{align*}
 
     \bibliographystyle{plainnat}
     \bibliography{../../references.bib}

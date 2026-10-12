@@ -11,7 +11,8 @@
 
 
 %% Generic contractions based on semirings
-\newcommand{\gensemiring}{(S,\srplus,\srmul,\srzero,\srone)}
+\newcommand{\gensemiring}{\mathbf{S}}
+\newcommand{\gensemiringexp}{(S,\srplus,\srmul,\srzero,\srone)}
 \newcommand{\booleansemiring}{(\{0,1\},\lor,\land,0,1)}
 \newcommand{\galoissemiring}{\mathbb{F}_2}
 \newcommand{\maxsemiring}{(\rr^+,\mathrm{max},\cdot,0,1)}
@@ -20,6 +21,8 @@
 
 \newcommand{\srcontractionwrt}[2]{\langle#1\rangle^{#2}_{\varnothing}}
 \newcommand{\srcontractionofwrt}[3]{\langle#1\rangle^{#3}_{[#2]}}
+\newcommand{\srcontraction}[1]{\srcontractionwrt{#1}{\gensemiring}}
+\newcommand{\srcontractionof}[2]{\srcontractionofwrt{#1}{#2}{\gensemiring}}
 \newcommand{\srplus}{\oplus}
 \newcommand{\bigsrplus}{\bigoplus}
 \newcommand{\srmul}{\otimes} % Clash with tensor product!

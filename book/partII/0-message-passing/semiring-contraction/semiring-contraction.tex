@@ -9,12 +9,17 @@ In an even broader perspective, contractions can be defined based on sequential 
 \subsection{Foundations}
 
 \begin{definition}
-    A commutative semiring is a tuple $\gensemiring$, where $S$ is a set, $\srzero,\srone\in S$, and
+    A commutative semiring is a tuple $\gensemiring=\gensemiringexp$, where $S$ is a set, $\srzero,\srone\in S$, and
     \begin{align*}
-        \srplus \defcols S \times S \rightarrow S \quad, \quad \srmul \defcols S \times S \rightarrow S \, ,
+        \srplus \defcols S \times S \rightarrow S
+        \quad, \quad
+        \srmul \defcols S \times S \rightarrow S \, ,
     \end{align*}
     such that the following properties hold:
     \begin{itemize}
+        \setlength{\labelwidth}{1.8em}
+        \setlength{\leftmargin}{1.8em}
+        \setlength{\itemindent}{0em}
         \item[(i)] $(S,\srplus,\srzero)$ is a commutative monoid\footnote{That is associativity, commutativity of $\srplus$ and identity of $s\srplus \srzero=s$ for all $s\in S$.}.
         \item[(ii)] $(S,\srmul,\srone)$ is a commutative monoid.
         \item[(iii)] $\srmul$ distributes over $\srplus$, that is for any $s_0,s_1,s_2\in S$
@@ -67,15 +72,15 @@ We understand $S$ as the set of possible coordinates of a tensor.
 \begin{definition}
     Given a semiring $\gensemiring$ and a tensor network $\extnetasset$ with coordinates in $S$, the contraction of the tensor network keeping the variables to a subset $\arbset\subset\nodes$ open is the tensor
     \begin{align*}
-        \srcontractionofwrt{
+        \srcontractionof{
             \extnetasset
-        }{\catvariableof{\arbset}}{\gensemiring}
+        }{\catvariableof{\arbset}}
     \end{align*}
     with coordinates at indices $\catindexof{\arbset}$ by
     \begin{align*}
-        \srcontractionofwrt{
+        \srcontractionof{
             \extnetasset
-        }{\catvariableof{\arbset}}{\gensemiring}
+        }{\catvariableof{\arbset}}
         = \bigoplus_{\catindexof{\nodes\backslash\arbset}} \bigotimes_{\edgein} \hypercoreofat{\edge}{\indexedcatvariableof{\edge}} \, .
     \end{align*}
 \end{definition}
@@ -86,18 +91,18 @@ The distributive property $(iii)$ of the semiring ensures, that we can compute c
     Given a disjoint partition of $\edges$ into $\edgesof{0},\edgesof{1}$, and a subset $\arbset\subset\nodes$, we define the sets $\nodesof{0}$ and $\nodesof{1}$ as the nodes appearing in $\edgesof{0}$, respectively $\edgesof{1}$.
     We then have
     \begin{align*}
-        \srcontractionofwrt{
+        \srcontractionof{
             \extnetasset
-        }{\catvariableof{\arbset}}{\gensemiring}
+        }{\catvariableof{\arbset}}
         =
-        \srcontractionofwrt{
-            \srcontractionofwrt{
+        \srcontractionof{
+            \srcontractionof{
                 \{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edgesof{0}\}
-            }{\catvariableof{\nodesof{0}\cap(\arbset\cup\nodesof{1})}}{\gensemiring},
-            \srcontractionofwrt{
+            }{\catvariableof{\nodesof{0}\cap(\arbset\cup\nodesof{1})}},
+            \srcontractionof{
                 \{\hypercoreofat{\edge}{\catvariableof{\edge}} \wcols \edge\in\edgesof{1}\}
-            }{\catvariableof{\nodesof{1}\cap(\arbset\cup\nodesof{0})}}{\gensemiring}
-        }{\catvariableof{\arbset}}{\gensemiring} \, .
+            }{\catvariableof{\nodesof{1}\cap(\arbset\cup\nodesof{0})}}
+        }{\catvariableof{\arbset}} \, .
     \end{align*}
 \end{theorem}
 \begin{proof}
@@ -335,7 +340,7 @@ Based on the restricted group operation tables we show the decomposition propert
         \bigsrplus_{\thirdcatindex\in[\thirdcatdim]}
         \bencodingofatwrt{\exfunction}{\thirdcatvariable=\thirdcatindex,\indexedshortcatvariables}{\gensemiring} \srmul
         \bencodingofatwrt{\secexfunction}{\indexedheadvariableof{[\seldim]},\thirdcatvariable=\thirdcatindex}{\gensemiring}
-       % \left(\sum_{\thirdcatindex\in[\thirdcatdim]\backslash(\{\exfunctionat{\shortcatindices}\}\cup\secexfunction^{-1}(\headindexof{[\seldim]})}) \srzero \right) \srmul \srzero
+        % \left(\sum_{\thirdcatindex\in[\thirdcatdim]\backslash(\{\exfunctionat{\shortcatindices}\}\cup\secexfunction^{-1}(\headindexof{[\seldim]})}) \srzero \right) \srmul \srzero
     \end{align*}
     Now, for any $\thirdcatindex$ for which either $\exfunctionat{\shortcatindices}\neq\thirdcatindex$ or $\secexfunctionat{\thirdcatindex}\neq\headindexof{[\seldim]}$, the summand is the neutral element $\srzero$ ($\srzero\srmul\srzero$, $\srzero\srmul\srone$ or $\srone\srmul\srzero$).
     If and only if $\secexfunction\circ\exfunctionat{\shortcatindices}=\headindexof{[\seldim]}$, there is one summand $\srone\srmul\srone=\srone$, and the contraction coordinate of the contraction is thus $\srone$.

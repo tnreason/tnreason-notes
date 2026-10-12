@@ -3,10 +3,10 @@
 \usepackage{../../spec_files/arxiv}
 \input{../../spec_files/standard_preamble.tex}
 
-\input{../../macros/organization_macros.tex}
-\input{../../macros/general_macros.tex}
-\input{../../macros/tc_macros.tex}
-\input{../../macros/tikz_macros.tex}
+\usepackage{import}
+\subimport{../../macros/}{all-macros}
+
+\usepackage{minted}
 
 \begin{document}
     \title{Characterization of \ComputationActivationNetworks{} by sufficient statistics}

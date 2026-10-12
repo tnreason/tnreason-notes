@@ -18,6 +18,9 @@ We assume, that all formulas have the same term variables.
 This is not restricting since we can always trivially extend a formula, which would just scale the count by a factor.
 
 We in this section treat random worlds in \firstOrderLogic{} with fixed domains $\worlddomain$.
+This is often called unique name assumptions and domain closure assumption \cite{russell_artificial_2021}.
+
+Then we are in finite dimensional cases, where we can apply the results of \charef{cha:maxEnt}.
 
 \subsubsection{Mean polytope}
 
@@ -140,50 +143,6 @@ We now show that the \HybridFOLNetwork{} can be propositionalized to a \HybridLo
 
 Each substitution of the variables in $\enumfolformula$ by objects in $\worlddomain$, which satisfies the formula in the world $\worldindices$, therefore provides a factor of $\expof{\canparamat{\indexedselvariable}}$ to the probability of $\worldindices$.
 
-
-%\red{Here we directly define them as exponential families distributing $\worldvariables$ for a given set of objects $\worlddomain$.}
-%\red{To avoid a similar discussion as in \charef{cha:networkRepresentation} we directly allow for boolean base measures and call the distributions \HybridFOLNetworks{}.}
-%
-%\begin{definition}[\HybridFOLNetworks{} (HFLN)]
-%    Let there be a set $\folformulaset$ of \firstOrderLogic{} formulas with maximal arity $\indorder$, which is enumerated by a selection variable $\selvariable$ of dimension $\seldim$.
-%    Further, let there be a set of objects $\worlddomain$ and a boolean base measure $\basemeasureat{\shortindvariables}$.
-%    The family of \HybridFOLNetworks{} $\expfamilyof{\restfolformulaset,\basemeasure}$ defined by the tuple $(\folformulaset,\worlddomain,\basemeasure)$ is the exponential family of joint distributions to the variables $\worldvariables$ with the statistics
-%    \begin{align*}
-%        \sstat^{\restfolformulaset}_{\selindex}\left[\indexedworldvariables\right]
-%        = \contraction{\groundingof{\enumfolformula}}
-%    \end{align*}
-%    and the base measure $\basemeasure$.
-%%    The \MarkovLogicNetwork{} instantiated for a given set of objects $\worlddomain$ and a base measure $\basemeasure$ is the random world, which is a member of the exponential family with sufficient statistics
-%%    \begin{align*}
-%%        \sstatcoordinateofat{\selindex}{\indexedworldvariables} = \contraction{\groundingof{\enumfolformula}}
-%%        %\sstat_{\selindex}(\worldindices)  = \contraction{\groundingof{\folexformula_\selindex}} % Formulas can have different
-%%    \end{align*}
-%%    and canonical parameters $\weight$.
-%\end{definition}
-%
-%Each element of the family $\expfamilyof{\restfolformulaset,\basemeasure}$ is represented by a canonical parameter $\canparamat{\selvariable}$.
-
-
-%We will in the next sections explore an alternative way to apply the theory of \charef{cha:networkRepresentation} and \charef{cha:networkReasoning}, namely based on importance formulas.
-
-
-%% Interpretation
-%The statistics
-%\begin{align*}
-%    \contraction{\groundingof{\folexformula_\selindex}} % Formulas can have different
-%\end{align*}
-%can be interpreted as the number of substitutions to a formula, such that the formula ist satisfied.
-%Each substitution satisfying a formula adds a factor of $\expof{\canparam_\selindex}$ to the probability of the respective world before normalization.
-
-
-%
-%When constructing a world tensor to a theory with predicates of different order, we already argued that we extend the arity of predicates by tensor products with $\onehotmapof{0}$.
-%To define random world tensors, we then restrict the corresponding base measure to be supported only on those worlds where the extended predicates hold only at the individual $\exindividualof{0}$ at the extended axis.
-
-
-% Comparison with PL MLN
-%We choose extraction formulas $\extformulaof{\atomenumerator}$ such that any formula in the FOL MLN has a propositional equivalent (see \defref{def:propositionalEquivalent}).
-%The statistic map is then a formula selecting tensor as in the propositional logic case contracted with the groundings of $\extformulaof{\atomenumerator}$.
 
 
 
