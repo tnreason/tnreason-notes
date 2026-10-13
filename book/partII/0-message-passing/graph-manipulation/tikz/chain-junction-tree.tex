@@ -1,0 +1,58 @@
+\stantikzpic{
+    \drawtextnode{-5}{1}{$a)$}
+
+    \drawsmalltensor{0}{0}{$\hypercoreof{0}$}
+    \drawvwire{0}{-1}{$\catvariableof{0}$}
+    \drawsmalltensor{0}{-4}{$\hypercoreof{1}$}
+    \drawvwire{0}{-5}{$\catvariableof{1}$}
+    \drawsmalltensor{0}{-8}{$\hypercoreof{2}$}
+    \drawvwire{0}{-9}{$\catvariableof{2}$}
+
+    \drawtextnode{0}{-12}{\colorlabelsize $\vdots$}
+
+    \drawvwire{0}{-13}{$\catvariableof{\catorder-2}$}
+    \drawsmalltensor{0}{-16}{$\hypercoreof{\catorder-1}$}
+
+
+    \drawvariabledot{-4}{-8}
+    \draw (-4,-8) to [bend right=-20] (-1,0);
+    \draw (-4,-8) to [bend right=-10] (-1,-4);
+    \draw (-4,-8) to (-1,-8);
+    \draw (-4,-8) to [bend right=20] (-1,-16);
+
+    \begin{scope}[shift={(15,0)}]
+        \drawtextnode{-5}{1}{$b)$}
+
+        \draw (0,0) ellipse (3cm and 1cm);
+        \drawtextnode{0}{0}{$\decvariable,\catvariableof{0}$}
+        \draw (0,-1) -- (0,-1.5);
+        \draw[dashed] (-1,-2.5) rectangle (1,-1.5);
+        \drawtextnode{0}{-2}{\colorlabelsize $\decvariable,\catvariableof{0}$}
+        \draw (0,-2.5) -- (0,-3);
+        \draw (0,-4) ellipse (3cm and 1cm);
+        \drawtextnode{0}{-4}{$\decvariable,\catvariableof{0},\catvariableof{1}$}
+        \draw (0,-5) -- (0,-5.5);
+        \draw[dashed] (-1,-6.5) rectangle (1,-5.5);
+        \drawtextnode{0}{-6}{\colorlabelsize $\decvariable,\catvariableof{1}$}
+        \draw (0,-6.5) -- (0,-7);
+        \draw (0,-8) ellipse (3cm and 1cm);
+        \drawtextnode{0}{-8}{$\decvariable,\catvariableof{1},\catvariableof{2}$}
+
+        \draw (0,-9) -- (0,-9.5);
+        \draw[dashed] (-1,-10.5) rectangle (1,-9.5);
+        \drawtextnode{0}{-10}{\colorlabelsize $\decvariable,\catvariableof{2}$}
+        \draw (0,-10.5) -- (0,-11);
+
+        \drawtextnode{0}{-11.75}{\colorlabelsize $\vdots$}
+
+        \draw (0,-13) -- (0,-13.5);
+        \draw[dashed] (-1,-14.5) rectangle (1,-13.5);
+        \drawtextnode{0}{-14}{\colorlabelsize $\decvariable,\catvariableof{\catorder\shortminus2}$}
+        \draw (0,-14.5) -- (0,-15);
+
+        \draw (0,-16) ellipse (3cm and 1cm);
+        \drawtextnode{0}{-16}{$\decvariable,\catvariableof{\catorder-2}$}
+
+    \end{scope}
+
+}

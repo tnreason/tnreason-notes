@@ -42,14 +42,15 @@ The main manipulation operation with delta tensor is shown in the next lemma.
 
 
 
-\begin{definition}\glsadd{mp:BetheHypergraph}
-    Given a tensor network $\tnetof{\graph}$ on a decorated hypergraph $\graph$, we define the Bethe hypergraph $\secgraph$ as
-    $(\secnodes, \secedges \cup \Delta^{\graph})$ where we have
-    \begin{itemize}
-        \item Recolored Edges $\secedges = \{\tilde{\edge} \wcols \edge\in \edges\}$ where $\tilde{\edge} = \{\node^{\edge} \wcols \node\in\edge\}$, which decoration tensor has same coordinates as $\hypercoreof{\edge}$
-        \item Nodes $\secnodes = \nodes \cup (\bigcup_{\edge\in\edges}\tilde{\edge})$ %$\secnodes = \bigcup_{\edge\in\edges}\{\node^{\edge} \wcols \node\in\edge \}$
-        \item Delta Edges $\Delta^{\graph} =  \big\{ \{\node\} \cup \{\node^{\edge} \wcols \edge\ni\node \}\wcols \node\in\nodes \big\} $, each of which decorated by a delta tensor $\delta^{\{\node^{\edge} \wcols \edge\ni\node \}}$
-    \end{itemize}
+\begin{definition}
+            \glsadd{mp:BetheHypergraph}
+        Given a tensor network $\tnetof{\graph}$ on a decorated hypergraph $\graph$, we define the Bethe hypergraph $\secgraph$ as
+        $(\secnodes, \secedges \cup \Delta^{\graph})$ where we have
+        \begin{itemize}
+            \item Recolored Edges $\secedges = \{\tilde{\edge} \wcols \edge\in \edges\}$ where $\tilde{\edge} = \{\node^{\edge} \wcols \node\in\edge\}$, which decoration tensor has same coordinates as $\hypercoreof{\edge}$
+            \item Nodes $\secnodes = \nodes \cup (\bigcup_{\edge\in\edges}\tilde{\edge})$ %$\secnodes = \bigcup_{\edge\in\edges}\{\node^{\edge} \wcols \node\in\edge \}$
+            \item Delta Edges $\Delta^{\graph} =  \big\{ \{\node\} \cup \{\node^{\edge} \wcols \edge\ni\node \}\wcols \node\in\nodes \big\} $, each of which decorated by a delta tensor $\delta^{\{\node^{\edge} \wcols \edge\ni\node \}}$
+        \end{itemize}
 \end{definition}
 
 % Bipartite
@@ -133,7 +134,6 @@ We notice that coarse graining of tensor networks preserves their contractions, 
     &= \sectnetofat{\secgraph}{\nodevariables} \, .
 \end{align*}
 
-
 \subsubsection{Variable Elimination}\glsadd{mp:VariableElimination}
 
 Given an order of the nodes the variable elimination procedure provides a coarse graining scheme of an augmented graph.
@@ -146,11 +146,10 @@ Given an order of the nodes the variable elimination procedure provides a coarse
         \Ensure Coarse graining map $c$ towards a tree hypergraph $(\nodes,\secedges)$
 
         \iosepline
-        \State $\mathcal{C}\algdefsymbol\varnothing$ of cores already contracted
-
-        \State $c:\varnothing\rightarrow\varnothing$
-
-        \State $\mathcal{M}$ auxiliary edges (messages)
+        \State $\mathcal{C}\algdefsymbol\varnothing$ a set of cores already contracted
+        \State $\secgraph=(\varnothing,\varnothing)$ a augmented hypergraph to be constructed
+        \State $c:\varnothing\rightarrow\varnothing$ a coarse graining map to be constructed
+        \State $\mathcal{M}=\varnothing$ auxiliary edges (messages)
 
         \For{$\nodein$ following the total order}
 
@@ -200,7 +199,7 @@ Given an order of the nodes the variable elimination procedure provides a coarse
                 \end{align*}
             \end{itemize}
         \EndFor
-        \State \Return $c,\secedges$
+        \State \Return Augmented tensor network $\sechypercoreof{\secgraph}$ and coarse graining map $c$
     \end{algorithmic}
 \end{algorithm}
 
@@ -223,19 +222,31 @@ The variable elimination algorithm is simultaneously defining an augmentation of
     }
 \end{figure}
 
-
 \subsubsection{Junction tree algorithm}
 
 Classically the junction tree algorithm is formulated on the extended graph (we define extended graphs here by two nodes adjacent if and only if they are contained in a hypergraph) \cite{lauritzen_local_1988}, where one exploits that a graph has a junction tree if and only if it is triangulated \cite{lauritzen_graphical_1996}.
-The junction tree algorithm therefore constructs a triangulation of the graph by adding edges (also called chordal graph \cite{koller_probabilistic_2009}), and gets a tree-hypergraph by its cliques.
+The junction tree algorithm therefore constructs a triangulation of the graph by adding edges (also called chordal graph \cite{koller_probabilistic_2009}).
+The maximal cliques of the triangulated graph form a clique tree, which satisfies the running intersection property \cite{koller_probabilistic_2009}.
+Here the edges of the tree can be selected by minimal spanning algorithms.
 The coarse graining map to a tree hypergraph is thus the selection of the maximal clique in the triangulated extended graph, which contains the nodes of the hyperedge.
 Note that finding a minimal triangulation is $\mathrm{NP}$-hard.
 
-%% Formulation on hypergraphs
-%We can equally formulate the junction tree algorithm on hypergraphs.
-%Equivalent to searching for a triangulation of an extended graph, we here search for a coarse grained hypergraph, which is a tree.
-%Then the cliques of the triangulated graphs correspond with the hyperedges of the coarse grained hypergraph.
-%
-%\red{Triangulation via Delta transform:
-%Choice of delta tensors and assignment to hyperedges amounts to triangulation procedure (i.e. combination of Bethe transform and coarse graining).
-%}
+% Tensor network formalism
+\todo{We can exploit the running intersection property and add delta tensors copying the variables:
+    \begin{itemize}
+        \item Assign each variable a cluster $\secedge$ containing the variable
+        \item Rename the variables $\nodeof{\edge}$ to each cluster, except those variables assigned to a cluster
+        \item Add delta tensors representing the sepsets
+    \end{itemize}
+    This turns a clique tree into a tree hypergraph.
+    The running intersection property ensures, that the augmented tensor network coincides with the original.
+}
+
+\begin{figure}
+        % Example
+    \input{tikz/chain-junction-tree}
+    \caption{Junction tree on a tensor network in the order $(\catvariableof{0},\ldots,\catvariableof{\catorder-1},\decvariable)$.
+    $a)$ Example chain hypergraph, which is already triangulated.
+    $b)$ Clique tree to the network.
+    }
+\end{figure}
