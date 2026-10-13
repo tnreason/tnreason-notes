@@ -2,7 +2,8 @@
 .idea
 
 old/*
-course/exam/*
+out/*
+#course/II-Probabilistic-Approaches/exercises/exam/*
 
 *.aux
 *.log

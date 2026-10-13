@@ -3,47 +3,6 @@
 We now review standard Quantum algorithms in the tensor network formalism.
 
 \input{sections/qft}
-
-\subsection{Quantum Phase Estimation}\label{sec:quantumPhaseEstimation}\glsadd{qc:QPE}
-
-% Generic Quantum Phase Estimation
-When having a circuit implementing a unitary, the phase of the eigenvalues can be estimated using the Quantum Phase Estimation routine \cite{kitaev_quantum_1995, cleve_quantum_1998}.
-
-Let $\unitaryat{\ccatvariableof{\insymbol}{[\catorder]},\ccatvariableof{\outsymbol}{[\catorder]}}$ be a unitary then the absolute of any eigenvalue is $1$ and the eigenvalue is expressible by
-\begin{align*}
-    \expof{\twopii \cdot \phi}
-\end{align*}
-for some $\phi\in[0,1]$.
-Let $\phi=0.\phi_{0}\cdots\phi_{n-1}$ be a $2$-adic representation of $\phi$, that is
-\begin{align*}
-    \phi
-    = \sum_{\catenumerator\in[n]} 2^{-\catenumerator-1} \phi_{\catenumerator} \, .
-\end{align*}
-
-In the Quantum Phase Estimation routine the Fourier transform of $\onehotmapofat{\phi_0,...,\phi_{n-1}}{\selvariableof{[n]}}$
-\begin{align*}
-    \sqrt{\frac{1}{2^{n}}} \cdot \bigotimes_{\catenumerator\in[n]} \left(\fbasisat{\selvariableof{0}} + \expof{\twopii \cdot 0.\phi_{n-\catenumerator-1}\cdots\phi_{n-1}}\right)
-\end{align*}
-is prepared as explained below.
-The inverse Fourier transform on the register $\selvariableof{[n]}$ results then in the state
-\begin{align*}
-    \onehotmapofat{\phi_0,...,\phi_{n-1}}{\selvariableof{[n]}} \otimes \qstateat{\shortcatvariables}
-\end{align*}
-and $\phi_{\catenumerator}$ for $\catenumerator\in[n]$ can be retrieved by a single computational basis measurement of the register $\selvariableof{[n]}$.
-
-To prepare the Fourier transform of $\onehotmapofat{\phi_0,...,\phi_{n-1}}{\shortcatvariables}$, we start with the state
-\begin{align*}
-    \hplusbasat{\selvariable} \otimes \qstateat{\shortcatvariables} \, .
-\end{align*}
-When applying $\unitaryat{\ccatvariableof{\insymbol}{[\catorder]},\ccatvariableof{\outsymbol}{[\catorder]}}$ $2^{\catenumerator}$ times controlled on $\selvariable$ we get the state
-\begin{align*}
-    \sqrt{\frac{1}{2}} \left(\fbasisat{\selvariableof{0}} + \expof{\twopii \cdot 0.\phi_{n-\catenumerator-1}\cdots\phi_{n-1}}\right) \otimes \qstateat{\shortcatvariables}
-\end{align*}
-
-Now we apply for each $\catenumerator\in[n]$ the unitary $\unitaryat{\ccatvariableof{\insymbol}{[\catorder]},\ccatvariableof{\outsymbol}{[\catorder]}}$ $2^{\catenumerator}$ times controlled on $\selvariableof{\catenumerator}$ and get
-\begin{align*}
-    \sqrt{\frac{1}{2^{n}}} \onesat{\selvariableof{[n]}} \otimes \qstateat{\shortcatvariables} \, .
-\end{align*}
-
+\input{sections/qpe}
 \input{sections/grover}
 \input{sections/moment-estimation}

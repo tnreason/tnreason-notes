@@ -47,19 +47,10 @@ When there are multiple orders respecting the directionality, then the concatena
 
 \subsection{Preparation of q-samples to Bayesian Networks} % Former activation circuits
 
-\red{Here: Bayesian networks with boolean variables}
-
 \subsubsection{\ActivationCircuits{}}
 
 We now study circuits preparing q-samples of Bayesian Networks.
-
-
-%A specific scheme to construct directed circuits with specific Bayesian Networks as measurement distributions are \activationCircuits{}.
-%Here we restrict during the preparation procedure to real and positive amplitudes (i.e. prepare q-samples).
-
-
-\ActivationCircuits{} are uniformly controlled unitaries (see \cite{mottonen_transformation_2005}), where the rotation axis is chosen as the $y$-axes of the Bloch sphere, and the angles are computed by the function $h(\cdot)$ acting on a function value to be encoded.
-%\red{Introduce rotation encodings based on activation circuit action, hint at a sampling scheme of probability distributions.}
+To this end we introduce \activationCircuits{}, which are uniformly controlled unitaries (see \cite{mottonen_transformation_2005}), where the rotation axis is chosen as the $y$-axes of the Bloch sphere, and the angles are computed by the function $h(\cdot)$ acting on a function value to be encoded.
 
 %% Angle preparing
 We define the angle preparing function on $p\in[0,1]$ by
@@ -92,7 +83,7 @@ For any $p\in[0,1]$ we then have
 %Along that picture the quantum circuit is a tensor network on hyperedges instead of edges.
 
 %% Probability Tensor
-When we have a probability tensor, its \activationCircuit{} be prepared, since all values are in $[0,1]$.
+When we have a probability tensor, its \activationCircuit{} can be prepared, since all values are in $[0,1]$.
 Note that for rejection sampling, only the quotients of the values are important, we can therefore scale the value by a scalar such that the mode is $1$.
 
 
@@ -407,7 +398,7 @@ Given a distribution $\probat{\shortcatvariables}$ we add an ancilla variable $\
     \begin{align*}
         \normalizationof{\anaugmentationofat{\probtensor,\frac{1}{\catdim}}{\avariable,\shortcatvariables}}{\avariable,\shortcatvariables}
     \end{align*}
-    with the acceptance probability $\catdim^{-1}\coloneqq \big(\prod_{\catenumeratorin\catdimof{\catenumerator}}\big)^{-1}$.
+    with the acceptance probability $\catdim^{-1}\coloneqq \big(\prod_{\catenumeratorin}\catdimof{\catenumerator}\big)^{-1}$.
 %    \begin{align*}
 %        \anaugmentationofat{\probtensor}{\avariable,\shortcatvariables}
 %        =
@@ -547,25 +538,6 @@ The $\infty$ Renyi Divergence is the limit $\alpha\rightarrow\infty$
     The constructed ancilla augmented distribution satisfies the bound \eqref{eq:acceptanceprobBoundRenyiProof} on the acceptance probability holds straight, and it is thus the one with largest acceptance rate.
 \end{proof}
 
-
-%\red{Connect with Ancilla Augmentation:
-%    \begin{itemize}
-%        \item Samples are drawn from $\mathbb{Q}=\normalizationof{\anaugmentationof{\probtensor}}{\shortcatvariables}$ and acceptance prob simulated by
-%        $\normalizationofwrt{\anaugmentationof{\probtensor}}{\avariable}{\shortcatvariables}$.
-%        \item $\mathbb{Q}$
-%        \item If $\shortcatvariables$ appearing only as control qubits, then $\mathbb{Q}$ is uniform.
-%        \item Improvement of the acceptance probability could be thus done, by rotating the distibuted qubits, towards the desired distribution.
-%    \end{itemize}
-%}
-%
-%In more generality we draw samples from a generic proposal distribution $\mathbb{Q}$, which support needs to include the support of the target distribution $\probtensor$.
-%We draw a sample $\shortcatindices$ from $\mathbb{Q}$ and accept it with the probability
-%\begin{align*}
-%    \frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
-%    \cdot \left(\max_{\shortcatindicesin}\frac{\probat{\indexedshortcatvariables}}{\mathbb{Q}\left[\indexedshortcatvariables\right]}
-%    \right)^{-1}
-%\end{align*}
-
 %% Uniform proposal distributions
 Note, that in the section above we have constructed ancilla augmentations with uniform $\mathbb{Q}$ by activation circuits.
 For these the optimal acceptance rate is
@@ -664,7 +636,7 @@ Note, that $\acceptanceprobof{\edge}$ is not an acceptance rate itself, since $\
 
 
 
-The main advantage of this augmentation is, that all cores are directed (see \figref{fig:markovNetworkAugmentation}b, and build therefore a Bayesian Network.
+The main advantage of this augmentation is, that all cores are directed (see \figref{fig:markovNetworkAugmentation}b), and build therefore a Bayesian Network.
 Using the \activationCircuits{} studied above, we can now determine a rejection sampling procedure for arbitrary Markov Networks.
 
 \begin{lemma}
