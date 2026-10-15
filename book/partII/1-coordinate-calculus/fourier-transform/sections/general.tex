@@ -8,7 +8,7 @@ Let us now generalize to generic groups.
 
 Recall that tensors are group fields, see \secref{sec:groupFields}.
 
-A representation is a map of $G$ to a matrix group.
+A representation is a map of $\gengroup$ to a matrix group.
 Irreducible representations (irrep) $\rho$ are those, which are not equivalent to matrix groups in block form.
 We represent them by tensors
 \begin{align*}
@@ -17,10 +17,10 @@ We represent them by tensors
 
 
 \begin{example}{Cyclic group}\label{exa:cycGroupIrreps}
-    For the cyclic group $G=[\catdim]$ the irreps are one-dimensional, that is $\headdim=1$, and enumerated by $\selindex\in[\catdim]$ as
+    For the cyclic group $\gengroup=[\catdim]$ the irreps are one-dimensional, that is $\headdim=1$, and enumerated by $\selindex\in[\catdim]$ as
     \begin{align*}
         \rho^{[\catdimof{\selindex}]}[\indexedcatvariable,\indexedselvariable,\cheadvariable{\insymbol}=0,\cheadvariable{\outsymbol}=0]
-        = \expof{2\pi i \cdot \frac{\catindex \cdot \selindex}{\catdim}} \, .
+        = \expof{\twopii \cdot \frac{\catindex \cdot \selindex}{\catdim}} \, .
     \end{align*}
     Note that for $\catdim=2$ this is the Hadamard matrix
     \begin{align*}
@@ -33,11 +33,11 @@ We represent them by tensors
 
 Finite Abelian groups are equivalent to cartesian products of cyclic groups, that is
 \begin{align*}
-    G \sim \bigtimes_{\catenumeratorin}[\catdimof{\catenumerator}] \, .
+    \gengroup \sim \facgroup \, .
 \end{align*}
 The irreps of finite Abelian groups are thus disconnected tensor networks
 \begin{align*}
-    \rho^{\bigtimes_{\catenumeratorin}[\catdimof{\catenumerator}]}[\shortcatvariables,\selvariableof{[\catorder]},\cheadvariableof{\insymbol}{[\catorder]},\cheadvariableof{\outsymbol}{[\catorder]}]
+    \rho^{\facgroup}[\shortcatvariables,\selvariableof{[\catorder]},\cheadvariableof{\insymbol}{[\catorder]},\cheadvariableof{\outsymbol}{[\catorder]}]
     = \bigotimes_{\catenumeratorin} \rho^{[\catdimof{\catenumerator}]}[\catvariableof{\catenumerator},\selvariableof{\catenumerator},\cheadvariableof{\insymbol}{\catenumerator},\cheadvariableof{\outsymbol}{\catenumerator}]
 \end{align*}
 where each $\rho^{[\catdimof{\catenumerator}]}[\catvariableof{\catenumerator},\selvariableof{\catenumerator},\cheadvariableof{\insymbol}{\catenumerator},\cheadvariableof{\outsymbol}{\catenumerator}]$ is the irrep tensor to $[\catdimof{\catenumerator}]$, see \exaref{exa:cycGroupIrreps}.
@@ -50,7 +50,7 @@ The Fourier transform of a group field $\hypercoreat{\catvariable}$ maps each ir
 \end{align*}
 
 \begin{example}[Walsh-Hadamard transform]
-    Consider the group $[2]^{\catorder}$, and a complex field on it by a quantum state $\qstateat{\shortcatvariables}$.
+    Consider the group $\gengroup=\atomgroup$, and a complex field on it by a quantum state $\qstateat{\shortcatvariables}$.
     The Fourier transform is then the application of Hadamard gates on each qubit, that is
     \begin{align*}
         \contractionof{
@@ -64,42 +64,42 @@ The Fourier transform of a group field $\hypercoreat{\catvariable}$ maps each ir
 
 \subsubsection{Coset transform}
 
-Let us again assume finite Abelian groups $G=\facstates$.
+Let us again assume finite Abelian groups $\gengroup=\facgroup$.
 Applying the Fourier transform on a coset encoding tensor gives a tensor supported at the annihilator.
 
 \begin{lemma}\label{lem:cosetTransform}
-    Let $G=\facstates$, $H\subset G$ be a subgroup and $\thirdcatindexof{[\catorder]}H$ be the coset to an element $\thirdcatindexof{[\catorder]}$.
+    Let $\gengroup=\facgroup$, $\gensubgroup\subset\gengroup$ be a subgroup and $\thirdcatindexof{[\catorder]}\gensubgroup$ be the coset to an element $\thirdcatindexof{[\catorder]}$.
     Then
     \begin{align*}
-        \contractionof{FT[\headvariableof{[\catorder]},\shortcatvariables],\onehotmapofat{gH}{\shortcatvariables}}{\headvariableof{[\catorder]}}
+        \contractionof{\ftat{\headvariableof{[\catorder]},\shortcatvariables},\onehotmapofat{gH}{\shortcatvariables}}{\headvariableof{[\catorder]}}
     \end{align*}
-    is supported at the elements of $H^{\perp}$.
+    is supported at the elements of $\genannihilator$.
 \end{lemma}
 \begin{proof}
     We have
     \begin{align*}
-        \contractionof{FT[\headvariableof{[\catorder]},\shortcatvariables],\onehotmapofat{gH}{\shortcatvariables}}{\headvariable=\headindexof{[\catorder]}}
+        \contractionof{\ftat{\headvariableof{[\catorder]},\shortcatvariables},\onehotmapofat{gH}{\shortcatvariables}}{\headvariable=\headindexof{[\catorder]}}
         & = \frac{1}{\sqrt{\cardof{G}}} \sum_{\shortcatindices\in H} \chi_{\headindexof{[\catorder]}}(\thirdcatindexof{[\catorder]}\otimes \shortcatindices) \\
         & = \frac{1}{\sqrt{\cardof{G}}} \chi_{\headindexof{[\catorder]}}(\thirdcatindexof{[\catorder]}) \left(\sum_{\shortcatindices\in H} \chi_{\headindexof{[\catorder]}}(\thirdcatindexof{[\catorder]}\otimes \shortcatindices)\right) \, .
     \end{align*}
-    Now, if $\chi_{\headindexof{[\catorder]}}\in H^{\perp}$, each summand is $1$, and the coordinate evaluates to $\frac{\cardof{H}}{\sqrt{\cardof{G}}} \cdot \chi_{\headindexof{[\catorder]}}(\thirdcatindexof{[\catorder]})$.
-    Using that $\cardof{H}\cdot\cardof{H^{\perp}}=\cardof{G}$, the absolute of the coordinate is
+    Now, if $\chi_{\headindexof{[\catorder]}}\in \genannihilator$, each summand is $1$, and the coordinate evaluates to $\frac{\cardof{\gensubgroup}}{\sqrt{\cardof{\gengroup}}} \cdot \chi_{\headindexof{[\catorder]}}(\thirdcatindexof{[\catorder]})$.
+    Using that $\cardof{\gensubgroup}\cdot\cardof{\genannihilator}=\cardof{\gengroup}$, the absolute of the coordinate is
     \begin{align*}
-        \sqrt{\cardof{H}} \cdot \frac{1}{\sqrt{\cardof{H^{\perp}}}} \, .
+        \sqrt{\cardof{\gensubgroup}} \cdot \frac{1}{\sqrt{\cardof{\genannihilator}}} \, .
     \end{align*}
-    The Hilbert-Schmidt norm of the contraction restricted to $H^{\perp}$ is therefore $\sqrt{\cardof{H}}$ and coincides with the Hilbert-Schmidt norm of the coset encoding.
-    All coordinates to $\hat{G}\backslash H^{\perp}$ have thus to vanish, which shows the claim.
+    The Hilbert-Schmidt norm of the contraction restricted to $\genannihilator$ is therefore $\sqrt{\cardof{\gensubgroup}}$ and coincides with the Hilbert-Schmidt norm of the coset encoding.
+    All coordinates to $\hat{\gengroup}\backslash \genannihilator$ have thus to vanish, which shows the claim.
     % Alternative derivation
     Alternatively one can derive the claim, based on destructive inference on the sum term.
 \end{proof}
 
 \begin{example}\label{exa:cosetWHTransform}
-    Let us consider the group $G=\atomstates$, which coset representing hypercores are characterized in \exaref{exa:cosetsCyclicTwoProduct}.
-    If $\cardof{H^{\perp}}=2$ we represent a coset by
+    Let us consider the group $\gengroup=\atomstates$, which coset representing hypercores are characterized in \exaref{exa:cosetsCyclicTwoProduct}.
+    If $\cardof{\genannihilator}=2$ we represent a coset by
     \begin{align*}
         \bigoplus[\catvariableof{\edge}] \quad\text{or}\quad \lnot\bigoplus[\catvariableof{\edge}]
     \end{align*}
-    where $\edge$ is the support of the generator of $H^{\perp}$.
+    where $\edge$ is the support of the generator of $\genannihilator$.
     Notice that
     \begin{align*}
         \bigoplus[\catvariableof{\edge}]
@@ -112,12 +112,12 @@ Applying the Fourier transform on a coset encoding tensor gives a tensor support
     \begin{align*}
         \sqrt{2^{\catorder}} \left(\onehotmapofat{\zerotuple{\edge}}{\catvariableof{\edge}} \pm \onehotmapofat{\onetuple{\edge}}{\catvariableof{\edge}} \right) \, ,
     \end{align*}
-    which is supported at $H^{\perp}$.
+    which is supported at $\genannihilator$.
 \end{example}
 
 \subsubsection{Hidden subgroup problem}\label{sec:ccHSP}
 
-Lets assume that a function $\exformula:G\rightarrow \mathcal{Y}$ mapping from a finite abelian group $G=\facstates$ to an arbitrary set $\mathcal{Y}$ is constant on the cosets of a subgroup $H$ (called the hidden subgroup), and different on each coset.
+Lets assume that a function $\exformula:\gengroup\rightarrow \mathcal{Y}$ mapping from a finite abelian group $\gengroup=\facgroup$ to an arbitrary set $\mathcal{Y}$ is constant on the cosets of a subgroup $H$ (called the hidden subgroup), and different on each coset.
 The slices
 \begin{align*}
     \bencodingofat{\exformula}{\headvariable=\headindex,\shortcatvariables}
@@ -126,10 +126,10 @@ of the basis encoding to any image element enumerated by $\headindex$ are then c
 \begin{align*}
     \contractionof{
         \bencodingofat{\exformula}{\headvariable=\headindex,\shortcatvariables}
-        FT[\headvariableof{[\catorder]},\shortcatvariables]
+        \ftat{\headvariableof{[\catorder]},\shortcatvariables}
     }{\headvariableof{[\catorder]}}
 \end{align*}
-is supported on the annihilator $H^{\perp}$, where each coordinate has equal support.
+is supported on the annihilator $\genannihilator$, where each coordinate has equal support.
 
-When retrieving the support of this transform, we can construct a generating set for $H^{\perp}$ and then $H$ as $\big(H^{\perp}\big)^{\perp}$ based on the solution of a equation system in modulus calculus.
+When retrieving the support of this transform, we can construct a generating set for $\genannihilator$ and then $H$ as $\big(\genannihilator\big)^{\annihilatorsymbol}$ based on the solution of a equation system in modulus calculus.
 This strategy is exploited in quantum computing and we will discuss it in \secref{sec:qcHSP}.

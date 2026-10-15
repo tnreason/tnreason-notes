@@ -1,0 +1,50 @@
+\stantikzpic{
+
+    \drawsmalltensor{0}{10}{$\fbasis$}
+    \draw (1,10) -- (4.5,10);
+    \drawtensorblock{6}{10}{1.5}{$\qcbencodingof{\exformula}$}
+    \draw (7.5,10) -- (11.5,10);
+    \drawqcmeasuresymbol{12.5}{10}
+    \drawhwire{13.5}{10}{$\headvariableof{\exformula}$}
+    \drawvariabledot{15.5}{10}
+
+
+    \draw (5,9) -- (5,6);
+    \drawvariabledot{5}{6}
+    \draw (7,9) -- (7,1);
+    \drawvariabledot{7}{1}
+
+    \drawsmalltensor{0}{6}{$\fbasis$}
+    \draw (1,6) -- (2,6);
+    \drawsmalltensor{3}{6}{$\hgate$}
+    \draw (4,6) -- (8.5,6);
+
+    \drawqcmeasuresymbol{12.5}{6}
+    \drawhwire{13.5}{6}{$\headvariableof{0}$}
+    \draw (10.5,6) -- (11.5,6);
+    \drawtextnode{0}{3.5}{\colorlabelsize $\vdots$}
+
+    \drawsmalltensor{0}{1}{$\fbasis$}
+    \draw (1,1) -- (2,1);
+    \drawsmalltensor{3}{1}{$\hgate$}
+    \draw (4,1) -- (8.5,1);
+
+    \draw (8.5,0) rectangle (10.5,7);
+    \drawtextnode{9.5}{3.5}{\corelabelsize $\ftsymbol$}
+    \draw (10.5,1) -- (11.5,1);
+    \drawqcmeasuresymbol{12.5}{1}
+    \drawhwire{13.5}{0}{$\headvariableof{\catorder-1}$}
+
+    \drawtextnode{17}{3.5}{$=$}
+
+    \begin{scope}[shift={(15,0)}]
+        \drawtextnode{6.5}{3.5}{$\frac{1}{\sqrt{\cardof{H^{\perp}}}}\cdot $}
+
+        \draw (8.5,0) rectangle (10.5,7);
+        \drawtextnode{9.5}{3.5}{\corelabelsize $\onehotmapof{H^{\perp}}$}
+        \drawhwire{10.5}{6}{$\headvariableof{0}$}
+        \drawtextnode{11.5}{3.5}{\colorlabelsize $\cdots$}
+        \drawhwire{10.5}{1}{$\headvariableof{\catorder-1}$}
+
+    \end{scope}
+}

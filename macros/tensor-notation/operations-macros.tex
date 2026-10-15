@@ -29,6 +29,30 @@
 \newcommand{\srone}{\mathbf{1}}
 \newcommand{\srzero}{\mathbf{0}}
 
+
+%% Groups
+\newcommand{\gengroup}{G}
+\newcommand{\gendualgroup}{\hat{\gengroup}}
+\newcommand{\exgroupelement}{g}
+\newcommand{\gensubgroup}{H}
+\newcommand{\annihilatorsymbol}{}
+\newcommand{\genannihilator}{\gensubgroup^{\annihilatorsymbol}}
+\newcommand{\gencoset}{\exgroupelement\gensubgroup}
+\newcommand{\charactersymbol}{\chi}
+\newcommand{\characterof}[1]{\charactersymbol_{#1}}
+\newcommand{\characterofat}[2]{\charactersymbol_{#1}\left(#2\right)}
+
+\newcommand{\cyclicgroupsymbol}{\mathbb{Z}}
+\newcommand{\cyclicgroupof}[1]{\cyclicgroupsymbol_{#1}}
+\newcommand{\facgroup}{\bigtimes_{\catenumeratorin}\cyclicgroupof{\catdimof{\catenumerator}}}
+\newcommand{\atomgroup}{\bigtimes_{\catenumeratorin}\cyclicgroupof{2}}
+
+
+\newcommand{\ftsymbol}{\mathcal{FT}}
+\newcommand{\ftof}[1]{\ftsymbol^{#1}} % Order
+\newcommand{\ftat}[1]{\ftsymbol\left[#1\right]}
+
+%% Support
 \newcommand{\nonzerofunction}{\ones_{\neq0}}
 \newcommand{\nonzeroof}[1]{\nonzerofunction\left(#1\right)}
 \newcommand{\nonzerocirc}{\nonzerofunction\circ}

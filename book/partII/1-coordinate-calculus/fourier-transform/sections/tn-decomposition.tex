@@ -1,25 +1,25 @@
 \subsection{Tensor network decomposition}\label{sec:ft:tn}
 
-We now derive a tensor network decomposition of the tensor $F^{\catorder}[\catvariableof{[\catorder]},\headvariableof{[\catorder]}]$.
+We now derive a tensor network decomposition of the tensor $\ftof{\catorder}[\catvariableof{[\catorder]},\headvariableof{[\catorder]}]$.
 
 
 \begin{lemma}
     The Fourier transform of basis vectors $\onehotmapofat{\shortcatindices}{\shortcatvariables}$ is the elementary tensor
     \begin{align*}
-        \frac{1}{\sqrt{2^{\catorder}}} \bigotimes_{\catenumeratorin} \left( \fbasisat{\headvariableof{\catenumerator}} + \expof{2\pi i \cdot (0.\catindexof{\catorder-\catenumerator-1}\cdots\catindexof{\catorder-1})}\cdot \tbasisat{\headvariableof{\catenumerator}}\right)
+        \frac{1}{\sqrt{2^{\catorder}}} \bigotimes_{\catenumeratorin} \left( \fbasisat{\headvariableof{\catenumerator}} + \expof{\twopii \cdot (0.\catindexof{\catorder-\catenumerator-1}\cdots\catindexof{\catorder-1})}\cdot \tbasisat{\headvariableof{\catenumerator}}\right)
     \end{align*}
 \end{lemma}
 \begin{proof}
     For each $\headindexof{[\catorder]}$ we have
     \begin{align*}
         &\contraction{
-            \{ \left( \fbasisat{\headvariableof{\catenumerator}} + \expof{2\pi i \cdot 0.\catindexof{\catorder-\catenumerator-1}\cdots\catindexof{\catorder-1}}\cdot \tbasisat{\headvariableof{\catenumerator}}\right) \wcols \catenumeratorin\}
+            \{ \left( \fbasisat{\headvariableof{\catenumerator}} + \expof{\twopii \cdot 0.\catindexof{\catorder-\catenumerator-1}\cdots\catindexof{\catorder-1}}\cdot \tbasisat{\headvariableof{\catenumerator}}\right) \wcols \catenumeratorin\}
             \cup \{\onehotmapofat{\headindexof{[\catorder]}}{\headvariableof{[\catorder]}}\}
         } \\
-        &\quad= \prod_{\catenumeratorin} \expof{2\pi i \cdot (0.\catindexof{\catorder-\catenumerator-1}\cdots\catindexof{\catorder-1}) \cdot \headindexof{\catenumerator}} \\
-        &\quad= \prod_{\catenumeratorin} \expof{2\pi i \cdot (\catindexof{0}\cdots\catindexof{\catorder-\catenumerator-2}.\catindexof{\catorder-\catenumerator-1}\cdots\catindexof{\catorder-1}) \cdot \headindexof{\catenumerator}} \\
-        &\quad= \expof{2\pi i \cdot \catindex \sum_{\catenumeratorin} \headindexof{\catenumerator} \cdot 2^{\catorder-\catenumerator-1}} \\
-        &\quad= \expof{2\pi i \cdot  \frac{\catindex\cdot\headindex}{2^{\catorder}}} \, .
+        &\quad= \prod_{\catenumeratorin} \expof{\twopii \cdot (0.\catindexof{\catorder-\catenumerator-1}\cdots\catindexof{\catorder-1}) \cdot \headindexof{\catenumerator}} \\
+        &\quad= \prod_{\catenumeratorin} \expof{\twopii \cdot (\catindexof{0}\cdots\catindexof{\catorder-\catenumerator-2}.\catindexof{\catorder-\catenumerator-1}\cdots\catindexof{\catorder-1}) \cdot \headindexof{\catenumerator}} \\
+        &\quad= \expof{\twopii \cdot \catindex \sum_{\catenumeratorin} \headindexof{\catenumerator} \cdot 2^{\catorder-\catenumerator-1}} \\
+        &\quad= \expof{\twopii \cdot  \frac{\catindex\cdot\headindex}{2^{\catorder}}} \, .
     \end{align*}
     Since the basis coefficients of the elementary tensor coincide with those of the Fourier transform of $\onehotmapofat{\shortcatindices}{\shortcatvariables}$, both tensors are equal.
 \end{proof}
@@ -27,21 +27,21 @@ We now derive a tensor network decomposition of the tensor $F^{\catorder}[\catva
 
 We introduce the diagonal unitary
 \begin{align*}
-    U^{\catorder}[\indexedshortcatvariables,\headvariableof{[\catorder]}=\headindexof{[\catorder]}]
+    \contunitaryof{\catorder}[\indexedshortcatvariables,\headvariableof{[\catorder]}=\headindexof{[\catorder]}]
     = \begin{cases}
-          \expof{2\pi i \cdot \left(\sum_{\catenumeratorin} \catindexof{\catenumerator} \cdot 2^{-\catenumerator-2} \right)} & \ifspace \shortcatindices=\headindexof{[\catorder]} \\
+          \expof{\twopii \cdot \left(\sum_{\catenumeratorin} \catindexof{\catenumerator} \cdot 2^{-\catenumerator-2} \right)} & \ifspace \shortcatindices=\headindexof{[\catorder]} \\
           0 & \elsetext
     \end{cases}
 \end{align*}
-Note that $U^{\catorder}$ is diagonal and the tensor product of matrices with variables $\catvariableof{\catenumerator},\headvariableof{\catenumerator}$.
-Diagonality can be used to contract $U^{\catorder}$ to an arbitrary tensor with computational demand in $\mathcal{0}(2^{\catorder})$.
+Note that $\contunitaryof{\catorder}$ is diagonal and the tensor product of matrices with variables $\catvariableof{\catenumerator},\headvariableof{\catenumerator}$.
+Diagonality can be used to contract $\contunitaryof{\catorder}$ to an arbitrary tensor with computational demand in $\mathcal{0}(2^{\catorder})$.
 
 Using diagonality and elementarity, we have
 \stantikzpic{
     \draw (0,2) -- (0,3);
     \draw (-4.5,3) rectangle (4.5,6);
     \drawtextnode{0}{4.5}{$\begin{pmatrix}
-                               1 \\ \expof{2\pi i \cdot 2^{-\catorder+1}}
+                               1 \\ \expof{\twopii \cdot 2^{-\catorder+1}}
     \end{pmatrix}$}
     \drawvariabledot{0}{2}
     \drawhwire{-6}{2}{$\tilde{\headvariable}_{\catorder-1}$}
@@ -57,7 +57,7 @@ Using diagonality and elementarity, we have
     \draw (0,-2) -- (0,-3);
     \draw (-4.5,-3) rectangle (4.5,-6);
     \drawtextnode{0}{-4.5}{$\begin{pmatrix}
-                                1 \\ \expof{2\pi i \cdot 2^{-2}}
+                                1 \\ \expof{\twopii \cdot 2^{-2}}
     \end{pmatrix}$}
 
     \drawtextnode{-8}{0}{$=$}
@@ -67,7 +67,7 @@ Using diagonality and elementarity, we have
         \drawtextnode{1}{0.5}{\colorlabelsize $\vdots$}
         \drawhwire{0}{-2}{$\tilde{\headvariable}_{0}$}
         \draw (2,-3) rectangle (4,3);
-        \drawtextnode{3}{0}{\corelabelsize $U^{\catorder}$}
+        \drawtextnode{3}{0}{\corelabelsize $\contunitaryof{\catorder}$}
 
         \drawhwire{4}{2}{$\headvariableof{\catorder}$}
         \drawtextnode{5}{0.5}{\colorlabelsize $\vdots$}
@@ -84,7 +84,7 @@ Using diagonality and elementarity, we have
         \drawtextnode{-2}{0.5}{\colorlabelsize $\vdots$}
         \drawhwire{-3}{-2.5}{$\catvariableof{\catorder-1}$}
         \draw (-1,-3) rectangle (1,3);
-        \drawtextnode{0}{0}{\corelabelsize $F^{\catorder}$}
+        \drawtextnode{0}{0}{\corelabelsize $\ftof{\catorder}$}
         \drawhwire{1}{2.5}{$\headvariableof{\catorder-1}$}
         \drawtextnode{2}{0.5}{\colorlabelsize $\vdots$}
         \drawhwire{1}{-2.5}{$\headvariableof{0}$}
@@ -97,7 +97,7 @@ Using diagonality and elementarity, we have
             \drawhwire{-4}{-0.5}{$\catvariableof{\catorder-2}$}
 
             \draw (-2,-1) rectangle (0,3);
-            \drawtextnode{-1}{1}{\corelabelsize $F^{\catorder-1}$}
+            \drawtextnode{-1}{1}{\corelabelsize $\ftof{\catorder-1}$}
 
             \draw (-4,-2) -- (5,-2);
             \drawsmalltensor{6}{-2}{$\hgate$}
@@ -109,7 +109,7 @@ Using diagonality and elementarity, we have
             \drawtextnode{1}{1.5}{\colorlabelsize $\vdots$}
             \drawhwire{0}{-0.5}{$\tilde{\headvariable}_{0}$}
             \draw (2,-1) rectangle (4,3);
-            \drawtextnode{3}{1}{\corelabelsize $U^{\catorder-1}$}
+            \drawtextnode{3}{1}{\corelabelsize $\contunitaryof{\catorder-1}$}
             \draw (4,2.5) -- (7,2.5);
             \drawtextnode{5}{1.5}{\colorlabelsize $\vdots$}
             \drawhwire{7}{2.5}{$\headvariableof{\catorder-1}$}
@@ -125,20 +125,20 @@ Using diagonality and elementarity, we have
     The Fourier transform of $\onehotmapofat{[\catorder-1]}{\catvariableof{[\catorder-1]}}$ is by the Lemma above
     \begin{align*}
         \frac{1}{\sqrt{2^{\catorder-1}}} \bigotimes_{\catenumerator\in[\catorder-1]}
-        \left( \fbasisat{\tilde{\headvariable}_{\catenumerator}} + \expof{2\pi i \cdot (0.\catindexof{\catorder-\catenumerator-2}\cdots\catindexof{\catorder-2})}\cdot \tbasisat{\tilde{\headvariable}_{\catenumerator}}\right)
+        \left( \fbasisat{\tilde{\headvariable}_{\catenumerator}} + \expof{\twopii \cdot (0.\catindexof{\catorder-\catenumerator-2}\cdots\catindexof{\catorder-2})}\cdot \tbasisat{\tilde{\headvariable}_{\catenumerator}}\right)
     \end{align*}
 
     %Case $\catindexof{\catorder-1}=0$
     In case of $\catindexof{\catorder-1}=0$, the Fourier transform of $\onehotmapofat{\shortcatindices}{\shortcatvariables}$ is the tensor product of this state with $\hplusbasat{\catvariableof{0}}$.
-    This is reproduced by the decomposition, since the controlled unitary $U^{\catorder-1}$ acts trivially and the Hadamard gate transforms $\fbasisat{\catorder-1}$ to $\hplusbasat{\catvariableof{0}}$.
+    This is reproduced by the decomposition, since the controlled unitary $\contunitaryof{\catorder-1}$ acts trivially and the Hadamard gate transforms $\fbasisat{\catorder-1}$ to $\hplusbasat{\catvariableof{0}}$.
 
     %Case $\catindexof{\catorder-1}=1$
-    In case of $\catindexof{\catorder-1}=1$, the leg vectors $\left( \fbasisat{\tilde{\headvariable}_{\catenumerator}} + \expof{2\pi i \cdot (0.\catindexof{\catorder-\catenumerator-2}\cdots\catindexof{\catorder-2})}\cdot \tbasisat{\tilde{\headvariable}_{\catenumerator}}\right)$ are further transformed into
+    In case of $\catindexof{\catorder-1}=1$, the leg vectors $\left( \fbasisat{\tilde{\headvariable}_{\catenumerator}} + \expof{\twopii \cdot (0.\catindexof{\catorder-\catenumerator-2}\cdots\catindexof{\catorder-2})}\cdot \tbasisat{\tilde{\headvariable}_{\catenumerator}}\right)$ are further transformed into
     \begin{align*}
-        \left( \fbasisat{\headvariableof{\catenumerator+1}} + \expof{2\pi i \cdot (0.\catindexof{\catorder-\catenumerator-2}\cdots\catindexof{\catorder-2}\catindexof{\catorder-1})}\cdot \tbasisat{\headvariableof{\catenumerator+1}}\right) \, .
+        \left( \fbasisat{\headvariableof{\catenumerator+1}} + \expof{\twopii \cdot (0.\catindexof{\catorder-\catenumerator-2}\cdots\catindexof{\catorder-2}\catindexof{\catorder-1})}\cdot \tbasisat{\headvariableof{\catenumerator+1}}\right) \, .
     \end{align*}
     In both cases we arrive at the Fourier transform of $\onehotmapofat{\shortcatindices}{\shortcatvariables}$.
 \end{proof}
 
-By iteratively decomposing $F^{\catorder-1}$ until we arrive at $F^{1}$ (which is the $\hgate$ matrix), we get a decomposition of $F^{\catorder}$ into $\catorder$ $\hgate$ matrices and controlled $U$ unitaries.
+By iteratively decomposing $\ftof{\catorder-1}$ until we arrive at $\ftof{1}$ (which is the $\hgate$ matrix), we get a decomposition of $\ftof{\catorder}$ into $\catorder$ $\hgate$ matrices and controlled $U$ unitaries.
 
