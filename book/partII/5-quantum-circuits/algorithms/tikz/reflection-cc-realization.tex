@@ -1,9 +1,6 @@
-\begin{tikzpicture}[scale=0.35, thick] % , baseline = -3.5pt
+\stantikzpic{
 
-
-    %\drawtextnode{9.5}{4}{\corelabelsize $\inshortcatvariables$}
-
-    \drawsmalltensor{10}{8}{\corelabelsize $\hminusbas$}
+    \drawsmalltensor{10}{8}{$\hminusbas$}
     \draw (11,8) -- (12,8);
     \draw (12,7) rectangle (15,9);
     \drawtextnode{13.5}{8}{\corelabelsize $\qcbencodingof{\formula}$}
@@ -12,16 +9,13 @@
     \draw (14,7) -- (14,2);
     \drawvariabledot{14}{2}
     \draw (15,8) -- (16,8);
-    \drawsmalltensor{17}{8}{\corelabelsize $\hminusbas$}
+    \drawsmalltensor{17}{8}{$\hminusbas$}
 
     \drawtextnode{10.5}{4}{\corelabelsize $\inshortcatvariables$}
     \draw (11,6) -- (16,6);
     \drawtextnode{12.5}{4.25}{$\vdots$}
     \draw (11,2) -- (16,2);
     \drawtextnode{16.5}{4}{\corelabelsize $\outshortcatvariables$}
-    %\draw (12,1) rectangle (14,7);
-    %\drawtextnode{13}{4}{\corelabelsize $\unitaryof{\dagger}$}
-    %\draw (14,6) -- (15,6);
 
     \begin{scope}[shift={(-12,0)}]
         \drawtextnode{9.5}{4}{\corelabelsize $\inshortcatvariables$}
@@ -40,9 +34,4 @@
         \drawtextnode{19}{4}{${=}$}
     \end{scope}
 
-
-    %\draw[dashed]  -- ;
-    %\draw[dashed]  -- ; % node[below] {\corelabelsize $\qstateofat{1}{\shortcatvariables} \otimes \hminusbasat{\headvariable}$};
-
-
-\end{tikzpicture}
+}

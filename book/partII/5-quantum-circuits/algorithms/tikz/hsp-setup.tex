@@ -6,8 +6,7 @@
     \draw (7.5,10) -- (11.5,10);
     \drawqcmeasuresymbol{12.5}{10}
     \drawhwire{13.5}{10}{$\headvariableof{\exformula}$}
-    \drawvariabledot{15.5}{10}
-
+    %\drawvariabledot{15.5}{10}
 
     \draw (5,9) -- (5,6);
     \drawvariabledot{5}{6}
@@ -29,21 +28,24 @@
     \drawsmalltensor{3}{1}{$\hgate$}
     \draw (4,1) -- (8.5,1);
 
-    \draw (8.5,0) rectangle (10.5,7);
-    \drawtextnode{9.5}{3.5}{\corelabelsize $\ftsymbol$}
+    \drawtextnode{12.5}{3.5}{\colorlabelsize $\vdots$}
+
+    \drawvblock{9.5}{3.5}{3.5}{$\ftsymbol$}
     \draw (10.5,1) -- (11.5,1);
     \drawqcmeasuresymbol{12.5}{1}
-    \drawhwire{13.5}{0}{$\headvariableof{\catorder-1}$}
+    \drawhwire{13.5}{1}{$\headvariableof{\catorder-1}$}
 
-    \drawtextnode{17}{3.5}{$=$}
+    \drawtextnode{18}{5.5}{$=$}
 
     \begin{scope}[shift={(15,0)}]
-        \drawtextnode{6.5}{3.5}{$\frac{1}{\sqrt{\cardof{H^{\perp}}}}\cdot $}
+        \drawtextnode{6.5}{3.5}{$\frac{1}{\sqrt{\cardof{\genannihilator}}}\cdot $}
 
-        \draw (8.5,0) rectangle (10.5,7);
-        \drawtextnode{9.5}{3.5}{\corelabelsize $\onehotmapof{H^{\perp}}$}
+        \drawsmalltensor{9.5}{10}{$\hplusbas$}
+        \drawhwire{10.5}{10}{$\headvariableof{\exformula}$}
+
+        \drawvblock{9.5}{3.5}{3.5}{$\onehotmapof{\genannihilator}$}
         \drawhwire{10.5}{6}{$\headvariableof{0}$}
-        \drawtextnode{11.5}{3.5}{\colorlabelsize $\cdots$}
+        \drawtextnode{11.5}{3.5}{\colorlabelsize $\vdots$}
         \drawhwire{10.5}{1}{$\headvariableof{\catorder-1}$}
 
     \end{scope}

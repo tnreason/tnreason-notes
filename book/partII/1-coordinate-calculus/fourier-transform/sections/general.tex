@@ -1,6 +1,6 @@
 \subsection{Generic groups}
 
-So far we have treated the Fourier transform on the cyclic group $[\prod_{\catenumeratorin}\catdimof{\catenumerator}]$ using unfoldings.
+So far we have treated the Fourier transform on the cyclic group $\cyclicgroupof{\prod_{\catenumeratorin}\catdimof{\catenumerator}}$ using unfoldings.
 More naturally, a tensor is defined as a complex field on the cartesian product group $\facstates$.
 Let us now generalize to generic groups.
 
@@ -9,23 +9,39 @@ Let us now generalize to generic groups.
 Recall that tensors are group fields, see \secref{sec:groupFields}.
 
 A representation is a map of $\gengroup$ to a matrix group.
-Irreducible representations (irrep) $\rho$ are those, which are not equivalent to matrix groups in block form.
-We represent them by tensors
+Irreducible representations (irrep) are those, which are not equivalent to matrix groups in block form.
+We enumerate them by a variable $\headvariable$ and store all irreps in the tensor
 \begin{align*}
-    \rho[\catvariable,\cheadvariable{\insymbol},\cheadvariable{\outsymbol}] \, .
+    \repofat{\gengroup}{
+        \catvariable,\headvariable,\cselvariable{\insymbol},\cselvariable{\outsymbol}
+    } \, ,
 \end{align*}
+where the $\headindex$-th representation maps the group element $\catindex$-th to the matrix
+\begin{align*}
+    \frac{1}{\sqrt{\seldim}} \cdot \repofat{\gengroup}{
+        \indexedcatvariable,\indexedheadvariable,\cselvariable{\insymbol},\cselvariable{\outsymbol}
+    } \, .
+\end{align*}
+Here $\seldim$ is the dimension of the representation.
+We here made the convention to store in the slices of $\repof{\gengroup}$ the by ${\sqrt{\seldim}}$ rescaled irrep, to ease the definition of the Fourier transform.
+
+
 
 
 \begin{example}{Cyclic group}\label{exa:cycGroupIrreps}
-    For the cyclic group $\gengroup=[\catdim]$ the irreps are one-dimensional, that is $\headdim=1$, and enumerated by $\selindex\in[\catdim]$ as
+    For the cyclic group $\gengroup=\cyclicgroupof{\catdim}$ the irreps are one-dimensional, that is $\headdim=1$, and enumerated by $\headindex\in[\catdim]$ as
     \begin{align*}
-        \rho^{[\catdimof{\selindex}]}[\indexedcatvariable,\indexedselvariable,\cheadvariable{\insymbol}=0,\cheadvariable{\outsymbol}=0]
-        = \expof{\twopii \cdot \frac{\catindex \cdot \selindex}{\catdim}} \, .
+        \repofat{\cyclicgroupof{\catdim}}{\indexedcatvariable,\indexedheadvariable,\cselvariable{\insymbol}=0,\cselvariable{\outsymbol}=0}
+        = \expof{\twopii \cdot \frac{\catindex \cdot \headindex}{\catdim}} \, .
+    \end{align*}
+    The characters of the irreps are
+    \begin{align*}
+        \characterofat{\headindex}{\catindex}=\repofat{\cyclicgroupof{\catdim}}{\indexedcatvariable,\indexedheadvariable,\cselvariable{\insymbol}=0,\cselvariable{\outsymbol}=0} \, .
     \end{align*}
     Note that for $\catdim=2$ this is the Hadamard matrix
     \begin{align*}
-        \rho^{[2]}[\catvariable,\selvariable,\cheadvariable{\insymbol}=0,\cheadvariable{\outsymbol}=0]
-        = \sqrt{2} \cdot \hgateat{\catvariable,\selvariable} \, .
+        \repofat{\cyclicgroupof{2}}{\catvariable,\headvariable,\cselvariable{\insymbol}=0,\cselvariable{\outsymbol}=0}
+        = \sqrt{2} \cdot \hgateat{\catvariable,\headvariable} \, .
     \end{align*}
 \end{example}
 
@@ -37,16 +53,20 @@ Finite Abelian groups are equivalent to cartesian products of cyclic groups, tha
 \end{align*}
 The irreps of finite Abelian groups are thus disconnected tensor networks
 \begin{align*}
-    \rho^{\facgroup}[\shortcatvariables,\selvariableof{[\catorder]},\cheadvariableof{\insymbol}{[\catorder]},\cheadvariableof{\outsymbol}{[\catorder]}]
-    = \bigotimes_{\catenumeratorin} \rho^{[\catdimof{\catenumerator}]}[\catvariableof{\catenumerator},\selvariableof{\catenumerator},\cheadvariableof{\insymbol}{\catenumerator},\cheadvariableof{\outsymbol}{\catenumerator}]
+    \repofat{\facgroup}{\shortcatvariables,\headvariableof{[\catorder]},\cselvariableof{\insymbol}{[\catorder]},\cselvariableof{\outsymbol}{[\catorder]}}
+    = \bigotimes_{\catenumeratorin} \repofat{\cyclicgroupof{\catdimof{\catenumerator}}}{
+        \catvariableof{\catenumerator},\headvariableof{\catenumerator},\cselvariableof{\insymbol}{\catenumerator},\cselvariableof{\outsymbol}{\catenumerator}
+    }
 \end{align*}
-where each $\rho^{[\catdimof{\catenumerator}]}[\catvariableof{\catenumerator},\selvariableof{\catenumerator},\cheadvariableof{\insymbol}{\catenumerator},\cheadvariableof{\outsymbol}{\catenumerator}]$ is the irrep tensor to $[\catdimof{\catenumerator}]$, see \exaref{exa:cycGroupIrreps}.
+where each $\repofat{\cyclicgroupof{\catdimof{\catenumerator}}}{\catvariableof{\catenumerator},\headvariableof{\catenumerator},\cselvariableof{\insymbol}{\catenumerator},\cselvariableof{\outsymbol}{\catenumerator}}$ is the irrep tensor to $\cyclicgroupof{\catdimof{\catenumerator}}$, see \exaref{exa:cycGroupIrreps}.
 
 \subsubsection{Fourier transform}
 
-The Fourier transform of a group field $\hypercoreat{\catvariable}$ maps each irrep $\rho$ to
+The Fourier transform of a complex group field $\hypercoreat{\catvariable}$ is the tensor
 \begin{align*}
-    \sqrt{\frac{\headdim}{\cardof{G}}} \cdot \contractionof{\hypercoreat{\catvariable},\rho[\catvariable,\cheadvariable{\insymbol},\cheadvariable{\outsymbol}]}{\cheadvariable{\insymbol},\cheadvariable{\outsymbol}} \, .
+    \sqrt{\frac{1}{\cardof{\gengroup}}} \cdot \contractionof{
+        \hypercoreat{\catvariable},\repofat{\gengroup}{\catvariable,\headvariable,\cselvariable{\insymbol},\cselvariable{\outsymbol}}
+    }{\headvariable,\cselvariable{\insymbol},\cselvariable{\outsymbol}} \, .
 \end{align*}
 
 \begin{example}[Walsh-Hadamard transform]
@@ -56,8 +76,8 @@ The Fourier transform of a group field $\hypercoreat{\catvariable}$ maps each ir
         \contractionof{
             \{\qstateat{\shortcatvariables}\}
             \cup \bigcup_{\catenumeratorin}
-            \{\hgateat{\catvariableof{\catenumerator},\selvariableof{\catenumerator}}\}
-        }{\selvariableof{[\catorder]}} \, .
+            \{\hgateat{\catvariableof{\catenumerator},\headvariableof{\catenumerator}}\}
+        }{\headvariableof{[\catorder]}} \, .
     \end{align*}
     This is the Walsh-Hadamard transform of the quantum state.
 \end{example}
@@ -71,16 +91,19 @@ Applying the Fourier transform on a coset encoding tensor gives a tensor support
     Let $\gengroup=\facgroup$, $\gensubgroup\subset\gengroup$ be a subgroup and $\thirdcatindexof{[\catorder]}\gensubgroup$ be the coset to an element $\thirdcatindexof{[\catorder]}$.
     Then
     \begin{align*}
-        \contractionof{\ftat{\headvariableof{[\catorder]},\shortcatvariables},\onehotmapofat{gH}{\shortcatvariables}}{\headvariableof{[\catorder]}}
+        \contractionof{
+            \ftat{\headvariableof{[\catorder]},\shortcatvariables},
+            \onehotmapofat{\gencoset}{\shortcatvariables}
+        }{\headvariableof{[\catorder]}}
     \end{align*}
     is supported at the elements of $\genannihilator$.
 \end{lemma}
 \begin{proof}
     We have
     \begin{align*}
-        \contractionof{\ftat{\headvariableof{[\catorder]},\shortcatvariables},\onehotmapofat{gH}{\shortcatvariables}}{\headvariable=\headindexof{[\catorder]}}
-        & = \frac{1}{\sqrt{\cardof{G}}} \sum_{\shortcatindices\in H} \chi_{\headindexof{[\catorder]}}(\thirdcatindexof{[\catorder]}\otimes \shortcatindices) \\
-        & = \frac{1}{\sqrt{\cardof{G}}} \chi_{\headindexof{[\catorder]}}(\thirdcatindexof{[\catorder]}) \left(\sum_{\shortcatindices\in H} \chi_{\headindexof{[\catorder]}}(\thirdcatindexof{[\catorder]}\otimes \shortcatindices)\right) \, .
+        \contractionof{\ftat{\headvariableof{[\catorder]},\shortcatvariables},\onehotmapofat{\gencoset}{\shortcatvariables}}{\indexedheadvariableof{[\catorder]}}
+        & = \frac{1}{\sqrt{\cardof{\gengroup}}} \sum_{\shortcatindices\in\gensubgroup} \chi_{\headindexof{[\catorder]}}(\thirdcatindexof{[\catorder]}\otimes \shortcatindices) \\
+        & = \frac{1}{\sqrt{\cardof{\gengroup}}} \characterofat{\headindexof{[\catorder]}}{\thirdcatindexof{[\catorder]}} \cdot \left(\sum_{\shortcatindices\in\gensubgroup} \characterofat{\headindexof{[\catorder]}}{\shortcatindices}\right) \, .
     \end{align*}
     Now, if $\chi_{\headindexof{[\catorder]}}\in \genannihilator$, each summand is $1$, and the coordinate evaluates to $\frac{\cardof{\gensubgroup}}{\sqrt{\cardof{\gengroup}}} \cdot \chi_{\headindexof{[\catorder]}}(\thirdcatindexof{[\catorder]})$.
     Using that $\cardof{\gensubgroup}\cdot\cardof{\genannihilator}=\cardof{\gengroup}$, the absolute of the coordinate is
@@ -97,7 +120,8 @@ Applying the Fourier transform on a coset encoding tensor gives a tensor support
     Let us consider the group $\gengroup=\atomstates$, which coset representing hypercores are characterized in \exaref{exa:cosetsCyclicTwoProduct}.
     If $\cardof{\genannihilator}=2$ we represent a coset by
     \begin{align*}
-        \bigoplus[\catvariableof{\edge}] \quad\text{or}\quad \lnot\bigoplus[\catvariableof{\edge}]
+        \bigoplus[\catvariableof{\edge}] \quad\text{or}\quad
+        \lnot\bigoplus[\catvariableof{\edge}]
     \end{align*}
     where $\edge$ is the support of the generator of $\genannihilator$.
     Notice that
@@ -117,19 +141,19 @@ Applying the Fourier transform on a coset encoding tensor gives a tensor support
 
 \subsubsection{Hidden subgroup problem}\label{sec:ccHSP}
 
-Lets assume that a function $\exformula:\gengroup\rightarrow \mathcal{Y}$ mapping from a finite abelian group $\gengroup=\facgroup$ to an arbitrary set $\mathcal{Y}$ is constant on the cosets of a subgroup $H$ (called the hidden subgroup), and different on each coset.
+Lets assume that a function $\exformula:\gengroup\rightarrow \mathcal{Y}$ mapping from a finite abelian group $\gengroup=\facgroup$ to an arbitrary set $\mathcal{Y}$ is constant on the cosets of a subgroup $\gensubgroup$ (called the hidden subgroup), and different on each coset.
 The slices
 \begin{align*}
-    \bencodingofat{\exformula}{\headvariable=\headindex,\shortcatvariables}
+    \bencodingofat{\exformula}{\indexedheadvariable,\shortcatvariables}
 \end{align*}
 of the basis encoding to any image element enumerated by $\headindex$ are then coset encoding tensors and by \lemref{lem:cosetTransform}
 \begin{align*}
     \contractionof{
-        \bencodingofat{\exformula}{\headvariable=\headindex,\shortcatvariables}
+        \bencodingofat{\exformula}{\indexedheadvariable,\shortcatvariables}
         \ftat{\headvariableof{[\catorder]},\shortcatvariables}
     }{\headvariableof{[\catorder]}}
 \end{align*}
 is supported on the annihilator $\genannihilator$, where each coordinate has equal support.
 
-When retrieving the support of this transform, we can construct a generating set for $\genannihilator$ and then $H$ as $\big(\genannihilator\big)^{\annihilatorsymbol}$ based on the solution of a equation system in modulus calculus.
+When retrieving the support of this transform, we can construct a generating set for $\genannihilator$ and then $\gensubgroup$ as $\big(\genannihilator\big)^{\annihilatorsymbol}$ based on the solution of a equation system in modulus calculus.
 This strategy is exploited in quantum computing and we will discuss it in \secref{sec:qcHSP}.

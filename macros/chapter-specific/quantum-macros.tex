@@ -1,5 +1,5 @@
 %% Quantum Computation
-\newcommand{\contunitary}{\mathcal{U}} % controlled unitary
+\newcommand{\contunitary}{\unitarysymbol} % controlled unitary, redundant?
 \newcommand{\contunitaryof}[1]{\contunitary^{#1}}
 \newcommand{\contunitaryat}[1]{\contunitary\left[#1\right]}
 \newcommand{\contunitaryofat}[2]{\contunitaryof{#1}\left[#2\right]}
@@ -50,6 +50,7 @@
 \newcommand{\cavariable}[1]{\avariable^{#1}}
 \newcommand{\cavariableof}[2]{\avariableof{#1}^{#2}}
 \newcommand{\cselvariable}[1]{\selvariable^{#1}}
+\newcommand{\cselvariableof}[2]{\selvariableof{#1}^{#2}}
 
 \newcommand{\inshortcatvariables}{\ccatvariableof{[\catorder]}{\insymbol}}
 \newcommand{\outshortcatvariables}{\ccatvariableof{[\catorder]}{\outsymbol}}
@@ -74,7 +75,7 @@
 \newcommand{\hplusbasat}[1]{\onehotmap^{+}\left[#1\right]} % Hadamard plus basis 1 1
 
 %% Gates
-\newcommand{\unitarysymbol}{U}
+\newcommand{\unitarysymbol}{\mathcal{U}}
 \newcommand{\unitaryof}[1]{\unitarysymbol^{#1}}
 \newcommand{\unitaryat}[1]{\unitarysymbol\left[#1\right]}
 \newcommand{\unitaryofat}[2]{\unitaryof{#1}\left[#2\right]}
@@ -85,12 +86,12 @@
 \newcommand{\paulizsymbol}{\sigma_3}
 \newcommand{\paulizat}[1]{\paulizsymbol\left[#1\right]}
 
-\newcommand{\yrotationsymbol}{R_Y}
+\newcommand{\yrotationsymbol}{\mathcal{R}_Y}
 \newcommand{\yrotationofat}[2]{\yrotationsymbol\left({#1}\right)\left[#2\right]}
 
 \newcommand{\adjointsymbol}{\textdagger}
 
-\newcommand{\hgate}{H}
+\newcommand{\hgate}{\mathcal{H}}
 \newcommand{\hgateat}[1]{\hgate\left[#1\right]}
 
 \newcommand{\acceptanceprob}{\lambda}
