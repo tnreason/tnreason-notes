@@ -1,21 +1,18 @@
-\begin{tikzpicture}[scale=0.35, thick]
+\stantikzpic{
 
     \begin{scope}[shift={(-10,0)}]
-        \node[anchor=center] at (-1.5,1) {$\acceptanceprob \cdot $};
-        \draw (0,-2) rectangle (2,4);
-        \node[anchor=center] (text) at (1,1) {\corelabelsize $\probtensor$};
-
-        \draw (2,3) -- (4,3) node[midway,above] {\colorlabelsize $\catvariableof{\catorder\shortminus1}$};
-        \draw (2,-1) -- (4,-1) node[midway,above] {\colorlabelsize $\catvariableof{0}$};
+        \drawtextnode{-1.5}{1}{$\acceptanceprob \cdot $}
+        \drawvblock{1}{1}{3}{$\probtensor$}
+        \drawhwire{2}{3}{$\catvariableof{\catorder\shortminus1}$}
+        \drawtextnode{3}{1}{\colorlabelsize $\vdots$}
+        \drawhwire{2}{-1}{$\catvariableof{\catorder\shortminus1}$}
     \end{scope}
 
     \node[anchor=center] at (-4,1) {$=$};
 
-    \draw (-1,5) rectangle (1,7);
-    \node[anchor=center] (text) at (0,6) {$\onehotmapof{0}$};
+    \drawsmalltensor{0}{6}{$\fbasis$}
     \draw (1,6) -- (4,6);
-    \draw (4,5) rectangle (6,7);
-    \node[anchor=center] (text) at (5,6) {\corelabelsize $\qcaencodingof{\probtensor}$};
+    \drawsmalltensor{5}{6}{$\qcaencodingof{\probtensor}$}
     \draw (5.5,5) -- (5.5,-1);
     \drawvariabledot{5.5}{-1}
     \draw (4.5,5) -- (4.5,3);
@@ -30,11 +27,9 @@
     %% Distributed Qubits
     \draw[dashed] (-2,4.5) -- (14,4.5);
 
-    \draw (-1,2) rectangle (1,4);
-    \node[anchor=center] (text) at (0,3) {$\onehotmapof{0}$};
+    \drawsmalltensor{0}{3}{$\fbasis$}
     \draw (1,3) -- (2,3);
-    \draw (2,2) rectangle (4,4);
-    \node[anchor=center] (text) at (3,3) {$\hgate$};
+    \drawsmalltensor{3}{3}{$\hgate$}
 
     \draw (4,3) -- (7,3);
     \drawqcmeasuresymbol{8}{3}
@@ -43,15 +38,11 @@
     \node[anchor=center] (text) at (0,1.25) {$\vdots$};
     \node[anchor=center] (text) at (10,1.25) {$\vdots$};
 
-    \draw (-1,-2) rectangle (1,0);
-    \node[anchor=center] (text) at (0,-1) {$\onehotmapof{0}$};
+    \drawsmalltensor{0}{-1}{$\fbasis$}
     \draw (1,-1) -- (2,-1);
-    \draw (2,-2) rectangle (4,0);
-    \node[anchor=center] (text) at (3,-1) {$\hgate$};
+    \drawsmalltensor{3}{-1}{$\hgate$}
 
     \draw (4,-1) -- (7,-1);
     \drawqcmeasuresymbol{8}{-1}
-    \draw (9,-1) -- (11,-1) node[midway,above]{\colorlabelsize $\catvariableof{0}$};
-
-
-\end{tikzpicture}
+    \drawhwire{9}{-1}{$\catvariableof{0}$}
+}

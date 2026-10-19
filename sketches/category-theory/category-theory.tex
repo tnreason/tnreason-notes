@@ -1,0 +1,48 @@
+\documentclass[aps,onecolumn,nofootinbib,pra]{article}
+
+\usepackage{../../spec_files/arxiv}
+\input{../../spec_files/standard_preamble.tex}
+
+\usepackage{import}
+\subimport{../../macros/}{all-macros}
+
+\begin{document}
+    \title{Category theory abstractions for \tnreason{}}
+
+    \maketitle
+    \date{\today}
+
+    \begin{abstract}
+        We investigate the abstractions of tensor networks by string diagrams of categories for usage in the \tnreason{} formalism.
+    \end{abstract}
+
+
+    \section{Semiring contractions as categories}
+
+    Each semiring $\gensemiring=\gensemiringexp$ defines a category:
+    \begin{itemize}
+        \item Objects are the elements of the cyclic group
+        \item Morphisms are maps from the objects to $\gensemiring$
+    \end{itemize}
+
+    {\bf Open question:} Are monads the property needed for message passing?
+
+    \section{Normalization}
+
+    Directed tensors are normalizations in the $\mathrm{Mat}$ category.
+
+    When mapping the $\mathrm{Hilb}$ elements to $\mathrm{Quant}$, quantum states are the normalized pure density matrices and unitaries channels.
+
+
+    \section{Encoding schemes as functors}
+
+    \begin{itemize}
+        \item Basis encodings, selection encodings as functors from the $\mathrm{FinSet}$ category to the $\mathrm{Mat}$ category
+        \item Computation circuits and activation circuits as functors from the $\mathrm{FinSet}$ category to the $\mathrm{Hilb}$ category
+    \end{itemize}
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
+
+
+\end{document}
