@@ -30,8 +30,9 @@
     \section{Normalization}
 
     Directed tensors are normalizations in the $\mathrm{Mat}$ category.
+    We highlight them in the \tnreason{} formalism by directed hyperedges.
 
-    When mapping the $\mathrm{Hilb}$ elements to $\mathrm{Quant}$, quantum states are the normalized pure density matrices and unitaries channels.
+    When choosing the $\mathrm{CPM}$ functor mapping $\mathrm{Hilb}$ to $\mathrm{Quant}$, quantum states are the normalized pure density matrices and unitaries channels.
 
 
     \section{Encoding schemes as functors}
@@ -40,6 +41,35 @@
         \item Basis encodings, selection encodings as functors from the $\mathrm{FinSet}$ category to the $\mathrm{Mat}$ category
         \item Computation circuits and activation circuits as functors from the $\mathrm{FinSet}$ category to the $\mathrm{Hilb}$ category
     \end{itemize}
+
+    \subsection{Basis encodings as the $\mathrm{L}_{\mathbb{B}}$ functor}
+
+    The category $\mathrm{FinSet}$ is defined as:
+    \begin{itemize}
+        \item Objects are finite sets
+        \item Morphisms are total functions between them
+    \end{itemize}
+
+    The category $\mathrm{Mat}_{\mathbb{B}}$ of Boolean tensors is defined as:
+    \begin{itemize}
+        \item Objects are cyclic groups
+        \item Morphisms are Boolean tensors
+    \end{itemize}
+
+    The basis encoding scheme is the $\mathrm{L}_{\mathbb{B}}$ functor:
+    \begin{itemize}
+        \item Finite sets $\arbset$ are mapped to cyclic groups $\cyclicgroupof{\cardof{\arbset}}$
+        \item Functions are mapped to Boolean tensors
+    \end{itemize}
+
+    There are different functors mapping Boolean matrices to further categories.
+
+
+    \subsection{Quantum measurement as functors}
+
+    Computational basis measurement of circuits is a functor from quantum circuits to classical probability distributions.
+    We can understand the functor based on contractions representing the Born rule.
+    The measurement can be understood as a composition of the $\mathrm{CPM}$ functor with the dephasing function mapping further to $\mathrm{FinStoch}$.
 
     \bibliographystyle{plainnat}
     \bibliography{../../references.bib}
