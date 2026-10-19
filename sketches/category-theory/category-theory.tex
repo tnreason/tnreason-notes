@@ -27,6 +27,20 @@
 
     {\bf Open question:} Are monads the property needed for message passing?
 
+
+    The contraction category on a semiring $\gensemiring$ is a symmetric monoidal category, where the functor is the tensor product.
+
+    \subsubsection{Properties}
+
+    \begin{lemma}
+        Each contraction category on a semiring $\gensemiring$ is a cd-category.
+        The copy morphism is the delta tensor on that semiring, and the discarding morphism the vector of coordinates $\srone$.
+    \end{lemma}
+
+    \begin{lemma}
+        Each contraction category on a semiring $\gensemiring$ has a cap by the delta tensor seen as an effect.
+    \end{lemma}
+
     \section{Normalization}
 
     Directed tensors are normalizations in the $\mathrm{Mat}$ category.
@@ -62,7 +76,12 @@
         \item Functions are mapped to Boolean tensors
     \end{itemize}
 
+    % Deterministic
+    Basis encodings are always deterministic morphisms: The contraction with the copy morphism (the delta tensor) is equal to the contraction of two basis encodings with different head variables.
+
+    % Further embeddings
     There are different functors mapping Boolean matrices to further categories.
+    Functors into any contraction category on a semiring just replace the $0$ and $1$ coordinates of the morphism by the $\srzero$ and $\srone$ elements of the semiring.
 
 
     \subsection{Quantum measurement as functors}
