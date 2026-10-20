@@ -146,3 +146,56 @@ We now justify the nomenclature of basis calculus, by showing that contraction w
 % Comparsion with coordinate calculus
 In comparison with the Coordinate Calculus scheme (see \theref{the:coordinateCalculus}), the Basis Calculus produces basis vectors of a functions evaluation instead of scalars.
 While this seems to produce unnecessary redundancy in representing a function, we will see in the following section, that this scheme is efficient in representing compositions of functions.
+
+
+\subsection{Semiring generalization} % Check, whether basis calculus before
+
+
+Basis calculus can be generalized to arbitrary semirings.
+
+\begin{definition}
+    Let $\gensemiring$ be a commutative semiring and $\exfunction \wcols \facstates \rightarrow \headstates$ a function.
+    Then the basis encoding of $\exfunction$ with respect to the $\gensemiring$ is the tensor $\bencodingofat{\exfunction}{\headvariables,\shortcatvariables}$ with coordinates
+    \begin{align*}
+        \bencodingofatwrt{\exfunction}{\indexedheadvariableof{[\seldim]},\indexedshortcatvariables}{\gensemiring}
+        = \begin{cases}
+              \srone & \ifspace \exfunctionat{\shortcatindices} = \headindexof{[\seldim]} \\
+              \srzero & \elsetext \, .
+        \end{cases}
+    \end{align*}
+\end{definition}
+
+Based on the restricted group operation tables we show the decomposition property of generic basis encodings.
+
+\begin{theorem}
+    Let $\gensemiring$ be a commutative semiring and $\exfunction \wcols \facstates \rightarrow [\thirdcatdim]$ and $\secexfunction \wcols [\thirdcatdim] \rightarrow \headstates$ functions.
+    Then we have
+    \begin{align*}
+        \srcontractionofwrt{
+            \bencodingofatwrt{\exfunction}{\thirdcatvariable,\shortcatvariables}{\gensemiring},
+            \bencodingofatwrt{\secexfunction}{\headvariables,\thirdcatvariable}{\gensemiring}
+        }{
+            \shortcatvariables,\headvariables
+        }{\gensemiring}
+        =\bencodingofatwrt{\secexfunction\circ\exfunction}{\headvariables,\shortcatvariables}{\gensemiring}
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    For any indices $\shortcatindices$ and $\headindexof{[\seldim]}$ we have
+    \begin{align*}
+        &\srcontractionofwrt{
+            \bencodingofatwrt{\exfunction}{\thirdcatvariable,\shortcatvariables}{\gensemiring},
+            \bencodingofatwrt{\secexfunction}{\headvariables,\thirdcatvariable}{\gensemiring}
+        }{
+            \indexedshortcatvariables,\indexedheadvariableof{[\seldim]}
+        }{\gensemiring} \\
+        &\quad=
+        \bigsrplus_{\thirdcatindex\in[\thirdcatdim]}
+        \bencodingofatwrt{\exfunction}{\thirdcatvariable=\thirdcatindex,\indexedshortcatvariables}{\gensemiring} \srmul
+        \bencodingofatwrt{\secexfunction}{\indexedheadvariableof{[\seldim]},\thirdcatvariable=\thirdcatindex}{\gensemiring}
+        % \left(\sum_{\thirdcatindex\in[\thirdcatdim]\backslash(\{\exfunctionat{\shortcatindices}\}\cup\secexfunction^{-1}(\headindexof{[\seldim]})}) \srzero \right) \srmul \srzero
+    \end{align*}
+    Now, for any $\thirdcatindex$ for which either $\exfunctionat{\shortcatindices}\neq\thirdcatindex$ or $\secexfunctionat{\thirdcatindex}\neq\headindexof{[\seldim]}$, the summand is the neutral element $\srzero$ ($\srzero\srmul\srzero$, $\srzero\srmul\srone$ or $\srone\srmul\srzero$).
+    If and only if $\secexfunction\circ\exfunctionat{\shortcatindices}=\headindexof{[\seldim]}$, there is one summand $\srone\srmul\srone=\srone$, and the contraction coordinate of the contraction is thus $\srone$.
+    The coordinates therefore coincide with those of $\bencodingofatwrt{\secexfunction\circ\exfunction}{\headvariables,\shortcatvariables}{\gensemiring}$.
+\end{proof}

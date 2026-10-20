@@ -5,11 +5,13 @@
     In this part we take a broader perspective and study principles and techniques of performing computations with tensor networks.
     Specific interest will be dedicated to encoding schemes of computation tasks and their efficient execution.
 
+    We first generalize tensor networks to contractions with respect to generic semirings.
+
 \end{partbacktext}
 
-\subimport{2-basis-calculus/}{basis-calculus} % Need to do before semiring, since different semirings support basis calculus
-\subimport{0-message-passing/}{message-passing} % Need to introduce complex semiring before FT
-\subimport{1-coordinate-calculus/}{coordinate-calculus} % Need to introduce FT before quantum circuits
+\subimport{0-semiring-contraction/}{semiring-contraction}
+\subimport{1-coordinate-calculus/}{coordinate-calculus}
+\subimport{2-basis-calculus/}{basis-calculus}
 \subimport{3-sparse-calculus/}{sparse-calculus}
-\subimport{4-languages-and-automata/}{languages-and-automata.tex}
+\subimport{4-message-passing/}{message-passing}
 \subimport{5-quantum-circuits/}{quantum-circuits}
