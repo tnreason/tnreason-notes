@@ -1,10 +1,13 @@
 \section{Foundations}
 
-
 By its central axioms, quantum mechanics of multiple qubits is formulated by tensors capturing states and discrete time evolutions.
 Motivated by the structural similarity, we investigate how quantum circuits can be utilized for the tensor-network based approach towards efficient and explainable AI in the \tnreason{} framework.
 
 Quantum circuits are contractions of gate tensors and therefore tensor networks, and measurement probabilities are given by contractions.
+
+\todo{% Quantum
+    We in this chapter investigate, how specific contractions (especially forward inference on \ComputationActivationNetworks{}) can be performed more efficiently on a Quantum Computer.
+}
 
 \subsection{Quantum and Tensor Parallelism}
 
@@ -90,9 +93,6 @@ where for each state $\catindexof{c}$ to the control variables we have that
     \contunitaryat{\ccatvariableof{\insymbol}{t},\ccatvariableof{\outsymbol}{t},\indexedcatvariableof{c}}
 \end{align*}
 is a unitary matrix acting on the leg space of the target variable.
-
-
-
 
 \subsection{Measurements and Contractions}
 
