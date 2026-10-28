@@ -1,0 +1,44 @@
+\section{Discretization of Gaussians}
+
+We investigate a discretization scheme for Gaussians, which preserves the maximum entropy property with respect to the sufficient statistic.
+
+\subsection{Standard Gaussians}
+
+A Gaussian distribution on $\rr$ with mean $\seccatindex$ and standard derivation $\sigma$ is the distribution
+\begin{align*}
+    \probat{\indexedcatvariable}
+    &= \frac{1}{\sqrt{2\pi\sigma^2}} \expof{-\frac{(\catindex-\seccatindex)^2}{2\sigma^2}} \\
+    &= \expof{- \frac{1}{\sigma^2} \catindex^2 + \frac{\seccatindex}{\sigma^2} \catindex - \frac{\seccatindex^2}{\sigma^2} - \lnof{\sqrt{2\pi\sigma^2}}} \, .
+\end{align*}
+
+We notice that it is in the exponential family to the statistic $\sstat(\catindex)=(\catindex,\catindex^2)$ with the canonical parameter
+\begin{align*}
+    \canparamat{\selvariable}
+    = \coloredmatrixof{
+    \frac{\seccatindex}{\sigma^2} \\
+    -\frac{1}{\sigma^2}
+    }{\selvariable}
+\end{align*}
+and the mean parameter (can be verified by integration)
+\begin{align*}
+    \meanparamat{\selvariable}
+    = \coloredmatrixof{
+    \seccatindex \\
+    \sigma^2+\seccatindex^2
+    }{\selvariable} \, .
+\end{align*}
+
+The mean polytope is the area bounded by a parabola (the image set of the statistic).
+The zero-noise limit are the maximum entropy distributions on the parabola, namely the Dirac distributions to the corresponding values.
+
+\subsection{Discretization}
+
+Let us now restrict the values $\rr$ to a finite set $\arbset\subset\rr$, which is enumerated by a variable $\catvariable$ taking values in $[\catdim]$.
+We define discrete Gaussian distributions on $\arbset$ as members of the exponential family with sufficient statistic $\sstat(\catindex)=(\catindex,\catindex^2)$.
+The mean polytope is now the convex hull of the two-dimensional vectors on the parabola which are images of $\arbset$.
+
+
+\subsection{Multivariate Gaussians}
+
+The discretization scheme preserving the maximum entropy property can be extended to multivariate Gaussians.
+The sufficient statistics is then $\sstat(\shortcatindices)=(\shortcatindices,\shortcatindices\shortcatindices^T)$, where by $\shortcatindices\shortcatindices^T$ we denote the unfolded matrix of product of the indices.
