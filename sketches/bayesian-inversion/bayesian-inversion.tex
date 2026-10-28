@@ -1,0 +1,173 @@
+\documentclass[aps,onecolumn,nofootinbib,pra]{article}
+
+\usepackage{../../spec_files/arxiv}
+\input{../../spec_files/standard_preamble.tex}
+
+\usepackage{import}
+\subimport{../../macros/}{all-macros}
+
+\begin{document}
+    \title{Bayesian inversion for PDE models in \tnreason{}}
+
+    \maketitle
+    \date{\today}
+
+    \begin{abstract}
+        We represent all solutions of a PDE to different parameters as tensor networks.
+        This enables the integration of logical constraints and formulation of inference tasks, such as sampling from Bayesian posteriors, based on contractions.
+    \end{abstract}
+
+
+    \section{PDE solutions as tensors}
+
+    Given a discretization of a function, we investigate the indicator tensor, whether a combination of values is a solution to the PDE.
+
+    \subsection{Tensor representation of solutions}
+
+    First of all we discretize continuous functions towards a tensor representation:
+    \begin{itemize}
+        \item Selection of $\catorder$ domain elements
+        \item Selection of $\catdim$ image elements together with an approximator mapping each image element to one of the selected
+        \item Variables $\catvariableof{\catenumerator}$ representing the function evaluation at the $\catenumeratorin$ domain element
+    \end{itemize}
+
+    In this discretization scheme any functions is represented by an index $\shortcatindices$.
+    A set of function is represented by its basis encoding
+    \begin{align*}
+        \hypercoreofat{\mathcal{F}}{\indexedshortcatvariables}
+        = \begin{cases}
+              1 & \ifspace \shortcatindices \in \mathcal{F} \\
+              0 & \elsetext \, .
+        \end{cases}
+    \end{align*}
+
+    We are interested in the discretized solution sets $\mathcal{F}$ of PDEs and in decompositions of $\hypercoreofat{\mathcal{F}}{\shortcatvariables}$.
+    Here, we include parameters of the PDE as further variables $\thirdcatvariable$.
+
+    \begin{example}[One-dimensional Darcy flows]
+        In the example of one-dimensional Darcy flows, the variables $\catvariableof{\catenumerator}$ describe the pressure at a position $\catenumerator$ and further variables $\seccatvariableof{\catenumerator}$ the medium resistance at that position.
+    \end{example}
+
+    \subsection{Euler method}
+
+    With Eulers method a solution to a PDE is approximated step by step.
+    Given the value $\catindexof{\catenumerator}$ the $\catindexof{\catenumerator+1}$ is computed given the parameters $\thirdcatindex$.
+    We define $\formulaof{\catenumerator}$ as the function mapping $\catindexof{\catenumerator}$ and $\thirdcatindex$ to the corresponding $\catindexof{\catenumerator+1}$.
+
+    The set of Euler approximations $\mathcal{F}$ of the solutions to a PDE is then decomposed as
+    \begin{align*}
+        \hypercoreofat{\mathcal{F}}{\shortcatvariables,\thirdcatvariable}
+        = \contractionof{
+            \{\bencodingofat{\formulaof{\catenumerator}}{\catvariableof{\catenumerator+1},\catvariableof{\catenumerator},\thirdcatvariable}
+            \wcols \catenumerator\in[\catorder-1]\}
+        }{\shortcatvariables,\thirdcatvariable} \, .
+    \end{align*}
+
+    \begin{example}[Toy example]\label{exa:EulerToy}
+        Consider the parameter free toy example $u'=1$ on the interval $[0,1]$ discretized into $\catorder$ equal size cells.
+        We choose $\catdim\geq \catorder$ and enumerate $[\catdim]$ another discretization of an interval with equal cell size.
+        The discretized solution is then captured by the functions
+        \begin{align*}
+            \formulaof{\catenumerator}(\catindexof{\catenumerator})
+            = \catindexof{\catenumerator}+1
+        \end{align*}
+        and the solutions tensor is the decomposition:
+
+        \stantikzpic{
+            \drawhblock{0}{0}{2}{$\bencodingof{\formulaof{0}}$}
+            \drawtdwire{-1}{-1}{$\catvariableof{0}$}
+            \drawddwire{1}{-3}{$\catvariableof{1}$}
+
+            \drawvariabledot{2.5}{-5}
+            \draw[-<-] (2.5,-5) to [bend right= -10] (1,-3);
+            \draw[->-] (2.5,-5) to [bend right= 10] (4,-3);
+            \drawddwire{2.5}{-7}{$\catvariableof{1}$}
+
+            \drawhblock{5}{0}{2}{$\bencodingof{\formulaof{1}}$}
+            \drawtdwire{4}{-1}{$\catvariableof{1}$}
+            \drawddwire{6}{-3}{$\catvariableof{2}$}
+
+
+            \begin{scope}[shift={(5,0)}]
+                \drawvariabledot{2.5}{-5}
+                \draw[-<-] (2.5,-5) to [bend right= -10] (1,-3);
+                \draw[->-] (2.5,-5) to [bend right= 10] (4,-3);
+                \drawddwire{2.5}{-7}{$\catvariableof{2}$}
+
+                \drawhblock{5}{0}{2}{$\bencodingof{\formulaof{2}}$}
+                \drawtdwire{4}{-1}{$\catvariableof{2}$}
+                \drawddwire{6}{-3}{$\catvariableof{3}$}
+
+            \end{scope}
+
+            \drawtextnode{15}{-4}{$\cdots$}
+
+            \begin{scope}[shift={(15,0)}]
+                \drawvariabledot{2.5}{-5}
+                \draw[-<-] (2.5,-5) to [bend right= -10] (1,-3);
+                \draw[->-] (2.5,-5) to [bend right= 10] (4,-3);
+                \drawddwire{2.5}{-7}{$\catvariableof{\catorder\shortminus 2}$}
+
+                \drawhblock{5}{0}{2}{$\bencodingof{\formulaof{\catorder\shortminus 2}}$}
+                \drawtdwire{4}{-1}{$\catvariableof{\catorder\shortminus 2}$}
+                \drawddwire{6}{-3}{$\catvariableof{\catorder\shortminus 1}$}
+
+            \end{scope}
+        }
+    \end{example}
+
+    \subsection{Generalization to Runge Kutte methods}
+
+    The generalization to Runge-Kutte methods of higher orders $\seccatorder$ is straight forward:
+    Each formula $\formulaof{\catenumerator}$ computing $\catindexof{\catenumerator+1}$ requires further arguments $\catindexof{\catenumerator},\ldots,\catindexof{\catenumerator-\seccatorder+1}$.
+    As a consequence, the decomposition of $\hypercoreof{\mathcal{F}}$ involves tensors of larger orders, namely
+    \begin{align*}
+        \hypercoreofat{\mathcal{F}}{\shortcatvariables,\thirdcatvariable}
+        = \contractionof{
+            \{\bencodingofat{\formulaof{\catenumerator}}{\catvariableof{\catenumerator+1},\catvariableof{\catenumerator},\ldots,\catvariableof{\catenumerator-\seccatorder+1},\thirdcatvariable}
+            \wcols \catenumerator\in[\catorder-1]\}
+        }{\shortcatvariables,\thirdcatvariable} \, .
+    \end{align*}
+
+
+    \section{Integration of logical constraints}
+
+
+    \begin{example}[Constrained parameters in Darcy flows]
+        When assumptions are made on the medium variables in Darcy flows, they can be added as further tensors.
+    \end{example}
+
+
+    \section{Noisy observations}
+
+    Let us consider access to observations of the solution function at specific domain elements.
+    We capture this by adding tensor cores to each observation.
+
+    When the observations of each values are independent, e.g. discretized Gaussian noise, they are added by elementary networks.
+    The corresponding sufficient statistics are $\catindexof{\catenumerator}$ and $(\catindexof{\catenumerator})^2$ to each observed value and the Gaussian noise is a maximum entropy distribution.
+
+    \subsection{Zero-noise limit}
+
+    The zero-noise limit can be investigated based on the characterization of generic maximum entropy distributions \cite{goessmann_tensor_2026-1}.
+
+    \begin{example}[Observations in the toy example]
+        In the setting \exaref{exa:EulerToy} let us discretize the solution with $\catorder=2$, i.e. only two values are considered.
+        Let us consider observations of both by $\seccatindexof{0}$ and $\seccatindexof{1}$.
+        If $\seccatindexof{1}=\seccatindexof{0}+1$, then the zero-noise limit is $\onehotmapofat{\seccatindexof{0},\seccatindexof{1}}{\catvariableof{0},\catvariableof{1}}$.
+        The more involved limit is $\seccatindexof{1}\neq\seccatindexof{0}+1$, in which the observations are not agreeing with respect to any solution of the PDE.
+        In this case, we can apply the characterization of maximum entropy distributions \cite{goessmann_tensor_2026-1} to characterize the limit.
+
+        If $\seccatindexof{1}=\seccatindexof{0}+2$ the limit is the uniform distribution on the support of the corresponding face, namely
+        \begin{align*}
+            \frac{1}{2} \cdot \left(
+            \onehotmapofat{\seccatindexof{0},\seccatindexof{0}+1}{\catvariableof{0},\catvariableof{1}}
+            + \onehotmapofat{\seccatindexof{0}+1,\seccatindexof{0}+2}{\catvariableof{0},\catvariableof{1}}
+            \right) \, .
+        \end{align*}
+    \end{example}
+
+    \bibliographystyle{plainnat}
+    \bibliography{../../references.bib}
+
+
+\end{document}
