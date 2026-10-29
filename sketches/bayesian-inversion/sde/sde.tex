@@ -1,0 +1,49 @@
+\section{Stochastic Differential Equations}
+
+We generalize to stochastic differential equations by considering probability distributions over parameters.
+
+\begin{example}[Eulers method with random parameters]
+    Consider an ODE discretized to $\shortcatvariables$ with parameters enumerated by $\thirdcatvariableof{[\catorder-1]}$.
+    Eulers method gives the next function value $\catindexof{\catenumerator+1}$ based on the current $\catindexof{\catenumerator}$ and parameter $\thirdcatvariableof{\catenumerator}$.
+    We denote $\formulaof{\catenumerator}$ as function computing these Euler steps.
+    When we have a distribution $\probtensor$ of the parameters, then the Euler approximated solution of the SDE is the contraction:
+    \stantikzpic{
+        \drawhblock{0}{0}{3}{$\bencodingof{\formulaof{0}}$}
+        \drawtdwire{-2}{-1}{$\catvariableof{0}$}
+        \drawddwire{0}{1}{$\thirdcatvariableof{0}$}
+        \drawddwire{2}{-3}{$\catvariableof{1}$}
+
+        \drawvariabledot{3.5}{-5}
+        \draw[-<-] (3.5,-5) to [bend right= -10] (2,-3);
+        \draw[->-] (3.5,-5) to [bend right= 10] (5,-3);
+        \drawddwire{3.5}{-7}{$\catvariableof{1}$}
+
+        \drawhblock{7}{0}{3}{$\bencodingof{\formulaof{1}}$}
+        \drawtdwire{5}{-1}{$\catvariableof{1}$}
+        \drawddwire{7}{1}{$\thirdcatvariableof{1}$}
+        \drawddwire{9}{-3}{$\catvariableof{2}$}
+
+        \drawvariabledot{10.5}{-5}
+        \draw[-<-] (10.5,-5) to [bend right= -10] (9,-3);
+        \draw[->-] (10.5,-5) to [bend right= 10] (12,-3);
+        \drawddwire{10.5}{-7}{$\catvariableof{2}$}
+
+        \drawtextnode{14}{2}{$\cdots$}
+        \drawtextnode{14}{0}{$\cdots$}
+
+        \begin{scope}[shift={(14,0)}]
+
+            \drawvariabledot{3.5}{-5}
+            \draw[-<-] (3.5,-5) to [bend right= -10] (2,-3);
+            \draw[->-] (3.5,-5) to [bend right= 10] (5,-3);
+            \drawddwire{3.5}{-7}{$\catvariableof{\catorder\shortminus 2}$}
+
+            \drawhblock{7}{0}{3}{$\bencodingof{\formulaof{\catorder\shortminus 2}}$}
+            \drawtdwire{5}{-1}{$\catvariableof{\catorder\shortminus 2}$}
+            \drawddwire{7}{1}{$\thirdcatvariableof{\catorder\shortminus 2}$}
+            \drawddwire{9}{-3}{$\catvariableof{\catorder\shortminus 1}$}
+        \end{scope}
+
+        \drawhblock{10.5}{4}{11.5}{$\probtensor$}
+    }
+\end{example}
