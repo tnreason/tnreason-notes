@@ -1,0 +1,123 @@
+\begin{example}[Chain Rule learning in FOL]
+
+    Let us consider a set of rules, which are formulas
+    \begin{align*}
+        q_0\land \ldots\land q_{n-1} \implies q_n
+    \end{align*}
+    where each $q_i$ is a FOL formula depending on variables $\indvariableof{i}$ and $\indvariableof{i+1}$
+
+    We select each $q_i$ from a set $\arbsetof{i}$ enumerated by $\indvariableof{i}$.
+
+
+    Effective parametrization: Sometimes we can contract the selector cores with the candidate atom cores to increase efficiency.
+
+    \stantikzpic{
+        \begin{scope}[shift={(-2,-2)}]
+            \drawtdwire{-7}{3}{$\headvariable$}
+            \drawhblock{-7}{0}{2}{$\bencodingof{\exformula}$}
+            \drawldwire{-5}{0}{$\selvariable$}
+            \drawtdwire{-8.5}{-1}{$\indvariableof{0}$}
+            \drawtdwire{-5.5}{-1}{$\indvariableof{1}$}
+
+            \drawtextnode{-1}{0}{$=$}
+        \end{scope}
+
+
+        \drawtdwire{5}{5}{$\headvariable$}
+        \drawhblock{5}{2}{2}{$\bencodingof{\vselectionmap}$}
+        \drawldwire{7}{2}{$\selvariable$}
+
+        \draw [->-] (1,-1) to [bend right = -10] (3.5,1);
+        \drawhblock{1}{-2}{2}{$\bencodingof{\folpredicateof{0}}$}
+
+        \draw [->-] (9,-1) to [bend right = 10] (6.5,1);
+        \drawhblock{9}{-2}{2}{$\bencodingof{\folpredicateof{\seldim-1}}$}
+
+        \draw[->-] (3,-5) to [bend right = -15] (-0.5,-3);
+        \draw[->-] (3,-5) to [bend right = 15] (7.5,-3);
+        \drawvariabledot{3}{-5}
+        \drawtdwire{3}{-5}{$\indvariableof{0}$}
+
+        \draw[->-] (7,-5) to [bend right = -15] (2.5,-3);
+        \draw[->-] (7,-5) to [bend right = 15] (10.5,-3);
+        \drawvariabledot{7}{-5}
+        \drawtdwire{7}{-5}{$\indvariableof{1}$}
+    }
+
+
+    Using the effective parameterization formulas by the tensor network:
+    \stantikzpic{
+
+        \drawtdwire{0}{3}{}
+        \drawhblock{0}{0}{2}{$\bencodingof{\formulaof{0}}$}
+        \draw[-<-] (2,0) to [bend right = -30] (3,-2);
+        \drawtextnode{2.75}{0.25}{\colorlabelsize $\selvariableof{0}$}
+
+        \draw[->-] (-1.5,-4) -- (-1.5,-1);
+        \drawtdwire{-1.5}{-4}{}
+        \drawtextnode{-2.25}{-5}{\colorlabelsize $\indvariableof{0}$}
+        \drawvariabledot{-1.5}{-4}
+        \draw[->-] (-1.5,-4) to [bend right=70] (21.5,-1);
+%        \drawtdwire{3}{-4}{$\indvariableof{1}$}
+
+        \draw[->-] (3,-4) to [bend right = -20] (1.5,-1);
+        \drawvariabledot{3}{-4}
+        \drawtdwire{3}{-4}{$\indvariableof{1}$}
+        \draw[->-] (3,-4) to [bend right = 20] (4.5,-1);
+
+
+        \drawtdwire{6}{3}{}
+        \drawhblock{6}{0}{2}{$\bencodingof{\formulaof{1}}$}
+        \drawtextnode{8.75}{0.25}{\colorlabelsize $\selvariableof{1}$}
+        \draw[-<-] (8,0) to [bend right = -30] (9,-2);
+
+        \draw[->-] (9,-4) to [bend right = -20] (7.5,-1);
+        \drawvariabledot{9}{-4}
+        \drawtdwire{9}{-4}{$\indvariableof{2}$}
+%        \draw[->-] (9,-4) to [bend right = 20] (10.5,-1);
+
+        \drawtextnode{10}{-1}{$\cdots$}
+
+        \drawtextnode{10}{-3}{$\cdots$}
+
+        %\draw[->-] (11,-4) to [bend right = -20] (9.5,-1);
+        \drawvariabledot{11}{-4}
+        \drawtdwire{11}{-4}{$\indvariableof{n-1}$}
+        \draw[->-] (11,-4) to [bend right = 20] (12.5,-1);
+
+        \draw[->-] (17,-4) to [bend right = -20] (15.5,-1);
+        \drawvariabledot{17}{-4}
+        \drawtdwire{17}{-4}{$\indvariableof{n}$}
+        \draw[->-] (17,-4) to [bend right = 20] (18.5,-1);
+
+
+
+        \drawtdwire{14}{3}{}
+        \drawhblock{14}{0}{2}{$\bencodingof{\formulaof{n-1}}$}
+        \drawtextnode{16.75}{0.25}{\colorlabelsize $\selvariableof{n-1}$}
+        \draw[-<-] (16,0) to [bend right = -30] (17,-2);
+
+        \drawhblock{20}{0}{2}{$\bencodingof{\formulaof{n}}$}
+        \drawtextnode{22.75}{0.25}{\colorlabelsize $\selvariableof{n}$}
+        \draw[-<-] (22,0) to [bend right = -30] (23,-2);
+
+        \drawtdwire{7}{7}{}
+        \drawhblock{7}{4}{8}{$\bencodingof{\land}$}
+
+        \drawsmalltensor{14}{12}{$\tbasis$}
+        \drawtdwire{14}{11}{}
+        \drawhblock{14}{8}{8}{$\bencodingof{\impbincon}$}
+        \drawtdwire{20}{7}{}
+        \draw (20,1) -- (20,5);
+
+
+
+
+
+
+
+    }
+
+
+
+\end{example}
