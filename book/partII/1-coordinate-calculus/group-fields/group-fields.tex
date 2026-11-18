@@ -28,13 +28,13 @@ A complex group field is a group field for the complex sum-product semiring.
 The group field perspective on tensors further applied in quantum gravity.
 Here symmetries are modeled based on the group structure \cite{chirco_group_2018,chirco_group_2020}.
 
-\subsection{Coset encoding}
+\subsection{Subgroup encoding}
 
 We here restrict to finite abelian groups.
 A subgroup is a subset $\gensubgroup\subset\gengroup$, which is itself a group.
-A coset to $\gensubgroup$ and an element $g \in \gengroup$ is the set
+A coset to $\gensubgroup$ and an element $\exgroupelement\in\gengroup$ is the set
 \begin{align*}
-    \{g\circ h \wcols h\in \gensubgroup\} \, .
+    \{\exgroupelement\circ\exsubgroupelement \wcols \exsubgroupelement\in\gensubgroup\} \, .
 \end{align*}
 
 % Dual group
@@ -48,9 +48,10 @@ The annihilator of a subgroup $\gensubgroup\subset \gengroup$ is the subgroup
     \genannihilator\coloneqq
     \{\characterof{k} \wcols \characterof{k}\in\gendualgroup\ncond \uniquantwrtof{h\in \gensubgroup}{\characterofat{k}{h}=1} \} \, .
 \end{align*}
-The annihilator of the annihilator is
+By the Pontryagin duality the annihilator of the annihilator is the original subgroup \cite{serre_linear_1977, terras_fourier_1999}, that is
 \begin{align*}
-    \big(\genannihilator\big)^{\perp} = \gensubgroup \, .
+    \big(\genannihilator\big)^{\perp}
+    = \gensubgroup \, .
 \end{align*}
 
 Since finite Abelian group are isomorphic to cartesian products of cyclic groups, we assume $\gengroup=\facgroup$.
@@ -89,6 +90,59 @@ Then we have for the subset encoding of $\genannihilator\subset\gendualgroup$ (w
     }{\shortcatvariables} \, .
 \end{align*}
 
+%% Representation by 
+To find a tensor network decomposition of $\hypercoreofat{h^j_{[\catorder]}}{\catvariableof{\edgeof{j}}}$ we define the smallest common multiple of the dimensions $\{\catdimof{\catenumerator}\wcols\catenumeratorin\}$ by $\catdim$ and notice that the condition for non-vanishing coordinates is equal to
+\begin{align*}
+    \sum_{\catenumerator\in\edgeof{j}} \frac{\catdim}{\catdimof{\catenumerator}} \cdot \thirdcatindexof{\catenumerator}\cdot h^j_{\catenumerator}
+    = 0 \modspace \catdim
+\end{align*}
+Since $\catdim$ is the smallest common multiple, $\frac{\catdim}{\catdimof{\catenumerator}}$ is an integer and we define for $\catenumeratorin$ functions
+\begin{align*}
+    \secexfunctionof{\catenumerator} \wcols [\catdim] \times [\catdim] \rightarrow [\catdim]
+    \quad , \quad
+    \secexfunctionof{\catenumerator}(\headindexof{\catenumerator},\catindexof{\catenumerator})
+    = \headindexof{\catenumerator} + \frac{\catdim}{\catdimof{\catenumerator}} \cdot \catindexof{\catenumerator} \modspace \catdim \, .
+\end{align*}
+
+
+
+    \stantikzpic{
+        \drawhblock{0}{0}{3}{$\hypercoreof{h^j_{[\catorder]}}$}
+
+        \drawtdwire{-2}{-1}{$\catvariableof{0}$}
+        \drawtextnode{0}{-2}{\colorlabelsize $\cdots$}
+        \drawtdwire{2}{-1}{$\catvariableof{\catorder-1}$}
+
+        \drawtextnode{5}{0}{$=$}
+        \begin{scope}[shift={(8,0)}]
+
+            \drawsmalltensor{0}{4}{$\fbasis$}
+            \drawddwire{0}{1}{$\headvariableof{0}$}
+            \drawsmalltensor{0}{0}{$\bencodingof{\secexfunctionof{0}}$}
+            \drawtdwire{0}{-1}{$\catvariableof{0}$}
+            \drawrdwire{3}{0}{$\headvariableof{1}$}
+            \drawsmalltensor{4}{0}{$\bencodingof{\secexfunctionof{2}}$}
+            \drawtdwire{4}{-1}{$\catvariableof{1}$}
+            \drawrdwire{7}{0}{$\headvariableof{2}$}
+
+            \drawsmalltensor{8}{0}{$\bencodingof{\secexfunctionof{2}}$}
+            \drawtdwire{8}{-1}{$\catvariableof{2}$}
+            \drawrdwire{11}{0}{$\headvariableof{3}$}
+
+            \drawtextnode{12}{0}{\colorlabelsize $\cdots$}
+            \drawrdwire{15}{0}{$\headvariableof{\catorder-1}$}
+            \drawsmalltensor{16}{0}{$\bencodingof{\oplus}$}
+
+            \drawtdwire{16}{-1}{$\catvariableof{\catorder-1}$}
+            \drawtdwire{16}{3}{$\headvariableof{\catorder}$}
+
+            \drawsmalltensor{16}{4}{$\fbasis$}
+
+        \end{scope}
+    }
+
+
+
 \begin{example}\label{exa:cosetsCyclicTwoProduct} % WH case
     If $\catdimof{\catenumerator}=2$ we can simplify the support condition for $\hypercoreofat{h^j_{[\catorder]}}{\indexedcatvariableof{\edgeof{j}}}$, since any nonvanishing $h^j_{\catenumerator}$ is $1$.
     The condition becomes
@@ -101,19 +155,41 @@ Then we have for the subset encoding of $\genannihilator\subset\gendualgroup$ (w
         = \bigoplus [\catvariableof{\edgeof{j}}] \, .
     \end{align*}
     Using the associativity of the exactly or connective, one can decompose the tensor in an arbitrary tree format with hidden ranks $2$.
+
+    We have a tensor decomposition of $\bigoplus$ as:
+    \stantikzpic{
+        \drawhblock{0}{0}{3}{$\bigoplus$}
+
+        \drawtdwire{-2}{-1}{$\catvariableof{0}$}
+        \drawtextnode{0}{-2}{\colorlabelsize $\cdots$}
+        \drawtdwire{2}{-1}{$\catvariableof{\catorder-1}$}
+
+        \drawtextnode{5}{0}{$=$}
+        \begin{scope}[shift={(8,0)}]
+
+            \drawvariabledot{0}{0}
+            \draw (0,-1) -- (0,0);
+            \draw (0,0) -- (1,0);
+            \drawtdwire{0}{-1}{$\catvariableof{0}$}
+            \drawrdwire{3}{0}{$\headvariableof{1}$}
+            \drawsmalltensor{4}{0}{$\bencodingof{\oplus}$}
+            \drawtdwire{4}{-1}{$\catvariableof{1}$}
+            \drawrdwire{7}{0}{$\headvariableof{2}$}
+
+            \drawsmalltensor{8}{0}{$\bencodingof{\oplus}$}
+            \drawtdwire{8}{-1}{$\catvariableof{2}$}
+            \drawrdwire{11}{0}{$\headvariableof{3}$}
+
+            \drawtextnode{12}{0}{\colorlabelsize $\cdots$}
+            \drawrdwire{15}{0}{$\headvariableof{\catorder-1}$}
+            \drawsmalltensor{16}{0}{$\bencodingof{\oplus}$}
+
+            \drawtdwire{16}{-1}{$\catvariableof{\catorder-1}$}
+            \drawtdwire{16}{3}{$\headvariableof{\catorder}$}
+
+            \drawsmalltensor{16}{4}{$\fbasis$}
+
+        \end{scope}
+    }
 \end{example}
 
-% Representing different
-Having represented a group itself based on its annihilator, we have represented the coset of $\gensubgroup$ to the neutral group element $0$.
-To represent an arbitrary coset to an element $\thirdcatindexof{[\catorder]}$ we apply a shift operator
-\begin{align*}
-    \bigotimes_{\catenumeratorin} \hypercoreofat{\catenumerator}{\catvariableof{\catenumerator},\tildecatvariableof{\catenumerator}} \, ,
-\end{align*}
-where each local shift operator is a basis encoding of a shift function defined as
-\begin{align*}
-    \hypercoreofat{\catenumerator}{\indexedcatvariableof{\catenumerator},\tildecatvariableof{\catenumerator}=\tildecatindexof{\catenumerator}}
-    = \begin{cases}
-          1 & \ifspace \catindexof{\catenumerator} + \thirdcatindexof{\catenumerator} = \tildecatindexof{\catenumerator} \modspace \catdimof{\catenumerator}\\
-          0 & \elsetext
-    \end{cases} \, .
-\end{align*}

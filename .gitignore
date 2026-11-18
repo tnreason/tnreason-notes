@@ -16,3 +16,6 @@ out/*
 *.toc
 *.nav
 *.snm
+
+talks/261116-Bosch/*
+talks/261127-Hamburg/*

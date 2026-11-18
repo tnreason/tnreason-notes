@@ -139,21 +139,3 @@ Applying the Fourier transform on a coset encoding tensor gives a tensor support
     which is supported at $\genannihilator$.
 \end{example}
 
-\subsubsection{Hidden subgroup problem}\label{sec:ccHSP}
-
-Lets assume that a function $\exformula:\gengroup\rightarrow \mathcal{Y}$ mapping from a finite abelian group $\gengroup=\facgroup$ to an arbitrary set $\mathcal{Y}$ is constant on the cosets of a subgroup $\gensubgroup$ (called the hidden subgroup), and different on each coset.
-The slices
-\begin{align*}
-    \bencodingofat{\exformula}{\indexedheadvariable,\shortcatvariables}
-\end{align*}
-of the basis encoding to any image element enumerated by $\headindex$ are then coset encoding tensors and by \lemref{lem:cosetTransform}
-\begin{align*}
-    \contractionof{
-        \bencodingofat{\exformula}{\indexedheadvariable,\shortcatvariables},
-        \ftat{\headvariableof{[\catorder]},\shortcatvariables}
-    }{\headvariableof{[\catorder]}}
-\end{align*}
-is supported on the annihilator $\genannihilator$, where each coordinate has equal support.
-
-When retrieving the support of this transform, we can construct a generating set for $\genannihilator$ and then $\gensubgroup$ as $\big(\genannihilator\big)^{\annihilatorsymbol}$ based on the solution of a equation system in modulus calculus.
-This strategy is exploited in quantum computing and we will discuss it in \secref{sec:qcHSP}.

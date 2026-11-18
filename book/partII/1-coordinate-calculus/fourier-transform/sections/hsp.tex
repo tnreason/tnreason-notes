@@ -1,0 +1,86 @@
+\subsection{Hidden subgroup problem}\label{sec:ccHSP}
+
+Lets assume that a function $\exformula:\gengroup\rightarrow \mathcal{Y}$ mapping from a finite abelian group $\gengroup=\facgroup$ to an arbitrary set $\mathcal{Y}$ is constant on the cosets of a subgroup $\gensubgroup$ (called the hidden subgroup), and different on each coset.
+The slices
+\begin{align*}
+    \bencodingofat{\exformula}{\indexedheadvariable,\shortcatvariables}
+\end{align*}
+of the basis encoding to any image element enumerated by $\headindex$ are then coset encoding tensors and by \lemref{lem:cosetTransform}
+\begin{align*}
+    \contractionof{
+        \bencodingofat{\exformula}{\indexedheadvariable,\shortcatvariables},
+        \ftat{\headvariableof{[\catorder]},\shortcatvariables}
+    }{\headvariableof{[\catorder]}}
+\end{align*}
+is supported on the annihilator $\genannihilator$, where each coordinate has equal support.
+
+% Retrieving $\subgroup$
+When retrieving the support of this transform, we can construct a generating set for $\genannihilator$ and then $\gensubgroup$ as $\big(\genannihilator\big)^{\annihilatorsymbol}$ based on the solution of a equation system in modulus calculus.
+This strategy is exploited in quantum computing and we will discuss it in \secref{sec:qcHSP}.
+
+% Coset shift
+Having represented a group itself based on its annihilator, we have represented the coset of $\gensubgroup$ to the neutral group element $\zerotuple{[\catorder]}$.
+To represent an arbitrary coset to an element $\thirdcatindexof{[\catorder]}$ we apply a shift operator
+\begin{align*}
+    \bigotimes_{\catenumeratorin} \hypercoreofat{\catenumerator,\thirdcatindexof{\catenumerator}}{\catvariableof{\catenumerator},\tildecatvariableof{\catenumerator}} \, ,
+\end{align*}
+where each local shift operator is a basis encoding of a shift function defined as
+\begin{align*}
+    \hypercoreofat{\catenumerator,\thirdcatindexof{\catenumerator}}{\indexedcatvariableof{\catenumerator},\tildecatvariableof{\catenumerator}=\tildecatindexof{\catenumerator}}
+    = \begin{cases}
+          \srone & \ifspace \catindexof{\catenumerator} + \thirdcatindexof{\catenumerator} = \tildecatindexof{\catenumerator} \modspace \catdimof{\catenumerator}\\
+          \srzero & \elsetext
+    \end{cases} \, .
+\end{align*}
+
+
+For each $\headindex\in[\headdim]$ in the enumerated image of the function $\exformula$ there is a group element denoted by $\thirdcatindexof{[\catorder]}(\headindex)$ such that $\exformula$ takes the value $\headindex$ on the coset $\thirdcatindexof{[\catorder]}(\headindex)\circ\gensubgroup$.
+We use these elements to define maps
+\begin{align*}
+    \secexfunctionof{\catenumerator} \wcols [\catdimof{\catenumerator}] \times [\headdim] \rightarrow [\catdimof{\catenumerator}]
+    \quad,\quad
+    \secexfunctionof{\catenumerator}(\catindexof{\catenumerator},\headindex)
+    = \catindexof{\catenumerator} + \thirdcatindexof{\catenumerator}(\headindex) \modspace \catdimof{\catenumerator} \, .
+\end{align*}
+We then have the decomposition (see \figref{fig:hspFunctionDecomposition})
+%\begin{lemma}
+\begin{align*}
+    \bencodingofat{\exformula}{\headvariable,\shortcatvariables}
+    = \contractionof{
+        \{\onehotmapofat{\gensubgroup}{\tildecatvariableof{[\catorder]}}\} \cup
+        \{\bencodingofat{\secexfunctionof{\catenumerator}}{\tildecatvariableof{\catenumerator},\catvariableof{\catenumerator},\headvariable} \wcols \catenumeratorin \}
+    }{\headvariable,\shortcatvariables}
+\end{align*}
+%\end{lemma}
+
+
+\begin{figure}
+    \stantikzpic{
+        \begin{scope}[shift={(-7,-1)}]
+            \drawtdwire{-5}{5}{$\headvariable$}
+            \drawhblock{-5}{2}{4}{$\bencodingof{\exformula}$}
+            \drawtdwire{-8}{1}{$\catvariableof{0}$}
+            \drawtextnode{-5}{0}{\colorlabelsize $\cdots$}
+            \drawtdwire{-2}{1}{$\catvariableof{\catorder\shortminus1}$}
+        \end{scope}
+
+        \drawtextnode{-6}{1}{$=$}
+
+        \drawhblock{0}{4}{4}{$\onehotmapof{\gensubgroup}$}
+        \drawtdwire{-3}{3}{$\tildecatvariableof{0}$}
+        \drawhblock{-3}{0}{1.5}{$\hypercoreof{0,\thirdcatindexof{0}}$}
+        \drawtdwire{-3}{-1}{$\catvariableof{0}$}
+
+        \drawtextnode{0}{-2}{\colorlabelsize $\cdots$}
+
+        \drawtdwire{3}{3}{$\tildecatvariableof{\catorder-1}$}
+        \drawhblock{3}{0}{1.5}{$\hypercoreof{\catorder\shortminus1,\thirdcatindexof{\catorder\shortminus1}}$}
+        \drawtdwire{3}{-1}{$\catvariableof{\catorder\shortminus1}$}
+
+        \drawvariabledot{7}{1.5}
+        \draw[->-] (7,1.5)  to [bend right = 10 ] (-1.5,0);
+        \draw[->-] (7,1.5)  to [bend right = 10 ] (4.5,0);
+        \drawldwire{7}{1.5}{$\headvariable$}
+    }
+    \caption{Decomposition of a function satisfying the hidden subgroup premise.}\label{fig:hspFunctionDecomposition}
+\end{figure}
